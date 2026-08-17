@@ -1,0 +1,197 @@
+<div id="hack">
+    <div id="EDITOR" tabindex="0">
+		<div id="virt_horiz" style="width: 3797px;"></div>
+		<div id="virt_vertical" style="height: 111975px;"></div>
+		<div id="horiz_scroll_sticky">
+			<div id="horiz_scrollbar" style="width: 536px;">
+			    <div id="horiz_scrollbar_virt_boundary" style="width: 3759px;"></div>
+			</div>
+		</div>
+		<div id="gutter_background_color" style="padding-left: 3px; padding-right: 6px; width: 29px;"></div>
+		<div id="gutter_container" style="padding-left: 3px; padding-right: 6px; width: 29px;">
+			<div class="eG" style="width: 29px; transform: translateY(540px);">37</div>
+			<!-- more "eG" -->
+		</div>
+		<div id="body" style="width: calc(100% - 38px);">
+			<div id="presentation">
+                <div id="cursor-1" style="display: contents;">
+                    <div class="selection" style="left: 38px; transform: translate(350.154px, 435px); width: 221.526px;"></div>
+                    <!-- A ".selection" exists per line that the selection spans -->
+                </div>
+                <!-- more cursor-% -->
+            </div>
+			<div id="cursorList">
+				<div id="caretRow-1" class="caretRow" style="left: 38px; transform: translateY(570px);">
+					<div id="cursor-1" class="cursor" style="transform: translateX(535.95px);">
+					</div>
+				</div>
+				<!-- more caretRow|cursor -->
+			</div>
+			<div id="text" style="height: 540px; width: 3759px;">
+				<div class="eT" style="transform: translateY(540)px; left: 38px;">
+					<span></span>
+					<!--
+						at minimum a single empty span, otherwise any amount of them are here
+						as necessitated by the syntax highlighting for the current line of text.
+					-->
+				</div>
+				<!-- more lines of text ("eT") -->
+			</div>
+		</div>
+	</div>
+	<div id="findOverlay" style="visibility: hidden"></div>
+	<div id="debug"></div>
+</div>
+
+<!--
+
+# Group_WidthLongestLine:
+=========================
+Name                          | Style | Note
+--------------------------------------------
+horiz_scrollbar_virt_boundary | width | NA
+text                          | width | vestigial?
+eT                            | width | NA
+virt_horiz                    | width | This one is a tentative member of the group, it actually seems to be with this group's width + the width of the gutter?
+--------------------------------------------
+List of user actions that can trigger a change in this group:
+{
+    change_of_font_size_theoretically,
+    change_of_font_family_theoretically,
+}
+--------------------------------------------
+List of related functions
+{
+    EDITOR_measureLineHeightAndCharacterWidth: font size or family can modify width of each individual monospace character,
+    EDITOR_createViewport: creation of divs foreach line of text, they need to be given the width of the longest line as their style,
+}
+
+
+
+
+# Group_GutterMeasurements:
+===========================
+Name                    | Style         | Note
+----------------------------------------------
+body                    | width         | vestigial... display: contents // 100% - totalGutterWidth => this is bad? Make it a value no calc in text editor? Avoids tiny shifts causing layout?
+cursor-%|selection      | left          | totalGutterWidth
+caretRow-%              | left          | totalGutterWidth
+eT                      | left          | totalGutterWidth
+gutter_background_color | padding-left  | NA
+gutter_background_color | width         | NA
+gutter_background_color | padding-right | NA
+gutter_container        | padding-left  | NA
+gutter_container        | width         | NA
+gutter_container        | padding-right | NA
+eg                      | width         | literalGutterWidth
+----------------------------------------------
+List of user actions that can trigger a change in this group:
+{
+    change_of_font_size_theoretically,
+    change_of_font_family_theoretically,
+}
+----------------------------------------------
+List of related functions
+{
+    EDITOR_init: padding (left and right) are set here,
+    EDITOR_measureLineHeightAndCharacterWidth: font size or family can modify width of each individual monospace character,
+}
+
+
+
+
+# Group_ContentTotalHeight:
+===========================
+Name          | Style  | Note
+-----------------------------
+virt_vertical | height | NA
+-----------------------------
+List of user actions that can trigger a change in this group:
+{
+    change_of_font_size_theoretically,
+    change_of_font_family_theoretically,
+}
+-----------------------------
+List of related functions
+{
+    EDITOR_measureLineHeightAndCharacterWidth: font size or family can modify the height of each line,
+}
+
+
+
+
+# SpecializedGroup_virtualization:
+==================================
+Name  | Note
+-----------------------------
+indexVirtual | the first line index that should be put in the UI
+countVirtual | the amount of lines to put in the UI
+-----------------------------
+List of user actions that can trigger a change in this group:
+{
+    aaa,
+    bbb,
+}
+-----------------------------
+List of related functions
+{
+    aaa,
+}
+
+
+
+
+# SpecializedGroup_scroll:
+==========================
+Name  | Note
+-----------------------------
+indexVirtual | the first line index that should be put in the UI
+-----------------------------
+List of user actions that can trigger a change in this group:
+{
+    mouse wheel,
+    click scrollbar,
+    drag slider within scrollbar,
+    wheel click double axis scrolling mode in some user agents,
+}
+-----------------------------
+List of related functions
+{
+    aaa,
+}
+
+
+
+
+# SpecializedGroup_resize:
+==========================
+Name  | Note
+-----------------------------
+countVirtual | the amount of lines to put in the UI
+-----------------------------
+List of user actions that can trigger a change in this group:
+{
+    resize the user agent,
+    resize an element within the app itself wherein the dimensions of the parent element of the editor have as a result either increased or decreased,
+}
+-----------------------------
+List of related functions
+{
+    aaa,
+}
+
+
+
+
+I think you missed this point which relates to the following two questions:
+
+    The point is: you need to know the position of the cursor to scroll it into view. I suppose that would imply just considering the total gutter width and all be relative to the body.
+    
+    Question: why is text height 540px?
+    It used to not be display: contents is the answer. This is vestigial css.
+    
+    Question: why is text width width 3759px?
+    The goal was for the lines of text to inherit that width value. But now that the lines of text use 'contain: size layout;' they no longer inherit width so this is vestigial css.
+
+
+-->

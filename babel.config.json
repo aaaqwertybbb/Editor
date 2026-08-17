@@ -1,0 +1,7 @@
+{
+  "presets": [],
+  "plugins": [
+    "./my-custom-babel-plugin.cjs"
+  ],
+  "compact": false
+}

@@ -1,0 +1,764 @@
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  background-color: var(--primary-background-color);
+  color: var(--primary-foreground-color);
+  color-scheme: var(--color-scheme);
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE 10+ and Edge */
+  user-select: none; /* Standard syntax */
+}
+
+#HEADER {
+  background-color: var(--secondary-background-color);
+  color: var(--secondary-foreground-color);
+  border-bottom: 1px solid var(--primary-border-color);
+  height: var(--header-height);
+}
+
+#BODY {
+  display: flex;
+  /* -1 for header border bottom */
+  height: calc(100% - var(--header-height) - 1px);
+}
+
+#EXPLORER {
+    width: 200px;
+    height: 100%;
+}
+
+.treeView_node {
+  height: var(--APP-line-height);
+  white-space: nowrap;
+}
+
+#FOOTER {
+}
+
+#MENU {
+  position: fixed;
+  min-width: 25px;
+  min-height: 25px;
+  background-color: var(--secondary-background-color);
+  color: var(--secondary-foreground-color);
+  border: 1px solid var(--primary-border-color);
+  padding-left: 4px;
+  padding-right: 4px;
+  /* the padding-top needs to be accounted for in the js code anywhere calculation of which option was clicked is done, as well any other scenarios that might follow the pattern */
+  padding-top: 4px;
+  padding-bottom: 1px;
+}
+
+  #MENU:focus #MENU_cursor {
+    background-color: var(--primary-active-with-focus-background-color);
+  }
+
+#MENU_cursor {
+  background-color: var(--primary-active-no-focus-background-color);
+  height: var(--APP-line-height);
+  position: absolute;
+  /* -8px is the sum of the padding left and padding right of the menu */
+  width: calc(100% - 8px);
+}
+
+#MENU_optionList {
+  cursor: default;
+  display: contents;
+}
+
+.menuOption {
+  height: var(--APP-line-height);
+  white-space: nowrap;
+  position: relative;
+}
+
+#TOOLTIP {
+  position: fixed;
+  min-width: 25px;
+  min-height: 25px;
+  background-color: var(--secondary-background-color);
+  color: var(--secondary-foreground-color);
+  border: 1px solid var(--primary-border-color);
+  padding-left: 4px;
+  padding-right: 4px;
+  /* the padding-top needs to be accounted for in the js code anywhere calculation of which option was clicked is done, as well any other scenarios that might follow the pattern */
+  padding-top: 4px;
+  padding-bottom: 1px;
+}
+
+.LIST_moveChildNodes {
+  position: relative;
+  overflow: scroll;
+}
+
+  .LIST_moveChildNodes:focus .LIST_moveChildNodes_cursor {
+    background-color: var(--primary-active-with-focus-background-color);
+  }
+
+.LIST_moveChildNodes_virtualization {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+}
+
+.LIST_moveChildNodes_cursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: var(--primary-active-no-focus-background-color);
+  position: absolute;
+  width: 100%;
+}
+
+.LIST_moveChildNodes_itemList {
+  display: contents;
+}
+
+#AUTOCOMPLETE {
+  position: fixed;
+  width: 200px;
+  height: 100px;
+  background-color: var(--secondary-background-color);
+  color: var(--secondary-foreground-color);
+  border: 1px solid var(--primary-border-color);
+  padding-left: 4px;
+  padding-right: 4px;
+  /* the padding-top needs to be accounted for in the js code anywhere calculation of which option was clicked is done, as well any other scenarios that might follow the pattern */
+  padding-top: 4px;
+  padding-bottom: 1px;
+  overflow: scroll;
+}
+
+  #AUTOCOMPLETE:focus #AUTOCOMPLETE_cursor {
+    background-color: var(--primary-active-with-focus-background-color);
+  }
+
+#AUTOCOMPLETE_virtualization {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+}
+
+#AUTOCOMPLETE_cursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: var(--primary-active-no-focus-background-color);
+  position: absolute;
+  width: 100%;
+  height: var(--APP-line-height);
+}
+
+#AUTOCOMPLETE_itemList {
+  display: contents;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+/*#AUTOCOMPLETE_ITEM {
+  
+}*/
+
+.TREEVIEW {
+  position: relative;
+  overflow: scroll;
+  outline: none;
+  width: 100%;
+  height: 100%;
+}
+
+  .TREEVIEW:focus .TREEVIEW_cursor {
+    background-color: var(--primary-active-with-focus-background-color);
+  }
+
+.TREEVIEW_virtualization {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+}
+
+.TREEVIEW_cursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: var(--primary-active-no-focus-background-color);
+  position: absolute;
+  width: 100%;
+}
+
+.TREEVIEW_itemList {
+  display: contents;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.unselectable {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE 10+ and Edge */
+  user-select: none; /* Standard syntax */
+}
+
+#WIDGET {
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: var(--primary-active-no-focus-background-color);
+    padding: 10px;
+    border: 1px solid var(--primary-border-color);
+}
+
+#EDITOR_hack {
+  width: calc(100% - 200px);
+}
+
+#EDITOR_debug {
+  height: 1.5em;
+  font-family: monospace;
+}
+
+#EDITOR {
+	outline: none;
+  height: calc(100% - 1.5em);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
+  font-family: monospace;
+  cursor: text;
+  display: flex;
+}
+
+	/*#EDITOR:focus {
+		outline: 1px solid pink;
+	}*/
+
+  /*#EDITOR:focus .EDITOR_cursor {
+    background-color: var(--editor-cursor-color-focused) !important;
+  }*/
+
+/*
+Class names "te..."
+are relating to the text editor UI.
+
+Most particularly renaming is being done to
+the class names that linearly scale in usage as you show more and more text.
+*/
+
+/* .EDITOR_comment is being renamed to .eC (i.e.: Editor Comment) */
+.eC {
+  color: var(--editor-syntax-comment-color);
+}
+
+/* Multiline comment that spans a single line (the 'm' is for 'multiline'. Lowercase lower range of lines being spanned... or something... vs uppercase.) */
+.eCm {
+  color: var(--editor-syntax-comment-color);
+}
+
+/* Multiline comment that spans multiple lines */
+.eCM {
+  color: var(--editor-syntax-comment-color);
+}
+
+/* .EDITOR_string is being renamed to .eS (i.e.: Editor String) */
+.eS {
+  color: var(--editor-syntax-string-color);
+}
+
+/* Backtick deliminated string that spans a single line */
+.eSm {
+  color: var(--editor-syntax-string-color);
+}
+
+/* Backtick deliminated string that spans multiple lines */
+.eSM {
+  color: var(--editor-syntax-string-color);
+}
+
+/* .EDITOR_keyword is being renamed to .eK (i.e.: Editor Keyword) */
+.eK {
+  color: var(--editor-syntax-keyword-color);
+}
+
+/* .EDITOR_keywordControl is being renamed to .eKC (i.e.: Editor KeywordControl) */
+.eKC {
+  color: var(--editor-syntax-keywordControl-color);
+}
+
+/* .eP (i.e.: Editor Parenthesis) */
+.eP {
+  color: var(--editor-syntax-parenthesis-color);
+}
+
+/* .eM (i.e.: Editor Member access) */
+.eM {
+  color: var(--editor-syntax-member-access-color);
+  /*background-color: var(--editor-syntax-member-access-background-color);*/
+}
+
+/* .eO (i.e.: Editor Operator) */
+.eO {
+  color: var(--editor-syntax-operator-color);
+  /*background-color: var(--editor-syntax-member-access-background-color);*/
+}
+
+/* .eOA (i.e.: Editor OperatorAssignment) */
+.eOA {
+  color: var(--editor-syntax-operatorAssignment-color);
+  /*background-color: var(--editor-syntax-member-access-background-color);*/
+}
+
+/* .eN (i.e.: Editor Not_yet_syntax_highlighted) */
+.eN {
+  color: var(--editor-syntax-operatorAssignment-color);
+}
+
+/*
+TODO: Is it better to have one virtualization element that has both the width and height set to non '1px' values...
+...or separate them? i.e.: is it easier to render an element that has a 1px width or height than both measurements being large?
+*/
+
+#EDITOR_virtualization_vertical {
+  width: 1px;
+  position: absolute;
+}
+
+#EDITOR_virtualization_horizontal {
+  height: 1px;
+  position: absolute;
+}
+
+#EDITOR_findOverlay {
+  /*width: 200px;
+  height: 200px;*/
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  padding: 5px;
+  background-color: var(--secondary-background-color);
+  color: var(--secondary-foreground-color);
+  border: 1px solid var(--primary-border-color);
+}
+
+#EDITOR_horizontal_scrollbar_sticky {
+  position: sticky;
+  left: 0;
+  top: 0;
+}
+
+#EDITOR_horizontal_scrollbar {
+  position: absolute;
+  overflow-x: scroll;
+  height: 14px;
+  width: 100px;
+  bottom: 0;
+  left: 37.5859px;
+}
+
+#EDITOR_horizontal_scrollbar_virtualization_boundary {
+  height: 1px;
+}
+
+#EDITOR_gutter_container {
+  position: absolute;
+  display: contents;
+  /*left: 0;*/
+  /*cursor: default;*/
+  /*min-height: 100%;*/
+  /*background-color: var(--gutter-background-color);*/
+  text-align: end;
+}
+
+/* can the gutter be used as vertical virtualization boundary? */
+#EDITOR_gutter_background_color {
+  position: sticky;
+  left: 0;
+  top: 0;
+  cursor: default;
+  min-height: 100%;
+  background-color: var(--gutter-background-color);
+}
+
+#EDITOR_gutter_sticky {
+  position: sticky;
+  left: 0;
+}
+
+/* .EDITOR_gutterLine is being renamed to .eG (i.e.: Editor Gutter line) */
+.eG {
+  height: var(--EDITOR-line-height);
+  position: absolute;
+  /*background-color: var(--gutter-background-color);*/
+
+  left: 0;
+  top: 0;
+
+  /*transform: translateZ(0);*/
+  
+
+  /* 3. Prevents layout changes inside the row from leaking out */
+  /*contain: layout style;*/
+  /*contain: strict; /* 👈 Tells the browser layout engine to stop tracking internal shifts globally */
+  overflow: hidden;
+  contain: size layout;
+}
+
+/* .EDITOR_line is being renamed to .eT (i.e.: Editor Text line) */
+.eT {
+  width: 100%;
+  height: var(--EDITOR-line-height);
+  position: absolute;
+
+  /* I'm presuming that position:absolute and top:0 is fine, so that I can "zero out" all the lines of text and do a translateY from position 0 */
+  /* left for the text is provided by the JavaScript so that it equals the width of the gutter. */
+  top: 0;
+
+  /*left: 0;*/
+
+  /*transform: translateZ(0);*/
+
+  /* 3. Prevents layout changes inside the row from leaking out */
+  /*contain: layout style;*/
+  /*contain: strict; /* 👈 Tells the browser layout engine to stop tracking internal shifts globally */
+  
+  /*font-variant-ligatures: none;
+  letter-spacing: 0;*/
+  /* Lock the graphics layer permanently so it doesn't drop to the CPU thread unexpectedly */
+  /*will-change: transform;
+  transform: translateZ(0);*/ /* Explicitly forces 3D layer permanence */
+
+  /*width: 200px;
+  height: 24px;*/
+  overflow: hidden;
+  contain: size layout;
+}
+
+#EDITOR_body {
+  cursor: text;
+  height: 100%;
+  display: contents;
+}
+
+#EDITOR_presentation {
+  display: contents;
+}
+
+#EDITOR_cursorList {
+  display: contents;
+}
+
+.EDITOR_caretRow {
+  width: 100%;
+  height: var(--EDITOR-line-height);
+  outline: 1px solid var(--light-border-color);
+  position: absolute;
+  left: 0;
+  top: 0;
+  contain: size layout;
+}
+
+.EDITOR_cursor {
+  width: 2.5px;
+  height: var(--EDITOR-line-height);
+  background-color: var(--primary-foreground-color);
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  opacity: 1;
+  will-change: opacity;
+}
+
+.EDITOR_cursor_focus {
+  animation: blink-animation 1s linear infinite;
+}
+
+@keyframes blink-animation {
+  0%, 49.9% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
+#EDITOR_text {
+  white-space: pre;
+  width: 0;
+  height: 0;
+  tab-size: 1;
+  display: contents;
+}
+
+/*
+Google AI Overview
+"
+I transform every line. Should I instead force a 3D layer on a parent element that contains the many lines.
+Thereby reducing the VRAM overhead by having a single 3D layer shared among all the lines due to inheriting it from the parent element.
+":
+############```paraphraseStart
+No, moving the 3D layer promotion to a single parent element will not achieve your goal.
+In fact, it will likely increase your Cumulative Layout Shift (CLS), break your virtualization optimization,
+and it won't actually reduce VRAM overhead the way you expect.
+
+...
+
+1. The Myth of Layer Inheritance:
+...
+############```paraphraseEnd
+
+Google AI Overview
+... continued questioning "
+If I click and drag the scrollbar slider, there is a lot of ghosting. And if I really go fast, it is pretty much only ghosting.
+":
+############```paraphraseStart
+This rapid ghosting (blank space) when dragging the scrollbar confirms that your virtualizer is suffering from Asynchronous Rendering Lag.
+
+...
+
+The browser ends up rendering empty space (ghosting) because your DOM elements haven't caught up to the scroll position yet.
+Then, a few milliseconds later, your JavaScript catches up and snaps the text into place,
+causing a massive, compounding penalty from the Cumulative Layout Shift (CLS) algorithm.
+
+...
+############```paraphraseEnd
+
+"causing a massive, compounding penalty from the Cumulative Layout Shift (CLS) algorithm." what???
+
+I thought the problem was either:
+- tab characters
+- null characters
+- text kerning
+- "text kerning specifically relating to the syntax highlighting so micro-spacing changes between spans when syntaxhighlighting"
+- making a 3D layer per line of text
+
+It isn't to say that it is the sole issue or that none of those things I listed are problematic.
+It just to say that this wasn't even on the list of reasons for high CLS scoring so that's interesting.
+(it isn't even to say that it is contributing the a high CLS, again just the mentioning of that being a possibility is massive it wasn't on my list)
+
+Google AI Overview
+... more of the response that came from "
+If I click and drag the scrollbar slider, there is a lot of ghosting. And if I really go fast, it is pretty much only ghosting.
+":
+############```paraphraseStart
+
+...
+
+Synchronous Layout + Asynchronous Coloring (The Gold Standard)
+
+Syntax highlighting tokenizers are computationally heavy.
+If you run full regex tokenization on 50 lines synchronously on every single pixel of a scrollbar drag, you will drop frames.
+
+The secret used by high-performance editors like VS Code is to split the virtualizer into two phases:
+- Phase 1: The Synchronous Skeleton (Instant, Monochromatic)
+    - ...
+- Phase 2: The Asynchronous Tokenizer (Lazy Coloring)
+    - ...
+
+
+...
+############```paraphraseEnd
+*/
+
+/*.eT span {
+  display: inline;
+  /* Prevent bold or italic keywords from altering character widths *//*
+  font-weight: normal !important;
+  font-style: normal !important;
+  
+  /* Kill browser-specific character spacing adjustments *//*
+  letter-spacing: 0px !important;
+  word-spacing: 0px !important;
+}*/
+
+/*
+#EDITOR_text, 
+#EDITOR_text div, 
+#EDITOR_text span {
+  /* Forces the browser to use fast, geometrically predictable text layout *//*
+  text-rendering: optimizeSpeed !important;
+  
+  /* Strictly forbids the browser from adjusting spacing between characters *//*
+  letter-spacing: 0px !important;
+  word-spacing: 0px !important;
+  font-kerning: none !important;
+  font-variant-ligatures: none !important;
+
+  /* Locks down standard font sizing characteristics *//*
+  font-weight: normal !important;
+  font-style: normal !important;
+}*/
+
+/*
+I think I like these css rules that it recommended.
+Some of the rules are unfamiliar to be but these one's stood out
+as kind of "yeah that makes sense" at an immediate glance.
+That these are probably good.
+
+I don't know how I feel about the specific selectors being used though...
+I always worry about selecting by an html element tag specifically in any regard.
+
+I also saw the AI saying that transform allocates something on the GPU or something?
+Is every line being... I have transform per line this was alarming to read.
+
+yesterday I tried testing tab logic by typing tabs in vscode like a goober
+it probably inserted 4 spaces and I was like doh why am I still getting 0 CLS after adding tabs to my test?
+*/
+#EDITOR_text, 
+#EDITOR_text div, 
+#EDITOR_text span {
+  /* Strictly forbids the browser from adjusting spacing between characters */
+  letter-spacing: 0px !important;
+  word-spacing: 0px !important;
+  font-kerning: none !important;
+  font-variant-ligatures: none !important;
+
+  /* Locks down standard font sizing characteristics */
+  font-weight: normal !important;
+  font-style: normal !important;
+}
+
+/* AI keeps recommending I put white-space pre on these specifically, I have it on '#EDITOR_text'... I am gonna put this here as a note to look into this later, I'm more focused on removing the control characters '\t' and '\0'. */
+.eT, .eT span {
+  /* Tells the browser's layout engine to render every space byte exactly as an isolated glyph */
+  white-space: pre !important;
+}
+
+.EDITOR_selection {
+    width: 100%;
+    height: var(--EDITOR-line-height);
+    position: absolute;
+    background-color: var(--primary-active-with-focus-background-color);
+}
+
+#DIALOG {
+  position: fixed;
+  width: 60vw;
+  height: 60vh;
+  left: 20vw;
+  top: 20vh;
+  background-color: var(--secondary-background-color);
+  color: var(--secondary-foreground-color);
+  border: 1px solid var(--primary-border-color);
+}
+
+#DIALOG_toolbar {
+  display: flex;
+  justify-content: space-between;
+  height: calc(2 * var(--EDITOR-line-height));
+  border-bottom: 1px solid var(--primary-border-color);
+  background-color: var(--secondary-background-color);
+  position: relative;
+}
+
+#DIALOG_body {
+  /* TODO: -9px is somewhat not understood I think it has to do with the borders but I'm not overly interested in looking into this right now. */
+  height: calc(100% - (2 * var(--EDITOR-line-height)) - 9px);
+  background-color: var(--secondary-background-color);
+  position: relative;
+}
+
+#DIALOG_resize {
+  position: absolute;
+  left: -8px;
+  top: -8px;
+  width: calc(100% + 16px);
+  height: calc(100% + 16px);
+}
+
+#DIALOG_FindAll_searchResultsDiv {
+  height: calc(100% - (2 * var(--APP-line-height)) - 2px);
+}
+
+:root {
+  --header-height: 25px;
+  --EDITOR-line-height: 20px;
+  --APP-line-height: 20px;
+}
+
+button:focus {
+	/*
+	When programmatically focusing a button with javascript,
+	the outline does not necessarily appear due to user-agent heuristics that determine whether the outline should appear.
+	
+	But, setting an outline yourself causes the outline to always appear regardless of the heuristics.
+	
+	This is important because some keyboard input moves focus to another "section" of app,
+	and leverages "known to exist" button elements as places to put the user's focus to.
+	
+	But without this, the user doesn't have any feedback for where their focus went (given my user-agent's heuristics, this was my experience).
+	*/
+	outline: 3px solid var(--primary-focus-outline);
+}
+
+input:focus {
+	outline: 3px solid var(--primary-focus-outline);
+}
+
+select:focus {
+  outline: 3px solid var(--primary-focus-outline);
+}
+
+/*
+propertyName: rgb(120, 200, 210)
+types: rgb(70, 165, 215)
+locals: rgb(170, 150, 215)
+functions: rgb(85, 193, 85)
+*/
+
+.dark-theme {
+  --primary-background-color: rgb(30, 30, 30);
+  --primary-foreground-color: rgb(187, 187, 187);
+  --secondary-background-color: rgb(38, 38, 40);
+  --secondary-foreground-color: rgb(212, 212, 212);
+  --primary-border-color: rgb(212, 212, 212);
+  --light-border-color: rgb(126, 126, 126);
+  --color-scheme: dark;
+  --primary-active-with-focus-background-color: rgb(22, 71, 104);
+  --primary-active-no-focus-background-color: rgb(65, 65, 65);
+  --primary-focus-outline: rgb(185, 185, 185);
+  --gap-buffer-span-color: rgb(244, 135, 0);
+  --gutter-background-color: rgb(30, 45, 45);
+  --editor-syntax-comment-color: rgb(90 151 90);
+  --editor-syntax-string-color: rgb(180, 180, 60);
+  --editor-syntax-keyword-color: rgb(215, 150, 70);
+  --editor-syntax-keywordControl-color: rgb(215, 100, 100);
+  --editor-syntax-parenthesis-color: rgb(173 90 255);
+  --editor-syntax-operator-color: rgb(70, 165, 215);
+  --editor-syntax-operatorAssignment-color: rgb(70, 165, 215);
+  --editor-syntax-member-access-color: rgb(0 180 255);
+  --editor-cursor-color-focused: rgb(6, 138, 255);
+}
+
+.light-theme {
+  --primary-background-color: white;
+  --primary-foreground-color: black;
+  --secondary-background-color: rgb(255, 246, 220);
+  --secondary-foreground-color: black;
+  --primary-border-color: black;
+  --light-border-color: rgb(126, 126, 126);
+  --color-scheme: light;
+  --primary-active-with-focus-background-color: #98d6f1;
+  --primary-active-no-focus-background-color: rgb(220, 220, 220);
+  --primary-focus-outline: black;
+  --gap-buffer-span-color: rgb(242, 92, 0);
+  --gutter-background-color: rgb(255, 246, 220);
+  --editor-syntax-comment-color: rgb(238, 0, 255);
+  --editor-syntax-string-color: rgb(255, 119, 0);
+  --editor-syntax-keyword-color: rgb(255, 0, 0);
+  --editor-syntax-keywordControl-color: rgb(215, 100, 100);
+  --editor-syntax-parenthesis-color: rgb(85, 193, 85);
+  --editor-syntax-operator-color: rgb(70, 165, 215);
+  --editor-syntax-operatorAssignment-color: rgb(70, 165, 215);
+  --editor-syntax-member-access-color: rgb(70, 165, 215);
+  --editor-cursor-color-focused: rgb(0, 0, 255);
+}

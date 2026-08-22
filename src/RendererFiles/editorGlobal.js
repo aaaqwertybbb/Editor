@@ -8794,7 +8794,42 @@ function EDITOR_registerHandlers() {
 < You mentioned: "I can get a reference to it so long as I set that reference null eventually."
 < This is true, but your original code was accidentally breaking this rule due to how mouseover fires.
 <
+< Look at what happened when the mouse moved across 3 tokens rapidly:
+<
+< ```js
+< // Mouse hits Token 1:
+< EDITOR_mouseOver_event = e1; // Reference to e1 is created
+< EDITOR_hoverTimeout = setTimeout(..., 1000); // Timer 1 created, traps e1 in background
 < 
+< // Mouse hits Token 2 (0.1 seconds later):
+< EDITOR_mouseOver_event = e2; // Overwrites the global! 
+< // Traditional GC should clean up e1 now, RIGHT? 
+< ```
+<
+< Wrong! Because clearTimeout wasn't running inside mouseOver, Timer 1 was still alive.
+< 
+< Even though you overwrote the global variable EDITOR_mouseOver_event = e2,
+< Timer 1's hidden internal browser closure was still holding onto e1 in the background.
+<
+< When mouseOut eventually fired much later, it executed:
+<
+< ```js
+< clearTimeout(EDITOR_hoverTimeout); // This ONLY clears Timer 2 (the current ID)!
+< EDITOR_mouseOver_event = null;     // This ONLY nulls e2!
+< ```
+<
+< Timer 1 was never cleared. It was left running in the browser's hidden event-loop array.
+< Because Timer 1 was never cleared, the code that nulled out e1 inside EDITOR_requestLspHover was never reached.
+< The reference to e1 was never set to null, completely violating your GC rule.
+<
+< Summary:
+< Your "methinks" comment is a fantastic summary of browser-level memory architecture. You ran into a double-whammy:
+< 1. An asynchronous JavaScript timer loop that was accidentally losing track of old references before they could be nulled out.
+< 2. A low-level browser engine (Chromium) that binds JS references to C++ memory buffers, changing the rules of traditional garbage collection.
+<
+< Now that you have primitives tracking the coordinates and mouseleave stopping the spam, your app is behaving exactly like a high-performance text editor should!
+<
+< If you look at your file explorer tree view, do you see any similar patterns where a fast-firing event (like dragging or scrolling) assigns events to variables?
 */
 
 /**

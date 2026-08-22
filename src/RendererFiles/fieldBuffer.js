@@ -76,14 +76,9 @@ const set_EDITOR_findOverlay_wasSearched = (byte) => EDITOR_byte_fields[6] = byt
 const get_EDITOR_findOverlay_options_matchWord = () => EDITOR_byte_fields[7];
 const set_EDITOR_findOverlay_options_matchWord = (byte) => EDITOR_byte_fields[7] = byte;
 
-const get_EDITOR_ASCII_LINE_FEED = () => EDITOR_byte_fields[9];
-EDITOR_byte_fields[9] = 10;
-
-const get_EDITOR_ASCII_TAB = () => EDITOR_byte_fields[10];
-EDITOR_byte_fields[10] = 9;
-
-const get_EDITOR_ASCII_SPACE = () => EDITOR_byte_fields[11];
-EDITOR_byte_fields[11] = 32;
+const get_EDITOR_ASCII_LINE_FEED = () => 10;
+const get_EDITOR_ASCII_TAB = () => 9;
+const get_EDITOR_ASCII_SPACE = () => 32;
 
 /////////////////////
 

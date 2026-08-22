@@ -733,19 +733,11 @@ function EDITOR_render_do_Scroll(timestamp) {
     // ==== end explicit inline (duplication) of 'update_VirtualIndexLine()';
     
     // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 1 of 4)
-    let local_prevVli = local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine()]; // If I delay setting 'set_EDITOR_ONSCROLLvirtualIndexLine()' then I can just use that. I can't bear to do that right now though. I'm just gonna make this variable.
+    let local_prevVli = local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine()];
     let local_currVli = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine()];
     local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine()] = local_currVli;
 
-    // Add these to the field buffer and change it so they're all one next to another maybe it'll cache one of the reads others and fastly
-    // ===================================================================================================================================
-    // - [x] EDITOR_scrollEndDeadline
-    // - [x] EDITOR_sum_diffPositive
-    // - [x] EDITOR_sum_diffNegative
-    // - [x] lastReadNumber_scrollTop
-
-    // TODO: Move this to the scroll event handler (probably-maybe)
-    local_EDITOR_int_fields[INDEXOF_EDITOR_scrollEndDeadline()] = timestamp + 1000;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_scrollEndDeadline()] = timestamp + 1000; // TODO: Move this to the scroll event handler (probably-maybe)
 
     if (!isScrolling) {
         // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 2 of 4)
@@ -759,8 +751,7 @@ function EDITOR_render_do_Scroll(timestamp) {
         local_currVli = currVli
     }
 
-    // TODO: Move this to the scroll event handler (probably-maybe)
-    local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop()] = local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop()];
+    local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop()] = local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop()]; // TODO: Move this to the scroll event handler (probably-maybe)
 
     // TODO: Move this to the leading edge? (maybe)
     if (EDITOR_primaryCursor.editKind !== get_EditKind_None()) {
@@ -878,6 +869,8 @@ function EDITOR_render_do_Scroll(timestamp) {
  * @returns true if scrollTop (and a few other details) have not changed, thus indicating the invoker should immediately return from their own rather than continuing with scroll logic.
  */
 function EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli) {
+
+    let local_EDITOR_int_fields = EDITOR_int_fields;
     
     // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 2 of 4)
     // ...and here the locals are moved to the global scope.
@@ -896,9 +889,9 @@ function EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli) {
 
     EDITOR_finalizeAllCursors();
 
-    if (get_EDITOR_ONSCROLLscrollTop() === get_lastReadNumber_scrollTop() &&
-        prevVli === get_EDITOR_virtualIndexLine() &&
-        get_EDITOR_ONSCROLLvirtualCount() === get_EDITOR_virtualCount()) {
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop()] === local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop()] &&
+        prevVli === local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine()] &&
+        local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount()] === local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()]) {
             // TODO: this is directly tied to a scroll event on EDITOR_baseElement so handle it from there perhaps?
             // TODO: this code is duplicated inside EDITOR_drawHorizontalScrollbar, reduce duplication?
             if (cached_EDITOR_horizontal_scrollbar.scrollLeft !== lastReadNumber_scrollLeft) {
@@ -907,13 +900,13 @@ function EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli) {
             return true;
     }
 
-    if (get_EDITOR_ONSCROLLvirtualCount() !== get_EDITOR_virtualCount()) {
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount()] !== local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()]) {
             // Force case 3
             prevVli = 0;
             currVli = get_EDITOR_virtualCount();
 
             // TODO: Duplicated setting of scrolltop; this case and just baseline everytime vertical scrolls it is done in this method elsewhere
-            set_EDITOR_ONSCROLLscrollTop(get_lastReadNumber_scrollTop());
+            local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop()] = local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop()];
             EDITOR_render_do_CreateViewport();
             return false;
     }

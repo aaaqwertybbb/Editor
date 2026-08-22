@@ -8756,6 +8756,11 @@ function EDITOR_registerHandlers() {
 // it just have a 1 shot one opportunity to be removed from some buffer and 
 // it sees you leaked it so it doesn't remove from the buffer
 // and then even if you set your references to null you missed that one chance for it to be removed from a buffer.
+//
+// ^ SPECULATION
+//
+// I'm just very confused because my undestanding of GC said "I can get a reference to it so long as I set that reference null eventually"
+// so there's gotta be a buffer that missed the chance to be removed from.
 
 /**
  * < Thanks to a browser feature called Event Bubbling, when the mouse enters a tiny token span, the event bubbles up to the parent container

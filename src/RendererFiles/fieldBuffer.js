@@ -45,7 +45,7 @@ it is as if I typed the expression body everywhere I typed the fat arrow functio
  * 
  * TODO: index 8 is available because 'EDITOR_onScroll_bool' was removed.
  */
-const EDITOR_byte_fields = new Uint8Array(64);
+const EDITOR_byte_fields = new Uint8Array(8);
 
 /** returns a number, beware '===' */
 const get_EDITOR_detailRank = () => EDITOR_byte_fields[0];
@@ -65,16 +65,16 @@ const get_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching = () => EDITOR
 const set_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching = (byte) => EDITOR_byte_fields[3] = byte;
 
 /** returns a number, beware '===' */
-const get_EDITOR_fileStartsWithBom = () => EDITOR_byte_fields[5];
-const set_EDITOR_fileStartsWithBom = (byte) => EDITOR_byte_fields[5] = byte;
+const get_EDITOR_fileStartsWithBom = () => EDITOR_byte_fields[4];
+const set_EDITOR_fileStartsWithBom = (byte) => EDITOR_byte_fields[4] = byte;
 
 /** returns a number, beware '===' */
-const get_EDITOR_findOverlay_wasSearched = () => EDITOR_byte_fields[6];
-const set_EDITOR_findOverlay_wasSearched = (byte) => EDITOR_byte_fields[6] = byte;
+const get_EDITOR_findOverlay_wasSearched = () => EDITOR_byte_fields[5];
+const set_EDITOR_findOverlay_wasSearched = (byte) => EDITOR_byte_fields[5] = byte;
 
 /** returns a number, beware '===' */
-const get_EDITOR_findOverlay_options_matchWord = () => EDITOR_byte_fields[7];
-const set_EDITOR_findOverlay_options_matchWord = (byte) => EDITOR_byte_fields[7] = byte;
+const get_EDITOR_findOverlay_options_matchWord = () => EDITOR_byte_fields[6];
+const set_EDITOR_findOverlay_options_matchWord = (byte) => EDITOR_byte_fields[6] = byte;
 
 const get_EDITOR_ASCII_LINE_FEED = () => 10;
 const get_EDITOR_ASCII_TAB = () => 9;

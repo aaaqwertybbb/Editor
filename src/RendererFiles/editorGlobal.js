@@ -328,8 +328,6 @@ let w_beltIndexLine = -1;
 /** Also is used from 'EDITOR_render_do_SetText()', and 'EDITOR_render_do_Resize()', not just 'EDITOR_render_do_Scroll()' */
 let isScrolling = false;
 /** Also is used from 'EDITOR_render_do_SetText()', and 'EDITOR_render_do_Resize()', not just 'EDITOR_render_do_Scroll()' */
-//let EDITOR_scrollEndDeadline = 0;
-/** Also is used from 'EDITOR_render_do_SetText()', and 'EDITOR_render_do_Resize()', not just 'EDITOR_render_do_Scroll()' */
 let isCheckingTrailingEdge = false;
 
 let prevVli;
@@ -344,8 +342,6 @@ let isProcessingLspQueue = false;
 
 /** The value of 'EDITOR_baseElement.scrollLeft' at the most recent scroll event that occurred */
 let lastReadNumber_scrollLeft = 0;
-/** The value of 'EDITOR_baseElement.scrollTop' at the most recent scroll event that occurred */
-//let lastReadNumber_scrollTop = 0;
 
 /** just floor these on init / resize and set the style so if they want resize they have to explicit and it is non decimal? */
 let lastReadNumber_offsetHeight = 0;
@@ -364,9 +360,6 @@ const count_of_wellknown_renderKinds = 19;
 
 /** 'EDITOR_init' and 'EDITOR_drawHorizontalScrollbar' related */
 let DRAWN_NUMBER_cached_EDITOR_horizontal_scrollbar_style_left;
-
-//let EDITOR_sum_diffNegative = 0;
-//let EDITOR_sum_diffPositive = 0;
 
 // Move some 'EDITOR_removeSelection()' state here so I can access it in the render function.
 // TODO: Don't do this long term, I need a simple bridge for this state so I can just get started otherwise I'll spend the rest of my life procrastinating.

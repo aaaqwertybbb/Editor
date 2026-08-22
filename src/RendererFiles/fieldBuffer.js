@@ -296,8 +296,11 @@ const set_EDITOR_pooledTrackedSyntax_start = (int) => EDITOR_int_fields[29] = in
 const get_EDITOR_pooledTrackedSyntax_length = () => EDITOR_int_fields[30];
 const set_EDITOR_pooledTrackedSyntax_length = (int) => EDITOR_int_fields[30] = int;
 
+/** Also is used from 'EDITOR_render_do_SetText()', and 'EDITOR_render_do_Resize()', not just 'EDITOR_render_do_Scroll()' */
 const get_EDITOR_scrollEndDeadline = () => EDITOR_int_fields[31];
+/** Also is used from 'EDITOR_render_do_SetText()', and 'EDITOR_render_do_Resize()', not just 'EDITOR_render_do_Scroll()' */
 const set_EDITOR_scrollEndDeadline = (int) => EDITOR_int_fields[31] = int;
+/** Also is used from 'EDITOR_render_do_SetText()', and 'EDITOR_render_do_Resize()', not just 'EDITOR_render_do_Scroll()' */
 const INDEXOF_EDITOR_scrollEndDeadline = () => 31;
 
 const get_EDITOR_sum_diffPositive = () => EDITOR_int_fields[32];
@@ -308,6 +311,9 @@ const get_EDITOR_sum_diffNegative = () => EDITOR_int_fields[33];
 const set_EDITOR_sum_diffNegative = (int) => EDITOR_int_fields[33] = int;
 const INDEXOF_EDITOR_sum_diffNegative = () => 33;
 
+/** The value of 'EDITOR_baseElement.scrollTop' at the most recent scroll event that occurred */
 const get_lastReadNumber_scrollTop = () => EDITOR_int_fields[34];
+/** The value of 'EDITOR_baseElement.scrollTop' at the most recent scroll event that occurred */
 const set_lastReadNumber_scrollTop = (int) => EDITOR_int_fields[34] = int;
+/** The value of 'EDITOR_baseElement.scrollTop' at the most recent scroll event that occurred */
 const INDEXOF_lastReadNumber_scrollTop = () => 34;

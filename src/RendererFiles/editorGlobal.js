@@ -8770,6 +8770,10 @@ function EDITOR_mouseOver(e) {
     EDITOR_hoverTimeout = setTimeout(EDITOR_requestLspHover, 1000);
 }
 
+// Partially it was:
+// - avoid letting the event objects escape the event handler, if you screw it up you'll leak the objects.
+// - and then mouseout => mouseleave was also needed presumably something in 'EDITOR_hideTooltip' causes a lot of issues?
+
 function EDITOR_mouseLeave() {
     // Clear timer if mouse leaves the token before 1000ms
     clearTimeout(EDITOR_hoverTimeout);

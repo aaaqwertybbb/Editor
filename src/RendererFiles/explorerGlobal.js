@@ -610,7 +610,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
         let nodeKind = TreeView_pooledNode_nodeKind;
 
         if (nodeKind === get_TreeViewNodeKind_NOTisExpandable_isExpanded()) {
-            alert("TODO: if (nodeKind === get_TreeViewNodeKind_NOTisExpandable_isExpanded())");
+            alert("TODO: if (nodeKind === ...TreeViewNodeKind_NOTisExpandable_isExpanded())");
             return;
         }
 

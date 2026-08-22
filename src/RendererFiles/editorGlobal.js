@@ -731,6 +731,11 @@ function EDITOR_onScroll_WRAPIT() {
  * - take heap snapshot 3
  * ## Heap snapshot 3 => 4.7 MB
  * 
+ * ....
+ * 
+ * Snapshot 6 (5.2 MB)
+ * - PerformanceEventTiming 4,985 instances sitting in heap
+ * 
  */
 function EDITOR_render_do_Scroll(timestamp) {
 

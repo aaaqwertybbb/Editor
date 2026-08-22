@@ -8770,6 +8770,8 @@ function EDITOR_mouseOver(e) {
     EDITOR_hoverTimeout = setTimeout(EDITOR_requestLspHover, 1000);
 }
 
+// you know when I called you a clown I was just projecting my own insecurities
+
 function EDITOR_mouseLeave() {
     // Clear timer if mouse leaves the token before 1000ms
     clearTimeout(EDITOR_hoverTimeout);

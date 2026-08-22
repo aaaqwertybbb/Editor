@@ -759,6 +759,7 @@ function EDITOR_render_do_Scroll(timestamp) {
         EDITOR_finalizeEdit(EDITOR_primaryCursor);
     }
 
+    // TODO: Consider moving the 0 diff case to the soonest possible line to skip as much code as possible.
     let diff = local_currVli - local_prevVli;
     if (diff === 0) return;
 

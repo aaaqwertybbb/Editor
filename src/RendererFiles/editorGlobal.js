@@ -374,7 +374,8 @@ let EDITOR_indentLess_startingLinePos_end = 0;
 
 let EDITOR_hoverTimeout = null;
 
-let EDITOR_mouseOver_event = null;
+let EDITOR_mouseOver_event_clientY = 0;
+let EDITOR_mouseOver_event_clientX = 0;
 
 let EDITOR_isChecking_cursorBlinkTrailingEdge = false;
 let EDITOR_cursorBlinkLastTimestamp = 0;
@@ -8740,7 +8741,7 @@ function EDITOR_registerHandlers() {
 
     // Attach a single listener to your text container (Event Delegation)
     EDITOR_baseElement.addEventListener('mouseover', EDITOR_mouseOver);
-    EDITOR_baseElement.addEventListener('mouseout', EDITOR_mouseOut);
+    EDITOR_baseElement.addEventListener('mouseleave', EDITOR_mouseLeave);
     
     EDITOR_baseElement.addEventListener('focus', EDITOR_onfocus);
     EDITOR_baseElement.addEventListener('blur', EDITOR_onblur);
@@ -8752,8 +8753,8 @@ function EDITOR_registerHandlers() {
  * Oh wow I can clearly see why this is better than mouseMove with heavy throttling/debouncing
  */
 function EDITOR_mouseOver(e) {
-
-    EDITOR_mouseOver_event = e;
+    EDITOR_mouseOver_event_clientY = e.clientY;
+    EDITOR_mouseOver_event_clientX = e.clientX;
     
     //const tokenElement = event.target.closest('.editor-token');
     //if (!tokenElement) return;
@@ -8769,11 +8770,10 @@ function EDITOR_mouseOver(e) {
     EDITOR_hoverTimeout = setTimeout(EDITOR_requestLspHover, 1000);
 }
 
-function EDITOR_mouseOut() {
+function EDITOR_mouseLeave() {
     // Clear timer if mouse leaves the token before 1000ms
     clearTimeout(EDITOR_hoverTimeout);
     EDITOR_hoverTimeout = null;
-    EDITOR_mouseOver_event = null;
     EDITOR_hideTooltip();
 }
 
@@ -8786,8 +8786,8 @@ function EDITOR_doEditorGoToDefinitionRequest() {
 }
 
 function EDITOR_requestLspHover() {
-    let event = EDITOR_mouseOver_event;
-    EDITOR_mouseOver_event = null;
+    let event_clientY = EDITOR_mouseOver_event_clientY;
+    let event_clientX = EDITOR_mouseOver_event_clientX;
 
     ///////////
     ///////////
@@ -8801,8 +8801,8 @@ function EDITOR_requestLspHover() {
         set_EDITOR_recentBoundingClientRect_isNull_intFalsey(0);
     }
 
-    let rY = event.clientY - get_EDITOR_recentBoundingClientRect_top() + get_lastReadNumber_scrollTop();
-    let rX = event.clientX - get_EDITOR_recentBoundingClientRect_left() - get_EDITOR_gutterWidthTotal() + lastReadNumber_scrollLeft;
+    let rY = event_clientY - get_EDITOR_recentBoundingClientRect_top() + get_lastReadNumber_scrollTop();
+    let rX = event_clientX - get_EDITOR_recentBoundingClientRect_left() - get_EDITOR_gutterWidthTotal() + lastReadNumber_scrollLeft;
     
     let indexLine = Math.floor(rY / get_EDITOR_lineHeight());
     let indexColumn = Math.round(rX / EDITOR_characterWidth);

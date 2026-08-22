@@ -726,6 +726,8 @@ function EDITOR_render_do_Scroll(timestamp) {
     let local_EDITOR_int_fields = EDITOR_int_fields;
     let local_lineHeight = local_EDITOR_int_fields[INDEXOF_EDITOR_lineHeight()];
 
+    // I felt a crazy burst of energy this morning.
+    // Hopefully I didn't just "firehouse delusion spaghetti code garbage"
 
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
     local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine()] = (Math.floor(local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop()] / local_lineHeight));

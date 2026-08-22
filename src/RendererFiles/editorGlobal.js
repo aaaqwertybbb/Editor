@@ -722,7 +722,12 @@ function EDITOR_onScroll_WRAPIT() {
  * - scrolled the explorer a bit while I thought about what to do next but only like a second or a few
  * - open dev tools
  * - take heap snapshot 1
- * Heap snapshot 1 => 3.1 MB
+ * ## Heap snapshot 1 => 3.1 MB
+ * - Open editorGlobal.js
+ * - Let the syntax highlighting debounce run
+ * - take heap snapshot 2
+ * ## Heap snapshot 2 => 4.4 MB
+ * 
  */
 function EDITOR_render_do_Scroll(timestamp) {
 

@@ -744,6 +744,7 @@ function EDITOR_render_do_Scroll(timestamp) {
     let local_currVli = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine()];
     local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine()] = local_currVli;
 
+    // TODO: Move this to the scroll event handler (probably-maybe)
     EDITOR_scrollEndDeadline = timestamp + 1000;
 
     if (!isScrolling) {
@@ -758,7 +759,7 @@ function EDITOR_render_do_Scroll(timestamp) {
         local_currVli = currVli
     }
 
-    // TODO: Move this to the scroll event handler (probably)
+    // TODO: Move this to the scroll event handler (probably-maybe)
     local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop()] = lastReadNumber_scrollTop;
 
     // TODO: Move this to the leading edge? (maybe)

@@ -741,8 +741,8 @@ function EDITOR_render_do_Scroll(timestamp) {
     
     // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 1 of 4)
     let local_prevVli = local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine()]; // If I delay setting 'set_EDITOR_ONSCROLLvirtualIndexLine()' then I can just use that. I can't bear to do that right now though. I'm just gonna make this variable.
-    let local_currVli = get_EDITOR_virtualIndexLine();
-    set_EDITOR_ONSCROLLvirtualIndexLine(local_currVli);
+    let local_currVli = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine()];
+    local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine()] = local_currVli;
 
     EDITOR_scrollEndDeadline = timestamp + 1000;
 
@@ -758,8 +758,9 @@ function EDITOR_render_do_Scroll(timestamp) {
         local_currVli = currVli
     }
 
-    set_EDITOR_ONSCROLLscrollTop(lastReadNumber_scrollTop);
+    local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop()] = lastReadNumber_scrollTop;
 
+    // TODO: Move this to the leading edge? (maybe)
     if (EDITOR_primaryCursor.editKind !== get_EditKind_None()) {
         EDITOR_finalizeEdit(EDITOR_primaryCursor);
     }
@@ -779,19 +780,19 @@ function EDITOR_render_do_Scroll(timestamp) {
     let EDITOR_textByteList_bytes = EDITOR_textByteList.bytes;
     let local_EDITOR_decoder = EDITOR_decoder;
 
-    if (diff > 0 && diff < get_EDITOR_virtualCount()) {
+    if (diff > 0 && diff < local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()]) {
 
         EDITOR_sum_diffPositive += diff;
 
         // Note: this case has 'vertical = (prevVli + get_EDITOR_virtualCount()) * local_lineHeight;' I believe 'get_EDITOR_virtualCount' === 'get_EDITOR_ONSCROLLvirtualCount' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
-        lowerBound = local_prevVli + get_EDITOR_ONSCROLLvirtualCount();
+        lowerBound = local_prevVli + local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount()];
         upperBound = lowerBound + diff;
 
         beltIndexLine = EDITOR_beltIndexZero - 1 /*This decrement avoids that.*/;
 
         EDITOR_beltIndexZero = (beltIndexLine + 1/*This decrement avoids that... but here you need to undo it for a moment*/ + diff) % local_ArrayFrom_textElement_children_length;
     }
-    else if (diff < 0 && (diff *= -1) < get_EDITOR_virtualCount()) {
+    else if (diff < 0 && (diff *= -1) < local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()]) {
 
         EDITOR_sum_diffNegative += diff;
 
@@ -809,9 +810,9 @@ function EDITOR_render_do_Scroll(timestamp) {
     }
     else {
         lowerBound = local_currVli;
-        upperBound = lowerBound + get_EDITOR_virtualCount();
+        upperBound = lowerBound + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()];
 
-        EDITOR_sum_diffPositive += get_EDITOR_virtualCount();
+        EDITOR_sum_diffPositive += local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()];
 
         beltIndexLine = EDITOR_beltIndexZero - 1/*This decrement avoids that.*/;
     }

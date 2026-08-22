@@ -738,14 +738,24 @@ function EDITOR_render_do_Scroll(timestamp) {
     local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine()] = (Math.floor(lastReadNumber_scrollTop / local_lineHeight));
     // ====
     // ==== end explicit inline (duplication) of 'update_VirtualIndexLine()';
-    prevVli = get_EDITOR_ONSCROLLvirtualIndexLine(); // If I delay setting 'set_EDITOR_ONSCROLLvirtualIndexLine()' then I can just use that. I can't bear to do that right now though. I'm just gonna make this variable.
-    currVli = get_EDITOR_virtualIndexLine();
-    set_EDITOR_ONSCROLLvirtualIndexLine(get_EDITOR_virtualIndexLine());
+    
+    // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 1 of 4)
+    let local_prevVli = local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine()]; // If I delay setting 'set_EDITOR_ONSCROLLvirtualIndexLine()' then I can just use that. I can't bear to do that right now though. I'm just gonna make this variable.
+    let local_currVli = get_EDITOR_virtualIndexLine();
+    set_EDITOR_ONSCROLLvirtualIndexLine(local_currVli);
 
     EDITOR_scrollEndDeadline = timestamp + 1000;
 
     if (!isScrolling) {
-        if (EDITOR_onScroll_LeadingEdge(timestamp)) return; // This if statement reads poorly. You return for a reason that isn't gleaned by reading the function name alone.
+        // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 2 of 4)
+        // ...and here the locals are passed to the LeadingEdge because only when performing the LeadingEdge do you need to use the global versions.
+
+        if (EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli)) return; // This if statement reads poorly. You return for a reason that isn't gleaned by reading the function name alone.
+        
+        // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 2 of 4)
+        // ...and here the locals assigned the same value as the globals in case 'EDITOR_onScroll_LeadingEdge' modified the globals.
+        local_prevVli = prevVli;
+        local_currVli = currVli
     }
 
     set_EDITOR_ONSCROLLscrollTop(lastReadNumber_scrollTop);
@@ -754,7 +764,7 @@ function EDITOR_render_do_Scroll(timestamp) {
         EDITOR_finalizeEdit(EDITOR_primaryCursor);
     }
 
-    let diff = currVli - prevVli;
+    let diff = local_currVli - local_prevVli;
     if (diff === 0) return;
 
     let lowerBound;
@@ -774,7 +784,7 @@ function EDITOR_render_do_Scroll(timestamp) {
         EDITOR_sum_diffPositive += diff;
 
         // Note: this case has 'vertical = (prevVli + get_EDITOR_virtualCount()) * local_lineHeight;' I believe 'get_EDITOR_virtualCount' === 'get_EDITOR_ONSCROLLvirtualCount' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
-        lowerBound = prevVli + get_EDITOR_ONSCROLLvirtualCount();
+        lowerBound = local_prevVli + get_EDITOR_ONSCROLLvirtualCount();
         upperBound = lowerBound + diff;
 
         beltIndexLine = EDITOR_beltIndexZero - 1 /*This decrement avoids that.*/;
@@ -785,7 +795,7 @@ function EDITOR_render_do_Scroll(timestamp) {
 
         EDITOR_sum_diffNegative += diff;
 
-        lowerBound = currVli;
+        lowerBound = local_currVli;
         upperBound = lowerBound + diff;
 
         // Of the 3 cases this is the only one that has a variable declaration thus the entire stackframe has to have memory allocated to store
@@ -798,7 +808,7 @@ function EDITOR_render_do_Scroll(timestamp) {
         beltIndexLine = EDITOR_beltIndexZero - 1/*This decrement avoids that.*/;
     }
     else {
-        lowerBound = get_EDITOR_virtualIndexLine();
+        lowerBound = local_currVli;
         upperBound = lowerBound + get_EDITOR_virtualCount();
 
         EDITOR_sum_diffPositive += get_EDITOR_virtualCount();
@@ -861,8 +871,13 @@ function EDITOR_render_do_Scroll(timestamp) {
 /**
  * @returns true if scrollTop (and a few other details) have not changed, thus indicating the invoker should immediately return from their own rather than continuing with scroll logic.
  */
-function EDITOR_onScroll_LeadingEdge(timestamp) {
+function EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli) {
     
+    // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 2 of 4)
+    // ...and here the locals are moved to the global scope.
+    prevVli = local_prevVli;
+    currVli = local_currVli;
+
     isScrolling = true;
 
     // TODO: If you can prove that the leading edge or 'isScrolling' is "equivalent" to 'isCheckingTrailingEdge' then you can reduce the code here.

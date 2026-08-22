@@ -8773,6 +8773,7 @@ function EDITOR_mouseOver(e) {
 // Partially it was:
 // - avoid letting the event objects escape the event handler, if you screw it up you'll leak the objects.
 // - and then mouseout => mouseleave was also needed presumably something in 'EDITOR_hideTooltip' causes a lot of issues?
+//     - (you drastically reduce the amount of hide tooltip invocations and you only need to do it mouseleave anyhow cause mouseover will clearTimeout too)
 
 function EDITOR_mouseLeave() {
     // Clear timer if mouse leaves the token before 1000ms

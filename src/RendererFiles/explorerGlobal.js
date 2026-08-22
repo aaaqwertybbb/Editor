@@ -1020,7 +1020,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 if (!entry) return;
                 MENU_HIDE_shouldRestoreFocus = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
-                await WIDGET_show(get_WidgetKind_InputText(), menuOptionX, menuOptionY, 'filename', entry, MENU_target, get_CommandKind_NewFile_Directory_WIDGET_InputText_callback);
+                await WIDGET_show(get_WidgetKind_InputText(), menuOptionX, menuOptionY, 'filename', entry, MENU_target, NewFile_Directory_WIDGET_InputText_callback);
                 break;
             }
         case get_CommandKind_NewFile_File():
@@ -1031,7 +1031,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 if (!entry) return;
                 MENU_HIDE_shouldRestoreFocus = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
-                await WIDGET_show(get_WidgetKind_InputText(), menuOptionX, menuOptionY, 'filename', entry, MENU_target, get_CommandKind_NewFile_File_WIDGET_InputText_callback);
+                await WIDGET_show(get_WidgetKind_InputText(), menuOptionX, menuOptionY, 'filename', entry, MENU_target, NewFile_File_WIDGET_InputText_callback);
                 break;
             }
         case get_CommandKind_DeleteFile_Directory():
@@ -1043,7 +1043,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 let filename = entry.basename;
                 MENU_HIDE_shouldRestoreFocus = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
-                await WIDGET_show(get_WidgetKind_YesCancel(), menuOptionX, menuOptionY, 'delete ' + filename, entry, MENU_target, get_CommandKind_DeleteFile_Directory_YesCancel_callback);
+                await WIDGET_show(get_WidgetKind_YesCancel(), menuOptionX, menuOptionY, 'delete ' + filename, entry, MENU_target, DeleteFile_Directory_YesCancel_callback);
                 break;
             }
         case get_CommandKind_DeleteFile_File():
@@ -1055,7 +1055,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 let filename = entry.basename;
                 MENU_HIDE_shouldRestoreFocus = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
-                await WIDGET_show(get_WidgetKind_YesCancel(), menuOptionX, menuOptionY, 'delete ' + filename, entry, MENU_target, get_CommandKind_DeleteFile_File_YesCancel_callback);
+                await WIDGET_show(get_WidgetKind_YesCancel(), menuOptionX, menuOptionY, 'delete ' + filename, entry, MENU_target, DeleteFile_File_YesCancel_callback);
                 break;
             }
         case get_CommandKind_RenameFile_Directory():
@@ -1067,7 +1067,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 let filename = entry.basename;
                 MENU_HIDE_shouldRestoreFocus = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
-                await WIDGET_show(get_WidgetKind_InputText(), menuOptionX, menuOptionY, 'rename', filename, {MENU_target:MENU_target, entry:entry}, get_CommandKind_RenameFile_Directory_InputText_callback);
+                await WIDGET_show(get_WidgetKind_InputText(), menuOptionX, menuOptionY, 'rename', filename, {MENU_target:MENU_target, entry:entry}, RenameFile_Directory_InputText_callback);
                 break;
             }
         case get_CommandKind_RenameFile_File():
@@ -1086,13 +1086,13 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 let filename = entry.basename;
                 MENU_HIDE_shouldRestoreFocus = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
-                await WIDGET_show(get_WidgetKind_InputText(), menuOptionX, menuOptionY, 'rename', filename, {MENU_target: MENU_target, entry: entry}, get_CommandKind_RenameFile_File_InputText_callback);
+                await WIDGET_show(get_WidgetKind_InputText(), menuOptionX, menuOptionY, 'rename', filename, {MENU_target: MENU_target, entry: entry}, RenameFile_File_InputText_callback);
                 break;
             }
     }
 }
 
-async function get_CommandKind_NewFile_Directory_WIDGET_InputText_callback(result) {
+async function NewFile_Directory_WIDGET_InputText_callback(result) {
     if (result.isCancelled) return;
 
     let entry = WIDGET_SHOW_value;
@@ -1177,7 +1177,7 @@ async function get_CommandKind_NewFile_Directory_WIDGET_InputText_callback(resul
     }
 }
 
-async function get_CommandKind_NewFile_File_WIDGET_InputText_callback(result) {
+async function NewFile_File_WIDGET_InputText_callback(result) {
     if (result.isCancelled) return;
 
     let entry = WIDGET_SHOW_value;
@@ -1259,7 +1259,7 @@ async function get_CommandKind_NewFile_File_WIDGET_InputText_callback(result) {
     }
 }
 
-async function get_CommandKind_DeleteFile_Directory_YesCancel_callback(result) {
+async function DeleteFile_Directory_YesCancel_callback(result) {
     if (result.isCancelled) return;
     let entry = WIDGET_SHOW_value;
     let deleteFileResult = await window.myAPI.deleteFile(entry.absolutePath, /*isDirectory*/ true);
@@ -1299,7 +1299,7 @@ async function get_CommandKind_DeleteFile_Directory_YesCancel_callback(result) {
     }
 }
 
-async function get_CommandKind_DeleteFile_File_YesCancel_callback(result) {
+async function DeleteFile_File_YesCancel_callback(result) {
     if (result.isCancelled) return;
     // TODO: Biggest concern is that 'WIDGET_SHOW_value' is never set to a GC collectable state after widget finishes.
     // ...better wording of the TODO: the object that 'WIDGET_SHOW_value' references can never be garbage collected even after the widget finishes (unless a later show of a widget overrites the variable to reference a different object). This is because the variable is never set to null. Due to the variable being global, it exists for the entire app duration and a null set is required in this case for garbage collection of what it points to to take place.
@@ -1332,7 +1332,7 @@ async function get_CommandKind_DeleteFile_File_YesCancel_callback(result) {
     }
 }
 
-async function get_CommandKind_RenameFile_Directory_InputText_callback(result) {
+async function RenameFile_Directory_InputText_callback(result) {
     if (result.isCancelled) return;
     // TODO: Confusing, hacky, upsetting: 'WIDGET_target.entry / WIDGET_target.MENU_target'
     let entry = WIDGET_target.entry;
@@ -1345,7 +1345,7 @@ async function get_CommandKind_RenameFile_Directory_InputText_callback(result) {
     }
 }
 
-async function get_CommandKind_RenameFile_File_InputText_callback(result) {
+async function RenameFile_File_InputText_callback(result) {
     if (result.isCancelled) return;
     // TODO: Confusing, hacky, upsetting: 'WIDGET_target.entry / WIDGET_target.MENU_target'
     let entry = WIDGET_target.entry;

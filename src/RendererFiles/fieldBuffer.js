@@ -97,75 +97,75 @@ EDITOR_byte_fields[11] = 32;
 /////////////////////
 
 const get_js_DOUBLEQUOTE_str = () => '"';
-EDITOR_byte_fields[12] = 34;
+const get_js_DOUBLEQUOTE_num = () => 34;
 
 const get_js_SINGLEQUOTE_str = () => '\'';
-EDITOR_byte_fields[13] = 39;
+const get_js_SINGLEQUOTE_num = () => 39;
 
 const get_js_BACKTICK_str = () => '`';
-EDITOR_byte_fields[14] = 96;
+const get_js_BACKTICK_num = () => 96;
 
 const get_js_FORWARDSLASH_str = () => '/';
-EDITOR_byte_fields[15] = 47;
+const get_js_FORWARDSLASH_num = () => 47;
 
 const get_js_BACKSLASH_str = () => '\\';
-EDITOR_byte_fields[16] = 92;
+const get_js_BACKSLASH_num = () => 92;
 
 const get_js_ASTERISK_str = () => '*';
-EDITOR_byte_fields[17] = 42;
+const get_js_ASTERISK_num = () => 42;
 
 const get_js_LINEFEED_str = () => '\n';
-EDITOR_byte_fields[18] = 10;
+const get_js_LINEFEED_num = () => 10;
 
 const get_js_OPENPARENTHESIS_str = () => '(';
-EDITOR_byte_fields[19] = 40;
+const get_js_OPENPARENTHESIS_num = () => 40;
 
 const get_js_CLOSEPARENTHESIS_str = () => ')';
-EDITOR_byte_fields[20] = 41;
+const get_js_CLOSEPARENTHESIS_num = () => 41;
 
 const get_js_PERIOD_str = () => '.';
-EDITOR_byte_fields[21] = 46;
+const get_js_PERIOD_num = () => 46;
 
 const get_js_EQUALS_str = () => '=';
-EDITOR_byte_fields[22] = 61;
+const get_js_EQUALS_num = () => 61;
 
 const get_js_OPENBRACKET_str = () => '[';
-EDITOR_byte_fields[23] = 60;
+const get_js_OPENBRACKET_num = () => 60;
 
 const get_js_CLOSEBRACKET_str = () => ']';
-EDITOR_byte_fields[24] = 62;
+const get_js_CLOSEBRACKET_num = () => 62;
 
 const get_js_BANG_str = () => '!';
-EDITOR_byte_fields[25] = 33;
+const get_js_BANG_num = () => 33;
 
 const get_js_PLUS_str = () => '+';
-EDITOR_byte_fields[26] = 43;
+const get_js_PLUS_num = () => 43;
 
 const get_js_MINUS_str = () => '-';
-EDITOR_byte_fields[27] = 45;
+const get_js_MINUS_num = () => 45;
 
 const get_js_STAR_str = () => '*';
-EDITOR_byte_fields[28] = 42;
+const get_js_STAR_num = () => 42;
 
 const get_js_PERCENT_str = () => '%';
-EDITOR_byte_fields[29] = 37;
+const get_js_PERCENT_num = () => 37;
 
 const get_js_AMPERSAND_str = () => '&';
-EDITOR_byte_fields[30] = 38;
+const get_js_AMPERSAND_num = () => 38;
 
 const get_js_PIPE_str = () => '|';
-EDITOR_byte_fields[31] = 24;
+const get_js_PIPE_num = () => 24;
 
 const get_js_QUESTIONMARK_str = () => '?';
-EDITOR_byte_fields[32] = 63;
+const get_js_QUESTIONMARK_num = () => 63;
 
 const get_js_CARET_str = () => '^';
-EDITOR_byte_fields[33] = 94;
+const get_js_CARET_num = () => 94;
 
-const get_EDITOR_gutterPaddingLeft_str = () => EDITOR_byte_fields[34];
+const get_EDITOR_gutterPaddingLeft = () => EDITOR_byte_fields[34];
 EDITOR_byte_fields[34] = 3;
 
-const get_EDITOR_gutterPaddingRight_str = () => EDITOR_byte_fields[35];
+const get_EDITOR_gutterPaddingRight = () => EDITOR_byte_fields[35];
 EDITOR_byte_fields[35] = 6;
 
 const get_DIALOG_minTop_str = () => EDITOR_byte_fields[36];

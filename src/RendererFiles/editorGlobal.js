@@ -730,9 +730,12 @@ function EDITOR_render_do_Scroll(timestamp) {
     // And then access all this information themselves.
     // Lest it possibly search the global scope for the "field buffer" over and over.
 
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_lineHeight = local_EDITOR_int_fields[INDEXOF_EDITOR_lineHeight()];
+
 
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
-    set_EDITOR_virtualIndexLine(Math.floor(lastReadNumber_scrollTop / get_EDITOR_lineHeight()));
+    local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine()] = (Math.floor(lastReadNumber_scrollTop / local_lineHeight));
     // ====
     // ==== end explicit inline (duplication) of 'update_VirtualIndexLine()';
     prevVli = get_EDITOR_ONSCROLLvirtualIndexLine(); // If I delay setting 'set_EDITOR_ONSCROLLvirtualIndexLine()' then I can just use that. I can't bear to do that right now though. I'm just gonna make this variable.
@@ -770,7 +773,7 @@ function EDITOR_render_do_Scroll(timestamp) {
 
         EDITOR_sum_diffPositive += diff;
 
-        // Note: this case has 'vertical = (prevVli + get_EDITOR_virtualCount()) * get_EDITOR_lineHeight();' I believe 'get_EDITOR_virtualCount' === 'get_EDITOR_ONSCROLLvirtualCount' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
+        // Note: this case has 'vertical = (prevVli + get_EDITOR_virtualCount()) * local_lineHeight;' I believe 'get_EDITOR_virtualCount' === 'get_EDITOR_ONSCROLLvirtualCount' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
         lowerBound = prevVli + get_EDITOR_ONSCROLLvirtualCount();
         upperBound = lowerBound + diff;
 
@@ -803,7 +806,7 @@ function EDITOR_render_do_Scroll(timestamp) {
         beltIndexLine = EDITOR_beltIndexZero - 1/*This decrement avoids that.*/;
     }
 
-    let vertical = lowerBound * get_EDITOR_lineHeight();
+    let vertical = lowerBound * local_lineHeight;
 
     // Important detail to consider: the lines that are >= EDITOR_lineEndPositionList_count will continually increment lineStart by 1 So if you expect this to accurately represent the EOF position when it is in view, it probably does NOT.
     // TODO: I think I saw how to do it in a way that is more sensible. There is no reason to not just put the lineStart = lineEnd + 1 inside the if that is immediately following I think? Then you'd avoid this 'note'... ugh for completeness I need to mention that this would be an issue now that I see it. You have lineEnd = -1 so then you'd need a note for that unless you changed the initial value to be 0 somehow or something, just idk.
@@ -848,7 +851,7 @@ function EDITOR_render_do_Scroll(timestamp) {
         }
 
         let translateY = `translateY(${vertical}px)`;
-        vertical += get_EDITOR_lineHeight(); // TODO: Hoist this straight up the value that was in the array it is inside a loop
+        vertical += local_lineHeight; // TODO: Hoist this straight up the value that was in the array it is inside a loop
 
         gutter.style.transform = translateY;
         div.style.transform = translateY;

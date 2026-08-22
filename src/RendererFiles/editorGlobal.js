@@ -739,6 +739,14 @@ function EDITOR_onScroll_WRAPIT() {
  * I've read that having the dev tools open confuses things because it'll hold onto them more than usual.
  * But I've done various things in the past like close and reopen dev tools and take a new snapshot and etc... and it never remedied in the past I gotta see
  * 
+ * 
+ * https://stackoverflow.com/questions/491527/javascript-event-handlers-always-increase-browser-memory-usage
+ * Answered by 'Ben Blank':
+ * Memory leaks related to event handlers are, generally speaking, related to enclosures.
+ * In other words, attaching a function to an event handler which points back to its element can prevent browsers from garbage-collecting either.
+ * (Thankfully, most newer browsers have "learned the trick" and no longer leak memory in this scenario, but there are a lot of older browsers floating around out there!)
+ * 
+ * 
  */
 function EDITOR_render_do_Scroll(timestamp) {
 

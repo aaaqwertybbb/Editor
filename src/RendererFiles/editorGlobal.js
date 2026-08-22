@@ -749,6 +749,30 @@ function EDITOR_onScroll_WRAPIT() {
  * I'm still looking.
  * 
  * The Explorer does it too
+ * 
+ * 
+ * < 1. The Global "Event History" Loophole
+ * < 
+ * < When you bind an event listener to an element, Chromium creates a native event wrapper behind the scenes.
+ * < If your text editor or tree-view code tracks actions via a history queue, undo/redo stack, or custom context menu,
+ * < you might be pushing raw event arguments directly into an array.
+ * <
+ * < The Leak Pattern:
+ * <
+ * < ```js
+ * < // An array tracking history, selections, or clicks
+ * < const selectionHistory = []; 
+ * < 
+ * < editor.addEventListener('click', (e) => {
+ * <   // Storing the RAW event object captures its internal performance counters!
+ * <   selectionHistory.push(e); 
+ * < });
+ * < ```
+ * <
+ * < Why it traps PerformanceEventTiming: Native Event objects carry references to Chromium's internal event timing timelines.
+ * < If you push the raw e (or an array of e objects) into a permanent or long-running array to track user history,
+ * < you implicitly prevent every associated PerformanceEventTiming object from being cleared from the heap.
+ * 
  */
 function EDITOR_render_do_Scroll(timestamp) {
 

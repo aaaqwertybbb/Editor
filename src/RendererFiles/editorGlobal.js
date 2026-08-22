@@ -758,6 +758,7 @@ function EDITOR_render_do_Scroll(timestamp) {
         local_currVli = currVli
     }
 
+    // TODO: Move this to the scroll event handler (probably)
     local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop()] = lastReadNumber_scrollTop;
 
     // TODO: Move this to the leading edge? (maybe)

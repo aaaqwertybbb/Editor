@@ -8830,6 +8830,36 @@ function EDITOR_registerHandlers() {
 < Now that you have primitives tracking the coordinates and mouseleave stopping the spam, your app is behaving exactly like a high-performance text editor should!
 <
 < If you look at your file explorer tree view, do you see any similar patterns where a fast-firing event (like dragging or scrolling) assigns events to variables?
+
+What it says about the timeouts... that was an issue on my end I gave it the code snippet for 'function EDITOR_mouseOver(e)'.
+This code currently is:
+
+function EDITOR_mouseOver(e) {
+    EDITOR_mouseOver_event_clientY = e.clientY;
+    EDITOR_mouseOver_event_clientX = e.clientX;
+    
+    //const tokenElement = event.target.closest('.editor-token');
+    //if (!tokenElement) return;
+    //
+    // Clear previous timer because the mouse is still moving
+    clearTimeout(EDITOR_hoverTimeout);
+    //
+    // Extract line and column stored in the DOM node's data attributes
+    //const line = parseInt(tokenElement.dataset.line);
+    //const column = parseInt(tokenElement.dataset.column);
+    //
+    // Wait 300ms. If the mouse leaves or moves, this timer gets cleared.
+    EDITOR_hoverTimeout = setTimeout(EDITOR_requestLspHover, 1000);
+}
+
+I said "it doesn't need all these comments"
+
+and I removed what I thought was one continuously block of single line comments
+but there's actually a 'clearTimeout(EDITOR_hoverTimeout);' hidden among the single line comments.
+
+So I ended up removing that.
+
+I tried explaining what I'm a goof to the AI after the fact. It seems to have brought it back up for some reason.
 */
 
 /**

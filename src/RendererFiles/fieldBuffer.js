@@ -162,11 +162,8 @@ const get_js_QUESTIONMARK_num = () => 63;
 const get_js_CARET_str = () => '^';
 const get_js_CARET_num = () => 94;
 
-const get_EDITOR_gutterPaddingLeft = () => EDITOR_byte_fields[34];
-EDITOR_byte_fields[34] = 3;
-
-const get_EDITOR_gutterPaddingRight = () => EDITOR_byte_fields[35];
-EDITOR_byte_fields[35] = 6;
+const get_EDITOR_gutterPaddingLeft = () => 3;
+const get_EDITOR_gutterPaddingRight = () => 6;
 
 const get_DIALOG_minTop = () => 8;
 const get_DIALOG_minLeft = () => 8;

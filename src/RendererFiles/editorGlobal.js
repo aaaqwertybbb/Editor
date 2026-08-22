@@ -744,6 +744,11 @@ function EDITOR_render_do_Scroll(timestamp) {
     let local_currVli = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine()];
     local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine()] = local_currVli;
 
+    // Add these to the field buffer and change it so they're all one next to another maybe it'll cache one of the reads others and fastly
+    // EDITOR_scrollEndDeadline
+    // EDITOR_sum_diffPositive
+    // lastReadNumber_scrollTop
+
     // TODO: Move this to the scroll event handler (probably-maybe)
     EDITOR_scrollEndDeadline = timestamp + 1000;
 

@@ -3294,8 +3294,7 @@ function EDITOR_getCharacterPrevious(indexColumn, positionIndex) {
         return getCharacter(positionIndex - 1);
     }
     else {
-        // TODO: I'm pretty sure this was supposed to say '\0' but it happens to "work" due to them both being 0.
-        return get_CharacterKind_None();
+        return '\0';
     }
 }
 
@@ -3313,8 +3312,7 @@ function EDITOR_getCharacterCurrent(indexColumn, positionIndex, lineEnd) {
         return getCharacter(positionIndex);
     }
     else {
-        // TODO: I'm pretty sure this was supposed to say '\0' but it happens to "work" due to them both being 0.
-        return get_CharacterKind_None();
+        return '\0';
     }
 }
 

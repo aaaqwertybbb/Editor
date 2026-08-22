@@ -737,6 +737,7 @@ function EDITOR_render_do_Scroll(timestamp) {
     let local_currVli = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine()];
     local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine()] = local_currVli;
 
+    // TODO: Instead of adding 1000 here you should do it when you check the debounce
     local_EDITOR_int_fields[INDEXOF_EDITOR_scrollEndDeadline()] = timestamp + 1000; // TODO: Move this to the scroll event handler (probably-maybe)
 
     if (!isScrolling) {

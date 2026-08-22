@@ -752,7 +752,7 @@ function EDITOR_render_do_Scroll(timestamp) {
 
         if (EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli)) return; // This if statement reads poorly. You return for a reason that isn't gleaned by reading the function name alone.
         
-        // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 2 of 4)
+        // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 4 of 4)
         // ...and here the locals assigned the same value as the globals in case 'EDITOR_onScroll_LeadingEdge' modified the globals.
         local_prevVli = prevVli;
         local_currVli = currVli

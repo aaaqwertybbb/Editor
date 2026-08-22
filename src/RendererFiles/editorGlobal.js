@@ -8766,6 +8766,36 @@ function EDITOR_registerHandlers() {
 // and then when I nulled my reference it still was in the buffer but never will be cleared unless I manually cleared it from the buffer myself.
 //
 // methinks
+/*
+< The missing puzzle piece is that PerformanceEventTiming and native MouseEvent objects are not normal JavaScript objects.
+< They are hybrid, split-personality objects governed by the browser engine (Chromium/V8).
+< 
+< Here is the exact explanation of why your "missed chance at the buffer" theory is spot on, and why your previous code broke the traditional GC rules:
+<
+< 1. Your "One Shot / Missed Chance" Buffer Theory is Real
+< In Chromium, when a user moves a mouse, two things are created simultaneously:
+< - A C++ DOM Object (inside Chromium's core engine, managing the event loop and the native Performance Timeline buffer).
+< - A JavaScript Wrapper Object (inside the V8 engine, which is the e variable you see in your code).
+<
+< Chromium has an internal performance logging buffer. When an event happens, it registers it in that buffer.
+< When the event finishes processing and the browser completes a paint frame,
+< Chromium runs a cleanup pass to flush short-lived event timings from its internal buffers.
+< 
+< If you copy the JavaScript wrapper e into a global variable or trap it inside an overwritten setTimeout closure,
+< the V8 engine alerts Chromium's C++ engine: "Hey, this JS code is still actively holding a reference to this event."
+<
+< Because of that active reference, Chromium skips purging that event from its internal performance/event buffers during that frame's cleanup pass.
+< Once it skips it, that specific entry is essentially "pushed" into a long-term fallback cache or historical timeline stream.
+< Even if you null out your JavaScript variable later, the C++ engine has already abandoned its tracking pass for that frame,
+< leaving the object permanently pinned from the C++ side.
+<
+< 2. The "Overwritten Variable" Trap (Why traditional GC failed here)
+<
+< You mentioned: "I can get a reference to it so long as I set that reference null eventually."
+< This is true, but your original code was accidentally breaking this rule due to how mouseover fires.
+<
+< 
+*/
 
 /**
  * < Thanks to a browser feature called Event Bubbling, when the mouse enters a tiny token span, the event bubbles up to the parent container

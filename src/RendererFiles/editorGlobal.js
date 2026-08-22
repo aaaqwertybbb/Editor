@@ -3638,7 +3638,7 @@ function EDITOR_onMouseDownDetailRankTwo(event, indexLineClicked, indexColumnCli
         while (cursor.indexColumn < lineLength) {
             cursor.indexColumn++;
             positionIndex++;
-            rightCharacterKind = EDITOR_getCharacterCurrent(cursor.indexColumn, positionIndex, line.end);
+            rightCharacterKind = EDITOR_getCharacterCurrent_KIND(cursor.indexColumn, positionIndex, line.end);
             if (rightCharacterKind !== goalCharacterKind) {
                 cursor.selectionEnd = positionIndex;
                 rightWasFound = true;

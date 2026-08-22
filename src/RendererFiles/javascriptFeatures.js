@@ -1391,6 +1391,14 @@ I did some exercises then about an hour long walk then showered...
                         // "Why Native Strings Win: V8 Monomorphism"
                         // 'Monomorphic Inline Caches:'... raw assembly instructions that execute instantly
                         //
+
+                        //
+                        // I need to look into this more.
+                        // I do believe that the short term "time taken to compare" is lower.
+                        // but you later on have this massive GC hit that causes staggering in the UI.
+                        // 
+
+
                         let wordlength = pos - wordstart;
                         switch (charIntSum) {
                             case 94844771: // const

@@ -779,15 +779,12 @@ function EDITOR_render_do_Scroll(timestamp) {
         lowerBound = currVli;
         upperBound = lowerBound + diff;
 
-        // TODO: This can be simplified to a modulo operation.
-        //let lastIndex = EDITOR_beltIndexZero === 0
-        //    ? local_ArrayFrom_textElement_children_length - 1
-        //    : EDITOR_beltIndexZero - 1;
+        // Of the 3 cases this is the only one that has a variable declaration thus the entire stackframe has to have memory allocated to store
+        // this case's variable even if one of the other cases ends up running, thus I'm inlining this.
 
-        let lastIndex = (EDITOR_beltIndexZero - 1 + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length;
-        //console.log(`${lastIndex} === ${dlastIndex}`);
-
-        EDITOR_beltIndexZero = (lastIndex - (diff - 1) + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length;
+        EDITOR_beltIndexZero = (
+            (/*let lastIndex = */(EDITOR_beltIndexZero - 1 + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length) -
+            (diff - 1) + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length;
 
         beltIndexLine = EDITOR_beltIndexZero - 1/*This decrement avoids that.*/;
     }

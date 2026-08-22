@@ -8764,6 +8764,8 @@ function EDITOR_registerHandlers() {
 //
 // It went to remove it from a buffer but saw I had a reference to it so it left it in the buffer
 // and then when I nulled my reference it still was in the buffer but never will be cleared unless I manually cleared it from the buffer myself.
+//
+// methinks
 
 /**
  * < Thanks to a browser feature called Event Bubbling, when the mouse enters a tiny token span, the event bubbles up to the parent container

@@ -1,12 +1,3 @@
-
-var asdfghijklmnop = 2;
-let hijklmnop = 2;
-const mnop = 2;
-
-function FIELDBUFFER_test() {
-    
-}
-
 /*
 #################
 # Goal of file: #

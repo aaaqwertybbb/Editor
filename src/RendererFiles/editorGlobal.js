@@ -795,9 +795,6 @@ function EDITOR_render_do_Scroll(timestamp) {
         lowerBound = local_currVli;
         upperBound = lowerBound + diff;
 
-        // Of the 3 cases this is the only one that has a variable declaration thus the entire stackframe has to have memory allocated to store
-        // this case's variable even if one of the other cases ends up running, thus I'm inlining this.
-
         EDITOR_beltIndexZero = (
             (/*let lastIndex = */(EDITOR_beltIndexZero - 1 + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length) -
             (diff - 1) + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length;

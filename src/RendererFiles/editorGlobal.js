@@ -743,7 +743,7 @@ function EDITOR_render_do_Scroll(timestamp) {
 
     let lowerBound;
     let upperBound;
-    let beltIndexLine;
+    let beltIndexLine; // The 0th loop will increment somewhat awkwardly. see the: "This decrement avoids that." comments for each case.
 
     let local_ArrayFrom_textElement_children_length = ArrayFrom_textElement_children_length;
     let local_ArrayFrom_gutter_children = ArrayFrom_gutter_children;
@@ -761,9 +761,9 @@ function EDITOR_render_do_Scroll(timestamp) {
         lowerBound = prevVli + get_EDITOR_ONSCROLLvirtualCount();
         upperBound = lowerBound + diff;
 
-        beltIndexLine = EDITOR_beltIndexZero;
+        beltIndexLine = EDITOR_beltIndexZero - 1 /*This decrement avoids that.*/;
 
-        EDITOR_beltIndexZero = (beltIndexLine + diff) % local_ArrayFrom_textElement_children_length;
+        EDITOR_beltIndexZero = (beltIndexLine + 1/*This decrement avoids that... but here you need to undo it for a moment*/ + diff) % local_ArrayFrom_textElement_children_length;
     }
     else if (diff < 0 && (diff *= -1) < get_EDITOR_virtualCount()) {
 
@@ -782,7 +782,7 @@ function EDITOR_render_do_Scroll(timestamp) {
 
         EDITOR_beltIndexZero = (lastIndex - (diff - 1) + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length;
 
-        beltIndexLine = EDITOR_beltIndexZero;
+        beltIndexLine = EDITOR_beltIndexZero - 1/*This decrement avoids that.*/;
     }
     else {
         lowerBound = get_EDITOR_virtualIndexLine();
@@ -790,12 +790,10 @@ function EDITOR_render_do_Scroll(timestamp) {
 
         EDITOR_sum_diffPositive += get_EDITOR_virtualCount();
 
-        beltIndexLine = EDITOR_beltIndexZero;
+        beltIndexLine = EDITOR_beltIndexZero - 1/*This decrement avoids that.*/;
     }
 
     let vertical = lowerBound * get_EDITOR_lineHeight();
-
-    beltIndexLine--; // The 0th loop will increment somewhat awkwardly. This decrement avoids that.
 
     // Important detail to consider: the lines that are >= EDITOR_lineEndPositionList_count will continually increment lineStart by 1 So if you expect this to accurately represent the EOF position when it is in view, it probably does NOT.
     // TODO: I think I saw how to do it in a way that is more sensible. There is no reason to not just put the lineStart = lineEnd + 1 inside the if that is immediately following I think? Then you'd avoid this 'note'... ugh for completeness I need to mention that this would be an issue now that I see it. You have lineEnd = -1 so then you'd need a note for that unless you changed the initial value to be 0 somehow or something, just idk.

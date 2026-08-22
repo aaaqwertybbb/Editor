@@ -717,7 +717,13 @@ function EDITOR_onScroll_WRAPIT() {
     EDITOR_render_request(get_RenderKind_Scroll());
 }
 
-/** I'm 99% certain that if I look at the heap snapshots I'll see a memory leak, but one thing at a time it is complicated and each task incurs varying degrees of stress and each moment to moment only has so much stress resilience. */
+/**
+ * I'm 99% certain that if I look at the heap snapshots I'll see a memory leak, but one thing at a time it is complicated and each task incurs varying degrees of stress and each moment to moment only has so much stress resilience.
+ * 
+ * "why did you remove 1 assignment lul"
+ * 
+ * This is my own side thing you ought to look at the heap snapshot but I'm doing what needs to be done to maintain consistency on my end.
+ */
 function EDITOR_render_do_Scroll(timestamp) {
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
     set_EDITOR_virtualIndexLine(Math.floor(lastReadNumber_scrollTop / get_EDITOR_lineHeight()));

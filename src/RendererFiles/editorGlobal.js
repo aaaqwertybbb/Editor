@@ -716,6 +716,13 @@ function EDITOR_onScroll_WRAPIT() {
  * "why did you remove 1 assignment lul"
  * 
  * This is my own side thing you ought to look at the heap snapshot but I'm doing what needs to be done to maintain consistency on my end.
+ * 
+ * - Run app
+ * - Pick workspace
+ * - scrolled the explorer a bit while I thought about what to do next but only like a second or a few
+ * - open dev tools
+ * - take heap snapshot 1
+ * Heap snapshot 1 => 3.1 MB
  */
 function EDITOR_render_do_Scroll(timestamp) {
 

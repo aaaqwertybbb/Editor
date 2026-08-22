@@ -779,8 +779,7 @@ function EDITOR_render_do_Scroll(timestamp) {
 
     if (diff > 0 && diff < local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()]) {
 
-        // TODO: Can you "sum into" an existing array slot for the '+=' effect?
-        local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive()] = local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive()] + diff;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive()] += diff;
 
         // Note: this case has 'vertical = (prevVli + get_EDITOR_virtualCount()) * local_lineHeight;' I believe 'get_EDITOR_virtualCount' === 'get_EDITOR_ONSCROLLvirtualCount' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
         lowerBound = local_prevVli + local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount()];
@@ -792,8 +791,7 @@ function EDITOR_render_do_Scroll(timestamp) {
     }
     else if (diff < 0 && (diff *= -1) < local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()]) {
 
-        // TODO: Can you "sum into" an existing array slot for the '+=' effect?
-        local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffNegative()] = local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffNegative()] + diff;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffNegative()] += diff;
 
         lowerBound = local_currVli;
         upperBound = lowerBound + diff;
@@ -808,8 +806,7 @@ function EDITOR_render_do_Scroll(timestamp) {
         lowerBound = local_currVli;
         upperBound = lowerBound + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()];
 
-        // TODO: Can you "sum into" an existing array slot for the '+=' effect?
-        local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive()] = local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive()] + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive()] += local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()];
 
         beltIndexLine = EDITOR_beltIndexZero - 1/*This decrement avoids that.*/;
     }

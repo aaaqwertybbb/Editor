@@ -848,7 +848,7 @@ function EDITOR_render_do_Scroll(timestamp) {
         }
 
         let translateY = `translateY(${vertical}px)`;
-        vertical += get_EDITOR_lineHeight();
+        vertical += get_EDITOR_lineHeight(); // TODO: Hoist this straight up the value that was in the array it is inside a loop
 
         gutter.style.transform = translateY;
         div.style.transform = translateY;

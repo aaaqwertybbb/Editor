@@ -277,6 +277,13 @@ module.exports = function (babel) {
     "get_AUTOCOMPLETErenderKind_CursorSet",
     "get_AUTOCOMPLETErenderKind_CreateLines",
     "get_AUTOCOMPLETErenderKind_Scroll",
+
+    "INDEXOF_EDITOR_lineHeight",
+    "INDEXOF_EDITOR_virtualIndexLine",
+    "INDEXOF_EDITOR_virtualCount",
+    "INDEXOF_EDITOR_ONSCROLLvirtualIndexLine",
+    "INDEXOF_EDITOR_ONSCROLLvirtualCount",
+    "INDEXOF_EDITOR_ONSCROLLscrollTop",
   ];
 
   return {

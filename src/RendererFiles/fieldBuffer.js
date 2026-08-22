@@ -173,6 +173,7 @@ const set_EDITOR_drawn_count_of_digits_longest_line_number = (int) => EDITOR_int
 
 const get_EDITOR_lineHeight = () => EDITOR_int_fields[2];
 const set_EDITOR_lineHeight = (int) => EDITOR_int_fields[2] = int;
+const INDEXOF_EDITOR_lineHeight = () => 2;
 set_EDITOR_lineHeight(20);
 
 const get_EDITOR_detail_smallPosition = () => EDITOR_int_fields[3];
@@ -208,9 +209,11 @@ set_EDITOR_gutterWidthTotal(32);
 /** The first line of text that you should see shown in the UI given the current scrollTop */
 const get_EDITOR_virtualIndexLine = () => EDITOR_int_fields[8];
 const set_EDITOR_virtualIndexLine = (int) => EDITOR_int_fields[8] = int;
+const INDEXOF_EDITOR_virtualIndexLine = () => 8;
 
 const get_EDITOR_virtualCount = () => EDITOR_int_fields[9];
 const set_EDITOR_virtualCount = (int) => EDITOR_int_fields[9] = int;
+const INDEXOF_EDITOR_virtualCount = () => 9;
 
 const get_didChangeTextDocument_version = () => EDITOR_int_fields[10];
 const set_didChangeTextDocument_version = (int) => EDITOR_int_fields[10] = int;
@@ -240,16 +243,19 @@ const set_EDITOR_offsetWithinSpan = (int) => EDITOR_int_fields[16] = int;
 
 const get_EDITOR_ONSCROLLvirtualIndexLine = () => EDITOR_int_fields[17];
 const set_EDITOR_ONSCROLLvirtualIndexLine = (int) => EDITOR_int_fields[17] = int;
+const INDEXOF_EDITOR_ONSCROLLvirtualIndexLine = () => 17;
 //throw new Error('-1');
 // This set used to be -1 to indicate a non existent value, 500 "seems to work" but a proof of it being an equivalent solution has not thoroughly been thought out, only a sort of "yeah that probably works" kinda vibe.
 set_EDITOR_ONSCROLLvirtualIndexLine(500);
 
 const get_EDITOR_ONSCROLLvirtualCount = () => EDITOR_int_fields[18];
 const set_EDITOR_ONSCROLLvirtualCount = (int) => EDITOR_int_fields[18] = int;
+const INDEXOF_EDITOR_ONSCROLLvirtualCount = () => 18;
 set_EDITOR_ONSCROLLvirtualCount(0);
 
 const get_EDITOR_ONSCROLLscrollTop = () => EDITOR_int_fields[19];
 const set_EDITOR_ONSCROLLscrollTop = (int) => EDITOR_int_fields[19] = int;
+const INDEXOF_EDITOR_ONSCROLLscrollTop = () => 19;
 //throw new Error('-1');
 // This set used to be -1 to indicate a non existent value, 500 "seems to work" but a proof of it being an equivalent solution has not thoroughly been thought out, only a sort of "yeah that probably works" kinda vibe.
 set_EDITOR_ONSCROLLscrollTop(500);

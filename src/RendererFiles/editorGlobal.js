@@ -717,6 +717,7 @@ function EDITOR_onScroll_WRAPIT() {
     EDITOR_render_request(get_RenderKind_Scroll());
 }
 
+/** I'm 99% certain that if I look at the heap snapshots I'll see a memory leak, but one thing at a time it is complicated and each task incurs varying degrees of stress and each moment to moment only has so much stress resilience. */
 function EDITOR_render_do_Scroll(timestamp) {
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
     set_EDITOR_virtualIndexLine(Math.floor(lastReadNumber_scrollTop / get_EDITOR_lineHeight()));

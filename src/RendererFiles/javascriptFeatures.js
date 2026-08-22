@@ -1663,8 +1663,8 @@ I did some exercises then about an hour long walk then showered...
                             substart += wordlength;
                         }
                         continue;
-                    case get_js_FORWARDSLASH():
-                        if (divSpanTextContent[pos + 1] === get_js_FORWARDSLASH()) {
+                    case get_js_FORWARDSLASH_str():
+                        if (divSpanTextContent[pos + 1] === get_js_FORWARDSLASH_str()) {
 
                             if (substart < pos) {
                                 flushTextContent = divSpanTextContent.substring(substart, substart = pos);
@@ -1688,7 +1688,7 @@ I did some exercises then about an hour long walk then showered...
                             // This change is moreso a matter of anxiety and me not wanting to deal with this at the moment so I need to see the explicit read here so I can sleep at night for the time being until my stress levels are lower.
                             pos++;
                             while (pos < subend) {
-                                if (divSpanTextContent[pos] === get_js_LINEFEED()) {
+                                if (divSpanTextContent[pos] === get_js_LINEFEED_str()) {
                                     break;
                                 }
                                 pos++;
@@ -1712,7 +1712,7 @@ I did some exercises then about an hour long walk then showered...
 
                             continue;
                         }
-                        else if (divSpanTextContent[pos + 1] === get_js_ASTERISK()) {
+                        else if (divSpanTextContent[pos + 1] === get_js_ASTERISK_str()) {
                             if (substart < pos) { // write any text that came prior, and on the same line.
                                 flushTextContent = divSpanTextContent.substring(substart, substart = pos);
                                 if (childIndex < divChildrenInitialLength) {
@@ -1739,13 +1739,13 @@ I did some exercises then about an hour long walk then showered...
                             let ticketForwardSlash = -1;
                             while (pos < subend) {
                                 switch (divSpanTextContent[pos]) {
-                                    case get_js_ASTERISK():
+                                    case get_js_ASTERISK_str():
                                         ticketAsterisk = ticketSource++;
                                         break;
-                                    case get_js_FORWARDSLASH():
+                                    case get_js_FORWARDSLASH_str():
                                         ticketForwardSlash = ticketSource++;
                                         break;
-                                    case get_js_LINEFEED():
+                                    case get_js_LINEFEED_str():
                                         ticketSource++;
                                         break;
                                     default:
@@ -1776,7 +1776,7 @@ I did some exercises then about an hour long walk then showered...
 
                         // TODO: Remove this break because it was confusing, you gotta make sure it continues, but this actually just never gets hit because the previous branches end with continue.
                         break;
-                    case get_js_DOUBLEQUOTE():
+                    case get_js_DOUBLEQUOTE_str():
                         if (substart < pos) {
                             flushTextContent = divSpanTextContent.substring(substart, substart = pos);
                             if (childIndex < divChildrenInitialLength) {
@@ -1796,10 +1796,10 @@ I did some exercises then about an hour long walk then showered...
                         pos++;
                         outer: while (pos < subend) {
                             switch (divSpanTextContent[pos]) {
-                                case get_js_DOUBLEQUOTE():
+                                case get_js_DOUBLEQUOTE_str():
                                     pos++;
                                     break outer;
-                                case get_js_BACKSLASH():
+                                case get_js_BACKSLASH_str():
                                     pos++;
                                     if (pos < subend) {
                                         pos++; // skip the escaped character provided that the file didn't end after the original backslash
@@ -1823,7 +1823,7 @@ I did some exercises then about an hour long walk then showered...
                             div.appendChild(span);
                         }
                         continue;
-                    case get_js_SINGLEQUOTE():
+                    case get_js_SINGLEQUOTE_str():
                         if (substart < pos) {
                             flushTextContent = divSpanTextContent.substring(substart, substart = pos);
                             if (childIndex < divChildrenInitialLength) {
@@ -1843,10 +1843,10 @@ I did some exercises then about an hour long walk then showered...
                         pos++;
                         outer: while (pos < subend) {
                             switch (divSpanTextContent[pos]) {
-                                case get_js_SINGLEQUOTE():
+                                case get_js_SINGLEQUOTE_str():
                                     pos++;
                                     break outer;
-                                case get_js_BACKSLASH():
+                                case get_js_BACKSLASH_str():
                                     pos++;
                                     if (pos < subend) {
                                         pos++; // skip the escaped character provided that the file didn't end after the original backslash
@@ -1870,7 +1870,7 @@ I did some exercises then about an hour long walk then showered...
                             div.appendChild(span);
                         }
                         continue;
-                    case get_js_BACKTICK():
+                    case get_js_BACKTICK_str():
                         if (substart < pos) {
                             flushTextContent = divSpanTextContent.substring(substart, substart = pos);
                             if (childIndex < divChildrenInitialLength) {
@@ -1890,10 +1890,10 @@ I did some exercises then about an hour long walk then showered...
                         pos++;
                         outer: while (pos < subend) {
                             switch (divSpanTextContent[pos]) {
-                                case get_js_BACKTICK():
+                                case get_js_BACKTICK_str():
                                     pos++;
                                     break outer;
-                                case get_js_BACKSLASH():
+                                case get_js_BACKSLASH_str():
                                     pos++;
                                     if (pos < subend) {
                                         pos++; // skip the escaped character provided that the file didn't end after the original backslash
@@ -1917,7 +1917,7 @@ I did some exercises then about an hour long walk then showered...
                             div.appendChild(span);
                         }
                         continue;
-                    case get_js_EQUALS():
+                    case get_js_EQUALS_str():
                         // I think I actually want to handle the '==', '===', and '===...=' cases just so I can skip over the text quickly.
                         // Otherwise every time I see '=' I have to check the left and right side and it is quite redundant?
                         //
@@ -1936,16 +1936,16 @@ I did some exercises then about an hour long walk then showered...
                         // let shouldSkipContiguous;... sneaky uninitialized variable conversion to a falsey or something was going on?
                         shouldSkipContiguous = false;
                         if (pos > substart) {
-                            if (divSpanTextContent[pos - 1] === get_js_EQUALS()) {
+                            if (divSpanTextContent[pos - 1] === get_js_EQUALS_str()) {
                                 shouldSkipContiguous = true;
                             }
-                            else if (divSpanTextContent[pos - 1] === get_js_BANG()) {
+                            else if (divSpanTextContent[pos - 1] === get_js_BANG_str()) {
                                 shouldSkipContiguous = true;
                             }
-                            else if (divSpanTextContent[pos - 1] === get_js_OPENBRACKET()) {
+                            else if (divSpanTextContent[pos - 1] === get_js_OPENBRACKET_str()) {
                                 shouldSkipContiguous = true;
                             }
-                            else if (divSpanTextContent[pos - 1] === get_js_CLOSEBRACKET()) {
+                            else if (divSpanTextContent[pos - 1] === get_js_CLOSEBRACKET_str()) {
                                 shouldSkipContiguous = true;
                             }
                         }
@@ -1953,7 +1953,7 @@ I did some exercises then about an hour long walk then showered...
                             shouldSkipContiguous = false;
                         }
                         if (!shouldSkipContiguous) {
-                            if (pos < subend && divSpanTextContent[pos + 1] === get_js_EQUALS()) {
+                            if (pos < subend && divSpanTextContent[pos + 1] === get_js_EQUALS_str()) {
                                 shouldSkipContiguous = true;
                             }
                         }
@@ -1962,7 +1962,7 @@ I did some exercises then about an hour long walk then showered...
                             // skip current
                             pos++;
                             // skip contiguous
-                            while (pos < subend && divSpanTextContent[pos] === get_js_EQUALS()) {
+                            while (pos < subend && divSpanTextContent[pos] === get_js_EQUALS_str()) {
                                 pos++;
                             }
                             continue;
@@ -1984,7 +1984,7 @@ I did some exercises then about an hour long walk then showered...
                             // I don't know if I would count '=>' as an "assignment operator"... maybe I would but I'm too focused on whether I'd count it as such that I can't figure out the way to make it work. So I need to just make it work first.
                             pos++;
                             substart++;
-                            if (pos < subend && divSpanTextContent[pos] === get_js_CLOSEBRACKET()) {
+                            if (pos < subend && divSpanTextContent[pos] === get_js_CLOSEBRACKET_str()) {
                                 textContent = '=>';
                                 pos++;
                                 substart++;
@@ -2008,7 +2008,7 @@ I did some exercises then about an hour long walk then showered...
                         
                         // TODO: you don't understand how code caching or like instruction caching etc works with respect to whether inlining interupts things
                         break;
-                    case get_js_PLUS():
+                    case get_js_PLUS_str():
                         // ++
                         // +=
                         
@@ -2028,13 +2028,13 @@ I did some exercises then about an hour long walk then showered...
                         // ...this presumption permits checking only the text that is in bounds of substart and subend.
                         
                         // TODO: This contiguous skipping logic isn't working for every switch case?
-                        shouldSkipContiguous = pos > substart && divSpanTextContent[pos - 1] === get_js_PLUS();
+                        shouldSkipContiguous = pos > substart && divSpanTextContent[pos - 1] === get_js_PLUS_str();
                         if (!shouldSkipContiguous) {
                             if (pos < subend) {
-                                if (divSpanTextContent[pos + 1] === get_js_PLUS()) {
+                                if (divSpanTextContent[pos + 1] === get_js_PLUS_str()) {
                                     textContent = '++';
                                 }
-                                else if (divSpanTextContent[pos + 1] === get_js_EQUALS()) {
+                                else if (divSpanTextContent[pos + 1] === get_js_EQUALS_str()) {
                                     textContent = '+=';
                                 }
                                 else {
@@ -2050,7 +2050,7 @@ I did some exercises then about an hour long walk then showered...
                             // skip current
                             pos++;
                             // skip contiguous
-                            while (pos < subend && divSpanTextContent[pos] === get_js_PLUS()) {
+                            while (pos < subend && divSpanTextContent[pos] === get_js_PLUS_str()) {
                                 pos++;
                             }
                             continue;
@@ -2084,7 +2084,7 @@ I did some exercises then about an hour long walk then showered...
                             }
                             continue;
                         }
-                    case get_js_MINUS():
+                    case get_js_MINUS_str():
                         // --
                         // -=
                         
@@ -2095,13 +2095,13 @@ I did some exercises then about an hour long walk then showered...
                         // you just "know" the text that goes there based on your conditional branching?
                             
                         // TODO: This contiguous skipping logic isn't working for every switch case?
-                        shouldSkipContiguous = pos > substart && divSpanTextContent[pos - 1] === get_js_MINUS();
+                        shouldSkipContiguous = pos > substart && divSpanTextContent[pos - 1] === get_js_MINUS_str();
                         if (!shouldSkipContiguous) {
                             if (pos < subend) {
-                                if (divSpanTextContent[pos + 1] === get_js_MINUS()) {
+                                if (divSpanTextContent[pos + 1] === get_js_MINUS_str()) {
                                     textContent = '--';
                                 }
-                                else if (divSpanTextContent[pos + 1] === get_js_EQUALS()) {
+                                else if (divSpanTextContent[pos + 1] === get_js_EQUALS_str()) {
                                     textContent = '-=';
                                 }
                                 else {
@@ -2117,7 +2117,7 @@ I did some exercises then about an hour long walk then showered...
                             // skip current
                             pos++;
                             // skip contiguous
-                            while (pos < subend && divSpanTextContent[pos] === get_js_MINUS()) {
+                            while (pos < subend && divSpanTextContent[pos] === get_js_MINUS_str()) {
                                 pos++;
                             }
                             continue;

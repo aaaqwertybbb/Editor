@@ -96,88 +96,88 @@ EDITOR_byte_fields[11] = 32;
 
 /////////////////////
 
-const get_js_DOUBLEQUOTE = () => '"';
+const get_js_DOUBLEQUOTE_str = () => '"';
 EDITOR_byte_fields[12] = 34;
 
-const get_js_SINGLEQUOTE = () => '\'';
+const get_js_SINGLEQUOTE_str = () => '\'';
 EDITOR_byte_fields[13] = 39;
 
-const get_js_BACKTICK = () => '`';
+const get_js_BACKTICK_str = () => '`';
 EDITOR_byte_fields[14] = 96;
 
-const get_js_FORWARDSLASH = () => '/';
+const get_js_FORWARDSLASH_str = () => '/';
 EDITOR_byte_fields[15] = 47;
 
-const get_js_BACKSLASH = () => '\\';
+const get_js_BACKSLASH_str = () => '\\';
 EDITOR_byte_fields[16] = 92;
 
-const get_js_ASTERISK = () => '*';
+const get_js_ASTERISK_str = () => '*';
 EDITOR_byte_fields[17] = 42;
 
-const get_js_LINEFEED = () => '\n';
+const get_js_LINEFEED_str = () => '\n';
 EDITOR_byte_fields[18] = 10;
 
-const get_js_OPENPARENTHESIS = () => '(';
+const get_js_OPENPARENTHESIS_str = () => '(';
 EDITOR_byte_fields[19] = 40;
 
-const get_js_CLOSEPARENTHESIS = () => ')';
+const get_js_CLOSEPARENTHESIS_str = () => ')';
 EDITOR_byte_fields[20] = 41;
 
-const get_js_PERIOD = () => '.';
+const get_js_PERIOD_str = () => '.';
 EDITOR_byte_fields[21] = 46;
 
-const get_js_EQUALS = () => '=';
+const get_js_EQUALS_str = () => '=';
 EDITOR_byte_fields[22] = 61;
 
-const get_js_OPENBRACKET = () => '[';
+const get_js_OPENBRACKET_str = () => '[';
 EDITOR_byte_fields[23] = 60;
 
-const get_js_CLOSEBRACKET = () => ']';
+const get_js_CLOSEBRACKET_str = () => ']';
 EDITOR_byte_fields[24] = 62;
 
-const get_js_BANG = () => '!';
+const get_js_BANG_str = () => '!';
 EDITOR_byte_fields[25] = 33;
 
-const get_js_PLUS = () => '+';
+const get_js_PLUS_str = () => '+';
 EDITOR_byte_fields[26] = 43;
 
-const get_js_MINUS = () => '-';
+const get_js_MINUS_str = () => '-';
 EDITOR_byte_fields[27] = 45;
 
-const get_js_STAR = () => '*';
+const get_js_STAR_str = () => '*';
 EDITOR_byte_fields[28] = 42;
 
-const get_js_PERCENT = () => '%';
+const get_js_PERCENT_str = () => '%';
 EDITOR_byte_fields[29] = 37;
 
-const get_js_AMPERSAND = () => '&';
+const get_js_AMPERSAND_str = () => '&';
 EDITOR_byte_fields[30] = 38;
 
-const get_js_PIPE = () => '|';
+const get_js_PIPE_str = () => '|';
 EDITOR_byte_fields[31] = 24;
 
-const get_js_QUESTIONMARK = () => '?';
+const get_js_QUESTIONMARK_str = () => '?';
 EDITOR_byte_fields[32] = 63;
 
-const get_js_CARET = () => '^';
+const get_js_CARET_str = () => '^';
 EDITOR_byte_fields[33] = 94;
 
-const get_EDITOR_gutterPaddingLeft = () => EDITOR_byte_fields[34];
+const get_EDITOR_gutterPaddingLeft_str = () => EDITOR_byte_fields[34];
 EDITOR_byte_fields[34] = 3;
 
-const get_EDITOR_gutterPaddingRight = () => EDITOR_byte_fields[35];
+const get_EDITOR_gutterPaddingRight_str = () => EDITOR_byte_fields[35];
 EDITOR_byte_fields[35] = 6;
 
-const get_DIALOG_minTop = () => EDITOR_byte_fields[36];
+const get_DIALOG_minTop_str = () => EDITOR_byte_fields[36];
 EDITOR_byte_fields[36] = 8;
 
-const get_DIALOG_minLeft = () => EDITOR_byte_fields[37];
+const get_DIALOG_minLeft_str = () => EDITOR_byte_fields[37];
 EDITOR_byte_fields[37] = 8;
 
-const get_DIALOG_minHeight = () => EDITOR_byte_fields[38];
+const get_DIALOG_minHeight_str = () => EDITOR_byte_fields[38];
 EDITOR_byte_fields[38] = 100;
 
-const get_DIALOG_minWidth = () => EDITOR_byte_fields[39];
+const get_DIALOG_minWidth_str = () => EDITOR_byte_fields[39];
 EDITOR_byte_fields[39] = 100;
 
 

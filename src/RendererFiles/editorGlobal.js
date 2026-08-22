@@ -747,6 +747,8 @@ function EDITOR_onScroll_WRAPIT() {
  * (Thankfully, most newer browsers have "learned the trick" and no longer leak memory in this scenario, but there are a lot of older browsers floating around out there!)
  * 
  * I'm still looking.
+ * 
+ * The Explorer does it too
  */
 function EDITOR_render_do_Scroll(timestamp) {
 

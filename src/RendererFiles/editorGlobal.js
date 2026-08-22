@@ -8875,7 +8875,13 @@ function EDITOR_mouseOver(e) {
     //if (!tokenElement) return;
     //
     // Clear previous timer because the mouse is still moving
+
+
+    
     clearTimeout(EDITOR_hoverTimeout);
+
+
+
     //
     // Extract line and column stored in the DOM node's data attributes
     //const line = parseInt(tokenElement.dataset.line);

@@ -204,9 +204,9 @@ function WIDGET_render_do_Hide() {
             break;
         case get_WidgetKind_YesCancel():
             let yesButtonElement = document.getElementById('WIDGET_YesCancel_yes');
-            yesButtonElement.removeEventListener('onclick', WIDGET_YesCancelButtonOnClick_yes);
+            yesButtonElement.removeEventListener('click', WIDGET_YesCancelButtonOnClick_yes);
             let cancelButtonElement = document.getElementById('WIDGET_YesCancel_cancel');
-            cancelButtonElement.removeEventListener('onclick', WIDGET_YesCancelButtonOnClick_cancel);
+            cancelButtonElement.removeEventListener('click', WIDGET_YesCancelButtonOnClick_cancel);
             break;
     }
     WIDGET_WidgetKind_drawn = get_WidgetKind_None();

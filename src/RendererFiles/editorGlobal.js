@@ -8747,6 +8747,16 @@ function EDITOR_registerHandlers() {
     EDITOR_baseElement.addEventListener('blur', EDITOR_onblur);
 }
 
+// TODO:
+//
+// (From the perspective of understanding)
+//
+// You gotta look into the event and performance leak,
+// I feel like you would've dropped the references and it'd be cleared.
+// it just have a 1 shot one opportunity to be removed from some buffer and 
+// it sees you leaked it so it doesn't remove from the buffer
+// and then even if you set your references to null you missed that one chance for it to be removed from a buffer.
+
 /**
  * < Thanks to a browser feature called Event Bubbling, when the mouse enters a tiny token span, the event bubbles up to the parent container
  * 

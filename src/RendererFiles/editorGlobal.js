@@ -727,6 +727,9 @@ function EDITOR_onScroll_WRAPIT() {
  * - Let the syntax highlighting debounce run
  * - take heap snapshot 2
  * ## Heap snapshot 2 => 4.4 MB
+ * - scroll wheel 30 times (each wheel stroke is like 60 lines of text scrolled)
+ * - take heap snapshot 3
+ * ## Heap snapshot 3 => 4.7 MB
  * 
  */
 function EDITOR_render_do_Scroll(timestamp) {

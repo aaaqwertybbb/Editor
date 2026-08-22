@@ -328,7 +328,7 @@ let w_beltIndexLine = -1;
 /** Also is used from 'EDITOR_render_do_SetText()', and 'EDITOR_render_do_Resize()', not just 'EDITOR_render_do_Scroll()' */
 let isScrolling = false;
 /** Also is used from 'EDITOR_render_do_SetText()', and 'EDITOR_render_do_Resize()', not just 'EDITOR_render_do_Scroll()' */
-let EDITOR_scrollEndDeadline = 0;
+//let EDITOR_scrollEndDeadline = 0;
 /** Also is used from 'EDITOR_render_do_SetText()', and 'EDITOR_render_do_Resize()', not just 'EDITOR_render_do_Scroll()' */
 let isCheckingTrailingEdge = false;
 
@@ -345,7 +345,7 @@ let isProcessingLspQueue = false;
 /** The value of 'EDITOR_baseElement.scrollLeft' at the most recent scroll event that occurred */
 let lastReadNumber_scrollLeft = 0;
 /** The value of 'EDITOR_baseElement.scrollTop' at the most recent scroll event that occurred */
-let lastReadNumber_scrollTop = 0;
+//let lastReadNumber_scrollTop = 0;
 
 /** just floor these on init / resize and set the style so if they want resize they have to explicit and it is non decimal? */
 let lastReadNumber_offsetHeight = 0;
@@ -365,8 +365,8 @@ const count_of_wellknown_renderKinds = 19;
 /** 'EDITOR_init' and 'EDITOR_drawHorizontalScrollbar' related */
 let DRAWN_NUMBER_cached_EDITOR_horizontal_scrollbar_style_left;
 
-let EDITOR_sum_diffNegative = 0;
-let EDITOR_sum_diffPositive = 0;
+//let EDITOR_sum_diffNegative = 0;
+//let EDITOR_sum_diffPositive = 0;
 
 // Move some 'EDITOR_removeSelection()' state here so I can access it in the render function.
 // TODO: Don't do this long term, I need a simple bridge for this state so I can just get started otherwise I'll spend the rest of my life procrastinating.
@@ -564,7 +564,7 @@ function EDITOR_render_do_Clear() {
     prevVli = 0;
     currVli = get_EDITOR_virtualCount();
     // TODO: Duplicated setting of scrolltop; this case and just baseline everytime vertical scrolls it is done in this method elsewhere
-    set_EDITOR_ONSCROLLscrollTop(lastReadNumber_scrollTop);
+    set_EDITOR_ONSCROLLscrollTop(get_lastReadNumber_scrollTop());
     EDITOR_render_do_CreateViewport();
 }
 
@@ -581,7 +581,7 @@ function EDITOR_render_do_SetText(timestamp) {
     currVli = get_EDITOR_virtualIndexLine();
     set_EDITOR_ONSCROLLvirtualIndexLine(get_EDITOR_virtualIndexLine());
 
-    EDITOR_scrollEndDeadline = timestamp + 1000;
+    set_EDITOR_scrollEndDeadline(timestamp + 1000);
     if (!isCheckingTrailingEdge) {
         isCheckingTrailingEdge = true;
         requestAnimationFrame(EDITOR_render_do_ScrollTrailingEdgeCheck);
@@ -601,11 +601,11 @@ function EDITOR_render_request(renderKind) {
 }
 
 function EDITOR_render_do_CreateViewport() {
-    let remember_scrollTop = lastReadNumber_scrollTop;
+    let remember_scrollTop = get_lastReadNumber_scrollTop();
     let remember_scrollLeft = lastReadNumber_scrollLeft;
 
     EDITOR_baseElement.scrollTop = 0;
-    lastReadNumber_scrollTop = 0;
+    set_lastReadNumber_scrollTop(0);
     EDITOR_baseElement.scrollLeft = 0;
     lastReadNumber_scrollLeft = 0;
 
@@ -712,7 +712,7 @@ function EDITOR_onScroll_WRAPIT() {
     // thus it is thought you might as well touch scrollLeft too here, if you're going down this path.
     //
     lastReadNumber_scrollLeft = EDITOR_baseElement.scrollLeft;
-    lastReadNumber_scrollTop = EDITOR_baseElement.scrollTop;
+    set_lastReadNumber_scrollTop(EDITOR_baseElement.scrollTop);
 
     EDITOR_render_request(get_RenderKind_Scroll());
 }
@@ -735,7 +735,7 @@ function EDITOR_render_do_Scroll(timestamp) {
 
 
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
-    local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine()] = (Math.floor(lastReadNumber_scrollTop / local_lineHeight));
+    local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine()] = (Math.floor(local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop()] / local_lineHeight));
     // ====
     // ==== end explicit inline (duplication) of 'update_VirtualIndexLine()';
     
@@ -745,12 +745,14 @@ function EDITOR_render_do_Scroll(timestamp) {
     local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine()] = local_currVli;
 
     // Add these to the field buffer and change it so they're all one next to another maybe it'll cache one of the reads others and fastly
-    // EDITOR_scrollEndDeadline
-    // EDITOR_sum_diffPositive
-    // lastReadNumber_scrollTop
+    // ===================================================================================================================================
+    // - [x] EDITOR_scrollEndDeadline
+    // - [x] EDITOR_sum_diffPositive
+    // - [x] EDITOR_sum_diffNegative
+    // - [x] lastReadNumber_scrollTop
 
     // TODO: Move this to the scroll event handler (probably-maybe)
-    EDITOR_scrollEndDeadline = timestamp + 1000;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_scrollEndDeadline()] = timestamp + 1000;
 
     if (!isScrolling) {
         // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 2 of 4)
@@ -765,7 +767,7 @@ function EDITOR_render_do_Scroll(timestamp) {
     }
 
     // TODO: Move this to the scroll event handler (probably-maybe)
-    local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop()] = lastReadNumber_scrollTop;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop()] = local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop()];
 
     // TODO: Move this to the leading edge? (maybe)
     if (EDITOR_primaryCursor.editKind !== get_EditKind_None()) {
@@ -789,7 +791,8 @@ function EDITOR_render_do_Scroll(timestamp) {
 
     if (diff > 0 && diff < local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()]) {
 
-        EDITOR_sum_diffPositive += diff;
+        // TODO: Can you "sum into" an existing array slot for the '+=' effect?
+        local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive()] = local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive()] + diff;
 
         // Note: this case has 'vertical = (prevVli + get_EDITOR_virtualCount()) * local_lineHeight;' I believe 'get_EDITOR_virtualCount' === 'get_EDITOR_ONSCROLLvirtualCount' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
         lowerBound = local_prevVli + local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount()];
@@ -801,7 +804,8 @@ function EDITOR_render_do_Scroll(timestamp) {
     }
     else if (diff < 0 && (diff *= -1) < local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()]) {
 
-        EDITOR_sum_diffNegative += diff;
+        // TODO: Can you "sum into" an existing array slot for the '+=' effect?
+        local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffNegative()] = local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffNegative()] + diff;
 
         lowerBound = local_currVli;
         upperBound = lowerBound + diff;
@@ -819,7 +823,8 @@ function EDITOR_render_do_Scroll(timestamp) {
         lowerBound = local_currVli;
         upperBound = lowerBound + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()];
 
-        EDITOR_sum_diffPositive += local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()];
+        // TODO: Can you "sum into" an existing array slot for the '+=' effect?
+        local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive()] = local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive()] + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()];
 
         beltIndexLine = EDITOR_beltIndexZero - 1/*This decrement avoids that.*/;
     }
@@ -898,7 +903,7 @@ function EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli) {
 
     EDITOR_finalizeAllCursors();
 
-    if (get_EDITOR_ONSCROLLscrollTop() === lastReadNumber_scrollTop &&
+    if (get_EDITOR_ONSCROLLscrollTop() === get_lastReadNumber_scrollTop() &&
         prevVli === get_EDITOR_virtualIndexLine() &&
         get_EDITOR_ONSCROLLvirtualCount() === get_EDITOR_virtualCount()) {
             // TODO: this is directly tied to a scroll event on EDITOR_baseElement so handle it from there perhaps?
@@ -915,7 +920,7 @@ function EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli) {
             currVli = get_EDITOR_virtualCount();
 
             // TODO: Duplicated setting of scrolltop; this case and just baseline everytime vertical scrolls it is done in this method elsewhere
-            set_EDITOR_ONSCROLLscrollTop(lastReadNumber_scrollTop);
+            set_EDITOR_ONSCROLLscrollTop(get_lastReadNumber_scrollTop());
             EDITOR_render_do_CreateViewport();
             return false;
     }
@@ -925,7 +930,7 @@ function EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli) {
 
 function EDITOR_render_do_ScrollTrailingEdgeCheck(timestamp) {
     // If the scroll deadline hasn't been met yet, keep checking on the next frame
-    if (timestamp < EDITOR_scrollEndDeadline) {
+    if (timestamp < get_EDITOR_scrollEndDeadline()) {
         requestAnimationFrame(EDITOR_render_do_ScrollTrailingEdgeCheck);
         return;
     }
@@ -958,8 +963,8 @@ but there is 0 reasoning, understanding, or measurements behind my decision.
 */
 
 function EDITOR_render_do_SyntaxHighlighting() {
-    let local_sum_diffNegative = EDITOR_sum_diffNegative;
-    let local_sum_diffPositive = EDITOR_sum_diffPositive;
+    let local_sum_diffNegative = get_EDITOR_sum_diffNegative();
+    let local_sum_diffPositive = get_EDITOR_sum_diffPositive();
     let total_diff = local_sum_diffNegative + local_sum_diffPositive;
 
     /*
@@ -974,8 +979,8 @@ function EDITOR_render_do_SyntaxHighlighting() {
     I'm gonna rain check that one... I'm thinking about more than 1 instance of an overlap breaking that math
     */
     
-    EDITOR_sum_diffNegative = 0;
-    EDITOR_sum_diffPositive = 0;
+    set_EDITOR_sum_diffNegative(0);
+    set_EDITOR_sum_diffPositive(0);
 
     if (total_diff === 0) return;
 
@@ -1070,7 +1075,7 @@ function EDITOR_render_do_SyntaxHighlighting() {
     }
 
     if (bothButNotFull) {
-        EDITOR_sum_diffPositive = local_sum_diffPositive;
+        set_EDITOR_sum_diffPositive(local_sum_diffPositive);
         EDITOR_render_do_SyntaxHighlighting();
     }
 }
@@ -1217,7 +1222,7 @@ function EDITOR_clear() {
 
 function EDITOR_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMATTED_textSourceIdentifier, extensionKind, lineEndString) {
     EDITOR_baseElement.scrollTop = 0;
-    lastReadNumber_scrollTop = 0;
+    set_lastReadNumber_scrollTop(0);
     EDITOR_baseElement.scrollLeft = 0;
     lastReadNumber_scrollLeft = 0;
     
@@ -1353,9 +1358,9 @@ function update_VirtualIndexLine() {
     // thus it is thought you might as well touch scrollLeft too here, if you're going down this path.
     //
     lastReadNumber_scrollLeft = EDITOR_baseElement.scrollLeft;
-    lastReadNumber_scrollTop = EDITOR_baseElement.scrollTop;
+    set_lastReadNumber_scrollTop(EDITOR_baseElement.scrollTop);
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
-    set_EDITOR_virtualIndexLine(Math.floor(lastReadNumber_scrollTop / get_EDITOR_lineHeight()));
+    set_EDITOR_virtualIndexLine(Math.floor(get_lastReadNumber_scrollTop() / get_EDITOR_lineHeight()));
 }
 
 function update_virtualCount() {
@@ -3191,7 +3196,7 @@ function EDITOR_onMouseMove_WRAPIT(event) {
         // TODO: Is it correct to use the cursor's indexLine and indexColumn directly as a means of determining redundancy? I worry about odd interactions, but I have no proof that such an odd interaction could exist.
 
         let rX = event.clientX - get_EDITOR_recentBoundingClientRect_left() - get_EDITOR_gutterWidthTotal() + lastReadNumber_scrollLeft;
-        let rY = event.clientY - get_EDITOR_recentBoundingClientRect_top() + lastReadNumber_scrollTop;
+        let rY = event.clientY - get_EDITOR_recentBoundingClientRect_top() + get_lastReadNumber_scrollTop();
 
         let indexColumn = Math.round(rX / EDITOR_characterWidth);
         let indexLine = Math.floor(rY / get_EDITOR_lineHeight());
@@ -5118,7 +5123,7 @@ function EDITOR_onMouseDown(event) {
         EDITOR_baseElement.addEventListener('mousemove', EDITOR_onMouseMove_WRAPIT);
     }
 
-    let rY = event.clientY - get_EDITOR_recentBoundingClientRect_top() + lastReadNumber_scrollTop;
+    let rY = event.clientY - get_EDITOR_recentBoundingClientRect_top() + get_lastReadNumber_scrollTop();
     let rX = event.clientX - get_EDITOR_recentBoundingClientRect_left() - get_EDITOR_gutterWidthTotal() + lastReadNumber_scrollLeft;
     
     let indexLine = Math.floor(rY / get_EDITOR_lineHeight());
@@ -5177,7 +5182,7 @@ async function EDITOR_onContextMenu(event) {
     ];
 
     let menuLeft = get_EDITOR_recentBoundingClientRect_left() + get_EDITOR_gutterWidthTotal() + EDITOR_primaryCursor.cursorTranslateXValue - lastReadNumber_scrollLeft;
-    let menuTop = get_EDITOR_recentBoundingClientRect_top() + EDITOR_primaryCursor.cursorTranslateYValue + get_EDITOR_lineHeight() - lastReadNumber_scrollTop;
+    let menuTop = get_EDITOR_recentBoundingClientRect_top() + EDITOR_primaryCursor.cursorTranslateYValue + get_EDITOR_lineHeight() - get_lastReadNumber_scrollTop();
 
     await menuSet('EDITOR', null, optionList, menuLeft, menuTop);
 }
@@ -7059,7 +7064,7 @@ function EDITOR_render_do_Resize(timestamp) {
 
         isScrolling = false;
 
-        EDITOR_scrollEndDeadline = timestamp + 1000;
+        set_EDITOR_scrollEndDeadline(timestamp + 1000);
 
         EDITOR_render_do_Scroll(timestamp); //EDITOR_onScroll_WRAPIT();
         // # Redraw cursor selection virtualization
@@ -8029,15 +8034,17 @@ function EDITOR_scrollCursorIntoView(cursor) {
     let scrollX = 0;
     let scrollY = 0;
 
-    if (cursor.cursorTranslateYValue < lastReadNumber_scrollTop) {
-        scrollY = cursor.cursorTranslateYValue - lastReadNumber_scrollTop;
+    let local_lastReadNumber_scrollTop = get_lastReadNumber_scrollTop();
+
+    if (cursor.cursorTranslateYValue < local_lastReadNumber_scrollTop) {
+        scrollY = cursor.cursorTranslateYValue - local_lastReadNumber_scrollTop;
     }
-    else if (cursor.cursorTranslateYValue >= lastReadNumber_scrollTop + lastReadNumber_offsetHeight) {
+    else if (cursor.cursorTranslateYValue >= local_lastReadNumber_scrollTop + lastReadNumber_offsetHeight) {
         // I want to use clientHeight but I don't have any logic for no scrollbar thus single page fitting text might bug out and trigger
         // scrollBy over and over.
 
         // make the bottom touch then add lineHeight is probably the algorithm to get a perfect fill maybe do lineHeight * 2 skip an event when spamming arrowDown?
-        let currentBottom = lastReadNumber_scrollTop + lastReadNumber_offsetHeight;
+        let currentBottom = local_lastReadNumber_scrollTop + lastReadNumber_offsetHeight;
         let changeToMakeBottomTouch = cursor.cursorTranslateYValue - currentBottom;
         scrollY = changeToMakeBottomTouch + (2 * get_EDITOR_lineHeight());
     }
@@ -8748,7 +8755,7 @@ function EDITOR_requestLspHover() {
         set_EDITOR_recentBoundingClientRect_isNull_intFalsey(0);
     }
 
-    let rY = event.clientY - get_EDITOR_recentBoundingClientRect_top() + lastReadNumber_scrollTop;
+    let rY = event.clientY - get_EDITOR_recentBoundingClientRect_top() + get_lastReadNumber_scrollTop();
     let rX = event.clientX - get_EDITOR_recentBoundingClientRect_left() - get_EDITOR_gutterWidthTotal() + lastReadNumber_scrollLeft;
     
     let indexLine = Math.floor(rY / get_EDITOR_lineHeight());

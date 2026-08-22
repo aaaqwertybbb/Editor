@@ -284,6 +284,22 @@ module.exports = function (babel) {
     "INDEXOF_EDITOR_ONSCROLLvirtualIndexLine",
     "INDEXOF_EDITOR_ONSCROLLvirtualCount",
     "INDEXOF_EDITOR_ONSCROLLscrollTop",
+
+    "get_EDITOR_scrollEndDeadline",
+    "set_EDITOR_scrollEndDeadline",
+    "INDEXOF_EDITOR_scrollEndDeadline",
+
+    "get_EDITOR_sum_diffPositive",
+    "set_EDITOR_sum_diffPositive",
+    "INDEXOF_EDITOR_sum_diffPositive",
+
+    "get_EDITOR_sum_diffNegative",
+    "set_EDITOR_sum_diffNegative",
+    "INDEXOF_EDITOR_sum_diffNegative",
+
+    "get_lastReadNumber_scrollTop",
+    "set_lastReadNumber_scrollTop",
+    "INDEXOF_lastReadNumber_scrollTop",
   ];
 
   return {

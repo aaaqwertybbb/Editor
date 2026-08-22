@@ -163,7 +163,7 @@ const get_DIALOG_minWidth = () => 100;
 
 // TODO: index 10 is available because 'ticket_didChangeTextDocumentNotificationPromise' was removed.
 // TODO: index 4 is available because 'EDITOR_isSourceOfLeftMouseButton' was removed.
-const EDITOR_int_fields = new Uint32Array(32);
+const EDITOR_int_fields = new Uint32Array(64);
 
 const get_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber = () => EDITOR_int_fields[0];
 const set_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber = (int) => EDITOR_int_fields[0] = int;
@@ -295,3 +295,19 @@ const set_EDITOR_pooledTrackedSyntax_start = (int) => EDITOR_int_fields[29] = in
 
 const get_EDITOR_pooledTrackedSyntax_length = () => EDITOR_int_fields[30];
 const set_EDITOR_pooledTrackedSyntax_length = (int) => EDITOR_int_fields[30] = int;
+
+const get_EDITOR_scrollEndDeadline = () => EDITOR_int_fields[31];
+const set_EDITOR_scrollEndDeadline = (int) => EDITOR_int_fields[31] = int;
+const INDEXOF_EDITOR_scrollEndDeadline = () => 31;
+
+const get_EDITOR_sum_diffPositive = () => EDITOR_int_fields[32];
+const set_EDITOR_sum_diffPositive = (int) => EDITOR_int_fields[32] = int;
+const INDEXOF_EDITOR_sum_diffPositive = () => 32;
+
+const get_EDITOR_sum_diffNegative = () => EDITOR_int_fields[33];
+const set_EDITOR_sum_diffNegative = (int) => EDITOR_int_fields[33] = int;
+const INDEXOF_EDITOR_sum_diffNegative = () => 33;
+
+const get_lastReadNumber_scrollTop = () => EDITOR_int_fields[34];
+const set_lastReadNumber_scrollTop = (int) => EDITOR_int_fields[34] = int;
+const INDEXOF_lastReadNumber_scrollTop = () => 34;

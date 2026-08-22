@@ -212,80 +212,80 @@ const set_EDITOR_virtualIndexLine = (int) => EDITOR_int_fields[8] = int;
 const get_EDITOR_virtualCount = () => EDITOR_int_fields[9];
 const set_EDITOR_virtualCount = (int) => EDITOR_int_fields[9] = int;
 
-const get_didChangeTextDocument_version = () => EDITOR_int_fields[11];
-const set_didChangeTextDocument_version = (int) => EDITOR_int_fields[11] = int;
+const get_didChangeTextDocument_version = () => EDITOR_int_fields[10];
+const set_didChangeTextDocument_version = (int) => EDITOR_int_fields[10] = int;
 
 /**
  * All the 'EDITOR_cursorList' loops are currently using the variable 'i'.
  * I'm experimenting with a few of the loops though such that at the start of every loop they set this variable equal to 'i'.
  * Then in any functions like getCharacter, I might be able to contextually find the character much faster.
  * */
-const get_EDITOR_indexCursor = () => EDITOR_int_fields[12];
-const set_EDITOR_indexCursor = (int) => EDITOR_int_fields[12] = int;
+const get_EDITOR_indexCursor = () => EDITOR_int_fields[11];
+const set_EDITOR_indexCursor = (int) => EDITOR_int_fields[11] = int;
 
-const get_EDITOR_offsetLine = () => EDITOR_int_fields[13];
-const set_EDITOR_offsetLine = (int) => EDITOR_int_fields[13] = int;
+const get_EDITOR_offsetLine = () => EDITOR_int_fields[12];
+const set_EDITOR_offsetLine = (int) => EDITOR_int_fields[12] = int;
 
-const get_EDITOR_offsetColumn_withRespectToThisIndexLine = () => EDITOR_int_fields[14];
-const set_EDITOR_offsetColumn_withRespectToThisIndexLine = (int) => EDITOR_int_fields[14] = int;
+const get_EDITOR_offsetColumn_withRespectToThisIndexLine = () => EDITOR_int_fields[13];
+const set_EDITOR_offsetColumn_withRespectToThisIndexLine = (int) => EDITOR_int_fields[13] = int;
 
-const get_EDITOR_offsetColumn = () => EDITOR_int_fields[15];
-const set_EDITOR_offsetColumn = (int) => EDITOR_int_fields[15] = int;
+const get_EDITOR_offsetColumn = () => EDITOR_int_fields[14];
+const set_EDITOR_offsetColumn = (int) => EDITOR_int_fields[14] = int;
 
-const get_EDITOR_totalShift = () => EDITOR_int_fields[16];
-const set_EDITOR_totalShift = (int) => EDITOR_int_fields[16] = int;
+const get_EDITOR_totalShift = () => EDITOR_int_fields[15];
+const set_EDITOR_totalShift = (int) => EDITOR_int_fields[15] = int;
 
-const get_EDITOR_offsetWithinSpan = () => EDITOR_int_fields[17];
-const set_EDITOR_offsetWithinSpan = (int) => EDITOR_int_fields[17] = int;
+const get_EDITOR_offsetWithinSpan = () => EDITOR_int_fields[16];
+const set_EDITOR_offsetWithinSpan = (int) => EDITOR_int_fields[16] = int;
 
-const get_EDITOR_ONSCROLLvirtualIndexLine = () => EDITOR_int_fields[18];
-const set_EDITOR_ONSCROLLvirtualIndexLine = (int) => EDITOR_int_fields[18] = int;
+const get_EDITOR_ONSCROLLvirtualIndexLine = () => EDITOR_int_fields[17];
+const set_EDITOR_ONSCROLLvirtualIndexLine = (int) => EDITOR_int_fields[17] = int;
 //throw new Error('-1');
 // This set used to be -1 to indicate a non existent value, 500 "seems to work" but a proof of it being an equivalent solution has not thoroughly been thought out, only a sort of "yeah that probably works" kinda vibe.
 set_EDITOR_ONSCROLLvirtualIndexLine(500);
 
-const get_EDITOR_ONSCROLLvirtualCount = () => EDITOR_int_fields[19];
-const set_EDITOR_ONSCROLLvirtualCount = (int) => EDITOR_int_fields[19] = int;
+const get_EDITOR_ONSCROLLvirtualCount = () => EDITOR_int_fields[18];
+const set_EDITOR_ONSCROLLvirtualCount = (int) => EDITOR_int_fields[18] = int;
 set_EDITOR_ONSCROLLvirtualCount(0);
 
-const get_EDITOR_ONSCROLLscrollTop = () => EDITOR_int_fields[20];
-const set_EDITOR_ONSCROLLscrollTop = (int) => EDITOR_int_fields[20] = int;
+const get_EDITOR_ONSCROLLscrollTop = () => EDITOR_int_fields[19];
+const set_EDITOR_ONSCROLLscrollTop = (int) => EDITOR_int_fields[19] = int;
 //throw new Error('-1');
 // This set used to be -1 to indicate a non existent value, 500 "seems to work" but a proof of it being an equivalent solution has not thoroughly been thought out, only a sort of "yeah that probably works" kinda vibe.
 set_EDITOR_ONSCROLLscrollTop(500);
 
-const get_EDITOR_longestLine_indexLine = () => EDITOR_int_fields[21];
-const set_EDITOR_longestLine_indexLine = (int) => EDITOR_int_fields[21] = int;
+const get_EDITOR_longestLine_indexLine = () => EDITOR_int_fields[20];
+const set_EDITOR_longestLine_indexLine = (int) => EDITOR_int_fields[20] = int;
 
-const get_EDITOR_longestLine_length = () => EDITOR_int_fields[22];
-const set_EDITOR_longestLine_length = (int) => EDITOR_int_fields[22] = int;
+const get_EDITOR_longestLine_length = () => EDITOR_int_fields[21];
+const set_EDITOR_longestLine_length = (int) => EDITOR_int_fields[21] = int;
 
 /**
  * The get_EDITOR_contentWidth() is calculated via Math.ceil(someVar * otherVar) so this is faster to check whether content width will change rather than the multiplication and ceil.
  */
-const get_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar = () => EDITOR_int_fields[23];
-const set_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar = (int) => EDITOR_int_fields[23] = int;
+const get_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar = () => EDITOR_int_fields[22];
+const set_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar = (int) => EDITOR_int_fields[22] = int;
 
-const get_EDITOR_contentWidth = () => EDITOR_int_fields[24];
-const set_EDITOR_contentWidth = (int) => EDITOR_int_fields[24] = int;
+const get_EDITOR_contentWidth = () => EDITOR_int_fields[23];
+const set_EDITOR_contentWidth = (int) => EDITOR_int_fields[23] = int;
 
-const get_EDITOR_indent_ORIGINAL_indentBy = () => EDITOR_int_fields[25];
-const set_EDITOR_indent_ORIGINAL_indentBy = (int) => EDITOR_int_fields[25] = int;
+const get_EDITOR_indent_ORIGINAL_indentBy = () => EDITOR_int_fields[24];
+const set_EDITOR_indent_ORIGINAL_indentBy = (int) => EDITOR_int_fields[24] = int;
 
-const get_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine = () => EDITOR_int_fields[26];
-const set_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine = (int) => EDITOR_int_fields[26] = int;
+const get_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine = () => EDITOR_int_fields[25];
+const set_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine = (int) => EDITOR_int_fields[25] = int;
 
-const get_EDITOR_indent_startingIndex = () => EDITOR_int_fields[27];
-const set_EDITOR_indent_startingIndex = (int) => EDITOR_int_fields[27] = int;
+const get_EDITOR_indent_startingIndex = () => EDITOR_int_fields[26];
+const set_EDITOR_indent_startingIndex = (int) => EDITOR_int_fields[26] = int;
 
-const get_EDITOR_recentBoundingClientRect_left = () => EDITOR_int_fields[28];
-const set_EDITOR_recentBoundingClientRect_left = (int) => EDITOR_int_fields[28] = int;
+const get_EDITOR_recentBoundingClientRect_left = () => EDITOR_int_fields[27];
+const set_EDITOR_recentBoundingClientRect_left = (int) => EDITOR_int_fields[27] = int;
 
-const get_EDITOR_recentBoundingClientRect_top = () => EDITOR_int_fields[29];
-const set_EDITOR_recentBoundingClientRect_top = (int) => EDITOR_int_fields[29] = int;
+const get_EDITOR_recentBoundingClientRect_top = () => EDITOR_int_fields[28];
+const set_EDITOR_recentBoundingClientRect_top = (int) => EDITOR_int_fields[28] = int;
 
-const get_EDITOR_pooledTrackedSyntax_start = () => EDITOR_int_fields[30];
-const set_EDITOR_pooledTrackedSyntax_start = (int) => EDITOR_int_fields[30] = int;
+const get_EDITOR_pooledTrackedSyntax_start = () => EDITOR_int_fields[29];
+const set_EDITOR_pooledTrackedSyntax_start = (int) => EDITOR_int_fields[29] = int;
 
-const get_EDITOR_pooledTrackedSyntax_length = () => EDITOR_int_fields[31];
-const set_EDITOR_pooledTrackedSyntax_length = (int) => EDITOR_int_fields[31] = int;
+const get_EDITOR_pooledTrackedSyntax_length = () => EDITOR_int_fields[30];
+const set_EDITOR_pooledTrackedSyntax_length = (int) => EDITOR_int_fields[30] = int;

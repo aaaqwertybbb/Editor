@@ -773,6 +773,11 @@ function EDITOR_onScroll_WRAPIT() {
  * < If you push the raw e (or an array of e objects) into a permanent or long-running array to track user history,
  * < you implicitly prevent every associated PerformanceEventTiming object from being cleared from the heap.
  * 
+ * It happens with the hover logic.
+ * All I need to do is move my mouse over the text editor and go either from line to line or mouse over from 1 syntax highlighted word to another
+ * and do that for a few seconds then heap snapshot the PerformanceEventTiming goes up.
+ * I don't even have to trigger the hover tooltip, just the debouncing itself.
+ * 
  */
 function EDITOR_render_do_Scroll(timestamp) {
 

@@ -773,9 +773,12 @@ function EDITOR_render_do_Scroll(timestamp) {
         upperBound = lowerBound + diff;
 
         // TODO: This can be simplified to a modulo operation.
-        let lastIndex = EDITOR_beltIndexZero === 0
-            ? local_ArrayFrom_textElement_children_length - 1
-            : EDITOR_beltIndexZero - 1;
+        //let lastIndex = EDITOR_beltIndexZero === 0
+        //    ? local_ArrayFrom_textElement_children_length - 1
+        //    : EDITOR_beltIndexZero - 1;
+
+        let lastIndex = (EDITOR_beltIndexZero - 1 + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length;
+        //console.log(`${lastIndex} === ${dlastIndex}`);
 
         EDITOR_beltIndexZero = (lastIndex - (diff - 1) + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length;
 

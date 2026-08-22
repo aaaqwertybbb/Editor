@@ -725,6 +725,12 @@ function EDITOR_onScroll_WRAPIT() {
  * This is my own side thing you ought to look at the heap snapshot but I'm doing what needs to be done to maintain consistency on my end.
  */
 function EDITOR_render_do_Scroll(timestamp) {
+
+    // All of these 'get' and 'set' should be rewritten to hoist the "field buffer" locally to this function.
+    // And then access all this information themselves.
+    // Lest it possibly search the global scope for the "field buffer" over and over.
+
+
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
     set_EDITOR_virtualIndexLine(Math.floor(lastReadNumber_scrollTop / get_EDITOR_lineHeight()));
     // ====

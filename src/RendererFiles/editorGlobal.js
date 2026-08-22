@@ -736,6 +736,9 @@ function EDITOR_onScroll_WRAPIT() {
  * Snapshot 6 (5.2 MB)
  * - PerformanceEventTiming 4,985 instances sitting in heap
  * 
+ * I've read that having the dev tools open confuses things because it'll hold onto them more than usual.
+ * But I've done various things in the past like close and reopen dev tools and take a new snapshot and etc... and it never remedied in the past I gotta see
+ * 
  */
 function EDITOR_render_do_Scroll(timestamp) {
 

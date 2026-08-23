@@ -3614,12 +3614,12 @@ function EDITOR_getPositionIndex_raw(cursor) {
     return EDITOR_getLineStart_pos_raw(cursor.indexLine) + cursor.indexColumn;
 }
 
-function EDITOR_onMouseDownDetailRankOne(event, indexLineClicked, indexColumnClicked) {
+function EDITOR_onMouseDownDetailRankOne(event_button, event_shiftKey, indexLineClicked, indexColumnClicked) {
     let cursor = EDITOR_primaryCursor;
 
-    let selectionPlusContextMenuCase = event.button === 2 && cursor.hasSelection();
+    let selectionPlusContextMenuCase = event_button === 2 && cursor.hasSelection();
 
-    if (event.shiftKey && !selectionPlusContextMenuCase) {
+    if (event_shiftKey && !selectionPlusContextMenuCase) {
         if (!cursor.hasSelection()) {
             cursor.selectionAnchor = EDITOR_getPositionIndex(cursor);
         }
@@ -3632,7 +3632,7 @@ function EDITOR_onMouseDownDetailRankOne(event, indexLineClicked, indexColumnCli
     
         cursor.selectionEnd = EDITOR_getPositionIndex(cursor);
 
-        if (!event.shiftKey) {
+        if (!event_shiftKey) {
             cursor.selectionAnchor = cursor.selectionEnd;
         }
     }
@@ -3641,9 +3641,9 @@ function EDITOR_onMouseDownDetailRankOne(event, indexLineClicked, indexColumnCli
     EDITOR_render_request(get_RenderKind_Cursor_n() + indexCursor);
 }
 
-function EDITOR_onMouseDownDetailRankTwo(event, indexLineClicked, indexColumnClicked) {
-    if (event.shiftKey) {
-        EDITOR_onMouseDownDetailRankOne(event, indexLineClicked, indexColumnClicked);
+function EDITOR_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLineClicked, indexColumnClicked) {
+    if (event_shiftKey) {
+        EDITOR_onMouseDownDetailRankOne(event_button, event_shiftKey, indexLineClicked, indexColumnClicked);
         return;
     }
 
@@ -3759,9 +3759,9 @@ function EDITOR_onMouseDownDetailRankTwo(event, indexLineClicked, indexColumnCli
     }
 }
 
-function EDITOR_onMouseDownDetailRankThree(event, indexLineClicked, indexColumnClicked) {
-    if (event.shiftKey) {
-        EDITOR_onMouseDownDetailRankOne(event, indexLineClicked, indexColumnClicked);
+function EDITOR_onMouseDownDetailRankThree(event_button, event_shiftKey, indexLineClicked, indexColumnClicked) {
+    if (event_shiftKey) {
+        EDITOR_onMouseDownDetailRankOne(event_button, event_shiftKey, indexLineClicked, indexColumnClicked);
         return;
     }
 
@@ -5195,7 +5195,7 @@ function EDITOR_onMouseDown(event) {
 
     if (rX < -1 * get_EDITOR_gutterPaddingRight()) {
         set_EDITOR_detailRank(3);
-        EDITOR_onMouseDownDetailRankThree(event, indexLine, indexColumn);
+        EDITOR_onMouseDownDetailRankThree(event.button, event.shiftKey, indexLine, indexColumn);
         if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
             EDITOR_cursorBlink_startChecking();
         }
@@ -5204,15 +5204,15 @@ function EDITOR_onMouseDown(event) {
 
     if (event.detail % 3 === 0) {
         set_EDITOR_detailRank(3);
-        EDITOR_onMouseDownDetailRankThree(event, indexLine, indexColumn);
+        EDITOR_onMouseDownDetailRankThree(event.button, event.shiftKey, indexLine, indexColumn);
     }
     else if (event.detail % 2 === 0) {
         set_EDITOR_detailRank(2);
-        EDITOR_onMouseDownDetailRankTwo(event, indexLine, indexColumn);
+        EDITOR_onMouseDownDetailRankTwo(event.button, event.shiftKey, indexLine, indexColumn);
     }
     else {
         set_EDITOR_detailRank(1);
-        EDITOR_onMouseDownDetailRankOne(event, indexLine, indexColumn);
+        EDITOR_onMouseDownDetailRankOne(event.button, event.shiftKey, indexLine, indexColumn);
     }
 
     if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {

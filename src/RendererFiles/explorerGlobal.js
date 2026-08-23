@@ -541,7 +541,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
         }
     }
     
-    async tvd_arrowRight_async(divItem, indexItem) {
+    tvd_arrowRight_async(divItem, indexItem) {
     	// TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
         this.nodeList.getElementAt(indexItem);
         let key = TreeView_pooledNode_key;
@@ -559,9 +559,11 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
     	else if (nodeKind === get_TreeViewNodeKind_isExpandable_NOTisExpanded()) {
     		return this.tvd_expandCollapseIconWasClicked_async(divItem, indexItem);
     	}
+
+        return Promise.resolve();
 	}
     
-    async tvd_arrowLeft_async(divItem, indexItem) {
+    tvd_arrowLeft_async(divItem, indexItem) {
     	// TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
         this.nodeList.getElementAt(indexItem);
         let key = TreeView_pooledNode_key;
@@ -588,6 +590,8 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
         			indexItem - distanceToParent));
             }
         }
+
+        return Promise.resolve();
     }
 
     tvd_getTotalCount() {
@@ -603,7 +607,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
      * @param {*} indexItem 
      * @returns 
      */
-    async removeFromNodeList_async(indexItem) {
+    removeFromNodeList(indexItem) {
         this.nodeList.getElementAt(indexItem);
         let key = TreeView_pooledNode_key;
         let depth = TreeView_pooledNode_depth;
@@ -635,7 +639,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
     }
 
     /** TODO: any usage of this needs to respect the actual zeroth UI div not the literal. */
-    async setNodeListEntryId_async(indexItem, pathId) {
+    setNodeListEntryId(indexItem, pathId) {
         this.nodeList.setKey(indexItem, pathId);
     }
 
@@ -970,7 +974,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                                         let countChanges;
                                         
                                         if (pasteResult.isDirectory) {
-                                            countChanges = await EXPLORER_director.removeFromNodeList_async(indexItem);
+                                            countChanges = EXPLORER_director.removeFromNodeList(indexItem);
                                         }
                                         else {
                                             EXPLORER_director.nodeList.removeAt(indexItem, 1);
@@ -1266,7 +1270,7 @@ async function DeleteFile_Directory_YesCancel_callback(result) {
     if (deleteFileResult) {
         let countOfMoreEntriesToShow = EXPLORER_director.tvd_getTotalCount() - (EXPLORER_director.component.virtualIndex_ofScrollTop + EXPLORER_director.component.virtualCount);
 
-        let countChanges = await EXPLORER_director.removeFromNodeList_async(WIDGET_target.indexItem);
+        let countChanges = EXPLORER_director.removeFromNodeList(WIDGET_target.indexItem);
 
         EXPLORER_director.component.itemHeightTotal = EXPLORER_director.tvd_getTotalCount() * EXPLORER_director.component.itemHeightNumber;
         EXPLORER_director.component.virtualizationElement.style.height = EXPLORER_director.component.itemHeightTotal + 'px';
@@ -1339,7 +1343,7 @@ async function RenameFile_Directory_InputText_callback(result) {
     WIDGET_target = WIDGET_target.MENU_target;
     let renameFileResult = await window.myAPI.renameFile(entry.absolutePath, result.value, /*isDirectory*/ true);
     if (renameFileResult.success) {
-        await EXPLORER_director.setNodeListEntryId_async(WIDGET_target.indexItem, renameFileResult.pathId);
+        EXPLORER_director.setNodeListEntryId(WIDGET_target.indexItem, renameFileResult.pathId);
         let divItem = EXPLORER_director.component.itemListElement.children[WIDGET_target.divRelativeIndex];
         divItem.lastChild.nodeValue = result.value;
     }
@@ -1352,7 +1356,7 @@ async function RenameFile_File_InputText_callback(result) {
     WIDGET_target = WIDGET_target.MENU_target;
     let renameFileResult = await window.myAPI.renameFile(entry.absolutePath, result.value, /*isDirectory*/ false);
     if (renameFileResult.success) {
-        await EXPLORER_director.setNodeListEntryId_async(WIDGET_target.indexItem, renameFileResult.pathId);
+        EXPLORER_director.setNodeListEntryId(WIDGET_target.indexItem, renameFileResult.pathId);
         let divItem = EXPLORER_director.component.itemListElement.children[WIDGET_target.divRelativeIndex];
         divItem.lastChild.nodeValue = result.value;
     }

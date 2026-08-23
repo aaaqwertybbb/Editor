@@ -4711,6 +4711,8 @@ hmmm is google AI just hyping me up... I need to clarify that those few conditio
  * 
  * < The browser's event listener engine ignores the return value of event handlers.
  * < If you return a Promise, the browser treats it exactly like returning undefined, true, or a string. It drops the return value on the floor.
+ * 
+ * TODO: timing issue of async paste and copy
  */
 function EDITOR_onKeyDown(event) {
     // Explicitly inlining 'clearMulticursorState()' because it currently is and I just don't want to make a decision about this right now.

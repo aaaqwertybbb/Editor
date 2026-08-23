@@ -9111,4 +9111,21 @@ Prior to this I was trying to get the AI to read this code snippet:
 But it just kept giving me "Here are top web results for exploring this topic:" :(
 I got a response by using the words though.
 
+=====
+
+this is a massive deal because
+PerformanceEventTiming objects are created via an event firing.
+These objects are stored in a short term "buffer" internally to the browser (specifically blink engine I believe)
+
+When the engine internally tries to clear the PerformanceEventTiming object from the internal buffer,
+if it sees that your event object "as a whole" cannot be collected, then it cannot fully stop
+tracking of the PerformanceEventTiming
+
+so it removes the PerformanceEventTiming from the short term "buffer"
+and moves it to a long term "buffer"
+where you'll then have THOUSANDS of these things sitting in the heap for your apps duration
+and depending on the speed of the event firing
+you'll accrue thousands and thousands of these in the heap per second
+until your program is unusable.
+
 */

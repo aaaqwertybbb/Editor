@@ -4653,6 +4653,14 @@ function EDITOR_cursorBlink_startChecking() {
     requestAnimationFrame(EDITOR_cursorBlink_trailingEdge);
 }
 
+/**
+ * When I change a sequence of synchronous calls to not take the event object but instead certain fields,
+ * I don't think that it is as important / might not even cause an issue at all, but
+ * nevertheless I can pass the direct fields to just reduce the overall surface area
+ * that I need to track where the event is going in the future.
+ * 
+ * Why is this async?????
+ */
 async function EDITOR_onKeyDown(event) {
     // Explicitly inlining 'clearMulticursorState()' because it currently is and I just don't want to make a decision about this right now.
     // So what I can do is mark the code paragraph for later decision making.

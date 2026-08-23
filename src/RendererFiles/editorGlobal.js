@@ -5071,6 +5071,16 @@ function EDITOR_onKeyDown_PageUp(event) {
     }
 }
 
+/**
+ * Make a list of the reasons why this "is async":
+ * - case 'c': (EDITOR_copySelection)
+ * - case 'x': (EDITOR_copySelection)
+ * - case 'v': (window.myAPI.readClipboard)
+ * 
+ * In otherwords:
+ * - EDITOR_copySelection
+ * - window.myAPI.readClipboard
+*/
 async function EDITOR_onKeyDown_keyLengthEqualsOne_ctrlKey(event) {
     let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
     EDITOR_movementBasedCacheInvalidation(EDITOR_primaryCursor);

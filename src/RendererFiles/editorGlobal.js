@@ -3275,13 +3275,13 @@ function EDITOR_onMouseMove_WRAPIT(event) {
         cursor.indexColumn = indexColumn;
 
         if (get_EDITOR_detailRank() === 3) {
-            EDITOR_onMouseMoveDetailRankThree(event, indexLine, indexColumn);
+            EDITOR_onMouseMoveDetailRankThree(indexLine, indexColumn);
         }
         else if (get_EDITOR_detailRank() === 2) {
-            EDITOR_onMouseMoveDetailRankTwo(event, indexLine, indexColumn);
+            EDITOR_onMouseMoveDetailRankTwo(indexLine, indexColumn);
         }
         else if (get_EDITOR_detailRank() === 1) {
-            EDITOR_onMouseMoveDetailRankOne(event, indexLine, indexColumn);
+            EDITOR_onMouseMoveDetailRankOne(indexLine, indexColumn);
         }
 
         if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
@@ -3294,7 +3294,7 @@ function EDITOR_onMouseMove_WRAPIT(event) {
     }
 }
 
-function EDITOR_onMouseMoveDetailRankOne(event, indexLineClicked, indexColumnClicked) {
+function EDITOR_onMouseMoveDetailRankOne(indexLineClicked, indexColumnClicked) {
     let cursor = EDITOR_primaryCursor;
     cursor.indexLine = indexLineClicked;
     cursor.indexColumn = indexColumnClicked;
@@ -3423,7 +3423,7 @@ function EDITOR_getCharacterCurrent_KIND(indexColumn, positionIndex, lineEnd) {
     }
 }
 
-function EDITOR_onMouseMoveDetailRankTwo(event, indexLineClicked, indexColumnClicked) {
+function EDITOR_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
     let nextPositionIndex = EDITOR_getPositionIndex_Overload(indexLineClicked, indexColumnClicked);
     let cursor = EDITOR_primaryCursor;
 
@@ -3512,7 +3512,7 @@ function EDITOR_onMouseMoveDetailRankTwo(event, indexLineClicked, indexColumnCli
     }
 }
 
-function EDITOR_onMouseMoveDetailRankThree(event, indexLineClicked, indexColumnClicked) {
+function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked) {
     let cursor = EDITOR_primaryCursor;
 
     // TODO: I remember this being bugged I think it makes sense why. You're checking if the cursor is exactly at the threshold rather than determining if the distance from previous event to this one puts you past the threshold.

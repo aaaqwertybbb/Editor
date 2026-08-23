@@ -5079,6 +5079,12 @@ function EDITOR_onKeyDown_PageUp(event) {
  * 
  * In otherwords:
  * - EDITOR_copySelection
+ *     - synchronous copy with textarea and 'success = document.execCommand('copy');'
+ *     - async copy logic
+ *         - you could determine the text to copy immediately I wonder?
+ *         - problematic is that you'd need to copy the bytes otherwise you'd be getting a subarray that points at the same data
+ *         - so you'd either have to copy the data to another "array"
+ *         - or lock the editor UI while the copy is being completed.
  * - window.myAPI.readClipboard
  *     - Solutions:
  *         - The synchronous paste event

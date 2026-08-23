@@ -186,8 +186,8 @@ class DIALOG_FindAll_TreeViewDirector {
         }
     }
     
-    async tvd_oncontextmenu_async(divItem, indexItem, event, relativeIndex) {
-        
+    tvd_oncontextmenu_async(divItem, indexItem, event_button, event_clientX, event_clientY, relativeIndex) {
+        return Promise.resolve();
     }
 
     /**

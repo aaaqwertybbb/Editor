@@ -448,7 +448,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
         }
     }
     
-    async tvd_oncontextmenu_async(divItem, indexItem, event, relativeIndex) {
+    tvd_oncontextmenu_async(divItem, indexItem, event_button, event_clientX, event_clientY, relativeIndex) {
         let optionList = [
             new MenuOption(get_CommandKind_Copy(), 'Copy', null),
             new MenuOption(get_CommandKind_CopyAbsolutePath(), 'Copy Absolute Path', null),
@@ -471,12 +471,12 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
             divRelativeIndex: relativeIndex,
         };
 
-        if (event.button === 2) {
+        if (event_button === 2) {
             this.addSpecificMenuOptionsForTarget(optionList, divItem, target);
-            await menuSet('EXPLORER', target, optionList, menuOptionX=event.clientX, menuOptionY=event.clientY);
+            return menuSet('EXPLORER', target, optionList, menuOptionX=event_clientX, menuOptionY=event_clientY);
         } else {
             this.addSpecificMenuOptionsForTarget(optionList, divItem, target);
-            await menuSet('EXPLORER', target, optionList, menuOptionX=nodeListBoundingClientRect.left, menuOptionY=(nodeListBoundingClientRect.top + ((this.component.cursorIndex + 1) * this.component.itemHeightNumber) - this.component.rootElement.scrollTop));
+            return menuSet('EXPLORER', target, optionList, menuOptionX=nodeListBoundingClientRect.left, menuOptionY=(nodeListBoundingClientRect.top + ((this.component.cursorIndex + 1) * this.component.itemHeightNumber) - this.component.rootElement.scrollTop));
         }
     }
 

@@ -242,7 +242,7 @@ class TreeViewComponent {
     handleEvent(event) {
         switch (event.type) {
             case 'click':
-                this.event_click(event);
+                this.event_click(event.clientY, event.target);
                 break;
             case 'keydown':
                 this.event_keydown(event);
@@ -394,10 +394,10 @@ class TreeViewComponent {
      * ...thus, you should consider checking the x position of the event against the x position of the nodeElement.children[0].
      * @param {*} event 
      */
-    async event_click(event) {
+    event_click(event_clientY, event_target) {
         this.ensure_boundingClientRect();
 
-        let rY = event.clientY - this.boundingClientRect.top + this.lastReadNumber_scrollTop;
+        let rY = event_clientY - this.boundingClientRect.top + this.lastReadNumber_scrollTop;
         let indexItem = Math.floor(rY / this.itemHeightNumber);
         indexItem = this.state_cursor_validateIndex(indexItem);
 
@@ -412,7 +412,7 @@ class TreeViewComponent {
         if (beltIndexItem < 0) return;
         let divItem = this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem];
 
-        if (event.target === divItem.children[0]) {
+        if (event_target === divItem.children[0]) {
             return this.director.tvd_expandCollapseIconWasClicked_async(divItem, indexItem);
         }
         else {
@@ -453,7 +453,7 @@ class TreeViewComponent {
         }
     }
 
-    async event_contextmenu(event) {
+    event_contextmenu(event) {
         this.ensure_boundingClientRect();
 
         if (event.button === 2) {
@@ -473,7 +473,7 @@ class TreeViewComponent {
             else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
 
             if (beltIndexItem < 0) return;
-            return this.director.tvd_oncontextmenu_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex, event, beltIndexItem);
+            return this.director.tvd_oncontextmenu_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex, event.button, event.clientX, event.clientY, beltIndexItem);
         } else {
             if (this.cursorIndex >= this.director.tvd_getTotalCount()) {
                 return;
@@ -493,11 +493,11 @@ class TreeViewComponent {
             if (beltIndexItem < 0) return;
 
             // TODO: Handle context menu with keyboard when active node is out of view
-            return this.director.tvd_oncontextmenu_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex, event, beltIndexItem);
+            return this.director.tvd_oncontextmenu_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex, event.button, event.clientX, event.clientY, beltIndexItem);
         }
     }
 
-    async event_keydown(event) {
+    event_keydown(event) {
         switch (event.key) {
             case 'ArrowDown':
                 event.preventDefault();

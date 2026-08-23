@@ -353,9 +353,9 @@ async function optionOnClick(indexClicked, elementClicked) {
 }
 
 /** mouse move handler has this explicit inlined (duplicated) due to the sheer frequency of its invocation */
-function menuGetRelativeMouseEventData(event) {
+function menuGetRelativeMouseEventData(event_clientY) {
     let paddingTop = 4;
-    let relativeY = event.clientY - (MENU_recentBoundingClientRectTop + paddingTop);
+    let relativeY = event_clientY - (MENU_recentBoundingClientRectTop + paddingTop);
     return Math.floor(relativeY / APP_lineHeight);
 }
 
@@ -379,7 +379,7 @@ function MENU_removeEvents() {
 
 function MENU_onclick(event) {
     MENU_ensure_boundingClientRect();
-    let indexClicked = menuGetRelativeMouseEventData(event);
+    let indexClicked = menuGetRelativeMouseEventData(event.clientY);
     return optionOnClick(indexClicked, MENU_ArrayFrom_menuOptionList_children[indexClicked]);
 }
 

@@ -3935,11 +3935,10 @@ function EDITOR_postKeyboardMovementSelectionLogic(cursor, shiftKey) {
  * More accurate description for this method beyond the name:
  * Duplicate the primaryCursor, then move the primaryCursor ArrowDown.
  */
-function EDITOR_createCursorLineBelow(event) {
+function EDITOR_createCursorLineBelow() {
     let indexLastCursor = EDITOR_cursorList.length - 1;
     let lastCursor = EDITOR_cursorList[indexLastCursor];
     let clone = lastCursor.clone();
-    event.shiftKey = false;
     EDITOR_arrowDown(lastCursor, /*shiftKey*/ false);
     EDITOR_cursorList.splice(indexLastCursor, 0, clone);
     cached_EDITOR_cursorListElement.appendChild(clone.caretRow);
@@ -4383,7 +4382,7 @@ function EDITOR_editEvent_theEditIself_Tab(event) {
                 // ...multi-cursor in and of itself is buggy that's why I'm not overly concerned with adding this in a bugged state...
                 // ...everything is buggy and it is very anxiety inducing and for the time being I guess it just has to be that way as I transition
                 // towards a useable editor all the features are coming together but there's this awkward phase of "I can start using it but also not really" or something I just idk.
-                EDITOR_onMouseDownDetailRankThree({shiftKey:false}, cursor.indexLine, cursor.indexColumn);
+                EDITOR_onMouseDownDetailRankThree(0, false, cursor.indexLine, cursor.indexColumn);
                 if (cursor.editKind !== get_EditKind_IndentLess()) {
                     EDITOR_startEdit(cursor, get_EditKind_IndentLess(), EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
                 }
@@ -4814,7 +4813,7 @@ function EDITOR_onKeyDown_ArrowDown(event) {
     }
     else if (event.altKey) {
         if (event.shiftKey) {
-            EDITOR_createCursorLineBelow(event);
+            EDITOR_createCursorLineBelow();
         }
     }
     else {
@@ -5943,7 +5942,7 @@ function EDITOR_indentLess(cursor) {
 async function EDITOR_copySelection(cursor) {
 	if (!cursor.hasSelection()) {
 		// TODO: This code has a bug and doesn't work with multicursor... EDITOR_onMouseDownDetailRankThree needs to accept a cursor rather than acting on EDITOR_primaryCursor
-    	EDITOR_onMouseDownDetailRankThree({shiftKey:false}, cursor.indexLine, cursor.indexColumn);
+    	EDITOR_onMouseDownDetailRankThree(0, false, cursor.indexLine, cursor.indexColumn);
 	}
 	let selectionAnchor = cursor.selectionAnchor;
     let selectionEnd = cursor.selectionEnd;
@@ -5968,7 +5967,7 @@ async function EDITOR_duplicateSelection(cursor) {
 	if (!cursor.hasSelection()) {
 		// TODO: This code has a bug and doesn't work with multicursor... EDITOR_onMouseDownDetailRankThree needs to accept a cursor rather than acting on EDITOR_primaryCursor...
         // ...these days the todo is somewhat incorrect, it takes cursor now, but you'd need to check whether this causes the selection of two cursors to overlap.
-    	EDITOR_onMouseDownDetailRankThree({shiftKey:false}, cursor.indexLine, cursor.indexColumn);
+    	EDITOR_onMouseDownDetailRankThree(0, false, cursor.indexLine, cursor.indexColumn);
 	}
 
 	let selectionAnchor = cursor.selectionAnchor;

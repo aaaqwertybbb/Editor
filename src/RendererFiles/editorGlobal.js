@@ -4705,6 +4705,9 @@ hmmm is google AI just hyping me up... I need to clarify that those few conditio
  * up to it right now, and so I'm thinking I would just look at "preprocessor.cjs" today; I know I should make this not async asap I'm tired I don't know.
  * 
  * This doesn't even run any async logic it just returns it???
+ * 
+ * Well the problem was always there then... the timing issue?
+ * Even with it async I wasn't actually doing anything.
  */
 function EDITOR_onKeyDown(event) {
     // Explicitly inlining 'clearMulticursorState()' because it currently is and I just don't want to make a decision about this right now.

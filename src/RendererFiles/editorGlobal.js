@@ -5084,6 +5084,8 @@ function EDITOR_onKeyDown_PageUp(event) {
  *         - The synchronous paste event
  *             - side note you always wondered why they focused a textarea, in part it is from what I understand so you can paste into it and synchronously get the pasted text.
  *             - problematic case is that you can't rebind paste event
+ *         - async paste logic
+ *             - problematic case is that you need to lock the editor UI while the paste is being completed.
 */
 async function EDITOR_onKeyDown_keyLengthEqualsOne_ctrlKey(event) {
     let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'

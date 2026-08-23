@@ -5082,6 +5082,7 @@ function EDITOR_onKeyDown_PageUp(event) {
  * - window.myAPI.readClipboard
  *     - Solutions:
  *         - The synchronous paste event
+ *             - side note you always wondered why they focused a textarea, in part it is from what I understand so you can paste into it and synchronously get the pasted text.
 */
 async function EDITOR_onKeyDown_keyLengthEqualsOne_ctrlKey(event) {
     let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'

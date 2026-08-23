@@ -9079,6 +9079,36 @@ Immediately problematic:
 
 - [ ] Parse variables progress by end of day
 
+> javascript async code:
+> if I reference a variable prior to an await statement, but then don't reference that variable after the await statement.
+> Is it garbage collectable while the 'await' statement is "awaited".
 
+< No, the variable is generally not garbage collectible while the await is pending.
+<
+< How await and Scope Work
+< - Coroutine State: When an async function hits an await, the JavaScript engine pauses execution and saves the entire local lexical environment (the activation record/closure frame) on the heap.
+< - Liveness vs. Usage: Even if you do not reference the variable after the await line, modern engines typically retain all local variables present in that function's saved scope for the entire duration of the async pause.
+< - Engine Optimizations: While some advanced engines (like V8) perform liveness analysis to clear dead variables during regular synchronous execution, across an asynchronous suspension point (await), the entire frame is kept reachable via the continuation/promise machinery. The variable only becomes eligible for garbage collection after the await finishes, the function finishes or exits its scope, and the execution context is completely destroyed.
+
+
+Prior to this I was trying to get the AI to read this code snippet:
+
+> I'd like to ask you a question about this code snippet. 
+> ```js
+> let buttonElement = document.getElementById('button');
+> buttonElement.addEventListener('keydown', keydown_function);
+> 
+> async function keydown_function(e) {
+>     // ... some code that uses 'e'
+> 
+>     // the first 'await' is hit here
+>     await foo();
+> 
+>     // ... some code that does NOT use 'e'
+> }
+> ```
+
+But it just kept giving me "Here are top web results for exploring this topic:" :(
+I got a response by using the words though.
 
 */

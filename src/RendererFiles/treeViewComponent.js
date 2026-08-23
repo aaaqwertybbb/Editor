@@ -251,10 +251,10 @@ class TreeViewComponent {
                 this.event_scroll();
                 break;
             case 'dblclick':
-                this.event_dblclick(event);
+                this.event_dblclick(event.clientY, event.target);
                 break;
             case 'contextmenu':
-                this.event_contextmenu(event);
+                this.event_contextmenu(event.button, event.clientX, event.clientY);
                 break;
             case 'resize':
                 this.event_windowResize();
@@ -420,10 +420,10 @@ class TreeViewComponent {
         }
     }
 
-    async event_dblclick(event) {
+    event_dblclick(event_clientY, event_target) {
         this.ensure_boundingClientRect();
 
-        let rY = event.clientY - this.boundingClientRect.top + this.lastReadNumber_scrollTop;
+        let rY = event_clientY - this.boundingClientRect.top + this.lastReadNumber_scrollTop;
         let indexItem = Math.floor(rY / this.itemHeightNumber);
         indexItem = this.state_cursor_validateIndex(indexItem);
 
@@ -439,7 +439,7 @@ class TreeViewComponent {
         let divItem = this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem];
 
         // if not clicked "chevron"
-        if (event.target !== divItem.children[0]) {
+        if (event_target !== divItem.children[0]) {
             // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
             // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
@@ -453,11 +453,11 @@ class TreeViewComponent {
         }
     }
 
-    event_contextmenu(event) {
+    event_contextmenu(event_button, event_clientX, event_clientY) {
         this.ensure_boundingClientRect();
 
-        if (event.button === 2) {
-            let rY = event.clientY - this.boundingClientRect.top + this.lastReadNumber_scrollTop;
+        if (event_button === 2) {
+            let rY = event_clientY - this.boundingClientRect.top + this.lastReadNumber_scrollTop;
 
             this.state_cursor_setIndex(this.state_cursor_validateIndex(
                 Math.floor(rY / this.itemHeightNumber)));
@@ -473,7 +473,7 @@ class TreeViewComponent {
             else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
 
             if (beltIndexItem < 0) return;
-            return this.director.tvd_oncontextmenu_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex, event.button, event.clientX, event.clientY, beltIndexItem);
+            return this.director.tvd_oncontextmenu_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex, event_button, event_clientX, event_clientY, beltIndexItem);
         } else {
             if (this.cursorIndex >= this.director.tvd_getTotalCount()) {
                 return;
@@ -493,7 +493,7 @@ class TreeViewComponent {
             if (beltIndexItem < 0) return;
 
             // TODO: Handle context menu with keyboard when active node is out of view
-            return this.director.tvd_oncontextmenu_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex, event.button, event.clientX, event.clientY, beltIndexItem);
+            return this.director.tvd_oncontextmenu_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex, event_button, event_clientX, event_clientY, beltIndexItem);
         }
     }
 

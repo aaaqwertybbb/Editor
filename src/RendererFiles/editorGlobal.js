@@ -5219,7 +5219,7 @@ function EDITOR_onMouseDown(event) {
     }
 }
 
-async function EDITOR_onContextMenu(event) {
+function EDITOR_onContextMenu() {
     let optionList = [
         new MenuOption(get_CommandKind_Cut(), 'Cut', null),
         new MenuOption(get_CommandKind_Copy(), 'Copy', null),
@@ -5230,7 +5230,7 @@ async function EDITOR_onContextMenu(event) {
     let menuLeft = get_EDITOR_recentBoundingClientRect_left() + get_EDITOR_gutterWidthTotal() + EDITOR_primaryCursor.cursorTranslateXValue - lastReadNumber_scrollLeft;
     let menuTop = get_EDITOR_recentBoundingClientRect_top() + EDITOR_primaryCursor.cursorTranslateYValue + get_EDITOR_lineHeight() - get_lastReadNumber_scrollTop();
 
-    await menuSet('EDITOR', null, optionList, menuLeft, menuTop);
+    return menuSet('EDITOR', null, optionList, menuLeft, menuTop);
 }
 
 function EDITOR_onWheel(event) {

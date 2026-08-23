@@ -4670,8 +4670,10 @@ function EDITOR_cursorBlink_startChecking() {
  *     - and then I can re-use the previous build result for any files that haven't changed.
  * And yes I do believe that EDITOR_onKeyDown is 100x more important I just don't know if I'm feeling
  * up to it right now, and so I'm thinking I would just look at "preprocessor.cjs" today; I know I should make this not async asap I'm tired I don't know.
+ * 
+ * This doesn't even run any async logic it just returns it???
  */
-async function EDITOR_onKeyDown(event) {
+function EDITOR_onKeyDown(event) {
     // Explicitly inlining 'clearMulticursorState()' because it currently is and I just don't want to make a decision about this right now.
     // So what I can do is mark the code paragraph for later decision making.
     set_EDITOR_indexCursor(0);

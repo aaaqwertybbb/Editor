@@ -5078,6 +5078,11 @@ function EDITOR_onKeyDown_PageUp(event) {
  * - case 'v': (window.myAPI.readClipboard)
  * 
  * In otherwords:
+ * 
+ * TODO:
+ * - the tiny details of the ipc calls i.e.: what lines run synchronously
+ * - is it enough lines that run synchronously before an await that it "just works"
+ * 
  * - EDITOR_copySelection
  *     - synchronous copy with textarea and 'success = document.execCommand('copy');'
  *     - async copy logic

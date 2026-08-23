@@ -4660,6 +4660,16 @@ function EDITOR_cursorBlink_startChecking() {
  * that I need to track where the event is going in the future.
  * 
  * Why is this async?????
+ * 
+ * TODO:
+ * - This needs to not be async as the number 1 next thing to do.
+ * - To finish today though I don't wanna do this I wanna make sure I have a fresh day to look at it.
+ *     - I'm thinking I wanna save out when doing the build for the js repo, each individual file's content
+ *     - after the "preprocessor.cjs" runs on the file.
+ *     - then somehow track whether the file changed the next time I build
+ *     - and then I can re-use the previous build result for any files that haven't changed.
+ * And yes I do believe that EDITOR_onKeyDown is 100x more important I just don't know if I'm feeling
+ * up to it right now, and so I'm thinking I would just look at "preprocessor.cjs" today; I know I should make this not async asap I'm tired I don't know.
  */
 async function EDITOR_onKeyDown(event) {
     // Explicitly inlining 'clearMulticursorState()' because it currently is and I just don't want to make a decision about this right now.

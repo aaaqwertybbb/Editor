@@ -107,9 +107,7 @@ module.exports = function (babel) {
     
 
 
-    "get_TrackedSyntaxKind_None",
-    "get_TrackedSyntaxKind_String",
-    "get_TrackedSyntaxKind_Comment",
+    
 
     "get_TreeViewNodeKind_None",
     "get_TreeViewNodeKind_isExpandable_isExpanded",
@@ -187,6 +185,10 @@ module.exports = function (babel) {
 
   // List all the variable names you want to inline
   const TARGET_VARIABLES = [
+
+    "ENUM_TrackedSyntaxKind_None",
+    "ENUM_TrackedSyntaxKind_String",
+    "ENUM_TrackedSyntaxKind_Comment",
 
     "ENUM_CommandKind_None",
     "ENUM_CommandKind_Submenu",

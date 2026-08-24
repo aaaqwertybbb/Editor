@@ -1,7 +1,7 @@
-const get_TrackedSyntaxKind_None = () => 0;
-const get_TrackedSyntaxKind_String = () => 1;
-/** only multi-line-comments that span multiple lines are stored in EDITOR_trackedSyntaxList with the 'get_TrackedSyntaxKind_Comment()' */
-const get_TrackedSyntaxKind_Comment = () => 2;
+const ENUM_TrackedSyntaxKind_None = 0;
+const ENUM_TrackedSyntaxKind_String = 1;
+/** only multi-line-comments that span multiple lines are stored in EDITOR_trackedSyntaxList with the 'ENUM_TrackedSyntaxKind_Comment' */
+const ENUM_TrackedSyntaxKind_Comment = 2;
 
 class TrackedSyntaxList {
     data_literal;

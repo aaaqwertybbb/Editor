@@ -309,7 +309,7 @@ let EDITOR_onResize_hasTrailingCall = false;
 
 let EDITOR_offsetWithinSpan_withRespectToThisSpan = null;
 
-let EDITOR_pooledTrackedSyntax_trackedSyntaxKind = get_TrackedSyntaxKind_None();
+let EDITOR_pooledTrackedSyntax_trackedSyntaxKind = ENUM_TrackedSyntaxKind_None;
 
 let EDITOR_characterWidth = 8;
 let EDITOR_horizontal_scrollbar_widthValue = 0;
@@ -1674,7 +1674,7 @@ function EDITOR_finalizeEdit_InsertLtr(cursor, indexLine_editOccurredOn) {
         if (cursor.editPosition <= get_EDITOR_pooledTrackedSyntax_start()) {
             EDITOR_trackedSyntaxList.setStart(i, get_EDITOR_pooledTrackedSyntax_start() + cursor.editLength);
         }
-        else if (EDITOR_pooledTrackedSyntax_trackedSyntaxKind === get_TrackedSyntaxKind_Comment() &&
+        else if (EDITOR_pooledTrackedSyntax_trackedSyntaxKind === ENUM_TrackedSyntaxKind_Comment &&
                 cursor.editPosition === get_EDITOR_pooledTrackedSyntax_start() + 1) {
 
             // TODO: Insertion of '*' probably shouldn't remove.
@@ -2322,11 +2322,11 @@ function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(cursor,
             // TODO: This needs to remove more than 1 at a time
             EDITOR_trackedSyntaxList.removeAt(i, 1);
         }
-        else if (EDITOR_pooledTrackedSyntax_trackedSyntaxKind === get_TrackedSyntaxKind_Comment() &&
+        else if (EDITOR_pooledTrackedSyntax_trackedSyntaxKind === ENUM_TrackedSyntaxKind_Comment &&
                 (get_EDITOR_pooledTrackedSyntax_start() + 1) >= cursor.editPosition && (get_EDITOR_pooledTrackedSyntax_start() + 1) < cursor.editPosition + cursor.editLength) {
             // TODO: You can invalidate a >1 char long by removing beyond just the first unless a character afterwards falls into place that is valid by chance
             //
-            // only multi-line-comments that span multiple lines are stored in EDITOR_trackedSyntaxList with the 'get_TrackedSyntaxKind_Comment()'
+            // only multi-line-comments that span multiple lines are stored in EDITOR_trackedSyntaxList with the 'ENUM_TrackedSyntaxKind_Comment'
             //
             EDITOR_trackedSyntaxList.removeAt(i, 1);
         }
@@ -2544,10 +2544,10 @@ function EDITOR_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_
                 span.textContent = EDITOR_decoder.decode(EDITOR_textByteList.bytes.subarray(substart, subend));
                 substart += (subend - substart);
                 switch (EDITOR_pooledTrackedSyntax_trackedSyntaxKind) {
-                    case get_TrackedSyntaxKind_Comment():
+                    case ENUM_TrackedSyntaxKind_Comment:
                         span.className = 'eCM';
                         break;
-                    case get_TrackedSyntaxKind_String():
+                    case ENUM_TrackedSyntaxKind_String:
                         span.className = 'eSM';
                         break;
                     default:
@@ -6655,7 +6655,7 @@ function EDITOR_duplicate_and_paste_handleNotHasSeenLinefeed(hasSeenLinefeed, or
             if (original_indexColumn_SpanTextContentRelative >= 2 && (original_indexColumn_SpanTextContentRelative <= original_span_textContent_length - 2)) {
                 w_span.className = 'eCM';
                 let indexOfGreaterThanOrEqual = EDITOR_trackedSyntaxReposition_find(indexPosition);
-                EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, get_TrackedSyntaxKind_Comment(), indexPosition - cursor.indexColumn + w_indexColumn_Sum, original_span_textContent_length);
+                EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_Comment, indexPosition - cursor.indexColumn + w_indexColumn_Sum, original_span_textContent_length);
                 return true;
             }
             return false;
@@ -6665,7 +6665,7 @@ function EDITOR_duplicate_and_paste_handleNotHasSeenLinefeed(hasSeenLinefeed, or
             if (original_indexColumn_SpanTextContentRelative >= 1 && (original_indexColumn_SpanTextContentRelative <= original_span_textContent_length - 1)) {
                 w_span.className = 'eSM';
                 let indexOfGreaterThanOrEqual = EDITOR_trackedSyntaxReposition_find(indexPosition);
-                EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, get_TrackedSyntaxKind_String(), indexPosition - cursor.indexColumn + w_indexColumn_Sum, original_span_textContent_length);
+                EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_String, indexPosition - cursor.indexColumn + w_indexColumn_Sum, original_span_textContent_length);
                 return true;
             }
             return false;
@@ -6997,7 +6997,7 @@ function EDITOR_render_do_EnterKey() {
                                 if (w_indexColumn_SpanTextContentRelative >= 2 && (w_indexColumn_SpanTextContentRelative <= w_span.textContent.length - 2)) {
                                     w_span.className = 'eCM';
                                     let indexOfGreaterThanOrEqual = EDITOR_trackedSyntaxReposition_find(indexPosition);
-                                    EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, get_TrackedSyntaxKind_Comment(), indexPosition - cursor.indexColumn + w_indexColumn_Sum, w_span.textContent.length);
+                                    EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_Comment, indexPosition - cursor.indexColumn + w_indexColumn_Sum, w_span.textContent.length);
                                     shouldPreserveCssClassWhenSplittingAmongLine = true;
                                 }
                                 break;
@@ -7008,7 +7008,7 @@ function EDITOR_render_do_EnterKey() {
                                 if (w_indexColumn_SpanTextContentRelative >= 1 && (w_indexColumn_SpanTextContentRelative <= w_span.textContent.length - 1)) {
                                     w_span.className = 'eSM';
                                     let indexOfGreaterThanOrEqual = EDITOR_trackedSyntaxReposition_find(indexPosition);
-                                    EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, get_TrackedSyntaxKind_String(), indexPosition - cursor.indexColumn + w_indexColumn_Sum, w_span.textContent.length);
+                                    EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_String, indexPosition - cursor.indexColumn + w_indexColumn_Sum, w_span.textContent.length);
                                     shouldPreserveCssClassWhenSplittingAmongLine = true;
                                 }
                                 break;

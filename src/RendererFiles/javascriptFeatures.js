@@ -2205,10 +2205,10 @@ I did some exercises then about an hour long walk then showered...
             substart += length;
             pos += length;
             switch (EDITOR_pooledTrackedSyntax_trackedSyntaxKind) {
-                case get_TrackedSyntaxKind_Comment():
+                case ENUM_TrackedSyntaxKind_Comment:
                     span.className = 'eCM';
                     break;
-                case get_TrackedSyntaxKind_String():
+                case ENUM_TrackedSyntaxKind_String:
                     span.className = 'eSM';
                     break;
                 default:

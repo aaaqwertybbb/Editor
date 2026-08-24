@@ -64,6 +64,8 @@ const path = require('path');
 const args = process.argv;
 
 let inputFolder;
+let outputFolder;
+let finalizedFile;
 let outputFile;
 
 let filePriorityOrder;
@@ -100,6 +102,8 @@ try {
 
     doAllBundleFiles(files);
 
+
+
     console.log(`emptyLineCount: ${emptyLineCount}`);
     console.log(`Successfully bundled ${files.length} files in prioritized order into ${outputFile}`);
 }
@@ -111,8 +115,23 @@ catch (err) {
 function doAllBundleFiles(files) {
     for (let i = 0; i < files.length; i++) {
         bundleFile(files[i]);
+        flushAppendToFile();
+    }
+    flushAppendToFile(); // TODO: this one isn't needed anymore?
+
+    // TODO: You might be able to append the "cache" file and to the output as you go instead of creating the caches in one loop
+    // and then appending the caches in another.
+
+    for (let i = 0; i < files.length; i++) {
+        CREATE_SINGLE_FINALIZE_FILE(files[i]);
     }
     flushAppendToFile();
+}
+
+function CREATE_SINGLE_FINALIZE_FILE(filename) {
+    outputFile = path.join(outputFolder, filename);
+    readTextNoBOM_intoGlobalVariable_sourceBuffer(outputFile);
+    fs.appendFileSync(finalizedFile, sourceBuffer.subarray(0, sourceBufferCount), 'utf8');
 }
 
 function bundleFile(fileName) {
@@ -134,6 +153,9 @@ function bundleFile(fileName) {
     // I think the only sensible answer is to work with the bytes of the text directly.
     // Otherwise if I continue the current pattern I'd be substringing every line of text in order to strip off the line ending
     // With a uint8array I could move the bytes en mass to a buffer and then to string the buffer.
+
+    outputFile = path.join(outputFolder, fileName);
+    fs.writeFileSync(outputFile, '');
 
     appendToWriteBuilder_string(`\n\n// ${fileName}\n\n`);
 
@@ -667,11 +689,15 @@ function readTextNoBOM_intoGlobalVariable_sourceBuffer(filePath) {
 function readyFileState() {
     if (args[2] === 'test') {
         inputFolder = './src/Test';
-        outputFile = './preprocessor/testPREPROCESSEDbundletest.js';
+        outputFolder = './preprocessor/';
+        finalizedFile = './preprocessor/testPREPROCESSEDbundletest.js';
+        outputFile = finalizedFile;
     }
     else {
         inputFolder = './src/RendererFiles';
-        outputFile = './preprocessor/__PREPROCESSEDbundle__.js';
+        outputFolder = './preprocessor/';
+        finalizedFile = './preprocessor/__PREPROCESSEDbundle__.js';
+        outputFile = finalizedFile;
     }
 
     // 1. Define the exact loading priority order
@@ -692,8 +718,8 @@ function readyFileState() {
         "applicationRendererRoot.js"
     ];
 
-    fs.mkdirSync(path.dirname(outputFile), { recursive: true });
-    fs.writeFileSync(outputFile, '');
+    fs.mkdirSync(path.dirname(finalizedFile), { recursive: true });
+    fs.writeFileSync(finalizedFile, '');
 }
 
 /**

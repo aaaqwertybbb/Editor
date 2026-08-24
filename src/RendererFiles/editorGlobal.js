@@ -9202,4 +9202,7 @@ but now I have consumed the cleaning products and I'm going to die
 
 And I have to sit here watching you fucking morons thinking xyz about me
 
+I know what you think of me. I know you think I'm a clown
+that I'm a scammer that I'm xyz go fuck yourself.
+
 */

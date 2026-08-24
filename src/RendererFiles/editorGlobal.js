@@ -984,6 +984,8 @@ function EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli) {
             //
             // I don't know I'm tired and confused.
             //
+            // TODO: Look into all the usages of 'prevVli and currVli' or like hacks to force cases
+            //
             prevVli = currVli + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
             //prevVli = 0;
             //currVli = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];

@@ -102,14 +102,7 @@ module.exports = function (babel) {
     "set_EDITOR_findOverlay_wasSearched",
 
     "get_EDITOR_findOverlay_options_matchWord",
-    "set_EDITOR_findOverlay_options_matchWord",
-
-    
-
-    "get_DIALOGrenderKind_None",
-    "get_DIALOGrenderKind_Show",
-    "get_DIALOGrenderKind_Hide",
-    "get_DIALOGrenderKind_DimensionsChanged",
+    "set_EDITOR_findOverlay_options_matchWord",    
 
     "get_AUTOCOMPLETErenderKind_None",
     "get_AUTOCOMPLETErenderKind_Show",
@@ -146,6 +139,11 @@ module.exports = function (babel) {
 
   // List all the variable names you want to inline
   const TARGET_VARIABLES = [
+
+    "ENUM_DIALOGrenderKind_None",
+    "ENUM_DIALOGrenderKind_Show",
+    "ENUM_DIALOGrenderKind_Hide",
+    "ENUM_DIALOGrenderKind_DimensionsChanged",
 
     "ENUM_LISTrenderKind_None",
     "ENUM_LISTrenderKind_Cursor",

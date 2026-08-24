@@ -55,10 +55,10 @@ let DIALOG_isRenderPending = false;
 
 //let DIALOG_ArrayFrom_menuOptionList_children = [];
 
-const get_DIALOGrenderKind_None = () => 0;
-const get_DIALOGrenderKind_Show = () => 1;
-const get_DIALOGrenderKind_Hide = () => 2;
-const get_DIALOGrenderKind_DimensionsChanged = () => 3;
+const ENUM_DIALOGrenderKind_None = 0;
+const ENUM_DIALOGrenderKind_Show = 1;
+const ENUM_DIALOGrenderKind_Hide = 2;
+const ENUM_DIALOGrenderKind_DimensionsChanged = 3;
 
 function DIALOG_render_request(renderKind) {
     if (DIALOG_renderKindArray[DIALOG_renderKindArray.length - 1] !== renderKind) {
@@ -76,13 +76,13 @@ function DIALOG_render_do() {
     
     while (renderKind = DIALOG_renderKindArray.shift()) {
         switch (renderKind) {
-            case get_DIALOGrenderKind_Show():
+            case ENUM_DIALOGrenderKind_Show:
                 DIALOG_render_do_Show();
                 break;
-            case get_DIALOGrenderKind_Hide():
+            case ENUM_DIALOGrenderKind_Hide:
                 DIALOG_render_do_Hide();
                 break;
-            case get_DIALOGrenderKind_DimensionsChanged():
+            case ENUM_DIALOGrenderKind_DimensionsChanged:
                 DIALOG_render_do_DimensionsChanged();
                 break;
         }
@@ -149,7 +149,7 @@ async function DIALOG_show_async(dialogKind, onResizeAction) {
     DIALOG_SHOW_restoreFocusToElement = document.activeElement;
     DIALOG_SHOW_currentDialogKind = dialogKind;
     DIALOG_SHOW_onResizeAction = onResizeAction;
-    DIALOG_render_request(get_DIALOGrenderKind_Show());
+    DIALOG_render_request(ENUM_DIALOGrenderKind_Show);
 }
 
 async function DIALOG_render_do_Hide() {
@@ -186,7 +186,7 @@ async function DIALOG_render_do_Hide() {
 
 function DIALOG_hide_request(shouldRestoreFocus) {
     DIALOG_HIDE_shouldRestoreFocus = shouldRestoreFocus;
-    DIALOG_render_request(get_DIALOGrenderKind_Hide());
+    DIALOG_render_request(ENUM_DIALOGrenderKind_Hide);
 }
 
 function DIALOG_closeButton_onclick() {
@@ -426,7 +426,7 @@ function DIALOG_resize_body_onmousemove(event) {
             return;
     }
 
-    DIALOG_render_request(get_DIALOGrenderKind_DimensionsChanged());
+    DIALOG_render_request(ENUM_DIALOGrenderKind_DimensionsChanged);
 }
 
 // TODO: async event handlers are probably more likely to leak the event...
@@ -553,12 +553,12 @@ function DIALOG_toolbar_body_onmousemove(event) {
 
             DIALOG_left -= absdiff_X;
             DIALOG_before_X = clientX;
-            DIALOG_render_request(get_DIALOGrenderKind_DimensionsChanged());
+            DIALOG_render_request(ENUM_DIALOGrenderKind_DimensionsChanged);
         }
         else {
             DIALOG_left -= absdiff_X;
             DIALOG_before_X = clientX;
-            DIALOG_render_request(get_DIALOGrenderKind_DimensionsChanged());
+            DIALOG_render_request(ENUM_DIALOGrenderKind_DimensionsChanged);
         }
     }
     else if (diff_X > 0) {
@@ -573,12 +573,12 @@ function DIALOG_toolbar_body_onmousemove(event) {
 
             DIALOG_left += absdiff_X;
             DIALOG_before_X = clientX;
-            DIALOG_render_request(get_DIALOGrenderKind_DimensionsChanged());
+            DIALOG_render_request(ENUM_DIALOGrenderKind_DimensionsChanged);
         }
         else {
             DIALOG_left += absdiff_X;
             DIALOG_before_X = clientX;
-            DIALOG_render_request(get_DIALOGrenderKind_DimensionsChanged());
+            DIALOG_render_request(ENUM_DIALOGrenderKind_DimensionsChanged);
         }
     }
 
@@ -593,12 +593,12 @@ function DIALOG_toolbar_body_onmousemove(event) {
             
             DIALOG_top -= absdiff_Y;
             DIALOG_before_Y = clientY;
-            DIALOG_render_request(get_DIALOGrenderKind_DimensionsChanged());
+            DIALOG_render_request(ENUM_DIALOGrenderKind_DimensionsChanged);
         }
         else {
             DIALOG_top -= absdiff_Y;
             DIALOG_before_Y = clientY;
-            DIALOG_render_request(get_DIALOGrenderKind_DimensionsChanged());
+            DIALOG_render_request(ENUM_DIALOGrenderKind_DimensionsChanged);
         }
     }
     else if (diff_Y > 0) {
@@ -613,12 +613,12 @@ function DIALOG_toolbar_body_onmousemove(event) {
             
             DIALOG_top += absdiff_Y;
             DIALOG_before_Y = clientY;
-            DIALOG_render_request(get_DIALOGrenderKind_DimensionsChanged());
+            DIALOG_render_request(ENUM_DIALOGrenderKind_DimensionsChanged);
         }
         else {
             DIALOG_top += absdiff_Y;
             DIALOG_before_Y = clientY;
-            DIALOG_render_request(get_DIALOGrenderKind_DimensionsChanged());
+            DIALOG_render_request(ENUM_DIALOGrenderKind_DimensionsChanged);
         }
     }
 }

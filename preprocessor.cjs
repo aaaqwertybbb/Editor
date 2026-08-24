@@ -1,3 +1,26 @@
+
+
+/*
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Only a single directory is permitted,
+- no recursion,
+- no other directories can exist in the target directory
+- and neither of the above cases are asserted, you'll just get undefined behavior.
+
+I don't like to make a comment saying this but I'm thinking about
+which came first the chicken or the egg kinda scenario.
+
+And the end result of thinking about the scenario is analysis paralysis so there it is.
+i.e.: this code is not good and do not use it yourself.
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
+
+
+
+
+
+
 /*
 #################
 # Goal of file: #

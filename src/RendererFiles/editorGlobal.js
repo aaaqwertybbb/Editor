@@ -781,21 +781,11 @@ function EDITOR_onScroll_WRAPIT() {
  * 
  */
 function EDITOR_render_do_Scroll(timestamp) {
-
-    // All of these 'get' and 'set' should be rewritten to hoist the "field buffer" locally to this function.
-    // And then access all this information themselves.
-    // Lest it possibly search the global scope for the "field buffer" over and over.
-
     let local_EDITOR_int_fields = EDITOR_int_fields;
     let local_lineHeight = local_EDITOR_int_fields[INDEXOF_EDITOR_lineHeight()];
 
-    // I felt a crazy burst of energy this morning.
-    // Hopefully I didn't just "firehouse delusion spaghetti code garbage"
-
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
     local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine()] = (Math.floor(local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop()] / local_lineHeight));
-    // ====
-    // ==== end explicit inline (duplication) of 'update_VirtualIndexLine()';
     
     // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 1 of 4)
     let local_prevVli = local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine()];
@@ -1239,6 +1229,12 @@ More accurately the ones that seem to not have an importance of position, they d
 */
 
 function EDITOR_state_clear() {
+
+    // the smi would exist on the object instance all near one another if you just used a class
+    // it is essentially the field buffer but you don't eat a global scope variable lookup at any point
+    // and you have to incur 1 extra object at all times but that ought to be negligible.
+
+
     EDITOR_finalizeAllCursors_andClearNonPrimaryCursors();
     EDITOR_primaryCursor.clear();
     set_EDITOR_recentBoundingClientRect_isNull_intFalsey(1);

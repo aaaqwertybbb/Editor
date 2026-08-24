@@ -1024,7 +1024,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 if (!entry) return;
                 MENU_HIDE_shouldRestoreFocus = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
-                await WIDGET_show(get_WidgetKind_InputText(), menuOptionX, menuOptionY, 'filename', entry, MENU_target, NewFile_Directory_WIDGET_InputText_callback);
+                await WIDGET_show(ENUM_WidgetKind_InputText, menuOptionX, menuOptionY, 'filename', entry, MENU_target, NewFile_Directory_WIDGET_InputText_callback);
                 break;
             }
         case ENUM_CommandKind_NewFile_File:
@@ -1035,7 +1035,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 if (!entry) return;
                 MENU_HIDE_shouldRestoreFocus = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
-                await WIDGET_show(get_WidgetKind_InputText(), menuOptionX, menuOptionY, 'filename', entry, MENU_target, NewFile_File_WIDGET_InputText_callback);
+                await WIDGET_show(ENUM_WidgetKind_InputText, menuOptionX, menuOptionY, 'filename', entry, MENU_target, NewFile_File_WIDGET_InputText_callback);
                 break;
             }
         case ENUM_CommandKind_DeleteFile_Directory:
@@ -1047,7 +1047,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 let filename = entry.basename;
                 MENU_HIDE_shouldRestoreFocus = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
-                await WIDGET_show(get_WidgetKind_YesCancel(), menuOptionX, menuOptionY, 'delete ' + filename, entry, MENU_target, DeleteFile_Directory_YesCancel_callback);
+                await WIDGET_show(ENUM_WidgetKind_YesCancel, menuOptionX, menuOptionY, 'delete ' + filename, entry, MENU_target, DeleteFile_Directory_YesCancel_callback);
                 break;
             }
         case ENUM_CommandKind_DeleteFile_File:
@@ -1059,7 +1059,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 let filename = entry.basename;
                 MENU_HIDE_shouldRestoreFocus = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
-                await WIDGET_show(get_WidgetKind_YesCancel(), menuOptionX, menuOptionY, 'delete ' + filename, entry, MENU_target, DeleteFile_File_YesCancel_callback);
+                await WIDGET_show(ENUM_WidgetKind_YesCancel, menuOptionX, menuOptionY, 'delete ' + filename, entry, MENU_target, DeleteFile_File_YesCancel_callback);
                 break;
             }
         case ENUM_CommandKind_RenameFile_Directory:
@@ -1071,7 +1071,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 let filename = entry.basename;
                 MENU_HIDE_shouldRestoreFocus = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
-                await WIDGET_show(get_WidgetKind_InputText(), menuOptionX, menuOptionY, 'rename', filename, {MENU_target:MENU_target, entry:entry}, RenameFile_Directory_InputText_callback);
+                await WIDGET_show(ENUM_WidgetKind_InputText, menuOptionX, menuOptionY, 'rename', filename, {MENU_target:MENU_target, entry:entry}, RenameFile_Directory_InputText_callback);
                 break;
             }
         case ENUM_CommandKind_RenameFile_File:
@@ -1090,7 +1090,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 let filename = entry.basename;
                 MENU_HIDE_shouldRestoreFocus = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
-                await WIDGET_show(get_WidgetKind_InputText(), menuOptionX, menuOptionY, 'rename', filename, {MENU_target: MENU_target, entry: entry}, RenameFile_File_InputText_callback);
+                await WIDGET_show(ENUM_WidgetKind_InputText, menuOptionX, menuOptionY, 'rename', filename, {MENU_target: MENU_target, entry: entry}, RenameFile_File_InputText_callback);
                 break;
             }
     }

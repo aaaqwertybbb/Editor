@@ -1,10 +1,10 @@
-const get_WidgetKind_None = () => 0;
-const get_WidgetKind_InputText = () => 1;
-const get_WidgetKind_YesCancel = () => 2;
+const ENUM_WidgetKind_None = 0;
+const ENUM_WidgetKind_InputText = 1;
+const ENUM_WidgetKind_YesCancel = 2;
 
-const get_WIDGETrenderKind_None = () => 0;
-const get_WIDGETrenderKind_Show = () => 1;
-const get_WIDGETrenderKind_Hide = () => 2;
+const ENUM_WIDGETrenderKind_None = 0;
+const ENUM_WIDGETrenderKind_Show = 1;
+const ENUM_WIDGETrenderKind_Hide = 2;
 
 /**
  * @callback MENU_Callback
@@ -30,8 +30,8 @@ const get_WIDGETrenderKind_Hide = () => 2;
  */
 let WIDGET_ticketId_counter = 1;
 
-let WIDGET_WidgetKind_pending = get_WidgetKind_None();
-let WIDGET_WidgetKind_drawn = get_WidgetKind_None();
+let WIDGET_WidgetKind_pending = ENUM_WidgetKind_None;
+let WIDGET_WidgetKind_drawn = ENUM_WidgetKind_None;
 let WIDGET_restoreFocusToElement_drawn = null;
 
 let WIDGET_ticketId_pending = 0;
@@ -68,7 +68,7 @@ let WIDGET_restoreFocusToElementOverride = null;
 function WIDGET_render_request(renderKind) {
     if (WIDGET_renderKindArray[WIDGET_renderKindArray.length - 1] !== renderKind) {
         WIDGET_renderKindArray.push(renderKind);
-        if (renderKind === get_WIDGETrenderKind_Show()) WIDGETrenderKind_Show_countOfPendingRequests++;
+        if (renderKind === ENUM_WIDGETrenderKind_Show) WIDGETrenderKind_Show_countOfPendingRequests++;
     }
     
     if (!WIDGET_isRenderPending) {
@@ -82,11 +82,11 @@ function WIDGET_render_do() {
     
     while (renderKind = WIDGET_renderKindArray.shift()) {
         switch (renderKind) {
-            case get_WIDGETrenderKind_Show():
+            case ENUM_WIDGETrenderKind_Show:
                 if (WIDGETrenderKind_Show_countOfPendingRequests-- > 1) break;
                 WIDGET_render_do_Show();
                 break;
-            case get_WIDGETrenderKind_Hide():
+            case ENUM_WIDGETrenderKind_Hide:
                 WIDGET_render_do_Hide();
                 break;
         }
@@ -98,7 +98,7 @@ function WIDGET_render_do() {
 function WIDGET_render_do_Show() {
 
     let WIDGET_element = document.getElementById('WIDGET');
-    if (WIDGET_WidgetKind_drawn !== get_WidgetKind_None()) {
+    if (WIDGET_WidgetKind_drawn !== ENUM_WidgetKind_None) {
         WIDGET_element = null;
         // You don't have to invoke 'WIDGET_state_do_Hide' because there was a 1 to 1 overwrite of all the state due to the 'WIDGET_show' invocation which triggered this function.
         WIDGET_shouldRestoreFocus = false; // going to show a different widget so don't bother with focus here
@@ -124,10 +124,10 @@ function WIDGET_render_do_Show() {
     WIDGET_ticketId_drawn = WIDGET_ticketId_pending;
 
     switch (WIDGET_WidgetKind_drawn) {
-        case get_WidgetKind_InputText():
+        case ENUM_WidgetKind_InputText:
             WIDGET_CreateInputText();
             break;
-        case get_WidgetKind_YesCancel():
+        case ENUM_WidgetKind_YesCancel:
             WIDGET_CreateYesCancel();
             break;
     }
@@ -191,25 +191,25 @@ async function WIDGET_show(widgetKind, left, top, placeholder, value, target, ca
     WIDGET_value = value;
     WIDGET_target = target;
 
-    WIDGET_render_request(get_WIDGETrenderKind_Show());
+    WIDGET_render_request(ENUM_WIDGETrenderKind_Show);
 }
 
 function WIDGET_render_do_Hide() {
     const WIDGET_element = document.getElementById('WIDGET');
 
     switch (WIDGET_WidgetKind_drawn) {
-        case get_WidgetKind_InputText():
+        case ENUM_WidgetKind_InputText:
             let input = document.getElementById('WIDGET_inputText');
             input.removeEventListener('keydown', WIDGET_inputTextOnKeyDown);
             break;
-        case get_WidgetKind_YesCancel():
+        case ENUM_WidgetKind_YesCancel:
             let yesButtonElement = document.getElementById('WIDGET_YesCancel_yes');
             yesButtonElement.removeEventListener('click', WIDGET_YesCancelButtonOnClick_yes);
             let cancelButtonElement = document.getElementById('WIDGET_YesCancel_cancel');
             cancelButtonElement.removeEventListener('click', WIDGET_YesCancelButtonOnClick_cancel);
             break;
     }
-    WIDGET_WidgetKind_drawn = get_WidgetKind_None();
+    WIDGET_WidgetKind_drawn = ENUM_WidgetKind_None;
     WIDGET_element.remove();
     if (WIDGET_shouldRestoreFocus && WIDGET_restoreFocusToElement_drawn)
         WIDGET_restoreFocusToElement_drawn.focus();
@@ -225,13 +225,13 @@ async function WIDGET_state_do_Hide(shouldRestoreFocus) {
         await WIDGET_currentCallback({isCancelled:true, value:undefined});
     }
     WIDGET_currentCallback = null;
-    WIDGET_WidgetKind_pending = get_WidgetKind_None();
+    WIDGET_WidgetKind_pending = ENUM_WidgetKind_None;
     WIDGET_target = null;
 }
 
 async function WIDGET_hide(shouldRestoreFocus) {
     await WIDGET_state_do_Hide(shouldRestoreFocus);
-    WIDGET_render_request(get_WIDGETrenderKind_Hide());
+    WIDGET_render_request(ENUM_WIDGETrenderKind_Hide);
 }
 
 /**

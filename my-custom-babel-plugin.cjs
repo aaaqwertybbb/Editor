@@ -111,9 +111,7 @@ module.exports = function (babel) {
 
     
 
-    "get_WidgetKind_None",
-    "get_WidgetKind_InputText",
-    "get_WidgetKind_YesCancel",
+    
 
     
 
@@ -136,10 +134,6 @@ module.exports = function (babel) {
 
     "get_LISTrenderKind_None",
     "get_LISTrenderKind_Cursor",
-
-    "get_WIDGETrenderKind_None",
-    "get_WIDGETrenderKind_Show",
-    "get_WIDGETrenderKind_Hide",
 
     "get_DIALOGrenderKind_None",
     "get_DIALOGrenderKind_Show",
@@ -181,6 +175,14 @@ module.exports = function (babel) {
 
   // List all the variable names you want to inline
   const TARGET_VARIABLES = [
+
+    "ENUM_WidgetKind_None",
+    "ENUM_WidgetKind_InputText",
+    "ENUM_WidgetKind_YesCancel",
+
+    "ENUM_WIDGETrenderKind_None",
+    "ENUM_WIDGETrenderKind_Show",
+    "ENUM_WIDGETrenderKind_Hide",
 
     "ENUM_TreeViewNodeKind_None",
     "ENUM_TreeViewNodeKind_isExpandable_isExpanded",

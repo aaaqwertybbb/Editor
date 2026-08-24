@@ -104,16 +104,6 @@ module.exports = function (babel) {
     "get_EDITOR_findOverlay_options_matchWord",
     "set_EDITOR_findOverlay_options_matchWord",
 
-    "ENUM_TREEVIEWrenderKind_None",
-    "ENUM_TREEVIEWrenderKind_Cursor",
-    "ENUM_TREEVIEWrenderKind_Create",
-    "ENUM_TREEVIEWrenderKind_Batch",
-    "ENUM_TREEVIEWrenderKind_Scroll",
-    "ENUM_TREEVIEWrenderKind_SetItems",
-    "ENUM_TREEVIEWrenderKind_FullReset",
-    "ENUM_TREEVIEWrenderKind_Scroll_PullDataDrawResult",
-    "ENUM_TREEVIEWrenderKind_Resize",
-
     "get_LISTrenderKind_None",
     "get_LISTrenderKind_Cursor",
 
@@ -157,6 +147,16 @@ module.exports = function (babel) {
 
   // List all the variable names you want to inline
   const TARGET_VARIABLES = [
+
+    "ENUM_TREEVIEWrenderKind_None",
+    "ENUM_TREEVIEWrenderKind_Cursor",
+    "ENUM_TREEVIEWrenderKind_Create",
+    "ENUM_TREEVIEWrenderKind_Batch",
+    "ENUM_TREEVIEWrenderKind_Scroll",
+    "ENUM_TREEVIEWrenderKind_SetItems",
+    "ENUM_TREEVIEWrenderKind_FullReset",
+    "ENUM_TREEVIEWrenderKind_Scroll_PullDataDrawResult",
+    "ENUM_TREEVIEWrenderKind_Resize",
 
     "ENUM_MENUrenderKind_None",
     "ENUM_MENUrenderKind_Cursor",

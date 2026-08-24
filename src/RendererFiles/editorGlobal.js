@@ -975,6 +975,15 @@ function EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli) {
             // This meant case 3 was incurring an extra global variable lookup (global variable lookup of 'EDITOR_int_fields')
             // - (or with 'local_EDITOR_int_fields' you are incurring a read of the array only, but still this is presumed to be more than just using the local variable).
             //
+            // Wait I'm wrong with that explanation...
+            // 'EDITOR_render_do_Clear()' does the hack too.
+            // But it works maybe?
+            //
+            // If it does work for 'EDITOR_render_do_Clear()' it probably has to do with having set the state
+            // prior to invoking the scroll function. Versus this leading edge case which changes the values out from under the scroll function.
+            //
+            // I don't know I'm tired and confused.
+            //
             prevVli = currVli + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
             //prevVli = 0;
             //currVli = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];

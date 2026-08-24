@@ -119,7 +119,6 @@ function doAllBundleFiles(files) {
         bundleFile(files[i]);
         flushAppendToFile();
     }
-    flushAppendToFile(); // TODO: this one isn't needed anymore?
 
     // TODO: You might be able to append the "cache" file and to the output as you go instead of creating the caches in one loop
     // and then appending the caches in another.
@@ -127,13 +126,29 @@ function doAllBundleFiles(files) {
     for (let i = 0; i < files.length; i++) {
         CREATE_SINGLE_FINALIZE_FILE(files[i]);
     }
-    flushAppendToFile();
 }
 
 function CREATE_SINGLE_FINALIZE_FILE(filename) {
     outputFile = path.join(outputFolder, filename);
     readTextNoBOM_intoGlobalVariable_sourceBuffer(outputFile);
     fs.appendFileSync(finalizedFile, sourceBuffer.subarray(0, sourceBufferCount), 'utf8');
+}
+
+function sourceFileChanged(sourcePath, cachedPath) {
+    // 1. If cache doesn't exist, it definitely changed
+    if (!fs.existsSync(cachedPath)) return true;
+
+    const sourceStat = fs.statSync(sourcePath);
+    const cachedStat = fs.statSync(cachedPath);
+
+    // 2. Check precise file size in bytes
+    const sizeChanged = sourceStat.size !== cachedStat.size;
+
+    // 3. Check precise modification time in floating-point milliseconds
+    const timeChanged = sourceStat.mtimeMs !== cachedStat.mtimeMs;
+
+    // Trigger a rebuild if either the size or the timestamp differs
+    return sizeChanged || timeChanged;
 }
 
 function bundleFile(fileName) {
@@ -157,7 +172,11 @@ function bundleFile(fileName) {
     // With a uint8array I could move the bytes en mass to a buffer and then to string the buffer.
 
     outputFile = path.join(outputFolder, fileName);
-    if (fs.existsSync(outputFile)) {
+
+
+    const filePath = path.join(inputFolder, fileName);
+
+    if (!sourceFileChanged(filePath, outputFile)) {
         reusedFilesCount++;
         return;
     }
@@ -166,7 +185,7 @@ function bundleFile(fileName) {
 
     appendToWriteBuilder_string(`\n\n// ${fileName}\n\n`);
 
-    const filePath = path.join(inputFolder, fileName);
+    
     readTextNoBOM_intoGlobalVariable_sourceBuffer(filePath);
     let pos = 0;
 

@@ -1304,13 +1304,13 @@ function EDITOR_state_setText(text, fileStartsWithBom, textSourceIdentifier, FOR
             case '\r':
                 if (sourceI < text.length - 1 & text[sourceI + 1] === '\n') {
                     if (!lineEndString) {
-                        EDITOR_lineEndString = '\r\n';
+                        lineEndString = EDITOR_lineEndString = '\r\n';
                     }
                     sourceI++;
                 }
                 else {
                     if (!lineEndString) {
-                        EDITOR_lineEndString = '\r';
+                        lineEndString = EDITOR_lineEndString = '\r';
                     }
                 }
                 if (lineLength > local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length()]) {
@@ -1323,7 +1323,7 @@ function EDITOR_state_setText(text, fileStartsWithBom, textSourceIdentifier, FOR
                 break;
             case '\n':
                 if (!lineEndString) {
-                    EDITOR_lineEndString = '\n';
+                    lineEndString = EDITOR_lineEndString = '\n';
                 }
                 if (lineLength > local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length()]) {
                     local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length()] = lineLength;

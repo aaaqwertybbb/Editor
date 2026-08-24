@@ -345,7 +345,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
 
         this.scrollIsFetchingData = false; // TODO: try/catch/finally; put this in the finally.
 
-        this.component.TREEVIEW_render_request(get_TREEVIEWrenderKind_Scroll_PullDataDrawResult());
+        this.component.TREEVIEW_render_request(ENUM_TREEVIEWrenderKind_Scroll_PullDataDrawResult);
     };
 
     tvd_drawItem_BATCH_PullDataDrawResult () {

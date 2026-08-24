@@ -22,7 +22,6 @@ module.exports = function (babel) {
 
     "get_EDITOR_lineHeight",
     "set_EDITOR_lineHeight",
-    "INDEXOF_EDITOR_lineHeight",
 
     "get_EDITOR_detailRank",
     "set_EDITOR_detailRank",
@@ -44,11 +43,9 @@ module.exports = function (babel) {
 
     "get_EDITOR_virtualIndexLine",
     "set_EDITOR_virtualIndexLine",
-    "INDEXOF_EDITOR_virtualIndexLine",
 
     "get_EDITOR_virtualCount",
     "set_EDITOR_virtualCount",
-    "INDEXOF_EDITOR_virtualCount",
 
     "get_didChangeTextDocument_version",
     "set_didChangeTextDocument_version",
@@ -73,23 +70,18 @@ module.exports = function (babel) {
 
     "get_EDITOR_ONSCROLLvirtualIndexLine",
     "set_EDITOR_ONSCROLLvirtualIndexLine",
-    "INDEXOF_EDITOR_ONSCROLLvirtualIndexLine",
 
     "get_EDITOR_ONSCROLLvirtualCount",
     "set_EDITOR_ONSCROLLvirtualCount",
-    "INDEXOF_EDITOR_ONSCROLLvirtualCount",
 
     "get_EDITOR_ONSCROLLscrollTop",
     "set_EDITOR_ONSCROLLscrollTop",
-    "INDEXOF_EDITOR_ONSCROLLscrollTop",
 
     "get_EDITOR_longestLine_indexLine",
     "set_EDITOR_longestLine_indexLine",
-    "INDEXOF_EDITOR_longestLine_indexLine",
     
     "get_EDITOR_longestLine_length",
     "set_EDITOR_longestLine_length",
-    "INDEXOF_EDITOR_longestLine_length",
 
     "get_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar",
     "set_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar",
@@ -138,23 +130,32 @@ module.exports = function (babel) {
 
     "get_EDITOR_scrollEndDeadline",
     "set_EDITOR_scrollEndDeadline",
-    "INDEXOF_EDITOR_scrollEndDeadline",
 
     "get_EDITOR_sum_diffPositive",
     "set_EDITOR_sum_diffPositive",
-    "INDEXOF_EDITOR_sum_diffPositive",
 
     "get_EDITOR_sum_diffNegative",
     "set_EDITOR_sum_diffNegative",
-    "INDEXOF_EDITOR_sum_diffNegative",
 
     "get_lastReadNumber_scrollTop",
     "set_lastReadNumber_scrollTop",
-    "INDEXOF_lastReadNumber_scrollTop",
   ];
 
   // List all the variable names you want to inline
   const TARGET_VARIABLES = [
+
+    "INDEXOF_EDITOR_lineHeight",
+    "INDEXOF_EDITOR_virtualIndexLine",
+    "INDEXOF_EDITOR_virtualCount",
+    "INDEXOF_EDITOR_ONSCROLLvirtualIndexLine",
+    "INDEXOF_EDITOR_ONSCROLLvirtualCount",
+    "INDEXOF_EDITOR_ONSCROLLscrollTop",
+    "INDEXOF_EDITOR_longestLine_indexLine",
+    "INDEXOF_EDITOR_longestLine_length",
+    "INDEXOF_EDITOR_scrollEndDeadline",
+    "INDEXOF_EDITOR_sum_diffPositive",
+    "INDEXOF_EDITOR_sum_diffNegative",
+    "INDEXOF_lastReadNumber_scrollTop",
 
     "ENUM_AUTOCOMPLETErenderKind_None",
     "ENUM_AUTOCOMPLETErenderKind_Show",

@@ -167,24 +167,24 @@ const EDITOR_int_fields = new Uint32Array(64);
 
 const get_EDITOR_lineHeight = () => EDITOR_int_fields[0];
 const set_EDITOR_lineHeight = (int) => EDITOR_int_fields[0] = int;
-const INDEXOF_EDITOR_lineHeight = () => 0;
+const INDEXOF_EDITOR_lineHeight = 0;
 set_EDITOR_lineHeight(20);
 
 /** The first line of text that you should see shown in the UI given the current scrollTop */
 const get_EDITOR_virtualIndexLine = () => EDITOR_int_fields[1];
 const set_EDITOR_virtualIndexLine = (int) => EDITOR_int_fields[1] = int;
-const INDEXOF_EDITOR_virtualIndexLine = () => 1;
+const INDEXOF_EDITOR_virtualIndexLine = 1;
 
 /** The value of 'EDITOR_baseElement.scrollTop' at the most recent scroll event that occurred */
 const get_lastReadNumber_scrollTop = () => EDITOR_int_fields[2];
 /** The value of 'EDITOR_baseElement.scrollTop' at the most recent scroll event that occurred */
 const set_lastReadNumber_scrollTop = (int) => EDITOR_int_fields[2] = int;
 /** The value of 'EDITOR_baseElement.scrollTop' at the most recent scroll event that occurred */
-const INDEXOF_lastReadNumber_scrollTop = () => 2;
+const INDEXOF_lastReadNumber_scrollTop = 2;
 
 const get_EDITOR_ONSCROLLvirtualIndexLine = () => EDITOR_int_fields[3];
 const set_EDITOR_ONSCROLLvirtualIndexLine = (int) => EDITOR_int_fields[3] = int;
-const INDEXOF_EDITOR_ONSCROLLvirtualIndexLine = () => 3;
+const INDEXOF_EDITOR_ONSCROLLvirtualIndexLine = 3;
 //throw new Error('-1');
 // This set used to be -1 to indicate a non existent value, 500 "seems to work" but a proof of it being an equivalent solution has not thoroughly been thought out, only a sort of "yeah that probably works" kinda vibe.
 set_EDITOR_ONSCROLLvirtualIndexLine(500);
@@ -194,31 +194,31 @@ const get_EDITOR_scrollEndDeadline = () => EDITOR_int_fields[4];
 /** Also is used from 'EDITOR_render_do_SetText()', and 'EDITOR_render_do_Resize()', not just 'EDITOR_render_do_Scroll()' */
 const set_EDITOR_scrollEndDeadline = (int) => EDITOR_int_fields[4] = int;
 /** Also is used from 'EDITOR_render_do_SetText()', and 'EDITOR_render_do_Resize()', not just 'EDITOR_render_do_Scroll()' */
-const INDEXOF_EDITOR_scrollEndDeadline = () => 4;
+const INDEXOF_EDITOR_scrollEndDeadline = 4;
 
 const get_EDITOR_ONSCROLLscrollTop = () => EDITOR_int_fields[5];
 const set_EDITOR_ONSCROLLscrollTop = (int) => EDITOR_int_fields[5] = int;
-const INDEXOF_EDITOR_ONSCROLLscrollTop = () => 5;
+const INDEXOF_EDITOR_ONSCROLLscrollTop = 5;
 //throw new Error('-1');
 // This set used to be -1 to indicate a non existent value, 500 "seems to work" but a proof of it being an equivalent solution has not thoroughly been thought out, only a sort of "yeah that probably works" kinda vibe.
 set_EDITOR_ONSCROLLscrollTop(500);
 
 const get_EDITOR_virtualCount = () => EDITOR_int_fields[6];
 const set_EDITOR_virtualCount = (int) => EDITOR_int_fields[6] = int;
-const INDEXOF_EDITOR_virtualCount = () => 6;
+const INDEXOF_EDITOR_virtualCount = 6;
 
 const get_EDITOR_sum_diffPositive = () => EDITOR_int_fields[7];
 const set_EDITOR_sum_diffPositive = (int) => EDITOR_int_fields[7] = int;
-const INDEXOF_EDITOR_sum_diffPositive = () => 7;
+const INDEXOF_EDITOR_sum_diffPositive = 7;
 
 const get_EDITOR_ONSCROLLvirtualCount = () => EDITOR_int_fields[8];
 const set_EDITOR_ONSCROLLvirtualCount = (int) => EDITOR_int_fields[8] = int;
-const INDEXOF_EDITOR_ONSCROLLvirtualCount = () => 8;
+const INDEXOF_EDITOR_ONSCROLLvirtualCount = 8;
 set_EDITOR_ONSCROLLvirtualCount(0);
 
 const get_EDITOR_sum_diffNegative = () => EDITOR_int_fields[9];
 const set_EDITOR_sum_diffNegative = (int) => EDITOR_int_fields[9] = int;
-const INDEXOF_EDITOR_sum_diffNegative = () => 9;
+const INDEXOF_EDITOR_sum_diffNegative = 9;
 
 const get_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber = () => EDITOR_int_fields[10];
 const set_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber = (int) => EDITOR_int_fields[10] = int;
@@ -284,11 +284,11 @@ const set_EDITOR_offsetWithinSpan = (int) => EDITOR_int_fields[23] = int;
 
 const get_EDITOR_longestLine_indexLine = () => EDITOR_int_fields[24];
 const set_EDITOR_longestLine_indexLine = (int) => EDITOR_int_fields[24] = int;
-const INDEXOF_EDITOR_longestLine_indexLine = () => 24;
+const INDEXOF_EDITOR_longestLine_indexLine = 24;
 
 const get_EDITOR_longestLine_length = () => EDITOR_int_fields[25];
 const set_EDITOR_longestLine_length = (int) => EDITOR_int_fields[25] = int;
-const INDEXOF_EDITOR_longestLine_length = () => 25;
+const INDEXOF_EDITOR_longestLine_length = 25;
 
 /**
  * The get_EDITOR_contentWidth() is calculated via Math.ceil(someVar * otherVar) so this is faster to check whether content width will change rather than the multiplication and ceil.

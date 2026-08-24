@@ -598,15 +598,15 @@ function EDITOR_render_do_CreateViewport() {
     let local_EDITOR_int_fields = EDITOR_int_fields;
 
 
-    let remember_scrollTop = local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop()];
+    let remember_scrollTop = local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
     let remember_scrollLeft = lastReadNumber_scrollLeft;
 
     EDITOR_baseElement.scrollTop = 0;
-    local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop()] = 0;
+    local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop] = 0;
     EDITOR_baseElement.scrollLeft = 0;
     lastReadNumber_scrollLeft = 0;
 
-    local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount()] = get_EDITOR_virtualCount();
+    local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount] = get_EDITOR_virtualCount();
 
     cached_EDITOR_gutter.innerHTML = '';
     cached_EDITOR_textElement.innerHTML = '';
@@ -616,9 +616,9 @@ function EDITOR_render_do_CreateViewport() {
     let left = gutterWidthTotal_withPxUnits;
     let gutterWidth = `${get_EDITOR_gutterWidthStyleValue()}px`;
 
-    for (var i = 0; i < local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()]; i++) {
+    for (var i = 0; i < local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]; i++) {
 
-        let indexLine = i + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine()];
+        let indexLine = i + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
 
         let gutterLineElement = document.createElement('div');
         if (indexLine >= EDITOR_lineEndPositionList.count) {
@@ -784,18 +784,18 @@ function EDITOR_onScroll_WRAPIT() {
  */
 function EDITOR_render_do_Scroll(timestamp) {
     let local_EDITOR_int_fields = EDITOR_int_fields;
-    let local_lineHeight = local_EDITOR_int_fields[INDEXOF_EDITOR_lineHeight()];
+    let local_lineHeight = local_EDITOR_int_fields[INDEXOF_EDITOR_lineHeight];
 
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
-    local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine()] = (Math.floor(local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop()] / local_lineHeight));
+    local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] = (Math.floor(local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop] / local_lineHeight));
     
     // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 1 of 4)
-    let local_prevVli = local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine()];
-    let local_currVli = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine()];
-    local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine()] = local_currVli;
+    let local_prevVli = local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine];
+    let local_currVli = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+    local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine] = local_currVli;
 
     // TODO: Instead of adding 1000 here you should do it when you check the debounce
-    local_EDITOR_int_fields[INDEXOF_EDITOR_scrollEndDeadline()] = timestamp + 1000; // TODO: Move this to the scroll event handler (probably-maybe)
+    local_EDITOR_int_fields[INDEXOF_EDITOR_scrollEndDeadline] = timestamp + 1000; // TODO: Move this to the scroll event handler (probably-maybe)
 
     if (!isScrolling) {
         // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 2 of 4)
@@ -809,7 +809,7 @@ function EDITOR_render_do_Scroll(timestamp) {
         local_currVli = currVli
     }
 
-    local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop()] = local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop()]; // TODO: Move this to the scroll event handler (probably-maybe)
+    local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop] = local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop]; // TODO: Move this to the scroll event handler (probably-maybe)
 
     // TODO: Move this to the leading edge? (maybe)
     if (EDITOR_primaryCursor.editKind !== ENUM_EditKind_None) {
@@ -835,21 +835,21 @@ function EDITOR_render_do_Scroll(timestamp) {
     let EDITOR_textByteList_bytes = EDITOR_textByteList.bytes;
     let local_EDITOR_decoder = EDITOR_decoder;
 
-    if (diff > 0 && diff < local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()]) {
+    if (diff > 0 && diff < local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]) {
 
-        local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive()] += diff;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive] += diff;
 
         // Note: this case has 'vertical = (prevVli + get_EDITOR_virtualCount()) * local_lineHeight;' I believe 'get_EDITOR_virtualCount' === 'get_EDITOR_ONSCROLLvirtualCount' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
-        lowerBound = local_prevVli + local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount()];
+        lowerBound = local_prevVli + local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount];
         upperBound = lowerBound + diff;
 
         beltIndexLine = EDITOR_beltIndexZero - 1 /*This decrement avoids that.*/;
 
         EDITOR_beltIndexZero = (beltIndexLine + 1/*This decrement avoids that... but here you need to undo it for a moment*/ + diff) % local_ArrayFrom_textElement_children_length;
     }
-    else if (diff < 0 && (diff *= -1) < local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()]) {
+    else if (diff < 0 && (diff *= -1) < local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]) {
 
-        local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffNegative()] += diff;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffNegative] += diff;
 
         lowerBound = local_currVli;
         upperBound = lowerBound + diff;
@@ -862,9 +862,9 @@ function EDITOR_render_do_Scroll(timestamp) {
     }
     else {
         lowerBound = local_currVli;
-        upperBound = lowerBound + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()];
+        upperBound = lowerBound + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
-        local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive()] += local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive] += local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
         beltIndexLine = EDITOR_beltIndexZero - 1/*This decrement avoids that.*/;
     }
@@ -944,9 +944,9 @@ function EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli) {
 
     EDITOR_finalizeAllCursors();
 
-    if (local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop()] === local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop()] &&
-        prevVli === local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine()] &&
-        local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount()] === local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()]) {
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop] === local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop] &&
+        prevVli === local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] &&
+        local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount] === local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]) {
             // TODO: this is directly tied to a scroll event on EDITOR_baseElement so handle it from there perhaps?
             // TODO: this code is duplicated inside EDITOR_drawHorizontalScrollbar, reduce duplication?
             if (cached_EDITOR_horizontal_scrollbar.scrollLeft !== lastReadNumber_scrollLeft) {
@@ -955,13 +955,13 @@ function EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli) {
             return true;
     }
 
-    if (local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount()] !== local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()]) {
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount] !== local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]) {
             // Force case 3
             prevVli = 0;
-            currVli = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()];
+            currVli = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
             // TODO: Duplicated setting of scrolltop; this case and just baseline everytime vertical scrolls it is done in this method elsewhere
-            local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop()] = local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop()];
+            local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop] = local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
             EDITOR_render_do_CreateViewport();
             return false;
     }
@@ -1272,7 +1272,7 @@ function EDITOR_state_setText(text, fileStartsWithBom, textSourceIdentifier, FOR
     let local_EDITOR_int_fields = EDITOR_int_fields;
 
     EDITOR_baseElement.scrollTop = 0;
-    local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop()] = 0;
+    local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop] = 0;
     EDITOR_baseElement.scrollLeft = 0;
     lastReadNumber_scrollLeft = 0;
     
@@ -1312,9 +1312,9 @@ function EDITOR_state_setText(text, fileStartsWithBom, textSourceIdentifier, FOR
                         lineEndString = EDITOR_lineEndString = '\r';
                     }
                 }
-                if (lineLength > local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length()]) {
-                    local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length()] = lineLength;
-                    local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine()] = local_EDITOR_lineEndPositionList.count;
+                if (lineLength > local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length]) {
+                    local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] = lineLength;
+                    local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine] = local_EDITOR_lineEndPositionList.count;
                 }
                 lineLength = 0;
                 local_EDITOR_lineEndPositionList.insert(local_EDITOR_lineEndPositionList.count, local_EDITOR_textByteList.count);
@@ -1324,9 +1324,9 @@ function EDITOR_state_setText(text, fileStartsWithBom, textSourceIdentifier, FOR
                 if (!lineEndString) {
                     lineEndString = EDITOR_lineEndString = '\n';
                 }
-                if (lineLength > local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length()]) {
-                    local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length()] = lineLength;
-                    local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine()] = local_EDITOR_lineEndPositionList.count;
+                if (lineLength > local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length]) {
+                    local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] = lineLength;
+                    local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine] = local_EDITOR_lineEndPositionList.count;
                 }
                 lineLength = 0;
                 local_EDITOR_lineEndPositionList.insert(local_EDITOR_lineEndPositionList.count, local_EDITOR_textByteList.count);
@@ -1378,7 +1378,7 @@ function EDITOR_state_setText(text, fileStartsWithBom, textSourceIdentifier, FOR
     // ...the difference between the previous and new value is 'get_EDITOR_virtualCount()'...
     // ...thus 'get_EDITOR_virtualCount()' amount of lines get redrawn...
     // ...i.e.: the entire viewport is redrawn with the new file's text.
-    local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine()] = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()];
+    local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 }
 
 /**

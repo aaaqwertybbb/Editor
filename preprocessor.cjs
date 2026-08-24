@@ -706,3 +706,18 @@ function getFiles() {
       import "./javascriptFeatures";
       //__#__
 */
+
+/*
+Google AI:
+
+> I am making a bundler for my vanilla js project. A lot of it is already implemented. But I had an idea I wanted to bounce off you.
+
+< ...
+
+> The project that I'm using the bundler with is an electron app. It is a text editor.
+> I have far more details but I want to take it bit by bit to make sure we're on the same track.
+
+< ...
+
+
+*/

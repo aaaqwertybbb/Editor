@@ -602,7 +602,7 @@ function EDITOR_render_do_CreateViewport() {
     let remember_scrollLeft = lastReadNumber_scrollLeft;
 
     EDITOR_baseElement.scrollTop = 0;
-    local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop] = 0;
+    //local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop] = 0; // TODO: This seems weird
     EDITOR_baseElement.scrollLeft = 0;
     lastReadNumber_scrollLeft = 0;
 
@@ -806,7 +806,7 @@ function EDITOR_render_do_Scroll(timestamp) {
         // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 4 of 4)
         // ...and here the locals assigned the same value as the globals in case 'EDITOR_onScroll_LeadingEdge' modified the globals.
         local_prevVli = prevVli;
-        local_currVli = currVli
+        local_currVli = currVli;
     }
 
     local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop] = local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop]; // TODO: Move this to the scroll event handler (probably-maybe)
@@ -957,11 +957,16 @@ function EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli) {
 
     if (local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount] !== local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]) {
             // Force case 3
-            prevVli = 0;
-            currVli = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+            //
+            // An overflow will wrap around and still give you a diff of 'local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]'.
+            // You cannot modify 'currVli' because the value is used by case '3' itself.
+            //
+            prevVli = currVli + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+            //prevVli = 0;
+            //currVli = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
             // TODO: Duplicated setting of scrolltop; this case and just baseline everytime vertical scrolls it is done in this method elsewhere
-            local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop] = local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
+            local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop] = local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop]; // TODO: This seems weird
             EDITOR_render_do_CreateViewport();
             return false;
     }

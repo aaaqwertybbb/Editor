@@ -450,8 +450,8 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
     
     tvd_oncontextmenu_async(divItem, indexItem, event_button, event_clientX, event_clientY, relativeIndex) {
         let optionList = [
-            new MenuOption(get_CommandKind_Copy(), 'Copy', null),
-            new MenuOption(get_CommandKind_CopyAbsolutePath(), 'Copy Absolute Path', null),
+            new MenuOption(ENUM_CommandKind_Copy, 'Copy', null),
+            new MenuOption(ENUM_CommandKind_CopyAbsolutePath, 'Copy Absolute Path', null),
         ];
 
         this.component.ensure_boundingClientRect();
@@ -651,18 +651,18 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
             target.nodeKind === get_TreeViewNodeKind_isExpandable_NOTisExpanded()) {
             
             // Directory
-            optionList.push(new MenuOption(get_CommandKind_NewFile_File(), 'NewFile', null));
-            optionList.push(new MenuOption(get_CommandKind_NewFile_Directory(), 'NewDirectory', null));
-            optionList.push(new MenuOption(get_CommandKind_DeleteFile_Directory(), 'Delete', null));
-            optionList.push(new MenuOption(get_CommandKind_RenameFile_Directory(), 'Rename', null));
-            optionList.push(new MenuOption(get_CommandKind_Paste(), 'Paste', null));
-            optionList.push(new MenuOption(get_CommandKind_Cut(), 'Cut', null));
+            optionList.push(new MenuOption(ENUM_CommandKind_NewFile_File, 'NewFile', null));
+            optionList.push(new MenuOption(ENUM_CommandKind_NewFile_Directory, 'NewDirectory', null));
+            optionList.push(new MenuOption(ENUM_CommandKind_DeleteFile_Directory, 'Delete', null));
+            optionList.push(new MenuOption(ENUM_CommandKind_RenameFile_Directory, 'Rename', null));
+            optionList.push(new MenuOption(ENUM_CommandKind_Paste, 'Paste', null));
+            optionList.push(new MenuOption(ENUM_CommandKind_Cut, 'Cut', null));
         }
         else {
             // File
-            optionList.push(new MenuOption(get_CommandKind_DeleteFile_File(), 'Delete', null));
-            optionList.push(new MenuOption(get_CommandKind_RenameFile_File(), 'Rename', null));
-            optionList.push(new MenuOption(get_CommandKind_Cut(), 'Cut', null));
+            optionList.push(new MenuOption(ENUM_CommandKind_DeleteFile_File, 'Delete', null));
+            optionList.push(new MenuOption(ENUM_CommandKind_RenameFile_File, 'Rename', null));
+            optionList.push(new MenuOption(ENUM_CommandKind_Cut, 'Cut', null));
         }
     }
 }
@@ -711,8 +711,8 @@ function toggleShowExplorerButton_onClick() {
 async function EXPLORER_pickFolderOrWorkspaceButton_onClick() {
     const EXPLORER_pickFolderOrWorkspaceButton = document.getElementById('EXPLORER_folderOrWorkspaceButtons');
     let optionList = [
-        new MenuOption(get_CommandKind_SelectFolder(), 'Folder', null),
-        new MenuOption(get_CommandKind_SelectWorkspace(), 'Workspace', null),
+        new MenuOption(ENUM_CommandKind_SelectFolder, 'Folder', null),
+        new MenuOption(ENUM_CommandKind_SelectWorkspace, 'Workspace', null),
     ];
     let boundingClientRect = EXPLORER_pickFolderOrWorkspaceButton.getBoundingClientRect();
     await menuSet(/*context*/ 'EXPLORER_pickFolderOrWorkspaceButton', /*target*/ null, optionList, /*left*/ boundingClientRect.left, /*top*/ boundingClientRect.top + boundingClientRect.height, /*NOTshouldFocus*/ false, /*index*/ 0, /*onHideAction*/ null);
@@ -782,7 +782,7 @@ async function EXPLORER_pickFolderOrWorkspaceButton_MenuOnClick(indexClicked, el
     }
 
     switch (commandKind) {
-        case get_CommandKind_SelectFolder():
+        case ENUM_CommandKind_SelectFolder:
             {
                 const EXPLORER_Element = document.getElementById('EXPLORER');
                 if (!EXPLORER_Element) return;
@@ -803,7 +803,7 @@ async function EXPLORER_pickFolderOrWorkspaceButton_MenuOnClick(indexClicked, el
                 EXPLORER_director.component.draw_create_request(EXPLORER_Element, null);
             }
             break;
-        case get_CommandKind_SelectWorkspace():
+        case ENUM_CommandKind_SelectWorkspace:
             {
                 const EXPLORER_Element = document.getElementById('EXPLORER');
                 if (!EXPLORER_Element) return;
@@ -831,12 +831,12 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
         return;
     }
 
-    if (commandKind !== get_CommandKind_Cut() & commandKind !== get_CommandKind_Paste()) {
+    if (commandKind !== ENUM_CommandKind_Cut & commandKind !== ENUM_CommandKind_Paste) {
         EXPLORER_menuOptionCut_object = null;
     }
 
     switch (commandKind) {
-        case get_CommandKind_Copy():
+        case ENUM_CommandKind_Copy:
             if (MENU_target.id) {
                 // TODO: optimize this?
                 const entry = await window.myAPI.getFilesystemEntryById(MENU_target.id);
@@ -844,7 +844,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 await window.myAPI.setClipboard('file:///' + entry.absolutePath);
             }
             break;
-        case get_CommandKind_Cut():
+        case ENUM_CommandKind_Cut:
             // they don't fully work but I'm not feeling overly interested in anything at the moment I wanna just lay down and do nothing so I'm pleased that I did something at all
             if (MENU_target.id) {
                 // TODO: optimize this?
@@ -860,7 +860,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 await window.myAPI.setClipboard(text);
             }
             break;
-        case get_CommandKind_CopyAbsolutePath():
+        case ENUM_CommandKind_CopyAbsolutePath:
             if (MENU_target.id) {
                 // TODO: optimize this?
                 const entry = await window.myAPI.getFilesystemEntryById(MENU_target.id);
@@ -868,7 +868,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 await window.myAPI.setClipboard(entry.absolutePath);
             }
             break;
-        case get_CommandKind_Paste():
+        case ENUM_CommandKind_Paste:
             {
                 EXPLORER_director.nodeList.getElementAt(MENU_target.indexItem);
                 let nodeKind = TreeView_pooledNode_nodeKind;
@@ -1016,7 +1016,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                     }
                 break;
             }
-        case get_CommandKind_NewFile_Directory():
+        case ENUM_CommandKind_NewFile_Directory:
             {
                 if (!MENU_target.id) return;
                 // TODO: optimize this?
@@ -1027,7 +1027,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 await WIDGET_show(get_WidgetKind_InputText(), menuOptionX, menuOptionY, 'filename', entry, MENU_target, NewFile_Directory_WIDGET_InputText_callback);
                 break;
             }
-        case get_CommandKind_NewFile_File():
+        case ENUM_CommandKind_NewFile_File:
             {
                 if (!MENU_target.id) return;
                 // TODO: optimize this?
@@ -1038,7 +1038,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 await WIDGET_show(get_WidgetKind_InputText(), menuOptionX, menuOptionY, 'filename', entry, MENU_target, NewFile_File_WIDGET_InputText_callback);
                 break;
             }
-        case get_CommandKind_DeleteFile_Directory():
+        case ENUM_CommandKind_DeleteFile_Directory:
             {
                 if (!MENU_target.id) return;
                 // TODO: optimize this?
@@ -1050,7 +1050,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 await WIDGET_show(get_WidgetKind_YesCancel(), menuOptionX, menuOptionY, 'delete ' + filename, entry, MENU_target, DeleteFile_Directory_YesCancel_callback);
                 break;
             }
-        case get_CommandKind_DeleteFile_File():
+        case ENUM_CommandKind_DeleteFile_File:
             {
                 if (!MENU_target.id) return;
                 // TODO: optimize this?
@@ -1062,7 +1062,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 await WIDGET_show(get_WidgetKind_YesCancel(), menuOptionX, menuOptionY, 'delete ' + filename, entry, MENU_target, DeleteFile_File_YesCancel_callback);
                 break;
             }
-        case get_CommandKind_RenameFile_Directory():
+        case ENUM_CommandKind_RenameFile_Directory:
             {
                 if (!MENU_target.id) return;
                 // TODO: optimize this?
@@ -1074,7 +1074,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 await WIDGET_show(get_WidgetKind_InputText(), menuOptionX, menuOptionY, 'rename', filename, {MENU_target:MENU_target, entry:entry}, RenameFile_Directory_InputText_callback);
                 break;
             }
-        case get_CommandKind_RenameFile_File():
+        case ENUM_CommandKind_RenameFile_File:
             {
                 /*
                 Maybe the only difference between the _Directory and _File cases for each ..._...

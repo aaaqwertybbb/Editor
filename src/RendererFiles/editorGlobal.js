@@ -5315,10 +5315,10 @@ function EDITOR_onMouseDown(event) {
 
 function EDITOR_onContextMenu() {
     let optionList = [
-        new MenuOption(get_CommandKind_Cut(), 'Cut', null),
-        new MenuOption(get_CommandKind_Copy(), 'Copy', null),
-        new MenuOption(get_CommandKind_Paste(), 'Paste', null),
-        new MenuOption(get_CommandKind_Find(), 'Find', null),
+        new MenuOption(ENUM_CommandKind_Cut, 'Cut', null),
+        new MenuOption(ENUM_CommandKind_Copy, 'Copy', null),
+        new MenuOption(ENUM_CommandKind_Paste, 'Paste', null),
+        new MenuOption(ENUM_CommandKind_Find, 'Find', null),
     ];
 
     let menuLeft = get_EDITOR_recentBoundingClientRect_left() + get_EDITOR_gutterWidthTotal() + EDITOR_primaryCursor.cursorTranslateXValue - lastReadNumber_scrollLeft;
@@ -8294,22 +8294,22 @@ async function EDITOR_MenuOnClick(indexClicked, elementClicked) {
     let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
 
     switch (commandKind) {
-        case get_CommandKind_Cut():
+        case ENUM_CommandKind_Cut:
             EDITOR_finalizeAllCursors();
             await EDITOR_copySelection(EDITOR_primaryCursor);
             EDITOR_removeSelection(EDITOR_primaryCursor);
             EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
             return;
-        case get_CommandKind_Copy():
+        case ENUM_CommandKind_Copy:
             EDITOR_finalizeAllCursors();
             return EDITOR_copySelection(EDITOR_primaryCursor);
-        case get_CommandKind_Paste():
+        case ENUM_CommandKind_Paste:
             EDITOR_finalizeAllCursors();
             let clipboard = await window.myAPI.readClipboard();
             EDITOR_paste(EDITOR_primaryCursor, clipboard);
             EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
             return;
-        case get_CommandKind_Find():
+        case ENUM_CommandKind_Find:
             EDITOR_findOverlay_showSetter(!get_EDITOR_findOverlay_show());
             return;
     }

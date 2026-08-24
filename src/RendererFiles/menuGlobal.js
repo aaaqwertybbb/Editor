@@ -1,27 +1,27 @@
-const get_CommandKind_None = () => 0;
-const get_CommandKind_Submenu = () => 1;
-const get_CommandKind_Copy = () => 2;
-const get_CommandKind_CopyAbsolutePath = () => 3;
-const get_CommandKind_Cut = () => 4;
-const get_CommandKind_Paste = () => 5;
-const get_CommandKind_NewFile_Directory = () => 6;
-const get_CommandKind_NewFile_File = () => 7;
-const get_CommandKind_DeleteFile_Directory = () => 8;
-const get_CommandKind_DeleteFile_File = () => 9;
-const get_CommandKind_RenameFile_Directory = () => 10;
-const get_CommandKind_RenameFile_File = () => 11;
-const get_CommandKind_Find = () => 12;
-const get_CommandKind_SelectFolder = () => 13;
-const get_CommandKind_SelectWorkspace = () => 14;
+const ENUM_CommandKind_None = 0;
+const ENUM_CommandKind_Submenu = 1;
+const ENUM_CommandKind_Copy = 2;
+const ENUM_CommandKind_CopyAbsolutePath = 3;
+const ENUM_CommandKind_Cut = 4;
+const ENUM_CommandKind_Paste = 5;
+const ENUM_CommandKind_NewFile_Directory = 6;
+const ENUM_CommandKind_NewFile_File = 7;
+const ENUM_CommandKind_DeleteFile_Directory = 8;
+const ENUM_CommandKind_DeleteFile_File = 9;
+const ENUM_CommandKind_RenameFile_Directory = 10;
+const ENUM_CommandKind_RenameFile_File = 11;
+const ENUM_CommandKind_Find = 12;
+const ENUM_CommandKind_SelectFolder = 13;
+const ENUM_CommandKind_SelectWorkspace = 14;
 
 /**
  * This needs to wrap the list.js?
  */
 class MenuOption {
-    commandKind = get_CommandKind_None();
+    commandKind = ENUM_CommandKind_None;
     text = '';
     /**
-     * If submenu is not null, the commandKind will be overriden to be get_CommandKind_Submenu()
+     * If submenu is not null, the commandKind will be overriden to be ENUM_CommandKind_Submenu
      * @type {MenuOption[]}
      */
     submenu = null;
@@ -29,7 +29,7 @@ class MenuOption {
     /**
      * @param {CommandKind} commandKind 
      * @param {string} text 
-     * @param {MenuOption[]} submenu If submenu is not null, the commandKind will be overriden to be get_CommandKind_Submenu()
+     * @param {MenuOption[]} submenu If submenu is not null, the commandKind will be overriden to be ENUM_CommandKind_Submenu
      */
     constructor(commandKind, text, submenu) {
         this.commandKind = commandKind;
@@ -216,7 +216,7 @@ function MENU_render_do_Set() {
             optionElement.textContent = entry.text;
 
             if (entry.submenu) {
-                optionElement.setAttribute("data-command-kind", get_CommandKind_Submenu());
+                optionElement.setAttribute("data-command-kind", ENUM_CommandKind_Submenu);
                 optionElement.textContent += '>';
             }
             else {

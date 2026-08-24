@@ -104,21 +104,7 @@ module.exports = function (babel) {
     "get_EDITOR_findOverlay_options_matchWord",
     "set_EDITOR_findOverlay_options_matchWord",
 
-    "get_CommandKind_None",
-    "get_CommandKind_Submenu",
-    "get_CommandKind_Copy",
-    "get_CommandKind_CopyAbsolutePath",
-    "get_CommandKind_Cut",
-    "get_CommandKind_Paste",
-    "get_CommandKind_NewFile_Directory",
-    "get_CommandKind_NewFile_File",
-    "get_CommandKind_DeleteFile_Directory",
-    "get_CommandKind_DeleteFile_File",
-    "get_CommandKind_RenameFile_Directory",
-    "get_CommandKind_RenameFile_File",
-    "get_CommandKind_Find",
-    "get_CommandKind_SelectFolder",
-    "get_CommandKind_SelectWorkspace",
+    
 
 
     "get_TrackedSyntaxKind_None",
@@ -201,6 +187,22 @@ module.exports = function (babel) {
 
   // List all the variable names you want to inline
   const TARGET_VARIABLES = [
+
+    "ENUM_CommandKind_None",
+    "ENUM_CommandKind_Submenu",
+    "ENUM_CommandKind_Copy",
+    "ENUM_CommandKind_CopyAbsolutePath",
+    "ENUM_CommandKind_Cut",
+    "ENUM_CommandKind_Paste",
+    "ENUM_CommandKind_NewFile_Directory",
+    "ENUM_CommandKind_NewFile_File",
+    "ENUM_CommandKind_DeleteFile_Directory",
+    "ENUM_CommandKind_DeleteFile_File",
+    "ENUM_CommandKind_RenameFile_Directory",
+    "ENUM_CommandKind_RenameFile_File",
+    "ENUM_CommandKind_Find",
+    "ENUM_CommandKind_SelectFolder",
+    "ENUM_CommandKind_SelectWorkspace",
 
     "ENUM_DialogKind_None",
     "ENUM_DialogKind_FindAll",

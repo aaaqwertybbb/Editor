@@ -1285,7 +1285,10 @@ function EDITOR_state_setText(text, fileStartsWithBom, textSourceIdentifier, FOR
     EDITOR_FORMATTED_textSourceIdentifier = FORMATTED_textSourceIdentifier;
     EDITOR_extensionKind = extensionKind;
     EDITOR_language_line_lex_SET(EDITOR_extensionKind);
-    EDITOR_lineEndString = lineEndString;
+    EDITOR_lineEndString = lineEndString; // use 'lineEndString' for the within-loop checks of '!lineEndString' to avoid reading global scope during loop when 'lineEndString' is equivalent.
+
+    let local_EDITOR_lineEndPositionList = EDITOR_lineEndPositionList;
+    let local_EDITOR_textByteList = EDITOR_textByteList;
 
     /**
      * TODO: I don't know whether I should calculate this from the EDITOR_lineEndPositionList or some such...
@@ -1300,39 +1303,39 @@ function EDITOR_state_setText(text, fileStartsWithBom, textSourceIdentifier, FOR
         switch (text[sourceI]) {
             case '\r':
                 if (sourceI < text.length - 1 & text[sourceI + 1] === '\n') {
-                    if (!EDITOR_lineEndString) {
+                    if (!lineEndString) {
                         EDITOR_lineEndString = '\r\n';
                     }
                     sourceI++;
                 }
                 else {
-                    if (!EDITOR_lineEndString) {
+                    if (!lineEndString) {
                         EDITOR_lineEndString = '\r';
                     }
                 }
                 if (lineLength > local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length()]) {
                     local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length()] = lineLength;
-                    local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine()] = EDITOR_lineEndPositionList.count;
+                    local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine()] = local_EDITOR_lineEndPositionList.count;
                 }
                 lineLength = 0;
-                EDITOR_lineEndPositionList.insert(EDITOR_lineEndPositionList.count, EDITOR_textByteList.count);
-                EDITOR_textByteList.insert(EDITOR_textByteList.count, get_EDITOR_ASCII_LINE_FEED());
+                local_EDITOR_lineEndPositionList.insert(local_EDITOR_lineEndPositionList.count, local_EDITOR_textByteList.count);
+                local_EDITOR_textByteList.insert(local_EDITOR_textByteList.count, get_EDITOR_ASCII_LINE_FEED());
                 break;
             case '\n':
-                if (!EDITOR_lineEndString) {
+                if (!lineEndString) {
                     EDITOR_lineEndString = '\n';
                 }
                 if (lineLength > local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length()]) {
                     local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length()] = lineLength;
-                    local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine()] = EDITOR_lineEndPositionList.count;
+                    local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine()] = local_EDITOR_lineEndPositionList.count;
                 }
                 lineLength = 0;
-                EDITOR_lineEndPositionList.insert(EDITOR_lineEndPositionList.count, EDITOR_textByteList.count);
-                EDITOR_textByteList.insert(EDITOR_textByteList.count, get_EDITOR_ASCII_LINE_FEED());
+                local_EDITOR_lineEndPositionList.insert(local_EDITOR_lineEndPositionList.count, local_EDITOR_textByteList.count);
+                local_EDITOR_textByteList.insert(local_EDITOR_textByteList.count, get_EDITOR_ASCII_LINE_FEED());
                 break;
             case '\t':
                 lineLength += 4;
-                EDITOR_textByteList.insertBytes(EDITOR_textByteList.count, EDITOR_tab_tabsbytes, /*offset*/ 0, /*length*/ 4);
+                local_EDITOR_textByteList.insertBytes(local_EDITOR_textByteList.count, EDITOR_tab_tabsbytes, /*offset*/ 0, /*length*/ 4);
                 break;
             default:
                 lineLength++;
@@ -1341,12 +1344,12 @@ function EDITOR_state_setText(text, fileStartsWithBom, textSourceIdentifier, FOR
                 // tbh: TODO: 'charCodeAt' also might be more allocation expensive than you expect. It returns a JavaScript number. Switching and returning an index from byte array prehardcoded might avoid an allocation per number returned?
                 // ... although I hear most engines store numbers such that the pointer represents the value and you avoid the allocation but even then where is the metadata that tells you how to read that pointer differently than the other ones etc...
                 //
-                EDITOR_textByteList.insert(EDITOR_textByteList.count, text.charCodeAt(sourceI));
+                local_EDITOR_textByteList.insert(local_EDITOR_textByteList.count, text.charCodeAt(sourceI));
                 break;
         }
     }
 
-    EDITOR_lineEndPositionList.insert(EDITOR_lineEndPositionList.count, EDITOR_textByteList.count);
+    local_EDITOR_lineEndPositionList.insert(local_EDITOR_lineEndPositionList.count, local_EDITOR_textByteList.count);
 
     update_VirtualIndexLine();
     update_virtualCount();

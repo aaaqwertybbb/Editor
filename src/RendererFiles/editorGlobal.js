@@ -3416,7 +3416,7 @@ function EDITOR_getCharacterPrevious_KIND(indexColumn, positionIndex) {
         return EDITOR_getCharacterKind(EDITOR_getCharacterPrevious(indexColumn, positionIndex));
     }
     else {
-        return get_CharacterKind_None();
+        return ENUM_CharacterKind_None;
     }
 }
 
@@ -3425,7 +3425,7 @@ function EDITOR_getCharacterCurrent_KIND(indexColumn, positionIndex, lineEnd) {
         return EDITOR_getCharacterKind(EDITOR_getCharacterCurrent(indexColumn, positionIndex, lineEnd));
     }
     else {
-        return get_CharacterKind_None();
+        return ENUM_CharacterKind_None;
     }
 }
 
@@ -7870,10 +7870,10 @@ function EDITOR_state_do_Delete(cursor, event) {
                 originalCharacterKind = getCharacter_kind_raw(tempPosition);
             }
             else {
-                originalCharacterKind = get_CharacterKind_None();
+                originalCharacterKind = ENUM_CharacterKind_None;
             }
 
-            let thisCharacterKind = get_CharacterKind_None();
+            let thisCharacterKind = ENUM_CharacterKind_None;
             
             tempIndexColumn++;
             tempPosition++;
@@ -7884,7 +7884,7 @@ function EDITOR_state_do_Delete(cursor, event) {
                     thisCharacterKind = getCharacter_kind_raw(tempPosition);
                 }
                 else {
-                    thisCharacterKind = get_CharacterKind_None();
+                    thisCharacterKind = ENUM_CharacterKind_None;
                 }
                 if (thisCharacterKind !== originalCharacterKind) {
                     break;
@@ -8274,14 +8274,14 @@ function EDITOR_getCharacterKind(character) {
         case '7':
         case '8':
         case '9':
-            return get_CharacterKind_LetterOrDigit();
+            return ENUM_CharacterKind_LetterOrDigit;
         case ' ':
         case '\t':
         case '\r':
         case '\n':
-            return get_CharacterKind_Whitespace();
+            return ENUM_CharacterKind_Whitespace;
         default:
-            return get_CharacterKind_Punctuation();
+            return ENUM_CharacterKind_Punctuation;
     }
 }
 

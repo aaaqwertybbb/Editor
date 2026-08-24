@@ -121,10 +121,10 @@ module.exports = function (babel) {
     "ENUM_EnterKeyEventKind_EndOfLine",
     "ENUM_EnterKeyEventKind_AmongALine",
 
-    "get_CharacterKind_None",
-    "get_CharacterKind_Whitespace",
-    "get_CharacterKind_Punctuation",
-    "get_CharacterKind_LetterOrDigit",
+    "ENUM_CharacterKind_None",
+    "ENUM_CharacterKind_Whitespace",
+    "ENUM_CharacterKind_Punctuation",
+    "ENUM_CharacterKind_LetterOrDigit",
 
     "get_DialogKind_None",
     "get_DialogKind_FindAll",

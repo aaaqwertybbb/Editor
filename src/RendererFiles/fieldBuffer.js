@@ -397,10 +397,10 @@ const ENUM_EnterKeyEventKind_AmongALine = 3;
  * 
  * TODO: Bug only 1 character selected when punctuation then letterOrDigit click between them the letterOrDigit is more than 1 contiguous only 1 selected.
  */
-const get_CharacterKind_None = () => 0;
-const get_CharacterKind_Whitespace = () => 1;
-const get_CharacterKind_Punctuation = () => 2;
-const get_CharacterKind_LetterOrDigit = () => 3;
+const ENUM_CharacterKind_None = 0;
+const ENUM_CharacterKind_Whitespace = 1;
+const ENUM_CharacterKind_Punctuation = 2;
+const ENUM_CharacterKind_LetterOrDigit = 3;
 
 // see editorGlobal.js:
 // > const count_of_wellknown_renderKinds = ...;

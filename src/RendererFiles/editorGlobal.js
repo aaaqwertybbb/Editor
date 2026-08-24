@@ -9211,4 +9211,8 @@ My IQ is dropping every second
 
 I am completely incompetent I can't think I can't code I can't brain
 
+I keep seeing taylor swift we are never ever getting back together
+and all I can think is no. You don't make that decision.
+I'm the one not getting back together with you.
+
 */

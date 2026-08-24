@@ -5,7 +5,16 @@
 Only a single directory is permitted,
 - no recursion,
 - no other directories can exist in the target directory
-- and neither of the above cases are asserted, you'll just get undefined behavior.
+- Reserved paths
+    - outputFolder:
+        - './preprocessor/'
+    - finalizedFile:
+        - './preprocessor/__PREPROCESSEDbundle__.js'
+        - './preprocessor/testPREPROCESSEDbundletest.js';
+    - timestampDictionaryFile:
+        - './preprocessor/__TIMESTAMP_DICTIONARY_FILE__.json'
+        - './preprocessor/test__TIMESTAMP_DICTIONARY_FILE__.json'
+- and none of the above cases are asserted, you'll just get undefined behavior.
 
 I don't like to make a comment saying this but I'm thinking about
 which came first the chicken or the egg kinda scenario.
@@ -67,6 +76,7 @@ let inputFolder;
 let outputFolder;
 let finalizedFile;
 let outputFile;
+let timestampDictionaryFile;
 
 let filePriorityOrder;
 
@@ -82,6 +92,8 @@ let sourceBuffer;
 let sourceBufferCount;
 
 let textEncoder = new TextEncoder();
+
+let timestampDictionaryObject = {};
 
 // TODO: Perhaps moving writeBuilder to a "string builder (per character) esque" implementation rather than the writeBuilder being an array of substrings would be more efficient...
 // ...especially given that as I add more features to this, the frequency of substrings will likely increase drastically.
@@ -120,6 +132,9 @@ function doAllBundleFiles(files) {
         flushAppendToFile();
     }
 
+    const jsonString = JSON.stringify(timestampDictionaryObject, null, 2);
+    fs.writeFileSync(timestampDictionaryFile, jsonString);
+
     // TODO: You might be able to append the "cache" file and to the output as you go instead of creating the caches in one loop
     // and then appending the caches in another.
 
@@ -135,20 +150,32 @@ function CREATE_SINGLE_FINALIZE_FILE(filename) {
 }
 
 function sourceFileChanged(sourcePath, cachedPath) {
-    // 1. If cache doesn't exist, it definitely changed
-    if (!fs.existsSync(cachedPath)) return true;
 
+    let result;
     const sourceStat = fs.statSync(sourcePath);
-    const cachedStat = fs.statSync(cachedPath);
 
-    // 2. Check precise file size in bytes
-    const sizeChanged = sourceStat.size !== cachedStat.size;
+    let previousTimestamp = timestampDictionaryObject[sourcePath];
 
-    // 3. Check precise modification time in floating-point milliseconds
-    const timeChanged = sourceStat.mtimeMs !== cachedStat.mtimeMs;
+    // 1. If cache doesn't exist, it definitely changed
+    if (!fs.existsSync(cachedPath) || previousTimestamp === undefined || previousTimestamp === null) {
+        result = true;
+    }
+    else {
+        const cachedStat = fs.statSync(cachedPath);
 
-    // Trigger a rebuild if either the size or the timestamp differs
-    return sizeChanged || timeChanged;
+        // 2. Check precise file size in bytes
+        //const sizeChanged = sourceStat.size !== cachedStat.size;
+
+        // 3. Check precise modification time in floating-point milliseconds
+        const timeChanged = sourceStat.mtimeMs !== previousTimestamp;
+
+        // Trigger a rebuild if either the size or the timestamp differs
+        result = /*sizeChanged || */timeChanged;
+    }
+
+    timestampDictionaryObject[sourcePath] = sourceStat.mtimeMs;
+
+    return result;
 }
 
 function bundleFile(fileName) {
@@ -718,12 +745,19 @@ function readyFileState() {
         outputFolder = './preprocessor/';
         finalizedFile = './preprocessor/testPREPROCESSEDbundletest.js';
         outputFile = finalizedFile;
+        timestampDictionaryFile = './preprocessor/test__TIMESTAMP_DICTIONARY_FILE__.json';
     }
     else {
         inputFolder = './src/RendererFiles';
         outputFolder = './preprocessor/';
         finalizedFile = './preprocessor/__PREPROCESSEDbundle__.js';
         outputFile = finalizedFile;
+        timestampDictionaryFile = './preprocessor/__TIMESTAMP_DICTIONARY_FILE__.json';
+    }
+
+    if (fs.existsSync(timestampDictionaryFile)) {
+        const data = fs.readFileSync(timestampDictionaryFile, 'utf8');
+        timestampDictionaryObject = JSON.parse(data);
     }
 
     // 1. Define the exact loading priority order

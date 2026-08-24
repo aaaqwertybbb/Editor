@@ -819,11 +819,6 @@ function EDITOR_render_do_Scroll(timestamp) {
 
     local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop()] = local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop()]; // TODO: Move this to the scroll event handler (probably-maybe)
 
-    // TODO: Move this to the leading edge? (maybe)
-    if (EDITOR_primaryCursor.editKind !== get_EditKind_None()) {
-        EDITOR_finalizeEdit(EDITOR_primaryCursor);
-    }
-
     // TODO: Consider moving the 0 diff case to the soonest possible line to skip as much code as possible.
     let diff = local_currVli - local_prevVli;
     if (diff === 0) return;
@@ -930,6 +925,14 @@ function EDITOR_render_do_Scroll(timestamp) {
  * @returns true if scrollTop (and a few other details) have not changed, thus indicating the invoker should immediately return from their own rather than continuing with scroll logic.
  */
 function EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli) {
+
+    
+    if (EDITOR_primaryCursor.editKind !== get_EditKind_None()) {
+        // TODO: Timing issue, someone typing while they scroll
+        // TODO: You need to finalize all the cursors not just the primary
+        // TODO: You probably need to "check all the cursors" too not just the primary
+        EDITOR_finalizeEdit(EDITOR_primaryCursor);
+    }
 
     let local_EDITOR_int_fields = EDITOR_int_fields;
     

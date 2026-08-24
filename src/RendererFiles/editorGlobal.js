@@ -9190,4 +9190,14 @@ to get contaminated by these floating cleaning chemical particles.
 I see starry eyes being recommended to me right now remind again that you're a fucking moron
 that can't see shit
 
+He was in the kitchen too but I'd already retreated far away into a corner that was in the opposite direction of the hall
+that went to my room.
+
+But my mom was making raviolis I think they're called and meatballs
+but he had cleaning products near the food
+I think the cleaning products got in the food
+
+I was so hungry I ate some left overs 
+but now I have consumed the cleaning products and I'm going to die
+
 */

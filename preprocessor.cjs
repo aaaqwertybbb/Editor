@@ -794,6 +794,26 @@ Google AI:
 < 3. Handling Deleted Files
 < ...
 
+> how do production grade bundlers determine whether a file has changed?
+
+< Production-grade bundlers (like Webpack, Vite, and esbuild) balance two strategies: metadata checks for raw speed and cryptographic hashing for absolute correctness.
+<
+< They also treat "Watch Mode" (development) and "Persistent Caching" (subsequent cold starts) as two entirely separate problems.
+<
+< ...
+
+> "Timestamps are fast, but they can be unreliable."
+> 
+> I'd like to start with a timestamp implementation but I worry that I somehow could edit a file,
+> and end up with the same timestamp and the bundler therefore doesn't think the file has changed.
+> Is this possible? How high resolution are these timestamps?
+
+< Yes, it is theoretically possible, but practically impossible on modern operating systems unless
+< your bundler runs at speeds faster than a fraction of a microsecond.
+< 
+< ...
+ 
+
 
 
 

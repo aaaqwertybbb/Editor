@@ -595,15 +595,19 @@ function EDITOR_render_request(renderKind) {
 }
 
 function EDITOR_render_do_CreateViewport() {
-    let remember_scrollTop = get_lastReadNumber_scrollTop();
+
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
+
+    let remember_scrollTop = local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop()];
     let remember_scrollLeft = lastReadNumber_scrollLeft;
 
     EDITOR_baseElement.scrollTop = 0;
-    set_lastReadNumber_scrollTop(0);
+    local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop()] = 0;
     EDITOR_baseElement.scrollLeft = 0;
     lastReadNumber_scrollLeft = 0;
 
-    set_EDITOR_ONSCROLLvirtualCount(get_EDITOR_virtualCount());
+    local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount()] = get_EDITOR_virtualCount();
 
     cached_EDITOR_gutter.innerHTML = '';
     cached_EDITOR_textElement.innerHTML = '';
@@ -613,9 +617,9 @@ function EDITOR_render_do_CreateViewport() {
     let left = gutterWidthTotal_withPxUnits;
     let gutterWidth = `${get_EDITOR_gutterWidthStyleValue()}px`;
 
-    for (var i = 0; i < get_EDITOR_virtualCount(); i++) {
+    for (var i = 0; i < local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()]; i++) {
 
-        let indexLine = i + get_EDITOR_virtualIndexLine();
+        let indexLine = i + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine()];
 
         let gutterLineElement = document.createElement('div');
         if (indexLine >= EDITOR_lineEndPositionList.count) {
@@ -629,7 +633,6 @@ function EDITOR_render_do_CreateViewport() {
         gutterLineElement.style.top = top;
         gutterLineElement.style.width = gutterWidth;
 
-        let line = EDITOR_getLineBoundaryPositions(indexLine);
         let div = document.createElement('div');
         div.className = 'eT';
         cached_EDITOR_textElement.appendChild(div);
@@ -644,10 +647,10 @@ function EDITOR_render_do_CreateViewport() {
     ArrayFrom_textElement_children = Array.from(cached_EDITOR_textElement.children);
     ArrayFrom_textElement_children_length = ArrayFrom_textElement_children.length;
 
-    EDITOR_drawHorizontalScrollbar();
+    EDITOR_drawHorizontalScrollbar(); // TODO: This line appearing after 'EDITOR_drawHorizontalScrollbar();' in this function strikes me as odd when skimming the code. (1 of 2)
 
     EDITOR_baseElement.scrollTop = remember_scrollTop;
-    EDITOR_baseElement.scrollLeft = remember_scrollLeft;
+    EDITOR_baseElement.scrollLeft = remember_scrollLeft; // TODO: This line appearing after 'EDITOR_drawHorizontalScrollbar();' in this function strikes me as odd when skimming the code. (1 of 2)
 }
 
 function EDITOR_createViewport() {

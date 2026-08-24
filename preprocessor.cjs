@@ -782,5 +782,20 @@ Google AI:
 > (there's details to this such as determining whether a file changed, and I have to decide on those details still).
 
 < ...
+< 
+< 1. Change Detection (Cache Invalidation)
+< ...
+< - File Modification Timestamps (mtime): Use fs.statSync(). Compare the modified time of the source file against the modified time of its cached version. If the source file is newer, re-process it. This is incredibly fast and requires no extra storage.
+< - Hashing: Calculate an MD5 or SHA-1 hash of the source file content. If the hash matches a saved hash from the last run, skip it. This is more robust than timestamps but costs slightly more CPU.
+<
+< 2. Maintaining Order of Execution
+< ...
+<
+< 3. Handling Deleted Files
+< ...
+
+
+
 
 */
+

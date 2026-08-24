@@ -719,5 +719,32 @@ Google AI:
 
 < ...
 
+> The electron app has a "renderer process", which takes an 'index.html'.
+> 
+> At the bottom of this 'index.html' file I have a script tag to include my vanilla javascript.
+> 
+> (I have more details)
+
+< ...
+
+> I group all of the vanilla javascript files that 'index.html' needs in src/RendererFiles/
+> 
+> There currently are 16 files in this directory.
+> 
+> Thus, you'd need 16 script tags in the 'index.html' to include all 16 files.
+> 
+> One of the goals with the "bundler" was to take all 16 files and combine them all into a single file.
+> 
+> Then, I'd use just 1 script tag in the 'index.html' to include it.
+> 
+> (I have more details)
+
+< ...
+
+> The bundler also removes comments, whitespace, and normalizes the line endings to '\n'.
+> 
+> All of this is already implemented.
+
+
 
 */

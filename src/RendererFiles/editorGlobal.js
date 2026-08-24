@@ -9135,4 +9135,10 @@ and depending on the speed of the event firing
 you'll accrue thousands and thousands of these in the heap per second
 until your program is unusable.
 
+> If I have a class instance, and I use 'this.' within a method on that instance.
+> Is the variable found faster than that of a global variable due to the engine knowing exactly which scope to check
+
+< No, a property on this is not found faster than a local variable, and it is usually not faster than a global variable either.
+< When you use this.variable, you are not looking up a variable in a scope. You are performing a property lookup on an object, which follows an entirely different resolution path in the JavaScript engine.
+
 */

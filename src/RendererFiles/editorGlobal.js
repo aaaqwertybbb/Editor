@@ -959,6 +959,22 @@ function EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli) {
             // An overflow will wrap around and still give you a diff of 'local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]'.
             // You cannot modify 'currVli' because the value is used by case '3' itself.
             //
+            // This is very awkward because all other UI that has this sliding window logic just uses 'currVli'.
+            //
+            // The reason is because they're also re-evaluating their equivalent of 'local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine]'.
+            //
+            // The editor has a local variable 'let local_currVli = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];'
+            // 
+            // If you scroll enough to get a case 3 (full screen "draw") rather than doing some hacky forcing of case 3
+            // you'll find that 'local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine]' within case 3 is
+            // equal to 'local_currVli'.
+            //
+            // But 'local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine]' was being used within case 3
+            // due to this awkward setting of the 'currVli' when doing a hack to force case 3.
+            //
+            // This meant case 3 was incurring an extra global variable lookup (global variable lookup of 'EDITOR_int_fields')
+            // - (or with 'local_EDITOR_int_fields' you are incurring a read of the array only, but still this is presumed to be more than just using the local variable).
+            //
             prevVli = currVli + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
             //prevVli = 0;
             //currVli = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];

@@ -3,13 +3,13 @@
 import "./fieldBuffer"
 //__#__
 
-const get_DialogKind_None = () => "None";
-const get_DialogKind_FindAll = () => "FindAll";
-const get_DialogKind_Settings = () => "Settings";
-const get_DialogKind_DocumentSymbol = () => "DocumentSymbol";
-const get_DialogKind_Debug = () => "Debug";
+const ENUM_DialogKind_None = "None";
+const ENUM_DialogKind_FindAll = "FindAll";
+const ENUM_DialogKind_Settings = "Settings";
+const ENUM_DialogKind_DocumentSymbol = "DocumentSymbol";
+const ENUM_DialogKind_Debug = "Debug";
 
-let DIALOG_currentDialogKind = get_DialogKind_None();
+let DIALOG_currentDialogKind = ENUM_DialogKind_None;
 
 /** A delegate of the form: () => {} */
 let DIALOG_onResizeAction = null;
@@ -21,7 +21,7 @@ let DIALOG_windowExists = false;
 let DIALOG_hasBeenMeaasured = false;
 
 let DIALOG_SHOW_restoreFocusToElement = null;
-let DIALOG_SHOW_currentDialogKind = get_DialogKind_None();
+let DIALOG_SHOW_currentDialogKind = ENUM_DialogKind_None;
 let DIALOG_SHOW_onResizeAction = null;
 
 /**
@@ -115,7 +115,7 @@ function DIALOG_render_do_DimensionsChanged() {
 }
 
 async function DIALOG_render_do_Show() {
-    if (DIALOG_currentDialogKind !== get_DialogKind_None()) {
+    if (DIALOG_currentDialogKind !== ENUM_DialogKind_None) {
         DIALOG_HIDE_shouldRestoreFocus = true;
         await DIALOG_render_do_Hide();
     }
@@ -134,13 +134,13 @@ async function DIALOG_render_do_Show() {
     DIALOG_createWindow();
 
     switch (DIALOG_currentDialogKind) {
-        case get_DialogKind_FindAll():
+        case ENUM_DialogKind_FindAll:
             return DIALOG_FindAll_Create_async();
-        case get_DialogKind_Settings():
+        case ENUM_DialogKind_Settings:
             return DIALOG_Settings_Create_async();
-        case get_DialogKind_DocumentSymbol():
+        case ENUM_DialogKind_DocumentSymbol:
             return DIALOG_DocumentSymbol_Create_async();
-        case get_DialogKind_Debug():
+        case ENUM_DialogKind_Debug:
             return DIALOG_Debug_Create_async();
     }
 }
@@ -157,16 +157,16 @@ async function DIALOG_render_do_Hide() {
     if (!DIALOG_element) return;
 
     switch (DIALOG_currentDialogKind) {
-        case get_DialogKind_FindAll():
+        case ENUM_DialogKind_FindAll:
             await DIALOG_FindAll_Delete_async();
             break;
-        case get_DialogKind_Settings():
+        case ENUM_DialogKind_Settings:
             await DIALOG_Settings_Delete_async();
             break;
-        case get_DialogKind_DocumentSymbol():
+        case ENUM_DialogKind_DocumentSymbol:
             await DIALOG_DocumentSymbol_Delete_async();
             break;
-        case get_DialogKind_Debug():
+        case ENUM_DialogKind_Debug:
             await DIALOG_Debug_Delete_async();
             break;
     }
@@ -175,7 +175,7 @@ async function DIALOG_render_do_Hide() {
 
     DIALOG_onResizeAction = null;
     DIALOG_element.remove();
-    DIALOG_currentDialogKind = get_DialogKind_None();
+    DIALOG_currentDialogKind = ENUM_DialogKind_None;
     if (shouldRestoreFocus) {
         if (DIALOG_restoreFocusToElement) {
             DIALOG_restoreFocusToElement.focus();

@@ -90,7 +90,7 @@ async function window_myAPI_onMessage(data) {
             EDITOR_listComponent_drawItemAction,
             EDITOR_listComponent_onkeydownAction,
             EDITOR_listComponent_getItemsCountFunc);
-        return DIALOG_show_async(get_DialogKind_DocumentSymbol(), dialog_documentSymbol_onResizeAction);
+        return DIALOG_show_async(ENUM_DialogKind_DocumentSymbol, dialog_documentSymbol_onResizeAction);
     }
     else if (data.method === 'textDocument/CustomFullFileLexRequest') {
 
@@ -289,7 +289,7 @@ async function documentBody_onKeyDown(event) {
             return;
         case 'F':
             if (!event.ctrlKey) return;
-            return DIALOG_show_async(get_DialogKind_FindAll());
+            return DIALOG_show_async(ENUM_DialogKind_FindAll);
         case 'Escape':
             // TODO: Provide a way to disable the next (body, and useCapture) 'Escape' keypress...
             // ...so a widget can restore focus to the relevant UI rather than
@@ -337,5 +337,5 @@ async function documentBody_onKeyDown(event) {
 }
 
 async function HEADER_buttonSettings_onClick() {
-    return DIALOG_show_async(get_DialogKind_Settings());
+    return DIALOG_show_async(ENUM_DialogKind_Settings);
 }

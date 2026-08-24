@@ -104,14 +104,6 @@ module.exports = function (babel) {
     "get_EDITOR_findOverlay_options_matchWord",
     "set_EDITOR_findOverlay_options_matchWord",
 
-    
-
-    "get_DialogKind_None",
-    "get_DialogKind_FindAll",
-    "get_DialogKind_Settings",
-    "get_DialogKind_DocumentSymbol",
-    "get_DialogKind_Debug",
-
     "get_CommandKind_None",
     "get_CommandKind_Submenu",
     "get_CommandKind_Copy",
@@ -209,6 +201,12 @@ module.exports = function (babel) {
 
   // List all the variable names you want to inline
   const TARGET_VARIABLES = [
+
+    "ENUM_DialogKind_None",
+    "ENUM_DialogKind_FindAll",
+    "ENUM_DialogKind_Settings",
+    "ENUM_DialogKind_DocumentSymbol",
+    "ENUM_DialogKind_Debug",
 
     "ENUM_EditKind_None",
     "ENUM_EditKind_InsertLtr",

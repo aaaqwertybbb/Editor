@@ -75,6 +75,7 @@ const writeBufferCapacity = 8192;
 let writeBuffer = new Uint8Array(writeBufferCapacity);
 let writeBufferCount = 0;
 
+let reusedFilesCount = 0;
 let emptyLineCount = 0;
 
 let sourceBuffer;
@@ -104,6 +105,7 @@ try {
 
 
 
+    console.log(`reusedFilesCount: ${reusedFilesCount}`);
     console.log(`emptyLineCount: ${emptyLineCount}`);
     console.log(`Successfully bundled ${files.length} files in prioritized order into ${outputFile}`);
 }
@@ -155,6 +157,11 @@ function bundleFile(fileName) {
     // With a uint8array I could move the bytes en mass to a buffer and then to string the buffer.
 
     outputFile = path.join(outputFolder, fileName);
+    if (fs.existsSync(outputFile)) {
+        reusedFilesCount++;
+        return;
+    }
+
     fs.writeFileSync(outputFile, '');
 
     appendToWriteBuilder_string(`\n\n// ${fileName}\n\n`);

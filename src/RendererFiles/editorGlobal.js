@@ -1269,8 +1269,11 @@ function EDITOR_clear() {
 }
 
 function EDITOR_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMATTED_textSourceIdentifier, extensionKind, lineEndString) {
+
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
     EDITOR_baseElement.scrollTop = 0;
-    set_lastReadNumber_scrollTop(0);
+    local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop()] = 0;
     EDITOR_baseElement.scrollLeft = 0;
     lastReadNumber_scrollLeft = 0;
     
@@ -1307,9 +1310,9 @@ function EDITOR_state_setText(text, fileStartsWithBom, textSourceIdentifier, FOR
                         EDITOR_lineEndString = '\r';
                     }
                 }
-                if (lineLength > get_EDITOR_longestLine_length()) {
-                    set_EDITOR_longestLine_length(lineLength);
-                    set_EDITOR_longestLine_indexLine(EDITOR_lineEndPositionList.count);
+                if (lineLength > local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length()]) {
+                    local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length()] = lineLength;
+                    local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine()] = EDITOR_lineEndPositionList.count;
                 }
                 lineLength = 0;
                 EDITOR_lineEndPositionList.insert(EDITOR_lineEndPositionList.count, EDITOR_textByteList.count);
@@ -1319,9 +1322,9 @@ function EDITOR_state_setText(text, fileStartsWithBom, textSourceIdentifier, FOR
                 if (!EDITOR_lineEndString) {
                     EDITOR_lineEndString = '\n';
                 }
-                if (lineLength > get_EDITOR_longestLine_length()) {
-                    set_EDITOR_longestLine_length(lineLength);
-                    set_EDITOR_longestLine_indexLine(EDITOR_lineEndPositionList.count);
+                if (lineLength > local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length()]) {
+                    local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length()] = lineLength;
+                    local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine()] = EDITOR_lineEndPositionList.count;
                 }
                 lineLength = 0;
                 EDITOR_lineEndPositionList.insert(EDITOR_lineEndPositionList.count, EDITOR_textByteList.count);
@@ -1373,7 +1376,7 @@ function EDITOR_state_setText(text, fileStartsWithBom, textSourceIdentifier, FOR
     // ...the difference between the previous and new value is 'get_EDITOR_virtualCount()'...
     // ...thus 'get_EDITOR_virtualCount()' amount of lines get redrawn...
     // ...i.e.: the entire viewport is redrawn with the new file's text.
-    set_EDITOR_ONSCROLLvirtualIndexLine(get_EDITOR_virtualCount());
+    local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine()] = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount()];
 }
 
 /**

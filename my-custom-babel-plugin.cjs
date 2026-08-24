@@ -284,6 +284,8 @@ module.exports = function (babel) {
     "INDEXOF_EDITOR_ONSCROLLvirtualIndexLine",
     "INDEXOF_EDITOR_ONSCROLLvirtualCount",
     "INDEXOF_EDITOR_ONSCROLLscrollTop",
+    "INDEXOF_EDITOR_longestLine_length",
+    "INDEXOF_EDITOR_longestLine_indexLine",
 
     "get_EDITOR_scrollEndDeadline",
     "set_EDITOR_scrollEndDeadline",

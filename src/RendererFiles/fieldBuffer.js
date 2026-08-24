@@ -284,9 +284,11 @@ const set_EDITOR_offsetWithinSpan = (int) => EDITOR_int_fields[23] = int;
 
 const get_EDITOR_longestLine_indexLine = () => EDITOR_int_fields[24];
 const set_EDITOR_longestLine_indexLine = (int) => EDITOR_int_fields[24] = int;
+const INDEXOF_EDITOR_longestLine_indexLine = () => 24;
 
 const get_EDITOR_longestLine_length = () => EDITOR_int_fields[25];
 const set_EDITOR_longestLine_length = (int) => EDITOR_int_fields[25] = int;
+const INDEXOF_EDITOR_longestLine_length = () => 25;
 
 /**
  * The get_EDITOR_contentWidth() is calculated via Math.ceil(someVar * otherVar) so this is faster to check whether content width will change rather than the multiplication and ceil.

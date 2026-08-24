@@ -9200,4 +9200,6 @@ I think the cleaning products got in the food
 I was so hungry I ate some left overs
 but now I have consumed the cleaning products and I'm going to die
 
+And I have to sit here watching you fucking morons thinking xyz about me
+
 */

@@ -9140,5 +9140,6 @@ until your program is unusable.
 
 < No, a property on this is not found faster than a local variable, and it is usually not faster than a global variable either.
 < When you use this.variable, you are not looking up a variable in a scope. You are performing a property lookup on an object, which follows an entirely different resolution path in the JavaScript engine.
+< ...
 
 */

@@ -597,12 +597,10 @@ function EDITOR_render_do_CreateViewport() {
 
     let local_EDITOR_int_fields = EDITOR_int_fields;
 
-
     let remember_scrollTop = local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
     let remember_scrollLeft = lastReadNumber_scrollLeft;
 
     EDITOR_baseElement.scrollTop = 0;
-    //local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop] = 0; // TODO: This seems weird
     EDITOR_baseElement.scrollLeft = 0;
     lastReadNumber_scrollLeft = 0;
 
@@ -965,8 +963,6 @@ function EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli) {
             //prevVli = 0;
             //currVli = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
-            // TODO: Duplicated setting of scrolltop; this case and just baseline everytime vertical scrolls it is done in this method elsewhere
-            local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop] = local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop]; // TODO: This seems weird
             EDITOR_render_do_CreateViewport();
             return false;
     }

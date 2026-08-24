@@ -647,10 +647,10 @@ function EDITOR_render_do_CreateViewport() {
     ArrayFrom_textElement_children = Array.from(cached_EDITOR_textElement.children);
     ArrayFrom_textElement_children_length = ArrayFrom_textElement_children.length;
 
-    EDITOR_drawHorizontalScrollbar(); // TODO: This line appearing after 'EDITOR_drawHorizontalScrollbar();' in this function strikes me as odd when skimming the code. (1 of 2)
+    EDITOR_drawHorizontalScrollbar(); // TODO: The 'setting EDITOR_baseElement.scrollLeft' line appearing after 'EDITOR_drawHorizontalScrollbar();' in this function strikes me as odd when skimming the code. (1 of 2)
 
     EDITOR_baseElement.scrollTop = remember_scrollTop;
-    EDITOR_baseElement.scrollLeft = remember_scrollLeft; // TODO: This line appearing after 'EDITOR_drawHorizontalScrollbar();' in this function strikes me as odd when skimming the code. (1 of 2)
+    EDITOR_baseElement.scrollLeft = remember_scrollLeft; // TODO: The 'setting EDITOR_baseElement.scrollLeft' line appearing after 'EDITOR_drawHorizontalScrollbar();' in this function strikes me as odd when skimming the code. (1 of 2)
 }
 
 function EDITOR_createViewport() {

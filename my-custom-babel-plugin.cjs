@@ -216,8 +216,8 @@ module.exports = function (babel) {
     "get_js_QUESTIONMARK_num",
     "get_js_CARET_num",
 
-    "get_EDITOR_gutterPaddingLeft",
-    "get_EDITOR_gutterPaddingRight",
+    "CONST_EDITOR_gutterPaddingLeft",
+    "CONST_EDITOR_gutterPaddingRight",
 
     "get_RenderKind_None",
     "get_RenderKind_Scroll",

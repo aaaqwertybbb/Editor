@@ -104,9 +104,6 @@ module.exports = function (babel) {
     "get_EDITOR_findOverlay_options_matchWord",
     "set_EDITOR_findOverlay_options_matchWord",
 
-    "get_ExtensionKind_None",
-    "get_ExtensionKind_JavaScript",
-
     "get_EditKind_None",
     "get_EditKind_InsertLtr",
     "get_EditKind_DeleteLtr",
@@ -165,10 +162,6 @@ module.exports = function (babel) {
     "get_WidgetKind_None",
     "get_WidgetKind_InputText",
     "get_WidgetKind_YesCancel",
-
-    "get_EDITOR_ASCII_LINE_FEED",
-    "get_EDITOR_ASCII_TAB",
-    "get_EDITOR_ASCII_SPACE",
 
     
 
@@ -254,6 +247,14 @@ module.exports = function (babel) {
 
   // List all the variable names you want to inline
   const TARGET_VARIABLES = [
+
+
+    "ENUM_ExtensionKind_None",
+    "ENUM_ExtensionKind_JavaScript",
+
+    "CONST_EDITOR_ASCII_LINE_FEED",
+    "CONST_EDITOR_ASCII_TAB",
+    "CONST_EDITOR_ASCII_SPACE",
 
     "CONST_js_DOUBLEQUOTE_str",
     "CONST_js_SINGLEQUOTE_str",

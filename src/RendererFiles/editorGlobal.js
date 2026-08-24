@@ -295,7 +295,7 @@ let EDITOR_cursorList = [EDITOR_primaryCursor];
 
 let EDITOR_textSourceIdentifier = '';
 let EDITOR_FORMATTED_textSourceIdentifier = '';
-let EDITOR_extensionKind = get_ExtensionKind_None();
+let EDITOR_extensionKind = ENUM_ExtensionKind_None;
 
 let EDITOR_lineEndString = null;
 
@@ -1242,7 +1242,7 @@ function EDITOR_state_clear() {
     set_EDITOR_recentBoundingClientRect_isNull_intFalsey(1);
     EDITOR_textSourceIdentifier = '';
     EDITOR_FORMATTED_textSourceIdentifier = '';
-    EDITOR_extensionKind = get_ExtensionKind_None();
+    EDITOR_extensionKind = ENUM_ExtensionKind_None;
     set_EDITOR_fileStartsWithBom(false);
     EDITOR_lineEndString = null;
     EDITOR_lineEndPositionList.clear();
@@ -1319,7 +1319,7 @@ function EDITOR_state_setText(text, fileStartsWithBom, textSourceIdentifier, FOR
                 }
                 lineLength = 0;
                 local_EDITOR_lineEndPositionList.insert(local_EDITOR_lineEndPositionList.count, local_EDITOR_textByteList.count);
-                local_EDITOR_textByteList.insert(local_EDITOR_textByteList.count, get_EDITOR_ASCII_LINE_FEED());
+                local_EDITOR_textByteList.insert(local_EDITOR_textByteList.count, CONST_EDITOR_ASCII_LINE_FEED);
                 break;
             case '\n':
                 if (!lineEndString) {
@@ -1331,7 +1331,7 @@ function EDITOR_state_setText(text, fileStartsWithBom, textSourceIdentifier, FOR
                 }
                 lineLength = 0;
                 local_EDITOR_lineEndPositionList.insert(local_EDITOR_lineEndPositionList.count, local_EDITOR_textByteList.count);
-                local_EDITOR_textByteList.insert(local_EDITOR_textByteList.count, get_EDITOR_ASCII_LINE_FEED());
+                local_EDITOR_textByteList.insert(local_EDITOR_textByteList.count, CONST_EDITOR_ASCII_LINE_FEED);
                 break;
             case '\t':
                 lineLength += 4;
@@ -1357,7 +1357,7 @@ function EDITOR_state_setText(text, fileStartsWithBom, textSourceIdentifier, FOR
     update_verticalVirtualizationBoundary();
 
     //switch (EDITOR_extensionKind) {
-    //    case get_ExtensionKind_JavaScript():
+    //    case ENUM_ExtensionKind_JavaScript:
     //        // This 'JS_full_lex' only runs when you open a file for the first time.
     //        // The logic likely has some JIT overhead that is long term persistent in the GC. I have no proof of this but I need to look into it.
     //        // If so, moving this to be an LSP request to get the initial list of tracked syntax could be a massive improvement.
@@ -2178,7 +2178,7 @@ function EDITOR_finalizeEdit_Paste(cursor, indexLine_editOccurredOn) {
                 insertionLength += 4;
                 break;
             case '\n':
-                EDITOR_textByteList.insert(cursor.editPosition + insertionLength, get_EDITOR_ASCII_LINE_FEED());
+                EDITOR_textByteList.insert(cursor.editPosition + insertionLength, CONST_EDITOR_ASCII_LINE_FEED);
                 EDITOR_lineEndPositionList.insert(cursor.editIndexLine + linesInsertedCount, cursor.editPosition + insertionLength);
                 insertionLength++;
                 linesInsertedCount++;
@@ -2187,7 +2187,7 @@ function EDITOR_finalizeEdit_Paste(cursor, indexLine_editOccurredOn) {
                 if (sourceI < content.length - 1 && content[sourceI + 1] === '\n') {
                     sourceI++;
                 }
-                EDITOR_textByteList.insert(cursor.editPosition + insertionLength, get_EDITOR_ASCII_LINE_FEED());
+                EDITOR_textByteList.insert(cursor.editPosition + insertionLength, CONST_EDITOR_ASCII_LINE_FEED);
                 EDITOR_lineEndPositionList.insert(cursor.editIndexLine + linesInsertedCount, cursor.editPosition + insertionLength);
                 insertionLength++;
                 linesInsertedCount++;
@@ -2233,10 +2233,10 @@ function EDITOR_finalizeEdit_Duplicate(cursor, indexLine_editOccurredOn) {
 
     for (let offset = 0; offset < length; offset++) {
         switch (EDITOR_textByteList.bytes[small + offset]) {
-            case get_EDITOR_ASCII_TAB():
+            case CONST_EDITOR_ASCII_TAB:
                 insertionLength += 4; // ??? I think this is copy pasted from 'paste' logic where the tab would change to 4 characters total, in the case of duplication you get what you select.
                 break;
-            case get_EDITOR_ASCII_LINE_FEED():
+            case CONST_EDITOR_ASCII_LINE_FEED:
                 EDITOR_lineEndPositionList.insert(cursor.editIndexLine + linesInsertedCount, cursor.editPosition + insertionLength);
                 insertionLength++;
                 linesInsertedCount++;
@@ -6762,7 +6762,7 @@ function EDITOR_findEndExclusiveIndentationIndexColumn(cursor) {
  */
 function EDITOR_cacheIndentation(cursor) {
     cursor.enterKey_newLinePlusIndentation_byteList = new ByteList(32);
-    cursor.enterKey_newLinePlusIndentation_byteList.insert(cursor.enterKey_newLinePlusIndentation_byteList.count, get_EDITOR_ASCII_LINE_FEED());
+    cursor.enterKey_newLinePlusIndentation_byteList.insert(cursor.enterKey_newLinePlusIndentation_byteList.count, CONST_EDITOR_ASCII_LINE_FEED);
     let indentationBuilder = [];
     let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(cursor.indexLine);
     let line = EDITOR_getLineBoundaryPositions(cursor.indexLine);
@@ -6780,11 +6780,11 @@ function EDITOR_cacheIndentation(cursor) {
         let c = getCharacter(line.start + i);
         switch (c) {
             case ' ':
-                cursor.enterKey_newLinePlusIndentation_byteList.insert(cursor.enterKey_newLinePlusIndentation_byteList.count, get_EDITOR_ASCII_SPACE());
+                cursor.enterKey_newLinePlusIndentation_byteList.insert(cursor.enterKey_newLinePlusIndentation_byteList.count, CONST_EDITOR_ASCII_SPACE);
                 indentationBuilder.push(c);
                 break;
             case '\t':
-                cursor.enterKey_newLinePlusIndentation_byteList.insert(cursor.enterKey_newLinePlusIndentation_byteList.count, get_EDITOR_ASCII_TAB());
+                cursor.enterKey_newLinePlusIndentation_byteList.insert(cursor.enterKey_newLinePlusIndentation_byteList.count, CONST_EDITOR_ASCII_TAB);
                 indentationBuilder.push(c);
                 break;
             case '\0': // tabs are stored as: '\t\0\0\0'
@@ -8677,15 +8677,15 @@ function EDITOR_toExtensionKind(extensionWithPeriod) {
     switch (extensionWithPeriod) {
         case '.js':
         case '.cjs':
-            return get_ExtensionKind_JavaScript();
+            return ENUM_ExtensionKind_JavaScript;
         default:
-            return get_ExtensionKind_None();
+            return ENUM_ExtensionKind_None;
     }
 }
 
 function EDITOR_language_line_lex_SET(extensionKind) {
     switch (extensionKind) {
-        case get_ExtensionKind_JavaScript():
+        case ENUM_ExtensionKind_JavaScript:
             EDITOR_language_line_lex = JS_line_lex;
             break;
         default:

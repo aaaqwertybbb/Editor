@@ -16,23 +16,23 @@ let cached_EDITOR_cursorListElement;
 let cached_EDITOR_textElement;
 
 const EDITOR_tab_tabsbytes = new Uint8Array(4);
-EDITOR_tab_tabsbytes[0] = get_EDITOR_ASCII_TAB();
+EDITOR_tab_tabsbytes[0] = CONST_EDITOR_ASCII_TAB;
 EDITOR_tab_tabsbytes[1] = 0;
 EDITOR_tab_tabsbytes[2] = 0;
 EDITOR_tab_tabsbytes[3] = 0;
 const EDITOR_tab_spacesbytes = new Uint8Array(4);
-EDITOR_tab_spacesbytes[0] = get_EDITOR_ASCII_SPACE();
-EDITOR_tab_spacesbytes[1] = get_EDITOR_ASCII_SPACE();
-EDITOR_tab_spacesbytes[2] = get_EDITOR_ASCII_SPACE();
-EDITOR_tab_spacesbytes[3] = get_EDITOR_ASCII_SPACE();
+EDITOR_tab_spacesbytes[0] = CONST_EDITOR_ASCII_SPACE;
+EDITOR_tab_spacesbytes[1] = CONST_EDITOR_ASCII_SPACE;
+EDITOR_tab_spacesbytes[2] = CONST_EDITOR_ASCII_SPACE;
+EDITOR_tab_spacesbytes[3] = CONST_EDITOR_ASCII_SPACE;
 
 /**
  * If you have an extension listed here, it is expected that the "function to invoke" exists.
  * As of right now any patterns to naming the function that gets invoked are tentative.
  * But I am not checking whether JS_full_lex or JS_line_lex exist, I'm just switching on ExtensionKind and presuming that function exists.
  */
-const get_ExtensionKind_None = () => 0;
-const get_ExtensionKind_JavaScript = () => 1;
+const ENUM_ExtensionKind_None = 0;
+const ENUM_ExtensionKind_JavaScript = 1;
 
 /**
  * DeleteLtr and BackspaceRtl are both forms of removing text,

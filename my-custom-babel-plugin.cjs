@@ -7,7 +7,7 @@ module.exports = function (babel) {
   const TARGET_FUNCTIONS = [
     
     
-    
+
     // TODO: this is in here twice (it appears again as another entry later)... why?
     "set_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber",
 
@@ -219,7 +219,7 @@ module.exports = function (babel) {
     "get_EDITOR_gutterPaddingLeft",
     "get_EDITOR_gutterPaddingRight",
 
-    "get_DIALOG_minTop",
+    
     "get_DIALOG_minLeft",
     "get_DIALOG_minHeight",
     "get_DIALOG_minWidth",
@@ -304,17 +304,24 @@ module.exports = function (babel) {
     "INDEXOF_lastReadNumber_scrollTop",
   ];
 
+  // List all the variable names you want to inline
+  const TARGET_VARIABLES = [
+    "CONST_DIALOG_minTop",
+  ];
+
   return {
     name: "inline-direct-substitution-safe",
     visitor: {
       Program(path) {
         const functionsToInline = new Map();
+        const variablesToInline = new Map();
 
-        // Pass 1: Collect target functions and remove their definitions
+        // Pass 1: Collect targets and remove their definitions
         path.traverse({
           VariableDeclarator(varPath) {
             const varName = varPath.node.id.name;
 
+            // Handle function inlining
             if (
               TARGET_FUNCTIONS.includes(varName) &&
               t.isArrowFunctionExpression(varPath.node.init)
@@ -335,63 +342,87 @@ module.exports = function (babel) {
 
               varPath.parentPath.remove();
             }
-          }
-        });
-
-        if (functionsToInline.size === 0) return;
-
-        // Pass 2: Safely replace the call expressions directly
-        path.traverse({
-          CallExpression(callPath) {
-            const calleeName = callPath.node.callee.name;
-
-            if (t.isIdentifier(callPath.node.callee) && functionsToInline.has(calleeName)) {
-              const fnData = functionsToInline.get(calleeName);
-              const args = callPath.node.arguments;
-              
-              // Clone the body statements for this specific call instance
-              const specializedBody = fnData.body.map(stmt => t.cloneNode(stmt));
-
-              // Map parameters to arguments
-              const paramValueMap = new Map();
-              fnData.params.forEach((paramName, index) => {
-                paramValueMap.set(paramName, args[index] || t.identifier("undefined"));
-              });
-
-              // Substitute the variable values into the statements
-              specializedBody.forEach(statement => {
-                babel.traverse(statement, {
-                  Identifier(idPath) {
-                    if (
-                      paramValueMap.has(idPath.node.name) &&
-                      !(idPath.parentPath.isMemberExpression() && idPath.parentPath.node.property === idPath.node && !idPath.parentPath.node.computed)
-                    ) {
-                      const substitutionNode = paramValueMap.get(idPath.node.name);
-                      idPath.replaceWith(t.cloneNode(substitutionNode));
-                    }
-                  }
-                }, path.scope, path);
-              });
-
-              // Strip away ExpressionStatement wrappers if replacing code inline
-              const nodesToInsert = specializedBody.map(node => {
-                if (t.isExpressionStatement(node)) {
-                  return node.expression;
-                }
-                return node;
-              });
-
-              // Safely swap out the exact call expression node without crashing on the parent lookups
-              if (nodesToInsert.length === 1) {
-                callPath.replaceWith(nodesToInsert[0]);
-              } else if (nodesToInsert.length > 1) {
-                callPath.replaceWithMultiple(nodesToInsert);
-              } else {
-                callPath.remove();
-              }
+            
+            // Handle static variable inlining
+            else if (TARGET_VARIABLES.includes(varName) && varPath.node.init) {
+              variablesToInline.set(varName, varPath.node.init);
+              varPath.parentPath.remove();
             }
           }
         });
+
+        // Pass 2: Safely replace variable references
+        if (variablesToInline.size > 0) {
+          path.traverse({
+            Identifier(idPath) {
+              const varName = idPath.node.name;
+              
+              if (
+                variablesToInline.has(varName) &&
+                !(idPath.parentPath.isMemberExpression() && idPath.parentPath.node.property === idPath.node && !idPath.parentPath.node.computed) &&
+                !idPath.parentPath.isVariableDeclarator() // Don't replace definitions if any are left
+              ) {
+                const valueNode = variablesToInline.get(varName);
+                idPath.replaceWith(t.cloneNode(valueNode));
+              }
+            }
+          });
+        }
+
+        // Pass 3: Safely replace the call expressions directly
+        if (functionsToInline.size > 0) {
+          path.traverse({
+            CallExpression(callPath) {
+              const calleeName = callPath.node.callee.name;
+
+              if (t.isIdentifier(callPath.node.callee) && functionsToInline.has(calleeName)) {
+                const fnData = functionsToInline.get(calleeName);
+                const args = callPath.node.arguments;
+                
+                // Clone the body statements for this specific call instance
+                const specializedBody = fnData.body.map(stmt => t.cloneNode(stmt));
+
+                // Map parameters to arguments
+                const paramValueMap = new Map();
+                fnData.params.forEach((paramName, index) => {
+                  paramValueMap.set(paramName, args[index] || t.identifier("undefined"));
+                });
+
+                // Substitute the variable values into the statements
+                specializedBody.forEach(statement => {
+                  babel.traverse(statement, {
+                    Identifier(idPath) {
+                      if (
+                        paramValueMap.has(idPath.node.name) &&
+                        !(idPath.parentPath.isMemberExpression() && idPath.parentPath.node.property === idPath.node && !idPath.parentPath.node.computed)
+                      ) {
+                        const substitutionNode = paramValueMap.get(idPath.node.name);
+                        idPath.replaceWith(t.cloneNode(substitutionNode));
+                      }
+                    }
+                  }, path.scope, path);
+                });
+
+                // Strip away ExpressionStatement wrappers if replacing code inline
+                const nodesToInsert = specializedBody.map(node => {
+                  if (t.isExpressionStatement(node)) {
+                    return node.expression;
+                  }
+                  return node;
+                });
+
+                // Safely swap out the exact call expression node without crashing on the parent lookups
+                if (nodesToInsert.length === 1) {
+                  callPath.replaceWith(nodesToInsert[0]);
+                } else if (nodesToInsert.length > 1) {
+                  callPath.replaceWithMultiple(nodesToInsert);
+                } else {
+                  callPath.remove();
+                }
+              }
+            }
+          });
+        }
       }
     }
   };

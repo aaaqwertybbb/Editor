@@ -245,12 +245,12 @@ function DIALOG_resize_onmousedown(event) {
 function DIALOG_n_resize_calcOnly(diff_Y, clientY) {
     if (diff_Y < 0) {
         let absdiff_Y = Math.abs(diff_Y);
-        if (DIALOG_top <= get_DIALOG_minTop()) {
+        if (DIALOG_top <= CONST_DIALOG_minTop) {
             return; // TODO: ...
         }
-        else if (DIALOG_top - absdiff_Y < get_DIALOG_minTop()) {
-            clientY += (absdiff_Y - (DIALOG_top - get_DIALOG_minTop()));
-            absdiff_Y = DIALOG_top - get_DIALOG_minTop();
+        else if (DIALOG_top - absdiff_Y < CONST_DIALOG_minTop) {
+            clientY += (absdiff_Y - (DIALOG_top - CONST_DIALOG_minTop));
+            absdiff_Y = DIALOG_top - CONST_DIALOG_minTop;
         }
         DIALOG_top -= absdiff_Y;
         DIALOG_height += absdiff_Y;
@@ -487,8 +487,8 @@ function DIALOG_window_onresize() {
         DIALOG_left = get_DIALOG_minLeft();
         DIALOG_element.style.left = DIALOG_left + 'px';
     }
-    if (DIALOG_top <= get_DIALOG_minTop()) {
-        DIALOG_top = get_DIALOG_minTop();
+    if (DIALOG_top <= CONST_DIALOG_minTop) {
+        DIALOG_top = CONST_DIALOG_minTop;
         DIALOG_element.style.top = DIALOG_top + 'px';
     }
 
@@ -584,12 +584,12 @@ function DIALOG_toolbar_body_onmousemove(event) {
 
     if (diff_Y < 0) {
         let absdiff_Y = Math.abs(diff_Y);
-        if (DIALOG_top <= get_DIALOG_minTop()) {
+        if (DIALOG_top <= CONST_DIALOG_minTop) {
             //return; // TODO: ...
         }
-        else if (DIALOG_top - absdiff_Y < get_DIALOG_minTop()) {
-            clientY += (absdiff_Y - (DIALOG_top - get_DIALOG_minTop()));
-            absdiff_Y = DIALOG_top - get_DIALOG_minTop();
+        else if (DIALOG_top - absdiff_Y < CONST_DIALOG_minTop) {
+            clientY += (absdiff_Y - (DIALOG_top - CONST_DIALOG_minTop));
+            absdiff_Y = DIALOG_top - CONST_DIALOG_minTop;
             
             DIALOG_top -= absdiff_Y;
             DIALOG_before_Y = clientY;

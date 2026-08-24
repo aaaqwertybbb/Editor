@@ -755,4 +755,32 @@ Google AI:
 
 < ...
 
+> The bundler starts by creating an empty file '__PREPROCESSEDbundle__.js'.
+> 
+> Then, foreach file:
+> the bundler reads the file.
+> And as it loops over the file's text,
+> it uses a UInt8Array buffer to collect any valuable text that ought to be included in the output.
+> When the buffer hits its limit, it appends the buffer's bytes to '__PREPROCESSEDbundle__.js',
+> and then the buffer gets cleared and you continue looping over the file's text.
+> 
+> My idea: instead of appending to '__PREPROCESSEDbundle__.js',
+> I can create a file alongside '__PREPROCESSEDbundle__.js'
+> which could use a naming convention that uses the same filename that you're currently looping over
+> and append the text that ought to be included in the output there.
+> 
+> If this is implemented properly, I'll finish the "looping phase"
+> with 16 "preprocessed files".
+> 
+> The final step would be to append the 16 "preprocessed files"
+> to the '__PREPROCESSEDbundle__.js'.
+> 
+> But now, the next time that I run the program I "check whether a file alongside '__PREPROCESSEDbundle__.js' with
+> the same filename as the one I'm looping over already exists".
+> If it does, then I don't have to process that file, when I'm done I'll just use the "cached" result from the last time I ran the builder.
+> 
+> (there's details to this such as determining whether a file changed, and I have to decide on those details still).
+
+< ...
+
 */

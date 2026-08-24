@@ -86,6 +86,7 @@ let writeBuffer = new Uint8Array(writeBufferCapacity);
 let writeBufferCount = 0;
 
 let reusedFilesCount = 0;
+let NOTreusedFilesCount = 0;
 let emptyLineCount = 0;
 
 let sourceBuffer;
@@ -118,7 +119,8 @@ try {
 
 
     console.log(`reusedFilesCount: ${reusedFilesCount}`);
-    console.log(`emptyLineCount: ${emptyLineCount}`);
+    console.log(`NOTreusedFilesCount: ${NOTreusedFilesCount}`);
+    console.log(`^----emptyLineCount: ${emptyLineCount}`);
     console.log(`Successfully bundled ${files.length} files in prioritized order into ${outputFile}`);
 }
 catch (err) {
@@ -207,6 +209,8 @@ function bundleFile(fileName) {
         reusedFilesCount++;
         return;
     }
+
+    NOTreusedFilesCount++;
 
     fs.writeFileSync(outputFile, '');
 

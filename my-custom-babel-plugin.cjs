@@ -1,5 +1,6 @@
 // This file was originally generated with google AI
 
+
 module.exports = function (babel) {
   const { types: t } = babel;
 
@@ -327,6 +328,7 @@ module.exports = function (babel) {
             // Handle function inlining
             if (
               TARGET_FUNCTIONS.includes(varName) &&
+              varPath.node.init &&
               t.isArrowFunctionExpression(varPath.node.init)
             ) {
               const arrowFn = varPath.node.init;
@@ -340,7 +342,7 @@ module.exports = function (babel) {
 
               functionsToInline.set(varName, {
                 params: arrowFn.params.map(p => p.name),
-                body: bodyStatements,
+                body: bodyStatements.map(stmt => t.cloneNode(stmt)),
               });
 
               varPath.parentPath.remove();
@@ -348,7 +350,7 @@ module.exports = function (babel) {
             
             // Handle static variable inlining
             else if (TARGET_VARIABLES.includes(varName) && varPath.node.init) {
-              variablesToInline.set(varName, varPath.node.init);
+              variablesToInline.set(varName, t.cloneNode(varPath.node.init));
               varPath.parentPath.remove();
             }
           }
@@ -363,7 +365,7 @@ module.exports = function (babel) {
               if (
                 variablesToInline.has(varName) &&
                 !(idPath.parentPath.isMemberExpression() && idPath.parentPath.node.property === idPath.node && !idPath.parentPath.node.computed) &&
-                !idPath.parentPath.isVariableDeclarator() // Don't replace definitions if any are left
+                !(idPath.parentPath.isVariableDeclarator() && idPath.parent.id === idPath.node)
               ) {
                 const valueNode = variablesToInline.get(varName);
                 idPath.replaceWith(t.cloneNode(valueNode));
@@ -382,16 +384,13 @@ module.exports = function (babel) {
                 const fnData = functionsToInline.get(calleeName);
                 const args = callPath.node.arguments;
                 
-                // Clone the body statements for this specific call instance
                 const specializedBody = fnData.body.map(stmt => t.cloneNode(stmt));
 
-                // Map parameters to arguments
                 const paramValueMap = new Map();
                 fnData.params.forEach((paramName, index) => {
                   paramValueMap.set(paramName, args[index] || t.identifier("undefined"));
                 });
 
-                // Substitute the variable values into the statements
                 specializedBody.forEach(statement => {
                   babel.traverse(statement, {
                     Identifier(idPath) {
@@ -406,7 +405,6 @@ module.exports = function (babel) {
                   }, path.scope, path);
                 });
 
-                // Strip away ExpressionStatement wrappers if replacing code inline
                 const nodesToInsert = specializedBody.map(node => {
                   if (t.isExpressionStatement(node)) {
                     return node.expression;
@@ -414,7 +412,7 @@ module.exports = function (babel) {
                   return node;
                 });
 
-                // Safely swap out the exact call expression node without crashing on the parent lookups
+                // FIXED: Extract the single node out of the array before replacing
                 if (nodesToInsert.length === 1) {
                   callPath.replaceWith(nodesToInsert[0]);
                 } else if (nodesToInsert.length > 1) {

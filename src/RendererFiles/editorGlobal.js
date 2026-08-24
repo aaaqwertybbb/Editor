@@ -1,6 +1,5 @@
 //__#__
 // preprocessor.cjs
-import "./header_editorGlobal_header"
 import "./fieldBuffer"
 import "./javascriptFeatures"
 //__#__

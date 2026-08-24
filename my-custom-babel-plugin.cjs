@@ -219,11 +219,6 @@ module.exports = function (babel) {
     "get_EDITOR_gutterPaddingLeft",
     "get_EDITOR_gutterPaddingRight",
 
-    
-    "get_DIALOG_minLeft",
-    "get_DIALOG_minHeight",
-    "get_DIALOG_minWidth",
-
     "get_RenderKind_None",
     "get_RenderKind_Scroll",
     "get_RenderKind_Resize",
@@ -307,6 +302,9 @@ module.exports = function (babel) {
   // List all the variable names you want to inline
   const TARGET_VARIABLES = [
     "CONST_DIALOG_minTop",
+    "CONST_DIALOG_minLeft",
+    "CONST_DIALOG_minHeight",
+    "CONST_DIALOG_minWidth",
   ];
 
   return {

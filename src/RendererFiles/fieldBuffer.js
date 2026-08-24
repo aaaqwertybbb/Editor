@@ -152,10 +152,9 @@ const get_EDITOR_gutterPaddingLeft = () => 3;
 const get_EDITOR_gutterPaddingRight = () => 6;
 
 const CONST_DIALOG_minTop = 8;
-
-const get_DIALOG_minLeft = () => 8;
-const get_DIALOG_minHeight = () => 100;
-const get_DIALOG_minWidth = () => 100;
+const CONST_DIALOG_minLeft = 8;
+const CONST_DIALOG_minHeight = 100;
+const CONST_DIALOG_minWidth = 100;
 
 
 ////////////////////////////

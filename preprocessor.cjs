@@ -16,7 +16,15 @@ i.e.: this code is not good and do not use it yourself.
 */
 
 
+/*
+Listen to the heartbeat of america~~~~~~~
 
+I'm trying to find a way to start typing code I'm extremely anxious
+and I don't wanna do anything
+
+The car commerical I got though was kinda hard
+
+*/
 
 
 

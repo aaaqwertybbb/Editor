@@ -72,7 +72,7 @@ class EXPLORER_TreeViewDirector {
 
         if (!this.chosenDirectory) return;
 
-        let nodeKind = get_TreeViewNodeKind_isExpandable_NOTisExpanded();
+        let nodeKind = ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded;
         this.nodeList.insert(this.nodeList.count_abstract, nodeKind, this.chosenDirectoryAbsolutePathId, 0);
         this.component.itemHeightTotal = this.tvd_getTotalCount() * this.component.itemHeightNumber;
         this.component.virtualizationElement.style.height = this.component.itemHeightTotal + 'px';
@@ -88,7 +88,7 @@ class EXPLORER_TreeViewDirector {
 
         for (let i = 0; i < chooseWorkspaceResult.directories.length; i++) {
             let directory = chooseWorkspaceResult.directories[i];
-            let nodeKind = get_TreeViewNodeKind_isExpandable_NOTisExpanded();
+            let nodeKind = ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded;
             this.nodeList.insert(this.nodeList.count_abstract, nodeKind, directory.id, 0);
         }
 
@@ -150,7 +150,7 @@ class EXPLORER_TreeViewDirector {
         for (var indexItem = start; indexItem < upperBound; indexItem++) {
 
             let depth = 0;
-            let nodeKind = get_TreeViewNodeKind_NOTisExpandable_NOTisExpanded();
+            let nodeKind = ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
             let divItem;
             let divIndex;
@@ -179,8 +179,8 @@ class EXPLORER_TreeViewDirector {
                 depth = TreeView_pooledNode_depth;
                 nodeKind = TreeView_pooledNode_nodeKind;
                 
-                let isDirectory = nodeKind === get_TreeViewNodeKind_isExpandable_isExpanded() ||
-                                  nodeKind === get_TreeViewNodeKind_isExpandable_NOTisExpanded();
+                let isDirectory = nodeKind === ENUM_TreeViewNodeKind_isExpandable_isExpanded ||
+                                  nodeKind === ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded;
 
                 //let entry = arrayEntries[loopCounter];
                 let textNode = divItem.lastChild;
@@ -190,22 +190,22 @@ class EXPLORER_TreeViewDirector {
 
                 if (false /*isDirectory*/ /*&& !entry.isDirectory*/) {
                     // A file was deleted then a directory was created with same absolute file path or vice versa.
-                    this.nodeList.setNodeKind(indexItem, get_TreeViewNodeKind_NOTisExpandable_NOTisExpanded());
-                    nodeKind = get_TreeViewNodeKind_NOTisExpandable_NOTisExpanded();
+                    this.nodeList.setNodeKind(indexItem, ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded);
+                    nodeKind = ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
                 }
             }
             
             switch (nodeKind) {
-                case get_TreeViewNodeKind_isExpandable_isExpanded():
+                case ENUM_TreeViewNodeKind_isExpandable_isExpanded:
                     divItem.children[0].textContent = '-';
                     break;
-                case get_TreeViewNodeKind_isExpandable_NOTisExpanded():
+                case ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded:
                     divItem.children[0].textContent = '+';
                     break;
-                case get_TreeViewNodeKind_NOTisExpandable_isExpanded():
+                case ENUM_TreeViewNodeKind_NOTisExpandable_isExpanded:
                     divItem.children[0].textContent = '';
                     break;
-                case get_TreeViewNodeKind_NOTisExpandable_NOTisExpanded():
+                case ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded:
                     divItem.children[0].textContent = '';
                     break;
             }
@@ -411,7 +411,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
                 let key = TreeView_pooledNode_key;
                 let depth = TreeView_pooledNode_depth;
                 let nodeKind = TreeView_pooledNode_nodeKind;
-                if (nodeKind === get_TreeViewNodeKind_NOTisExpandable_NOTisExpanded()) {
+                if (nodeKind === ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded) {
                     // TODO: open the file by id in one ipc call
                     const entry = await window.myAPI.getFilesystemEntryById(key);
                     if (!entry) return;
@@ -437,7 +437,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
         let depth = TreeView_pooledNode_depth;
         let nodeKind = TreeView_pooledNode_nodeKind;
 
-        if (nodeKind === get_TreeViewNodeKind_NOTisExpandable_NOTisExpanded()) {
+        if (nodeKind === ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded) {
             // TODO: open the file by id in one ipc call
             const entry = await window.myAPI.getFilesystemEntryById(key);
             if (!entry) return;
@@ -493,10 +493,10 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
         let depth = TreeView_pooledNode_depth;
         let nodeKind = TreeView_pooledNode_nodeKind;
 
-        if (nodeKind === get_TreeViewNodeKind_isExpandable_NOTisExpanded()) {
+        if (nodeKind === ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded) {
 
             divItem.children[0].textContent = '-';
-            this.nodeList.setNodeKind(indexItem, get_TreeViewNodeKind_isExpandable_isExpanded());
+            this.nodeList.setNodeKind(indexItem, ENUM_TreeViewNodeKind_isExpandable_isExpanded);
 
             const filesystemEntries = await window.myAPI.getFilesystemEntries_argumentIsId(key);
     
@@ -504,10 +504,10 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
                 let entry = filesystemEntries[i];
                 let nodeKind;
                 if (entry.isDirectory) {
-                    nodeKind = get_TreeViewNodeKind_isExpandable_NOTisExpanded();
+                    nodeKind = ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded;
                 }
                 else {
-                    nodeKind = get_TreeViewNodeKind_NOTisExpandable_NOTisExpanded();
+                    nodeKind = ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
                 }
                 // TODO: Insert range, or at the least 'pre-emptively' resize the list so that it fits each insertion without resizing per insertion.
                 this.nodeList.insert(indexItem + 1 + i, nodeKind, entry.id, depth + 1);
@@ -517,10 +517,10 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
 
             this.component.draw_render_fullReset_request();
         }
-        else if (nodeKind === get_TreeViewNodeKind_isExpandable_isExpanded()) {
+        else if (nodeKind === ENUM_TreeViewNodeKind_isExpandable_isExpanded) {
 
             divItem.children[0].textContent = '+';
-            this.nodeList.setNodeKind(indexItem, get_TreeViewNodeKind_isExpandable_NOTisExpanded());
+            this.nodeList.setNodeKind(indexItem, ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded);
 
             let countChildren = 0;
             for (let i = indexItem + 1; i < this.nodeList.count_abstract; i++) {
@@ -548,7 +548,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
         let depth = TreeView_pooledNode_depth;
         let nodeKind = TreeView_pooledNode_nodeKind;
         
-        if (nodeKind === get_TreeViewNodeKind_isExpandable_isExpanded()) {
+        if (nodeKind === ENUM_TreeViewNodeKind_isExpandable_isExpanded) {
             if (indexItem + 1 < this.nodeList.count_abstract) {
                 if (this.nodeList.getDepth(indexItem + 1) > depth) {
                     this.component.state_cursor_setIndex(this.component.state_cursor_validateIndex(
@@ -556,7 +556,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
                 }
             }
     	}
-    	else if (nodeKind === get_TreeViewNodeKind_isExpandable_NOTisExpanded()) {
+    	else if (nodeKind === ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded) {
     		return this.tvd_expandCollapseIconWasClicked_async(divItem, indexItem);
     	}
 
@@ -570,7 +570,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
         let depth = TreeView_pooledNode_depth;
         let nodeKind = TreeView_pooledNode_nodeKind;
         
-        if (nodeKind === get_TreeViewNodeKind_isExpandable_isExpanded()) {
+        if (nodeKind === ENUM_TreeViewNodeKind_isExpandable_isExpanded) {
         	return this.tvd_expandCollapseIconWasClicked_async(divItem, indexItem);
         }
         else {
@@ -613,14 +613,14 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
         let depth = TreeView_pooledNode_depth;
         let nodeKind = TreeView_pooledNode_nodeKind;
 
-        if (nodeKind === get_TreeViewNodeKind_NOTisExpandable_isExpanded()) {
+        if (nodeKind === ENUM_TreeViewNodeKind_NOTisExpandable_isExpanded) {
             alert("TODO: if (nodeKind === ...TreeViewNodeKind_NOTisExpandable_isExpanded())");
             return;
         }
 
         let countChildren = 0;
 
-        if (nodeKind === get_TreeViewNodeKind_isExpandable_isExpanded()) {
+        if (nodeKind === ENUM_TreeViewNodeKind_isExpandable_isExpanded) {
             for (let i = indexItem + 1; i < this.nodeList.count_abstract; i++) {
                 // If currentDepth < ithElementDepth; then current is a parent of ithElement.
                 if (depth < this.nodeList.getDepth(i)) {
@@ -647,8 +647,8 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
         if (!divItem) return;
 
         // check the "text icon": { '-', '+', '' }
-        if (target.nodeKind === get_TreeViewNodeKind_isExpandable_isExpanded() ||
-            target.nodeKind === get_TreeViewNodeKind_isExpandable_NOTisExpanded()) {
+        if (target.nodeKind === ENUM_TreeViewNodeKind_isExpandable_isExpanded ||
+            target.nodeKind === ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded) {
             
             // Directory
             optionList.push(new MenuOption(ENUM_CommandKind_NewFile_File, 'NewFile', null));
@@ -873,7 +873,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 EXPLORER_director.nodeList.getElementAt(MENU_target.indexItem);
                 let nodeKind = TreeView_pooledNode_nodeKind;
                 let depthOfTheParent = TreeView_pooledNode_depth;
-                let isCollapsed = nodeKind === get_TreeViewNodeKind_isExpandable_NOTisExpanded() || nodeKind === get_TreeViewNodeKind_NOTisExpandable_NOTisExpanded();
+                let isCollapsed = nodeKind === ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
                 let local_EXPLORER_menuOptionCut_object = EXPLORER_menuOptionCut_object;
                 EXPLORER_menuOptionCut_object = null;
@@ -893,10 +893,10 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
 
                         let nodeKind;
                         if (pasteResult.isDirectory) {
-                            nodeKind = get_TreeViewNodeKind_isExpandable_NOTisExpanded();
+                            nodeKind = ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded;
                         }
                         else {
-                            nodeKind = get_TreeViewNodeKind_NOTisExpandable_NOTisExpanded();
+                            nodeKind = ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
                         }
 
                         if (!isCollapsed) {
@@ -909,7 +909,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                             for (let i_targetDepth = 0; i_targetDepth < pasteResult.indexOf; i_targetDepth++) {
                                 EXPLORER_director.nodeList.getElementAt(someIndex);
                                 let nodeKind = TreeView_pooledNode_nodeKind;
-                                let isCollapsed = nodeKind === get_TreeViewNodeKind_isExpandable_NOTisExpanded() || nodeKind === get_TreeViewNodeKind_NOTisExpandable_NOTisExpanded();
+                                let isCollapsed = nodeKind === ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
                                 let d_of_presumed_correct_depth = TreeView_pooledNode_depth;
                                 if (d_of_presumed_correct_depth !== targetDepth) {
@@ -1104,7 +1104,7 @@ async function NewFile_Directory_WIDGET_InputText_callback(result) {
     EXPLORER_director.nodeList.getElementAt(WIDGET_target.indexItem);
     let nodeKind = TreeView_pooledNode_nodeKind;
     let depthOfTheParent = TreeView_pooledNode_depth;
-    let isCollapsed = nodeKind === get_TreeViewNodeKind_isExpandable_NOTisExpanded() || nodeKind === get_TreeViewNodeKind_NOTisExpandable_NOTisExpanded();
+    let isCollapsed = nodeKind === ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
     let newFileResult = await window.myAPI.newFile(entry.absolutePath, result.value, /*isDirectory*/ true);
     if (newFileResult.success) {
@@ -1117,7 +1117,7 @@ async function NewFile_Directory_WIDGET_InputText_callback(result) {
 
         // TODO: I belive this final new directory logic that comes after this comment and within this scope is 1 to 1 an exact duplication of the new file logic...
         
-        let nodeKind = get_TreeViewNodeKind_isExpandable_NOTisExpanded();
+        let nodeKind = ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded;
 
         if (!isCollapsed) {
 
@@ -1130,7 +1130,7 @@ async function NewFile_Directory_WIDGET_InputText_callback(result) {
             for (let i_targetDepth = 0; i_targetDepth < newFileResult.indexOf; i_targetDepth++) {
                 EXPLORER_director.nodeList.getElementAt(someIndex);
                 let nodeKind = TreeView_pooledNode_nodeKind;
-                let isCollapsed = nodeKind === get_TreeViewNodeKind_isExpandable_NOTisExpanded() || nodeKind === get_TreeViewNodeKind_NOTisExpandable_NOTisExpanded();
+                let isCollapsed = nodeKind === ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
                 let d_of_presumed_correct_depth = TreeView_pooledNode_depth;
                 if (d_of_presumed_correct_depth !== targetDepth) {
@@ -1189,7 +1189,7 @@ async function NewFile_File_WIDGET_InputText_callback(result) {
     EXPLORER_director.nodeList.getElementAt(WIDGET_target.indexItem);
     let nodeKind = TreeView_pooledNode_nodeKind;
     let depthOfTheParent = TreeView_pooledNode_depth;
-    let isCollapsed = nodeKind === get_TreeViewNodeKind_isExpandable_NOTisExpanded() || nodeKind === get_TreeViewNodeKind_NOTisExpandable_NOTisExpanded();
+    let isCollapsed = nodeKind === ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
     let newFileResult = await window.myAPI.newFile(entry.absolutePath, result.value, /*isDirectory*/ false);
     if (newFileResult.success) {
@@ -1200,7 +1200,7 @@ async function NewFile_File_WIDGET_InputText_callback(result) {
         // ...I think the middle case for some reason ended up in the parent? I'm not quite sure what happened.
         */
 
-        let nodeKind = get_TreeViewNodeKind_NOTisExpandable_NOTisExpanded();
+        let nodeKind = ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
         if (!isCollapsed) {
             let targetDepth = depthOfTheParent + 1;
@@ -1212,7 +1212,7 @@ async function NewFile_File_WIDGET_InputText_callback(result) {
             for (let i_targetDepth = 0; i_targetDepth < newFileResult.indexOf; i_targetDepth++) {
                 EXPLORER_director.nodeList.getElementAt(someIndex);
                 let nodeKind = TreeView_pooledNode_nodeKind;
-                let isCollapsed = nodeKind === get_TreeViewNodeKind_isExpandable_NOTisExpanded() || nodeKind === get_TreeViewNodeKind_NOTisExpandable_NOTisExpanded();
+                let isCollapsed = nodeKind === ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
                 let d_of_presumed_correct_depth = TreeView_pooledNode_depth;
                 if (d_of_presumed_correct_depth !== targetDepth) {

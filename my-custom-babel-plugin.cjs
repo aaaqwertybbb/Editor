@@ -109,11 +109,7 @@ module.exports = function (babel) {
 
     
 
-    "get_TreeViewNodeKind_None",
-    "get_TreeViewNodeKind_isExpandable_isExpanded",
-    "get_TreeViewNodeKind_isExpandable_NOTisExpanded",
-    "get_TreeViewNodeKind_NOTisExpandable_isExpanded",
-    "get_TreeViewNodeKind_NOTisExpandable_NOTisExpanded",
+    
 
     "get_WidgetKind_None",
     "get_WidgetKind_InputText",
@@ -185,6 +181,12 @@ module.exports = function (babel) {
 
   // List all the variable names you want to inline
   const TARGET_VARIABLES = [
+
+    "ENUM_TreeViewNodeKind_None",
+    "ENUM_TreeViewNodeKind_isExpandable_isExpanded",
+    "ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded",
+    "ENUM_TreeViewNodeKind_NOTisExpandable_isExpanded",
+    "ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded",
 
     "ENUM_TrackedSyntaxKind_None",
     "ENUM_TrackedSyntaxKind_String",

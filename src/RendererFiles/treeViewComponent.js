@@ -713,11 +713,11 @@ class TreeViewComponent {
     */
 }
 
-const get_TreeViewNodeKind_None = () => 0;
-const get_TreeViewNodeKind_isExpandable_isExpanded = () => 1;
-const get_TreeViewNodeKind_isExpandable_NOTisExpanded = () => 2;
-const get_TreeViewNodeKind_NOTisExpandable_isExpanded = () => 3;
-const get_TreeViewNodeKind_NOTisExpandable_NOTisExpanded = () => 4;
+const ENUM_TreeViewNodeKind_None = 0;
+const ENUM_TreeViewNodeKind_isExpandable_isExpanded = 1;
+const ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded = 2;
+const ENUM_TreeViewNodeKind_NOTisExpandable_isExpanded = 3;
+const ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded = 4;
 
 class TreeViewNodeList {
     data_literal;
@@ -950,6 +950,6 @@ class TreeViewNodeList {
     }
 }
 
-let TreeView_pooledNode_nodeKind = get_TreeViewNodeKind_None();
+let TreeView_pooledNode_nodeKind = ENUM_TreeViewNodeKind_None;
 let TreeView_pooledNode_key = 0;
 let TreeView_pooledNode_depth = 0;

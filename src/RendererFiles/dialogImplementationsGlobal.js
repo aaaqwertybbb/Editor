@@ -25,7 +25,7 @@ class DIALOG_FindAll_TreeViewDirector {
         this.component.setItems(this, APP_lineHeight, APP_lineHeight + 'px');
 
         for (let i = 0; i < actualData.length; i++) {
-            let nodeKind = get_TreeViewNodeKind_isExpandable_NOTisExpanded();
+            let nodeKind = ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded;
             this.nodeList.insert(this.nodeList.count_abstract, nodeKind, i, 0);
         }
         this.component.itemHeightTotal = this.tvd_getTotalCount() * this.component.itemHeightNumber;
@@ -63,7 +63,7 @@ class DIALOG_FindAll_TreeViewDirector {
         for (var indexItem = start; indexItem < upperBound; indexItem++) {
 
             let depth = 0;
-            let nodeKind = get_TreeViewNodeKind_NOTisExpandable_NOTisExpanded();
+            let nodeKind = ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
             let divItem;
             let divIndex;
@@ -113,16 +113,16 @@ class DIALOG_FindAll_TreeViewDirector {
             }
 
             switch (nodeKind) {
-                case get_TreeViewNodeKind_isExpandable_isExpanded():
+                case ENUM_TreeViewNodeKind_isExpandable_isExpanded:
                     divItem.children[0].textContent = '-';
                     break;
-                case get_TreeViewNodeKind_isExpandable_NOTisExpanded():
+                case ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded:
                     divItem.children[0].textContent = '+';
                     break;
-                case get_TreeViewNodeKind_NOTisExpandable_isExpanded():
+                case ENUM_TreeViewNodeKind_NOTisExpandable_isExpanded:
                     divItem.children[0].textContent = '';
                     break;
-                case get_TreeViewNodeKind_NOTisExpandable_NOTisExpanded():
+                case ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded:
                     divItem.children[0].textContent = '';
                     break;
             }
@@ -156,7 +156,7 @@ class DIALOG_FindAll_TreeViewDirector {
         let depth = TreeView_pooledNode_depth;
         let nodeKind = TreeView_pooledNode_nodeKind;
 
-        if (nodeKind === get_TreeViewNodeKind_NOTisExpandable_NOTisExpanded()) {
+        if (nodeKind === ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded) {
 
             let textNode = divItem.lastChild;
             if (textNode.nodeType !== Node.TEXT_NODE) throw new Error('if (textNode.nodeType !== Node.TEXT_NODE)');
@@ -202,10 +202,10 @@ class DIALOG_FindAll_TreeViewDirector {
         let depth = TreeView_pooledNode_depth;
         let nodeKind = TreeView_pooledNode_nodeKind;
 
-        if (nodeKind === get_TreeViewNodeKind_isExpandable_NOTisExpanded()) {
+        if (nodeKind === ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded) {
 
             divItem.children[0].textContent = '-';
-            this.nodeList.setNodeKind(indexItem, get_TreeViewNodeKind_isExpandable_isExpanded());
+            this.nodeList.setNodeKind(indexItem, ENUM_TreeViewNodeKind_isExpandable_isExpanded);
 
             let searchTextInput = document.getElementById('DIALOG_FindAll_searchTextInput');
             if (!searchTextInput) return;
@@ -222,7 +222,7 @@ class DIALOG_FindAll_TreeViewDirector {
                 }
 
                 for (let i = 0; i < results.length; i++) {
-                    let nodeKind = get_TreeViewNodeKind_NOTisExpandable_NOTisExpanded();
+                    let nodeKind = ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
                     // TODO: Insert range, or at the least 'pre-emptively' resize the list so that it fits each insertion without resizing per insertion.
                     this.nodeList.insert(indexItem + 1 + i, nodeKind, indexItem + 1 + i, depth + 1);
                     this.component.itemHeightTotal = this.tvd_getTotalCount() * this.component.itemHeightNumber;
@@ -232,10 +232,10 @@ class DIALOG_FindAll_TreeViewDirector {
 
             this.component.draw_render_fullReset_request();
         }
-        else if (nodeKind === get_TreeViewNodeKind_isExpandable_isExpanded()) {
+        else if (nodeKind === ENUM_TreeViewNodeKind_isExpandable_isExpanded) {
 
             divItem.children[0].textContent = '+';
-            this.nodeList.setNodeKind(indexItem, get_TreeViewNodeKind_isExpandable_NOTisExpanded());
+            this.nodeList.setNodeKind(indexItem, ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded);
 
             let countChildren = 0;
             for (let i = indexItem + 1; i < this.nodeList.count_abstract; i++) {

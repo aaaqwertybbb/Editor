@@ -812,6 +812,12 @@ Google AI:
 < your bundler runs at speeds faster than a fraction of a microsecond.
 < 
 < ...
+<
+< 1. Check for Strict Inequality (!==) instead of Greater Than (>)
+< Instead of checking if the source file is newer than the cache, check if they are different.
+< If you switch Git branches or roll back a file, the source file might become older than the cache. 
+< Checking for strict inequality catches changes in both directions.
+
  
 
 

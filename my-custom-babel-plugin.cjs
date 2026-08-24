@@ -104,27 +104,7 @@ module.exports = function (babel) {
     "get_EDITOR_findOverlay_options_matchWord",
     "set_EDITOR_findOverlay_options_matchWord",
 
-    "ENUM_EditKind_None",
-    "ENUM_EditKind_InsertLtr",
-    "ENUM_EditKind_DeleteLtr",
-    "ENUM_EditKind_BackspaceRtl",
-    "ENUM_EditKind_RemoveTextNoBatching",
-    "ENUM_EditKind_Tab",
-    "ENUM_EditKind_IndentMore",
-    "ENUM_EditKind_IndentLess",
-    "ENUM_EditKind_Enter",
-    "ENUM_EditKind_Paste",
-    "ENUM_EditKind_Duplicate",
-
-    "ENUM_EnterKeyEventKind_None",
-    "ENUM_EnterKeyEventKind_StartOfLine",
-    "ENUM_EnterKeyEventKind_EndOfLine",
-    "ENUM_EnterKeyEventKind_AmongALine",
-
-    "ENUM_CharacterKind_None",
-    "ENUM_CharacterKind_Whitespace",
-    "ENUM_CharacterKind_Punctuation",
-    "ENUM_CharacterKind_LetterOrDigit",
+    
 
     "get_DialogKind_None",
     "get_DialogKind_FindAll",
@@ -165,25 +145,7 @@ module.exports = function (babel) {
 
     
 
-    "ENUM_RenderKind_None",
-    "ENUM_RenderKind_Scroll",
-    "ENUM_RenderKind_Resize",
-    "ENUM_RenderKind_InsertLtr",
-    "ENUM_RenderKind_TabKey",
-    "ENUM_RenderKind_IndentMore",
-    "ENUM_RenderKind_IndentLess",
-    "ENUM_RenderKind_BackspaceRtl",
-    "ENUM_RenderKind_DeleteLtr",
-    "ENUM_RenderKind_RemoveSelection",
-    "ENUM_RenderKind_Enter",
-    "ENUM_RenderKind_DuplicateOrPaste",
-    "ENUM_RenderKind_Clear",
-    "ENUM_RenderKind_SetText",
-    "ENUM_RenderKind_CreateViewport",
-    "ENUM_RenderKind_SyntaxHighlighting",
-    "ENUM_RenderKind_Cursor_flag_scrollIntoViewExplicit",
-    "ENUM_RenderKind_Cursor_flag_doNotScrollIntoView",
-    "ENUM_RenderKind_Cursor_n",
+    
 
     "get_MENUrenderKind_None",
     "get_MENUrenderKind_Cursor",
@@ -248,6 +210,47 @@ module.exports = function (babel) {
   // List all the variable names you want to inline
   const TARGET_VARIABLES = [
 
+    "ENUM_EditKind_None",
+    "ENUM_EditKind_InsertLtr",
+    "ENUM_EditKind_DeleteLtr",
+    "ENUM_EditKind_BackspaceRtl",
+    "ENUM_EditKind_RemoveTextNoBatching",
+    "ENUM_EditKind_Tab",
+    "ENUM_EditKind_IndentMore",
+    "ENUM_EditKind_IndentLess",
+    "ENUM_EditKind_Enter",
+    "ENUM_EditKind_Paste",
+    "ENUM_EditKind_Duplicate",
+
+    "ENUM_EnterKeyEventKind_None",
+    "ENUM_EnterKeyEventKind_StartOfLine",
+    "ENUM_EnterKeyEventKind_EndOfLine",
+    "ENUM_EnterKeyEventKind_AmongALine",
+
+    "ENUM_CharacterKind_None",
+    "ENUM_CharacterKind_Whitespace",
+    "ENUM_CharacterKind_Punctuation",
+    "ENUM_CharacterKind_LetterOrDigit",
+
+    "ENUM_RenderKind_None",
+    "ENUM_RenderKind_Scroll",
+    "ENUM_RenderKind_Resize",
+    "ENUM_RenderKind_InsertLtr",
+    "ENUM_RenderKind_TabKey",
+    "ENUM_RenderKind_IndentMore",
+    "ENUM_RenderKind_IndentLess",
+    "ENUM_RenderKind_BackspaceRtl",
+    "ENUM_RenderKind_DeleteLtr",
+    "ENUM_RenderKind_RemoveSelection",
+    "ENUM_RenderKind_Enter",
+    "ENUM_RenderKind_DuplicateOrPaste",
+    "ENUM_RenderKind_Clear",
+    "ENUM_RenderKind_SetText",
+    "ENUM_RenderKind_CreateViewport",
+    "ENUM_RenderKind_SyntaxHighlighting",
+    "ENUM_RenderKind_Cursor_flag_scrollIntoViewExplicit",
+    "ENUM_RenderKind_Cursor_flag_doNotScrollIntoView",
+    "ENUM_RenderKind_Cursor_n",
 
     "ENUM_ExtensionKind_None",
     "ENUM_ExtensionKind_JavaScript",

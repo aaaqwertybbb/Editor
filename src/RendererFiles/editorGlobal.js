@@ -9205,4 +9205,10 @@ And I have to sit here watching you fucking morons thinking xyz about me
 I know what you think of me. I know you think I'm a clown
 that I'm a scammer that I'm xyz go fuck yourself.
 
+I can't cause I'm dying I am dying because I consumed cleaning products that my brother held near to food casually
+
+My IQ is dropping every second
+
+I am completely incompetent I can't think I can't code I can't brain
+
 */

@@ -97,15 +97,15 @@ let MENU_onHideAction = null;
 
 let MENU_last_handled_ticketId = 0;
 
-const get_MENUrenderKind_None = () => 0;
-const get_MENUrenderKind_Cursor = () => 1;
-const get_MENUrenderKind_Set = () => 2;
-const get_MENUrenderKind_Hide = () => 3;
+const ENUM_MENUrenderKind_None = 0;
+const ENUM_MENUrenderKind_Cursor = 1;
+const ENUM_MENUrenderKind_Set = 2;
+const ENUM_MENUrenderKind_Hide = 3;
 
 function MENU_render_request(renderKind) {
     if (MENU_renderKindArray[MENU_renderKindArray.length - 1] !== renderKind) {
         MENU_renderKindArray.push(renderKind);
-        if (renderKind === get_MENUrenderKind_Set()) MENU_renderKind_Set_countOfPendingRequests++;
+        if (renderKind === ENUM_MENUrenderKind_Set) MENU_renderKind_Set_countOfPendingRequests++;
     }
     
     if (!MENU_isRenderPending) {
@@ -119,14 +119,14 @@ function MENU_render_do() {
     
     while (renderKind = MENU_renderKindArray.shift()) {
         switch (renderKind) {
-            case get_MENUrenderKind_Cursor():
+            case ENUM_MENUrenderKind_Cursor:
                 MENU_render_do_Cursor();
                 break;
-            case get_MENUrenderKind_Set():
+            case ENUM_MENUrenderKind_Set:
                 if (MENU_renderKind_Set_countOfPendingRequests-- > 1) break;
                 MENU_render_do_Set();
                 break;
-            case get_MENUrenderKind_Hide():
+            case ENUM_MENUrenderKind_Hide:
                 MENU_render_do_Hide();
                 break;
         }
@@ -181,7 +181,7 @@ async function menuHide(shouldRestoreFocus) {
     // ...I'm anxious and can't think straight I swear...
     MENU_last_handled_ticketId = MENU_ticketId_drawn;
     await MENU_state_do_hide(shouldRestoreFocus);
-    MENU_render_request(get_MENUrenderKind_Hide());
+    MENU_render_request(ENUM_MENUrenderKind_Hide);
 }
 
 function MENU_render_do_Set() {
@@ -314,7 +314,7 @@ async function menuSet(context, target, optionList, left, top, NOTshouldFocus, i
 
     MENU_recentBoundingClientRectTop = null;
 
-    MENU_render_request(get_MENUrenderKind_Set());
+    MENU_render_request(ENUM_MENUrenderKind_Set);
 }
 
 function MENU_onMouseMove(event) {
@@ -402,7 +402,7 @@ function MENU_state_do_Cursor(index) {
 
 function MENU_setCursorIndex(index) {
     MENU_state_do_Cursor(index);
-    MENU_render_request(get_MENUrenderKind_Cursor());
+    MENU_render_request(ENUM_MENUrenderKind_Cursor);
 }
 
 // My only public C# repo is terrible too lol

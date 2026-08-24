@@ -104,24 +104,6 @@ module.exports = function (babel) {
     "get_EDITOR_findOverlay_options_matchWord",
     "set_EDITOR_findOverlay_options_matchWord",
 
-    
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    "get_MENUrenderKind_None",
-    "get_MENUrenderKind_Cursor",
-    "get_MENUrenderKind_Set",
-    "get_MENUrenderKind_Hide",
-
     "get_TREEVIEWrenderKind_None",
     "get_TREEVIEWrenderKind_Cursor",
     "get_TREEVIEWrenderKind_Create",
@@ -175,6 +157,11 @@ module.exports = function (babel) {
 
   // List all the variable names you want to inline
   const TARGET_VARIABLES = [
+
+    "ENUM_MENUrenderKind_None",
+    "ENUM_MENUrenderKind_Cursor",
+    "ENUM_MENUrenderKind_Set",
+    "ENUM_MENUrenderKind_Hide",
 
     "ENUM_WidgetKind_None",
     "ENUM_WidgetKind_InputText",

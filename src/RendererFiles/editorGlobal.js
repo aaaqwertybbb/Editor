@@ -106,7 +106,7 @@ class EDITOR_Cursor {
         this.DRAWN_selectionEnd = 0;
         this.DRAWN_selection_virtualIndexLine = 0;
         this.DRAWN_selection_virtualCount = 0;
-        this.editKind = get_EditKind_None();
+        this.editKind = ENUM_EditKind_None;
         this.editLength = 0;
         this.editPosition = 0;
         this.editIndexLine = 0;
@@ -222,7 +222,7 @@ class EDITOR_Cursor {
         this.DRAWN_selectionEnd = 0;
         this.DRAWN_selection_virtualIndexLine = 0;
         this.DRAWN_selection_virtualCount = 0;
-        this.editKind = get_EditKind_None();
+        this.editKind = ENUM_EditKind_None;
         this.editLength = 0;
         this.editPosition = 0;
         this.editIndexLine = 0;
@@ -528,7 +528,7 @@ function EDITOR_render_do_cursor(timestamp, renderKind) {
 function EDITOR_render_do_InsertLtr() {
     for (let i = EDITOR_cursorList.length - 1; i >= 0; i--) {
         let cursor = EDITOR_cursorList[i];
-        if (cursor.editKind !== get_EditKind_InsertLtr()) {
+        if (cursor.editKind !== ENUM_EditKind_InsertLtr) {
             continue;
         }
         if (cursor.editRenderedDisplacement < cursor.editLength) {
@@ -812,7 +812,7 @@ function EDITOR_render_do_Scroll(timestamp) {
     local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop()] = local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop()]; // TODO: Move this to the scroll event handler (probably-maybe)
 
     // TODO: Move this to the leading edge? (maybe)
-    if (EDITOR_primaryCursor.editKind !== get_EditKind_None()) {
+    if (EDITOR_primaryCursor.editKind !== ENUM_EditKind_None) {
         // TODO: Timing issue, someone typing while they scroll
         // TODO: You need to finalize all the cursors not just the primary
         // TODO: You probably need to "check all the cursors" too not just the primary
@@ -1579,30 +1579,30 @@ function EDITOR_finalizeEdit(cursor) {
     let indexLine_editOccurredOn = -1;
 
     switch (cursor.editKind) {
-        case get_EditKind_InsertLtr():
+        case ENUM_EditKind_InsertLtr:
             indexLine_editOccurredOn = EDITOR_finalizeEdit_InsertLtr(cursor, indexLine_editOccurredOn);
             break;
-        case get_EditKind_Enter():
+        case ENUM_EditKind_Enter:
             indexLine_editOccurredOn = EDITOR_finalizeEdit_Enter(cursor, indexLine_editOccurredOn);
             return;
-        case get_EditKind_Tab():
+        case ENUM_EditKind_Tab:
             indexLine_editOccurredOn = EDITOR_finalizeEdit_Tab(cursor, indexLine_editOccurredOn);
             return;
-        case get_EditKind_IndentMore():
+        case ENUM_EditKind_IndentMore:
             indexLine_editOccurredOn = EDITOR_finalizeEdit_IndentMore(cursor, indexLine_editOccurredOn);
             return;
-        case get_EditKind_IndentLess():
+        case ENUM_EditKind_IndentLess:
             indexLine_editOccurredOn = EDITOR_finalizeEdit_IndentLess(cursor, indexLine_editOccurredOn);
             break;
-        case get_EditKind_Paste():
+        case ENUM_EditKind_Paste:
             indexLine_editOccurredOn = EDITOR_finalizeEdit_Paste(cursor, indexLine_editOccurredOn);
             return;
-        case get_EditKind_Duplicate():
+        case ENUM_EditKind_Duplicate:
             indexLine_editOccurredOn = EDITOR_finalizeEdit_Duplicate(cursor, indexLine_editOccurredOn);
             return;
-        case get_EditKind_DeleteLtr():
-        case get_EditKind_BackspaceRtl():
-        case get_EditKind_RemoveTextNoBatching():
+        case ENUM_EditKind_DeleteLtr:
+        case ENUM_EditKind_BackspaceRtl:
+        case ENUM_EditKind_RemoveTextNoBatching:
             indexLine_editOccurredOn = EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(cursor, indexLine_editOccurredOn);
             break;
     }
@@ -2261,7 +2261,7 @@ function EDITOR_finalizeEdit_Duplicate(cursor, indexLine_editOccurredOn) {
 function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(cursor, indexLine_editOccurredOn) {
     // TODO: surely u'd get this before doing the edit?
     let startLineAndColumnIndices;
-    if (cursor.editKind === get_EditKind_RemoveTextNoBatching()) {
+    if (cursor.editKind === ENUM_EditKind_RemoveTextNoBatching) {
         startLineAndColumnIndices = {
             indexLine: cursor.editIndexLine,
             indexColumn: cursor.editIndexColumn,
@@ -2271,7 +2271,7 @@ function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(cursor,
         startLineAndColumnIndices = EDITOR_getLineAndColumnIndices_raw(cursor.editPosition);
     }
     let endLineAndColumnIndices;
-    if (cursor.editKind === get_EditKind_RemoveTextNoBatching()) {
+    if (cursor.editKind === ENUM_EditKind_RemoveTextNoBatching) {
         endLineAndColumnIndices = {
             indexLine: cursor.END_editIndexLine,
             indexColumn: cursor.END_editIndexColumn,
@@ -2379,7 +2379,7 @@ function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(cursor,
 }
 
 function EDITOR_finalizeEdit_ClearEditState(cursor) {
-    cursor.editKind = get_EditKind_None();
+    cursor.editKind = ENUM_EditKind_None;
     cursor.editLength = 0;
     cursor.editPosition = 0;
     cursor.editIndexLine = 0;
@@ -2466,12 +2466,12 @@ function EDITOR_readLineEndPositionList(indexLine) {
         let cursor = EDITOR_cursorList[i];
         if (cursor.editLength > 0 & cursor.editPosition <= lineEndPositionIndex) {
             switch (cursor.editKind) {
-                case get_EditKind_InsertLtr():
+                case ENUM_EditKind_InsertLtr:
                     lineEndPositionIndex += cursor.editLength;
                     break;
-                case get_EditKind_DeleteLtr():
-                case get_EditKind_BackspaceRtl():
-                case get_EditKind_RemoveTextNoBatching():
+                case ENUM_EditKind_DeleteLtr:
+                case ENUM_EditKind_BackspaceRtl:
+                case ENUM_EditKind_RemoveTextNoBatching:
                     lineEndPositionIndex -= cursor.editLength;
                     break;
             }
@@ -3349,7 +3349,7 @@ function getCharacter(positionIndex) {
     for (var i = 0; i < EDITOR_cursorList.length; i++) {
         let cursor = EDITOR_cursorList[i];
         switch (cursor.editKind) {
-            case get_EditKind_InsertLtr():
+            case ENUM_EditKind_InsertLtr:
                 if (positionIndex >= cursor.editPosition & positionIndex < cursor.editPosition + cursor.editLength) {
                     // TODO: I hear fromCharCode is faster than 'String.fromCodePoint(...)' thus I'm seeing if it is sufficient for my current personal usage...
                     // ...long term it presumably fails for characters that I don't tend to type, but until then this is working so I'll just use fromCharCode.
@@ -3361,9 +3361,9 @@ function getCharacter(positionIndex) {
                     totalShift += cursor.editLength;
                 }
                 break;
-            case get_EditKind_DeleteLtr():
-            case get_EditKind_BackspaceRtl():
-            case get_EditKind_RemoveTextNoBatching():
+            case ENUM_EditKind_DeleteLtr:
+            case ENUM_EditKind_BackspaceRtl:
+            case ENUM_EditKind_RemoveTextNoBatching:
                 totalShift -= cursor.editLength;
                 break;
         }
@@ -3848,7 +3848,7 @@ function EDITOR_startEdit(cursor, editKind, editPosition, editLength) {
     cursor.editLength = editLength;
 
     switch (editKind) {
-        case get_EditKind_InsertLtr():
+        case ENUM_EditKind_InsertLtr:
             EDITOR_insertGapBufferSpan(cursor);
             break;
     }
@@ -3860,7 +3860,7 @@ function EDITOR_startEdit(cursor, editKind, editPosition, editLength) {
  * @returns 
  */
 function EDITOR_NOTcanBatch_insert(cursor, indexCursor) {
-    return cursor.editKind != get_EditKind_InsertLtr() ||
+    return cursor.editKind != ENUM_EditKind_InsertLtr ||
            cursor.indexLine !== cursor.editIndexLine ||
            cursor.indexColumn !== cursor.editIndexColumn + cursor.editLength ||
            cursor.editLength >= EDITOR_Cursor.GAP_BUFFER_CAPACITY ||
@@ -3874,7 +3874,7 @@ function EDITOR_NOTcanBatch_insert(cursor, indexCursor) {
  */
 function EDITOR_NOTcanBatch_enter(cursor, indexCursor) {
     return true || // turn off batching until it works. The initial enter event is what matters everything else can be recreated based on the amount of lineFeeds that were inserted.
-           cursor.editKind != get_EditKind_Enter() ||
+           cursor.editKind != ENUM_EditKind_Enter ||
            cursor.indexLine !== cursor.END_editIndexLine ||
            cursor.indexColumn !== cursor.END_editIndexColumn ||
            cursor.editLength >= EDITOR_Cursor.GAP_BUFFER_CAPACITY ||
@@ -3887,7 +3887,7 @@ function EDITOR_NOTcanBatch_enter(cursor, indexCursor) {
  * @returns 
  */
 function EDITOR_NOTcanBatch_backspace(cursor) {
-    return cursor.editKind != get_EditKind_BackspaceRtl() ||
+    return cursor.editKind != ENUM_EditKind_BackspaceRtl ||
            cursor.indexLine !== cursor.editIndexLine ||
            cursor.indexColumn !== cursor.editIndexColumn ||
            cursor.hasSelection();
@@ -3898,7 +3898,7 @@ function EDITOR_NOTcanBatch_backspace(cursor) {
  * @returns 
  */
 function EDITOR_NOTcanBatch_delete(cursor) {
-    return cursor.editKind != get_EditKind_DeleteLtr() ||
+    return cursor.editKind != ENUM_EditKind_DeleteLtr ||
            cursor.indexLine !== cursor.editIndexLine ||
            cursor.indexColumn !== cursor.editIndexColumn ||
            cursor.hasSelection();
@@ -4149,7 +4149,7 @@ function EDITOR_arrowDown(cursor, shiftKey) {
  * @param {EDITOR_Cursor} cursor 
  */
 function EDITOR_movementBasedCacheInvalidation(cursor) {
-    if (cursor.editKind === get_EditKind_Enter()) {
+    if (cursor.editKind === ENUM_EditKind_Enter) {
         //
         // this only happens once even if you have many cursors because the next cursor that enters this function would be and editKind of None.
         //
@@ -4187,8 +4187,8 @@ function EDITOR_editEvent(editKind, event, clipboardContent) {
 
         shouldFinalizeAllCursors = false;
         
-        if ((editKind === get_EditKind_Tab() && EDITOR_cursorList.length === 1 && EDITOR_cursorList[0].editKind === get_EditKind_IndentMore()) ||
-            (editKind === get_EditKind_Tab() && EDITOR_cursorList.length === 1 && EDITOR_cursorList[0].editKind === get_EditKind_IndentLess() && event.shiftKey)) {
+        if ((editKind === ENUM_EditKind_Tab && EDITOR_cursorList.length === 1 && EDITOR_cursorList[0].editKind === ENUM_EditKind_IndentMore) ||
+            (editKind === ENUM_EditKind_Tab && EDITOR_cursorList.length === 1 && EDITOR_cursorList[0].editKind === ENUM_EditKind_IndentLess && event.shiftKey)) {
 
                 // TODO: IndentLess when no selection however shiftTab then it does indentLess even still but I haven't gone out of the way to handle that hack...
                 // ...maybe it'll be covered maybe it won't.
@@ -4202,8 +4202,8 @@ function EDITOR_editEvent(editKind, event, clipboardContent) {
 
     // If you have delete/backspace you need to ONLY remove the selection if it exists not remove selection then delete/backspace
     // but insert needs to remove selection AND insert.
-    if (editKind === get_EditKind_InsertLtr() || editKind === get_EditKind_Enter() || editKind === get_EditKind_Paste()) {
-        // check for get_editKind_None() => selection
+    if (editKind === ENUM_EditKind_InsertLtr || editKind === ENUM_EditKind_Enter || editKind === ENUM_EditKind_Paste) {
+        // check for ENUM_EditKind_None => selection
         // if so then attempt to remove selection foreach cursor
         // then finalize all those newly made selection removal edits
         if (atLeastOneCursorHasASelection) {
@@ -4223,31 +4223,31 @@ function EDITOR_editEvent(editKind, event, clipboardContent) {
 
     // check for NOTcanBatch... I don't want the switch in the for loop... if you have a selection then you have a not can batch?
     switch (editKind) {
-        case get_EditKind_InsertLtr():
+        case ENUM_EditKind_InsertLtr:
             shouldFinalizeAllCursors = EDITOR_editEvent_checkFor_NOTcanBatch_InsertLtr();
             break;
-        case get_EditKind_DeleteLtr():
+        case ENUM_EditKind_DeleteLtr:
             shouldFinalizeAllCursors = EDITOR_editEvent_checkFor_NOTcanBatch_DeleteLtr();
             break;
-        case get_EditKind_BackspaceRtl():
+        case ENUM_EditKind_BackspaceRtl:
             shouldFinalizeAllCursors = EDITOR_editEvent_checkFor_NOTcanBatch_BackspaceRtl();
             break;
-        case get_EditKind_Tab():
+        case ENUM_EditKind_Tab:
             shouldFinalizeAllCursors = EDITOR_editEvent_checkFor_NOTcanBatch_Tab(event);
             break;
-        case get_EditKind_IndentMore():
+        case ENUM_EditKind_IndentMore:
             shouldFinalizeAllCursors = EDITOR_editEvent_checkFor_NOTcanBatch_IndentMore();
             break;
-        case get_EditKind_IndentLess():
+        case ENUM_EditKind_IndentLess:
             shouldFinalizeAllCursors = EDITOR_editEvent_checkFor_NOTcanBatch_IndentLess();
             break;
-        case get_EditKind_Enter():
+        case ENUM_EditKind_Enter:
             shouldFinalizeAllCursors = EDITOR_editEvent_checkFor_NOTcanBatch_Enter();
             break;
-        case get_EditKind_Paste():
+        case ENUM_EditKind_Paste:
             shouldFinalizeAllCursors = true;
             break;
-        case get_EditKind_Duplicate():
+        case ENUM_EditKind_Duplicate:
             shouldFinalizeAllCursors = true;
             break;
         default:
@@ -4261,25 +4261,25 @@ function EDITOR_editEvent(editKind, event, clipboardContent) {
 
     // start/continue edit... I don't want the switch in the for loop
     switch (editKind) {
-        case get_EditKind_InsertLtr():
+        case ENUM_EditKind_InsertLtr:
             EDITOR_editEvent_theEditIself_InsertLtr(event);
             break;
-        case get_EditKind_DeleteLtr():
+        case ENUM_EditKind_DeleteLtr:
             EDITOR_editEvent_theEditIself_DeleteLtr(event);
             break;
-        case get_EditKind_BackspaceRtl():
+        case ENUM_EditKind_BackspaceRtl:
             EDITOR_editEvent_theEditIself_BackspaceRtl(event);
             break;
-        case get_EditKind_Tab():
+        case ENUM_EditKind_Tab:
             EDITOR_editEvent_theEditIself_Tab(event);
             break;
-        case get_EditKind_Enter():
+        case ENUM_EditKind_Enter:
             EDITOR_editEvent_theEditIself_Enter(event);
             break;
-        case get_EditKind_Paste():
+        case ENUM_EditKind_Paste:
             EDITOR_editEvent_theEditIself_Paste(clipboardContent);
             break;
-        case get_EditKind_Duplicate():
+        case ENUM_EditKind_Duplicate:
             EDITOR_editEvent_theEditIself_Duplicate();
             break;
         default:
@@ -4302,9 +4302,9 @@ function EDITOR_editEvent_theEditIself_InsertLtr(event) {
             set_EDITOR_offsetColumn(0);
         }
         // You can do this because the function 'EDITOR_NOTcanBatch_insert' was already checked for all the cursors, if it is possible to batch, the editKind will stay InsertLtr otherwise it is finalized and set to None.
-        // TODO: Use if === get_EditKind_None() for copy and paste safety / it might just even be more readable
-        if (cursor.editKind !== get_EditKind_InsertLtr()) {
-            EDITOR_startEdit(cursor, get_EditKind_InsertLtr(), EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
+        // TODO: Use if === ENUM_EditKind_None for copy and paste safety / it might just even be more readable
+        if (cursor.editKind !== ENUM_EditKind_InsertLtr) {
+            EDITOR_startEdit(cursor, ENUM_EditKind_InsertLtr, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
         }
         EDITOR_insertDo(cursor, event.key);
         cursor.STORED_indexColumn = cursor.indexColumn;
@@ -4328,8 +4328,8 @@ function EDITOR_editEvent_theEditIself_DeleteLtr(event) {
             EDITOR_removeSelection(cursor);
         }
         else {
-            if (cursor.editKind !== get_EditKind_DeleteLtr()) {
-                EDITOR_startEdit(cursor, get_EditKind_DeleteLtr(), EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
+            if (cursor.editKind !== ENUM_EditKind_DeleteLtr) {
+                EDITOR_startEdit(cursor, ENUM_EditKind_DeleteLtr, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
             }
             EDITOR_deleteDo(cursor, event);
         }
@@ -4352,8 +4352,8 @@ function EDITOR_editEvent_theEditIself_BackspaceRtl(event) {
             EDITOR_removeSelection(cursor);
         }
         else {
-            if (cursor.editKind !== get_EditKind_BackspaceRtl()) {
-                EDITOR_startEdit(cursor, get_EditKind_BackspaceRtl(), EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
+            if (cursor.editKind !== ENUM_EditKind_BackspaceRtl) {
+                EDITOR_startEdit(cursor, ENUM_EditKind_BackspaceRtl, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
             }
             EDITOR_backspaceDo(cursor, event);
             cursor.STORED_indexColumn = cursor.indexColumn;
@@ -4370,14 +4370,14 @@ function EDITOR_editEvent_theEditIself_Tab(event) {
         EDITOR_movementBasedCacheInvalidation(cursor);
         if (cursor.hasSelection()) {
             if (event.shiftKey) {
-                if (cursor.editKind !== get_EditKind_IndentLess()) {
-                    EDITOR_startEdit(cursor, get_EditKind_IndentLess(), EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
+                if (cursor.editKind !== ENUM_EditKind_IndentLess) {
+                    EDITOR_startEdit(cursor, ENUM_EditKind_IndentLess, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
                 }
                 EDITOR_indentLess(cursor);
             }
             else {
-                if (cursor.editKind !== get_EditKind_IndentMore()) {
-                    EDITOR_startEdit(cursor, get_EditKind_IndentMore(), EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
+                if (cursor.editKind !== ENUM_EditKind_IndentMore) {
+                    EDITOR_startEdit(cursor, ENUM_EditKind_IndentMore, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
                 }
                 EDITOR_indentMore(cursor);
             }
@@ -4389,14 +4389,14 @@ function EDITOR_editEvent_theEditIself_Tab(event) {
                 // ...everything is buggy and it is very anxiety inducing and for the time being I guess it just has to be that way as I transition
                 // towards a useable editor all the features are coming together but there's this awkward phase of "I can start using it but also not really" or something I just idk.
                 EDITOR_onMouseDownDetailRankThree(0, false, cursor.indexLine, cursor.indexColumn);
-                if (cursor.editKind !== get_EditKind_IndentLess()) {
-                    EDITOR_startEdit(cursor, get_EditKind_IndentLess(), EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
+                if (cursor.editKind !== ENUM_EditKind_IndentLess) {
+                    EDITOR_startEdit(cursor, ENUM_EditKind_IndentLess, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
                 }
                 EDITOR_indentLess(cursor);
             }
             else {
-                if (cursor.editKind !== get_EditKind_Tab()) {
-                    EDITOR_startEdit(cursor, get_EditKind_Tab(), EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
+                if (cursor.editKind !== ENUM_EditKind_Tab) {
+                    EDITOR_startEdit(cursor, ENUM_EditKind_Tab, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
                 }
                 EDITOR_tabKey(cursor);
             }
@@ -4408,8 +4408,8 @@ function EDITOR_editEvent_theEditIself_Tab(event) {
 function EDITOR_editEvent_theEditIself_Enter(event) {
     for (var i = 0; i < EDITOR_cursorList.length; i++) {
         let cursor = EDITOR_cursorList[i];
-        if (cursor.editKind !== get_EditKind_Enter()) {
-            EDITOR_startEdit(cursor, get_EditKind_Enter(), EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
+        if (cursor.editKind !== ENUM_EditKind_Enter) {
+            EDITOR_startEdit(cursor, ENUM_EditKind_Enter, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
         }
         EDITOR_EnterKey(cursor, event.ctrlKey, event.shiftKey);
         cursor.STORED_indexColumn = cursor.indexColumn;
@@ -4421,8 +4421,8 @@ function EDITOR_editEvent_theEditIself_Enter(event) {
 function EDITOR_editEvent_theEditIself_Paste(clipboardContent) {
     for (var i = 0; i < EDITOR_cursorList.length; i++) {
         let cursor = EDITOR_cursorList[i];
-        if (cursor.editKind !== get_EditKind_Enter()) {
-            EDITOR_startEdit(cursor, get_EditKind_Paste(), EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
+        if (cursor.editKind !== ENUM_EditKind_Enter) {
+            EDITOR_startEdit(cursor, ENUM_EditKind_Paste, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
         }
         EDITOR_paste(cursor, clipboardContent);
         cursor.STORED_indexColumn = cursor.indexColumn;
@@ -4433,8 +4433,8 @@ function EDITOR_editEvent_theEditIself_Paste(clipboardContent) {
 function EDITOR_editEvent_theEditIself_Duplicate() {
     for (var i = 0; i < EDITOR_cursorList.length; i++) {
         let cursor = EDITOR_cursorList[i];
-        if (cursor.editKind !== get_EditKind_Duplicate()) {
-            EDITOR_startEdit(cursor, get_EditKind_Duplicate(), EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
+        if (cursor.editKind !== ENUM_EditKind_Duplicate) {
+            EDITOR_startEdit(cursor, ENUM_EditKind_Duplicate, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
         }
         EDITOR_duplicateSelection(cursor);
         cursor.STORED_indexColumn = cursor.indexColumn;
@@ -4516,7 +4516,7 @@ function EDITOR_editEvent_checkFor_NOTcanBatch_IndentMore() {
         return true;
     }
     let cursor = EDITOR_cursorList[0];
-    if (cursor.editKind === get_EditKind_IndentLess()) {
+    if (cursor.editKind === ENUM_EditKind_IndentLess) {
         return true;
     }
     
@@ -4571,7 +4571,7 @@ function EDITOR_editEvent_checkFor_NOTcanBatch_IndentLess() {
         return true;
     }
     let cursor = EDITOR_cursorList[0];
-    if (cursor.editKind === get_EditKind_IndentMore()) {
+    if (cursor.editKind === ENUM_EditKind_IndentMore) {
         return true;
     }
     
@@ -4765,21 +4765,21 @@ function EDITOR_onKeyDown(event) {
             EDITOR_onKeyDown_PageUp(event);
             break;
         case 'Delete':
-            EDITOR_editEvent(get_EditKind_DeleteLtr(), event);
+            EDITOR_editEvent(ENUM_EditKind_DeleteLtr, event);
             break;
         case 'Backspace':
-            EDITOR_editEvent(get_EditKind_BackspaceRtl(), event);
+            EDITOR_editEvent(ENUM_EditKind_BackspaceRtl, event);
             break;
         case 'Escape':
             EDITOR_finalizeAllCursors_andClearNonPrimaryCursors();
             break;
         case 'Tab':
             event.preventDefault();
-            EDITOR_editEvent(get_EditKind_Tab(), event);
+            EDITOR_editEvent(ENUM_EditKind_Tab, event);
             break;
         case 'Enter':
             // Enter key relies on cached data that would be cleared, pattern doesn't match on purpose
-            EDITOR_editEvent(get_EditKind_Enter(), event);
+            EDITOR_editEvent(ENUM_EditKind_Enter, event);
             break;
         case 'F12':
             EDITOR_doEditorGoToDefinitionRequest();
@@ -4795,7 +4795,7 @@ function EDITOR_onKeyDown(event) {
                 }
                 else {
                     event.preventDefault();
-                    EDITOR_editEvent(get_EditKind_InsertLtr(), event);
+                    EDITOR_editEvent(ENUM_EditKind_InsertLtr, event);
                 }
             }
             break;
@@ -5178,14 +5178,14 @@ async function EDITOR_onKeyDown_keyLengthEqualsOne_ctrlKey(event) {
             event.stopPropagation();
 
             let clipboard = await window.myAPI.readClipboard();
-            EDITOR_editEvent(get_EditKind_Paste(), event, clipboard);
+            EDITOR_editEvent(ENUM_EditKind_Paste, event, clipboard);
             break;
         case 'd':
 
             event.preventDefault();
             event.stopPropagation();
 
-            EDITOR_editEvent(get_EditKind_Duplicate(), event);
+            EDITOR_editEvent(ENUM_EditKind_Duplicate, event);
             break;
         case 'a':
 
@@ -5704,7 +5704,7 @@ function EDITOR_render_do_IndentMore() {
 
     for (let i = EDITOR_cursorList.length - 1; i >= 0; i--) {
         let cursor = EDITOR_cursorList[i];
-        if (cursor.editKind !== get_EditKind_IndentMore()) {
+        if (cursor.editKind !== ENUM_EditKind_IndentMore) {
             continue;
         }
         if (cursor.editRenderedDisplacement < cursor.editLength) {
@@ -5860,7 +5860,7 @@ function EDITOR_render_do_IndentLess() {
 
     for (let cursorI = EDITOR_cursorList.length - 1; cursorI >= 0; cursorI--) {
         let cursor = EDITOR_cursorList[cursorI];
-        if (cursor.editKind !== get_EditKind_IndentLess()) {
+        if (cursor.editKind !== ENUM_EditKind_IndentLess) {
             continue;
         }
         if (cursor.editRenderedDisplacement < cursor.editLength) {
@@ -6119,10 +6119,10 @@ function EDITOR_render_do_DuplicateOrPaste() {
 
     for (let i = EDITOR_cursorList.length - 1; i >= 0; i--) {
         let cursor = EDITOR_cursorList[i];
-        if (cursor.editKind !== get_EditKind_Duplicate() && cursor.editKind !== get_EditKind_Paste()) {
+        if (cursor.editKind !== ENUM_EditKind_Duplicate && cursor.editKind !== ENUM_EditKind_Paste) {
             continue;
         }
-        if (cursor.editRenderedDisplacement < cursor.editLength || cursor.editKind === get_EditKind_Paste() /* Paste has an editLength of 0 currently */) {
+        if (cursor.editRenderedDisplacement < cursor.editLength || cursor.editKind === ENUM_EditKind_Paste /* Paste has an editLength of 0 currently */) {
 
             let small = cursor.EDITOR_duplicate_small;
             let length = cursor.EDITOR_duplicate_length;
@@ -6133,10 +6133,10 @@ function EDITOR_render_do_DuplicateOrPaste() {
             let byteArray;
 
             // TODO: re-use the paste byte array
-            if (cursor.editKind === get_EditKind_Duplicate()) {
+            if (cursor.editKind === ENUM_EditKind_Duplicate) {
                 byteArray = EDITOR_textByteList.bytes.subarray(small, large);
             }
-            else if (cursor.editKind === get_EditKind_Paste()) {
+            else if (cursor.editKind === ENUM_EditKind_Paste) {
                 large = EDITOR_getPositionIndex_raw(cursor);
                 let clipboardContent = cursor.EDITOR_paste_clipboardContent;
                 let clipboardContentLength = clipboardContent.length;
@@ -6680,10 +6680,10 @@ function EDITOR_render_do_TabKey() {
 
     for (let i = EDITOR_cursorList.length - 1; i >= 0; i--) {
         let cursor = EDITOR_cursorList[i];
-        if (cursor.editKind !== get_EditKind_Tab()) {
+        if (cursor.editKind !== ENUM_EditKind_Tab) {
             continue;
         }
-        if (cursor.editRenderedDisplacement < cursor.editLength || cursor.editKind === get_EditKind_Tab()) {
+        if (cursor.editRenderedDisplacement < cursor.editLength || cursor.editKind === ENUM_EditKind_Tab) {
 
             cursor.indexColumn -= 4; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
 
@@ -6864,7 +6864,7 @@ function EDITOR_render_do_EnterKey() {
 
     for (let i = EDITOR_cursorList.length - 1; i >= 0; i--) {
         let cursor = EDITOR_cursorList[i];
-        if (cursor.editKind !== get_EditKind_Enter()) {
+        if (cursor.editKind !== ENUM_EditKind_Enter) {
             continue;
         }
 
@@ -7349,7 +7349,7 @@ And then I got response of
  * @returns 
  */
 function EDITOR_removeSelection(cursor) {
-    if (cursor.editKind != get_EditKind_None()) {
+    if (cursor.editKind != ENUM_EditKind_None) {
         // TODO: multicursor confusion scenario is likely to happy due to this code, but the code isn't related enough for me to change it yet.
         EDITOR_finalizeEdit(cursor);
     }
@@ -7373,7 +7373,7 @@ function EDITOR_removeSelection(cursor) {
 
     let editLength = largePosition - smallPosition;
     // editLength is 0 in this ...startEdit invocation intentionally, you cannot set the editLength until the end (TODO: remember what the exact reason was and put it here... I think it was because 'EDITOR_readLineEndPositionList' function is used rather than reading directly)
-    EDITOR_startEdit(cursor, get_EditKind_RemoveTextNoBatching(), smallPosition, /*editLength*/ 0);
+    EDITOR_startEdit(cursor, ENUM_EditKind_RemoveTextNoBatching, smallPosition, /*editLength*/ 0);
 
     let smallLineAndColumnIndices = EDITOR_getLineAndColumnIndices(smallPosition);
     EDITOR_RemoveSelection_smallLineAndColumnIndices = smallLineAndColumnIndices;
@@ -7413,7 +7413,7 @@ function EDITOR_render_do_RemoveSelection() {
     
     for (let cursorI = EDITOR_cursorList.length - 1; cursorI >= 0; cursorI--) {
         let cursor = EDITOR_cursorList[cursorI];
-        if (cursor.editKind !== get_EditKind_RemoveTextNoBatching()) {
+        if (cursor.editKind !== ENUM_EditKind_RemoveTextNoBatching) {
             continue;
         }
         if (cursor.editRenderedDisplacement < cursor.editLength) {
@@ -7710,11 +7710,11 @@ comments from EDITOR_removeSelection(cursor) that may or may not be useful idk I
     }
 */
 
-/** TODO: this is nearly identical to backspace, the difference is the check 'if (cursor.editKind !== get_EditKind_DeleteLtr())', thus dedupe the logic or no? */
+/** TODO: this is nearly identical to backspace, the difference is the check 'if (cursor.editKind !== ENUM_EditKind_DeleteLtr)', thus dedupe the logic or no? */
 function EDITOR_render_do_Delete() {
     for (let i = EDITOR_cursorList.length - 1; i >= 0; i--) {
         let cursor = EDITOR_cursorList[i];
-        if (cursor.editKind !== get_EditKind_DeleteLtr()) {
+        if (cursor.editKind !== ENUM_EditKind_DeleteLtr) {
             continue;
         }
         if (cursor.editRenderedDisplacement < cursor.editLength) {
@@ -7914,7 +7914,7 @@ function EDITOR_deleteDo(cursor, event) {
 function EDITOR_render_do_Backspace() {
     for (let i = EDITOR_cursorList.length - 1; i >= 0; i--) {
         let cursor = EDITOR_cursorList[i];
-        if (cursor.editKind !== get_EditKind_BackspaceRtl()) {
+        if (cursor.editKind !== ENUM_EditKind_BackspaceRtl) {
             continue;
         }
 

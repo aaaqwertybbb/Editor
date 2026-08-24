@@ -1,6 +1,5 @@
 // This file was originally generated with google AI
 
-
 module.exports = function (babel) {
   const { types: t } = babel;
 
@@ -105,17 +104,17 @@ module.exports = function (babel) {
     "get_EDITOR_findOverlay_options_matchWord",
     "set_EDITOR_findOverlay_options_matchWord",
 
-    "get_EditKind_None",
-    "get_EditKind_InsertLtr",
-    "get_EditKind_DeleteLtr",
-    "get_EditKind_BackspaceRtl",
-    "get_EditKind_RemoveTextNoBatching",
-    "get_EditKind_Tab",
-    "get_EditKind_IndentMore",
-    "get_EditKind_IndentLess",
-    "get_EditKind_Enter",
-    "get_EditKind_Paste",
-    "get_EditKind_Duplicate",
+    "ENUM_EditKind_None",
+    "ENUM_EditKind_InsertLtr",
+    "ENUM_EditKind_DeleteLtr",
+    "ENUM_EditKind_BackspaceRtl",
+    "ENUM_EditKind_RemoveTextNoBatching",
+    "ENUM_EditKind_Tab",
+    "ENUM_EditKind_IndentMore",
+    "ENUM_EditKind_IndentLess",
+    "ENUM_EditKind_Enter",
+    "ENUM_EditKind_Paste",
+    "ENUM_EditKind_Duplicate",
 
     "get_EnterKeyEventKind_None",
     "get_EnterKeyEventKind_StartOfLine",

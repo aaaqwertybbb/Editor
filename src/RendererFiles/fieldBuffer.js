@@ -371,17 +371,17 @@ const ENUM_ExtensionKind_JavaScript = 1;
  * their edits are stored the same (i.e.: both in "the form of a delete" keypress)
  * The kind delete/backspace tells you how to restore the cursor when doing a ctrl+z and etc...?
  */
-const get_EditKind_None = () => 0;
-const get_EditKind_InsertLtr = () => 1;
-const get_EditKind_DeleteLtr = () => 2;
-const get_EditKind_BackspaceRtl = () => 3;
-const get_EditKind_RemoveTextNoBatching = () => 4;
-const get_EditKind_Tab = () => 5;
-const get_EditKind_IndentMore = () => 6;
-const get_EditKind_IndentLess = () => 7;
-const get_EditKind_Enter = () => 8;
-const get_EditKind_Paste = () => 9;
-const get_EditKind_Duplicate = () => 10;
+const ENUM_EditKind_None = 0;
+const ENUM_EditKind_InsertLtr = 1;
+const ENUM_EditKind_DeleteLtr = 2;
+const ENUM_EditKind_BackspaceRtl = 3;
+const ENUM_EditKind_RemoveTextNoBatching = 4;
+const ENUM_EditKind_Tab = 5;
+const ENUM_EditKind_IndentMore = 6;
+const ENUM_EditKind_IndentLess = 7;
+const ENUM_EditKind_Enter = 8;
+const ENUM_EditKind_Paste = 9;
+const ENUM_EditKind_Duplicate = 10;
 
 /**
  * TODO: Long term this likely should be removed and all enter key logic reduced into an insertion but this will help in the time being.

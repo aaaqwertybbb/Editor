@@ -7,12 +7,12 @@ let AUTOCOMPLETE_items_slice_start = 0;
 let AUTOCOMPLETE_items_slice_end = 0;
 let AUTOCOMPLETE_items_totalLength = 0;
 
-const get_AUTOCOMPLETErenderKind_None = () => 0;
-const get_AUTOCOMPLETErenderKind_Show = () => 1;
-const get_AUTOCOMPLETErenderKind_Hide = () => 2;
-const get_AUTOCOMPLETErenderKind_CursorSet = () => 3;
-const get_AUTOCOMPLETErenderKind_CreateLines = () => 4;
-const get_AUTOCOMPLETErenderKind_Scroll = () => 5;
+const ENUM_AUTOCOMPLETErenderKind_None = 0;
+const ENUM_AUTOCOMPLETErenderKind_Show = 1;
+const ENUM_AUTOCOMPLETErenderKind_Hide = 2;
+const ENUM_AUTOCOMPLETErenderKind_CursorSet = 3;
+const ENUM_AUTOCOMPLETErenderKind_CreateLines = 4;
+const ENUM_AUTOCOMPLETErenderKind_Scroll = 5;
 
 let AUTOCOMPLETE_renderKindArray = [];
 let AUTOCOMPLETE_isRenderPending = false;
@@ -61,19 +61,19 @@ function AUTOCOMPLETE_renderDo(timestamp) {
 
     while (renderKind = AUTOCOMPLETE_renderKindArray.shift()) {
         switch (renderKind) {
-            case get_AUTOCOMPLETErenderKind_Show():
+            case ENUM_AUTOCOMPLETErenderKind_Show:
                 AUTOCOMPLETE_render_do_show(timestamp);
                 break;
-            case get_AUTOCOMPLETErenderKind_Hide():
+            case ENUM_AUTOCOMPLETErenderKind_Hide:
                 AUTOCOMPLETE_render_do_hide();
                 break;
-            case get_AUTOCOMPLETErenderKind_CursorSet():
+            case ENUM_AUTOCOMPLETErenderKind_CursorSet:
                 AUTOCOMPLETE_cursor_render_set();
                 break;
-            case get_AUTOCOMPLETErenderKind_CreateLines():
+            case ENUM_AUTOCOMPLETErenderKind_CreateLines:
                 AUTOCOMPLETE_render_create_lines();
                 break;
-            case get_AUTOCOMPLETErenderKind_Scroll():
+            case ENUM_AUTOCOMPLETErenderKind_Scroll:
                 AUTOCOMPLETE_events_scroll_render(timestamp);
                 break;
         }
@@ -267,7 +267,7 @@ function AUTOCOMPLETE_render_do_show(timestamp) {
 
 function AUTOCOMPLETE_show(lspResult) {
     AUTOCOMPLETE_pending_lspResult = lspResult;
-    AUTOCOMPLETE_render_request(get_AUTOCOMPLETErenderKind_Show());
+    AUTOCOMPLETE_render_request(ENUM_AUTOCOMPLETErenderKind_Show);
 }
 
 function AUTOCOMPLETE_slice(lspResult) {
@@ -335,7 +335,7 @@ function AUTOCOMPLETE_render_do_hide() {
 
 function AUTOCOMPLETE_hide() {
     AUTOCOMPLETE_pending_lspResult = null;
-    AUTOCOMPLETE_render_request(get_AUTOCOMPLETErenderKind_Hide());
+    AUTOCOMPLETE_render_request(ENUM_AUTOCOMPLETErenderKind_Hide);
 }
 
 function AUTOCOMPLETE_cursor_render_set() {
@@ -369,7 +369,7 @@ function AUTOCOMPLETE_cursor_render_set() {
 
 function AUTOCOMPLETE_cursor_do_set(cursorIndex) {
     AUTOCOMPLETE_cursorIndex = cursorIndex;
-    AUTOCOMPLETE_render_request(get_AUTOCOMPLETErenderKind_CursorSet());
+    AUTOCOMPLETE_render_request(ENUM_AUTOCOMPLETErenderKind_CursorSet);
 }
 
 function AUTOCOMPLETE_cursor_validate(cursorIndex) {
@@ -420,7 +420,7 @@ function AUTOCOMPLETE_events_scroll_receive(event) {
     // Something is still breaking
     // 
     AUTOCOMPLETE_scrollTop = AUTOCOMPLETEElement.scrollTop;
-    AUTOCOMPLETE_render_request(get_AUTOCOMPLETErenderKind_Scroll());
+    AUTOCOMPLETE_render_request(ENUM_AUTOCOMPLETErenderKind_Scroll);
 }
 
 function AUTOCOMPLETE_events_scroll_render(timestamp) {

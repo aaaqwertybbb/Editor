@@ -82,71 +82,71 @@ const get_EDITOR_ASCII_SPACE = () => 32;
 
 /////////////////////
 
-const get_js_DOUBLEQUOTE_str = () => '"';
-const get_js_DOUBLEQUOTE_num = () => 34;
+const CONST_js_DOUBLEQUOTE_str = '"';
+const CONST_js_DOUBLEQUOTE_num = 34;
 
-const get_js_SINGLEQUOTE_str = () => '\'';
-const get_js_SINGLEQUOTE_num = () => 39;
+const CONST_js_SINGLEQUOTE_str = '\'';
+const CONST_js_SINGLEQUOTE_num = 39;
 
-const get_js_BACKTICK_str = () => '`';
-const get_js_BACKTICK_num = () => 96;
+const CONST_js_BACKTICK_str = '`';
+const CONST_js_BACKTICK_num = 96;
 
-const get_js_FORWARDSLASH_str = () => '/';
-const get_js_FORWARDSLASH_num = () => 47;
+const CONST_js_FORWARDSLASH_str = '/';
+const CONST_js_FORWARDSLASH_num = 47;
 
-const get_js_BACKSLASH_str = () => '\\';
-const get_js_BACKSLASH_num = () => 92;
+const CONST_js_BACKSLASH_str = '\\';
+const CONST_js_BACKSLASH_num = 92;
 
-const get_js_ASTERISK_str = () => '*';
-const get_js_ASTERISK_num = () => 42;
+const CONST_js_ASTERISK_str = '*';
+const CONST_js_ASTERISK_num = 42;
 
-const get_js_LINEFEED_str = () => '\n';
-const get_js_LINEFEED_num = () => 10;
+const CONST_js_LINEFEED_str = '\n';
+const CONST_js_LINEFEED_num = 10;
 
-const get_js_OPENPARENTHESIS_str = () => '(';
-const get_js_OPENPARENTHESIS_num = () => 40;
+const CONST_js_OPENPARENTHESIS_str = '(';
+const CONST_js_OPENPARENTHESIS_num = 40;
 
-const get_js_CLOSEPARENTHESIS_str = () => ')';
-const get_js_CLOSEPARENTHESIS_num = () => 41;
+const CONST_js_CLOSEPARENTHESIS_str = ')';
+const CONST_js_CLOSEPARENTHESIS_num = 41;
 
-const get_js_PERIOD_str = () => '.';
-const get_js_PERIOD_num = () => 46;
+const CONST_js_PERIOD_str = '.';
+const CONST_js_PERIOD_num = 46;
 
-const get_js_EQUALS_str = () => '=';
-const get_js_EQUALS_num = () => 61;
+const CONST_js_EQUALS_str = '=';
+const CONST_js_EQUALS_num = 61;
 
-const get_js_OPENBRACKET_str = () => '[';
-const get_js_OPENBRACKET_num = () => 60;
+const CONST_js_OPENBRACKET_str = '[';
+const CONST_js_OPENBRACKET_num = 60;
 
-const get_js_CLOSEBRACKET_str = () => ']';
-const get_js_CLOSEBRACKET_num = () => 62;
+const CONST_js_CLOSEBRACKET_str = ']';
+const CONST_js_CLOSEBRACKET_num = 62;
 
-const get_js_BANG_str = () => '!';
-const get_js_BANG_num = () => 33;
+const CONST_js_BANG_str = '!';
+const CONST_js_BANG_num = 33;
 
-const get_js_PLUS_str = () => '+';
-const get_js_PLUS_num = () => 43;
+const CONST_js_PLUS_str = '+';
+const CONST_js_PLUS_num = 43;
 
-const get_js_MINUS_str = () => '-';
-const get_js_MINUS_num = () => 45;
+const CONST_js_MINUS_str = '-';
+const CONST_js_MINUS_num = 45;
 
-const get_js_STAR_str = () => '*';
-const get_js_STAR_num = () => 42;
+const CONST_js_STAR_str = '*';
+const CONST_js_STAR_num = 42;
 
-const get_js_PERCENT_str = () => '%';
-const get_js_PERCENT_num = () => 37;
+const CONST_js_PERCENT_str = '%';
+const CONST_js_PERCENT_num = 37;
 
-const get_js_AMPERSAND_str = () => '&';
-const get_js_AMPERSAND_num = () => 38;
+const CONST_js_AMPERSAND_str = '&';
+const CONST_js_AMPERSAND_num = 38;
 
-const get_js_PIPE_str = () => '|';
-const get_js_PIPE_num = () => 24;
+const CONST_js_PIPE_str = '|';
+const CONST_js_PIPE_num = 24;
 
-const get_js_QUESTIONMARK_str = () => '?';
-const get_js_QUESTIONMARK_num = () => 63;
+const CONST_js_QUESTIONMARK_str = '?';
+const CONST_js_QUESTIONMARK_num = 63;
 
-const get_js_CARET_str = () => '^';
-const get_js_CARET_num = () => 94;
+const CONST_js_CARET_str = '^';
+const CONST_js_CARET_num = 94;
 
 const CONST_EDITOR_gutterPaddingLeft = 3;
 const CONST_EDITOR_gutterPaddingRight = 6;

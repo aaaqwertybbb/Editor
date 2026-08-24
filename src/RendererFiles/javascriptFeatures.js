@@ -580,8 +580,8 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                     substart += wordlength;
                 }
                 continue;
-            case get_js_FORWARDSLASH_num():
-                if (bytes[pos + 1] === get_js_FORWARDSLASH_num()) {
+            case CONST_js_FORWARDSLASH_num:
+                if (bytes[pos + 1] === CONST_js_FORWARDSLASH_num) {
 
                     if (substart < pos) {
                         flushTextContent = EDITOR_decoder.decode(bytes.subarray(substart, substart = pos));
@@ -606,7 +606,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                     // This change is moreso a matter of anxiety and me not wanting to deal with this at the moment so I need to see the explicit read here so I can sleep at night for the time being until my stress levels are lower.
                     pos++;
                     while (pos < lineEnd) {
-                        if (bytes[pos] === get_js_LINEFEED_num()) {
+                        if (bytes[pos] === CONST_js_LINEFEED_num) {
                             break;
                         }
                         pos++;
@@ -631,7 +631,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
 
                     continue;
                 }
-                else if (bytes[pos + 1] === get_js_ASTERISK_num()) {
+                else if (bytes[pos + 1] === CONST_js_ASTERISK_num) {
                     if (substart < pos) { // write any text that came prior, and on the same line.
                         flushTextContent = EDITOR_decoder.decode(bytes.subarray(substart, substart = pos));
                         if (childIndex < div.children.length) {
@@ -659,13 +659,13 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                     let ticketForwardSlash = -1;
                     while (pos < lineEnd) {
                         switch (bytes[pos]) {
-                            case get_js_ASTERISK_num():
+                            case CONST_js_ASTERISK_num:
                                 ticketAsterisk = ticketSource++;
                                 break;
-                            case get_js_FORWARDSLASH_num():
+                            case CONST_js_FORWARDSLASH_num:
                                 ticketForwardSlash = ticketSource++;
                                 break;
-                            case get_js_LINEFEED_num():
+                            case CONST_js_LINEFEED_num:
                                 ticketSource++;
                                 break;
                             default:
@@ -696,7 +696,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                 }
 
                 break;
-            case get_js_DOUBLEQUOTE_num():
+            case CONST_js_DOUBLEQUOTE_num:
                 if (substart < pos) {
                     flushTextContent = EDITOR_decoder.decode(bytes.subarray(substart, substart = pos));
                     if (childIndex < div.children.length) {
@@ -717,10 +717,10 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                 pos++;
                 outer: while (pos < lineEnd) {
                     switch (bytes[pos]) {
-                        case get_js_DOUBLEQUOTE_num():
+                        case CONST_js_DOUBLEQUOTE_num:
                             pos++;
                             break outer;
-                        case get_js_BACKSLASH_num():
+                        case CONST_js_BACKSLASH_num:
                             pos++;
                             if (pos < lineEnd) {
                                 pos++; // skip the escaped character provided that the file didn't end after the original backslash
@@ -745,7 +745,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                     childIndex++;
                 }
                 continue;
-            case get_js_SINGLEQUOTE_num():
+            case CONST_js_SINGLEQUOTE_num:
                 if (substart < pos) {
                     flushTextContent = EDITOR_decoder.decode(bytes.subarray(substart, substart = pos));
                     if (childIndex < div.children.length) {
@@ -766,10 +766,10 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                 pos++;
                 outer: while (pos < lineEnd) {
                     switch (bytes[pos]) {
-                        case get_js_SINGLEQUOTE_num():
+                        case CONST_js_SINGLEQUOTE_num:
                             pos++;
                             break outer;
-                        case get_js_BACKSLASH_num():
+                        case CONST_js_BACKSLASH_num:
                             pos++;
                             if (pos < lineEnd) {
                                 pos++; // skip the escaped character provided that the file didn't end after the original backslash
@@ -794,7 +794,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                     childIndex++;
                 }
                 continue;
-            case get_js_BACKTICK_num():
+            case CONST_js_BACKTICK_num:
                 if (substart < pos) {
                     flushTextContent = EDITOR_decoder.decode(bytes.subarray(substart, substart = pos));
                     if (childIndex < div.children.length) {
@@ -815,10 +815,10 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                 pos++;
                 outer: while (pos < lineEnd) {
                     switch (bytes[pos]) {
-                        case get_js_BACKTICK_num():
+                        case CONST_js_BACKTICK_num:
                             pos++;
                             break outer;
-                        case get_js_BACKSLASH_num():
+                        case CONST_js_BACKSLASH_num:
                             pos++;
                             if (pos < lineEnd) {
                                 pos++; // skip the escaped character provided that the file didn't end after the original backslash
@@ -843,7 +843,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                     childIndex++;
                 }
                 continue;
-            case get_js_EQUALS_num():
+            case CONST_js_EQUALS_num:
                 // I think I actually want to handle the '==', '===', and '===...=' cases just so I can skip over the text quickly.
                 // Otherwise every time I see '=' I have to check the left and right side and it is quite redundant?
                 //
@@ -862,16 +862,16 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                 // let shouldSkipContiguous;... sneaky uninitialized variable conversion to a falsey or something was going on?
                 shouldSkipContiguous = false;
                 if (pos > substart) {
-                    if (bytes[pos - 1] === get_js_EQUALS_num()) {
+                    if (bytes[pos - 1] === CONST_js_EQUALS_num) {
                         shouldSkipContiguous = true;
                     }
-                    else if (bytes[pos - 1] === get_js_BANG_num()) {
+                    else if (bytes[pos - 1] === CONST_js_BANG_num) {
                         shouldSkipContiguous = true;
                     }
-                    else if (bytes[pos - 1] === get_js_OPENBRACKET_num()) {
+                    else if (bytes[pos - 1] === CONST_js_OPENBRACKET_num) {
                         shouldSkipContiguous = true;
                     }
-                    else if (bytes[pos - 1] === get_js_CLOSEBRACKET_num()) {
+                    else if (bytes[pos - 1] === CONST_js_CLOSEBRACKET_num) {
                         shouldSkipContiguous = true;
                     }
                 }
@@ -879,7 +879,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                     shouldSkipContiguous = false;
                 }
                 if (!shouldSkipContiguous) {
-                    if (pos < lineEnd && bytes[pos + 1] === get_js_EQUALS_num()) {
+                    if (pos < lineEnd && bytes[pos + 1] === CONST_js_EQUALS_num) {
                         shouldSkipContiguous = true;
                     }
                 }
@@ -888,7 +888,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                     // skip current
                     pos++;
                     // skip contiguous
-                    while (pos < lineEnd && bytes[pos] === get_js_EQUALS_num()) {
+                    while (pos < lineEnd && bytes[pos] === CONST_js_EQUALS_num) {
                         pos++;
                     }
                     continue;
@@ -911,7 +911,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                     // I don't know if I would count '=>' as an "assignment operator"... maybe I would but I'm too focused on whether I'd count it as such that I can't figure out the way to make it work. So I need to just make it work first.
                     pos++;
                     substart++;
-                    if (pos < lineEnd && bytes[pos] === get_js_CLOSEBRACKET_num()) {
+                    if (pos < lineEnd && bytes[pos] === CONST_js_CLOSEBRACKET_num) {
                         textContent = '=>';
                         pos++;
                         substart++;
@@ -936,7 +936,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                 
                 // TODO: you don't understand how code caching or like instruction caching etc works with respect to whether inlining interupts things
                 break;
-            case get_js_PLUS_num():
+            case CONST_js_PLUS_num:
                 // ++
                 // +=
                 
@@ -956,13 +956,13 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                 // ...this presumption permits checking only the text that is in bounds of substart and lineEnd.
                 
                 // TODO: This contiguous skipping logic isn't working for every switch case?
-                shouldSkipContiguous = pos > substart && bytes[pos - 1] === get_js_PLUS_num();
+                shouldSkipContiguous = pos > substart && bytes[pos - 1] === CONST_js_PLUS_num;
                 if (!shouldSkipContiguous) {
                     if (pos < lineEnd) {
-                        if (bytes[pos + 1] === get_js_PLUS_num()) {
+                        if (bytes[pos + 1] === CONST_js_PLUS_num) {
                             textContent = '++';
                         }
-                        else if (bytes[pos + 1] === get_js_EQUALS_num()) {
+                        else if (bytes[pos + 1] === CONST_js_EQUALS_num) {
                             textContent = '+=';
                         }
                         else {
@@ -978,7 +978,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                     // skip current
                     pos++;
                     // skip contiguous
-                    while (pos < lineEnd && bytes[pos] === get_js_PLUS_num()) {
+                    while (pos < lineEnd && bytes[pos] === CONST_js_PLUS_num) {
                         pos++;
                     }
                     continue;
@@ -1014,7 +1014,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                     }
                     continue;
                 }
-            case get_js_MINUS_num():
+            case CONST_js_MINUS_num:
                 // --
                 // -=
                 
@@ -1025,13 +1025,13 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                 // you just "know" the text that goes there based on your conditional branching?
                     
                 // TODO: This contiguous skipping logic isn't working for every switch case?
-                shouldSkipContiguous = pos > substart && bytes[pos - 1] === get_js_MINUS_num();
+                shouldSkipContiguous = pos > substart && bytes[pos - 1] === CONST_js_MINUS_num;
                 if (!shouldSkipContiguous) {
                     if (pos < lineEnd) {
-                        if (bytes[pos + 1] === get_js_MINUS_num()) {
+                        if (bytes[pos + 1] === CONST_js_MINUS_num) {
                             textContent = '--';
                         }
-                        else if (bytes[pos + 1] === get_js_EQUALS_num()) {
+                        else if (bytes[pos + 1] === CONST_js_EQUALS_num) {
                             textContent = '-=';
                         }
                         else {
@@ -1047,7 +1047,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                     // skip current
                     pos++;
                     // skip contiguous
-                    while (pos < lineEnd && bytes[pos] === get_js_MINUS_num()) {
+                    while (pos < lineEnd && bytes[pos] === CONST_js_MINUS_num) {
                         pos++;
                     }
                     continue;
@@ -1671,8 +1671,8 @@ I did some exercises then about an hour long walk then showered...
                             substart += wordlength;
                         }
                         continue;
-                    case get_js_FORWARDSLASH_str():
-                        if (divSpanTextContent[pos + 1] === get_js_FORWARDSLASH_str()) {
+                    case CONST_js_FORWARDSLASH_str:
+                        if (divSpanTextContent[pos + 1] === CONST_js_FORWARDSLASH_str) {
 
                             if (substart < pos) {
                                 flushTextContent = divSpanTextContent.substring(substart, substart = pos);
@@ -1696,7 +1696,7 @@ I did some exercises then about an hour long walk then showered...
                             // This change is moreso a matter of anxiety and me not wanting to deal with this at the moment so I need to see the explicit read here so I can sleep at night for the time being until my stress levels are lower.
                             pos++;
                             while (pos < subend) {
-                                if (divSpanTextContent[pos] === get_js_LINEFEED_str()) {
+                                if (divSpanTextContent[pos] === CONST_js_LINEFEED_str) {
                                     break;
                                 }
                                 pos++;
@@ -1720,7 +1720,7 @@ I did some exercises then about an hour long walk then showered...
 
                             continue;
                         }
-                        else if (divSpanTextContent[pos + 1] === get_js_ASTERISK_str()) {
+                        else if (divSpanTextContent[pos + 1] === CONST_js_ASTERISK_str) {
                             if (substart < pos) { // write any text that came prior, and on the same line.
                                 flushTextContent = divSpanTextContent.substring(substart, substart = pos);
                                 if (childIndex < divChildrenInitialLength) {
@@ -1747,13 +1747,13 @@ I did some exercises then about an hour long walk then showered...
                             let ticketForwardSlash = -1;
                             while (pos < subend) {
                                 switch (divSpanTextContent[pos]) {
-                                    case get_js_ASTERISK_str():
+                                    case CONST_js_ASTERISK_str:
                                         ticketAsterisk = ticketSource++;
                                         break;
-                                    case get_js_FORWARDSLASH_str():
+                                    case CONST_js_FORWARDSLASH_str:
                                         ticketForwardSlash = ticketSource++;
                                         break;
-                                    case get_js_LINEFEED_str():
+                                    case CONST_js_LINEFEED_str:
                                         ticketSource++;
                                         break;
                                     default:
@@ -1784,7 +1784,7 @@ I did some exercises then about an hour long walk then showered...
 
                         // TODO: Remove this break because it was confusing, you gotta make sure it continues, but this actually just never gets hit because the previous branches end with continue.
                         break;
-                    case get_js_DOUBLEQUOTE_str():
+                    case CONST_js_DOUBLEQUOTE_str:
                         if (substart < pos) {
                             flushTextContent = divSpanTextContent.substring(substart, substart = pos);
                             if (childIndex < divChildrenInitialLength) {
@@ -1804,10 +1804,10 @@ I did some exercises then about an hour long walk then showered...
                         pos++;
                         outer: while (pos < subend) {
                             switch (divSpanTextContent[pos]) {
-                                case get_js_DOUBLEQUOTE_str():
+                                case CONST_js_DOUBLEQUOTE_str:
                                     pos++;
                                     break outer;
-                                case get_js_BACKSLASH_str():
+                                case CONST_js_BACKSLASH_str:
                                     pos++;
                                     if (pos < subend) {
                                         pos++; // skip the escaped character provided that the file didn't end after the original backslash
@@ -1831,7 +1831,7 @@ I did some exercises then about an hour long walk then showered...
                             div.appendChild(span);
                         }
                         continue;
-                    case get_js_SINGLEQUOTE_str():
+                    case CONST_js_SINGLEQUOTE_str:
                         if (substart < pos) {
                             flushTextContent = divSpanTextContent.substring(substart, substart = pos);
                             if (childIndex < divChildrenInitialLength) {
@@ -1851,10 +1851,10 @@ I did some exercises then about an hour long walk then showered...
                         pos++;
                         outer: while (pos < subend) {
                             switch (divSpanTextContent[pos]) {
-                                case get_js_SINGLEQUOTE_str():
+                                case CONST_js_SINGLEQUOTE_str:
                                     pos++;
                                     break outer;
-                                case get_js_BACKSLASH_str():
+                                case CONST_js_BACKSLASH_str:
                                     pos++;
                                     if (pos < subend) {
                                         pos++; // skip the escaped character provided that the file didn't end after the original backslash
@@ -1878,7 +1878,7 @@ I did some exercises then about an hour long walk then showered...
                             div.appendChild(span);
                         }
                         continue;
-                    case get_js_BACKTICK_str():
+                    case CONST_js_BACKTICK_str:
                         if (substart < pos) {
                             flushTextContent = divSpanTextContent.substring(substart, substart = pos);
                             if (childIndex < divChildrenInitialLength) {
@@ -1898,10 +1898,10 @@ I did some exercises then about an hour long walk then showered...
                         pos++;
                         outer: while (pos < subend) {
                             switch (divSpanTextContent[pos]) {
-                                case get_js_BACKTICK_str():
+                                case CONST_js_BACKTICK_str:
                                     pos++;
                                     break outer;
-                                case get_js_BACKSLASH_str():
+                                case CONST_js_BACKSLASH_str:
                                     pos++;
                                     if (pos < subend) {
                                         pos++; // skip the escaped character provided that the file didn't end after the original backslash
@@ -1925,7 +1925,7 @@ I did some exercises then about an hour long walk then showered...
                             div.appendChild(span);
                         }
                         continue;
-                    case get_js_EQUALS_str():
+                    case CONST_js_EQUALS_str:
                         // I think I actually want to handle the '==', '===', and '===...=' cases just so I can skip over the text quickly.
                         // Otherwise every time I see '=' I have to check the left and right side and it is quite redundant?
                         //
@@ -1944,16 +1944,16 @@ I did some exercises then about an hour long walk then showered...
                         // let shouldSkipContiguous;... sneaky uninitialized variable conversion to a falsey or something was going on?
                         shouldSkipContiguous = false;
                         if (pos > substart) {
-                            if (divSpanTextContent[pos - 1] === get_js_EQUALS_str()) {
+                            if (divSpanTextContent[pos - 1] === CONST_js_EQUALS_str) {
                                 shouldSkipContiguous = true;
                             }
-                            else if (divSpanTextContent[pos - 1] === get_js_BANG_str()) {
+                            else if (divSpanTextContent[pos - 1] === CONST_js_BANG_str) {
                                 shouldSkipContiguous = true;
                             }
-                            else if (divSpanTextContent[pos - 1] === get_js_OPENBRACKET_str()) {
+                            else if (divSpanTextContent[pos - 1] === CONST_js_OPENBRACKET_str) {
                                 shouldSkipContiguous = true;
                             }
-                            else if (divSpanTextContent[pos - 1] === get_js_CLOSEBRACKET_str()) {
+                            else if (divSpanTextContent[pos - 1] === CONST_js_CLOSEBRACKET_str) {
                                 shouldSkipContiguous = true;
                             }
                         }
@@ -1961,7 +1961,7 @@ I did some exercises then about an hour long walk then showered...
                             shouldSkipContiguous = false;
                         }
                         if (!shouldSkipContiguous) {
-                            if (pos < subend && divSpanTextContent[pos + 1] === get_js_EQUALS_str()) {
+                            if (pos < subend && divSpanTextContent[pos + 1] === CONST_js_EQUALS_str) {
                                 shouldSkipContiguous = true;
                             }
                         }
@@ -1970,7 +1970,7 @@ I did some exercises then about an hour long walk then showered...
                             // skip current
                             pos++;
                             // skip contiguous
-                            while (pos < subend && divSpanTextContent[pos] === get_js_EQUALS_str()) {
+                            while (pos < subend && divSpanTextContent[pos] === CONST_js_EQUALS_str) {
                                 pos++;
                             }
                             continue;
@@ -1992,7 +1992,7 @@ I did some exercises then about an hour long walk then showered...
                             // I don't know if I would count '=>' as an "assignment operator"... maybe I would but I'm too focused on whether I'd count it as such that I can't figure out the way to make it work. So I need to just make it work first.
                             pos++;
                             substart++;
-                            if (pos < subend && divSpanTextContent[pos] === get_js_CLOSEBRACKET_str()) {
+                            if (pos < subend && divSpanTextContent[pos] === CONST_js_CLOSEBRACKET_str) {
                                 textContent = '=>';
                                 pos++;
                                 substart++;
@@ -2016,7 +2016,7 @@ I did some exercises then about an hour long walk then showered...
                         
                         // TODO: you don't understand how code caching or like instruction caching etc works with respect to whether inlining interupts things
                         break;
-                    case get_js_PLUS_str():
+                    case CONST_js_PLUS_str:
                         // ++
                         // +=
                         
@@ -2036,13 +2036,13 @@ I did some exercises then about an hour long walk then showered...
                         // ...this presumption permits checking only the text that is in bounds of substart and subend.
                         
                         // TODO: This contiguous skipping logic isn't working for every switch case?
-                        shouldSkipContiguous = pos > substart && divSpanTextContent[pos - 1] === get_js_PLUS_str();
+                        shouldSkipContiguous = pos > substart && divSpanTextContent[pos - 1] === CONST_js_PLUS_str;
                         if (!shouldSkipContiguous) {
                             if (pos < subend) {
-                                if (divSpanTextContent[pos + 1] === get_js_PLUS_str()) {
+                                if (divSpanTextContent[pos + 1] === CONST_js_PLUS_str) {
                                     textContent = '++';
                                 }
-                                else if (divSpanTextContent[pos + 1] === get_js_EQUALS_str()) {
+                                else if (divSpanTextContent[pos + 1] === CONST_js_EQUALS_str) {
                                     textContent = '+=';
                                 }
                                 else {
@@ -2058,7 +2058,7 @@ I did some exercises then about an hour long walk then showered...
                             // skip current
                             pos++;
                             // skip contiguous
-                            while (pos < subend && divSpanTextContent[pos] === get_js_PLUS_str()) {
+                            while (pos < subend && divSpanTextContent[pos] === CONST_js_PLUS_str) {
                                 pos++;
                             }
                             continue;
@@ -2092,7 +2092,7 @@ I did some exercises then about an hour long walk then showered...
                             }
                             continue;
                         }
-                    case get_js_MINUS_str():
+                    case CONST_js_MINUS_str:
                         // --
                         // -=
                         
@@ -2103,13 +2103,13 @@ I did some exercises then about an hour long walk then showered...
                         // you just "know" the text that goes there based on your conditional branching?
                             
                         // TODO: This contiguous skipping logic isn't working for every switch case?
-                        shouldSkipContiguous = pos > substart && divSpanTextContent[pos - 1] === get_js_MINUS_str();
+                        shouldSkipContiguous = pos > substart && divSpanTextContent[pos - 1] === CONST_js_MINUS_str;
                         if (!shouldSkipContiguous) {
                             if (pos < subend) {
-                                if (divSpanTextContent[pos + 1] === get_js_MINUS_str()) {
+                                if (divSpanTextContent[pos + 1] === CONST_js_MINUS_str) {
                                     textContent = '--';
                                 }
-                                else if (divSpanTextContent[pos + 1] === get_js_EQUALS_str()) {
+                                else if (divSpanTextContent[pos + 1] === CONST_js_EQUALS_str) {
                                     textContent = '-=';
                                 }
                                 else {
@@ -2125,7 +2125,7 @@ I did some exercises then about an hour long walk then showered...
                             // skip current
                             pos++;
                             // skip contiguous
-                            while (pos < subend && divSpanTextContent[pos] === get_js_MINUS_str()) {
+                            while (pos < subend && divSpanTextContent[pos] === CONST_js_MINUS_str) {
                                 pos++;
                             }
                             continue;

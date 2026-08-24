@@ -116,10 +116,10 @@ module.exports = function (babel) {
     "ENUM_EditKind_Paste",
     "ENUM_EditKind_Duplicate",
 
-    "get_EnterKeyEventKind_None",
-    "get_EnterKeyEventKind_StartOfLine",
-    "get_EnterKeyEventKind_EndOfLine",
-    "get_EnterKeyEventKind_AmongALine",
+    "ENUM_EnterKeyEventKind_None",
+    "ENUM_EnterKeyEventKind_StartOfLine",
+    "ENUM_EnterKeyEventKind_EndOfLine",
+    "ENUM_EnterKeyEventKind_AmongALine",
 
     "get_CharacterKind_None",
     "get_CharacterKind_Whitespace",

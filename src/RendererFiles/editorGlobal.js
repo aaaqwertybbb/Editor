@@ -162,7 +162,7 @@ class EDITOR_Cursor {
          */
         this.enterKey_newLinePlusIndentation_byteList = null;
         this.cached_indentation_string = null;
-        this.enterKeyEventKind = get_EnterKeyEventKind_None();
+        this.enterKeyEventKind = ENUM_EnterKeyEventKind_None;
 
         /**
          * TODO: probably is sensible to use this for the enter key too but I'm firstly adding it for the sake of backspace so
@@ -236,7 +236,7 @@ class EDITOR_Cursor {
 
         this.enterKey_newLinePlusIndentation_byteList = null;
         this.cached_indentation_string = null;
-        this.enterKeyEventKind = get_EnterKeyEventKind_None();
+        this.enterKeyEventKind = ENUM_EnterKeyEventKind_None;
 
         this.editLineFeedCount = 0;
         this.edit_flagLineChanged = -1;
@@ -1437,7 +1437,7 @@ function update_virtualCount() {
  */
 function EDITOR_drawGutter_Width() {
     let count = EDITOR_lineEndPositionList.count;
-    if (EDITOR_primaryCursor.enterKeyEventKind !== get_EnterKeyEventKind_None()) {
+    if (EDITOR_primaryCursor.enterKeyEventKind !== ENUM_EnterKeyEventKind_None) {
         count += 1;
     }
     let digitCountOfLargestLineNumber = positiveNumbersOnly_countDigitsLoop(count);
@@ -1726,8 +1726,8 @@ function EDITOR_finalizeEdit_Enter(cursor, indexLine_editOccurredOn) {
 
     EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(cursor.editPosition, cursor.editLength);
 
-    // throws an exception if 'get_EnterKeyEventKind_None' (...or falsey).
-    if (!cursor.enterKeyEventKind || cursor.enterKeyEventKind === get_EnterKeyEventKind_None()) { EDITOR_finalizeEdit_ClearEditState(cursor); throw new Error('if (!enterKeyEventKind...)'); }
+    // throws an exception if 'ENUM_EnterKeyEventKind_None' (...or falsey).
+    if (!cursor.enterKeyEventKind || cursor.enterKeyEventKind === ENUM_EnterKeyEventKind_None) { EDITOR_finalizeEdit_ClearEditState(cursor); throw new Error('if (!enterKeyEventKind...)'); }
 
     EDITOR_textByteList.insertBytes(cursor.editPosition, cursor.enterKey_newLinePlusIndentation_byteList.bytes, /*offset*/ 0, cursor.enterKey_newLinePlusIndentation_byteList.count);
 
@@ -7082,7 +7082,7 @@ function EDITOR_EnterKey(cursor, ctrlKey, shiftKey) {
 
     if (cursor.editLength === 0) {
 
-        cursor.enterKeyEventKind = get_EnterKeyEventKind_None();
+        cursor.enterKeyEventKind = ENUM_EnterKeyEventKind_None;
 
         cursor.editPosition = EDITOR_getPositionIndex_raw(cursor);
         cursor.editIndexLine = cursor.indexLine;
@@ -7093,7 +7093,7 @@ function EDITOR_EnterKey(cursor, ctrlKey, shiftKey) {
     
     if (cursor.indexColumn === 0) { // start of line
         if (cursor.enterKeyEventKind === 0) {
-            cursor.enterKeyEventKind = get_EnterKeyEventKind_StartOfLine();
+            cursor.enterKeyEventKind = ENUM_EnterKeyEventKind_StartOfLine;
         }
 
         if (!ctrlKey)
@@ -7104,8 +7104,8 @@ function EDITOR_EnterKey(cursor, ctrlKey, shiftKey) {
 
         if (cursor.enterKeyEventKind === 0) {
             cursor.enterKeyEventKind = lastValidIndexColumn === cursor.indexColumn
-                ? get_EnterKeyEventKind_EndOfLine()
-                : get_EnterKeyEventKind_AmongALine();
+                ? ENUM_EnterKeyEventKind_EndOfLine
+                : ENUM_EnterKeyEventKind_AmongALine;
         }
         
         cursor.indexLine++;

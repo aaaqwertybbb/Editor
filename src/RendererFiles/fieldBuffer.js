@@ -386,10 +386,10 @@ const ENUM_EditKind_Duplicate = 10;
 /**
  * TODO: Long term this likely should be removed and all enter key logic reduced into an insertion but this will help in the time being.
  */
-const get_EnterKeyEventKind_None = () => 0;
-const get_EnterKeyEventKind_StartOfLine = () => 1;
-const get_EnterKeyEventKind_EndOfLine = () => 2;
-const get_EnterKeyEventKind_AmongALine = () => 3;
+const ENUM_EnterKeyEventKind_None = 0;
+const ENUM_EnterKeyEventKind_StartOfLine = 1;
+const ENUM_EnterKeyEventKind_EndOfLine = 2;
+const ENUM_EnterKeyEventKind_AmongALine = 3;
 
 /**
  * Do not change the order/values of these, they are used in equality comparisons, the larger the number says when double clicking between a character and a punctuation

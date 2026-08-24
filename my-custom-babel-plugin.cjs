@@ -22,6 +22,7 @@ module.exports = function (babel) {
 
     "get_EDITOR_lineHeight",
     "set_EDITOR_lineHeight",
+    "INDEXOF_EDITOR_lineHeight",
 
     "get_EDITOR_detailRank",
     "set_EDITOR_detailRank",
@@ -43,9 +44,11 @@ module.exports = function (babel) {
 
     "get_EDITOR_virtualIndexLine",
     "set_EDITOR_virtualIndexLine",
+    "INDEXOF_EDITOR_virtualIndexLine",
 
     "get_EDITOR_virtualCount",
     "set_EDITOR_virtualCount",
+    "INDEXOF_EDITOR_virtualCount",
 
     "get_didChangeTextDocument_version",
     "set_didChangeTextDocument_version",
@@ -70,18 +73,23 @@ module.exports = function (babel) {
 
     "get_EDITOR_ONSCROLLvirtualIndexLine",
     "set_EDITOR_ONSCROLLvirtualIndexLine",
+    "INDEXOF_EDITOR_ONSCROLLvirtualIndexLine",
 
     "get_EDITOR_ONSCROLLvirtualCount",
     "set_EDITOR_ONSCROLLvirtualCount",
+    "INDEXOF_EDITOR_ONSCROLLvirtualCount",
 
     "get_EDITOR_ONSCROLLscrollTop",
     "set_EDITOR_ONSCROLLscrollTop",
+    "INDEXOF_EDITOR_ONSCROLLscrollTop",
 
     "get_EDITOR_longestLine_indexLine",
     "set_EDITOR_longestLine_indexLine",
+    "INDEXOF_EDITOR_longestLine_indexLine",
     
     "get_EDITOR_longestLine_length",
     "set_EDITOR_longestLine_length",
+    "INDEXOF_EDITOR_longestLine_length",
 
     "get_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar",
     "set_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar",
@@ -127,15 +135,6 @@ module.exports = function (babel) {
 
     "get_EDITOR_findOverlay_options_matchWord",
     "set_EDITOR_findOverlay_options_matchWord",
-
-    "INDEXOF_EDITOR_lineHeight",
-    "INDEXOF_EDITOR_virtualIndexLine",
-    "INDEXOF_EDITOR_virtualCount",
-    "INDEXOF_EDITOR_ONSCROLLvirtualIndexLine",
-    "INDEXOF_EDITOR_ONSCROLLvirtualCount",
-    "INDEXOF_EDITOR_ONSCROLLscrollTop",
-    "INDEXOF_EDITOR_longestLine_length",
-    "INDEXOF_EDITOR_longestLine_indexLine",
 
     "get_EDITOR_scrollEndDeadline",
     "set_EDITOR_scrollEndDeadline",

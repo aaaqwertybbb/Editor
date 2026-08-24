@@ -745,6 +745,14 @@ Google AI:
 > 
 > All of this is already implemented.
 
+< ...
 
+> I worry about the performance of the bundler. Because if I make a change to 1 of the 16 files, the next time I run the bundler it will "redundantly" process all 16 files again, rather than just the 1 that was changed.
+> 
+> I have an idea for how I can avoid this, such that "only 1 file" needs to be processed in the case that I changed only 1 file.
+> 
+> Once you let me know you followed everything I'd like to give you my idea and see if you have any comments on it.
+
+< ...
 
 */

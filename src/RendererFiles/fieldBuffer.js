@@ -405,33 +405,33 @@ const ENUM_CharacterKind_LetterOrDigit = 3;
 // see editorGlobal.js:
 // > const count_of_wellknown_renderKinds = ...;
 //
-// get_RenderKind_Cursor_n is to say
+// ENUM_RenderKind_Cursor_n is to say
 // renderKind - (count_of_wellknown_renderKinds - 1) => render the cursor at cursorList[result];
 // ...
 // maybe I'll change this to be the id of the cursor at some point cause I'm not sure if it holds up with cursor movement possibly changing their order in the list.
 // but for now...
-const get_RenderKind_None = () => 0;
-const get_RenderKind_Scroll = () => 1;
-const get_RenderKind_Resize = () => 2;
-const get_RenderKind_InsertLtr = () => 3;
-const get_RenderKind_TabKey = () => 4;
-const get_RenderKind_IndentMore = () => 5;
-const get_RenderKind_IndentLess = () => 6;
-const get_RenderKind_BackspaceRtl = () => 7;
-const get_RenderKind_DeleteLtr = () => 8;
-const get_RenderKind_RemoveSelection = () => 9;
-const get_RenderKind_Enter = () => 10;
-const get_RenderKind_DuplicateOrPaste = () => 11;
-const get_RenderKind_Clear = () => 12;
-const get_RenderKind_SetText = () => 13;
-const get_RenderKind_CreateViewport = () => 14;
-const get_RenderKind_SyntaxHighlighting = () => 15;
+const ENUM_RenderKind_None = 0;
+const ENUM_RenderKind_Scroll = 1;
+const ENUM_RenderKind_Resize = 2;
+const ENUM_RenderKind_InsertLtr = 3;
+const ENUM_RenderKind_TabKey = 4;
+const ENUM_RenderKind_IndentMore = 5;
+const ENUM_RenderKind_IndentLess = 6;
+const ENUM_RenderKind_BackspaceRtl = 7;
+const ENUM_RenderKind_DeleteLtr = 8;
+const ENUM_RenderKind_RemoveSelection = 9;
+const ENUM_RenderKind_Enter = 10;
+const ENUM_RenderKind_DuplicateOrPaste = 11;
+const ENUM_RenderKind_Clear = 12;
+const ENUM_RenderKind_SetText = 13;
+const ENUM_RenderKind_CreateViewport = 14;
+const ENUM_RenderKind_SyntaxHighlighting = 15;
 /** non-primaryCursors won't scroll into view, */
-const get_RenderKind_Cursor_flag_scrollIntoViewExplicit = () => 16;
-/** To have a cursor not scroll into view add request this render immediately after the 'get_RenderKind_Cursor_n'. */
-const get_RenderKind_Cursor_flag_doNotScrollIntoView = () => 17;
+const ENUM_RenderKind_Cursor_flag_scrollIntoViewExplicit = 16;
+/** To have a cursor not scroll into view add request this render immediately after the 'ENUM_RenderKind_Cursor_n'. */
+const ENUM_RenderKind_Cursor_flag_doNotScrollIntoView = 17;
 /** Add the index of the cursor */
-const get_RenderKind_Cursor_n = () => 18;
+const ENUM_RenderKind_Cursor_n = 18;
 
 
 

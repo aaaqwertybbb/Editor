@@ -9141,4 +9141,11 @@ until your program is unusable.
 < When you use this.variable, you are not looking up a variable in a scope. You are performing a property lookup on an object, which follows an entirely different resolution path in the JavaScript engine.
 < ...
 
+
+=====
+
+ugh why does the text disappear when I resize until I scroll enough to refill the viewport
+I'm annoyed cause I've seen this bug before and I can't remember.
+If I can get this then I think today was a 10/10
+
 */

@@ -11,119 +11,119 @@ module.exports = function (babel) {
   // List all the variable names you want to inline
   const TARGET_VARIABLES = [
 
-    "get_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber",
+    "INDEXOF_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber",
     "set_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber",
 
-    "get_EDITOR_drawn_count_of_digits_longest_line_number",
+    "INDEXOF_EDITOR_drawn_count_of_digits_longest_line_number",
     "set_EDITOR_drawn_count_of_digits_longest_line_number",
 
     "set_EDITOR_lineHeight",
 
-    "get_EDITOR_detailRank",
+    "INDEXOF_EDITOR_detailRank",
     "set_EDITOR_detailRank",
 
-    "get_EDITOR_detail_smallPosition",
+    "INDEXOF_EDITOR_detail_smallPosition",
     "set_EDITOR_detail_smallPosition",
 
-    "get_EDITOR_detail_largePosition",
+    "INDEXOF_EDITOR_detail_largePosition",
     "set_EDITOR_detail_largePosition",
 
-    "get_EDITOR_detailRank3OriginLine",
+    "INDEXOF_EDITOR_detailRank3OriginLine",
     "set_EDITOR_detailRank3OriginLine",
 
-    "get_EDITOR_gutterWidthStyleValue",
+    "INDEXOF_EDITOR_gutterWidthStyleValue",
     "set_EDITOR_gutterWidthStyleValue",
 
-    "get_EDITOR_gutterWidthTotal",
+    "INDEXOF_EDITOR_gutterWidthTotal",
     "set_EDITOR_gutterWidthTotal",
 
-    "get_EDITOR_virtualIndexLine",
+    "INDEXOF_EDITOR_virtualIndexLine",
     "set_EDITOR_virtualIndexLine",
 
-    "get_EDITOR_virtualCount",
+    "INDEXOF_EDITOR_virtualCount",
     "set_EDITOR_virtualCount",
 
-    "get_didChangeTextDocument_version",
+    "INDEXOF_didChangeTextDocument_version",
     "set_didChangeTextDocument_version",
 
-    "get_EDITOR_indexCursor",
+    "INDEXOF_EDITOR_indexCursor",
     "set_EDITOR_indexCursor",
 
-    "get_EDITOR_offsetLine",
+    "INDEXOF_EDITOR_offsetLine",
     "set_EDITOR_offsetLine",
 
-    "get_EDITOR_offsetColumn_withRespectToThisIndexLine",
+    "INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine",
     "set_EDITOR_offsetColumn_withRespectToThisIndexLine",
 
-    "get_EDITOR_offsetColumn",
+    "INDEXOF_EDITOR_offsetColumn",
     "set_EDITOR_offsetColumn",
 
-    "get_EDITOR_totalShift",
+    "INDEXOF_EDITOR_totalShift",
     "set_EDITOR_totalShift",
 
-    "get_EDITOR_offsetWithinSpan",
+    "INDEXOF_EDITOR_offsetWithinSpan",
     "set_EDITOR_offsetWithinSpan",
 
-    "get_EDITOR_ONSCROLLvirtualIndexLine",
+    "INDEXOF_EDITOR_ONSCROLLvirtualIndexLine",
     "set_EDITOR_ONSCROLLvirtualIndexLine",
 
     "set_EDITOR_ONSCROLLvirtualCount",
 
-    "get_EDITOR_ONSCROLLscrollTop",
+    "INDEXOF_EDITOR_ONSCROLLscrollTop",
     "set_EDITOR_ONSCROLLscrollTop",
 
-    "get_EDITOR_longestLine_indexLine",
+    "INDEXOF_EDITOR_longestLine_indexLine",
     "set_EDITOR_longestLine_indexLine",
     
-    "get_EDITOR_longestLine_length",
+    "INDEXOF_EDITOR_longestLine_length",
     "set_EDITOR_longestLine_length",
 
-    "get_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar",
+    "INDEXOF_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar",
     "set_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar",
 
-    "get_EDITOR_contentWidth",
+    "INDEXOF_EDITOR_contentWidth",
     "set_EDITOR_contentWidth",
 
-    "get_EDITOR_indent_ORIGINAL_indentBy",
+    "INDEXOF_EDITOR_indent_ORIGINAL_indentBy",
     "set_EDITOR_indent_ORIGINAL_indentBy",
 
-    "get_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine",
+    "INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine",
     "set_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine",
 
-    "get_EDITOR_indent_startingIndex",
+    "INDEXOF_EDITOR_indent_startingIndex",
     "set_EDITOR_indent_startingIndex",
 
-    "get_EDITOR_recentBoundingClientRect_left",
+    "INDEXOF_EDITOR_recentBoundingClientRect_left",
     "set_EDITOR_recentBoundingClientRect_left",
 
-    "get_EDITOR_recentBoundingClientRect_top",
+    "INDEXOF_EDITOR_recentBoundingClientRect_top",
     "set_EDITOR_recentBoundingClientRect_top",
 
-    "get_EDITOR_recentBoundingClientRect_isNull_intFalsey",
+    "INDEXOF_EDITOR_recentBoundingClientRect_isNull_intFalsey",
     "set_EDITOR_recentBoundingClientRect_isNull_intFalsey",
 
-    "get_EDITOR_pooledTrackedSyntax_start",
+    "INDEXOF_EDITOR_pooledTrackedSyntax_start",
     "set_EDITOR_pooledTrackedSyntax_start",
 
-    "get_EDITOR_pooledTrackedSyntax_length",
+    "INDEXOF_EDITOR_pooledTrackedSyntax_length",
     "set_EDITOR_pooledTrackedSyntax_length",
 
-    "get_EDITOR_findOverlay_show",
+    "INDEXOF_EDITOR_findOverlay_show",
     "set_EDITOR_findOverlay_show",
 
-    "get_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching",
+    "INDEXOF_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching",
     "set_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching",
 
-    "get_EDITOR_fileStartsWithBom",
+    "INDEXOF_EDITOR_fileStartsWithBom",
     "set_EDITOR_fileStartsWithBom",
 
-    "get_EDITOR_findOverlay_wasSearched",
+    "INDEXOF_EDITOR_findOverlay_wasSearched",
     "set_EDITOR_findOverlay_wasSearched",
 
-    "get_EDITOR_findOverlay_options_matchWord",
+    "INDEXOF_EDITOR_findOverlay_options_matchWord",
     "set_EDITOR_findOverlay_options_matchWord",
 
-    "get_EDITOR_scrollEndDeadline",
+    "INDEXOF_EDITOR_scrollEndDeadline",
     "set_EDITOR_scrollEndDeadline",
 
 

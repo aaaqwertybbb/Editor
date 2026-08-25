@@ -83,9 +83,6 @@ let EDITOR_cursor_STATIC_CURSOR_ID = 1;
  */
 let EDITOR_cursor_GAP_BUFFER_CAPACITY = 32;
 
-let EDITOR_cursor_DRAWN_selection_virtualIndexLine = 0;
-let EDITOR_cursor_DRAWN_selection_virtualCount = 0;
-
 // TODO: This assignment isn't necessary, it was already the default value;
 EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] = ENUM_EditKind_None;
 
@@ -208,8 +205,8 @@ function EDITOR_cursor_clear() {
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionEnd] = 0;
-    EDITOR_cursor_DRAWN_selection_virtualIndexLine = 0;
-    EDITOR_cursor_DRAWN_selection_virtualCount = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selection_virtualIndexLine] = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selection_virtualCount] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] = ENUM_EditKind_None;
     EDITOR_cursor_editLength = 0;
     EDITOR_cursor_editPosition = 0;
@@ -2895,13 +2892,13 @@ function EDITOR_clearSelectionStyle() {
 function EDITOR_createStyleForSelection() {
     if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] ||
         EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionEnd] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] ||
-        EDITOR_cursor_DRAWN_selection_virtualCount !== EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] ||
-        EDITOR_cursor_DRAWN_selection_virtualIndexLine !== EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine]) {
+        EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selection_virtualCount] !== EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] ||
+        EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selection_virtualIndexLine] !== EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine]) {
 
         EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
         EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionEnd] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
-        EDITOR_cursor_DRAWN_selection_virtualCount = EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
-        EDITOR_cursor_DRAWN_selection_virtualIndexLine = EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+        EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selection_virtualCount] = EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+        EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selection_virtualIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
 
         let shouldExistSelectionDiv;
         if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor] === EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionEnd]) {

@@ -304,8 +304,11 @@ const INDEXOF_EDITOR_cursor_selectionIndexEndColumn = 47;
 const INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor = 48;
 const INDEXOF_EDITOR_cursor_DRAWN_selectionEnd = 49;
 
+const INDEXOF_EDITOR_cursor_DRAWN_selection_virtualIndexLine = 50;
+const INDEXOF_EDITOR_cursor_DRAWN_selection_virtualCount = 51;
 
-// EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionEnd]
+
+// EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selection_virtualCount]
 
 
 

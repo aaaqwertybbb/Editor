@@ -98,8 +98,11 @@ let EDITOR_cursor_cursorTranslateXValue = 0;
 let EDITOR_cursor_selectionAnchor = 0;
 let EDITOR_cursor_selectionEnd = 0;
 
-let EDITOR_cursor_selectionIndexAnchorLine = EDITOR_cursor_indexLine;
-let EDITOR_cursor_selectionIndexAnchorColumn = EDITOR_cursor_indexColumn;
+let EDITOR_cursor_selectionIndexAnchorLine = 0;
+let EDITOR_cursor_selectionIndexAnchorColumn = 0;
+
+let EDITOR_cursor_selectionIndexEndLine = 0;
+let EDITOR_cursor_selectionIndexEndColumn = 0;
 
 let EDITOR_cursor_DRAWN_selectionAnchor = 0;
 let EDITOR_cursor_DRAWN_selectionEnd = 0;
@@ -1569,8 +1572,6 @@ function EDITOR_finalizeAllCursors_andClearNonPrimaryCursors() {
 
 /**
  * TODO: Exception during finalize softlocks the editor because you can't even clear to reset the state: 'Uncaught (in promise) Error: removeAt(...): index > this.count'
- * 
- * @param {EDITOR_Cursor} cursor 
  */
 function EDITOR_finalizeEdit() {
     /**
@@ -1654,9 +1655,6 @@ function EDITOR_finalizeEdit() {
     }
 }
 
-/**
- * @param {EDITOR_Cursor} cursor 
- */
 function EDITOR_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
     for (let i = EDITOR_lineEndPositionList.count - 1; i >= 0; i--) {
         if (EDITOR_cursor_editPosition <= EDITOR_lineEndPositionList.data[i]) {
@@ -1717,9 +1715,6 @@ function EDITOR_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
     return indexLine_editOccurredOn;
 }
 
-/**
- * @param {EDITOR_Cursor} cursor 
- */
 function EDITOR_finalizeEdit_Enter(indexLine_editOccurredOn) {
     if (EDITOR_cursor_editRenderedDisplacement !== EDITOR_cursor_editLength) {
         EDITOR_render_do_EnterKey();
@@ -1749,9 +1744,6 @@ function EDITOR_finalizeEdit_Enter(indexLine_editOccurredOn) {
     return indexLine_editOccurredOn;
 }
 
-/**
- * @param {EDITOR_Cursor} cursor 
- */
 function EDITOR_finalizeEdit_Tab(indexLine_editOccurredOn) {
 
     let that_four = 4;
@@ -1783,9 +1775,6 @@ function EDITOR_finalizeEdit_Tab(indexLine_editOccurredOn) {
     return indexLine_editOccurredOn;
 }
 
-/**
- * @param {EDITOR_Cursor} cursor 
- */
 function EDITOR_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
 
     let startingIndex = EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex];
@@ -1893,9 +1882,6 @@ function EDITOR_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
     return indexLine_editOccurredOn;
 }
 
-/**
- * @param {EDITOR_Cursor} cursor 
- */
 function EDITOR_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
 
     // Both indentMore and indentLess have logic in the initial event that needs to be moved here.
@@ -2160,9 +2146,6 @@ function EDITOR_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
     return indexLine_editOccurredOn;
 }
 
-/**
- * @param {EDITOR_Cursor} cursor 
- */
 function EDITOR_finalizeEdit_Paste(indexLine_editOccurredOn) {
     
     EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(EDITOR_cursor_editPosition, EDITOR_cursor_editLength);
@@ -2210,9 +2193,6 @@ function EDITOR_finalizeEdit_Paste(indexLine_editOccurredOn) {
     return indexLine_editOccurredOn;
 }
 
-/**
- * @param {EDITOR_Cursor} cursor 
- */
 function EDITOR_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
 
     EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(EDITOR_cursor_editPosition, EDITOR_cursor_editLength);
@@ -2258,9 +2238,6 @@ function EDITOR_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
     return indexLine_editOccurredOn;
 }
 
-/**
- * @param {EDITOR_Cursor} cursor 
- */
 function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_editOccurredOn) {
     // TODO: surely u'd get this before doing the edit?
     let startLineAndColumnIndices;
@@ -2587,8 +2564,7 @@ function EDITOR_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_
  * 
  * NOTE: when copying and pasting code be sure the snippet uses the respective 'break' or 'return' that you're interested in...
  * ...as those keywords are common in code that use the result of this function, but can vary on a case by case basis.
- * 
- * @param {EDITOR_Cursor} cursor
+ *
  * @returns
  */
 function walkLineUntilIndexColumn() {
@@ -2788,7 +2764,6 @@ function EDITOR_draw_all_cursors() {
  * If the 'cursor' is not EDITOR_primaryCursor, then the 'NOTscrollCursorIntoView' parameter has no effect.
  * i.e.: only the EDITOR_primaryCursor will ever be scrolled into view via this method.
  * 
- * @param {EDITOR_Cursor} cursor 
  * @param {boolean} NOTscrollCursorIntoView 
  */
 function EDITOR_drawCursor(NOTscrollCursorIntoView) {
@@ -2921,8 +2896,6 @@ function EDITOR_getLineAndColumnIndices(positionIndex) {
 
 /**
  * This function only clears both the 'EDITOR_cursor_selectionDivExists' and the HTML associated with the selection NOT the actual selection position properties of the cursor.
- * 
- * @param {EDITOR_Cursor} cursor 
  */
 function EDITOR_clearSelectionStyle() {
     let shouldExistSelectionDiv = false;
@@ -2940,9 +2913,6 @@ function EDITOR_clearSelectionStyle() {
     }
 }
 
-/**
- * @param {EDITOR_Cursor} cursor 
- */
 function EDITOR_createStyleForSelection() {
     if (EDITOR_cursor_DRAWN_selectionAnchor !== EDITOR_cursor_selectionAnchor ||
         EDITOR_cursor_DRAWN_selectionEnd !== EDITOR_cursor_selectionEnd ||
@@ -3376,7 +3346,6 @@ function getCharacter(positionIndex) {
  * It tends to be the case that you already are using a variable to store the positionIndex.
  * Thus providing that positionIndex is ideal.
  * 
- * @param {*} cursor 
  * @param {*} positionIndex 
  */
 function EDITOR_getCharacterPrevious(indexColumn, positionIndex) {
@@ -3589,7 +3558,6 @@ function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked)
 }
 
 /**
- * @param {EDITOR_Cursor} cursor 
  * @returns 
  */
 function EDITOR_getPositionIndex_cursor() {
@@ -3601,7 +3569,6 @@ function EDITOR_getPositionIndex_Overload(indexLine, indexColumn) {
 }
 
 /**
- * @param {EDITOR_Cursor} cursor 
  * @returns 
  */
 function EDITOR_getPositionIndex_raw_cursor() {
@@ -3783,7 +3750,6 @@ function EDITOR_onMouseDownDetailRankThree(event_button, event_shiftKey, indexLi
 }
 
 /**
- * @param {EDITOR_Cursor} cursor 
  * @returns 
  */
 function EDITOR_insertGapBufferSpan() {
@@ -3812,7 +3778,6 @@ function EDITOR_insertGapBufferSpan() {
 }
 
 /**
- * @param {EDITOR_Cursor} cursor 
  * @param {*} editKind 
  * @param {*} editPosition 
  * @param {*} editLength 
@@ -3832,8 +3797,6 @@ function EDITOR_startEdit(editKind, editPosition, editLength) {
 }
 
 /**
- * @param {EDITOR_Cursor} cursor 
- * @param {*} indexCursor 
  * @returns 
  */
 function EDITOR_NOTcanBatch_insert() {
@@ -3845,8 +3808,6 @@ function EDITOR_NOTcanBatch_insert() {
 }
 
 /**
- * @param {EDITOR_Cursor} cursor 
- * @param {*} indexCursor 
  * @returns 
  */
 function EDITOR_NOTcanBatch_enter() {
@@ -3860,7 +3821,6 @@ function EDITOR_NOTcanBatch_enter() {
 }
 
 /**
- * @param {EDITOR_Cursor} cursor 
  * @returns 
  */
 function EDITOR_NOTcanBatch_backspace() {
@@ -3871,7 +3831,6 @@ function EDITOR_NOTcanBatch_backspace() {
 }
 
 /**
- * @param {EDITOR_Cursor} cursor 
  * @returns 
  */
 function EDITOR_NOTcanBatch_delete() {
@@ -3882,7 +3841,6 @@ function EDITOR_NOTcanBatch_delete() {
 }
 
 /**
- * @param {EDITOR_Cursor} cursor 
  * @param {*} shiftKey 
  */
 function EDITOR_preKeyboardMovementSelectionLogic(shiftKey) {
@@ -3896,26 +3854,24 @@ function EDITOR_preKeyboardMovementSelectionLogic(shiftKey) {
     else {
         if (EDITOR_cursor_hasSelection()) {
             EDITOR_cursor_selectionAnchor = EDITOR_cursor_selectionEnd;
-            EDITOR_cursor_selectionIndexAnchorLine = cursor.selectionIndexEndLine;
-            EDITOR_cursor_selectionIndexAnchorColumn = cursor.selectionIndexEndColumn;
+            EDITOR_cursor_selectionIndexAnchorLine = EDITOR_cursor_selectionIndexEndLine;
+            EDITOR_cursor_selectionIndexAnchorColumn = EDITOR_cursor_selectionIndexEndColumn;
         }
     }
 }
 
 /**
- * @param {EDITOR_Cursor} cursor 
  * @param {*} shiftKey 
  */
 function EDITOR_postKeyboardMovementSelectionLogic(cursor, shiftKey) {
     if (shiftKey) {
         EDITOR_cursor_selectionEnd = EDITOR_getPositionIndex_cursor();
-        cursor.selectionIndexEndLine = EDITOR_cursor_indexLine;
-        cursor.selectionIndexEndColumn = EDITOR_cursor_indexColumn;
+        EDITOR_cursor_selectionIndexEndLine = EDITOR_cursor_indexLine;
+        EDITOR_cursor_selectionIndexEndColumn = EDITOR_cursor_indexColumn;
     }
 }
 
 /**
- * @param {EDITOR_Cursor} cursor 
  * @param {*} shiftKey 
  */
 function EDITOR_arrowDown(shiftKey) {
@@ -3944,8 +3900,6 @@ function EDITOR_arrowDown(shiftKey) {
  * TODO: I am quite certain that there are cases where this should be invoked but it isn't currently.
  * 
  * TODO: I believe this function to be an unoptimized solution, just that there are more pressing matters to attend to.
- * 
- * @param {EDITOR_Cursor} cursor 
  */
 function EDITOR_movementBasedCacheInvalidation() {
     if (EDITOR_cursor_editKind === ENUM_EditKind_Enter) {
@@ -4563,8 +4517,8 @@ function EDITOR_onKeyDown_ArrowLeft(event) {
         EDITOR_cursor_indexLine = lineAndColumnIndices.indexLine;
         EDITOR_cursor_indexColumn = lineAndColumnIndices.indexColumn;
         EDITOR_cursor_selectionAnchor = EDITOR_cursor_selectionEnd;
-        EDITOR_cursor_selectionIndexAnchorLine = cursor.selectionIndexEndLine;
-        EDITOR_cursor_selectionIndexAnchorColumn = cursor.selectionIndexEndColumn;
+        EDITOR_cursor_selectionIndexAnchorLine = EDITOR_cursor_selectionIndexEndLine;
+        EDITOR_cursor_selectionIndexAnchorColumn = EDITOR_cursor_selectionIndexEndColumn;
     }
     else {
         EDITOR_preKeyboardMovementSelectionLogic(event.shiftKey);
@@ -4675,8 +4629,8 @@ function EDITOR_onKeyDown_ArrowRight(event) {
         EDITOR_cursor_indexLine = lineAndColumnIndices.indexLine;
         EDITOR_cursor_indexColumn = lineAndColumnIndices.indexColumn;
         EDITOR_cursor_selectionAnchor = EDITOR_cursor_selectionEnd;
-        EDITOR_cursor_selectionIndexAnchorLine = cursor.selectionIndexEndLine;
-        EDITOR_cursor_selectionIndexAnchorColumn = cursor.selectionIndexEndColumn;
+        EDITOR_cursor_selectionIndexAnchorLine = EDITOR_cursor_selectionIndexEndLine;
+        EDITOR_cursor_selectionIndexAnchorColumn = EDITOR_cursor_selectionIndexEndColumn;
     }
     else {
         EDITOR_preKeyboardMovementSelectionLogic(event.shiftKey);

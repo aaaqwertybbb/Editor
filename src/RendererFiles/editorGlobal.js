@@ -2428,6 +2428,9 @@ function EDITOR_readLineEndPositionList(indexLine) {
  * @returns trackedSyntax_I the index that was left off on
  */
 function EDITOR_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_I) {
+
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
 	let childIndex = 0;
 
     if (lineStart === lineEnd) {
@@ -2450,17 +2453,17 @@ function EDITOR_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_
                 break;
             }
     
-            if (EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] >= lineEnd) {
+            if (local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] >= lineEnd) {
                 break;
             }
     
-            if (EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] < lineStart) {
+            if (local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] < lineStart) {
                 trackedSyntax_I++;
                 continue;
             }
     
-            if (EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] > substart) {
-                let subend = EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] > lineEnd ? lineEnd : EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start]; // probably a nonsense line of code given the previous if statements
+            if (local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] > substart) {
+                let subend = local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] > lineEnd ? lineEnd : local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start]; // probably a nonsense line of code given the previous if statements
                 childIndex = EDITOR_language_line_lex(div, substart, subend, childIndex);
                 substart += (subend - substart);
             }
@@ -2476,7 +2479,7 @@ function EDITOR_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_
                     div.appendChild(span);
                     childIndex++;
 				}
-                let trackedSyntaxEnd = EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length];
+                let trackedSyntaxEnd = local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length];
                 let subend = trackedSyntaxEnd > lineEnd ? lineEnd : trackedSyntaxEnd;
                 span.textContent = EDITOR_decoder.decode(EDITOR_textByteList.bytes.subarray(substart, subend));
                 substart += (subend - substart);
@@ -2493,7 +2496,7 @@ function EDITOR_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_
                 }
             }
     
-            if (EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] <= lineEnd) {
+            if (local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] <= lineEnd) {
                 trackedSyntax_I++;
                 continue;
             }

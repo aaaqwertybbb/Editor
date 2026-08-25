@@ -6595,6 +6595,7 @@ function EDITOR_render_do_EnterKey() {
                         case 'eCm':
                             if (w_indexColumn_SpanTextContentRelative >= 2 && (w_indexColumn_SpanTextContentRelative <= w_span.textContent.length - 2)) {
                                 w_span.className = 'eCM';
+                                let indexPosition = EDITOR_getPositionIndex_raw_cursor();
                                 let indexOfGreaterThanOrEqual = EDITOR_trackedSyntaxReposition_find(indexPosition);
                                 EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_Comment, indexPosition - EDITOR_cursor_indexColumn + w_indexColumn_Sum, w_span.textContent.length);
                                 shouldPreserveCssClassWhenSplittingAmongLine = true;
@@ -6606,6 +6607,7 @@ function EDITOR_render_do_EnterKey() {
                         case 'eSm':
                             if (w_indexColumn_SpanTextContentRelative >= 1 && (w_indexColumn_SpanTextContentRelative <= w_span.textContent.length - 1)) {
                                 w_span.className = 'eSM';
+                                let indexPosition = EDITOR_getPositionIndex_raw_cursor();
                                 let indexOfGreaterThanOrEqual = EDITOR_trackedSyntaxReposition_find(indexPosition);
                                 EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_String, indexPosition - EDITOR_cursor_indexColumn + w_indexColumn_Sum, w_span.textContent.length);
                                 shouldPreserveCssClassWhenSplittingAmongLine = true;

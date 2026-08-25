@@ -9255,4 +9255,13 @@ The key was not defining them in terms of eachother but instead just taking an i
 as if no other edits existed in reverse order and then from there you're just modifying the length of the edit
 and since no cursors overlapped it all "just worked".
 
+Well except for when cursors shared the same line
+and when cursors something something
+
+but that's what all that column and line offset logic was for
+I found the minimum necessary "in terms of eachother" that was necessary.
+
+And that worked because you started the edit in reverse so they didn't clobber eachother
+but you rendered then forwards so you could track the cumulative offsets caused by prior cursors.
+
 */

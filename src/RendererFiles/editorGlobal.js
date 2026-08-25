@@ -84,6 +84,12 @@ let EDITOR_cursor_GAP_BUFFER_CAPACITY = 32;
 let EDITOR_cursor_indexLine = 0;
 let EDITOR_cursor_indexColumn = 0;
 
+/**
+ * When moving cursor vertically, if the current column index cannot be matched due to the upcoming line being too short,
+ * then this will allow a later vertical movement to a line that is long enough to match the original column rather than the minimized one.
+ */
+let EDITOR_cursor_STORED_indexColumn = 0;
+
 class EDITOR_Cursor {
     /**
      * After invoking the constructor you likely would want to add to:
@@ -94,11 +100,7 @@ class EDITOR_Cursor {
      * `EDITOR_cursorList.splice(index, 0, cursorInstance)`
      */
     constructor() {
-        /**
-         * When moving cursor vertically, if the current column index cannot be matched due to the upcoming line being too short,
-         * then this will allow a later vertical movement to a line that is long enough to match the original column rather than the minimized one.
-         */
-        this.STORED_indexColumn = 0;
+        
         this.cursorTranslateYValue = 0;
         this.cursorTranslateXValue = 0;
         this.selectionAnchor = 0;
@@ -214,7 +216,7 @@ class EDITOR_Cursor {
     clear() {
         EDITOR_cursor_indexLine = 0;
         EDITOR_cursor_indexColumn = 0;
-        this.STORED_indexColumn = 0;
+        EDITOR_cursor_STORED_indexColumn = 0;
         this.cursorTranslateYValue = 0;
         this.cursorTranslateXValue = 0;
         this.selectionAnchor = 0;
@@ -3633,7 +3635,7 @@ function EDITOR_onMouseDownDetailRankOne(event_button, event_shiftKey, indexLine
     if (!selectionPlusContextMenuCase) {
         EDITOR_cursor_indexLine = indexLineClicked;
         EDITOR_cursor_indexColumn = indexColumnClicked;
-        cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
+        EDITOR_cursor_STORED_indexColumn = EDITOR_cursor_indexColumn;
     
         cursor.selectionEnd = EDITOR_getPositionIndex(cursor);
 
@@ -3940,11 +3942,11 @@ function EDITOR_arrowDown(cursor, shiftKey) {
     if (EDITOR_cursor_indexLine < EDITOR_lineEndPositionList.count - 1) {
         EDITOR_cursor_indexLine++;
         let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
-        if (cursor.STORED_indexColumn > lastValidIndexColumn) {
+        if (EDITOR_cursor_STORED_indexColumn > lastValidIndexColumn) {
             EDITOR_cursor_indexColumn = lastValidIndexColumn;
         }
         else {
-            EDITOR_cursor_indexColumn = cursor.STORED_indexColumn;
+            EDITOR_cursor_indexColumn = EDITOR_cursor_STORED_indexColumn;
         }
     }
     EDITOR_postKeyboardMovementSelectionLogic(cursor, shiftKey);
@@ -4113,7 +4115,7 @@ function EDITOR_editEvent_theEditIself_InsertLtr(event) {
         EDITOR_startEdit(cursor, ENUM_EditKind_InsertLtr, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
     }
     EDITOR_insertDo(cursor, event.key);
-    cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
+    EDITOR_cursor_STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     //EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] + cursor.editLength;
     //EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = get_EDITOR_totalShift() + cursor.editLength; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
@@ -4156,7 +4158,7 @@ function EDITOR_editEvent_theEditIself_BackspaceRtl(event) {
             EDITOR_startEdit(cursor, ENUM_EditKind_BackspaceRtl, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
         }
         EDITOR_backspaceDo(cursor, event);
-        cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
+        EDITOR_cursor_STORED_indexColumn = EDITOR_cursor_indexColumn;
     }
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     //EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] - cursor.editLength;
@@ -4208,7 +4210,7 @@ function EDITOR_editEvent_theEditIself_Enter(event) {
         EDITOR_startEdit(cursor, ENUM_EditKind_Enter, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
     }
     EDITOR_EnterKey(cursor, event.ctrlKey, event.shiftKey);
-    cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
+    EDITOR_cursor_STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     //EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] = EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] + 1;
 }
@@ -4219,7 +4221,7 @@ function EDITOR_editEvent_theEditIself_Paste(clipboardContent) {
         EDITOR_startEdit(cursor, ENUM_EditKind_Paste, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
     }
     EDITOR_paste(cursor, clipboardContent);
-    cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
+    EDITOR_cursor_STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
 }
 
@@ -4229,7 +4231,7 @@ function EDITOR_editEvent_theEditIself_Duplicate() {
         EDITOR_startEdit(cursor, ENUM_EditKind_Duplicate, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
     }
     EDITOR_duplicateSelection(cursor);
-    cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
+    EDITOR_cursor_STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
 }
 
@@ -4630,7 +4632,7 @@ function EDITOR_onKeyDown_ArrowLeft(event) {
         }
         EDITOR_postKeyboardMovementSelectionLogic(cursor, event.shiftKey);
     }
-    cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
+    EDITOR_cursor_STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
         EDITOR_cursorBlink_startChecking();
@@ -4672,11 +4674,11 @@ function EDITOR_onKeyDown_ArrowUp(event) {
         if (EDITOR_cursor_indexLine > 0) {
             EDITOR_cursor_indexLine--;
             let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
-            if (cursor.STORED_indexColumn > lastValidIndexColumn) {
+            if (EDITOR_cursor_STORED_indexColumn > lastValidIndexColumn) {
                 EDITOR_cursor_indexColumn = lastValidIndexColumn;
             }
             else {
-                EDITOR_cursor_indexColumn = cursor.STORED_indexColumn;
+                EDITOR_cursor_indexColumn = EDITOR_cursor_STORED_indexColumn;
             }
         }
         EDITOR_postKeyboardMovementSelectionLogic(cursor, event.shiftKey);
@@ -4745,7 +4747,7 @@ function EDITOR_onKeyDown_ArrowRight(event) {
         }
         EDITOR_postKeyboardMovementSelectionLogic(cursor, event.shiftKey);
     }
-    cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
+    EDITOR_cursor_STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
         EDITOR_cursorBlink_startChecking();
@@ -4775,7 +4777,7 @@ function EDITOR_onKeyDown_Home(event) {
         }
     }
     EDITOR_postKeyboardMovementSelectionLogic(cursor, event.shiftKey);
-    cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
+    EDITOR_cursor_STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
         EDITOR_cursorBlink_startChecking();
@@ -4795,7 +4797,7 @@ function EDITOR_onKeyDown_End(event) {
     }
     EDITOR_cursor_indexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
     EDITOR_postKeyboardMovementSelectionLogic(cursor, event.shiftKey);
-    cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
+    EDITOR_cursor_STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
         EDITOR_cursorBlink_startChecking();
@@ -7089,7 +7091,7 @@ function EDITOR_removeSelection(cursor) {
 
     cursor.editLength = editLength;
     
-    cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
+    EDITOR_cursor_STORED_indexColumn = EDITOR_cursor_indexColumn;
 
     EDITOR_render_request(ENUM_RenderKind_RemoveSelection);
 }

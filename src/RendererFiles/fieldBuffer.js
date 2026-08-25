@@ -166,10 +166,10 @@ const CONST_EDI_cursor_GAP_BUFFER_CAPACITY = 32;
 ////////////////////////////
 ////////////////////////////
 
-const GLOB_int_fields = new Uint32Array(64);
+const gINT_FIELDS = new Uint32Array(64);
 
 const F_EDI_lineHeight = 0;
-GLOB_int_fields[F_EDI_lineHeight] = 20;
+gINT_FIELDS[F_EDI_lineHeight] = 20;
 
 /** The first line of text that you should see shown in the UI given the current scrollTop */
 const F_EDI_virtualIndexLine = 1;
@@ -180,7 +180,7 @@ const F_lastReadNumber_scrollTop = 2;
 const F_EDI_ONSCROLLvirtualIndexLine = 3;
 //throw new Error('-1');
 // This set used to be -1 to indicate a non existent value, 500 "seems to work" but a proof of it being an equivalent solution has not thoroughly been thought out, only a sort of "yeah that probably works" kinda vibe.
-GLOB_int_fields[F_EDI_ONSCROLLvirtualIndexLine] = 500;
+gINT_FIELDS[F_EDI_ONSCROLLvirtualIndexLine] = 500;
 
 /** Also is used from 'EDI_render_do_SetText()', and 'EDI_render_do_Resize()', not just 'EDI_render_do_Scroll()' */
 const F_EDI_scrollEndDeadline = 4;
@@ -188,7 +188,7 @@ const F_EDI_scrollEndDeadline = 4;
 const F_EDI_ONSCROLLscrollTop = 5;
 //throw new Error('-1');
 // This set used to be -1 to indicate a non existent value, 500 "seems to work" but a proof of it being an equivalent solution has not thoroughly been thought out, only a sort of "yeah that probably works" kinda vibe.
-GLOB_int_fields[F_EDI_ONSCROLLscrollTop] = 500;
+gINT_FIELDS[F_EDI_ONSCROLLscrollTop] = 500;
 
 
 const F_EDI_virtualCount = 6;
@@ -196,7 +196,7 @@ const F_EDI_virtualCount = 6;
 const F_EDI_sum_diffPositive = 7;
 
 const F_EDI_ONSCROLLvirtualCount = 8;
-GLOB_int_fields[F_EDI_ONSCROLLvirtualCount] = 0;
+gINT_FIELDS[F_EDI_ONSCROLLvirtualCount] = 0;
 
 const F_EDI_sum_diffNegative = 9;
 
@@ -219,7 +219,7 @@ const F_EDI_detailRank3OriginLine = 14;
  * Whereas the line height is a css variable (and thus could cause layout for the entire application whenever it changes).
  */
 const F_EDI_gutterWidthStyleValue = 15;
-GLOB_int_fields[F_EDI_gutterWidthStyleValue] = 32;
+gINT_FIELDS[F_EDI_gutterWidthStyleValue] = 32;
 
 /**
  * This is the sum of the 'F_EDI_gutterWidthStyleValue()' in addition to paddig
@@ -227,7 +227,7 @@ GLOB_int_fields[F_EDI_gutterWidthStyleValue] = 32;
  */
 const F_EDI_gutterWidthTotal = 16;
 /** WARNING: This will not set 'gutterWidthTotal_withPxUnits' and thus is somewhat prone to a mistake at some point. */
-GLOB_int_fields[F_EDI_gutterWidthTotal] = 32;
+gINT_FIELDS[F_EDI_gutterWidthTotal] = 32;
 
 const F_didChangeTextDocument_version = 17;
 
@@ -276,12 +276,12 @@ const F_EDI_pooledTrackedSyntax_length = 34;
 /**
  * Also is used from 'EDI_render_do_SetText()', and 'EDI_render_do_Resize()', not just 'EDI_render_do_Scroll()'
  * 
- * I'm gonna store this in the int32 array so that the editor scroll render function can access it from the already existing local reference of GLOB_int_fields.
+ * I'm gonna store this in the int32 array so that the editor scroll render function can access it from the already existing local reference of gINT_FIELDS.
  */
 const F_EDI_intFalsey_isScrolling = 35;
 
 /**
- * I'm gonna store this in the int32 array so that the editor scroll render function can access it from the already existing local reference of GLOB_int_fields.
+ * I'm gonna store this in the int32 array so that the editor scroll render function can access it from the already existing local reference of gINT_FIELDS.
  */
 const F_EDI_cursor_editKind = 36;
 
@@ -347,7 +347,7 @@ const F_EDI_cursor_EDI_duplicate_small = 62;
 /** same comment that pertains to EDI_cursor_EDI_paste_clipboardContent is somewhat relevant here */
 const F_EDI_cursor_EDI_duplicate_length = 63;
 
-// GLOB_int_fields[F_EDI_cursor_EDI_duplicate_length]
+// gINT_FIELDS[F_EDI_cursor_EDI_duplicate_length]
 
 
 
@@ -360,7 +360,7 @@ const F_EDI_cursor_EDI_duplicate_length = 63;
 // ... / figure out details of caching so you read them all in one go if possible.
 
 // TODO: Move all the other smi's here
-// TODO: a local copy of 'GLOB_int_fields' is likely always a meaningful performance gain once you've moved everything because of how much state is being stored here, but it still depends maybe some functions only access it once or something etc...
+// TODO: a local copy of 'gINT_FIELDS' is likely always a meaningful performance gain once you've moved everything because of how much state is being stored here, but it still depends maybe some functions only access it once or something etc...
 
 /*
 The smi's are when you do a collection you start at the roots

@@ -2197,7 +2197,7 @@ I did some exercises then about an hour long walk then showered...
                 div.appendChild(span);
             }
 
-            let trackedSyntaxEnd = GLOB_int_fields[F_EDI_pooledTrackedSyntax_start] + GLOB_int_fields[F_EDI_pooledTrackedSyntax_length];
+            let trackedSyntaxEnd = gINT_FIELDS[F_EDI_pooledTrackedSyntax_start] + gINT_FIELDS[F_EDI_pooledTrackedSyntax_length];
             subend = trackedSyntaxEnd > divSpanTextContentLength ? divSpanTextContentLength : trackedSyntaxEnd;
             
             let length = subend - substart;
@@ -2234,22 +2234,22 @@ I did some exercises then about an hour long walk then showered...
                 continue;
             }
 
-            if (GLOB_int_fields[F_EDI_pooledTrackedSyntax_start] >= lineStart + divSpanTextContentLength) {
+            if (gINT_FIELDS[F_EDI_pooledTrackedSyntax_start] >= lineStart + divSpanTextContentLength) {
                 createDoLexFlag = true;
                 trackedSyntaxExhausted = true;
                 subend = divSpanTextContentLength;
                 continue;
             }
 
-            if (GLOB_int_fields[F_EDI_pooledTrackedSyntax_start] + GLOB_int_fields[F_EDI_pooledTrackedSyntax_length] < lineStart) {
+            if (gINT_FIELDS[F_EDI_pooledTrackedSyntax_start] + gINT_FIELDS[F_EDI_pooledTrackedSyntax_length] < lineStart) {
                 trackedSyntax_I++;
                 continue;
             }
 
-            if (GLOB_int_fields[F_EDI_pooledTrackedSyntax_start] > lineStart + substart) {
+            if (gINT_FIELDS[F_EDI_pooledTrackedSyntax_start] > lineStart + substart) {
                 createDoLexFlag = true;
                 trackedSyntaxExhausted = false;
-                subend = GLOB_int_fields[F_EDI_pooledTrackedSyntax_start] > lineStart + divSpanTextContentLength ? lineStart + divSpanTextContentLength : GLOB_int_fields[F_EDI_pooledTrackedSyntax_start]; // probably a nonsense line of code given the previous if statements
+                subend = gINT_FIELDS[F_EDI_pooledTrackedSyntax_start] > lineStart + divSpanTextContentLength ? lineStart + divSpanTextContentLength : gINT_FIELDS[F_EDI_pooledTrackedSyntax_start]; // probably a nonsense line of code given the previous if statements
                 continue;
                 //childIndex = EDI_language_line_lex(div, substart, subend, childIndex);
                 //substart += (subend - substart);
@@ -2261,7 +2261,7 @@ I did some exercises then about an hour long walk then showered...
                 
             }
 
-            if (GLOB_int_fields[F_EDI_pooledTrackedSyntax_start] + GLOB_int_fields[F_EDI_pooledTrackedSyntax_length] <= divSpanTextContentLength) {
+            if (gINT_FIELDS[F_EDI_pooledTrackedSyntax_start] + gINT_FIELDS[F_EDI_pooledTrackedSyntax_length] <= divSpanTextContentLength) {
                 trackedSyntax_I++;
                 continue;
             }

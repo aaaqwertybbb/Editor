@@ -9298,4 +9298,7 @@ for you to watch this so much that it gets recommended to me.
 
 I take strattera and only 60mg
 
+you know I also take 80mg of prozac the max dose
+and the reason is for OCD lol
+
 */

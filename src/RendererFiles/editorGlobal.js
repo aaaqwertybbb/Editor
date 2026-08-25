@@ -9205,4 +9205,6 @@ Theprimeagen is the quote. Maybe he said 12 not 13 big deal what a stupid statem
 
 I think about it daily cause of how much I hate what he said
 
+It looks like everything is working, well everything short of the nerves in my wrist I gotta type slowly for a bit that was rough lol
+
 */

@@ -99,6 +99,9 @@ let EDITOR_cursor_selectionEnd = 0;
 let EDITOR_cursor_DRAWN_selectionAnchor = 0;
 let EDITOR_cursor_DRAWN_selectionEnd = 0;
 
+let EDITOR_cursor_DRAWN_selection_virtualIndexLine = 0;
+let EDITOR_cursor_DRAWN_selection_virtualCount = 0;
+
 class EDITOR_Cursor {
     /**
      * After invoking the constructor you likely would want to add to:
@@ -110,10 +113,6 @@ class EDITOR_Cursor {
      */
     constructor() {
         
-        
-        
-        this.DRAWN_selection_virtualIndexLine = 0;
-        this.DRAWN_selection_virtualCount = 0;
         this.editKind = ENUM_EditKind_None;
         this.editLength = 0;
         this.editPosition = 0;
@@ -228,8 +227,8 @@ class EDITOR_Cursor {
         EDITOR_cursor_selectionEnd = 0;
         EDITOR_cursor_DRAWN_selectionAnchor = 0;
         EDITOR_cursor_DRAWN_selectionEnd = 0;
-        this.DRAWN_selection_virtualIndexLine = 0;
-        this.DRAWN_selection_virtualCount = 0;
+        EDITOR_cursor_DRAWN_selection_virtualIndexLine = 0;
+        EDITOR_cursor_DRAWN_selection_virtualCount = 0;
         this.editKind = ENUM_EditKind_None;
         this.editLength = 0;
         this.editPosition = 0;
@@ -2958,13 +2957,13 @@ function EDITOR_clearSelectionStyle(cursor) {
 function EDITOR_createStyleForSelection(cursor) {
     if (EDITOR_cursor_DRAWN_selectionAnchor !== EDITOR_cursor_selectionAnchor ||
         EDITOR_cursor_DRAWN_selectionEnd !== EDITOR_cursor_selectionEnd ||
-        cursor.DRAWN_selection_virtualCount !== EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] ||
-        cursor.DRAWN_selection_virtualIndexLine !== EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine]) {
+        EDITOR_cursor_DRAWN_selection_virtualCount !== EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] ||
+        EDITOR_cursor_DRAWN_selection_virtualIndexLine !== EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine]) {
 
         EDITOR_cursor_DRAWN_selectionAnchor = EDITOR_cursor_selectionAnchor;
         EDITOR_cursor_DRAWN_selectionEnd = EDITOR_cursor_selectionEnd;
-        cursor.DRAWN_selection_virtualCount = EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
-        cursor.DRAWN_selection_virtualIndexLine = EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+        EDITOR_cursor_DRAWN_selection_virtualCount = EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+        EDITOR_cursor_DRAWN_selection_virtualIndexLine = EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
 
         let shouldExistSelectionDiv;
         if (EDITOR_cursor_DRAWN_selectionAnchor === EDITOR_cursor_DRAWN_selectionEnd) {

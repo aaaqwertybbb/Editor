@@ -7734,21 +7734,24 @@ function EDITOR_insertDo(character) {
 }
 
 function EDITOR_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine() {
-    // binary search for 'if (EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] > positionIndex)'
-    let indexTrackedSyntax = EDITOR_drawViewPort_FindTrackedSyntax_StartingIndex(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
+    // binary search for 'if (local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] > positionIndex)'
+    let indexTrackedSyntax = EDITOR_drawViewPort_FindTrackedSyntax_StartingIndex(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
     if (indexTrackedSyntax === NaN || indexTrackedSyntax === -1) {
         indexTrackedSyntax = EDITOR_trackedSyntaxList.count_abstract;
     }
     if (indexTrackedSyntax < EDITOR_trackedSyntaxList.count_abstract) {
         EDITOR_trackedSyntaxList.getElementAt(indexTrackedSyntax);
-        if (EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]) {
+        if (local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] < local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]) {
             let moreThanOneLineEndPositionIsEncompassed = false;
 
             // TODO: This has no reason to be a for loop
-            for (let i = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] - 1; i >= 0; i--) {
+            for (let i = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] - 1; i >= 0; i--) {
                 let lineEndPosition = EDITOR_lineEndPositionList.data[i];
-                if (EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] < lineEndPosition &&
-                    EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] > lineEndPosition) {
+                if (local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] < lineEndPosition &&
+                    local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] > lineEndPosition) {
                         moreThanOneLineEndPositionIsEncompassed = true;
                         break;
                 }
@@ -7759,10 +7762,10 @@ function EDITOR_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine() {
             
             if (!moreThanOneLineEndPositionIsEncompassed) {
                 // TODO: This has no reason to be a for loop
-                for (let i = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] + 1; i < EDITOR_lineEndPositionList.count; i++) {
+                for (let i = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] + 1; i < EDITOR_lineEndPositionList.count; i++) {
                     let lineEndPosition = EDITOR_lineEndPositionList.data[i];
-                    if (EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] < lineEndPosition &&
-                        EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] > lineEndPosition) {
+                    if (local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] < lineEndPosition &&
+                        local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] > lineEndPosition) {
                             moreThanOneLineEndPositionIsEncompassed = true;
                             break;
                     }

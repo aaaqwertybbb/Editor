@@ -2197,7 +2197,7 @@ I did some exercises then about an hour long walk then showered...
                 div.appendChild(span);
             }
 
-            let trackedSyntaxEnd = EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length];
+            let trackedSyntaxEnd = int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length];
             subend = trackedSyntaxEnd > divSpanTextContentLength ? divSpanTextContentLength : trackedSyntaxEnd;
             
             let length = subend - substart;
@@ -2234,22 +2234,22 @@ I did some exercises then about an hour long walk then showered...
                 continue;
             }
 
-            if (EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] >= lineStart + divSpanTextContentLength) {
+            if (int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] >= lineStart + divSpanTextContentLength) {
                 createDoLexFlag = true;
                 trackedSyntaxExhausted = true;
                 subend = divSpanTextContentLength;
                 continue;
             }
 
-            if (EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] < lineStart) {
+            if (int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] < lineStart) {
                 trackedSyntax_I++;
                 continue;
             }
 
-            if (EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] > lineStart + substart) {
+            if (int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] > lineStart + substart) {
                 createDoLexFlag = true;
                 trackedSyntaxExhausted = false;
-                subend = EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] > lineStart + divSpanTextContentLength ? lineStart + divSpanTextContentLength : EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start]; // probably a nonsense line of code given the previous if statements
+                subend = int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] > lineStart + divSpanTextContentLength ? lineStart + divSpanTextContentLength : int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start]; // probably a nonsense line of code given the previous if statements
                 continue;
                 //childIndex = EDITOR_language_line_lex(div, substart, subend, childIndex);
                 //substart += (subend - substart);
@@ -2261,7 +2261,7 @@ I did some exercises then about an hour long walk then showered...
                 
             }
 
-            if (EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] <= divSpanTextContentLength) {
+            if (int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] <= divSpanTextContentLength) {
                 trackedSyntax_I++;
                 continue;
             }

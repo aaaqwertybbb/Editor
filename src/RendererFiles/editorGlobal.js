@@ -77,7 +77,7 @@ const EDITOR_decoder = new TextDecoder();
 let gutterWidthTotal_withPxUnits;
 
 // TODO: This assignment isn't necessary, it was already the default value;
-EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] = ENUM_EditKind_None;
+int_fields[INDEXOF_EDITOR_cursor_editKind] = ENUM_EditKind_None;
 
 let EDITOR_cursor_cursorId = 1;//EDITOR_cursor_STATIC_CURSOR_ID++;
 let EDITOR_cursor_htmlId = "EDITOR_cursor-" + EDITOR_cursor_cursorId;
@@ -142,7 +142,7 @@ let EDITOR_cursor_edit_flagLineChanged = -1;
 let EDITOR_cursor_EDITOR_paste_clipboardContent = null;
 
 function EDITOR_cursor_hasSelection() {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
     return local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] >= 0 &&
             local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] >= 0 &&
             local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] != local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
@@ -154,7 +154,7 @@ function EDITOR_cursor_hasSelection() {
  * Somewhat duplicated code: This messes with the language features if I invoke clear() in the constructor, it puts "| undefined" on all the types.
  */
 function EDITOR_cursor_clear() {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
     local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = 0;
     local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
     local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = 0;
@@ -330,12 +330,12 @@ function EDITOR_init() {
     EDITOR_gutterBackgroundColor.style.paddingLeft = gutterPaddingLeft;
     EDITOR_gutterBackgroundColor.style.paddingRight = gutterPaddingRight;
 
-    EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthStyleValue] = EDITOR_characterWidth;
-    let gutterWidth = EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthStyleValue] + 'px';
+    int_fields[INDEXOF_EDITOR_gutterWidthStyleValue] = EDITOR_characterWidth;
+    let gutterWidth = int_fields[INDEXOF_EDITOR_gutterWidthStyleValue] + 'px';
 
     EDITOR_drawGutter_Width();
 
-    EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar] = 1; // necessary for the first render, otherwise the if statement sees 0 !== 0.
+    int_fields[INDEXOF_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar] = 1; // necessary for the first render, otherwise the if statement sees 0 !== 0.
     EDITOR_drawHorizontalScrollbar();
     EDITOR_draw_all_cursors();
 
@@ -449,7 +449,7 @@ function EDITOR_render_do_cursor_flag_doNotScrollIntoView(timestamp) {
 }
 
 function EDITOR_render_do_InsertLtr() {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
     if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_InsertLtr) {
         return;
     }
@@ -476,9 +476,9 @@ function EDITOR_render_do_Clear() {
 
     // Force case 3
     prevVli = 0;
-    currVli = EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+    currVli = int_fields[INDEXOF_EDITOR_virtualCount];
     // TODO: Duplicated setting of scrolltop; this case and just baseline everytime vertical scrolls it is done in this method elsewhere
-    EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop] = EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
+    int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop] = int_fields[INDEXOF_lastReadNumber_scrollTop];
     EDITOR_render_do_CreateViewport();
 }
 
@@ -491,11 +491,11 @@ function EDITOR_render_do_SetText(timestamp) {
 
     EDITOR_render_do_Scroll(timestamp)
 
-    prevVli = EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine];
-    currVli = EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
-    EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+    prevVli = int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine];
+    currVli = int_fields[INDEXOF_EDITOR_virtualIndexLine];
+    int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine] = int_fields[INDEXOF_EDITOR_virtualIndexLine];
 
-    EDITOR_int_fields[INDEXOF_EDITOR_scrollEndDeadline] = timestamp + 1000;
+    int_fields[INDEXOF_EDITOR_scrollEndDeadline] = timestamp + 1000;
     if (!isCheckingTrailingEdge) {
         isCheckingTrailingEdge = true;
         requestAnimationFrame(EDITOR_render_do_ScrollTrailingEdgeCheck);
@@ -516,7 +516,7 @@ function EDITOR_render_request(renderKind) {
 
 function EDITOR_render_do_CreateViewport() {
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     let remember_scrollTop = local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
     let remember_scrollLeft = lastReadNumber_scrollLeft;
@@ -596,7 +596,7 @@ function EDITOR_createViewport() {
  * 
  * If the scroll and mouse down events are handled prior to my rAF
  * 
- * and I've moved all the EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] logic from here to the rAF
+ * and I've moved all the int_fields[INDEXOF_EDITOR_virtualIndexLine] logic from here to the rAF
  * then the user will "click the wrong line".
  * 
  * "I don't want to limit the speed of editing to that of the screen's refresh rate"
@@ -627,7 +627,7 @@ function EDITOR_onScroll_WRAPIT() {
     // thus it is thought you might as well touch scrollLeft too here, if you're going down this path.
     //
     lastReadNumber_scrollLeft = EDITOR_baseElement.scrollLeft;
-    EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop] = EDITOR_baseElement.scrollTop;
+    int_fields[INDEXOF_lastReadNumber_scrollTop] = EDITOR_baseElement.scrollTop;
 
     EDITOR_render_request(ENUM_RenderKind_Scroll);
 }
@@ -702,7 +702,7 @@ function EDITOR_onScroll_WRAPIT() {
  * 
  */
 function EDITOR_render_do_Scroll(timestamp) {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
     let local_lineHeight = local_EDITOR_int_fields[INDEXOF_EDITOR_lineHeight];
 
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
@@ -846,7 +846,7 @@ function EDITOR_render_do_Scroll(timestamp) {
  * @returns true if scrollTop (and a few other details) have not changed, thus indicating the invoker should immediately return from their own rather than continuing with scroll logic.
  */
 function EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli) {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
     
     // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 2 of 4)
     // ...and here the locals are moved to the global scope.
@@ -895,7 +895,7 @@ function EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli) {
             // But 'local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine]' was being used within case 3
             // due to this awkward setting of the 'currVli' when doing a hack to force case 3.
             //
-            // This meant case 3 was incurring an extra global variable lookup (global variable lookup of 'EDITOR_int_fields')
+            // This meant case 3 was incurring an extra global variable lookup (global variable lookup of 'int_fields')
             // - (or with 'local_EDITOR_int_fields' you are incurring a read of the array only, but still this is presumed to be more than just using the local variable).
             //
             // Wait I'm wrong with that explanation...
@@ -922,7 +922,7 @@ function EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli) {
 
 function EDITOR_render_do_ScrollTrailingEdgeCheck(timestamp) {
     // If the scroll deadline hasn't been met yet, keep checking on the next frame
-    if (timestamp < EDITOR_int_fields[INDEXOF_EDITOR_scrollEndDeadline]) {
+    if (timestamp < int_fields[INDEXOF_EDITOR_scrollEndDeadline]) {
         requestAnimationFrame(EDITOR_render_do_ScrollTrailingEdgeCheck);
         return;
     }
@@ -932,10 +932,10 @@ function EDITOR_render_do_ScrollTrailingEdgeCheck(timestamp) {
 }
 
 /**
- * must set 'EDITOR_int_fields[INDEXOF_EDITOR_intFalsey_isScrolling] = 0;' within this function.
+ * must set 'int_fields[INDEXOF_EDITOR_intFalsey_isScrolling] = 0;' within this function.
  */
 function EDITOR_onScroll_TrailingEdge() {
-    EDITOR_int_fields[INDEXOF_EDITOR_intFalsey_isScrolling] = 0;
+    int_fields[INDEXOF_EDITOR_intFalsey_isScrolling] = 0;
     isCheckingTrailingEdge = false; // Reset the flag here
     EDITOR_render_request(ENUM_RenderKind_SyntaxHighlighting);
 }
@@ -956,7 +956,7 @@ but there is 0 reasoning, understanding, or measurements behind my decision.
 
 function EDITOR_render_do_SyntaxHighlighting() {
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     let local_sum_diffNegative = local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffNegative];
     let local_sum_diffPositive = local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive];
@@ -1145,10 +1145,10 @@ More accurately the ones that seem to not have an importance of position, they d
     //     - [ ] [BABEL] Note: The code generator has deoptimised the styling of C:\Users\hunte\Repos\New folder (3)\Edit\preprocessor\__PREPROCESSEDbundle__.js as it exceeds the max of 500KB.
     //     - ... I don't actually know if they're counting whitespace as part of that 500KB, I'd presume they are so you should stop doing it. At least when it comes to the comments that are indented, and you include the indentation for no reason even though you removed the comment.
 
-//if (diff > 0 && diff < EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]) {
+//if (diff > 0 && diff < int_fields[INDEXOF_EDITOR_virtualCount]) {
     //    
     //}
-    //else if (diff < 0 && (diff *= -1) < EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]) {
+    //else if (diff < 0 && (diff *= -1) < int_fields[INDEXOF_EDITOR_virtualCount]) {
     //    
     //}
     //else {
@@ -1160,7 +1160,7 @@ More accurately the ones that seem to not have an importance of position, they d
     //}
 
     //You know there's diff many lines to syntax highlight.
-    //You can guess that is diff < EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]
+    //You can guess that is diff < int_fields[INDEXOF_EDITOR_virtualCount]
     //that you'll start at 'EDITOR_beltIndexZero'
     //and loop diff amount of times.
 //
@@ -1185,7 +1185,7 @@ More accurately the ones that seem to not have an importance of position, they d
 
 function EDITOR_state_clear() {
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     // the smi would exist on the object instance all near one another if you just used a class
     // it is essentially the field buffer but you don't eat a global scope variable lookup at any point
@@ -1224,7 +1224,7 @@ function EDITOR_clear() {
 
 function EDITOR_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMATTED_textSourceIdentifier, extensionKind, lineEndString) {
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     EDITOR_baseElement.scrollTop = 0;
     local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop] = 0;
@@ -1328,10 +1328,10 @@ function EDITOR_state_setText(text, fileStartsWithBom, textSourceIdentifier, FOR
     // ...I believe this works because when you change the text you guarantee a virtual index line of '0' because the scrollTop gets moved to 0...
     // ...the partial solution is to set it to anything other than '0' so the editor detects that a line of text needs to be drawn...
     // ...but this isn't enough because you want the editor to draw every line, thus you make the difference...
-    // ...in the virtual index line equal to the count of lines being displayed, i.e.: set virtual index line to 'EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]'...
+    // ...in the virtual index line equal to the count of lines being displayed, i.e.: set virtual index line to 'int_fields[INDEXOF_EDITOR_virtualCount]'...
     // ...then it sees the new value for virtual index line is 0...
-    // ...the difference between the previous and new value is 'EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]'...
-    // ...thus 'EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]' amount of lines get redrawn...
+    // ...the difference between the previous and new value is 'int_fields[INDEXOF_EDITOR_virtualCount]'...
+    // ...thus 'int_fields[INDEXOF_EDITOR_virtualCount]' amount of lines get redrawn...
     // ...i.e.: the entire viewport is redrawn with the new file's text.
     local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 }
@@ -1354,7 +1354,7 @@ function EDITOR_setText(text, fileStartsWithBom, textSourceIdentifier, FORMATTED
  */
 function update_verticalVirtualizationBoundary(lineCount) {
     if (!lineCount) lineCount = EDITOR_lineEndPositionList.count;
-    cached_EDITOR_virtualization_vertical.style.height = ((lineCount + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1) * EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]) + 'px';
+    cached_EDITOR_virtualization_vertical.style.height = ((lineCount + int_fields[INDEXOF_EDITOR_virtualCount] - 1) * int_fields[INDEXOF_EDITOR_lineHeight]) + 'px';
 }
 
 /**
@@ -1366,22 +1366,22 @@ function update_VirtualIndexLine() {
     // thus it is thought you might as well touch scrollLeft too here, if you're going down this path.
     //
     lastReadNumber_scrollLeft = EDITOR_baseElement.scrollLeft;
-    EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop] = EDITOR_baseElement.scrollTop;
+    int_fields[INDEXOF_lastReadNumber_scrollTop] = EDITOR_baseElement.scrollTop;
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
-    EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] = Math.floor(EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop] / EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]);
+    int_fields[INDEXOF_EDITOR_virtualIndexLine] = Math.floor(int_fields[INDEXOF_lastReadNumber_scrollTop] / int_fields[INDEXOF_EDITOR_lineHeight]);
 }
 
 function update_virtualCount() {
-    EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] = Math.ceil(lastReadNumber_offsetHeight / EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]);
+    int_fields[INDEXOF_EDITOR_virtualCount] = Math.ceil(lastReadNumber_offsetHeight / int_fields[INDEXOF_EDITOR_lineHeight]);
 }
 
 /**
- * If the 'EDITOR_int_fields[INDEXOF_EDITOR_drawn_count_of_digits_longest_line_number] === positiveNumbersOnly_countDigitsLoop(EDITOR_lineEndPositionList.count)'
+ * If the 'int_fields[INDEXOF_EDITOR_drawn_count_of_digits_longest_line_number] === positiveNumbersOnly_countDigitsLoop(EDITOR_lineEndPositionList.count)'
  * then the function does nothing.
  * 
  * TODO: Track the min and max until length changes and then only 2 operations at worst case than while
  * 
- * @returns a bool indicating whether the gutter was drawn (if 'EDITOR_int_fields[INDEXOF_EDITOR_drawn_count_of_digits_longest_line_number]' has not changed then false is returned because the gutter didn't need to be "re-" drawn)
+ * @returns a bool indicating whether the gutter was drawn (if 'int_fields[INDEXOF_EDITOR_drawn_count_of_digits_longest_line_number]' has not changed then false is returned because the gutter didn't need to be "re-" drawn)
  * 
  * Dependent UI: EDITOR_draw_all_cursors(); EDITOR_drawHorizontalScrollbar();
  * 
@@ -1391,7 +1391,7 @@ function update_virtualCount() {
  * The confusion, if there is any, comes from the dependent UI in some scenarios being required independently of whether drawGutter changes. And at other times they're solely dependent on whether drawGutter changes.
  */
 function EDITOR_drawGutter_Width() {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
     let count = EDITOR_lineEndPositionList.count;
     if (EDITOR_cursor_enterKeyEventKind !== ENUM_EnterKeyEventKind_None) {
         count += 1;
@@ -1428,7 +1428,7 @@ function EDITOR_drawGutter_Width() {
  * then at that point you redraw this.
  */
 function EDITOR_drawHorizontalScrollbar() {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
     if (DRAWN_NUMBER_cached_EDITOR_horizontal_scrollbar_style_left !== local_EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal]) {
         cached_EDITOR_horizontal_scrollbar.style.left = gutterWidthTotal_withPxUnits;
         DRAWN_NUMBER_cached_EDITOR_horizontal_scrollbar_style_left = local_EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal];
@@ -1516,7 +1516,7 @@ function EDITOR_finalizeEdit() {
      */
     let indexLine_editOccurredOn = -1;
 
-    switch (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind]) {
+    switch (int_fields[INDEXOF_EDITOR_cursor_editKind]) {
         case ENUM_EditKind_InsertLtr:
             indexLine_editOccurredOn = EDITOR_finalizeEdit_InsertLtr(indexLine_editOccurredOn);
             break;
@@ -1551,8 +1551,8 @@ function EDITOR_finalizeEdit() {
     // You need to NOT do this when you are working with multiple cursors however, because it bugs everything out.
     // 
     if (indexLine_editOccurredOn >= 0 && indexLine_editOccurredOn < EDITOR_lineEndPositionList.count) {
-        if (cached_EDITOR_gutter.children.length === EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] &&
-            cached_EDITOR_textElement.children.length === EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]) {
+        if (cached_EDITOR_gutter.children.length === int_fields[INDEXOF_EDITOR_virtualCount] &&
+            cached_EDITOR_textElement.children.length === int_fields[INDEXOF_EDITOR_virtualCount]) {
 
                 // TODO: The 'awkward explicit inlining' for this case isn't seemingly working...
                 // ...I need to type 'function' then more characters until I hit 32 and force a finalization of the edit due to the length being too long.
@@ -1566,9 +1566,9 @@ function EDITOR_finalizeEdit() {
                 // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
                 // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-                let beltIndexLine = (indexLine_editOccurredOn + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+                let beltIndexLine = (indexLine_editOccurredOn + int_fields[INDEXOF_EDITOR_offsetLine]) - int_fields[INDEXOF_EDITOR_virtualIndexLine];
                 if (beltIndexLine >= ArrayFrom_textElement_children_length || beltIndexLine < 0) beltIndexLine = -1;
-                else beltIndexLine = (beltIndexLine + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+                else beltIndexLine = (beltIndexLine + EDITOR_beltIndexZero) % int_fields[INDEXOF_EDITOR_virtualCount];
 
                 if (beltIndexLine >= 0) {
                     let gutterLineElement = cached_EDITOR_gutter.children[beltIndexLine];
@@ -1588,7 +1588,7 @@ function EDITOR_finalizeEdit() {
 }
 
 function EDITOR_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     for (let i = EDITOR_lineEndPositionList.count - 1; i >= 0; i--) {
         if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] <= EDITOR_lineEndPositionList.data[i]) {
@@ -1650,7 +1650,7 @@ function EDITOR_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
 }
 
 function EDITOR_finalizeEdit_Enter(indexLine_editOccurredOn) {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
         EDITOR_render_do_EnterKey();
@@ -1686,8 +1686,8 @@ function EDITOR_finalizeEdit_Tab(indexLine_editOccurredOn) {
 
     let bytes = EDITOR_on_tab_bytes;
 
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] > 1) {
-        that_four *= EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+    if (int_fields[INDEXOF_EDITOR_cursor_editLength] > 1) {
+        that_four *= int_fields[INDEXOF_EDITOR_cursor_editLength];
         bytes = new Uint8Array(that_four);
         let src_bytes = EDITOR_on_tab_bytes;
         // TODO: typed array function usage
@@ -1698,11 +1698,11 @@ function EDITOR_finalizeEdit_Tab(indexLine_editOccurredOn) {
         }
     }
 
-    EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition], that_four);
+    EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(int_fields[INDEXOF_EDITOR_cursor_editPosition], that_four);
 
-    EDITOR_textByteList.insertBytes(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition], bytes, /*offset*/ 0, /*length*/ that_four);
+    EDITOR_textByteList.insertBytes(int_fields[INDEXOF_EDITOR_cursor_editPosition], bytes, /*offset*/ 0, /*length*/ that_four);
 
-    for (var i = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine]; i < EDITOR_lineEndPositionList.count; i++) {
+    for (var i = int_fields[INDEXOF_EDITOR_cursor_editIndexLine]; i < EDITOR_lineEndPositionList.count; i++) {
         EDITOR_lineEndPositionList.data[i] += that_four;
     }
 
@@ -1713,7 +1713,7 @@ function EDITOR_finalizeEdit_Tab(indexLine_editOccurredOn) {
 
 function EDITOR_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     let startingIndex = local_EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex];
     local_EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex] = 0;
@@ -1822,7 +1822,7 @@ function EDITOR_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
 
 function EDITOR_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     // Both indentMore and indentLess have logic in the initial event that needs to be moved here.
     // Nevertheless there is a difference between indentLess and indentMore in that you cannot simply
@@ -2088,7 +2088,7 @@ function EDITOR_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
 
 function EDITOR_finalizeEdit_Paste(indexLine_editOccurredOn) {
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
     
     EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition], local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]);
     
@@ -2137,7 +2137,7 @@ function EDITOR_finalizeEdit_Paste(indexLine_editOccurredOn) {
 
 function EDITOR_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition], local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]);
 
@@ -2184,7 +2184,7 @@ function EDITOR_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
 
 function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_editOccurredOn) {
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     // TODO: surely u'd get this before doing the edit?
     let startLineAndColumnIndices;
@@ -2306,7 +2306,7 @@ function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLi
 }
 
 function EDITOR_finalizeEdit_ClearEditState() {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] = ENUM_EditKind_None;
     local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] = 0;
@@ -2391,15 +2391,15 @@ function EDITOR_readLineEndPositionList(indexLine) {
     let lineEndPositionIndex = EDITOR_lineEndPositionList.data[indexLine];
 
     // If you need to determine the text without finalizing an edit, you DO have to loop forwards right?
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] > 0 & EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] <= lineEndPositionIndex) {
-        switch (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind]) {
+    if (int_fields[INDEXOF_EDITOR_cursor_editLength] > 0 & int_fields[INDEXOF_EDITOR_cursor_editPosition] <= lineEndPositionIndex) {
+        switch (int_fields[INDEXOF_EDITOR_cursor_editKind]) {
             case ENUM_EditKind_InsertLtr:
-                lineEndPositionIndex += EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+                lineEndPositionIndex += int_fields[INDEXOF_EDITOR_cursor_editLength];
                 break;
             case ENUM_EditKind_DeleteLtr:
             case ENUM_EditKind_BackspaceRtl:
             case ENUM_EditKind_RemoveTextNoBatching:
-                lineEndPositionIndex -= EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+                lineEndPositionIndex -= int_fields[INDEXOF_EDITOR_cursor_editLength];
                 break;
         }
     }
@@ -2418,7 +2418,7 @@ function EDITOR_readLineEndPositionList(indexLine) {
  */
 function EDITOR_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_I) {
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
 	let childIndex = 0;
 
@@ -2527,9 +2527,9 @@ function walkLineUntilIndexColumn() {
     // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-    w_beltIndexLine = (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+    w_beltIndexLine = (int_fields[INDEXOF_EDITOR_cursor_indexLine] + int_fields[INDEXOF_EDITOR_offsetLine]) - int_fields[INDEXOF_EDITOR_virtualIndexLine];
     if (w_beltIndexLine >= ArrayFrom_textElement_children_length || w_beltIndexLine < 0) w_beltIndexLine = -1;
-    else w_beltIndexLine = (w_beltIndexLine + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+    else w_beltIndexLine = (w_beltIndexLine + EDITOR_beltIndexZero) % int_fields[INDEXOF_EDITOR_virtualCount];
     
     if (w_beltIndexLine < 0) {
         w_indexColumn_Goal = -1;
@@ -2543,7 +2543,7 @@ function walkLineUntilIndexColumn() {
     }
     
     let div = ArrayFrom_textElement_children[w_beltIndexLine];
-    let indexColumn_Goal = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] + EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn];
+    let indexColumn_Goal = int_fields[INDEXOF_EDITOR_cursor_indexColumn] + int_fields[INDEXOF_EDITOR_offsetColumn];
     let indexColumn_Sum = 0;
 
     for (var indexSpan = 0; indexSpan < div.children.length; indexSpan++) {
@@ -2617,7 +2617,7 @@ function EDITOR_drawViewPort_FindTrackedSyntax_StartingIndex(indexLineAaa) {
 
     // TODO: 'indexLineAaa' and 'indexLineBbb'; babel compiler error when both were named indexLine.
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
     let local_EDITOR_trackedSyntaxList = EDITOR_trackedSyntaxList;
 
     let line = EDITOR_getLineBoundaryPositions(indexLineAaa);
@@ -2719,7 +2719,7 @@ function EDITOR_draw_all_cursors() {
  * @param {boolean} NOTscrollCursorIntoView 
  */
 function EDITOR_drawCursor(NOTscrollCursorIntoView) {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] = (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) * local_EDITOR_int_fields[INDEXOF_EDITOR_lineHeight];
     local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] = (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn]) * EDITOR_characterWidth;
@@ -2868,7 +2868,7 @@ function EDITOR_clearSelectionStyle() {
 }
 
 function EDITOR_createStyleForSelection() {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] ||
         local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionEnd] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] ||
@@ -3029,8 +3029,8 @@ function EDITOR_createStyleForSelection_indentMore() {
         lineSelectionDiv.style.width = widthNumberValue + 'px';
     }
 
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionEnd] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+    int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor] = int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+    int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionEnd] = int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
 }
 
 function EDITOR_getLastValidIndexColumn(indexLine) {
@@ -3069,7 +3069,7 @@ function EDITOR_getLastValidIndexColumn_raw(indexLine) {
  * 
  * @returns an object with properties 'start' inclusive, 'end' exclusive
  * 
- * TODO: Remove this function or move the output to two entries of 'EDITOR_int_fields'
+ * TODO: Remove this function or move the output to two entries of 'int_fields'
  */
 function EDITOR_getLineBoundaryPositions(indexLine) {
     if (indexLine < EDITOR_lineEndPositionList.count) {
@@ -3174,7 +3174,7 @@ function EDITOR_getLineEnd_pos_raw(indexLine) {
 function EDITOR_onMouseMove_WRAPIT(event) {
     if ((event.buttons & 1) && !get_EDITOR_recentBoundingClientRect_isNull_intFalsey()) {
 
-        let local_EDITOR_int_fields = EDITOR_int_fields;
+        let local_EDITOR_int_fields = int_fields;
 
         // TODO: Consider short circuiting at via event.clientX and clientY by tracking the necessary thresholds for the cursor position to pass rather than the previous and current indices. (you can possibly thereby skip the calculation of the indices entirely for the redundant events).
         // TODO: Is it correct to use the cursor's indexLine and indexColumn directly as a means of determining redundancy? I worry about odd interactions, but I have no proof that such an odd interaction could exist.
@@ -3231,10 +3231,10 @@ function EDITOR_onMouseMove_WRAPIT(event) {
 
 function EDITOR_onMouseMoveDetailRankOne(indexLineClicked, indexColumnClicked) {
     // TODO: These two sets the ones to line and column seem redundant weren't these just done by the original EDITOR_onMouseMove_WRAPIT?
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLineClicked;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = indexColumnClicked;
+    int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLineClicked;
+    int_fields[INDEXOF_EDITOR_cursor_indexColumn] = indexColumnClicked;
 
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = EDITOR_getPositionIndex_cursor();
+    int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = EDITOR_getPositionIndex_cursor();
 
     EDITOR_render_request(ENUM_RenderKind_Cursor_flag_doNotScrollIntoView);
 }
@@ -3274,23 +3274,23 @@ function getCharacter(positionIndex) {
 
     let totalShift = 0;
     // If you need to determine the text without finalizing an edit, you DO have to loop forwards right?
-    switch (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind]) {
+    switch (int_fields[INDEXOF_EDITOR_cursor_editKind]) {
         case ENUM_EditKind_InsertLtr:
-            if (positionIndex >= EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] & positionIndex < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] + EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
+            if (positionIndex >= int_fields[INDEXOF_EDITOR_cursor_editPosition] & positionIndex < int_fields[INDEXOF_EDITOR_cursor_editPosition] + int_fields[INDEXOF_EDITOR_cursor_editLength]) {
                 // TODO: I hear fromCharCode is faster than 'String.fromCodePoint(...)' thus I'm seeing if it is sufficient for my current personal usage...
                 // ...long term it presumably fails for characters that I don't tend to type, but until then this is working so I'll just use fromCharCode.
                 //
                 // TODO: This takes a spread/array; if I give it a single byte does it allocate a length of 1 array every invocation?
-                return String.fromCharCode(EDITOR_cursor_gapBuffer[positionIndex - EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]]);
+                return String.fromCharCode(EDITOR_cursor_gapBuffer[positionIndex - int_fields[INDEXOF_EDITOR_cursor_editPosition]]);
             }
-            else if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] <= positionIndex) {
-                totalShift += EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+            else if (int_fields[INDEXOF_EDITOR_cursor_editPosition] <= positionIndex) {
+                totalShift += int_fields[INDEXOF_EDITOR_cursor_editLength];
             }
             break;
         case ENUM_EditKind_DeleteLtr:
         case ENUM_EditKind_BackspaceRtl:
         case ENUM_EditKind_RemoveTextNoBatching:
-            totalShift -= EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+            totalShift -= int_fields[INDEXOF_EDITOR_cursor_editLength];
             break;
     }
     // TODO: I hear fromCharCode is faster than 'String.fromCodePoint(...)' thus I'm seeing if it is sufficient for my current personal usage...
@@ -3355,7 +3355,7 @@ function EDITOR_getCharacterCurrent_KIND(indexColumn, positionIndex, lineEnd) {
 
 function EDITOR_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     let nextPositionIndex = EDITOR_getPositionIndex_Overload(indexLineClicked, indexColumnClicked);
 
@@ -3444,7 +3444,7 @@ function EDITOR_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
 
 function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked) {
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     // TODO: I remember this being bugged I think it makes sense why. You're checking if the cursor is exactly at the threshold rather than determining if the distance from previous event to this one puts you past the threshold.
     if (indexLineClicked === local_EDITOR_int_fields[INDEXOF_EDITOR_detailRank3OriginLine]) {
@@ -3525,7 +3525,7 @@ function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked)
  * @returns 
  */
 function EDITOR_getPositionIndex_cursor() {
-    return EDITOR_getLineStart_pos(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]) + EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+    return EDITOR_getLineStart_pos(int_fields[INDEXOF_EDITOR_cursor_indexLine]) + int_fields[INDEXOF_EDITOR_cursor_indexColumn];
 }
 
 function EDITOR_getPositionIndex_Overload(indexLine, indexColumn) {
@@ -3536,7 +3536,7 @@ function EDITOR_getPositionIndex_Overload(indexLine, indexColumn) {
  * @returns 
  */
 function EDITOR_getPositionIndex_raw_cursor() {
-    return EDITOR_getLineStart_pos_raw(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]) + EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+    return EDITOR_getLineStart_pos_raw(int_fields[INDEXOF_EDITOR_cursor_indexLine]) + int_fields[INDEXOF_EDITOR_cursor_indexColumn];
 }
 
 function EDITOR_onMouseDownDetailRankOne(event_button, event_shiftKey, indexLineClicked, indexColumnClicked) {
@@ -3545,19 +3545,19 @@ function EDITOR_onMouseDownDetailRankOne(event_button, event_shiftKey, indexLine
 
     if (event_shiftKey && !selectionPlusContextMenuCase) {
         if (!EDITOR_cursor_hasSelection()) {
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = EDITOR_getPositionIndex_cursor();
+            int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = EDITOR_getPositionIndex_cursor();
         }
     }
 
     if (!selectionPlusContextMenuCase) {
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLineClicked;
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = indexColumnClicked;
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+        int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLineClicked;
+        int_fields[INDEXOF_EDITOR_cursor_indexColumn] = indexColumnClicked;
+        int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = int_fields[INDEXOF_EDITOR_cursor_indexColumn];
     
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = EDITOR_getPositionIndex_cursor();
+        int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = EDITOR_getPositionIndex_cursor();
 
         if (!event_shiftKey) {
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+            int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
         }
     }
 
@@ -3570,7 +3570,7 @@ function EDITOR_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLine
         return;
     }
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLineClicked;
     local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = indexColumnClicked;
@@ -3685,7 +3685,7 @@ function EDITOR_onMouseDownDetailRankThree(event_button, event_shiftKey, indexLi
         return;
     }
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLineClicked;
     local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = indexColumnClicked;
@@ -3751,7 +3751,7 @@ function EDITOR_insertGapBufferSpan() {
  * @param {*} editLength 
  */
 function EDITOR_startEdit(editKind, editPosition, editLength) {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
     local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] = editKind;
     local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = editPosition;
     local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
@@ -3769,7 +3769,7 @@ function EDITOR_startEdit(editKind, editPosition, editLength) {
  * @returns 
  */
 function EDITOR_NOTcanBatch_insert() {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
     return local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_InsertLtr ||
            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] ||
            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] + local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] ||
@@ -3781,7 +3781,7 @@ function EDITOR_NOTcanBatch_insert() {
  * @returns 
  */
 function EDITOR_NOTcanBatch_enter() {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
     return true || // turn off batching until it works. The initial enter event is what matters everything else can be recreated based on the amount of lineFeeds that were inserted.
            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_Enter ||
            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexLine] ||
@@ -3795,7 +3795,7 @@ function EDITOR_NOTcanBatch_enter() {
  * @returns 
  */
 function EDITOR_NOTcanBatch_backspace() {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
     return local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_BackspaceRtl ||
            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] ||
            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] ||
@@ -3806,7 +3806,7 @@ function EDITOR_NOTcanBatch_backspace() {
  * @returns 
  */
 function EDITOR_NOTcanBatch_delete() {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
     return local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_DeleteLtr ||
            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] ||
            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] ||
@@ -3819,7 +3819,7 @@ function EDITOR_NOTcanBatch_delete() {
 function EDITOR_preKeyboardMovementSelectionLogic(shiftKey) {
     if (shiftKey) {
         if (!EDITOR_cursor_hasSelection()) {
-            let local_EDITOR_int_fields = EDITOR_int_fields;
+            let local_EDITOR_int_fields = int_fields;
             local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = EDITOR_getPositionIndex_cursor();
             local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
             local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorColumn] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
@@ -3827,7 +3827,7 @@ function EDITOR_preKeyboardMovementSelectionLogic(shiftKey) {
     }
     else {
         if (EDITOR_cursor_hasSelection()) {
-            let local_EDITOR_int_fields = EDITOR_int_fields;
+            let local_EDITOR_int_fields = int_fields;
             local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
             local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexEndLine];
             local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorColumn] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexEndColumn];
@@ -3840,7 +3840,7 @@ function EDITOR_preKeyboardMovementSelectionLogic(shiftKey) {
  */
 function EDITOR_postKeyboardMovementSelectionLogic(shiftKey) {
     if (shiftKey) {
-        let local_EDITOR_int_fields = EDITOR_int_fields;
+        let local_EDITOR_int_fields = int_fields;
         local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = EDITOR_getPositionIndex_cursor();
         local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexEndLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
         local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexEndColumn] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
@@ -3851,7 +3851,7 @@ function EDITOR_postKeyboardMovementSelectionLogic(shiftKey) {
  * @param {*} shiftKey 
  */
 function EDITOR_arrowDown(shiftKey) {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
     EDITOR_movementBasedCacheInvalidation();
     EDITOR_preKeyboardMovementSelectionLogic(shiftKey);
     if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] < EDITOR_lineEndPositionList.count - 1) {
@@ -3879,7 +3879,7 @@ function EDITOR_arrowDown(shiftKey) {
  * TODO: I believe this function to be an unoptimized solution, just that there are more pressing matters to attend to.
  */
 function EDITOR_movementBasedCacheInvalidation() {
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_Enter) {
+    if (int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_Enter) {
         //
         // this only happens once even if you have many cursors because the next cursor that enters this function would be and editKind of None.
         //
@@ -3913,8 +3913,8 @@ function EDITOR_editEvent(editKind, event, clipboardContent) {
 
         shouldFinalizeAllCursors = false;
         
-        if ((editKind === ENUM_EditKind_Tab && EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_IndentMore) ||
-            (editKind === ENUM_EditKind_Tab && EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_IndentLess && event.shiftKey)) {
+        if ((editKind === ENUM_EditKind_Tab && int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_IndentMore) ||
+            (editKind === ENUM_EditKind_Tab && int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_IndentLess && event.shiftKey)) {
 
                 // TODO: IndentLess when no selection however shiftTab then it does indentLess even still but I haven't gone out of the way to handle that hack...
                 // ...maybe it'll be covered maybe it won't.
@@ -4014,7 +4014,7 @@ function EDITOR_editEvent(editKind, event, clipboardContent) {
 }
 
 function EDITOR_editEvent_theEditIself_InsertLtr(event) {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
     EDITOR_movementBasedCacheInvalidation();
     if (local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]) {
         local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
@@ -4034,7 +4034,7 @@ function EDITOR_editEvent_theEditIself_InsertLtr(event) {
 }
 
 function EDITOR_editEvent_theEditIself_DeleteLtr(event) {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
     EDITOR_movementBasedCacheInvalidation();
     if (local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]) {
         local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
@@ -4055,7 +4055,7 @@ function EDITOR_editEvent_theEditIself_DeleteLtr(event) {
 }
 
 function EDITOR_editEvent_theEditIself_BackspaceRtl(event) {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
     EDITOR_movementBasedCacheInvalidation();
     if (local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]) {
         local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
@@ -4080,13 +4080,13 @@ function EDITOR_editEvent_theEditIself_Tab(event) {
     EDITOR_movementBasedCacheInvalidation();
     if (EDITOR_cursor_hasSelection()) {
         if (event.shiftKey) {
-            if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_IndentLess) {
+            if (int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_IndentLess) {
                 EDITOR_startEdit(ENUM_EditKind_IndentLess, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
             }
             EDITOR_indentLess();
         }
         else {
-            if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_IndentMore) {
+            if (int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_IndentMore) {
                 EDITOR_startEdit(ENUM_EditKind_IndentMore, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
             }
             EDITOR_indentMore();
@@ -4098,14 +4098,14 @@ function EDITOR_editEvent_theEditIself_Tab(event) {
             // ...multi-cursor in and of itself is buggy that's why I'm not overly concerned with adding this in a bugged state...
             // ...everything is buggy and it is very anxiety inducing and for the time being I guess it just has to be that way as I transition
             // towards a useable editor all the features are coming together but there's this awkward phase of "I can start using it but also not really" or something I just idk.
-            EDITOR_onMouseDownDetailRankThree(0, false, EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine], EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]);
-            if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_IndentLess) {
+            EDITOR_onMouseDownDetailRankThree(0, false, int_fields[INDEXOF_EDITOR_cursor_indexLine], int_fields[INDEXOF_EDITOR_cursor_indexColumn]);
+            if (int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_IndentLess) {
                 EDITOR_startEdit(ENUM_EditKind_IndentLess, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
             }
             EDITOR_indentLess();
         }
         else {
-            if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Tab) {
+            if (int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Tab) {
                 EDITOR_startEdit(ENUM_EditKind_Tab, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
             }
             EDITOR_tabKey();
@@ -4115,30 +4115,30 @@ function EDITOR_editEvent_theEditIself_Tab(event) {
 }
 
 function EDITOR_editEvent_theEditIself_Enter(event) {
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Enter) {
+    if (int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Enter) {
         EDITOR_startEdit(ENUM_EditKind_Enter, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
     }
     EDITOR_EnterKey(event.ctrlKey, event.shiftKey);
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+    int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = int_fields[INDEXOF_EDITOR_cursor_indexColumn];
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
-    //EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] = EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] + 1;
+    //int_fields[INDEXOF_EDITOR_offsetLine] = int_fields[INDEXOF_EDITOR_offsetLine] + 1;
 }
 
 function EDITOR_editEvent_theEditIself_Paste(clipboardContent) {
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Enter) {
+    if (int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Enter) {
         EDITOR_startEdit(ENUM_EditKind_Paste, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
     }
     EDITOR_paste(clipboardContent);
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+    int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = int_fields[INDEXOF_EDITOR_cursor_indexColumn];
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
 }
 
 function EDITOR_editEvent_theEditIself_Duplicate() {
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Duplicate) {
+    if (int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Duplicate) {
         EDITOR_startEdit(ENUM_EditKind_Duplicate, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
     }
     EDITOR_duplicateSelection();
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+    int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = int_fields[INDEXOF_EDITOR_cursor_indexColumn];
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
 }
 
@@ -4180,8 +4180,8 @@ function EDITOR_editEvent_checkFor_NOTcanBatch_Tab(event) {
             return EDITOR_editEvent_checkFor_NOTcanBatch_IndentLess();
         }
         else {
-            if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] === EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] &&
-                EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] + (4 * EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) === EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]) {
+            if (int_fields[INDEXOF_EDITOR_cursor_editIndexLine] === int_fields[INDEXOF_EDITOR_cursor_indexLine] &&
+                int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] + (4 * int_fields[INDEXOF_EDITOR_cursor_editLength]) === int_fields[INDEXOF_EDITOR_cursor_indexColumn]) {
                     return false;
             }
         }
@@ -4197,20 +4197,20 @@ function EDITOR_editEvent_checkFor_NOTcanBatch_Tab(event) {
  * 
  */
 function EDITOR_editEvent_checkFor_NOTcanBatch_IndentMore() {
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_IndentLess) {
+    if (int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_IndentLess) {
         return true;
     }
     
     /////
     let SMALL_pos;
     let LARGE_pos;
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
-        SMALL_pos = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
-        LARGE_pos = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+    if (int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
+        SMALL_pos = int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+        LARGE_pos = int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
     }
     else {
-        SMALL_pos = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
-        LARGE_pos = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+        SMALL_pos = int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+        LARGE_pos = int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
     }
     let SMALL_lineAndColumnIndices = EDITOR_getLineAndColumnIndices(SMALL_pos);
     let LARGE_lineAndColumnIndices = EDITOR_getLineAndColumnIndices(LARGE_pos);
@@ -4231,8 +4231,8 @@ function EDITOR_editEvent_checkFor_NOTcanBatch_IndentMore() {
     // TODO: '..._EDITOR_indent_ORIGINAL_indentBy()' is no longer in use
 
     // # Determine the total count of text that will be inserted, prior to actually beginning the edit.
-    if (EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] === SMALL_lineAndColumnIndices.indexLine &&
-        EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex] === startingIndex) {
+    if (int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] === SMALL_lineAndColumnIndices.indexLine &&
+        int_fields[INDEXOF_EDITOR_indent_startingIndex] === startingIndex) {
 
             return false;
     }
@@ -4248,7 +4248,7 @@ function EDITOR_editEvent_checkFor_NOTcanBatch_IndentMore() {
  * 
  */
 function EDITOR_editEvent_checkFor_NOTcanBatch_IndentLess() {
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_IndentMore) {
+    if (int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_IndentMore) {
         return true;
     }
     
@@ -4256,13 +4256,13 @@ function EDITOR_editEvent_checkFor_NOTcanBatch_IndentLess() {
     // selection positions
     let SMALL_pos;
     let LARGE_pos;
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
-        SMALL_pos = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
-        LARGE_pos = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+    if (int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
+        SMALL_pos = int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+        LARGE_pos = int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
     }
     else {
-        SMALL_pos = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
-        LARGE_pos = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+        SMALL_pos = int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+        LARGE_pos = int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
     }
     let SMALL_lineAndColumnIndices = EDITOR_getLineAndColumnIndices_raw(SMALL_pos);
     let LARGE_lineAndColumnIndices = EDITOR_getLineAndColumnIndices_raw(LARGE_pos);
@@ -4281,8 +4281,8 @@ function EDITOR_editEvent_checkFor_NOTcanBatch_IndentLess() {
     }
 
     // # Determine the total count of text that will be inserted, prior to actually beginning the edit.
-    if (EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] === SMALL_lineAndColumnIndices.indexLine &&
-        EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex] === startingIndex) {
+    if (int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] === SMALL_lineAndColumnIndices.indexLine &&
+        int_fields[INDEXOF_EDITOR_indent_startingIndex] === startingIndex) {
 
             return false;
     }
@@ -4396,7 +4396,7 @@ hmmm is google AI just hyping me up... I need to clarify that those few conditio
  */
 function EDITOR_onKeyDown(event) {
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     // Explicitly inlining 'clearMulticursorState()' because it currently is and I just don't want to make a decision about this right now.
     // So what I can do is mark the code paragraph for later decision making.
@@ -4484,7 +4484,7 @@ function EDITOR_onKeyDown_ArrowLeft(event) {
 
     EDITOR_movementBasedCacheInvalidation();
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     if (local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]) {
         local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
@@ -4551,7 +4551,7 @@ function EDITOR_onKeyDown_ArrowDown(event) {
     event.stopPropagation();
     if (event.ctrlKey) {
         // TODO: raf or something this scrollBy?
-        EDITOR_baseElement.scrollBy(0, EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]);
+        EDITOR_baseElement.scrollBy(0, int_fields[INDEXOF_EDITOR_lineHeight]);
     }
     else {
         EDITOR_arrowDown(/*shiftKey*/ event.shiftKey);
@@ -4569,19 +4569,19 @@ function EDITOR_onKeyDown_ArrowUp(event) {
     event.stopPropagation();
     if (event.ctrlKey) {
         // TODO: raf or something this scrollBy?
-        EDITOR_baseElement.scrollBy(0, -1 * EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]);
+        EDITOR_baseElement.scrollBy(0, -1 * int_fields[INDEXOF_EDITOR_lineHeight]);
     }
     else {
         EDITOR_movementBasedCacheInvalidation();
         EDITOR_preKeyboardMovementSelectionLogic(event.shiftKey);
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] > 0) {
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]--;
-            let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
-            if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] > lastValidIndexColumn) {
-                EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = lastValidIndexColumn;
+        if (int_fields[INDEXOF_EDITOR_cursor_indexLine] > 0) {
+            int_fields[INDEXOF_EDITOR_cursor_indexLine]--;
+            let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+            if (int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] > lastValidIndexColumn) {
+                int_fields[INDEXOF_EDITOR_cursor_indexColumn] = lastValidIndexColumn;
             }
             else {
-                EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn];
+                int_fields[INDEXOF_EDITOR_cursor_indexColumn] = int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn];
             }
         }
         EDITOR_postKeyboardMovementSelectionLogic(event.shiftKey);
@@ -4599,7 +4599,7 @@ function EDITOR_onKeyDown_ArrowRight(event) {
 
     EDITOR_movementBasedCacheInvalidation();
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     if (local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]) {
         local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
@@ -4669,20 +4669,20 @@ function EDITOR_onKeyDown_Home(event) {
     EDITOR_movementBasedCacheInvalidation();
     EDITOR_preKeyboardMovementSelectionLogic(event.shiftKey);
     if (event.ctrlKey) {
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = 0;
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
+        int_fields[INDEXOF_EDITOR_cursor_indexLine] = 0;
+        int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
     }
     else {
         let endExclusiveIndentationIndexColumn = EDITOR_findEndExclusiveIndentationIndexColumn();
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] == endExclusiveIndentationIndexColumn) {
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
+        if (int_fields[INDEXOF_EDITOR_cursor_indexColumn] == endExclusiveIndentationIndexColumn) {
+            int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
         }
         else {
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = endExclusiveIndentationIndexColumn;
+            int_fields[INDEXOF_EDITOR_cursor_indexColumn] = endExclusiveIndentationIndexColumn;
         }
     }
     EDITOR_postKeyboardMovementSelectionLogic(event.shiftKey);
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+    int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = int_fields[INDEXOF_EDITOR_cursor_indexColumn];
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
         EDITOR_cursorBlink_startChecking();
@@ -4698,11 +4698,11 @@ function EDITOR_onKeyDown_End(event) {
     EDITOR_movementBasedCacheInvalidation();
     EDITOR_preKeyboardMovementSelectionLogic(event.shiftKey);
     if (event.ctrlKey) {
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = EDITOR_lineEndPositionList.count - 1;
+        int_fields[INDEXOF_EDITOR_cursor_indexLine] = EDITOR_lineEndPositionList.count - 1;
     }
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = EDITOR_getLastValidIndexColumn(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+    int_fields[INDEXOF_EDITOR_cursor_indexColumn] = EDITOR_getLastValidIndexColumn(int_fields[INDEXOF_EDITOR_cursor_indexLine]);
     EDITOR_postKeyboardMovementSelectionLogic(event.shiftKey);
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+    int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = int_fields[INDEXOF_EDITOR_cursor_indexColumn];
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
         EDITOR_cursorBlink_startChecking();
@@ -4714,18 +4714,18 @@ function EDITOR_onKeyDown_PageDown(event) {
     event.stopPropagation();
 
     if (event.ctrlKey) {
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
-        if (EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] > 1) {
+        int_fields[INDEXOF_EDITOR_cursor_indexLine] = int_fields[INDEXOF_EDITOR_virtualIndexLine] + int_fields[INDEXOF_EDITOR_virtualCount];
+        if (int_fields[INDEXOF_EDITOR_virtualCount] > 1) {
             // this seems to more commonly have the cursor staying within the viewport rather than overlapping outside.
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]--;
+            int_fields[INDEXOF_EDITOR_cursor_indexLine]--;
         }
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] >= EDITOR_lineEndPositionList.count) {
+        if (int_fields[INDEXOF_EDITOR_cursor_indexLine] >= EDITOR_lineEndPositionList.count) {
             // TODO: You can't delete EOF can you? i.e.: cursor final position of file then delete?
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = EDITOR_lineEndPositionList.count - 1;
+            int_fields[INDEXOF_EDITOR_cursor_indexLine] = EDITOR_lineEndPositionList.count - 1;
         }
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
+        int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
         // TODO: allow someone to select via this keybind, but for now it causes a bad selection if you { 'Ctrl' + 'a' } then use it so I'm clearing any active selection here for now.
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+        int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
         EDITOR_render_request(ENUM_RenderKind_Cursor_n);
         if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
             EDITOR_cursorBlink_startChecking();
@@ -4737,18 +4737,18 @@ function EDITOR_onKeyDown_PageUp(event) {
     event.stopPropagation();
 
     if (event.ctrlKey) {        
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
-        if (EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] > 1) {
+        int_fields[INDEXOF_EDITOR_cursor_indexLine] = int_fields[INDEXOF_EDITOR_virtualIndexLine];
+        if (int_fields[INDEXOF_EDITOR_virtualCount] > 1) {
             // this seems to more commonly have the cursor staying within the viewport rather than overlapping outside.
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]++;
+            int_fields[INDEXOF_EDITOR_cursor_indexLine]++;
         }
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] >= EDITOR_lineEndPositionList.count) {
+        if (int_fields[INDEXOF_EDITOR_cursor_indexLine] >= EDITOR_lineEndPositionList.count) {
             // TODO: You can't delete EOF can you? i.e.: cursor final position of file then delete?
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = EDITOR_lineEndPositionList.count - 1;
+            int_fields[INDEXOF_EDITOR_cursor_indexLine] = EDITOR_lineEndPositionList.count - 1;
         }
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
+        int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
         // TODO: allow someone to select via this keybind, but for now it causes a bad selection if you { 'Ctrl' + 'a' } then use it so I'm clearing any active selection here for now.
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+        int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
         EDITOR_render_request(ENUM_RenderKind_Cursor_n);
         if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
             EDITOR_cursorBlink_startChecking();
@@ -4828,11 +4828,11 @@ async function EDITOR_onKeyDown_keyLengthEqualsOne_ctrlKey(event) {
             event.stopPropagation();
 
             EDITOR_finalizeAllCursors(); // TODO: Multicursor bad
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = 0;
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = EDITOR_textByteList.count;
-            let selectionEndLineAndColumnIndices = EDITOR_getLineAndColumnIndices(EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]);
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = selectionEndLineAndColumnIndices.indexLine;
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = selectionEndLineAndColumnIndices.indexColumn;
+            int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = 0;
+            int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = EDITOR_textByteList.count;
+            let selectionEndLineAndColumnIndices = EDITOR_getLineAndColumnIndices(int_fields[INDEXOF_EDITOR_cursor_selectionEnd]);
+            int_fields[INDEXOF_EDITOR_cursor_indexLine] = selectionEndLineAndColumnIndices.indexLine;
+            int_fields[INDEXOF_EDITOR_cursor_indexColumn] = selectionEndLineAndColumnIndices.indexColumn;
             EDITOR_render_request(ENUM_RenderKind_Cursor_flag_doNotScrollIntoView);
             break;
         case 'f':
@@ -4864,13 +4864,13 @@ function EDITOR_onMouseDown(event) {
     EDITOR_movementBasedCacheInvalidation();
     
     // TODO: You might want to do this inside 'EDITOR_finalizeAllCursors_andClearNonPrimaryCursors();' at the end... I'm not sure.
-    EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] = 0;
+    int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
+    int_fields[INDEXOF_EDITOR_offsetLine] = 0;
 
     if (get_EDITOR_recentBoundingClientRect_isNull_intFalsey()) {
         let boundingClientRect = EDITOR_baseElement.getBoundingClientRect();
-        EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] = boundingClientRect.left;
-        EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] = boundingClientRect.top;
+        int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] = boundingClientRect.left;
+        int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] = boundingClientRect.top;
         set_EDITOR_recentBoundingClientRect_isNull_intFalsey(0);
     }
 
@@ -4879,10 +4879,10 @@ function EDITOR_onMouseDown(event) {
         EDITOR_baseElement.addEventListener('mousemove', EDITOR_onMouseMove_WRAPIT);
     }
 
-    let rY = event.clientY - EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] + EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
-    let rX = event.clientX - EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] + lastReadNumber_scrollLeft;
+    let rY = event.clientY - int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] + int_fields[INDEXOF_lastReadNumber_scrollTop];
+    let rX = event.clientX - int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] - int_fields[INDEXOF_EDITOR_gutterWidthTotal] + lastReadNumber_scrollLeft;
     
-    let indexLine = Math.floor(rY / EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]);
+    let indexLine = Math.floor(rY / int_fields[INDEXOF_EDITOR_lineHeight]);
     let indexColumn = Math.round(rX / EDITOR_characterWidth);
 
     if (indexLine < 0) {
@@ -4937,8 +4937,8 @@ function EDITOR_onContextMenu() {
         new MenuOption(ENUM_CommandKind_Find, 'Find', null),
     ];
 
-    let menuLeft = EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] + EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] + EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] - lastReadNumber_scrollLeft;
-    let menuTop = EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] + EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] + EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] - EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
+    let menuLeft = int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] + int_fields[INDEXOF_EDITOR_gutterWidthTotal] + int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] - lastReadNumber_scrollLeft;
+    let menuTop = int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] + int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] + int_fields[INDEXOF_EDITOR_lineHeight] - int_fields[INDEXOF_lastReadNumber_scrollTop];
 
     return menuSet('EDITOR', null, optionList, menuLeft, menuTop);
 }
@@ -4981,11 +4981,11 @@ function EDITOR_findOverlay_doSearch() {
     let nextMatchPos;
 
     if (EDITOR_cursor_hasSelection()) {
-        let small = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
-        let large = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] > EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
-            small = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
-            large = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+        let small = int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+        let large = int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+        if (int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] > int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
+            small = int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+            large = int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
         }
         nextMatchPos = small;
     }
@@ -5186,8 +5186,8 @@ function EDITOR_findOverlay_showSetter(showValue) {
         
         if (EDITOR_cursor_hasSelection()) {
         	EDITOR_finalizeAllCursors();
-            let selectionAnchor = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
-            let selectionEnd = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+            let selectionAnchor = int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+            let selectionEnd = int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
             let small;
             let large;
             if (selectionAnchor < selectionEnd) {
@@ -5302,7 +5302,7 @@ function EDITOR_btnNext_onclick() {
 
 function EDITOR_render_do_IndentMore() {
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     // When you're done with IndentLess batch editing correctly.
     // You still need to come back to the render for
@@ -5408,13 +5408,13 @@ function EDITOR_indentMore() {
     // # Small and large selection positions
     let SMALL_pos;
     let LARGE_pos;
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
-        SMALL_pos = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
-        LARGE_pos = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+    if (int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
+        SMALL_pos = int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+        LARGE_pos = int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
     }
     else {
-        SMALL_pos = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
-        LARGE_pos = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+        SMALL_pos = int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+        LARGE_pos = int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
     }
     let SMALL_lineAndColumnIndices = EDITOR_getLineAndColumnIndices_raw(SMALL_pos);
     let LARGE_lineAndColumnIndices = EDITOR_getLineAndColumnIndices_raw(LARGE_pos);
@@ -5432,42 +5432,42 @@ function EDITOR_indentMore() {
         return;
     }
 
-    EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] = SMALL_lineAndColumnIndices.indexLine;
-    EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex] = startingIndex;
+    int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] = SMALL_lineAndColumnIndices.indexLine;
+    int_fields[INDEXOF_EDITOR_indent_startingIndex] = startingIndex;
 
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] === 0) {
+    if (int_fields[INDEXOF_EDITOR_cursor_editLength] === 0) {
         EDITOR_indentLess_startingLinePos_end = startingLinePos.end;
     } 
 
     //// # Update the cursor's selection to reflect the inserted text
-    //if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
-    //    EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] += ORIGINAL_incrementBy;
+    //if (int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
+    //    int_fields[INDEXOF_EDITOR_cursor_selectionEnd] += ORIGINAL_incrementBy;
     //}
     //else {
-    //    EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] += ORIGINAL_incrementBy;
+    //    int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] += ORIGINAL_incrementBy;
     //}
 
     // # Update the cursor's indexColumn to reflect the inserted text
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] += 4;
+    int_fields[INDEXOF_EDITOR_cursor_indexColumn] += 4;
 
     //// # Update the cursor's selection to reflect the inserted text
     //let smallLinePos = EDITOR_getLineBoundaryPositions(SMALL_lineAndColumnIndices.indexLine);
     //if (SMALL_pos > smallLinePos.start) {
-    //    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
-    //        EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] += 4;
+    //    if (int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
+    //        int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] += 4;
     //    }
     //    else {
-    //        EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] += 4;
+    //        int_fields[INDEXOF_EDITOR_cursor_selectionEnd] += 4;
     //    }
     //}
 
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
+    int_fields[INDEXOF_EDITOR_cursor_editLength]++;
     EDITOR_render_request(ENUM_RenderKind_IndentMore);
 }
 
 function EDITOR_render_do_IndentLess() {
     
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     let startingIndex = local_EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex] = startingIndex;
     let SMALL_lineAndColumnIndices_indexLine = local_EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine];
@@ -5592,13 +5592,13 @@ function EDITOR_indentLess() {
     // selection positions
     let SMALL_pos;
     let LARGE_pos;
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
-        SMALL_pos = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
-        LARGE_pos = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+    if (int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
+        SMALL_pos = int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+        LARGE_pos = int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
     }
     else {
-        SMALL_pos = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
-        LARGE_pos = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+        SMALL_pos = int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+        LARGE_pos = int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
     }
     let SMALL_lineAndColumnIndices = EDITOR_getLineAndColumnIndices(SMALL_pos);
     let LARGE_lineAndColumnIndices = EDITOR_getLineAndColumnIndices(LARGE_pos);
@@ -5616,24 +5616,24 @@ function EDITOR_indentLess() {
         return;
     }
 
-    EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] = SMALL_lineAndColumnIndices.indexLine;
-    EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex] = startingIndex;
+    int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] = SMALL_lineAndColumnIndices.indexLine;
+    int_fields[INDEXOF_EDITOR_indent_startingIndex] = startingIndex;
 
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] === 0) {
+    if (int_fields[INDEXOF_EDITOR_cursor_editLength] === 0) {
         EDITOR_indentLess_startingLinePos_end = startingLinePos.end;
     }
 
     // TODO: Some kind of "fake" selection somehow because you really only need to modify the top-left most selection and the bottom-right most selection.
     // Then when you perhaps hit 'ctrl + c' to copy. You'd need to finalize the edit then and there so you copy the text correctly.
     //
-    //if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
-    //    EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] -= ORIGINAL_decrementBy;
+    //if (int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
+    //    int_fields[INDEXOF_EDITOR_cursor_selectionEnd] -= ORIGINAL_decrementBy;
     //}
     //else {
-    //    EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] -= ORIGINAL_decrementBy;
+    //    int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] -= ORIGINAL_decrementBy;
     //}
 
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
+    int_fields[INDEXOF_EDITOR_cursor_editLength]++;
     EDITOR_render_request(ENUM_RenderKind_IndentLess);
 }
 
@@ -5643,10 +5643,10 @@ function EDITOR_indentLess() {
 async function EDITOR_copySelection() {
 	if (!EDITOR_cursor_hasSelection()) {
 		// TODO: This code has a bug and doesn't work with multicursor... EDITOR_onMouseDownDetailRankThree needs to accept a cursor rather than acting on EDITOR_primaryCursor
-    	EDITOR_onMouseDownDetailRankThree(0, false, EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine], EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]);
+    	EDITOR_onMouseDownDetailRankThree(0, false, int_fields[INDEXOF_EDITOR_cursor_indexLine], int_fields[INDEXOF_EDITOR_cursor_indexColumn]);
 	}
-	let selectionAnchor = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
-    let selectionEnd = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+	let selectionAnchor = int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+    let selectionEnd = int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
     let small;
     let large;
     if (selectionAnchor < selectionEnd) {
@@ -5665,7 +5665,7 @@ async function EDITOR_copySelection() {
  */
 async function EDITOR_duplicateSelection() {
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
 	if (!EDITOR_cursor_hasSelection()) {
 		// TODO: This code has a bug and doesn't work with multicursor... EDITOR_onMouseDownDetailRankThree needs to accept a cursor rather than acting on EDITOR_primaryCursor...
@@ -5709,7 +5709,7 @@ async function EDITOR_duplicateSelection() {
 
 function EDITOR_render_do_DuplicateOrPaste() {
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     // Word
     // Tab
@@ -6090,7 +6090,7 @@ function EDITOR_render_do_DuplicateOrPaste() {
 function EDITOR_paste(content) {
     let positionIndex = EDITOR_getPositionIndex_cursor();
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = positionIndex;
     local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
@@ -6264,7 +6264,7 @@ function EDITOR_duplicate_and_paste_handleNotHasSeenLinefeed(hasSeenLinefeed, or
             if (original_indexColumn_SpanTextContentRelative >= 2 && (original_indexColumn_SpanTextContentRelative <= original_span_textContent_length - 2)) {
                 w_span.className = 'eCM';
                 let indexOfGreaterThanOrEqual = EDITOR_trackedSyntaxReposition_find(indexPosition);
-                EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_Comment, indexPosition - EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] + w_indexColumn_Sum, original_span_textContent_length);
+                EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_Comment, indexPosition - int_fields[INDEXOF_EDITOR_cursor_indexColumn] + w_indexColumn_Sum, original_span_textContent_length);
                 return true;
             }
             return false;
@@ -6274,7 +6274,7 @@ function EDITOR_duplicate_and_paste_handleNotHasSeenLinefeed(hasSeenLinefeed, or
             if (original_indexColumn_SpanTextContentRelative >= 1 && (original_indexColumn_SpanTextContentRelative <= original_span_textContent_length - 1)) {
                 w_span.className = 'eSM';
                 let indexOfGreaterThanOrEqual = EDITOR_trackedSyntaxReposition_find(indexPosition);
-                EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_String, indexPosition - EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] + w_indexColumn_Sum, original_span_textContent_length);
+                EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_String, indexPosition - int_fields[INDEXOF_EDITOR_cursor_indexColumn] + w_indexColumn_Sum, original_span_textContent_length);
                 return true;
             }
             return false;
@@ -6286,12 +6286,12 @@ function EDITOR_duplicate_and_paste_handleNotHasSeenLinefeed(hasSeenLinefeed, or
 }
 
 function EDITOR_render_do_TabKey() {
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Tab) {
+    if (int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Tab) {
         return;
     }
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] || EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_Tab) {
+    if (int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < int_fields[INDEXOF_EDITOR_cursor_editLength] || int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_Tab) {
 
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] -= 4; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
+        int_fields[INDEXOF_EDITOR_cursor_indexColumn] -= 4; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
 
         walkLineUntilIndexColumn();
 
@@ -6311,21 +6311,21 @@ function EDITOR_render_do_TabKey() {
             EDITOR_on_tab_string +
             w_span.textContent.slice(w_indexColumn_SpanTextContentRelative);
 
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] += 4; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
+        int_fields[INDEXOF_EDITOR_cursor_indexColumn] += 4; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
     }
 }
 
 function EDITOR_tabKey() {
 
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] === 0) {
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = EDITOR_getPositionIndex_cursor();
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+    if (int_fields[INDEXOF_EDITOR_cursor_editLength] === 0) {
+        int_fields[INDEXOF_EDITOR_cursor_editPosition] = EDITOR_getPositionIndex_cursor();
+        int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = int_fields[INDEXOF_EDITOR_cursor_indexLine];
+        int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = int_fields[INDEXOF_EDITOR_cursor_indexColumn];
     }
 
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
+    int_fields[INDEXOF_EDITOR_cursor_editLength]++;
 
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] += 4; // this has to come after the 'walkLineUntilIndexColumn' invocation.
+    int_fields[INDEXOF_EDITOR_cursor_indexColumn] += 4; // this has to come after the 'walkLineUntilIndexColumn' invocation.
 
     EDITOR_render_request(ENUM_RenderKind_TabKey);
 }
@@ -6334,8 +6334,8 @@ function EDITOR_tabKey() {
  * @returns the COLUMN index that exclusively ends the indentation.
  */
 function EDITOR_findEndExclusiveIndentationIndexColumn() {
-    let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
-    let line = EDITOR_getLineBoundaryPositions(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+    let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+    let line = EDITOR_getLineBoundaryPositions(int_fields[INDEXOF_EDITOR_cursor_indexLine]);
 
     for (var i = 0; i < lastValidIndexColumn; i++) {
         let c = getCharacter(line.start + i);
@@ -6364,13 +6364,13 @@ function EDITOR_cacheIndentation() {
     EDITOR_cursor_enterKey_newLinePlusIndentation_byteList = new ByteList(32);
     EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.insert(EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.count, CONST_EDITOR_ASCII_LINE_FEED);
     let indentationBuilder = [];
-    let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
-    let line = EDITOR_getLineBoundaryPositions(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+    let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+    let line = EDITOR_getLineBoundaryPositions(int_fields[INDEXOF_EDITOR_cursor_indexLine]);
 
     let upperLimitIndexColumn;
 
-    if (lastValidIndexColumn > EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]) {
-        upperLimitIndexColumn = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+    if (lastValidIndexColumn > int_fields[INDEXOF_EDITOR_cursor_indexColumn]) {
+        upperLimitIndexColumn = int_fields[INDEXOF_EDITOR_cursor_indexColumn];
     }
     else {
         upperLimitIndexColumn = lastValidIndexColumn;
@@ -6405,7 +6405,7 @@ function EDITOR_lineWasInsertedValidateGutter() {
     //     - [ ] 'break' when you start moving '~' lines to '~' lines.
     //     - [ ] When you move from 'existing lines of text' to '~' lines, you need to set the line number of that '~' line.
     // 
-    //if (cached_EDITOR_gutter.children.length > 0 && cached_EDITOR_gutter.children.length === EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]) {
+    //if (cached_EDITOR_gutter.children.length > 0 && cached_EDITOR_gutter.children.length === int_fields[INDEXOF_EDITOR_virtualCount]) {
     //    if (cached_EDITOR_gutter.children[cached_EDITOR_gutter.children.length - 1].textContent === '~') {
     //        let successFoundTildeAtIndex = cached_EDITOR_gutter.children.length - 1;
     //        for (let i = cached_EDITOR_gutter.children.length - 2; i >= 0; i--) {
@@ -6449,7 +6449,7 @@ function EDITOR_lineWasInsertedValidateGutter() {
  * @param {*} insertionCount 
  */
 function EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(indexPosition, insertionCount) {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
     for (var i = 0; i < EDITOR_trackedSyntaxList.count_abstract; i++) {
         EDITOR_trackedSyntaxList.getElementAt(i);
         if (indexPosition <= local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start]) {
@@ -6463,7 +6463,7 @@ function EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(indexPosition,
 
 function EDITOR_render_do_EnterKey() {
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     update_verticalVirtualizationBoundary();
 
@@ -6669,7 +6669,7 @@ function EDITOR_render_do_EnterKey() {
  * @returns 
  * 
  * The batching logic is a pattern of (for this function):
- *     if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] === 0) {...}
+ *     if (int_fields[INDEXOF_EDITOR_cursor_editLength] === 0) {...}
  * 
  * 3 cases:
  * - "start of line":
@@ -6680,46 +6680,46 @@ function EDITOR_EnterKey(ctrlKey, shiftKey) {
     if (!EDITOR_cursor_enterKey_newLinePlusIndentation_byteList)
         EDITOR_cacheIndentation();
 
-    if (ctrlKey) EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
-    else if (shiftKey) EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = EDITOR_getLastValidIndexColumn(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+    if (ctrlKey) int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
+    else if (shiftKey) int_fields[INDEXOF_EDITOR_cursor_indexColumn] = EDITOR_getLastValidIndexColumn(int_fields[INDEXOF_EDITOR_cursor_indexLine]);
 
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] === 0) {
+    if (int_fields[INDEXOF_EDITOR_cursor_editLength] === 0) {
 
         EDITOR_cursor_enterKeyEventKind = ENUM_EnterKeyEventKind_None;
 
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = EDITOR_getPositionIndex_raw_cursor();
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+        int_fields[INDEXOF_EDITOR_cursor_editPosition] = EDITOR_getPositionIndex_raw_cursor();
+        int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = int_fields[INDEXOF_EDITOR_cursor_indexLine];
+        int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = int_fields[INDEXOF_EDITOR_cursor_indexColumn];
     }
 
     let insertionCount = EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.count;
     
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] === 0) { // start of line
+    if (int_fields[INDEXOF_EDITOR_cursor_indexColumn] === 0) { // start of line
         if (EDITOR_cursor_enterKeyEventKind === 0) {
             EDITOR_cursor_enterKeyEventKind = ENUM_EnterKeyEventKind_StartOfLine;
         }
 
         if (!ctrlKey)
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]++;
+            int_fields[INDEXOF_EDITOR_cursor_indexLine]++;
     }
     else {
-        let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+        let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(int_fields[INDEXOF_EDITOR_cursor_indexLine]);
 
         if (EDITOR_cursor_enterKeyEventKind === 0) {
-            EDITOR_cursor_enterKeyEventKind = lastValidIndexColumn === EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]
+            EDITOR_cursor_enterKeyEventKind = lastValidIndexColumn === int_fields[INDEXOF_EDITOR_cursor_indexColumn]
                 ? ENUM_EnterKeyEventKind_EndOfLine
                 : ENUM_EnterKeyEventKind_AmongALine;
         }
         
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]++;
+        int_fields[INDEXOF_EDITOR_cursor_indexLine]++;
     }
 
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = insertionCount - 1;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] += insertionCount;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount]++;
+    int_fields[INDEXOF_EDITOR_cursor_indexColumn] = insertionCount - 1;
+    int_fields[INDEXOF_EDITOR_cursor_editLength] += insertionCount;
+    int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount]++;
 
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+    int_fields[INDEXOF_EDITOR_cursor_END_editIndexLine] = int_fields[INDEXOF_EDITOR_cursor_indexLine];
+    int_fields[INDEXOF_EDITOR_cursor_END_editIndexColumn] = int_fields[INDEXOF_EDITOR_cursor_indexColumn];
 
     EDITOR_render_request(ENUM_RenderKind_Enter);
 }
@@ -6761,8 +6761,8 @@ function EDITOR_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, i
 function EDITOR_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last, smallestBeltIndexLineToReceive, distance, local_virtualIndexLine, local_virtualCount) {
 
     // TODO: Does 'coalesce assignment' exist, and is it equivalent?
-    if (!local_virtualIndexLine) local_virtualIndexLine = EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
-    if (!local_virtualCount) local_virtualCount = EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+    if (!local_virtualIndexLine) local_virtualIndexLine = int_fields[INDEXOF_EDITOR_virtualIndexLine];
+    if (!local_virtualCount) local_virtualCount = int_fields[INDEXOF_EDITOR_virtualCount];
 
     // TODO: if smallestBeltIndexLineToReceive < 0 throw an error?
 
@@ -6799,15 +6799,15 @@ function EDITOR_render_do_Resize(timestamp) {
 
     EDITOR_measureBaseElement();
 
-    let remember_virtualCount = EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+    let remember_virtualCount = int_fields[INDEXOF_EDITOR_virtualCount];
     update_virtualCount();
-    if (EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] !== remember_virtualCount) {
+    if (int_fields[INDEXOF_EDITOR_virtualCount] !== remember_virtualCount) {
         // why 'update_verticalVirtualizationBoundary' here???
         update_verticalVirtualizationBoundary(EDITOR_lineEndPositionList.count + 1);
 
-        EDITOR_int_fields[INDEXOF_EDITOR_intFalsey_isScrolling] = 0;
+        int_fields[INDEXOF_EDITOR_intFalsey_isScrolling] = 0;
 
-        EDITOR_int_fields[INDEXOF_EDITOR_scrollEndDeadline] = timestamp + 1000;
+        int_fields[INDEXOF_EDITOR_scrollEndDeadline] = timestamp + 1000;
 
         EDITOR_render_do_Scroll(timestamp); //EDITOR_onScroll_WRAPIT();
         // # Redraw cursor selection virtualization
@@ -6950,7 +6950,7 @@ And then I got response of
  */
 function EDITOR_removeSelection() {
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_None) {
         // TODO: multicursor confusion scenario is likely to happy due to this code, but the code isn't related enough for me to change it yet.
@@ -7002,7 +7002,7 @@ function EDITOR_removeSelection() {
 
 function EDITOR_render_do_RemoveSelection() {
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     let smallPosition = EDITOR_RemoveSelection_smallPosition;
     let largePosition = EDITOR_RemoveSelection_largePosition;
@@ -7291,7 +7291,7 @@ comments from EDITOR_removeSelection(cursor) that may or may not be useful idk I
         // Each case might be the same solution I don't know I just need time to think I'm completely exhausted but ima figure it out by just typing everything out and overtime it will happen
         // 
 
-        let beltIndexLine_last = EDITOR_indexLineTo_beltIndexLine(EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1);
+        let beltIndexLine_last = EDITOR_indexLineTo_beltIndexLine(int_fields[INDEXOF_EDITOR_virtualIndexLine] + int_fields[INDEXOF_EDITOR_virtualCount] - 1);
 
         if (cached_EDITOR_textElement.children.length === cached_EDITOR_gutter.children.length) {
             for (let i = 0; i < visibleLinesRemovedCount; i++) {
@@ -7312,9 +7312,9 @@ comments from EDITOR_removeSelection(cursor) that may or may not be useful idk I
     }
 */
 
-/** TODO: this is nearly identical to backspace, the difference is the check 'if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_DeleteLtr)', thus dedupe the logic or no? */
+/** TODO: this is nearly identical to backspace, the difference is the check 'if (int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_DeleteLtr)', thus dedupe the logic or no? */
 function EDITOR_render_do_Delete() {
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_DeleteLtr) {
         return;
@@ -7423,7 +7423,7 @@ function EDITOR_state_do_Delete(event) {
         return;
     }
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     let virtual_cursorIndexLine = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] + local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount];
 
@@ -7514,7 +7514,7 @@ function EDITOR_deleteDo(event) {
 
 function EDITOR_render_do_Backspace() {
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_BackspaceRtl) {
         return;
@@ -7617,7 +7617,7 @@ function EDITOR_state_do_Backspace(event) {
         return;
     }
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
     
     if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] === 0) {
         if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] > 0) {
@@ -7702,29 +7702,29 @@ function EDITOR_insertDo(character) {
     */
     
     /*if (EDITOR_cursor_gapBufferWriteToSpanElement !== EDITOR_offsetWithinSpan_withRespectToThisSpan) {
-        EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] = 0;
+        int_fields[INDEXOF_EDITOR_offsetWithinSpan] = 0;
         EDITOR_offsetWithinSpan_withRespectToThisSpan = EDITOR_cursor_gapBufferWriteToSpanElement;
     }
 
     if (EDITOR_cursor_gapBufferWriteToSpanElement) {
         EDITOR_cursor_gapBufferWriteToSpanElement.textContent = 
-            EDITOR_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]) + EDITOR_int_fields[INDEXOF_EDITOR_cursor_gapBufferCount]) +
+            EDITOR_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + int_fields[INDEXOF_EDITOR_offsetWithinSpan]) + int_fields[INDEXOF_EDITOR_cursor_gapBufferCount]) +
             character +
-            EDITOR_cursor_gapBufferWriteToSpanElement.textContent.slice((EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]) + EDITOR_int_fields[INDEXOF_EDITOR_cursor_gapBufferCount]);
+            EDITOR_cursor_gapBufferWriteToSpanElement.textContent.slice((EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + int_fields[INDEXOF_EDITOR_offsetWithinSpan]) + int_fields[INDEXOF_EDITOR_cursor_gapBufferCount]);
     }*/
 
-    EDITOR_cursor_gapBuffer[EDITOR_int_fields[INDEXOF_EDITOR_cursor_gapBufferCount]] = character.charCodeAt(0);
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_gapBufferCount]++;
+    EDITOR_cursor_gapBuffer[int_fields[INDEXOF_EDITOR_cursor_gapBufferCount]] = character.charCodeAt(0);
+    int_fields[INDEXOF_EDITOR_cursor_gapBufferCount]++;
 
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]++;
+    int_fields[INDEXOF_EDITOR_cursor_editLength]++;
+    int_fields[INDEXOF_EDITOR_cursor_indexColumn]++;
 
-    EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] = EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] + EDITOR_int_fields[INDEXOF_EDITOR_cursor_gapBufferCount];
+    int_fields[INDEXOF_EDITOR_offsetWithinSpan] = int_fields[INDEXOF_EDITOR_offsetWithinSpan] + int_fields[INDEXOF_EDITOR_cursor_gapBufferCount];
 }
 
 function EDITOR_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine() {
 
-    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_int_fields = int_fields;
 
     // binary search for 'if (local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] > positionIndex)'
     let indexTrackedSyntax = EDITOR_drawViewPort_FindTrackedSyntax_StartingIndex(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
@@ -7775,31 +7775,31 @@ function EDITOR_scrollCursorIntoView() {
     let scrollX = 0;
     let scrollY = 0;
 
-    let local_lastReadNumber_scrollTop = EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
+    let local_lastReadNumber_scrollTop = int_fields[INDEXOF_lastReadNumber_scrollTop];
 
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] < local_lastReadNumber_scrollTop) {
-        scrollY = EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] - local_lastReadNumber_scrollTop;
+    if (int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] < local_lastReadNumber_scrollTop) {
+        scrollY = int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] - local_lastReadNumber_scrollTop;
     }
-    else if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] >= local_lastReadNumber_scrollTop + lastReadNumber_offsetHeight) {
+    else if (int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] >= local_lastReadNumber_scrollTop + lastReadNumber_offsetHeight) {
         // I want to use clientHeight but I don't have any logic for no scrollbar thus single page fitting text might bug out and trigger
         // scrollBy over and over.
 
         // make the bottom touch then add lineHeight is probably the algorithm to get a perfect fill maybe do lineHeight * 2 skip an event when spamming arrowDown?
         let currentBottom = local_lastReadNumber_scrollTop + lastReadNumber_offsetHeight;
-        let changeToMakeBottomTouch = EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] - currentBottom;
-        scrollY = changeToMakeBottomTouch + (2 * EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]);
+        let changeToMakeBottomTouch = int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] - currentBottom;
+        scrollY = changeToMakeBottomTouch + (2 * int_fields[INDEXOF_EDITOR_lineHeight]);
     }
 
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] < lastReadNumber_scrollLeft) {
-        scrollX = EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] - lastReadNumber_scrollLeft;
+    if (int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] < lastReadNumber_scrollLeft) {
+        scrollX = int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] - lastReadNumber_scrollLeft;
     }
-    else if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] >= lastReadNumber_scrollLeft + lastReadNumber_offsetWidth) {
+    else if (int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] >= lastReadNumber_scrollLeft + lastReadNumber_offsetWidth) {
         // I want to use clientWidth but I don't have any logic for no scrollbar thus single page fitting text might bug out and trigger
         // scrollBy over and over.
 
         // make the right touch then add characterWidth is probably the algorithm to get a perfect fill maybe do characterWidth * 2 skip an event when spamming arrowRight?
         let currentRight = lastReadNumber_scrollLeft + lastReadNumber_offsetWidth;
-        let changeToMakeRightTouch = EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] - currentRight;
+        let changeToMakeRightTouch = int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] - currentRight;
         scrollX = changeToMakeRightTouch + (4 * EDITOR_characterWidth);
     }
 
@@ -7929,16 +7929,16 @@ function EDITOR_moveCursor_indexLine_indexColumn(indexLine, indexColumn) {
     let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(indexLine);
 
     if (indexColumn > lastValidIndexColumn) {
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = lastValidIndexColumn;
+        int_fields[INDEXOF_EDITOR_cursor_indexColumn] = lastValidIndexColumn;
     }
     else {
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = indexColumn;
+        int_fields[INDEXOF_EDITOR_cursor_indexColumn] = indexColumn;
     }
 
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLine;
+    int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLine;
     
     // TODO: selectionAnchor = selectionEnd; EDITOR_drawCursor(); # being the way to clear a selection should be documented / wrapped by a method for ease of use / readability?
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+    int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
 }
 
@@ -8404,14 +8404,14 @@ function EDITOR_measureLineHeightAndCharacterWidth() {
     measureElement.innerHTML = 'A'.repeat(len);
     let measureElementBoundingClientRect = measureElement.getBoundingClientRect();
     EDITOR_characterWidth = measureElementBoundingClientRect.width / len; // 7.146002258917298
-    EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] = Math.ceil(measureElementBoundingClientRect.height); // 15
+    int_fields[INDEXOF_EDITOR_lineHeight] = Math.ceil(measureElementBoundingClientRect.height); // 15
 
     wrapper.removeChild(measureElement);
     cached_EDITOR_textElement.removeChild(wrapper);
 
     const root = document.documentElement;
     const computedStyles = window.getComputedStyle(root);
-    let teLineHeight = EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] + 'px';
+    let teLineHeight = int_fields[INDEXOF_EDITOR_lineHeight] + 'px';
     let propertyName = '--EDITOR-line-height';
     if (computedStyles.getPropertyValue(propertyName) !== teLineHeight) {
         // avoid layout with if statement
@@ -8595,11 +8595,11 @@ function EDITOR_mouseLeave() {
 }
 
 function EDITOR_requestLspComplete() {
-    window.myAPI.editorCompletionRequest(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine], EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]);
+    window.myAPI.editorCompletionRequest(int_fields[INDEXOF_EDITOR_cursor_indexLine], int_fields[INDEXOF_EDITOR_cursor_indexColumn]);
 }
 
 function EDITOR_doEditorGoToDefinitionRequest() {
-    window.myAPI.editorGoToDefinitionRequest(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine], EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]);
+    window.myAPI.editorGoToDefinitionRequest(int_fields[INDEXOF_EDITOR_cursor_indexLine], int_fields[INDEXOF_EDITOR_cursor_indexColumn]);
 }
 
 function EDITOR_requestLspHover() {
@@ -8613,15 +8613,15 @@ function EDITOR_requestLspHover() {
     ///////////
     if (get_EDITOR_recentBoundingClientRect_isNull_intFalsey()) {
         let boundingClientRect = EDITOR_baseElement.getBoundingClientRect();
-        EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] = boundingClientRect.left;
-        EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] = boundingClientRect.top;
+        int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] = boundingClientRect.left;
+        int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] = boundingClientRect.top;
         set_EDITOR_recentBoundingClientRect_isNull_intFalsey(0);
     }
 
-    let rY = event_clientY - EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] + EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
-    let rX = event_clientX - EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] + lastReadNumber_scrollLeft;
+    let rY = event_clientY - int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] + int_fields[INDEXOF_lastReadNumber_scrollTop];
+    let rX = event_clientX - int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] - int_fields[INDEXOF_EDITOR_gutterWidthTotal] + lastReadNumber_scrollLeft;
     
-    let indexLine = Math.floor(rY / EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]);
+    let indexLine = Math.floor(rY / int_fields[INDEXOF_EDITOR_lineHeight]);
     let indexColumn = Math.round(rX / EDITOR_characterWidth);
 
     if (indexLine < 0) return;
@@ -8775,7 +8775,7 @@ Theprimeagen is the quote. Maybe he said 12 not 13 big deal what a stupid statem
 
 I think about it daily cause of how much I hate what he said
 
-I haven't done anything yet, but I'm now able to hoist the EDITOR_int_fields as a local variable anywhere it is used a lot.
+I haven't done anything yet, but I'm now able to hoist the int_fields as a local variable anywhere it is used a lot.
 
 ====
 

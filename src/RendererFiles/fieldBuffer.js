@@ -166,10 +166,10 @@ const CONST_EDITOR_cursor_GAP_BUFFER_CAPACITY = 32;
 ////////////////////////////
 ////////////////////////////
 
-const EDITOR_int_fields = new Uint32Array(64);
+const int_fields = new Uint32Array(64);
 
 const INDEXOF_EDITOR_lineHeight = 0;
-EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] = 20;
+int_fields[INDEXOF_EDITOR_lineHeight] = 20;
 
 /** The first line of text that you should see shown in the UI given the current scrollTop */
 const INDEXOF_EDITOR_virtualIndexLine = 1;
@@ -180,7 +180,7 @@ const INDEXOF_lastReadNumber_scrollTop = 2;
 const INDEXOF_EDITOR_ONSCROLLvirtualIndexLine = 3;
 //throw new Error('-1');
 // This set used to be -1 to indicate a non existent value, 500 "seems to work" but a proof of it being an equivalent solution has not thoroughly been thought out, only a sort of "yeah that probably works" kinda vibe.
-EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine] = 500;
+int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine] = 500;
 
 /** Also is used from 'EDITOR_render_do_SetText()', and 'EDITOR_render_do_Resize()', not just 'EDITOR_render_do_Scroll()' */
 const INDEXOF_EDITOR_scrollEndDeadline = 4;
@@ -188,7 +188,7 @@ const INDEXOF_EDITOR_scrollEndDeadline = 4;
 const INDEXOF_EDITOR_ONSCROLLscrollTop = 5;
 //throw new Error('-1');
 // This set used to be -1 to indicate a non existent value, 500 "seems to work" but a proof of it being an equivalent solution has not thoroughly been thought out, only a sort of "yeah that probably works" kinda vibe.
-EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop] = 500;
+int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop] = 500;
 
 
 const INDEXOF_EDITOR_virtualCount = 6;
@@ -196,7 +196,7 @@ const INDEXOF_EDITOR_virtualCount = 6;
 const INDEXOF_EDITOR_sum_diffPositive = 7;
 
 const INDEXOF_EDITOR_ONSCROLLvirtualCount = 8;
-EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount] = 0;
+int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount] = 0;
 
 const INDEXOF_EDITOR_sum_diffNegative = 9;
 
@@ -219,7 +219,7 @@ const INDEXOF_EDITOR_detailRank3OriginLine = 14;
  * Whereas the line height is a css variable (and thus could cause layout for the entire application whenever it changes).
  */
 const INDEXOF_EDITOR_gutterWidthStyleValue = 15;
-EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthStyleValue] = 32;
+int_fields[INDEXOF_EDITOR_gutterWidthStyleValue] = 32;
 
 /**
  * This is the sum of the 'INDEXOF_EDITOR_gutterWidthStyleValue()' in addition to paddig
@@ -227,7 +227,7 @@ EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthStyleValue] = 32;
  */
 const INDEXOF_EDITOR_gutterWidthTotal = 16;
 /** WARNING: This will not set 'gutterWidthTotal_withPxUnits' and thus is somewhat prone to a mistake at some point. */
-EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] = 32;
+int_fields[INDEXOF_EDITOR_gutterWidthTotal] = 32;
 
 const INDEXOF_didChangeTextDocument_version = 17;
 
@@ -276,12 +276,12 @@ const INDEXOF_EDITOR_pooledTrackedSyntax_length = 34;
 /**
  * Also is used from 'EDITOR_render_do_SetText()', and 'EDITOR_render_do_Resize()', not just 'EDITOR_render_do_Scroll()'
  * 
- * I'm gonna store this in the int32 array so that the editor scroll render function can access it from the already existing local reference of EDITOR_int_fields.
+ * I'm gonna store this in the int32 array so that the editor scroll render function can access it from the already existing local reference of int_fields.
  */
 const INDEXOF_EDITOR_intFalsey_isScrolling = 35;
 
 /**
- * I'm gonna store this in the int32 array so that the editor scroll render function can access it from the already existing local reference of EDITOR_int_fields.
+ * I'm gonna store this in the int32 array so that the editor scroll render function can access it from the already existing local reference of int_fields.
  */
 const INDEXOF_EDITOR_cursor_editKind = 36;
 
@@ -347,7 +347,7 @@ const INDEXOF_EDITOR_cursor_EDITOR_duplicate_small = 62;
 /** same comment that pertains to EDITOR_cursor_EDITOR_paste_clipboardContent is somewhat relevant here */
 const INDEXOF_EDITOR_cursor_EDITOR_duplicate_length = 63;
 
-// EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_length]
+// int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_length]
 
 
 
@@ -360,7 +360,7 @@ const INDEXOF_EDITOR_cursor_EDITOR_duplicate_length = 63;
 // ... / figure out details of caching so you read them all in one go if possible.
 
 // TODO: Move all the other smi's here
-// TODO: a local copy of 'EDITOR_int_fields' is likely always a meaningful performance gain once you've moved everything because of how much state is being stored here, but it still depends maybe some functions only access it once or something etc...
+// TODO: a local copy of 'int_fields' is likely always a meaningful performance gain once you've moved everything because of how much state is being stored here, but it still depends maybe some functions only access it once or something etc...
 
 /*
 The smi's are when you do a collection you start at the roots

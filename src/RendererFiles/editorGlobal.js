@@ -110,7 +110,9 @@ let EDITOR_cursor_DRAWN_selectionEnd = 0;
 let EDITOR_cursor_DRAWN_selection_virtualIndexLine = 0;
 let EDITOR_cursor_DRAWN_selection_virtualCount = 0;
 
-let EDITOR_cursor_editKind = ENUM_EditKind_None;
+// TODO: This assignment isn't necessary, it was already the default value;
+EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] = ENUM_EditKind_None;
+
 let EDITOR_cursor_editLength = 0;
 let EDITOR_cursor_editPosition = 0;
 let EDITOR_cursor_editIndexLine = 0;
@@ -232,7 +234,7 @@ function EDITOR_cursor_clear() {
     EDITOR_cursor_DRAWN_selectionEnd = 0;
     EDITOR_cursor_DRAWN_selection_virtualIndexLine = 0;
     EDITOR_cursor_DRAWN_selection_virtualCount = 0;
-    EDITOR_cursor_editKind = ENUM_EditKind_None;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] = ENUM_EditKind_None;
     EDITOR_cursor_editLength = 0;
     EDITOR_cursor_editPosition = 0;
     EDITOR_cursor_editIndexLine = 0;
@@ -526,7 +528,7 @@ function EDITOR_render_do_cursor_flag_doNotScrollIntoView(timestamp) {
 }
 
 function EDITOR_render_do_InsertLtr() {
-    if (EDITOR_cursor_editKind !== ENUM_EditKind_InsertLtr) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_InsertLtr) {
         return;
     }
     if (EDITOR_cursor_editRenderedDisplacement < EDITOR_cursor_editLength) {
@@ -808,7 +810,7 @@ function EDITOR_render_do_Scroll(timestamp) {
     local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop] = local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop]; // TODO: Move this to the scroll event handler (probably-maybe)
 
     // TODO: Move this to the leading edge? (maybe)
-    if (EDITOR_cursor_editKind !== ENUM_EditKind_None) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_None) {
         // TODO: Timing issue, someone typing while they scroll
         // TODO: You need to finalize all the cursors not just the primary
         // TODO: You probably need to "check all the cursors" too not just the primary
@@ -1584,7 +1586,7 @@ function EDITOR_finalizeEdit() {
      */
     let indexLine_editOccurredOn = -1;
 
-    switch (EDITOR_cursor_editKind) {
+    switch (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind]) {
         case ENUM_EditKind_InsertLtr:
             indexLine_editOccurredOn = EDITOR_finalizeEdit_InsertLtr(indexLine_editOccurredOn);
             break;
@@ -2241,7 +2243,7 @@ function EDITOR_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
 function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_editOccurredOn) {
     // TODO: surely u'd get this before doing the edit?
     let startLineAndColumnIndices;
-    if (EDITOR_cursor_editKind === ENUM_EditKind_RemoveTextNoBatching) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_RemoveTextNoBatching) {
         startLineAndColumnIndices = {
             indexLine: EDITOR_cursor_editIndexLine,
             indexColumn: EDITOR_cursor_editIndexColumn,
@@ -2251,7 +2253,7 @@ function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLi
         startLineAndColumnIndices = EDITOR_getLineAndColumnIndices_raw(EDITOR_cursor_editPosition);
     }
     let endLineAndColumnIndices;
-    if (EDITOR_cursor_editKind === ENUM_EditKind_RemoveTextNoBatching) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_RemoveTextNoBatching) {
         endLineAndColumnIndices = {
             indexLine: EDITOR_cursor_END_editIndexLine,
             indexColumn: EDITOR_cursor_END_editIndexColumn,
@@ -2359,7 +2361,7 @@ function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLi
 }
 
 function EDITOR_finalizeEdit_ClearEditState() {
-    EDITOR_cursor_editKind = ENUM_EditKind_None;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] = ENUM_EditKind_None;
     EDITOR_cursor_editLength = 0;
     EDITOR_cursor_editPosition = 0;
     EDITOR_cursor_editIndexLine = 0;
@@ -2443,7 +2445,7 @@ function EDITOR_readLineEndPositionList(indexLine) {
 
     // If you need to determine the text without finalizing an edit, you DO have to loop forwards right?
     if (EDITOR_cursor_editLength > 0 & EDITOR_cursor_editPosition <= lineEndPositionIndex) {
-        switch (EDITOR_cursor_editKind) {
+        switch (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind]) {
             case ENUM_EditKind_InsertLtr:
                 lineEndPositionIndex += EDITOR_cursor_editLength;
                 break;
@@ -3315,7 +3317,7 @@ function getCharacter(positionIndex) {
 
     let totalShift = 0;
     // If you need to determine the text without finalizing an edit, you DO have to loop forwards right?
-    switch (EDITOR_cursor_editKind) {
+    switch (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind]) {
         case ENUM_EditKind_InsertLtr:
             if (positionIndex >= EDITOR_cursor_editPosition & positionIndex < EDITOR_cursor_editPosition + EDITOR_cursor_editLength) {
                 // TODO: I hear fromCharCode is faster than 'String.fromCodePoint(...)' thus I'm seeing if it is sufficient for my current personal usage...
@@ -3783,7 +3785,7 @@ function EDITOR_insertGapBufferSpan() {
  * @param {*} editLength 
  */
 function EDITOR_startEdit(editKind, editPosition, editLength) {
-    EDITOR_cursor_editKind = editKind;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] = editKind;
     EDITOR_cursor_editPosition = editPosition;
     EDITOR_cursor_editIndexLine = EDITOR_cursor_indexLine;
     EDITOR_cursor_editIndexColumn = EDITOR_cursor_indexColumn;
@@ -3800,7 +3802,7 @@ function EDITOR_startEdit(editKind, editPosition, editLength) {
  * @returns 
  */
 function EDITOR_NOTcanBatch_insert() {
-    return EDITOR_cursor_editKind != ENUM_EditKind_InsertLtr ||
+    return EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_InsertLtr ||
            EDITOR_cursor_indexLine !== EDITOR_cursor_editIndexLine ||
            EDITOR_cursor_indexColumn !== EDITOR_cursor_editIndexColumn + EDITOR_cursor_editLength ||
            EDITOR_cursor_editLength >= EDITOR_cursor_GAP_BUFFER_CAPACITY ||
@@ -3812,7 +3814,7 @@ function EDITOR_NOTcanBatch_insert() {
  */
 function EDITOR_NOTcanBatch_enter() {
     return true || // turn off batching until it works. The initial enter event is what matters everything else can be recreated based on the amount of lineFeeds that were inserted.
-           EDITOR_cursor_editKind != ENUM_EditKind_Enter ||
+           EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_Enter ||
            EDITOR_cursor_indexLine !== EDITOR_cursor_END_editIndexLine ||
            EDITOR_cursor_indexColumn !== EDITOR_cursor_END_editIndexColumn ||
            EDITOR_cursor_editLength >= EDITOR_cursor_GAP_BUFFER_CAPACITY ||
@@ -3824,7 +3826,7 @@ function EDITOR_NOTcanBatch_enter() {
  * @returns 
  */
 function EDITOR_NOTcanBatch_backspace() {
-    return EDITOR_cursor_editKind != ENUM_EditKind_BackspaceRtl ||
+    return EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_BackspaceRtl ||
            EDITOR_cursor_indexLine !== EDITOR_cursor_editIndexLine ||
            EDITOR_cursor_indexColumn !== EDITOR_cursor_editIndexColumn ||
            EDITOR_cursor_hasSelection();
@@ -3834,7 +3836,7 @@ function EDITOR_NOTcanBatch_backspace() {
  * @returns 
  */
 function EDITOR_NOTcanBatch_delete() {
-    return EDITOR_cursor_editKind != ENUM_EditKind_DeleteLtr ||
+    return EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_DeleteLtr ||
            EDITOR_cursor_indexLine !== EDITOR_cursor_editIndexLine ||
            EDITOR_cursor_indexColumn !== EDITOR_cursor_editIndexColumn ||
            EDITOR_cursor_hasSelection();
@@ -3902,7 +3904,7 @@ function EDITOR_arrowDown(shiftKey) {
  * TODO: I believe this function to be an unoptimized solution, just that there are more pressing matters to attend to.
  */
 function EDITOR_movementBasedCacheInvalidation() {
-    if (EDITOR_cursor_editKind === ENUM_EditKind_Enter) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_Enter) {
         //
         // this only happens once even if you have many cursors because the next cursor that enters this function would be and editKind of None.
         //
@@ -3936,8 +3938,8 @@ function EDITOR_editEvent(editKind, event, clipboardContent) {
 
         shouldFinalizeAllCursors = false;
         
-        if ((editKind === ENUM_EditKind_Tab && EDITOR_cursor_editKind === ENUM_EditKind_IndentMore) ||
-            (editKind === ENUM_EditKind_Tab && EDITOR_cursor_editKind === ENUM_EditKind_IndentLess && event.shiftKey)) {
+        if ((editKind === ENUM_EditKind_Tab && EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_IndentMore) ||
+            (editKind === ENUM_EditKind_Tab && EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_IndentLess && event.shiftKey)) {
 
                 // TODO: IndentLess when no selection however shiftTab then it does indentLess even still but I haven't gone out of the way to handle that hack...
                 // ...maybe it'll be covered maybe it won't.
@@ -4044,7 +4046,7 @@ function EDITOR_editEvent_theEditIself_InsertLtr(event) {
     }
     // You can do this because the function 'EDITOR_NOTcanBatch_insert' was already checked for all the cursors, if it is possible to batch, the editKind will stay InsertLtr otherwise it is finalized and set to None.
     // TODO: Use if === ENUM_EditKind_None for copy and paste safety / it might just even be more readable
-    if (EDITOR_cursor_editKind !== ENUM_EditKind_InsertLtr) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_InsertLtr) {
         EDITOR_startEdit(ENUM_EditKind_InsertLtr, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
     }
     EDITOR_insertDo(event.key);
@@ -4065,7 +4067,7 @@ function EDITOR_editEvent_theEditIself_DeleteLtr(event) {
         EDITOR_removeSelection();
     }
     else {
-        if (EDITOR_cursor_editKind !== ENUM_EditKind_DeleteLtr) {
+        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_DeleteLtr) {
             EDITOR_startEdit(ENUM_EditKind_DeleteLtr, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
         }
         EDITOR_deleteDo(event);
@@ -4085,7 +4087,7 @@ function EDITOR_editEvent_theEditIself_BackspaceRtl(event) {
         EDITOR_removeSelection();
     }
     else {
-        if (EDITOR_cursor_editKind !== ENUM_EditKind_BackspaceRtl) {
+        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_BackspaceRtl) {
             EDITOR_startEdit(ENUM_EditKind_BackspaceRtl, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
         }
         EDITOR_backspaceDo(event);
@@ -4100,13 +4102,13 @@ function EDITOR_editEvent_theEditIself_Tab(event) {
     EDITOR_movementBasedCacheInvalidation();
     if (EDITOR_cursor_hasSelection()) {
         if (event.shiftKey) {
-            if (EDITOR_cursor_editKind !== ENUM_EditKind_IndentLess) {
+            if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_IndentLess) {
                 EDITOR_startEdit(ENUM_EditKind_IndentLess, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
             }
             EDITOR_indentLess();
         }
         else {
-            if (EDITOR_cursor_editKind !== ENUM_EditKind_IndentMore) {
+            if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_IndentMore) {
                 EDITOR_startEdit(ENUM_EditKind_IndentMore, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
             }
             EDITOR_indentMore();
@@ -4119,13 +4121,13 @@ function EDITOR_editEvent_theEditIself_Tab(event) {
             // ...everything is buggy and it is very anxiety inducing and for the time being I guess it just has to be that way as I transition
             // towards a useable editor all the features are coming together but there's this awkward phase of "I can start using it but also not really" or something I just idk.
             EDITOR_onMouseDownDetailRankThree(0, false, EDITOR_cursor_indexLine, EDITOR_cursor_indexColumn);
-            if (EDITOR_cursor_editKind !== ENUM_EditKind_IndentLess) {
+            if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_IndentLess) {
                 EDITOR_startEdit(ENUM_EditKind_IndentLess, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
             }
             EDITOR_indentLess();
         }
         else {
-            if (EDITOR_cursor_editKind !== ENUM_EditKind_Tab) {
+            if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Tab) {
                 EDITOR_startEdit(ENUM_EditKind_Tab, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
             }
             EDITOR_tabKey();
@@ -4135,7 +4137,7 @@ function EDITOR_editEvent_theEditIself_Tab(event) {
 }
 
 function EDITOR_editEvent_theEditIself_Enter(event) {
-    if (EDITOR_cursor_editKind !== ENUM_EditKind_Enter) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Enter) {
         EDITOR_startEdit(ENUM_EditKind_Enter, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
     }
     EDITOR_EnterKey(event.ctrlKey, event.shiftKey);
@@ -4145,7 +4147,7 @@ function EDITOR_editEvent_theEditIself_Enter(event) {
 }
 
 function EDITOR_editEvent_theEditIself_Paste(clipboardContent) {
-    if (EDITOR_cursor_editKind !== ENUM_EditKind_Enter) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Enter) {
         EDITOR_startEdit(ENUM_EditKind_Paste, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
     }
     EDITOR_paste(clipboardContent);
@@ -4154,7 +4156,7 @@ function EDITOR_editEvent_theEditIself_Paste(clipboardContent) {
 }
 
 function EDITOR_editEvent_theEditIself_Duplicate() {
-    if (EDITOR_cursor_editKind !== ENUM_EditKind_Duplicate) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Duplicate) {
         EDITOR_startEdit(ENUM_EditKind_Duplicate, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
     }
     EDITOR_duplicateSelection();
@@ -4217,7 +4219,7 @@ function EDITOR_editEvent_checkFor_NOTcanBatch_Tab(event) {
  * 
  */
 function EDITOR_editEvent_checkFor_NOTcanBatch_IndentMore() {
-    if (EDITOR_cursor_editKind === ENUM_EditKind_IndentLess) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_IndentLess) {
         return true;
     }
     
@@ -4268,7 +4270,7 @@ function EDITOR_editEvent_checkFor_NOTcanBatch_IndentMore() {
  * 
  */
 function EDITOR_editEvent_checkFor_NOTcanBatch_IndentLess() {
-    if (EDITOR_cursor_editKind === ENUM_EditKind_IndentMore) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_IndentMore) {
         return true;
     }
     
@@ -5329,7 +5331,7 @@ function EDITOR_render_do_IndentMore() {
         EDITOR_on_tab_string += String.fromCharCode(EDITOR_on_tab_bytes[i]);
     }
 
-    if (EDITOR_cursor_editKind !== ENUM_EditKind_IndentMore) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_IndentMore) {
         return;
     }
     if (EDITOR_cursor_editRenderedDisplacement < EDITOR_cursor_editLength) {
@@ -5479,7 +5481,7 @@ function EDITOR_render_do_IndentLess() {
     let startingIndex = EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex] = startingIndex;
     let SMALL_lineAndColumnIndices_indexLine = EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine];
 
-    if (EDITOR_cursor_editKind !== ENUM_EditKind_IndentLess) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_IndentLess) {
         return;
     }
     if (EDITOR_cursor_editRenderedDisplacement < EDITOR_cursor_editLength) {
@@ -5730,10 +5732,10 @@ function EDITOR_render_do_DuplicateOrPaste() {
 
     let hasSeenLinefeed = false;
 
-    if (EDITOR_cursor_editKind !== ENUM_EditKind_Duplicate && EDITOR_cursor_editKind !== ENUM_EditKind_Paste) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Duplicate && EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Paste) {
         return;
     }
-    if (EDITOR_cursor_editRenderedDisplacement < EDITOR_cursor_editLength || EDITOR_cursor_editKind === ENUM_EditKind_Paste /* Paste has an editLength of 0 currently */) {
+    if (EDITOR_cursor_editRenderedDisplacement < EDITOR_cursor_editLength || EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_Paste /* Paste has an editLength of 0 currently */) {
 
         let small = EDITOR_cursor_EDITOR_duplicate_small;
         let length = EDITOR_cursor_EDITOR_duplicate_length;
@@ -5744,10 +5746,10 @@ function EDITOR_render_do_DuplicateOrPaste() {
         let byteArray;
 
         // TODO: re-use the paste byte array
-        if (EDITOR_cursor_editKind === ENUM_EditKind_Duplicate) {
+        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_Duplicate) {
             byteArray = EDITOR_textByteList.bytes.subarray(small, large);
         }
-        else if (EDITOR_cursor_editKind === ENUM_EditKind_Paste) {
+        else if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_Paste) {
             large = EDITOR_getPositionIndex_raw_cursor();
             let clipboardContent = EDITOR_cursor_EDITOR_paste_clipboardContent;
             let clipboardContentLength = clipboardContent.length;
@@ -6286,10 +6288,10 @@ function EDITOR_duplicate_and_paste_handleNotHasSeenLinefeed(hasSeenLinefeed, or
 }
 
 function EDITOR_render_do_TabKey() {
-    if (EDITOR_cursor_editKind !== ENUM_EditKind_Tab) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Tab) {
         return;
     }
-    if (EDITOR_cursor_editRenderedDisplacement < EDITOR_cursor_editLength || EDITOR_cursor_editKind === ENUM_EditKind_Tab) {
+    if (EDITOR_cursor_editRenderedDisplacement < EDITOR_cursor_editLength || EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_Tab) {
 
         EDITOR_cursor_indexColumn -= 4; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
 
@@ -6463,7 +6465,7 @@ function EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(indexPosition,
 function EDITOR_render_do_EnterKey() {
     update_verticalVirtualizationBoundary();
 
-    if (EDITOR_cursor_editKind !== ENUM_EditKind_Enter) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Enter) {
         return;
     }
 
@@ -6945,7 +6947,7 @@ And then I got response of
  * @returns 
  */
 function EDITOR_removeSelection() {
-    if (EDITOR_cursor_editKind != ENUM_EditKind_None) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_None) {
         // TODO: multicursor confusion scenario is likely to happy due to this code, but the code isn't related enough for me to change it yet.
         EDITOR_finalizeEdit();
     }
@@ -7007,7 +7009,7 @@ function EDITOR_render_do_RemoveSelection() {
     ///////////
     ///////////
 
-    if (EDITOR_cursor_editKind !== ENUM_EditKind_RemoveTextNoBatching) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_RemoveTextNoBatching) {
         return;
     }
     if (EDITOR_cursor_editRenderedDisplacement < EDITOR_cursor_editLength) {
@@ -7303,9 +7305,9 @@ comments from EDITOR_removeSelection(cursor) that may or may not be useful idk I
     }
 */
 
-/** TODO: this is nearly identical to backspace, the difference is the check 'if (EDITOR_cursor_editKind !== ENUM_EditKind_DeleteLtr)', thus dedupe the logic or no? */
+/** TODO: this is nearly identical to backspace, the difference is the check 'if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_DeleteLtr)', thus dedupe the logic or no? */
 function EDITOR_render_do_Delete() {
-    if (EDITOR_cursor_editKind !== ENUM_EditKind_DeleteLtr) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_DeleteLtr) {
         return;
     }
     if (EDITOR_cursor_editRenderedDisplacement < EDITOR_cursor_editLength) {
@@ -7500,7 +7502,7 @@ function EDITOR_deleteDo(event) {
 }
 
 function EDITOR_render_do_Backspace() {
-    if (EDITOR_cursor_editKind !== ENUM_EditKind_BackspaceRtl) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_BackspaceRtl) {
         return;
     }
 

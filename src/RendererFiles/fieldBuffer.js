@@ -275,6 +275,8 @@ const INDEXOF_EDITOR_pooledTrackedSyntax_length = 34;
  */
 const INDEXOF_EDITOR_intFalsey_isScrolling = 35;
 
+const INDEXOF_EDITOR_cursor_editKind = 36;
+
 
 
 

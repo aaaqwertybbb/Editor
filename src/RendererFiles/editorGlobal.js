@@ -162,6 +162,8 @@ let EDITOR_cursor_enterKey_newLinePlusIndentation_byteList = null;
 
 let EDITOR_cursor_cached_indentation_string = null;
 
+let EDITOR_cursor_enterKeyEventKind = ENUM_EnterKeyEventKind_None;
+
 class EDITOR_Cursor {
     /**
      * After invoking the constructor you likely would want to add to:
@@ -172,8 +174,6 @@ class EDITOR_Cursor {
      * `EDITOR_cursorList.splice(index, 0, cursorInstance)`
      */
     constructor() {
-        
-        this.enterKeyEventKind = ENUM_EnterKeyEventKind_None;
 
         /**
          * TODO: probably is sensible to use this for the enter key too but I'm firstly adding it for the sake of backspace so
@@ -247,7 +247,7 @@ class EDITOR_Cursor {
 
         EDITOR_cursor_enterKey_newLinePlusIndentation_byteList = null;
         EDITOR_cursor_cached_indentation_string = null;
-        this.enterKeyEventKind = ENUM_EnterKeyEventKind_None;
+        EDITOR_cursor_enterKeyEventKind = ENUM_EnterKeyEventKind_None;
 
         this.editLineFeedCount = 0;
         this.edit_flagLineChanged = -1;
@@ -1471,7 +1471,7 @@ function update_virtualCount() {
  */
 function EDITOR_drawGutter_Width() {
     let count = EDITOR_lineEndPositionList.count;
-    if (EDITOR_primaryCursor.enterKeyEventKind !== ENUM_EnterKeyEventKind_None) {
+    if (EDITOR_cursor_enterKeyEventKind !== ENUM_EnterKeyEventKind_None) {
         count += 1;
     }
     let digitCountOfLargestLineNumber = positiveNumbersOnly_countDigitsLoop(count);
@@ -1742,7 +1742,7 @@ function EDITOR_finalizeEdit_Enter(cursor, indexLine_editOccurredOn) {
     EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(EDITOR_cursor_editPosition, EDITOR_cursor_editLength);
 
     // throws an exception if 'ENUM_EnterKeyEventKind_None' (...or falsey).
-    if (!cursor.enterKeyEventKind || cursor.enterKeyEventKind === ENUM_EnterKeyEventKind_None) { EDITOR_finalizeEdit_ClearEditState(cursor); throw new Error('if (!enterKeyEventKind...)'); }
+    if (!EDITOR_cursor_enterKeyEventKind || EDITOR_cursor_enterKeyEventKind === ENUM_EnterKeyEventKind_None) { EDITOR_finalizeEdit_ClearEditState(cursor); throw new Error('if (!enterKeyEventKind...)'); }
 
     EDITOR_textByteList.insertBytes(EDITOR_cursor_editPosition, EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.bytes, /*offset*/ 0, EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.count);
 
@@ -6650,7 +6650,7 @@ function EDITOR_render_do_EnterKey() {
         // - "among a line":
         // - "fallback case": this last case is a fallback case and redraws the entire viewport in the case that the UI is in an "unpredictable state" and cannot be optimally redrawn in a smaller more specific redraw.
 
-        // consider using 'cursor.enterKeyEventKind' for the 'render'?
+        // consider using 'EDITOR_cursor_enterKeyEventKind' for the 'render'?
 
         // Is holding down ctrl+enter / shift+enter batchable?
 
@@ -6791,7 +6791,7 @@ function EDITOR_EnterKey(cursor, ctrlKey, shiftKey) {
 
     if (EDITOR_cursor_editLength === 0) {
 
-        cursor.enterKeyEventKind = ENUM_EnterKeyEventKind_None;
+        EDITOR_cursor_enterKeyEventKind = ENUM_EnterKeyEventKind_None;
 
         EDITOR_cursor_editPosition = EDITOR_getPositionIndex_raw(cursor);
         EDITOR_cursor_editIndexLine = EDITOR_cursor_indexLine;
@@ -6801,8 +6801,8 @@ function EDITOR_EnterKey(cursor, ctrlKey, shiftKey) {
     let insertionCount = EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.count;
     
     if (EDITOR_cursor_indexColumn === 0) { // start of line
-        if (cursor.enterKeyEventKind === 0) {
-            cursor.enterKeyEventKind = ENUM_EnterKeyEventKind_StartOfLine;
+        if (EDITOR_cursor_enterKeyEventKind === 0) {
+            EDITOR_cursor_enterKeyEventKind = ENUM_EnterKeyEventKind_StartOfLine;
         }
 
         if (!ctrlKey)
@@ -6811,8 +6811,8 @@ function EDITOR_EnterKey(cursor, ctrlKey, shiftKey) {
     else {
         let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
 
-        if (cursor.enterKeyEventKind === 0) {
-            cursor.enterKeyEventKind = lastValidIndexColumn === EDITOR_cursor_indexColumn
+        if (EDITOR_cursor_enterKeyEventKind === 0) {
+            EDITOR_cursor_enterKeyEventKind = lastValidIndexColumn === EDITOR_cursor_indexColumn
                 ? ENUM_EnterKeyEventKind_EndOfLine
                 : ENUM_EnterKeyEventKind_AmongALine;
         }

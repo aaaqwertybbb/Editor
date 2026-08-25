@@ -474,38 +474,67 @@ function EDITOR_render_do(timestamp) {
             case ENUM_RenderKind_SyntaxHighlighting:
                 EDITOR_render_do_SyntaxHighlighting();
                 break;
+            case ENUM_RenderKind_Cursor_flag_scrollIntoViewExplicit:
+                EDITOR_render_do_cursor_flag_scrollIntoViewExplicit(timestamp);
+                break;
+            case ENUM_RenderKind_Cursor_flag_doNotScrollIntoView:
+                EDITOR_render_do_cursor_flag_doNotScrollIntoView(timestamp);
+                break;
             // Don't include these you're wasting stackframe space.
             // You could perhaps "debug mode" check for these
             //case ENUM_RenderKind_None: // this is a duplicate case ???
             //case ENUM_RenderKind_Cursor_flag_doNotScrollIntoView: // TODO: This is a silent error
             //case ENUM_RenderKind_Cursor_flag_scrollIntoViewExplicit: // TODO: This is a silent error
             //    break;
-            default:
+            case ENUM_RenderKind_Cursor_n:
                 // the 'default case' is ENUM_RenderKind_Cursor_n:
-                EDITOR_render_do_cursor(timestamp, renderKind);
+                EDITOR_render_do_cursor(timestamp);
                 break;
+            //default:
+            //    break;
         }
     }
     
     EDITOR_isRenderPending = false; // Reset the lock
 }
 
-function EDITOR_render_do_cursor(timestamp, renderKind) {
+function EDITOR_render_do_cursor(timestamp) {
     EDITOR_cursorBlinkLastTimestamp = timestamp;
-    let indexCursor = renderKind - (count_of_wellknown_renderKinds - 1);
     let cursor = EDITOR_primaryCursor;
     let notShouldScrollIntoView = false;
     let flag_scrollIntoViewExplicit = false;
 
-    let entryZero = EDITOR_renderKindArray[0];
-    if (entryZero === ENUM_RenderKind_Cursor_flag_doNotScrollIntoView) {
-        EDITOR_renderKindArray.shift();
-        notShouldScrollIntoView = true;
+    if (flag_scrollIntoViewExplicit) {
+        // TODO: consider setting 'notShouldScrollIntoView' to false to avoid two scroll into views redundantly?
+        EDITOR_scrollCursorIntoView(cursor);
     }
-    else if (entryZero === ENUM_RenderKind_Cursor_flag_scrollIntoViewExplicit) {
-        EDITOR_renderKindArray.shift();
-        flag_scrollIntoViewExplicit = true;
+    EDITOR_drawCursor(cursor, notShouldScrollIntoView);
+}
+
+function EDITOR_render_do_cursor_flag_scrollIntoViewExplicit(timestamp) {
+    EDITOR_cursorBlinkLastTimestamp = timestamp;
+    let cursor = EDITOR_primaryCursor;
+    let notShouldScrollIntoView = false;
+    let flag_scrollIntoViewExplicit = false;
+
+    EDITOR_renderKindArray.shift();
+    flag_scrollIntoViewExplicit = true;
+
+    if (flag_scrollIntoViewExplicit) {
+        // TODO: consider setting 'notShouldScrollIntoView' to false to avoid two scroll into views redundantly?
+        EDITOR_scrollCursorIntoView(cursor);
     }
+    EDITOR_drawCursor(cursor, notShouldScrollIntoView);
+}
+
+function EDITOR_render_do_cursor_flag_doNotScrollIntoView(timestamp) {
+    EDITOR_cursorBlinkLastTimestamp = timestamp;
+    let cursor = EDITOR_primaryCursor;
+    let notShouldScrollIntoView = false;
+    let flag_scrollIntoViewExplicit = false;
+
+    EDITOR_renderKindArray.shift();
+    notShouldScrollIntoView = true;
 
     if (flag_scrollIntoViewExplicit) {
         // TODO: consider setting 'notShouldScrollIntoView' to false to avoid two scroll into views redundantly?
@@ -4940,7 +4969,6 @@ async function EDITOR_onKeyDown_keyLengthEqualsOne_ctrlKey(event) {
             let selectionEndLineAndColumnIndices = EDITOR_getLineAndColumnIndices(EDITOR_primaryCursor.selectionEnd);
             EDITOR_primaryCursor.indexLine = selectionEndLineAndColumnIndices.indexLine;
             EDITOR_primaryCursor.indexColumn = selectionEndLineAndColumnIndices.indexColumn;
-            EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
             EDITOR_render_request(ENUM_RenderKind_Cursor_flag_doNotScrollIntoView);
             break;
         case 'f':

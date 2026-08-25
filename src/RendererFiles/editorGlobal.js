@@ -9283,4 +9283,7 @@ I tried to put a paper plate over my plate earlier like a few hours ago when it 
 but I couldn't bring myself to do it so I hid in an opposite corner and ate a lb of chicken straight while standing
 and scarfed it down before the panic set in.
 
+I feel like I can feel the cleaning products melting my brain but maybe that is just
+tension and anxiety that I feel in the front of my head top side tension
+
 */

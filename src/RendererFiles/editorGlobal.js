@@ -9176,5 +9176,4 @@ ugh why does the text disappear when I resize until I scroll enough to refill th
 I'm annoyed cause I've seen this bug before and I can't remember.
 If I can get this then I think today was a 10/10
 
-
 */

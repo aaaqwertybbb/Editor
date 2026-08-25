@@ -205,50 +205,46 @@ function EDITOR_cursor_hasSelection() {
             EDITOR_cursor_selectionAnchor != EDITOR_cursor_selectionEnd;
 }
 
-class EDITOR_Cursor {
-    
-    
-    /**
-     * The code that clears the editor is dependent on this method NOT clearing 'cursor.selectionDivExists'
-     * 
-     * Somewhat duplicated code: This messes with the language features if I invoke clear() in the constructor, it puts "| undefined" on all the types.
-     */
-    clear() {
-        EDITOR_cursor_indexLine = 0;
-        EDITOR_cursor_indexColumn = 0;
-        EDITOR_cursor_STORED_indexColumn = 0;
-        EDITOR_cursor_cursorTranslateYValue = 0;
-        EDITOR_cursor_cursorTranslateXValue = 0;
-        EDITOR_cursor_selectionAnchor = 0;
-        EDITOR_cursor_selectionEnd = 0;
-        EDITOR_cursor_DRAWN_selectionAnchor = 0;
-        EDITOR_cursor_DRAWN_selectionEnd = 0;
-        EDITOR_cursor_DRAWN_selection_virtualIndexLine = 0;
-        EDITOR_cursor_DRAWN_selection_virtualCount = 0;
-        EDITOR_cursor_editKind = ENUM_EditKind_None;
-        EDITOR_cursor_editLength = 0;
-        EDITOR_cursor_editPosition = 0;
-        EDITOR_cursor_editIndexLine = 0;
-        EDITOR_cursor_editIndexColumn = 0;
-        EDITOR_cursor_editRenderedDisplacement = 0;
-        EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET = 0;
-        EDITOR_cursor_END_editIndexLine = 0;
-        EDITOR_cursor_END_editIndexColumn = 0;
+/**
+ * The code that clears the editor is dependent on this method NOT clearing 'cursor.selectionDivExists'
+ * 
+ * Somewhat duplicated code: This messes with the language features if I invoke clear() in the constructor, it puts "| undefined" on all the types.
+ */
+function EDITOR_cursor_clear() {
+    EDITOR_cursor_indexLine = 0;
+    EDITOR_cursor_indexColumn = 0;
+    EDITOR_cursor_STORED_indexColumn = 0;
+    EDITOR_cursor_cursorTranslateYValue = 0;
+    EDITOR_cursor_cursorTranslateXValue = 0;
+    EDITOR_cursor_selectionAnchor = 0;
+    EDITOR_cursor_selectionEnd = 0;
+    EDITOR_cursor_DRAWN_selectionAnchor = 0;
+    EDITOR_cursor_DRAWN_selectionEnd = 0;
+    EDITOR_cursor_DRAWN_selection_virtualIndexLine = 0;
+    EDITOR_cursor_DRAWN_selection_virtualCount = 0;
+    EDITOR_cursor_editKind = ENUM_EditKind_None;
+    EDITOR_cursor_editLength = 0;
+    EDITOR_cursor_editPosition = 0;
+    EDITOR_cursor_editIndexLine = 0;
+    EDITOR_cursor_editIndexColumn = 0;
+    EDITOR_cursor_editRenderedDisplacement = 0;
+    EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET = 0;
+    EDITOR_cursor_END_editIndexLine = 0;
+    EDITOR_cursor_END_editIndexColumn = 0;
 
-        EDITOR_cursor_gapBufferCount = 0;
+    EDITOR_cursor_gapBufferCount = 0;
 
-        EDITOR_cursor_enterKey_newLinePlusIndentation_byteList = null;
-        EDITOR_cursor_cached_indentation_string = null;
-        EDITOR_cursor_enterKeyEventKind = ENUM_EnterKeyEventKind_None;
+    EDITOR_cursor_enterKey_newLinePlusIndentation_byteList = null;
+    EDITOR_cursor_cached_indentation_string = null;
+    EDITOR_cursor_enterKeyEventKind = ENUM_EnterKeyEventKind_None;
 
-        EDITOR_cursor_editLineFeedCount = 0;
-        EDITOR_cursor_edit_flagLineChanged = -1;
+    EDITOR_cursor_editLineFeedCount = 0;
+    EDITOR_cursor_edit_flagLineChanged = -1;
 
-        EDITOR_cursor_EDITOR_paste_clipboardContent = null;
+    EDITOR_cursor_EDITOR_paste_clipboardContent = null;
 
-        EDITOR_cursor_EDITOR_duplicate_small = 0;
-        EDITOR_cursor_EDITOR_duplicate_length = 0;
-    }
+    EDITOR_cursor_EDITOR_duplicate_small = 0;
+    EDITOR_cursor_EDITOR_duplicate_length = 0;
 }
 
 const EDITOR_debug = document.getElementById('EDITOR_debug');
@@ -1264,7 +1260,7 @@ function EDITOR_state_clear() {
 
 
     EDITOR_finalizeAllCursors_andClearNonPrimaryCursors();
-    EDITOR_primaryCursor.clear();
+    EDITOR_cursor_clear();
     set_EDITOR_recentBoundingClientRect_isNull_intFalsey(1);
     EDITOR_textSourceIdentifier = '';
     EDITOR_FORMATTED_textSourceIdentifier = '';

@@ -164,6 +164,29 @@ let EDITOR_cursor_cached_indentation_string = null;
 
 let EDITOR_cursor_enterKeyEventKind = ENUM_EnterKeyEventKind_None;
 
+/**
+ * TODO: probably is sensible to use this for the enter key too but I'm firstly adding it for the sake of backspace so
+ * I don't have to waste time looping over the removed text to find the line end positions that are being removed.
+ * (I could do some kind of other tracking but I chose not to for no particular reason, well I think I chose this one out of laziness and that the other solutions long term like a
+ *  list at the editor level 1 of them that is shared among all cursors is probably better or something.)
+ * 
+ * ========
+ * 
+ * TODO: Cursor should store this as -1 to signify false,
+ * and then it is a number 0 to ... the offset in the pending line end position list
+ * and then you have another number too separately that says the length of line endings that this cursor contributed to modifying.
+ */
+let EDITOR_cursor_editLineFeedCount = 0;
+
+/**
+ * This purposefully avoids the wording "edit length" in order to avoid accident / confusing / hard to read code
+ * but in simplest terms this variable is the resulting 'editLength' that existed after a delete or backspace removed a line end.
+ * 
+ * This way you can always just check whether the "sub length" which is relative to the edit_flagLineChanged has removed all the
+ * text that other line that you landed on without having yet finalized.
+ */
+let EDITOR_cursor_edit_flagLineChanged = -1;
+
 class EDITOR_Cursor {
     /**
      * After invoking the constructor you likely would want to add to:
@@ -174,29 +197,6 @@ class EDITOR_Cursor {
      * `EDITOR_cursorList.splice(index, 0, cursorInstance)`
      */
     constructor() {
-
-        /**
-         * TODO: probably is sensible to use this for the enter key too but I'm firstly adding it for the sake of backspace so
-         * I don't have to waste time looping over the removed text to find the line end positions that are being removed.
-         * (I could do some kind of other tracking but I chose not to for no particular reason, well I think I chose this one out of laziness and that the other solutions long term like a
-         *  list at the editor level 1 of them that is shared among all cursors is probably better or something.)
-         * 
-         * ========
-         * 
-         * TODO: Cursor should store this as -1 to signify false,
-         * and then it is a number 0 to ... the offset in the pending line end position list
-         * and then you have another number too separately that says the length of line endings that this cursor contributed to modifying.
-         */
-        this.editLineFeedCount = 0;
-        /**
-         * This purposefully avoids the wording "edit length" in order to avoid accident / confusing / hard to read code
-         * but in simplest terms this variable is the resulting 'editLength' that existed after a delete or backspace removed a line end.
-         * 
-         * This way you can always just check whether the "sub length" which is relative to the edit_flagLineChanged has removed all the
-         * text that other line that you landed on without having yet finalized.
-         */
-        this.edit_flagLineChanged = -1;
-
         /**
          * TODO: Consider putting this at the editor level and then delay setting it to null until all cursors have made use of it?...
          * ...an NRE is thrown with this at the editor level so I'm moving it per cursor but...
@@ -249,8 +249,8 @@ class EDITOR_Cursor {
         EDITOR_cursor_cached_indentation_string = null;
         EDITOR_cursor_enterKeyEventKind = ENUM_EnterKeyEventKind_None;
 
-        this.editLineFeedCount = 0;
-        this.edit_flagLineChanged = -1;
+        EDITOR_cursor_editLineFeedCount = 0;
+        EDITOR_cursor_edit_flagLineChanged = -1;
 
         this.EDITOR_paste_clipboardContent = null;
 
@@ -2296,7 +2296,7 @@ function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(cursor,
         endLineAndColumnIndices = EDITOR_getLineAndColumnIndices_raw(EDITOR_cursor_editPosition + EDITOR_cursor_editLength);
     }
 
-    if (cursor.editLineFeedCount > 0) {
+    if (EDITOR_cursor_editLineFeedCount > 0) {
         let count = 0;
         let lastMatchedIndexLine = 0;
         for (let i = EDITOR_lineEndPositionList_PENDING.count - 1; i >= 0; i--) {
@@ -2405,7 +2405,7 @@ function EDITOR_finalizeEdit_ClearEditState(cursor) {
     EDITOR_cursor_gapBufferCount = 0;
     EDITOR_cursor_gapBufferWriteToSpanElement = null;
     EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
-    cursor.editLineFeedCount = 0;
+    EDITOR_cursor_editLineFeedCount = 0;
     EDITOR_lineEndPositionList_PENDING.clear();
 }
 
@@ -6582,7 +6582,7 @@ function EDITOR_render_do_EnterKey() {
     // - for loop
     // - or preferably a shift by some count other than just one
     //
-    if (EDITOR_cursor_editRenderedDisplacement < cursor.editLineFeedCount) {
+    if (EDITOR_cursor_editRenderedDisplacement < EDITOR_cursor_editLineFeedCount) {
 
         // TODO: This is missing a loop or etc... as was also stated elsewhere.
         // ...
@@ -6822,7 +6822,7 @@ function EDITOR_EnterKey(cursor, ctrlKey, shiftKey) {
 
     EDITOR_cursor_indexColumn = insertionCount - 1;
     EDITOR_cursor_editLength += insertionCount;
-    cursor.editLineFeedCount++;
+    EDITOR_cursor_editLineFeedCount++;
 
     EDITOR_cursor_END_editIndexLine = EDITOR_cursor_indexLine;
     EDITOR_cursor_END_editIndexColumn = EDITOR_cursor_indexColumn;
@@ -7157,7 +7157,7 @@ function EDITOR_render_do_RemoveSelection() {
             let lineEnding = EDITOR_readLineEndPositionList(iVarDependent);
             if (lineEnding >= EDITOR_cursor_editPosition && lineEnding < EDITOR_cursor_editPosition + editLength) {
                 linesRemovedCount++;
-                cursor.editLineFeedCount++;
+                EDITOR_cursor_editLineFeedCount++;
                 EDITOR_lineEndPositionList_PENDING.insert(EDITOR_lineEndPositionList_PENDING.count, lineEnding);
 
                 if (possibleTrackedSyntaxToSpanSingleLine) {
@@ -7526,14 +7526,14 @@ function EDITOR_state_do_Delete(cursor, event) {
         return;
     }
 
-    let virtual_cursorIndexLine = EDITOR_cursor_indexLine + cursor.editLineFeedCount;
+    let virtual_cursorIndexLine = EDITOR_cursor_indexLine + EDITOR_cursor_editLineFeedCount;
 
     let virtual_cursorIndexColumn;
-    if (cursor.edit_flagLineChanged === -1) {
+    if (EDITOR_cursor_edit_flagLineChanged === -1) {
         virtual_cursorIndexColumn = EDITOR_cursor_indexColumn;
     }
     else {
-        virtual_cursorIndexColumn = EDITOR_cursor_editLength - cursor.edit_flagLineChanged;
+        virtual_cursorIndexColumn = EDITOR_cursor_editLength - EDITOR_cursor_edit_flagLineChanged;
     }
 
     let lineEnd = EDITOR_getLineEnd_pos_raw(virtual_cursorIndexLine);
@@ -7549,10 +7549,10 @@ function EDITOR_state_do_Delete(cursor, event) {
             // flag the current editlength whenever u change lines so you can check the editlength relative to the line
 
             EDITOR_cursor_editLength++;
-            cursor.editLineFeedCount++;
+            EDITOR_cursor_editLineFeedCount++;
             EDITOR_lineEndPositionList_PENDING.insert(EDITOR_lineEndPositionList_PENDING.count, lineEnd);
 
-            cursor.edit_flagLineChanged = EDITOR_cursor_editLength;
+            EDITOR_cursor_edit_flagLineChanged = EDITOR_cursor_editLength;
 
             EDITOR_render_request(ENUM_RenderKind_DeleteLtr);
         }
@@ -7732,7 +7732,7 @@ function EDITOR_state_do_Backspace(cursor, event) {
             EDITOR_cursor_editIndexLine = EDITOR_cursor_indexLine;
             EDITOR_cursor_editIndexColumn = EDITOR_cursor_indexColumn;
 
-            cursor.editLineFeedCount++;
+            EDITOR_cursor_editLineFeedCount++;
             EDITOR_lineEndPositionList_PENDING.insert(0, EDITOR_cursor_editPosition);
         }
         else {

@@ -8860,4 +8860,6 @@ and so I am prepared to just cross off an item on a list of bad ideas and then g
 
 I'm confused I need to do lateral raises
 
+Maybe I should go to bed wtf have I been doing the last hour or so
+
 */

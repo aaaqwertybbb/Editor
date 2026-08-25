@@ -9325,4 +9325,8 @@ The main lyric from brokencyde monster inside me that I like is:
 
  brennan heart - don't speak
 
+ I really gotta go to bed but what a throw back
+ someone is watching "ojos grises (grey eyes) - Official trailer (2021)" lol I haven't
+ talked about that in forever.
+
 */

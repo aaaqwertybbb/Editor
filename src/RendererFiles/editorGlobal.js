@@ -9240,4 +9240,7 @@ as your body stops functioning like it used to.
 
 And you'll have to endure that reduced quality of life it is all the "perfect" scenario
 
+Not enough damage to notice but enough damage that you end up with chronic
+fatigue that you cannot explain
+
 */

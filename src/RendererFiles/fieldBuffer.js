@@ -282,6 +282,19 @@ const INDEXOF_EDITOR_cursor_editKind = 36;
 
 const INDEXOF_EDITOR_cursor_indexLine = 37;
 
+const INDEXOF_EDITOR_cursor_indexColumn = 38;
+
+/**
+ * When moving cursor vertically, if the current column index cannot be matched due to the upcoming line being too short,
+ * then this will allow a later vertical movement to a line that is long enough to match the original column rather than the minimized one.
+ */
+const INDEXOF_EDITOR_cursor_STORED_indexColumn = 39;
+
+
+
+
+// 63 is inclusive final index
+
 
 
 

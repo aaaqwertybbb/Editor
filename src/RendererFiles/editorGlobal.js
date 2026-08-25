@@ -7325,18 +7325,20 @@ comments from EDITOR_removeSelection(cursor) that may or may not be useful idk I
 
 /** TODO: this is nearly identical to backspace, the difference is the check 'if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_DeleteLtr)', thus dedupe the logic or no? */
 function EDITOR_render_do_Delete() {
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_DeleteLtr) {
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_DeleteLtr) {
         return;
     }
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
         walkLineUntilIndexColumn();
 
         if (!w_span || w_indexColumn_SpanTextContentRelative < 0) {
             // TODO: this
         }
         else {
-            let remaining = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] - EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement];
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+            let remaining = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] - local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement];
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
             while (remaining > 0) {
                 // When the cursor is at the end of a span, there is no text to delete, because the text starts in the next span.
                 let available = w_span.textContent.length - w_indexColumn_SpanTextContentRelative;
@@ -7363,7 +7365,7 @@ function EDITOR_render_do_Delete() {
                         // Extreme cancellation logic whenever finalizeEdit runs, if there were any pending specific draws, skip them and force full screen redraw
                         // would permit a bridge of having the code work as I narrow down the edge cases more and more maybe.
                         //
-                        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] < EDITOR_lineEndPositionList.count - 1) {
+                        if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] < EDITOR_lineEndPositionList.count - 1) {
 
                             remaining--;
 
@@ -7378,9 +7380,9 @@ function EDITOR_render_do_Delete() {
                             // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
                             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-                            let beltIndexLine_next = ((EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] + 1) + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+                            let beltIndexLine_next = ((local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] + 1) + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
                             if (beltIndexLine_next >= ArrayFrom_textElement_children_length || beltIndexLine_next < 0) beltIndexLine_next = -1;
-                            else beltIndexLine_next = (beltIndexLine_next + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+                            else beltIndexLine_next = (beltIndexLine_next + EDITOR_beltIndexZero) % local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
                             if (beltIndexLine_next >= 0) {
                                 let keepingDiv = w_div;
@@ -7405,9 +7407,9 @@ function EDITOR_render_do_Delete() {
                                 // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
                                 // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-                                let beltIndexLine_last = ((EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1) + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+                                let beltIndexLine_last = ((local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1) + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
                                 if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
-                                else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+                                else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
                                 EDITOR_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last, beltIndexLine_next, 1);
                             }
@@ -7432,14 +7434,16 @@ function EDITOR_state_do_Delete(event) {
         return;
     }
 
-    let virtual_cursorIndexLine = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] + EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount];
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
+    let virtual_cursorIndexLine = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] + local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount];
 
     let virtual_cursorIndexColumn;
     if (EDITOR_cursor_edit_flagLineChanged === -1) {
-        virtual_cursorIndexColumn = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+        virtual_cursorIndexColumn = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
     }
     else {
-        virtual_cursorIndexColumn = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] - EDITOR_cursor_edit_flagLineChanged;
+        virtual_cursorIndexColumn = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] - EDITOR_cursor_edit_flagLineChanged;
     }
 
     let lineEnd = EDITOR_getLineEnd_pos_raw(virtual_cursorIndexLine);
@@ -7454,11 +7458,11 @@ function EDITOR_state_do_Delete(event) {
 
             // flag the current editlength whenever u change lines so you can check the editlength relative to the line
 
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount]++;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount]++;
             EDITOR_lineEndPositionList_PENDING.insert(EDITOR_lineEndPositionList_PENDING.count, lineEnd);
 
-            EDITOR_cursor_edit_flagLineChanged = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+            EDITOR_cursor_edit_flagLineChanged = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
 
             EDITOR_render_request(ENUM_RenderKind_DeleteLtr);
         }
@@ -7469,9 +7473,9 @@ function EDITOR_state_do_Delete(event) {
     }
     else {
         if (event.ctrlKey) {
-            // EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] is intended to be equal due to the batch requirements / a new edit would also be equal.
-            let tempIndexColumn = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
-            let tempPosition = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition];
+            // local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] is intended to be equal due to the batch requirements / a new edit would also be equal.
+            let tempIndexColumn = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+            let tempPosition = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition];
 
 
             let originalCharacterKind;
@@ -7486,9 +7490,9 @@ function EDITOR_state_do_Delete(event) {
             
             tempIndexColumn++;
             tempPosition++;
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
             
-            while (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] < lastValidIndexColumn) {
+            while (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] < lastValidIndexColumn) {
                 if (tempIndexColumn < lineEnd) {
                     thisCharacterKind = getCharacter_kind_raw(tempPosition);
                 }
@@ -7500,11 +7504,11 @@ function EDITOR_state_do_Delete(event) {
                 }
                 tempIndexColumn++;
                 tempPosition++;
-                EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
+                local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
             }
         }
         else {
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
         }
 
         EDITOR_render_request(ENUM_RenderKind_DeleteLtr);
@@ -7520,19 +7524,22 @@ function EDITOR_deleteDo(event) {
 }
 
 function EDITOR_render_do_Backspace() {
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_BackspaceRtl) {
+
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_BackspaceRtl) {
         return;
     }
 
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
         walkLineUntilIndexColumn();
 
         if (!w_span || w_indexColumn_SpanTextContentRelative < 0) {
             // TODO: this
         }
         else {
-            let remaining = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] - EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement];
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+            let remaining = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] - local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement];
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
             while (remaining > 0) {
                 let available = w_span.textContent.length - w_indexColumn_SpanTextContentRelative;
                 let count = remaining > available ? available : remaining;
@@ -7552,7 +7559,7 @@ function EDITOR_render_do_Backspace() {
     
                 if (remaining > 0) {
                     if (w_indexSpan >= w_div.children.length) {
-                        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] < EDITOR_lineEndPositionList.count - 1) {
+                        if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] < EDITOR_lineEndPositionList.count - 1) {
 
                             remaining--;
 
@@ -7567,9 +7574,9 @@ function EDITOR_render_do_Backspace() {
                             // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
                             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-                            let beltIndexLine_next = ((EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] + 1) + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+                            let beltIndexLine_next = ((local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] + 1) + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
                             if (beltIndexLine_next >= ArrayFrom_textElement_children_length || beltIndexLine_next < 0) beltIndexLine_next = -1;
-                            else beltIndexLine_next = (beltIndexLine_next + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+                            else beltIndexLine_next = (beltIndexLine_next + EDITOR_beltIndexZero) % local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
                             if (beltIndexLine_next >= 0) {
                                 let keepingDiv = w_div;
@@ -7594,9 +7601,9 @@ function EDITOR_render_do_Backspace() {
                                 // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
                                 // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-                                let beltIndexLine_last = ((EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1) + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+                                let beltIndexLine_last = ((local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1) + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
                                 if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
-                                else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+                                else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
                                 EDITOR_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last, beltIndexLine_next, 1);
                             }

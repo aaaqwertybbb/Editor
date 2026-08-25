@@ -3863,7 +3863,7 @@ function EDITOR_preKeyboardMovementSelectionLogic(shiftKey) {
 /**
  * @param {*} shiftKey 
  */
-function EDITOR_postKeyboardMovementSelectionLogic(cursor, shiftKey) {
+function EDITOR_postKeyboardMovementSelectionLogic(shiftKey) {
     if (shiftKey) {
         EDITOR_cursor_selectionEnd = EDITOR_getPositionIndex_cursor();
         EDITOR_cursor_selectionIndexEndLine = EDITOR_cursor_indexLine;
@@ -3875,7 +3875,7 @@ function EDITOR_postKeyboardMovementSelectionLogic(cursor, shiftKey) {
  * @param {*} shiftKey 
  */
 function EDITOR_arrowDown(shiftKey) {
-    EDITOR_movementBasedCacheInvalidation(cursor);
+    EDITOR_movementBasedCacheInvalidation();
     EDITOR_preKeyboardMovementSelectionLogic(shiftKey);
     if (EDITOR_cursor_indexLine < EDITOR_lineEndPositionList.count - 1) {
         EDITOR_cursor_indexLine++;
@@ -3887,7 +3887,7 @@ function EDITOR_arrowDown(shiftKey) {
             EDITOR_cursor_indexColumn = EDITOR_cursor_STORED_indexColumn;
         }
     }
-    EDITOR_postKeyboardMovementSelectionLogic(cursor, shiftKey);
+    EDITOR_postKeyboardMovementSelectionLogic(shiftKey);
 }
 
 /**
@@ -3958,7 +3958,7 @@ function EDITOR_editEvent(editKind, event, clipboardContent) {
         if (atLeastOneCursorHasASelection) {
             shouldFinalizeAllCursors = true;
             if (EDITOR_cursor_hasSelection()) {
-                EDITOR_removeSelection(cursor);
+                EDITOR_removeSelection();
             }
         }
         if (shouldFinalizeAllCursors) {
@@ -4037,7 +4037,7 @@ function EDITOR_editEvent(editKind, event, clipboardContent) {
 }
 
 function EDITOR_editEvent_theEditIself_InsertLtr(event) {
-    EDITOR_movementBasedCacheInvalidation(cursor);
+    EDITOR_movementBasedCacheInvalidation();
     if (EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== EDITOR_cursor_indexLine) {
         EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = EDITOR_cursor_indexLine;
         EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
@@ -4045,9 +4045,9 @@ function EDITOR_editEvent_theEditIself_InsertLtr(event) {
     // You can do this because the function 'EDITOR_NOTcanBatch_insert' was already checked for all the cursors, if it is possible to batch, the editKind will stay InsertLtr otherwise it is finalized and set to None.
     // TODO: Use if === ENUM_EditKind_None for copy and paste safety / it might just even be more readable
     if (EDITOR_cursor_editKind !== ENUM_EditKind_InsertLtr) {
-        EDITOR_startEdit(cursor, ENUM_EditKind_InsertLtr, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
+        EDITOR_startEdit(ENUM_EditKind_InsertLtr, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
     }
-    EDITOR_insertDo(cursor, event.key);
+    EDITOR_insertDo(event.key);
     EDITOR_cursor_STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     //EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] + EDITOR_cursor_editLength;
@@ -4056,19 +4056,19 @@ function EDITOR_editEvent_theEditIself_InsertLtr(event) {
 }
 
 function EDITOR_editEvent_theEditIself_DeleteLtr(event) {
-    EDITOR_movementBasedCacheInvalidation(cursor);
+    EDITOR_movementBasedCacheInvalidation();
     if (EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== EDITOR_cursor_indexLine) {
         EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = EDITOR_cursor_indexLine;
         EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
     }
     if (EDITOR_cursor_hasSelection()) {
-        EDITOR_removeSelection(cursor);
+        EDITOR_removeSelection();
     }
     else {
         if (EDITOR_cursor_editKind !== ENUM_EditKind_DeleteLtr) {
-            EDITOR_startEdit(cursor, ENUM_EditKind_DeleteLtr, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
+            EDITOR_startEdit(ENUM_EditKind_DeleteLtr, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
         }
-        EDITOR_deleteDo(cursor, event);
+        EDITOR_deleteDo(event);
     }
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     //EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] - EDITOR_cursor_editLength;
@@ -4076,19 +4076,19 @@ function EDITOR_editEvent_theEditIself_DeleteLtr(event) {
 }
 
 function EDITOR_editEvent_theEditIself_BackspaceRtl(event) {
-    EDITOR_movementBasedCacheInvalidation(cursor);
+    EDITOR_movementBasedCacheInvalidation();
     if (EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== EDITOR_cursor_indexLine) {
         EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = EDITOR_cursor_indexLine;
         EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
     }
     if (EDITOR_cursor_hasSelection()) {
-        EDITOR_removeSelection(cursor);
+        EDITOR_removeSelection();
     }
     else {
         if (EDITOR_cursor_editKind !== ENUM_EditKind_BackspaceRtl) {
-            EDITOR_startEdit(cursor, ENUM_EditKind_BackspaceRtl, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
+            EDITOR_startEdit(ENUM_EditKind_BackspaceRtl, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
         }
-        EDITOR_backspaceDo(cursor, event);
+        EDITOR_backspaceDo(event);
         EDITOR_cursor_STORED_indexColumn = EDITOR_cursor_indexColumn;
     }
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
@@ -4097,19 +4097,19 @@ function EDITOR_editEvent_theEditIself_BackspaceRtl(event) {
 }
 
 function EDITOR_editEvent_theEditIself_Tab(event) {
-    EDITOR_movementBasedCacheInvalidation(cursor);
+    EDITOR_movementBasedCacheInvalidation();
     if (EDITOR_cursor_hasSelection()) {
         if (event.shiftKey) {
             if (EDITOR_cursor_editKind !== ENUM_EditKind_IndentLess) {
-                EDITOR_startEdit(cursor, ENUM_EditKind_IndentLess, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
+                EDITOR_startEdit(ENUM_EditKind_IndentLess, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
             }
-            EDITOR_indentLess(cursor);
+            EDITOR_indentLess();
         }
         else {
             if (EDITOR_cursor_editKind !== ENUM_EditKind_IndentMore) {
-                EDITOR_startEdit(cursor, ENUM_EditKind_IndentMore, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
+                EDITOR_startEdit(ENUM_EditKind_IndentMore, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
             }
-            EDITOR_indentMore(cursor);
+            EDITOR_indentMore();
         }
     }
     else {
@@ -4120,15 +4120,15 @@ function EDITOR_editEvent_theEditIself_Tab(event) {
             // towards a useable editor all the features are coming together but there's this awkward phase of "I can start using it but also not really" or something I just idk.
             EDITOR_onMouseDownDetailRankThree(0, false, EDITOR_cursor_indexLine, EDITOR_cursor_indexColumn);
             if (EDITOR_cursor_editKind !== ENUM_EditKind_IndentLess) {
-                EDITOR_startEdit(cursor, ENUM_EditKind_IndentLess, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
+                EDITOR_startEdit(ENUM_EditKind_IndentLess, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
             }
-            EDITOR_indentLess(cursor);
+            EDITOR_indentLess();
         }
         else {
             if (EDITOR_cursor_editKind !== ENUM_EditKind_Tab) {
-                EDITOR_startEdit(cursor, ENUM_EditKind_Tab, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
+                EDITOR_startEdit(ENUM_EditKind_Tab, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
             }
-            EDITOR_tabKey(cursor);
+            EDITOR_tabKey();
         }
     }
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
@@ -4136,9 +4136,9 @@ function EDITOR_editEvent_theEditIself_Tab(event) {
 
 function EDITOR_editEvent_theEditIself_Enter(event) {
     if (EDITOR_cursor_editKind !== ENUM_EditKind_Enter) {
-        EDITOR_startEdit(cursor, ENUM_EditKind_Enter, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
+        EDITOR_startEdit(ENUM_EditKind_Enter, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
     }
-    EDITOR_EnterKey(cursor, event.ctrlKey, event.shiftKey);
+    EDITOR_EnterKey(event.ctrlKey, event.shiftKey);
     EDITOR_cursor_STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     //EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] = EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] + 1;
@@ -4146,18 +4146,18 @@ function EDITOR_editEvent_theEditIself_Enter(event) {
 
 function EDITOR_editEvent_theEditIself_Paste(clipboardContent) {
     if (EDITOR_cursor_editKind !== ENUM_EditKind_Enter) {
-        EDITOR_startEdit(cursor, ENUM_EditKind_Paste, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
+        EDITOR_startEdit(ENUM_EditKind_Paste, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
     }
-    EDITOR_paste(cursor, clipboardContent);
+    EDITOR_paste(clipboardContent);
     EDITOR_cursor_STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
 }
 
 function EDITOR_editEvent_theEditIself_Duplicate() {
     if (EDITOR_cursor_editKind !== ENUM_EditKind_Duplicate) {
-        EDITOR_startEdit(cursor, ENUM_EditKind_Duplicate, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
+        EDITOR_startEdit(ENUM_EditKind_Duplicate, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
     }
-    EDITOR_duplicateSelection(cursor);
+    EDITOR_duplicateSelection();
     EDITOR_cursor_STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
 }
@@ -4499,7 +4499,7 @@ function EDITOR_onKeyDown_ArrowLeft(event) {
     event.preventDefault();
     event.stopPropagation();
 
-    EDITOR_movementBasedCacheInvalidation(cursor);
+    EDITOR_movementBasedCacheInvalidation();
     if (EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== EDITOR_cursor_indexLine) {
         EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = EDITOR_cursor_indexLine;
         EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
@@ -4548,7 +4548,7 @@ function EDITOR_onKeyDown_ArrowLeft(event) {
                 EDITOR_cursor_indexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
             }
         }
-        EDITOR_postKeyboardMovementSelectionLogic(cursor, event.shiftKey);
+        EDITOR_postKeyboardMovementSelectionLogic(event.shiftKey);
     }
     EDITOR_cursor_STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
@@ -4586,7 +4586,7 @@ function EDITOR_onKeyDown_ArrowUp(event) {
         EDITOR_baseElement.scrollBy(0, -1 * EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]);
     }
     else {
-        EDITOR_movementBasedCacheInvalidation(cursor);
+        EDITOR_movementBasedCacheInvalidation();
         EDITOR_preKeyboardMovementSelectionLogic(event.shiftKey);
         if (EDITOR_cursor_indexLine > 0) {
             EDITOR_cursor_indexLine--;
@@ -4598,7 +4598,7 @@ function EDITOR_onKeyDown_ArrowUp(event) {
                 EDITOR_cursor_indexColumn = EDITOR_cursor_STORED_indexColumn;
             }
         }
-        EDITOR_postKeyboardMovementSelectionLogic(cursor, event.shiftKey);
+        EDITOR_postKeyboardMovementSelectionLogic(event.shiftKey);
         EDITOR_render_request(ENUM_RenderKind_Cursor_n);
         if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
             EDITOR_cursorBlink_startChecking();
@@ -4611,7 +4611,7 @@ function EDITOR_onKeyDown_ArrowRight(event) {
     event.preventDefault();
     event.stopPropagation();
 
-    EDITOR_movementBasedCacheInvalidation(cursor);
+    EDITOR_movementBasedCacheInvalidation();
     if (EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== EDITOR_cursor_indexLine) {
         EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = EDITOR_cursor_indexLine;
         EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
@@ -4661,7 +4661,7 @@ function EDITOR_onKeyDown_ArrowRight(event) {
                 EDITOR_cursor_indexLine++;
             }
         }
-        EDITOR_postKeyboardMovementSelectionLogic(cursor, event.shiftKey);
+        EDITOR_postKeyboardMovementSelectionLogic(event.shiftKey);
     }
     EDITOR_cursor_STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
@@ -4677,14 +4677,14 @@ function EDITOR_onKeyDown_Home(event) {
     event.preventDefault();
     event.stopPropagation();
 
-    EDITOR_movementBasedCacheInvalidation(cursor);
+    EDITOR_movementBasedCacheInvalidation();
     EDITOR_preKeyboardMovementSelectionLogic(event.shiftKey);
     if (event.ctrlKey) {
         EDITOR_cursor_indexLine = 0;
         EDITOR_cursor_indexColumn = 0;
     }
     else {
-        let endExclusiveIndentationIndexColumn = EDITOR_findEndExclusiveIndentationIndexColumn(cursor);
+        let endExclusiveIndentationIndexColumn = EDITOR_findEndExclusiveIndentationIndexColumn();
         if (EDITOR_cursor_indexColumn == endExclusiveIndentationIndexColumn) {
             EDITOR_cursor_indexColumn = 0;
         }
@@ -4692,7 +4692,7 @@ function EDITOR_onKeyDown_Home(event) {
             EDITOR_cursor_indexColumn = endExclusiveIndentationIndexColumn;
         }
     }
-    EDITOR_postKeyboardMovementSelectionLogic(cursor, event.shiftKey);
+    EDITOR_postKeyboardMovementSelectionLogic(event.shiftKey);
     EDITOR_cursor_STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
@@ -4706,13 +4706,13 @@ function EDITOR_onKeyDown_End(event) {
     event.preventDefault();
     event.stopPropagation();
 
-    EDITOR_movementBasedCacheInvalidation(cursor);
+    EDITOR_movementBasedCacheInvalidation();
     EDITOR_preKeyboardMovementSelectionLogic(event.shiftKey);
     if (event.ctrlKey) {
         EDITOR_cursor_indexLine = EDITOR_lineEndPositionList.count - 1;
     }
     EDITOR_cursor_indexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
-    EDITOR_postKeyboardMovementSelectionLogic(cursor, event.shiftKey);
+    EDITOR_postKeyboardMovementSelectionLogic(event.shiftKey);
     EDITOR_cursor_STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
@@ -5370,14 +5370,11 @@ function EDITOR_render_do_IndentMore() {
         }
 
         // # Draw the cursor
-        EDITOR_createStyleForSelection_indentMore(cursor);
+        EDITOR_createStyleForSelection_indentMore();
     }
 }
 
-/**
- * @param {EDITOR_Cursor} cursor 
- */
-function EDITOR_indentMore(cursor) {
+function EDITOR_indentMore() {
 
     // TODO: You need to move the logic that moves the tracked syntax to the finalize edit.
 
@@ -5593,10 +5590,7 @@ function EDITOR_render_do_IndentLess() {
     }
 }
 
-/**
- * @param {EDITOR_Cursor} cursor 
- */
-function EDITOR_indentLess(cursor) {
+function EDITOR_indentLess() {
 
     // everything in indentMore / indentLess likely needs to use the '_raw' variants for each function.
     // as for indentLess, it likely HAS to be written correctly.
@@ -5652,7 +5646,6 @@ function EDITOR_indentLess(cursor) {
 
 /**
  * Invoking 'EDITOR_finalizeAllCursors()' is a good idea prior to invoking this. Long term perhaps this won't be so important.
- * @param {*} cursor 
  */
 async function EDITOR_copySelection() {
 	if (!EDITOR_cursor_hasSelection()) {
@@ -5676,9 +5669,8 @@ async function EDITOR_copySelection() {
 
 /**
  * Invoking 'EDITOR_finalizeAllCursors()' is a good idea prior to invoking this. Long term perhaps this won't be so important.
- * @param {EDITOR_Cursor} cursor 
  */
-async function EDITOR_duplicateSelection(cursor) {
+async function EDITOR_duplicateSelection() {
 	if (!EDITOR_cursor_hasSelection()) {
 		// TODO: This code has a bug and doesn't work with multicursor... EDITOR_onMouseDownDetailRankThree needs to accept a cursor rather than acting on EDITOR_primaryCursor...
         // ...these days the todo is somewhat incorrect, it takes cursor now, but you'd need to check whether this causes the selection of two cursors to overlap.
@@ -5756,7 +5748,7 @@ function EDITOR_render_do_DuplicateOrPaste() {
             byteArray = EDITOR_textByteList.bytes.subarray(small, large);
         }
         else if (EDITOR_cursor_editKind === ENUM_EditKind_Paste) {
-            large = EDITOR_getPositionIndex_raw(cursor);
+            large = EDITOR_getPositionIndex_raw_cursor();
             let clipboardContent = EDITOR_cursor_EDITOR_paste_clipboardContent;
             let clipboardContentLength = clipboardContent.length;
 
@@ -5827,7 +5819,7 @@ function EDITOR_render_do_DuplicateOrPaste() {
             throw Error();
         }
 
-        walkLineUntilIndexColumn(cursor);
+        walkLineUntilIndexColumn();
         if (w_indexColumn_Goal === -1 || !w_div || w_div.children.length === 0) {
             // TODO: silent error bad
             alert('// EDITOR_paste TODO: silent error bad');
@@ -5919,7 +5911,7 @@ function EDITOR_render_do_DuplicateOrPaste() {
                         DUPLICATE_writeLinefeed();
                         break;
                     case 2/*wordLetterOrDigit*/:
-                        EDITOR_duplicate_and_paste_writeWord(wordLength, cursor, EDITOR_decoder.decode(byteArray.subarray(wordStart, wordStart + wordLength)));
+                        EDITOR_duplicate_and_paste_writeWord(wordLength, EDITOR_decoder.decode(byteArray.subarray(wordStart, wordStart + wordLength)));
                         last_valid_indexColumn_currentLine += wordLength;
                         wordStart = 0;
                         wordLength = 0;
@@ -5972,7 +5964,7 @@ function EDITOR_render_do_DuplicateOrPaste() {
         function DUPLICATE_writeLinefeed() {
             if (!hasSeenLinefeed) {
                 hasSeenLinefeed = true;
-                shouldPreserveCssClassWhenSplittingAmongLine = EDITOR_duplicate_and_paste_handleNotHasSeenLinefeed(hasSeenLinefeed, original_indexColumn_SpanTextContentRelative, original_span_textContent_length, positionIndex, cursor);
+                shouldPreserveCssClassWhenSplittingAmongLine = EDITOR_duplicate_and_paste_handleNotHasSeenLinefeed(hasSeenLinefeed, original_indexColumn_SpanTextContentRelative, original_span_textContent_length, positionIndex);
             }
 
             // TODO: this is a very lazy solution to the problem, likely a more optimal way is available. Also name the variable?
@@ -6082,7 +6074,7 @@ function EDITOR_render_do_DuplicateOrPaste() {
             linefeedLength = 0;
         }
 
-        function EDITOR_duplicate_and_paste_writeWord(wordLength, cursor, word) {
+        function EDITOR_duplicate_and_paste_writeWord(wordLength, word) {
             w_span.textContent = 
                 w_span.textContent.slice(0, w_indexColumn_SpanTextContentRelative) +
                 word +
@@ -6095,7 +6087,6 @@ function EDITOR_render_do_DuplicateOrPaste() {
 }
 
 /**
- * @param {EDITOR_Cursor} cursor 
  * @param {*} content 
  */
 function EDITOR_paste(content) {
@@ -6174,7 +6165,7 @@ function EDITOR_paste(content) {
             case '\n':
                 //
                 if (wordLength > 0) {
-                    //EDITOR_duplicate_and_paste_writeWord(wordLength, cursor, content.substring(wordStart, wordStart + wordLength));
+                    //EDITOR_duplicate_and_paste_writeWord(wordLength, content.substring(wordStart, wordStart + wordLength));
                     last_valid_indexColumn_currentLine += wordLength;
                     wordStart = 0;
                     wordLength = 0;
@@ -6189,7 +6180,7 @@ function EDITOR_paste(content) {
             case '\r':
                 //
                 if (wordLength > 0) {
-                    //EDITOR_duplicate_and_paste_writeWord(wordLength, cursor, content.substring(wordStart, wordStart + wordLength));
+                    //EDITOR_duplicate_and_paste_writeWord(wordLength, content.substring(wordStart, wordStart + wordLength));
                     last_valid_indexColumn_currentLine += wordLength;
                     wordStart = 0;
                     wordLength = 0;
@@ -6207,7 +6198,7 @@ function EDITOR_paste(content) {
             case '\t':
                 //
                 if (wordLength > 0) {
-                    //EDITOR_duplicate_and_paste_writeWord(wordLength, cursor, content.substring(wordStart, wordStart + wordLength));
+                    //EDITOR_duplicate_and_paste_writeWord(wordLength, content.substring(wordStart, wordStart + wordLength));
                     last_valid_indexColumn_currentLine += wordLength;
                     wordStart = 0;
                     wordLength = 0;
@@ -6240,7 +6231,7 @@ function EDITOR_paste(content) {
     }
 
     if (wordLength > 0) {
-        //EDITOR_duplicate_and_paste_writeWord(wordLength, cursor, content.substring(wordStart, wordStart + wordLength));
+        //EDITOR_duplicate_and_paste_writeWord(wordLength, content.substring(wordStart, wordStart + wordLength));
         last_valid_indexColumn_currentLine += wordLength;
         wordStart = 0;
         wordLength = 0;
@@ -6262,7 +6253,7 @@ function EDITOR_paste(content) {
 /**
  * @returns {boolean} 'shouldPreserveCssClassWhenSplittingAmongLine'
  */
-function EDITOR_duplicate_and_paste_handleNotHasSeenLinefeed(hasSeenLinefeed, original_indexColumn_SpanTextContentRelative, original_span_textContent_length, indexPosition, cursor) {
+function EDITOR_duplicate_and_paste_handleNotHasSeenLinefeed(hasSeenLinefeed, original_indexColumn_SpanTextContentRelative, original_span_textContent_length, indexPosition) {
     // The only way to invoke this is if you encountered a linefeed for the first time,
     // therefore 'w_span' is the original span and no variable for the original needs to be made.
     // (unless in the future you don't end up using the w_span in some way or etc...)
@@ -6302,7 +6293,7 @@ function EDITOR_render_do_TabKey() {
 
         EDITOR_cursor_indexColumn -= 4; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
 
-        walkLineUntilIndexColumn(cursor);
+        walkLineUntilIndexColumn();
 
         if (w_indexColumn_Goal === -1 || !w_div || w_div.children.length === 0) {
             // TODO: silent error bad
@@ -6324,10 +6315,7 @@ function EDITOR_render_do_TabKey() {
     }
 }
 
-/**
- * @param {EDITOR_Cursor} cursor 
- */
-function EDITOR_tabKey(cursor) {
+function EDITOR_tabKey() {
 
     if (EDITOR_cursor_editLength === 0) {
         EDITOR_cursor_editPosition = EDITOR_getPositionIndex_cursor();
@@ -6343,10 +6331,9 @@ function EDITOR_tabKey(cursor) {
 }
 
 /**
- * @param {EDITOR_Cursor} cursor 
  * @returns the COLUMN index that exclusively ends the indentation.
  */
-function EDITOR_findEndExclusiveIndentationIndexColumn(cursor) {
+function EDITOR_findEndExclusiveIndentationIndexColumn() {
     let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
     let line = EDITOR_getLineBoundaryPositions(EDITOR_cursor_indexLine);
 
@@ -6370,10 +6357,10 @@ function EDITOR_findEndExclusiveIndentationIndexColumn(cursor) {
  * then only the first 2 space characters will be used as indentation.
  * 
  * This is intentional, it seems like the more expected behavior in my mind.
- * @param {EDITOR_Cursor} cursor 
+ *
  * @returns 
  */
-function EDITOR_cacheIndentation(cursor) {
+function EDITOR_cacheIndentation() {
     EDITOR_cursor_enterKey_newLinePlusIndentation_byteList = new ByteList(32);
     EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.insert(EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.count, CONST_EDITOR_ASCII_LINE_FEED);
     let indentationBuilder = [];
@@ -6600,7 +6587,7 @@ function EDITOR_render_do_EnterKey() {
                     let spanClassName = '';
                     let spanText = EDITOR_cursor_cached_indentation_string;
 
-                    walkLineUntilIndexColumn(cursor);
+                    walkLineUntilIndexColumn();
 
                     let shouldPreserveCssClassWhenSplittingAmongLine = false;
                     
@@ -6671,7 +6658,6 @@ function EDITOR_render_do_EnterKey() {
 }
 
 /**
- * @param {EDITOR_Cursor} cursor 
  * @param {boolean} ctrlKey 
  * @param {boolean} shiftKey 
  * @returns 
@@ -6684,9 +6670,9 @@ function EDITOR_render_do_EnterKey() {
  * - "end of line":
  * - "among a line":
  */
-function EDITOR_EnterKey(cursor, ctrlKey, shiftKey) {
+function EDITOR_EnterKey(ctrlKey, shiftKey) {
     if (!EDITOR_cursor_enterKey_newLinePlusIndentation_byteList)
-        EDITOR_cacheIndentation(cursor);
+        EDITOR_cacheIndentation();
 
     if (ctrlKey) EDITOR_cursor_indexColumn = 0;
     else if (shiftKey) EDITOR_cursor_indexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
@@ -6695,7 +6681,7 @@ function EDITOR_EnterKey(cursor, ctrlKey, shiftKey) {
 
         EDITOR_cursor_enterKeyEventKind = ENUM_EnterKeyEventKind_None;
 
-        EDITOR_cursor_editPosition = EDITOR_getPositionIndex_raw(cursor);
+        EDITOR_cursor_editPosition = EDITOR_getPositionIndex_raw_cursor();
         EDITOR_cursor_editIndexLine = EDITOR_cursor_indexLine;
         EDITOR_cursor_editIndexColumn = EDITOR_cursor_indexColumn;
     }
@@ -6954,10 +6940,9 @@ And then I got response of
 /**
  * TODO: This function uses 'EDITOR_getLineAndColumnIndices' but it needs to be raw.
  * 
- * @param {EDITOR_Cursor} cursor 
  * @returns 
  */
-function EDITOR_removeSelection(cursor) {
+function EDITOR_removeSelection() {
     if (EDITOR_cursor_editKind != ENUM_EditKind_None) {
         // TODO: multicursor confusion scenario is likely to happy due to this code, but the code isn't related enough for me to change it yet.
         EDITOR_finalizeEdit();
@@ -6982,7 +6967,7 @@ function EDITOR_removeSelection(cursor) {
 
     let editLength = largePosition - smallPosition;
     // editLength is 0 in this ...startEdit invocation intentionally, you cannot set the editLength until the end (TODO: remember what the exact reason was and put it here... I think it was because 'EDITOR_readLineEndPositionList' function is used rather than reading directly)
-    EDITOR_startEdit(cursor, ENUM_EditKind_RemoveTextNoBatching, smallPosition, /*editLength*/ 0);
+    EDITOR_startEdit(ENUM_EditKind_RemoveTextNoBatching, smallPosition, /*editLength*/ 0);
 
     let smallLineAndColumnIndices = EDITOR_getLineAndColumnIndices(smallPosition);
     EDITOR_RemoveSelection_smallLineAndColumnIndices = smallLineAndColumnIndices;
@@ -7121,7 +7106,7 @@ function EDITOR_render_do_RemoveSelection() {
             EDITOR_cursor_indexLine = smallLineAndColumnIndices.indexLine;
             EDITOR_cursor_indexColumn = smallLineAndColumnIndices.indexColumn;
 
-            walkLineUntilIndexColumn(cursor);
+            walkLineUntilIndexColumn();
             
             let lineBoundaryPositions = EDITOR_getLineBoundaryPositions(EDITOR_cursor_indexLine);
             let remaining;
@@ -7168,7 +7153,7 @@ function EDITOR_render_do_RemoveSelection() {
             let lineBoundaryPositions = EDITOR_getLineBoundaryPositions(EDITOR_cursor_indexLine);
             let remaining = largePosition - lineBoundaryPositions.start;
 
-            walkLineUntilIndexColumn(cursor);
+            walkLineUntilIndexColumn();
 
             if (w_span && w_indexColumn_SpanTextContentRelative >= 0) {
                 largeLineDiv = w_div;
@@ -7322,7 +7307,7 @@ function EDITOR_render_do_Delete() {
         return;
     }
     if (EDITOR_cursor_editRenderedDisplacement < EDITOR_cursor_editLength) {
-        walkLineUntilIndexColumn(cursor);
+        walkLineUntilIndexColumn();
 
         if (!w_span || w_indexColumn_SpanTextContentRelative < 0) {
             // TODO: this
@@ -7361,7 +7346,7 @@ function EDITOR_render_do_Delete() {
                             remaining--;
 
                             if (w_span.className === 'eCM') {
-                                EDITOR_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine(cursor);
+                                EDITOR_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine();
                             }
 
                             // Merge the lines if both are visible.
@@ -7419,10 +7404,9 @@ function EDITOR_render_do_Delete() {
     }
 }
 
-/** @param {EDITOR_Cursor} cursor  */
-function EDITOR_state_do_Delete(cursor, event) {
+function EDITOR_state_do_Delete(event) {
     if (EDITOR_cursor_hasSelection()) {
-        EDITOR_removeSelection(cursor);
+        EDITOR_removeSelection();
         return;
     }
 
@@ -7506,12 +7490,11 @@ function EDITOR_state_do_Delete(cursor, event) {
 }
 
 /**
- * @param {EDITOR_Cursor} cursor 
  * @param {*} event 
  * @returns 
  */
-function EDITOR_deleteDo(cursor, event) {
-    EDITOR_state_do_Delete(cursor, event);
+function EDITOR_deleteDo(event) {
+    EDITOR_state_do_Delete(event);
 }
 
 function EDITOR_render_do_Backspace() {
@@ -7520,7 +7503,7 @@ function EDITOR_render_do_Backspace() {
     }
 
     if (EDITOR_cursor_editRenderedDisplacement < EDITOR_cursor_editLength) {
-        walkLineUntilIndexColumn(cursor);
+        walkLineUntilIndexColumn();
 
         if (!w_span || w_indexColumn_SpanTextContentRelative < 0) {
             // TODO: this
@@ -7552,7 +7535,7 @@ function EDITOR_render_do_Backspace() {
                             remaining--;
 
                             if (w_span.className === 'eCM') {
-                                EDITOR_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine(cursor);
+                                EDITOR_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine();
                             }
 
                             // Merge the lines if both are visible.
@@ -7610,9 +7593,9 @@ function EDITOR_render_do_Backspace() {
     }
 }
 
-function EDITOR_state_do_Backspace(cursor, event) {
+function EDITOR_state_do_Backspace(event) {
     if (EDITOR_cursor_hasSelection()) {
-        EDITOR_removeSelection(cursor);
+        EDITOR_removeSelection();
         return;
     }
     
@@ -7670,12 +7653,11 @@ function EDITOR_state_do_Backspace(cursor, event) {
 }
 
 /**
- * @param {EDITOR_Cursor} cursor 
  * @param {*} event 
  * @returns 
  */
-function EDITOR_backspaceDo(cursor, event) {
-    EDITOR_state_do_Backspace(cursor, event);
+function EDITOR_backspaceDo(event) {
+    EDITOR_state_do_Backspace(event);
 
     // EDITOR_render_request(ENUM_RenderKind_BackspaceRtl);
     //
@@ -7687,10 +7669,9 @@ function EDITOR_backspaceDo(cursor, event) {
 }
 
 /**
- * @param {EDITOR_Cursor} cursor 
  * @param {string} character 
  */
-function EDITOR_insertDo(cursor, character) {
+function EDITOR_insertDo(character) {
     /*
     TODO: (optimization idea) if you are inserting at the 0th or length position it might be worthwhile
     to have a conditional branch make the textContent with 1 less slice invocation.
@@ -7721,7 +7702,7 @@ function EDITOR_insertDo(cursor, character) {
     EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] = EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] + EDITOR_cursor_gapBufferCount;
 }
 
-function EDITOR_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine(cursor) {
+function EDITOR_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine() {
     // binary search for 'if (EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] > positionIndex)'
     let indexTrackedSyntax = EDITOR_drawViewPort_FindTrackedSyntax_StartingIndex(EDITOR_cursor_indexLine);
     if (indexTrackedSyntax === NaN || indexTrackedSyntax === -1) {
@@ -7767,9 +7748,6 @@ function EDITOR_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine(cursor) {
     }
 }
 
-/**
- * @param {EDITOR_Cursor} cursor 
- */
 function EDITOR_scrollCursorIntoView() {
     let scrollX = 0;
     let scrollY = 0;
@@ -7936,7 +7914,7 @@ function EDITOR_moveCursor_indexLine_indexColumn(indexLine, indexColumn) {
 
     EDITOR_cursor_indexLine = indexLine;
     
-    // TODO: selectionAnchor = selectionEnd; EDITOR_drawCursor(cursor); # being the way to clear a selection should be documented / wrapped by a method for ease of use / readability?
+    // TODO: selectionAnchor = selectionEnd; EDITOR_drawCursor(); # being the way to clear a selection should be documented / wrapped by a method for ease of use / readability?
     EDITOR_cursor_selectionAnchor = EDITOR_cursor_selectionEnd;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
 }

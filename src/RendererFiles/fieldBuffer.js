@@ -299,6 +299,9 @@ The global variable access of the UInt...Array can be offset by only doing it on
 Accessing a property on a class is not equivalent to accessing a variable.
 I don't know the difference but property accessing of a class is similar to accessing a global variable?
 Or maybe it only was if the prototype was large?
+
+I remember a bit now so for correctness: I'm pretty sure it is more a matter of
+if there's a large class or something that is close to a global variable in terms of accessing the property speed but I don't know.
 */
 
 

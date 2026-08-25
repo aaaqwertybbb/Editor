@@ -9323,4 +9323,6 @@ The main lyric from brokencyde monster inside me that I like is:
  I tried to listen to the lyrics with my ears but I can't understand what they're saying.
  Something like that.
 
+ brennan heart - don't speak
+
 */

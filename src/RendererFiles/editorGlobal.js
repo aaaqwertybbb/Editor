@@ -9234,4 +9234,10 @@ Is the cleaning chemicals in the food?
 
 I ate a leftovers.
 
+Cleaning chemicals in small amounts won't kill you it will just
+continually decrease the quality of your life
+as your body stops functioning like it used to.
+
+And you'll have to endure that reduced quality of life it is all the "perfect" scenario
+
 */

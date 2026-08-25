@@ -462,7 +462,7 @@ function DIALOG_checkboxEditorDebugShowAdjacentCharacters_onchange() {
     if (!checkboxEditorDebugShowAdjacentCharacters) return;
 
     DIALOG_Settings_editorDebugShowAdjacentCharacters = checkboxEditorDebugShowAdjacentCharacters.checked;
-    EDITOR_drawCursor(EDITOR_primaryCursor);
+    EDITOR_drawCursor();
 }
 
 async function DIALOG_DocumentSymbol_Create_async() {

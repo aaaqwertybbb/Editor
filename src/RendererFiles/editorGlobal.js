@@ -810,7 +810,7 @@ function EDITOR_render_do_Scroll(timestamp) {
     local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop] = local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop]; // TODO: Move this to the scroll event handler (probably-maybe)
 
     // TODO: Move this to the leading edge? (maybe)
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_None) {
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_None) {
         // TODO: Timing issue, someone typing while they scroll
         // TODO: You need to finalize all the cursors not just the primary
         // TODO: You probably need to "check all the cursors" too not just the primary

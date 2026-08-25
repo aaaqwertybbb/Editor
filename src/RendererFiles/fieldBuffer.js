@@ -283,6 +283,9 @@ const INDEXOF_EDITOR_cursor_editKind = 36;
 // TODO: Sort the field buffer entries so that everything the scroll render function needs is next to eachother...
 // ... / figure out details of caching so you read them all in one go if possible.
 
+// TODO: Move all the other smi's here
+// TODO: a local copy of 'EDITOR_int_fields' is likely always a meaningful performance gain once you've moved everything because of how much state is being stored here, but it still depends maybe some functions only access it once or something etc...
+
 
 
 

@@ -1279,9 +1279,9 @@ function EDITOR_state_clear() {
     
     // Explicitly inlining 'clearMulticursorState()' because it currently is and I just don't want to make a decision about this right now.
     // So what I can do is mark the code paragraph for later decision making.
-    set_EDITOR_indexCursor(0);
-    set_EDITOR_offsetLine(0);
-    set_EDITOR_offsetColumn_withRespectToThisIndexLine(0);
+    EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = 0;
     set_EDITOR_offsetColumn(0);
     set_EDITOR_totalShift(0);
     EDITOR_offsetWithinSpan_withRespectToThisSpan = null;
@@ -4323,10 +4323,10 @@ function EDITOR_editEvent(editKind, event, clipboardContent) {
 function EDITOR_editEvent_theEditIself_InsertLtr(event) {
     for (var i = 0; i < EDITOR_cursorList.length; i++) {
         let cursor = EDITOR_cursorList[i];
-        set_EDITOR_indexCursor(i);
+        EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = i;
         EDITOR_movementBasedCacheInvalidation(cursor);
         if (get_EDITOR_offsetColumn_withRespectToThisIndexLine() !== cursor.indexLine) {
-            set_EDITOR_offsetColumn_withRespectToThisIndexLine(cursor.indexLine);
+            EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = cursor.indexLine;
             set_EDITOR_offsetColumn(0);
         }
         // You can do this because the function 'EDITOR_NOTcanBatch_insert' was already checked for all the cursors, if it is possible to batch, the editKind will stay InsertLtr otherwise it is finalized and set to None.
@@ -4346,10 +4346,10 @@ function EDITOR_editEvent_theEditIself_InsertLtr(event) {
 function EDITOR_editEvent_theEditIself_DeleteLtr(event) {
     for (var i = 0; i < EDITOR_cursorList.length; i++) {
         let cursor = EDITOR_cursorList[i];
-        set_EDITOR_indexCursor(i);
+        EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = i;
         EDITOR_movementBasedCacheInvalidation(cursor);
         if (get_EDITOR_offsetColumn_withRespectToThisIndexLine() !== cursor.indexLine) {
-            set_EDITOR_offsetColumn_withRespectToThisIndexLine(cursor.indexLine);
+            EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = cursor.indexLine;
             set_EDITOR_offsetColumn(0);
         }
         if (cursor.hasSelection()) {
@@ -4370,10 +4370,10 @@ function EDITOR_editEvent_theEditIself_DeleteLtr(event) {
 function EDITOR_editEvent_theEditIself_BackspaceRtl(event) {
     for (var i = 0; i < EDITOR_cursorList.length; i++) {
         let cursor = EDITOR_cursorList[i];
-        set_EDITOR_indexCursor(i);
+        EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = i;
         EDITOR_movementBasedCacheInvalidation(cursor);
         if (get_EDITOR_offsetColumn_withRespectToThisIndexLine() !== cursor.indexLine) {
-            set_EDITOR_offsetColumn_withRespectToThisIndexLine(cursor.indexLine);
+            EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = cursor.indexLine;
             set_EDITOR_offsetColumn(0);
         }
         if (cursor.hasSelection()) {
@@ -4442,7 +4442,7 @@ function EDITOR_editEvent_theEditIself_Enter(event) {
         EDITOR_EnterKey(cursor, event.ctrlKey, event.shiftKey);
         cursor.STORED_indexColumn = cursor.indexColumn;
         EDITOR_render_request(ENUM_RenderKind_Cursor_n + i);
-        //set_EDITOR_offsetLine(EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] + 1);
+        //EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] = EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] + 1;
     }
 }
 
@@ -4751,9 +4751,9 @@ hmmm is google AI just hyping me up... I need to clarify that those few conditio
 function EDITOR_onKeyDown(event) {
     // Explicitly inlining 'clearMulticursorState()' because it currently is and I just don't want to make a decision about this right now.
     // So what I can do is mark the code paragraph for later decision making.
-    set_EDITOR_indexCursor(0);
-    set_EDITOR_offsetLine(0);
-    set_EDITOR_offsetColumn_withRespectToThisIndexLine(0);
+    EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = 0;
     set_EDITOR_offsetColumn(0);
     set_EDITOR_totalShift(0);
     EDITOR_offsetWithinSpan_withRespectToThisSpan = null;
@@ -4836,10 +4836,10 @@ function EDITOR_onKeyDown_ArrowLeft(event) {
             
     for (var i = 0; i < EDITOR_cursorList.length; i++) {
         let cursor = EDITOR_cursorList[i];
-        set_EDITOR_indexCursor(i);
+        EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = i;
         EDITOR_movementBasedCacheInvalidation(cursor);
         if (get_EDITOR_offsetColumn_withRespectToThisIndexLine() !== cursor.indexLine) {
-            set_EDITOR_offsetColumn_withRespectToThisIndexLine(cursor.indexLine);
+            EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = cursor.indexLine;
             set_EDITOR_offsetColumn(0);
         }
 
@@ -4976,10 +4976,10 @@ function EDITOR_onKeyDown_ArrowRight(event) {
 
     for (var i = 0; i < EDITOR_cursorList.length; i++) {
         let cursor = EDITOR_cursorList[i];
-        set_EDITOR_indexCursor(i);
+        EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = i;
         EDITOR_movementBasedCacheInvalidation(cursor);
         if (get_EDITOR_offsetColumn_withRespectToThisIndexLine() !== cursor.indexLine) {
-            set_EDITOR_offsetColumn_withRespectToThisIndexLine(cursor.indexLine);
+            EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = cursor.indexLine;
             set_EDITOR_offsetColumn(0);
         }
 
@@ -5275,9 +5275,9 @@ function EDITOR_onMouseDown(event) {
     }
     
     // TODO: You might want to do this inside 'EDITOR_finalizeAllCursors_andClearNonPrimaryCursors();' at the end... I'm not sure.
-    set_EDITOR_indexCursor(0);
+    EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = 0;
     set_EDITOR_offsetColumn(0);
-    set_EDITOR_offsetLine(0);
+    EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] = 0;
 
     if (get_EDITOR_recentBoundingClientRect_isNull_intFalsey()) {
         let boundingClientRect = EDITOR_baseElement.getBoundingClientRect();

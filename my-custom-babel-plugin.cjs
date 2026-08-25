@@ -10,17 +10,8 @@ module.exports = function (babel) {
 
     
 
-
     
     
-    
-    
-    
-    "set_EDITOR_indexCursor",
-    
-    "set_EDITOR_offsetLine",
-    
-    "set_EDITOR_offsetColumn_withRespectToThisIndexLine",
     
     "set_EDITOR_offsetColumn",
     

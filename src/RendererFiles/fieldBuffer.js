@@ -232,13 +232,10 @@ const INDEXOF_didChangeTextDocument_version = 17;
  * Then in any functions like getCharacter, I might be able to contextually find the character much faster.
  * */
 const INDEXOF_EDITOR_indexCursor = 18;
-const set_EDITOR_indexCursor = (int) => EDITOR_int_fields[18] = int;
 
 const INDEXOF_EDITOR_offsetLine = 19;
-const set_EDITOR_offsetLine = (int) => EDITOR_int_fields[19] = int;
 
 const INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine = 20;
-const set_EDITOR_offsetColumn_withRespectToThisIndexLine = (int) => EDITOR_int_fields[20] = int;
 
 const INDEXOF_EDITOR_offsetColumn = 21;
 const set_EDITOR_offsetColumn = (int) => EDITOR_int_fields[21] = int;

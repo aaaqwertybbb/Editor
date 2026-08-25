@@ -82,6 +82,7 @@ let EDITOR_cursor_STATIC_CURSOR_ID = 1;
 let EDITOR_cursor_GAP_BUFFER_CAPACITY = 32;
 
 let EDITOR_cursor_indexLine = 0;
+let EDITOR_cursor_indexColumn = 0;
 
 class EDITOR_Cursor {
     /**
@@ -93,8 +94,6 @@ class EDITOR_Cursor {
      * `EDITOR_cursorList.splice(index, 0, cursorInstance)`
      */
     constructor() {
-        
-        this.indexColumn = 0;
         /**
          * When moving cursor vertically, if the current column index cannot be matched due to the upcoming line being too short,
          * then this will allow a later vertical movement to a line that is long enough to match the original column rather than the minimized one.
@@ -214,7 +213,7 @@ class EDITOR_Cursor {
      */
     clear() {
         EDITOR_cursor_indexLine = 0;
-        this.indexColumn = 0;
+        EDITOR_cursor_indexColumn = 0;
         this.STORED_indexColumn = 0;
         this.cursorTranslateYValue = 0;
         this.cursorTranslateXValue = 0;
@@ -2020,7 +2019,7 @@ function EDITOR_finalizeEdit_IndentLess(cursor, indexLine_editOccurredOn) {
     //    }
 //
     //    if (EDITOR_cursor_indexLine === SMALL_lineAndColumnIndices_indexLine) {
-    //        cursor.indexColumn -= count;
+    //        EDITOR_cursor_indexColumn -= count;
     //    }
     //}
 
@@ -2068,7 +2067,7 @@ function EDITOR_finalizeEdit_IndentLess(cursor, indexLine_editOccurredOn) {
     //        }
     //    }*/
     //    //if (EDITOR_cursor_indexLine === LARGE_lineAndColumnIndices.indexLine) {
-    //    //    cursor.indexColumn -= count;
+    //    //    EDITOR_cursor_indexColumn -= count;
     //    //}
     //}
 
@@ -2619,7 +2618,7 @@ function walkLineUntilIndexColumn(cursor) {
     }
     
     let div = ArrayFrom_textElement_children[w_beltIndexLine];
-    let indexColumn_Goal = cursor.indexColumn + EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn];
+    let indexColumn_Goal = EDITOR_cursor_indexColumn + EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn];
     let indexColumn_Sum = 0;
 
     for (var indexSpan = 0; indexSpan < div.children.length; indexSpan++) {
@@ -2797,7 +2796,7 @@ function EDITOR_draw_all_cursors() {
  */
 function EDITOR_drawCursor(cursor, NOTscrollCursorIntoView) {
     cursor.cursorTranslateYValue = (EDITOR_cursor_indexLine + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) * EDITOR_int_fields[INDEXOF_EDITOR_lineHeight];
-    cursor.cursorTranslateXValue = (cursor.indexColumn + EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn]) * EDITOR_characterWidth;
+    cursor.cursorTranslateXValue = (EDITOR_cursor_indexColumn + EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn]) * EDITOR_characterWidth;
 
     cursor.caretRow.style.transform = `translateY(${cursor.cursorTranslateYValue}px)`;
     cursor.cursorElement.style.transform = `translateX(${cursor.cursorTranslateXValue}px)`;
@@ -2807,13 +2806,13 @@ function EDITOR_drawCursor(cursor, NOTscrollCursorIntoView) {
     if (cursor === EDITOR_primaryCursor) {
         let text = '';
 
-        text += '(' + EDITOR_cursor_indexLine + ', ' + cursor.indexColumn + ')';
+        text += '(' + EDITOR_cursor_indexLine + ', ' + EDITOR_cursor_indexColumn + ')';
         
         if (DIALOG_Settings_editorDebugShowAdjacentCharacters) {
-	        let previous = EDITOR_getCharacterPrevious(cursor.indexColumn, EDITOR_getPositionIndex(cursor));
+	        let previous = EDITOR_getCharacterPrevious(EDITOR_cursor_indexColumn, EDITOR_getPositionIndex(cursor));
 	        if (previous === '\n') previous = '\\n';
 	        else if (previous === '\t') previous = '\\t';
-	        let current = EDITOR_getCharacterCurrent(cursor.indexColumn, EDITOR_getPositionIndex(cursor), EDITOR_getLineEnd_pos(EDITOR_cursor_indexLine));
+	        let current = EDITOR_getCharacterCurrent(EDITOR_cursor_indexColumn, EDITOR_getPositionIndex(cursor), EDITOR_getLineEnd_pos(EDITOR_cursor_indexLine));
 	        if (current === '\n') current = '\\n';
 	        else if (current === '\t') current = '\\t';
 	        text += ' | (' + previous + ', ' + current + ')';
@@ -3282,12 +3281,12 @@ function EDITOR_onMouseMove_WRAPIT(event) {
 
         let cursor = EDITOR_primaryCursor;
 
-        if (EDITOR_cursor_indexLine === indexLine && cursor.indexColumn === indexColumn) {
+        if (EDITOR_cursor_indexLine === indexLine && EDITOR_cursor_indexColumn === indexColumn) {
             return;
         }
         
         EDITOR_cursor_indexLine = indexLine;
-        cursor.indexColumn = indexColumn;
+        EDITOR_cursor_indexColumn = indexColumn;
 
         if (get_EDITOR_detailRank() === 3) {
             EDITOR_onMouseMoveDetailRankThree(indexLine, indexColumn);
@@ -3312,7 +3311,7 @@ function EDITOR_onMouseMove_WRAPIT(event) {
 function EDITOR_onMouseMoveDetailRankOne(indexLineClicked, indexColumnClicked) {
     let cursor = EDITOR_primaryCursor;
     EDITOR_cursor_indexLine = indexLineClicked;
-    cursor.indexColumn = indexColumnClicked;
+    EDITOR_cursor_indexColumn = indexColumnClicked;
 
     cursor.selectionEnd = EDITOR_getPositionIndex(cursor);
 
@@ -3445,27 +3444,27 @@ function EDITOR_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
         }
 
         EDITOR_cursor_indexLine = indexLineClicked;
-        cursor.indexColumn = indexColumnClicked;
+        EDITOR_cursor_indexColumn = indexColumnClicked;
         let positionIndex = nextPositionIndex;
 
         cursor.selectionEnd = positionIndex;
 
         if (nextPositionIndex < EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]) {
-            let goalCharacterKind = EDITOR_getCharacterCurrent_KIND(cursor.indexColumn, positionIndex, EDITOR_getLineEnd_pos(EDITOR_cursor_indexLine));
+            let goalCharacterKind = EDITOR_getCharacterCurrent_KIND(EDITOR_cursor_indexColumn, positionIndex, EDITOR_getLineEnd_pos(EDITOR_cursor_indexLine));
 
             let leftWasFound = false;
 
             let tempPositionIndex = positionIndex;
 
-            while (cursor.indexColumn > 0) {
-                let leftCharacterKind = EDITOR_getCharacterPrevious_KIND(cursor.indexColumn, tempPositionIndex);
+            while (EDITOR_cursor_indexColumn > 0) {
+                let leftCharacterKind = EDITOR_getCharacterPrevious_KIND(EDITOR_cursor_indexColumn, tempPositionIndex);
                 if (leftCharacterKind !== goalCharacterKind) {
                     cursor.selectionEnd = tempPositionIndex;
                     leftWasFound = true;
                     break;
                 }
                 tempPositionIndex--;
-                cursor.indexColumn--;
+                EDITOR_cursor_indexColumn--;
             }
 
             if (!leftWasFound) {
@@ -3482,12 +3481,12 @@ function EDITOR_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
 
         if (nextPositionIndex >= EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition]) {
             EDITOR_cursor_indexLine = indexLineClicked;
-            cursor.indexColumn = indexColumnClicked;
+            EDITOR_cursor_indexColumn = indexColumnClicked;
             let positionIndex = nextPositionIndex;
 
             cursor.selectionEnd = positionIndex;
 
-            let leftCharacterKind = EDITOR_getCharacterPrevious_KIND(cursor.indexColumn, positionIndex);
+            let leftCharacterKind = EDITOR_getCharacterPrevious_KIND(EDITOR_cursor_indexColumn, positionIndex);
             let goalCharacterKind = leftCharacterKind;
 
             let line = EDITOR_getLineBoundaryPositions(EDITOR_cursor_indexLine);
@@ -3495,15 +3494,15 @@ function EDITOR_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
             let rightWasFound = false;
 
             let tempPositionIndex = positionIndex;
-            while (cursor.indexColumn < lineLength) {
-                let rightCharacterKind = EDITOR_getCharacterCurrent_KIND(cursor.indexColumn, tempPositionIndex, line.end);
+            while (EDITOR_cursor_indexColumn < lineLength) {
+                let rightCharacterKind = EDITOR_getCharacterCurrent_KIND(EDITOR_cursor_indexColumn, tempPositionIndex, line.end);
                 if (rightCharacterKind !== goalCharacterKind) {
                     cursor.selectionEnd = tempPositionIndex;
                     rightWasFound = true;
                     break;
                 }
                 tempPositionIndex++;
-                cursor.indexColumn++;
+                EDITOR_cursor_indexColumn++;
             }
 
             if (!rightWasFound) {
@@ -3514,7 +3513,7 @@ function EDITOR_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
         else {
             let largeLineAndColumnIndices = EDITOR_getLineAndColumnIndices(EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition]);
             EDITOR_cursor_indexLine = largeLineAndColumnIndices.indexLine;
-            cursor.indexColumn = largeLineAndColumnIndices.indexColumn;
+            EDITOR_cursor_indexColumn = largeLineAndColumnIndices.indexColumn;
             cursor.selectionEnd = EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition];
         }
 
@@ -3536,7 +3535,7 @@ function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked)
         if (EDITOR_getPositionIndex_raw(cursor) !== EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]) {
             let smallLineAndColumnPositionIndices = EDITOR_getLineAndColumnIndices(EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]);
             EDITOR_cursor_indexLine = smallLineAndColumnPositionIndices.indexLine;
-            cursor.indexColumn = smallLineAndColumnPositionIndices.indexColumn;
+            EDITOR_cursor_indexColumn = smallLineAndColumnPositionIndices.indexColumn;
         }
 
         if (cursor.selectionEnd !== EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]) {
@@ -3554,7 +3553,7 @@ function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked)
             let smallLineAndColumnPositionIndices = EDITOR_getLineAndColumnIndices(EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]);
 
             EDITOR_cursor_indexLine = smallLineAndColumnPositionIndices.indexLine;
-            cursor.indexColumn = smallLineAndColumnPositionIndices.indexColumn;
+            EDITOR_cursor_indexColumn = smallLineAndColumnPositionIndices.indexColumn;
 
             cursor.selectionEnd = EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition];
 
@@ -3562,7 +3561,7 @@ function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked)
         }
 
         EDITOR_cursor_indexLine = indexLineClicked;
-        cursor.indexColumn = 0;
+        EDITOR_cursor_indexColumn = 0;
 
         cursor.selectionEnd = EDITOR_getPositionIndex_Overload(indexLineClicked, 0);
 
@@ -3575,22 +3574,22 @@ function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked)
         }
 
         EDITOR_cursor_indexLine = indexLineClicked;
-        cursor.indexColumn = indexColumnClicked;
+        EDITOR_cursor_indexColumn = indexColumnClicked;
         let positionIndex = EDITOR_getPositionIndex_Overload(indexLineClicked, indexColumnClicked);
 
         // move to end of line...
         let line = EDITOR_getLineBoundaryPositions(EDITOR_cursor_indexLine);
         let lineLength = line.end - line.start;
-        positionIndex += lineLength - cursor.indexColumn;
+        positionIndex += lineLength - EDITOR_cursor_indexColumn;
 
         if (EDITOR_cursor_indexLine === EDITOR_lineEndPositionList.count - 1) {
-            cursor.indexColumn = lineLength;
+            EDITOR_cursor_indexColumn = lineLength;
             cursor.selectionEnd = positionIndex;
         }
         else {
             // wrap to the next line
             EDITOR_cursor_indexLine++;
-            cursor.indexColumn = 0;
+            EDITOR_cursor_indexColumn = 0;
             positionIndex++;
 
             cursor.selectionEnd = positionIndex;
@@ -3605,7 +3604,7 @@ function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked)
  * @returns 
  */
 function EDITOR_getPositionIndex(cursor) {
-    return EDITOR_getLineStart_pos(EDITOR_cursor_indexLine) + cursor.indexColumn;
+    return EDITOR_getLineStart_pos(EDITOR_cursor_indexLine) + EDITOR_cursor_indexColumn;
 }
 
 function EDITOR_getPositionIndex_Overload(indexLine, indexColumn) {
@@ -3617,7 +3616,7 @@ function EDITOR_getPositionIndex_Overload(indexLine, indexColumn) {
  * @returns 
  */
 function EDITOR_getPositionIndex_raw(cursor) {
-    return EDITOR_getLineStart_pos_raw(EDITOR_cursor_indexLine) + cursor.indexColumn;
+    return EDITOR_getLineStart_pos_raw(EDITOR_cursor_indexLine) + EDITOR_cursor_indexColumn;
 }
 
 function EDITOR_onMouseDownDetailRankOne(event_button, event_shiftKey, indexLineClicked, indexColumnClicked) {
@@ -3633,8 +3632,8 @@ function EDITOR_onMouseDownDetailRankOne(event_button, event_shiftKey, indexLine
 
     if (!selectionPlusContextMenuCase) {
         EDITOR_cursor_indexLine = indexLineClicked;
-        cursor.indexColumn = indexColumnClicked;
-        cursor.STORED_indexColumn = cursor.indexColumn;
+        EDITOR_cursor_indexColumn = indexColumnClicked;
+        cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
     
         cursor.selectionEnd = EDITOR_getPositionIndex(cursor);
 
@@ -3655,18 +3654,18 @@ function EDITOR_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLine
     let cursor = EDITOR_primaryCursor;
 
     EDITOR_cursor_indexLine = indexLineClicked;
-    cursor.indexColumn = indexColumnClicked;
+    EDITOR_cursor_indexColumn = indexColumnClicked;
     let positionIndex = EDITOR_getPositionIndex(cursor);
     
     let line = EDITOR_getLineBoundaryPositions(EDITOR_cursor_indexLine);
 
-    let leftCharacterKind = EDITOR_getCharacterPrevious_KIND(cursor.indexColumn, positionIndex);
-    let rightCharacterKind = EDITOR_getCharacterCurrent_KIND(cursor.indexColumn, positionIndex, line.end);
+    let leftCharacterKind = EDITOR_getCharacterPrevious_KIND(EDITOR_cursor_indexColumn, positionIndex);
+    let rightCharacterKind = EDITOR_getCharacterCurrent_KIND(EDITOR_cursor_indexColumn, positionIndex, line.end);
 
     if (leftCharacterKind === rightCharacterKind) {
         let goalCharacterKind = rightCharacterKind;
 
-        let tempIndexColumn = cursor.indexColumn;
+        let tempIndexColumn = EDITOR_cursor_indexColumn;
         let tempPositionIndex = EDITOR_getPositionIndex_Overload(EDITOR_cursor_indexLine, tempIndexColumn);
         while (tempIndexColumn > 0) {
             tempIndexColumn--;
@@ -3680,14 +3679,14 @@ function EDITOR_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLine
 
         let lineLength = line.end - line.start;
         let rightWasFound = false;
-        tempIndexColumn = cursor.indexColumn;
+        tempIndexColumn = EDITOR_cursor_indexColumn;
         tempPositionIndex = EDITOR_getPositionIndex_Overload(EDITOR_cursor_indexLine, tempIndexColumn);
         while (tempIndexColumn < lineLength) {
             tempIndexColumn++;
             tempPositionIndex++;
             rightCharacterKind = EDITOR_getCharacterCurrent_KIND(tempIndexColumn, tempPositionIndex, line.end);
             if (rightCharacterKind !== goalCharacterKind) {
-                cursor.indexColumn = tempIndexColumn;
+                EDITOR_cursor_indexColumn = tempIndexColumn;
                 cursor.selectionEnd = tempPositionIndex;
                 rightWasFound = true;
                 break;
@@ -3696,7 +3695,7 @@ function EDITOR_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLine
 
         if (!rightWasFound) {
             // end of line
-            cursor.indexColumn = tempIndexColumn;
+            EDITOR_cursor_indexColumn = tempIndexColumn;
             cursor.selectionEnd = tempPositionIndex;
         }
 
@@ -3705,11 +3704,11 @@ function EDITOR_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLine
     else if (leftCharacterKind > rightCharacterKind) {
         let goalCharacterKind = leftCharacterKind;
 
-        let tempIndexColumn = cursor.indexColumn;
+        let tempIndexColumn = EDITOR_cursor_indexColumn;
         let originalPositionIndex = EDITOR_getPositionIndex_Overload(EDITOR_cursor_indexLine, tempIndexColumn);
         let tempPositionIndex = originalPositionIndex;
 
-        while (cursor.indexColumn > 0) {
+        while (EDITOR_cursor_indexColumn > 0) {
             tempIndexColumn--;
             tempPositionIndex--;
             leftCharacterKind = EDITOR_getCharacterPrevious_KIND(tempIndexColumn, tempPositionIndex);
@@ -3726,16 +3725,16 @@ function EDITOR_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLine
     else {
         let goalCharacterKind = rightCharacterKind;
 
-        let positionIndex = EDITOR_getPositionIndex_Overload(EDITOR_cursor_indexLine, cursor.indexColumn);
+        let positionIndex = EDITOR_getPositionIndex_Overload(EDITOR_cursor_indexLine, EDITOR_cursor_indexColumn);
         cursor.selectionAnchor = positionIndex;
 
         let lineLength = line.end - line.start;
         let rightWasFound = false;
 
-        while (cursor.indexColumn < lineLength) {
-            cursor.indexColumn++;
+        while (EDITOR_cursor_indexColumn < lineLength) {
+            EDITOR_cursor_indexColumn++;
             positionIndex++;
-            rightCharacterKind = EDITOR_getCharacterCurrent_KIND(cursor.indexColumn, positionIndex, line.end);
+            rightCharacterKind = EDITOR_getCharacterCurrent_KIND(EDITOR_cursor_indexColumn, positionIndex, line.end);
             if (rightCharacterKind !== goalCharacterKind) {
                 cursor.selectionEnd = positionIndex;
                 rightWasFound = true;
@@ -3770,7 +3769,7 @@ function EDITOR_onMouseDownDetailRankThree(event_button, event_shiftKey, indexLi
     let cursor = EDITOR_primaryCursor;
 
     EDITOR_cursor_indexLine = indexLineClicked;
-    cursor.indexColumn = indexColumnClicked;
+    EDITOR_cursor_indexColumn = indexColumnClicked;
     
     cursor.selectionAnchor = EDITOR_getPositionIndex_Overload(EDITOR_cursor_indexLine, 0);
     
@@ -3783,7 +3782,7 @@ function EDITOR_onMouseDownDetailRankThree(event_button, event_shiftKey, indexLi
     }
     else {
         EDITOR_cursor_indexLine++;
-        cursor.indexColumn = 0;
+        EDITOR_cursor_indexColumn = 0;
         let line = EDITOR_getLineBoundaryPositions(EDITOR_cursor_indexLine);
         cursor.selectionEnd = line.start;
         EDITOR_render_request(ENUM_RenderKind_Cursor_n);
@@ -3838,7 +3837,7 @@ function EDITOR_startEdit(cursor, editKind, editPosition, editLength) {
     cursor.editKind = editKind;
     cursor.editPosition = editPosition;
     cursor.editIndexLine = EDITOR_cursor_indexLine;
-    cursor.editIndexColumn = cursor.indexColumn;
+    cursor.editIndexColumn = EDITOR_cursor_indexColumn;
     cursor.editLength = editLength;
 
     switch (editKind) {
@@ -3856,7 +3855,7 @@ function EDITOR_startEdit(cursor, editKind, editPosition, editLength) {
 function EDITOR_NOTcanBatch_insert(cursor, indexCursor) {
     return cursor.editKind != ENUM_EditKind_InsertLtr ||
            EDITOR_cursor_indexLine !== cursor.editIndexLine ||
-           cursor.indexColumn !== cursor.editIndexColumn + cursor.editLength ||
+           EDITOR_cursor_indexColumn !== cursor.editIndexColumn + cursor.editLength ||
            cursor.editLength >= EDITOR_cursor_GAP_BUFFER_CAPACITY ||
            cursor.hasSelection();
 }
@@ -3870,7 +3869,7 @@ function EDITOR_NOTcanBatch_enter(cursor, indexCursor) {
     return true || // turn off batching until it works. The initial enter event is what matters everything else can be recreated based on the amount of lineFeeds that were inserted.
            cursor.editKind != ENUM_EditKind_Enter ||
            EDITOR_cursor_indexLine !== cursor.END_editIndexLine ||
-           cursor.indexColumn !== cursor.END_editIndexColumn ||
+           EDITOR_cursor_indexColumn !== cursor.END_editIndexColumn ||
            cursor.editLength >= EDITOR_cursor_GAP_BUFFER_CAPACITY ||
            !cursor.enterKey_newLinePlusIndentation_byteList ||
            cursor.hasSelection();
@@ -3883,7 +3882,7 @@ function EDITOR_NOTcanBatch_enter(cursor, indexCursor) {
 function EDITOR_NOTcanBatch_backspace(cursor) {
     return cursor.editKind != ENUM_EditKind_BackspaceRtl ||
            EDITOR_cursor_indexLine !== cursor.editIndexLine ||
-           cursor.indexColumn !== cursor.editIndexColumn ||
+           EDITOR_cursor_indexColumn !== cursor.editIndexColumn ||
            cursor.hasSelection();
 }
 
@@ -3894,7 +3893,7 @@ function EDITOR_NOTcanBatch_backspace(cursor) {
 function EDITOR_NOTcanBatch_delete(cursor) {
     return cursor.editKind != ENUM_EditKind_DeleteLtr ||
            EDITOR_cursor_indexLine !== cursor.editIndexLine ||
-           cursor.indexColumn !== cursor.editIndexColumn ||
+           EDITOR_cursor_indexColumn !== cursor.editIndexColumn ||
            cursor.hasSelection();
 }
 
@@ -3907,7 +3906,7 @@ function EDITOR_preKeyboardMovementSelectionLogic(cursor, shiftKey) {
         if (!cursor.hasSelection()) {
             cursor.selectionAnchor = EDITOR_getPositionIndex(cursor);
             cursor.selectionIndexAnchorLine = EDITOR_cursor_indexLine;
-            cursor.selectionIndexAnchorColumn = cursor.indexColumn;
+            cursor.selectionIndexAnchorColumn = EDITOR_cursor_indexColumn;
         }
     }
     else {
@@ -3927,7 +3926,7 @@ function EDITOR_postKeyboardMovementSelectionLogic(cursor, shiftKey) {
     if (shiftKey) {
         cursor.selectionEnd = EDITOR_getPositionIndex(cursor);
         cursor.selectionIndexEndLine = EDITOR_cursor_indexLine;
-        cursor.selectionIndexEndColumn = cursor.indexColumn;
+        cursor.selectionIndexEndColumn = EDITOR_cursor_indexColumn;
     }
 }
 
@@ -3942,10 +3941,10 @@ function EDITOR_arrowDown(cursor, shiftKey) {
         EDITOR_cursor_indexLine++;
         let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
         if (cursor.STORED_indexColumn > lastValidIndexColumn) {
-            cursor.indexColumn = lastValidIndexColumn;
+            EDITOR_cursor_indexColumn = lastValidIndexColumn;
         }
         else {
-            cursor.indexColumn = cursor.STORED_indexColumn;
+            EDITOR_cursor_indexColumn = cursor.STORED_indexColumn;
         }
     }
     EDITOR_postKeyboardMovementSelectionLogic(cursor, shiftKey);
@@ -4114,7 +4113,7 @@ function EDITOR_editEvent_theEditIself_InsertLtr(event) {
         EDITOR_startEdit(cursor, ENUM_EditKind_InsertLtr, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
     }
     EDITOR_insertDo(cursor, event.key);
-    cursor.STORED_indexColumn = cursor.indexColumn;
+    cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     //EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] + cursor.editLength;
     //EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = get_EDITOR_totalShift() + cursor.editLength; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
@@ -4157,7 +4156,7 @@ function EDITOR_editEvent_theEditIself_BackspaceRtl(event) {
             EDITOR_startEdit(cursor, ENUM_EditKind_BackspaceRtl, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
         }
         EDITOR_backspaceDo(cursor, event);
-        cursor.STORED_indexColumn = cursor.indexColumn;
+        cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
     }
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     //EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] - cursor.editLength;
@@ -4187,7 +4186,7 @@ function EDITOR_editEvent_theEditIself_Tab(event) {
             // ...multi-cursor in and of itself is buggy that's why I'm not overly concerned with adding this in a bugged state...
             // ...everything is buggy and it is very anxiety inducing and for the time being I guess it just has to be that way as I transition
             // towards a useable editor all the features are coming together but there's this awkward phase of "I can start using it but also not really" or something I just idk.
-            EDITOR_onMouseDownDetailRankThree(0, false, EDITOR_cursor_indexLine, cursor.indexColumn);
+            EDITOR_onMouseDownDetailRankThree(0, false, EDITOR_cursor_indexLine, EDITOR_cursor_indexColumn);
             if (cursor.editKind !== ENUM_EditKind_IndentLess) {
                 EDITOR_startEdit(cursor, ENUM_EditKind_IndentLess, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
             }
@@ -4209,7 +4208,7 @@ function EDITOR_editEvent_theEditIself_Enter(event) {
         EDITOR_startEdit(cursor, ENUM_EditKind_Enter, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
     }
     EDITOR_EnterKey(cursor, event.ctrlKey, event.shiftKey);
-    cursor.STORED_indexColumn = cursor.indexColumn;
+    cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     //EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] = EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] + 1;
 }
@@ -4220,7 +4219,7 @@ function EDITOR_editEvent_theEditIself_Paste(clipboardContent) {
         EDITOR_startEdit(cursor, ENUM_EditKind_Paste, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
     }
     EDITOR_paste(cursor, clipboardContent);
-    cursor.STORED_indexColumn = cursor.indexColumn;
+    cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
 }
 
@@ -4230,7 +4229,7 @@ function EDITOR_editEvent_theEditIself_Duplicate() {
         EDITOR_startEdit(cursor, ENUM_EditKind_Duplicate, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
     }
     EDITOR_duplicateSelection(cursor);
-    cursor.STORED_indexColumn = cursor.indexColumn;
+    cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
 }
 
@@ -4278,7 +4277,7 @@ function EDITOR_editEvent_checkFor_NOTcanBatch_Tab(event) {
         }
         else {
             if (cursor.editIndexLine === EDITOR_cursor_indexLine &&
-                cursor.editIndexColumn + (4 * cursor.editLength) === cursor.indexColumn) {
+                cursor.editIndexColumn + (4 * cursor.editLength) === EDITOR_cursor_indexColumn) {
                     return false;
             }
         }
@@ -4596,23 +4595,23 @@ function EDITOR_onKeyDown_ArrowLeft(event) {
         }
         let lineAndColumnIndices = EDITOR_getLineAndColumnIndices(small);
         EDITOR_cursor_indexLine = lineAndColumnIndices.indexLine;
-        cursor.indexColumn = lineAndColumnIndices.indexColumn;
+        EDITOR_cursor_indexColumn = lineAndColumnIndices.indexColumn;
         cursor.selectionAnchor = cursor.selectionEnd;
         cursor.selectionIndexAnchorLine = cursor.selectionIndexEndLine;
         cursor.selectionIndexAnchorColumn = cursor.selectionIndexEndColumn;
     }
     else {
         EDITOR_preKeyboardMovementSelectionLogic(cursor, event.shiftKey);
-        if (event.ctrlKey & cursor.indexColumn > 0) {
+        if (event.ctrlKey & EDITOR_cursor_indexColumn > 0) {
             let line = EDITOR_getLineBoundaryPositions(EDITOR_cursor_indexLine);
-            let indexPosition = line.start + cursor.indexColumn;
-            let originalCharacterKind = EDITOR_getCharacterPrevious_KIND(cursor.indexColumn, indexPosition);
-            cursor.indexColumn--;
+            let indexPosition = line.start + EDITOR_cursor_indexColumn;
+            let originalCharacterKind = EDITOR_getCharacterPrevious_KIND(EDITOR_cursor_indexColumn, indexPosition);
+            EDITOR_cursor_indexColumn--;
             indexPosition--;
 
-            while (cursor.indexColumn > 0) {
-                if (EDITOR_getCharacterPrevious_KIND(cursor.indexColumn, indexPosition) === originalCharacterKind) {
-                    cursor.indexColumn--;
+            while (EDITOR_cursor_indexColumn > 0) {
+                if (EDITOR_getCharacterPrevious_KIND(EDITOR_cursor_indexColumn, indexPosition) === originalCharacterKind) {
+                    EDITOR_cursor_indexColumn--;
                     indexPosition--;
                 }
                 else {
@@ -4621,17 +4620,17 @@ function EDITOR_onKeyDown_ArrowLeft(event) {
             }
         }
         else {
-            if (cursor.indexColumn > 0) {
-                cursor.indexColumn--;
+            if (EDITOR_cursor_indexColumn > 0) {
+                EDITOR_cursor_indexColumn--;
             }
             else if (EDITOR_cursor_indexLine > 0) {
                 EDITOR_cursor_indexLine--;
-                cursor.indexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
+                EDITOR_cursor_indexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
             }
         }
         EDITOR_postKeyboardMovementSelectionLogic(cursor, event.shiftKey);
     }
-    cursor.STORED_indexColumn = cursor.indexColumn;
+    cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
         EDITOR_cursorBlink_startChecking();
@@ -4674,10 +4673,10 @@ function EDITOR_onKeyDown_ArrowUp(event) {
             EDITOR_cursor_indexLine--;
             let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
             if (cursor.STORED_indexColumn > lastValidIndexColumn) {
-                cursor.indexColumn = lastValidIndexColumn;
+                EDITOR_cursor_indexColumn = lastValidIndexColumn;
             }
             else {
-                cursor.indexColumn = cursor.STORED_indexColumn;
+                EDITOR_cursor_indexColumn = cursor.STORED_indexColumn;
             }
         }
         EDITOR_postKeyboardMovementSelectionLogic(cursor, event.shiftKey);
@@ -4710,7 +4709,7 @@ function EDITOR_onKeyDown_ArrowRight(event) {
         }
         let lineAndColumnIndices = EDITOR_getLineAndColumnIndices(large);
         EDITOR_cursor_indexLine = lineAndColumnIndices.indexLine;
-        cursor.indexColumn = lineAndColumnIndices.indexColumn;
+        EDITOR_cursor_indexColumn = lineAndColumnIndices.indexColumn;
         cursor.selectionAnchor = cursor.selectionEnd;
         cursor.selectionIndexAnchorLine = cursor.selectionIndexEndLine;
         cursor.selectionIndexAnchorColumn = cursor.selectionIndexEndColumn;
@@ -4718,16 +4717,16 @@ function EDITOR_onKeyDown_ArrowRight(event) {
     else {
         EDITOR_preKeyboardMovementSelectionLogic(cursor, event.shiftKey);
         let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
-        if (event.ctrlKey & cursor.indexColumn < lastValidIndexColumn) {
+        if (event.ctrlKey & EDITOR_cursor_indexColumn < lastValidIndexColumn) {
             let line = EDITOR_getLineBoundaryPositions(EDITOR_cursor_indexLine);
-            let indexPosition = line.start + cursor.indexColumn;
-            let originalCharacterKind = EDITOR_getCharacterCurrent_KIND(cursor.indexColumn, indexPosition, line.end);
-            cursor.indexColumn++;
+            let indexPosition = line.start + EDITOR_cursor_indexColumn;
+            let originalCharacterKind = EDITOR_getCharacterCurrent_KIND(EDITOR_cursor_indexColumn, indexPosition, line.end);
+            EDITOR_cursor_indexColumn++;
             indexPosition++;
 
-            while (cursor.indexColumn < lastValidIndexColumn) {
-                if (EDITOR_getCharacterCurrent_KIND(cursor.indexColumn, indexPosition, line.end) === originalCharacterKind) {
-                    cursor.indexColumn++;
+            while (EDITOR_cursor_indexColumn < lastValidIndexColumn) {
+                if (EDITOR_getCharacterCurrent_KIND(EDITOR_cursor_indexColumn, indexPosition, line.end) === originalCharacterKind) {
+                    EDITOR_cursor_indexColumn++;
                     indexPosition++;
                 }
                 else {
@@ -4736,17 +4735,17 @@ function EDITOR_onKeyDown_ArrowRight(event) {
             }
         }
         else {
-            if (cursor.indexColumn < lastValidIndexColumn) {
-                cursor.indexColumn++;
+            if (EDITOR_cursor_indexColumn < lastValidIndexColumn) {
+                EDITOR_cursor_indexColumn++;
             }
             else if (EDITOR_cursor_indexLine < EDITOR_lineEndPositionList.count - 1) {
-                cursor.indexColumn = 0;
+                EDITOR_cursor_indexColumn = 0;
                 EDITOR_cursor_indexLine++;
             }
         }
         EDITOR_postKeyboardMovementSelectionLogic(cursor, event.shiftKey);
     }
-    cursor.STORED_indexColumn = cursor.indexColumn;
+    cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
         EDITOR_cursorBlink_startChecking();
@@ -4764,19 +4763,19 @@ function EDITOR_onKeyDown_Home(event) {
     EDITOR_preKeyboardMovementSelectionLogic(cursor, event.shiftKey);
     if (event.ctrlKey) {
         EDITOR_cursor_indexLine = 0;
-        cursor.indexColumn = 0;
+        EDITOR_cursor_indexColumn = 0;
     }
     else {
         let endExclusiveIndentationIndexColumn = EDITOR_findEndExclusiveIndentationIndexColumn(cursor);
-        if (cursor.indexColumn == endExclusiveIndentationIndexColumn) {
-            cursor.indexColumn = 0;
+        if (EDITOR_cursor_indexColumn == endExclusiveIndentationIndexColumn) {
+            EDITOR_cursor_indexColumn = 0;
         }
         else {
-            cursor.indexColumn = endExclusiveIndentationIndexColumn;
+            EDITOR_cursor_indexColumn = endExclusiveIndentationIndexColumn;
         }
     }
     EDITOR_postKeyboardMovementSelectionLogic(cursor, event.shiftKey);
-    cursor.STORED_indexColumn = cursor.indexColumn;
+    cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
         EDITOR_cursorBlink_startChecking();
@@ -4794,9 +4793,9 @@ function EDITOR_onKeyDown_End(event) {
     if (event.ctrlKey) {
         EDITOR_cursor_indexLine = EDITOR_lineEndPositionList.count - 1;
     }
-    cursor.indexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
+    EDITOR_cursor_indexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
     EDITOR_postKeyboardMovementSelectionLogic(cursor, event.shiftKey);
-    cursor.STORED_indexColumn = cursor.indexColumn;
+    cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
         EDITOR_cursorBlink_startChecking();
@@ -5544,7 +5543,7 @@ function EDITOR_indentMore(cursor) {
     //}
 
     // # Update the cursor's indexColumn to reflect the inserted text
-    cursor.indexColumn += 4;
+    EDITOR_cursor_indexColumn += 4;
 
     //// # Update the cursor's selection to reflect the inserted text
     //let smallLinePos = EDITOR_getLineBoundaryPositions(SMALL_lineAndColumnIndices.indexLine);
@@ -5742,7 +5741,7 @@ function EDITOR_indentLess(cursor) {
 async function EDITOR_copySelection(cursor) {
 	if (!cursor.hasSelection()) {
 		// TODO: This code has a bug and doesn't work with multicursor... EDITOR_onMouseDownDetailRankThree needs to accept a cursor rather than acting on EDITOR_primaryCursor
-    	EDITOR_onMouseDownDetailRankThree(0, false, EDITOR_cursor_indexLine, cursor.indexColumn);
+    	EDITOR_onMouseDownDetailRankThree(0, false, EDITOR_cursor_indexLine, EDITOR_cursor_indexColumn);
 	}
 	let selectionAnchor = cursor.selectionAnchor;
     let selectionEnd = cursor.selectionEnd;
@@ -5767,7 +5766,7 @@ async function EDITOR_duplicateSelection(cursor) {
 	if (!cursor.hasSelection()) {
 		// TODO: This code has a bug and doesn't work with multicursor... EDITOR_onMouseDownDetailRankThree needs to accept a cursor rather than acting on EDITOR_primaryCursor...
         // ...these days the todo is somewhat incorrect, it takes cursor now, but you'd need to check whether this causes the selection of two cursors to overlap.
-    	EDITOR_onMouseDownDetailRankThree(0, false, EDITOR_cursor_indexLine, cursor.indexColumn);
+    	EDITOR_onMouseDownDetailRankThree(0, false, EDITOR_cursor_indexLine, EDITOR_cursor_indexColumn);
 	}
 
 	let selectionAnchor = cursor.selectionAnchor;
@@ -5792,7 +5791,7 @@ async function EDITOR_duplicateSelection(cursor) {
     cursor.editLength = length;
 
     EDITOR_cursor_indexLine = large_lineAndColumnIndices.indexLine;
-    cursor.indexColumn = large_lineAndColumnIndices.indexColumn;
+    EDITOR_cursor_indexColumn = large_lineAndColumnIndices.indexColumn;
 
     cursor.EDITOR_duplicate_small = small;
     cursor.EDITOR_duplicate_length = length;
@@ -5969,7 +5968,7 @@ function EDITOR_render_do_DuplicateOrPaste() {
 
         let original_indexColumn_SpanTextContentRelative = w_indexColumn_SpanTextContentRelative;
         let original_span_textContent_length = w_span.textContent.length;
-        let original_tracked_syntax_start = positionIndex - cursor.indexColumn + w_indexColumn_Sum;
+        let original_tracked_syntax_start = positionIndex - EDITOR_cursor_indexColumn + w_indexColumn_Sum;
 
         let offset = 0;
 
@@ -6072,7 +6071,7 @@ function EDITOR_render_do_DuplicateOrPaste() {
                     break;
                 }
 
-                if (cursor.indexColumn === 0 && last_valid_indexColumn_currentLine !== 0) { // start of line
+                if (EDITOR_cursor_indexColumn === 0 && last_valid_indexColumn_currentLine !== 0) { // start of line
                     
                     EDITOR_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, beltIndexLine_current);
                     cached_EDITOR_textElement.children[beltIndexLine_current].appendChild(document.createElement('span'));
@@ -6086,13 +6085,13 @@ function EDITOR_render_do_DuplicateOrPaste() {
                     w_indexColumn_Sum = 0;
                     w_indexColumn_SpanTextContentRelative = 0;
                     EDITOR_cursor_indexLine++;
-                    cursor.indexColumn = 0;
+                    EDITOR_cursor_indexColumn = 0;
 
                     continue;
                 }
                 else {
                     // ensure this conditional branch continues if handled, otherwise it will execute the fallback case erroneously
-                    if (last_valid_indexColumn_currentLine === cursor.indexColumn) { // end of line
+                    if (last_valid_indexColumn_currentLine === EDITOR_cursor_indexColumn) { // end of line
 
                         beltIndexLine_current = (beltIndexLine_current + 1) % ArrayFrom_textElement_children_length;
                         
@@ -6108,7 +6107,7 @@ function EDITOR_render_do_DuplicateOrPaste() {
                         w_indexColumn_Sum = 0;
                         w_indexColumn_SpanTextContentRelative = 0;
                         EDITOR_cursor_indexLine++;
-                        cursor.indexColumn = 0;
+                        EDITOR_cursor_indexColumn = 0;
                         last_valid_indexColumn_currentLine = 0;
                         
 
@@ -6157,7 +6156,7 @@ function EDITOR_render_do_DuplicateOrPaste() {
                         w_indexColumn_Sum = 0;
                         w_indexColumn_SpanTextContentRelative = 0;
                         EDITOR_cursor_indexLine++;
-                        cursor.indexColumn = 0;
+                        EDITOR_cursor_indexColumn = 0;
                         // last_valid_indexColumn_currentLine is being set when splitting the text.
 
                         continue;
@@ -6174,7 +6173,7 @@ function EDITOR_render_do_DuplicateOrPaste() {
                 word +
                 w_span.textContent.slice(w_indexColumn_SpanTextContentRelative);
 
-            cursor.indexColumn += wordLength;
+            EDITOR_cursor_indexColumn += wordLength;
             w_indexColumn_SpanTextContentRelative += wordLength;
         }
     }
@@ -6189,7 +6188,7 @@ function EDITOR_paste(cursor, content) {
 
     cursor.editPosition = positionIndex;
     cursor.editIndexLine = EDITOR_cursor_indexLine;
-    cursor.editIndexColumn = cursor.indexColumn;
+    cursor.editIndexColumn = EDITOR_cursor_indexColumn;
 
     cursor.EDITOR_paste_clipboardContent = content;
 
@@ -6253,7 +6252,7 @@ function EDITOR_paste(cursor, content) {
 
     //let original_indexColumn_SpanTextContentRelative = w_indexColumn_SpanTextContentRelative;
     //let original_span_textContent_length = w_span.textContent.length;
-    //let original_tracked_syntax_start = positionIndex - cursor.indexColumn + w_indexColumn_Sum;
+    //let original_tracked_syntax_start = positionIndex - EDITOR_cursor_indexColumn + w_indexColumn_Sum;
 
     for (var sourceI = 0; sourceI < content.length; sourceI++) {
         switch (content[sourceI]) {
@@ -6359,7 +6358,7 @@ function EDITOR_duplicate_and_paste_handleNotHasSeenLinefeed(hasSeenLinefeed, or
             if (original_indexColumn_SpanTextContentRelative >= 2 && (original_indexColumn_SpanTextContentRelative <= original_span_textContent_length - 2)) {
                 w_span.className = 'eCM';
                 let indexOfGreaterThanOrEqual = EDITOR_trackedSyntaxReposition_find(indexPosition);
-                EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_Comment, indexPosition - cursor.indexColumn + w_indexColumn_Sum, original_span_textContent_length);
+                EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_Comment, indexPosition - EDITOR_cursor_indexColumn + w_indexColumn_Sum, original_span_textContent_length);
                 return true;
             }
             return false;
@@ -6369,7 +6368,7 @@ function EDITOR_duplicate_and_paste_handleNotHasSeenLinefeed(hasSeenLinefeed, or
             if (original_indexColumn_SpanTextContentRelative >= 1 && (original_indexColumn_SpanTextContentRelative <= original_span_textContent_length - 1)) {
                 w_span.className = 'eSM';
                 let indexOfGreaterThanOrEqual = EDITOR_trackedSyntaxReposition_find(indexPosition);
-                EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_String, indexPosition - cursor.indexColumn + w_indexColumn_Sum, original_span_textContent_length);
+                EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_String, indexPosition - EDITOR_cursor_indexColumn + w_indexColumn_Sum, original_span_textContent_length);
                 return true;
             }
             return false;
@@ -6388,7 +6387,7 @@ function EDITOR_render_do_TabKey() {
     }
     if (cursor.editRenderedDisplacement < cursor.editLength || cursor.editKind === ENUM_EditKind_Tab) {
 
-        cursor.indexColumn -= 4; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
+        EDITOR_cursor_indexColumn -= 4; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
 
         walkLineUntilIndexColumn(cursor);
 
@@ -6408,7 +6407,7 @@ function EDITOR_render_do_TabKey() {
             EDITOR_on_tab_string +
             w_span.textContent.slice(w_indexColumn_SpanTextContentRelative);
 
-        cursor.indexColumn += 4; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
+        EDITOR_cursor_indexColumn += 4; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
     }
 }
 
@@ -6420,12 +6419,12 @@ function EDITOR_tabKey(cursor) {
     if (cursor.editLength === 0) {
         cursor.editPosition = EDITOR_getPositionIndex(cursor);
         cursor.editIndexLine = EDITOR_cursor_indexLine;
-        cursor.editIndexColumn = cursor.indexColumn;
+        cursor.editIndexColumn = EDITOR_cursor_indexColumn;
     }
 
     cursor.editLength++;
 
-    cursor.indexColumn += 4; // this has to come after the 'walkLineUntilIndexColumn' invocation.
+    EDITOR_cursor_indexColumn += 4; // this has to come after the 'walkLineUntilIndexColumn' invocation.
 
     EDITOR_render_request(ENUM_RenderKind_TabKey);
 }
@@ -6470,8 +6469,8 @@ function EDITOR_cacheIndentation(cursor) {
 
     let upperLimitIndexColumn;
 
-    if (lastValidIndexColumn > cursor.indexColumn) {
-        upperLimitIndexColumn = cursor.indexColumn;
+    if (lastValidIndexColumn > EDITOR_cursor_indexColumn) {
+        upperLimitIndexColumn = EDITOR_cursor_indexColumn;
     }
     else {
         upperLimitIndexColumn = lastValidIndexColumn;
@@ -6681,10 +6680,10 @@ function EDITOR_render_do_EnterKey() {
                     // Prior to returning from this function restore the original 'indexLine', and 'indexColumn'.
 
                     let remember_cursorIndexLine = EDITOR_cursor_indexLine;
-                    let remember_cursorIndexColumn = cursor.indexColumn;
+                    let remember_cursorIndexColumn = EDITOR_cursor_indexColumn;
 
                     EDITOR_cursor_indexLine = cursor.editIndexLine;
-                    cursor.indexColumn = cursor.editIndexColumn;
+                    EDITOR_cursor_indexColumn = cursor.editIndexColumn;
 
                     let spanClassName = '';
                     let spanText = cursor.cached_indentation_string;
@@ -6698,7 +6697,7 @@ function EDITOR_render_do_EnterKey() {
                             if (w_indexColumn_SpanTextContentRelative >= 2 && (w_indexColumn_SpanTextContentRelative <= w_span.textContent.length - 2)) {
                                 w_span.className = 'eCM';
                                 let indexOfGreaterThanOrEqual = EDITOR_trackedSyntaxReposition_find(indexPosition);
-                                EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_Comment, indexPosition - cursor.indexColumn + w_indexColumn_Sum, w_span.textContent.length);
+                                EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_Comment, indexPosition - EDITOR_cursor_indexColumn + w_indexColumn_Sum, w_span.textContent.length);
                                 shouldPreserveCssClassWhenSplittingAmongLine = true;
                             }
                             break;
@@ -6709,7 +6708,7 @@ function EDITOR_render_do_EnterKey() {
                             if (w_indexColumn_SpanTextContentRelative >= 1 && (w_indexColumn_SpanTextContentRelative <= w_span.textContent.length - 1)) {
                                 w_span.className = 'eSM';
                                 let indexOfGreaterThanOrEqual = EDITOR_trackedSyntaxReposition_find(indexPosition);
-                                EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_String, indexPosition - cursor.indexColumn + w_indexColumn_Sum, w_span.textContent.length);
+                                EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_String, indexPosition - EDITOR_cursor_indexColumn + w_indexColumn_Sum, w_span.textContent.length);
                                 shouldPreserveCssClassWhenSplittingAmongLine = true;
                             }
                             break;
@@ -6749,7 +6748,7 @@ function EDITOR_render_do_EnterKey() {
                     EDITOR_lineWasInsertedValidateGutter();
 
                     EDITOR_cursor_indexLine = remember_cursorIndexLine;
-                    cursor.indexColumn = remember_cursorIndexColumn;
+                    EDITOR_cursor_indexColumn = remember_cursorIndexColumn;
                     return;
                 }
             }
@@ -6777,8 +6776,8 @@ function EDITOR_EnterKey(cursor, ctrlKey, shiftKey) {
     if (!cursor.enterKey_newLinePlusIndentation_byteList)
         EDITOR_cacheIndentation(cursor);
 
-    if (ctrlKey) cursor.indexColumn = 0;
-    else if (shiftKey) cursor.indexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
+    if (ctrlKey) EDITOR_cursor_indexColumn = 0;
+    else if (shiftKey) EDITOR_cursor_indexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
 
     if (cursor.editLength === 0) {
 
@@ -6786,12 +6785,12 @@ function EDITOR_EnterKey(cursor, ctrlKey, shiftKey) {
 
         cursor.editPosition = EDITOR_getPositionIndex_raw(cursor);
         cursor.editIndexLine = EDITOR_cursor_indexLine;
-        cursor.editIndexColumn = cursor.indexColumn;
+        cursor.editIndexColumn = EDITOR_cursor_indexColumn;
     }
 
     let insertionCount = cursor.enterKey_newLinePlusIndentation_byteList.count;
     
-    if (cursor.indexColumn === 0) { // start of line
+    if (EDITOR_cursor_indexColumn === 0) { // start of line
         if (cursor.enterKeyEventKind === 0) {
             cursor.enterKeyEventKind = ENUM_EnterKeyEventKind_StartOfLine;
         }
@@ -6803,7 +6802,7 @@ function EDITOR_EnterKey(cursor, ctrlKey, shiftKey) {
         let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
 
         if (cursor.enterKeyEventKind === 0) {
-            cursor.enterKeyEventKind = lastValidIndexColumn === cursor.indexColumn
+            cursor.enterKeyEventKind = lastValidIndexColumn === EDITOR_cursor_indexColumn
                 ? ENUM_EnterKeyEventKind_EndOfLine
                 : ENUM_EnterKeyEventKind_AmongALine;
         }
@@ -6811,12 +6810,12 @@ function EDITOR_EnterKey(cursor, ctrlKey, shiftKey) {
         EDITOR_cursor_indexLine++;
     }
 
-    cursor.indexColumn = insertionCount - 1;
+    EDITOR_cursor_indexColumn = insertionCount - 1;
     cursor.editLength += insertionCount;
     cursor.editLineFeedCount++;
 
     cursor.END_editIndexLine = EDITOR_cursor_indexLine;
-    cursor.END_editIndexColumn = cursor.indexColumn;
+    cursor.END_editIndexColumn = EDITOR_cursor_indexColumn;
 
     EDITOR_render_request(ENUM_RenderKind_Enter);
 }
@@ -7076,7 +7075,7 @@ function EDITOR_removeSelection(cursor) {
     let smallLineAndColumnIndices = EDITOR_getLineAndColumnIndices(smallPosition);
     EDITOR_RemoveSelection_smallLineAndColumnIndices = smallLineAndColumnIndices;
     EDITOR_cursor_indexLine = smallLineAndColumnIndices.indexLine;
-    cursor.indexColumn = smallLineAndColumnIndices.indexColumn;
+    EDITOR_cursor_indexColumn = smallLineAndColumnIndices.indexColumn;
     cursor.editIndexLine = smallLineAndColumnIndices.indexLine;
     cursor.editIndexColumn = smallLineAndColumnIndices.indexColumn;
 
@@ -7086,11 +7085,11 @@ function EDITOR_removeSelection(cursor) {
     cursor.END_editIndexColumn = largeLineAndColumnIndices.indexColumn;
 
     EDITOR_cursor_indexLine = smallLineAndColumnIndices.indexLine;
-    cursor.indexColumn = smallLineAndColumnIndices.indexColumn;
+    EDITOR_cursor_indexColumn = smallLineAndColumnIndices.indexColumn;
 
     cursor.editLength = editLength;
     
-    cursor.STORED_indexColumn = cursor.indexColumn;
+    cursor.STORED_indexColumn = EDITOR_cursor_indexColumn;
 
     EDITOR_render_request(ENUM_RenderKind_RemoveSelection);
 }
@@ -7209,7 +7208,7 @@ function EDITOR_render_do_RemoveSelection() {
         let smallLineDiv = null;
         {
             EDITOR_cursor_indexLine = smallLineAndColumnIndices.indexLine;
-            cursor.indexColumn = smallLineAndColumnIndices.indexColumn;
+            EDITOR_cursor_indexColumn = smallLineAndColumnIndices.indexColumn;
 
             walkLineUntilIndexColumn(cursor);
             
@@ -7253,7 +7252,7 @@ function EDITOR_render_do_RemoveSelection() {
         let largeLineDiv = null;
         if (linesRemovedCount > 0) {
             EDITOR_cursor_indexLine = EDITOR_cursor_indexLine + linesRemovedCount;
-            cursor.indexColumn = 0;
+            EDITOR_cursor_indexColumn = 0;
 
             let lineBoundaryPositions = EDITOR_getLineBoundaryPositions(EDITOR_cursor_indexLine);
             let remaining = largePosition - lineBoundaryPositions.start;
@@ -7297,7 +7296,7 @@ function EDITOR_render_do_RemoveSelection() {
         //
         if (linesRemovedCount > 0) {
             EDITOR_cursor_indexLine = smallLineAndColumnIndices.indexLine;
-            cursor.indexColumn = smallLineAndColumnIndices.indexColumn;
+            EDITOR_cursor_indexColumn = smallLineAndColumnIndices.indexColumn;
 
             if (smallLineDiv) {
                 if (largeLineDiv) { // - [x] keeping, removing
@@ -7521,7 +7520,7 @@ function EDITOR_state_do_Delete(cursor, event) {
 
     let virtual_cursorIndexColumn;
     if (cursor.edit_flagLineChanged === -1) {
-        virtual_cursorIndexColumn = cursor.indexColumn;
+        virtual_cursorIndexColumn = EDITOR_cursor_indexColumn;
     }
     else {
         virtual_cursorIndexColumn = cursor.editLength - cursor.edit_flagLineChanged;
@@ -7555,7 +7554,7 @@ function EDITOR_state_do_Delete(cursor, event) {
     else {
         if (event.ctrlKey) {
             // cursor.editPosition is intended to be equal due to the batch requirements / a new edit would also be equal.
-            let tempIndexColumn = cursor.indexColumn;
+            let tempIndexColumn = EDITOR_cursor_indexColumn;
             let tempPosition = cursor.editPosition;
 
 
@@ -7573,7 +7572,7 @@ function EDITOR_state_do_Delete(cursor, event) {
             tempPosition++;
             cursor.editLength++;
             
-            while (cursor.indexColumn < lastValidIndexColumn) {
+            while (EDITOR_cursor_indexColumn < lastValidIndexColumn) {
                 if (tempIndexColumn < lineEnd) {
                     thisCharacterKind = getCharacter_kind_raw(tempPosition);
                 }
@@ -7708,7 +7707,7 @@ function EDITOR_state_do_Backspace(cursor, event) {
         return;
     }
     
-    if (cursor.indexColumn === 0) {
+    if (EDITOR_cursor_indexColumn === 0) {
         if (EDITOR_cursor_indexLine > 0) {
 
             // TODO: multicursor bugs are more likely to occur with this logic:
@@ -7717,11 +7716,11 @@ function EDITOR_state_do_Backspace(cursor, event) {
             //
             // wrap to previous line
             EDITOR_cursor_indexLine--;
-            cursor.indexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
+            EDITOR_cursor_indexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
             cursor.editPosition--;
             cursor.editLength++;
             cursor.editIndexLine = EDITOR_cursor_indexLine;
-            cursor.editIndexColumn = cursor.indexColumn;
+            cursor.editIndexColumn = EDITOR_cursor_indexColumn;
 
             cursor.editLineFeedCount++;
             EDITOR_lineEndPositionList_PENDING.insert(0, cursor.editPosition);
@@ -7735,23 +7734,23 @@ function EDITOR_state_do_Backspace(cursor, event) {
             // cursor.editPosition is intended to be equal due to the batch requirements / a new edit would also be equal.
 
             let originalCharacterKind = getCharacter_kind_raw(cursor.editPosition - 1);
-            cursor.indexColumn--;
+            EDITOR_cursor_indexColumn--;
             cursor.editPosition--;
             cursor.editIndexColumn--;
             cursor.editLength++;
 
-            while (cursor.indexColumn > 0) {
+            while (EDITOR_cursor_indexColumn > 0) {
                 if (getCharacter_kind_raw(cursor.editPosition - 1) !== originalCharacterKind) {
                     break;
                 }
-                cursor.indexColumn--;
+                EDITOR_cursor_indexColumn--;
                 cursor.editPosition--;
                 cursor.editIndexColumn--;
                 cursor.editLength++;
             }
         }
         else {
-            cursor.indexColumn -= 1;
+            EDITOR_cursor_indexColumn -= 1;
             cursor.editPosition -= 1;
             cursor.editIndexColumn -= 1;
             cursor.editLength++;
@@ -7808,7 +7807,7 @@ function EDITOR_insertDo(cursor, character) {
     cursor.gapBufferCount++;
 
     cursor.editLength++;
-    cursor.indexColumn++;
+    EDITOR_cursor_indexColumn++;
 
     EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] = EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] + cursor.gapBufferCount;
 }

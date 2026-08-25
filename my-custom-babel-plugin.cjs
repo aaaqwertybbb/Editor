@@ -6,46 +6,26 @@ module.exports = function (babel) {
   // List all the function names you want to inline
   const TARGET_FUNCTIONS = [
 
+    "get_EDITOR_detailRank",
     "set_EDITOR_detailRank",
 
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-  
-    
-    
-    
-    
-
-    
-    
-
-    
+    "get_EDITOR_recentBoundingClientRect_isNull_intFalsey",
     "set_EDITOR_recentBoundingClientRect_isNull_intFalsey",
     
-    
-    
+    "get_EDITOR_findOverlay_show",
     "set_EDITOR_findOverlay_show",
     
+    "get_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching",
     "set_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching",
     
+    "get_EDITOR_fileStartsWithBom",
     "set_EDITOR_fileStartsWithBom",
     
+    "get_EDITOR_findOverlay_wasSearched",
     "set_EDITOR_findOverlay_wasSearched",
     
+    "get_EDITOR_findOverlay_options_matchWord",
     "set_EDITOR_findOverlay_options_matchWord",
-    
-
-
-
-
   ];
 
   // List all the variable names you want to inline

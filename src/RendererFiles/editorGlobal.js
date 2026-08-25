@@ -3241,6 +3241,7 @@ function EDITOR_onMouseMove_WRAPIT(event) {
 }
 
 function EDITOR_onMouseMoveDetailRankOne(indexLineClicked, indexColumnClicked) {
+    // TODO: These two sets the ones to line and column seem redundant weren't these just done by the original EDITOR_onMouseMove_WRAPIT?
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLineClicked;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = indexColumnClicked;
 

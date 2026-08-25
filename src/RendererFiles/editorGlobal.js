@@ -3276,8 +3276,8 @@ function EDITOR_onMouseMove_WRAPIT(event) {
         // TODO: Consider short circuiting at via event.clientX and clientY by tracking the necessary thresholds for the cursor position to pass rather than the previous and current indices. (you can possibly thereby skip the calculation of the indices entirely for the redundant events).
         // TODO: Is it correct to use the cursor's indexLine and indexColumn directly as a means of determining redundancy? I worry about odd interactions, but I have no proof that such an odd interaction could exist.
 
-        let rX = event.clientX - get_EDITOR_recentBoundingClientRect_left() - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] + lastReadNumber_scrollLeft;
-        let rY = event.clientY - get_EDITOR_recentBoundingClientRect_top() + EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
+        let rX = event.clientX - EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] + lastReadNumber_scrollLeft;
+        let rY = event.clientY - EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] + EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
 
         let indexColumn = Math.round(rX / EDITOR_characterWidth);
         let indexLine = Math.floor(rY / EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]);
@@ -3308,13 +3308,13 @@ function EDITOR_onMouseMove_WRAPIT(event) {
         cursor.indexLine = indexLine;
         cursor.indexColumn = indexColumn;
 
-        if (get_EDITOR_detailRank() === 3) {
+        if (EDITOR_int_fields[INDEXOF_EDITOR_detailRank] === 3) {
             EDITOR_onMouseMoveDetailRankThree(indexLine, indexColumn);
         }
-        else if (get_EDITOR_detailRank() === 2) {
+        else if (EDITOR_int_fields[INDEXOF_EDITOR_detailRank] === 2) {
             EDITOR_onMouseMoveDetailRankTwo(indexLine, indexColumn);
         }
-        else if (get_EDITOR_detailRank() === 1) {
+        else if (EDITOR_int_fields[INDEXOF_EDITOR_detailRank] === 1) {
             EDITOR_onMouseMoveDetailRankOne(indexLine, indexColumn);
         }
 
@@ -3461,7 +3461,7 @@ function EDITOR_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
     let nextPositionIndex = EDITOR_getPositionIndex_Overload(indexLineClicked, indexColumnClicked);
     let cursor = EDITOR_primaryCursor;
 
-    if (nextPositionIndex <= get_EDITOR_detail_smallPosition()) {
+    if (nextPositionIndex <= EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]) {
         if (cursor.selectionAnchor < cursor.selectionEnd) {
             cursor.selectionAnchor = get_EDITOR_detail_largePosition();
         }
@@ -3472,7 +3472,7 @@ function EDITOR_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
 
         cursor.selectionEnd = positionIndex;
 
-        if (nextPositionIndex < get_EDITOR_detail_smallPosition()) {
+        if (nextPositionIndex < EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]) {
             let goalCharacterKind = EDITOR_getCharacterCurrent_KIND(cursor.indexColumn, positionIndex, EDITOR_getLineEnd_pos(cursor.indexLine));
 
             let leftWasFound = false;
@@ -3500,7 +3500,7 @@ function EDITOR_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
     }
     else {
         if (cursor.selectionAnchor > cursor.selectionEnd) {
-            cursor.selectionAnchor = get_EDITOR_detail_smallPosition();
+            cursor.selectionAnchor = EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition];
         }
 
         if (nextPositionIndex >= get_EDITOR_detail_largePosition()) {
@@ -3557,14 +3557,14 @@ function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked)
         // You could attach to I think it is window? but then I'm wondering if a race condition could ever occur.
         // so you'd probably want to do both attach to window and protect against large movements that skip the exact threshold when transitioning.
         //
-        if (EDITOR_getPositionIndex_raw(cursor) !== get_EDITOR_detail_smallPosition()) {
-            let smallLineAndColumnPositionIndices = EDITOR_getLineAndColumnIndices(get_EDITOR_detail_smallPosition());
+        if (EDITOR_getPositionIndex_raw(cursor) !== EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]) {
+            let smallLineAndColumnPositionIndices = EDITOR_getLineAndColumnIndices(EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]);
             cursor.indexLine = smallLineAndColumnPositionIndices.indexLine;
             cursor.indexColumn = smallLineAndColumnPositionIndices.indexColumn;
         }
 
-        if (cursor.selectionEnd !== get_EDITOR_detail_smallPosition()) {
-            cursor.selectionEnd = get_EDITOR_detail_smallPosition();
+        if (cursor.selectionEnd !== EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]) {
+            cursor.selectionEnd = EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition];
         }
 
         if (cursor.selectionAnchor !== get_EDITOR_detail_largePosition()) {
@@ -3576,12 +3576,12 @@ function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked)
     }
     else if (indexLineClicked < get_EDITOR_detailRank3OriginLine()) {
         if (cursor.selectionAnchor < cursor.selectionEnd) {
-            let smallLineAndColumnPositionIndices = EDITOR_getLineAndColumnIndices(get_EDITOR_detail_smallPosition());
+            let smallLineAndColumnPositionIndices = EDITOR_getLineAndColumnIndices(EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]);
 
             cursor.indexLine = smallLineAndColumnPositionIndices.indexLine;
             cursor.indexColumn = smallLineAndColumnPositionIndices.indexColumn;
 
-            cursor.selectionEnd = get_EDITOR_detail_smallPosition();
+            cursor.selectionEnd = EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition];
 
             let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
             EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
@@ -3597,8 +3597,8 @@ function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked)
     }
     else if (indexLineClicked > get_EDITOR_detailRank3OriginLine()) {
 
-        if (cursor.selectionAnchor !== get_EDITOR_detail_smallPosition()) {
-            cursor.selectionAnchor = get_EDITOR_detail_smallPosition();
+        if (cursor.selectionAnchor !== EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]) {
+            cursor.selectionAnchor = EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition];
         }
 
         cursor.indexLine = indexLineClicked;

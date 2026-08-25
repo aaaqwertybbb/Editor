@@ -105,6 +105,7 @@ let EDITOR_cursor_DRAWN_selection_virtualCount = 0;
 let EDITOR_cursor_editKind = ENUM_EditKind_None;
 let EDITOR_cursor_editLength = 0;
 let EDITOR_cursor_editPosition = 0;
+let EDITOR_cursor_editIndexLine = 0;
 
 class EDITOR_Cursor {
     /**
@@ -118,7 +119,6 @@ class EDITOR_Cursor {
     constructor() {
 
         
-        this.editIndexLine = 0;
         this.editIndexColumn = 0;
         /**
          * the amount of characters that UI has changed with respect to the pending edit
@@ -234,7 +234,7 @@ class EDITOR_Cursor {
         EDITOR_cursor_editKind = ENUM_EditKind_None;
         EDITOR_cursor_editLength = 0;
         EDITOR_cursor_editPosition = 0;
-        this.editIndexLine = 0;
+        EDITOR_cursor_editIndexLine = 0;
         this.editIndexColumn = 0;
         this.editRenderedDisplacement = 0;
         this.editRenderedDisplacement_INDEX_LINE_OFFSET = 0;
@@ -1744,15 +1744,15 @@ function EDITOR_finalizeEdit_Enter(cursor, indexLine_editOccurredOn) {
 
     EDITOR_textByteList.insertBytes(EDITOR_cursor_editPosition, cursor.enterKey_newLinePlusIndentation_byteList.bytes, /*offset*/ 0, cursor.enterKey_newLinePlusIndentation_byteList.count);
 
-    for (var i = cursor.editIndexLine; i < EDITOR_lineEndPositionList.count; i++) {
+    for (var i = EDITOR_cursor_editIndexLine; i < EDITOR_lineEndPositionList.count; i++) {
         EDITOR_lineEndPositionList.data[i] += EDITOR_cursor_editLength;
     }
 
     // You need to consider if the longest line gets split
-    if (cursor.editIndexLine <= EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine])
+    if (EDITOR_cursor_editIndexLine <= EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine])
         EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine] = EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine] + 1;
 
-    EDITOR_lineEndPositionList.insert(cursor.editIndexLine, EDITOR_cursor_editPosition);
+    EDITOR_lineEndPositionList.insert(EDITOR_cursor_editIndexLine, EDITOR_cursor_editPosition);
 
     EDITOR_finalizeEdit_ClearEditState(cursor);
 
@@ -1784,7 +1784,7 @@ function EDITOR_finalizeEdit_Tab(cursor, indexLine_editOccurredOn) {
 
     EDITOR_textByteList.insertBytes(EDITOR_cursor_editPosition, bytes, /*offset*/ 0, /*length*/ that_four);
 
-    for (var i = cursor.editIndexLine; i < EDITOR_lineEndPositionList.count; i++) {
+    for (var i = EDITOR_cursor_editIndexLine; i < EDITOR_lineEndPositionList.count; i++) {
         EDITOR_lineEndPositionList.data[i] += that_four;
     }
 
@@ -2191,7 +2191,7 @@ function EDITOR_finalizeEdit_Paste(cursor, indexLine_editOccurredOn) {
                 break;
             case '\n':
                 EDITOR_textByteList.insert(EDITOR_cursor_editPosition + insertionLength, CONST_EDITOR_ASCII_LINE_FEED);
-                EDITOR_lineEndPositionList.insert(cursor.editIndexLine + linesInsertedCount, EDITOR_cursor_editPosition + insertionLength);
+                EDITOR_lineEndPositionList.insert(EDITOR_cursor_editIndexLine + linesInsertedCount, EDITOR_cursor_editPosition + insertionLength);
                 insertionLength++;
                 linesInsertedCount++;
                 break;
@@ -2200,7 +2200,7 @@ function EDITOR_finalizeEdit_Paste(cursor, indexLine_editOccurredOn) {
                     sourceI++;
                 }
                 EDITOR_textByteList.insert(EDITOR_cursor_editPosition + insertionLength, CONST_EDITOR_ASCII_LINE_FEED);
-                EDITOR_lineEndPositionList.insert(cursor.editIndexLine + linesInsertedCount, EDITOR_cursor_editPosition + insertionLength);
+                EDITOR_lineEndPositionList.insert(EDITOR_cursor_editIndexLine + linesInsertedCount, EDITOR_cursor_editPosition + insertionLength);
                 insertionLength++;
                 linesInsertedCount++;
                 break;
@@ -2211,7 +2211,7 @@ function EDITOR_finalizeEdit_Paste(cursor, indexLine_editOccurredOn) {
         }
     }
 
-    for (var i = cursor.editIndexLine + linesInsertedCount; i < EDITOR_lineEndPositionList.count; i++) {
+    for (var i = EDITOR_cursor_editIndexLine + linesInsertedCount; i < EDITOR_lineEndPositionList.count; i++) {
         EDITOR_lineEndPositionList.data[i] += insertionLength;
     }
 
@@ -2249,7 +2249,7 @@ function EDITOR_finalizeEdit_Duplicate(cursor, indexLine_editOccurredOn) {
                 insertionLength += 4; // ??? I think this is copy pasted from 'paste' logic where the tab would change to 4 characters total, in the case of duplication you get what you select.
                 break;
             case CONST_EDITOR_ASCII_LINE_FEED:
-                EDITOR_lineEndPositionList.insert(cursor.editIndexLine + linesInsertedCount, EDITOR_cursor_editPosition + insertionLength);
+                EDITOR_lineEndPositionList.insert(EDITOR_cursor_editIndexLine + linesInsertedCount, EDITOR_cursor_editPosition + insertionLength);
                 insertionLength++;
                 linesInsertedCount++;
                 break;
@@ -2259,7 +2259,7 @@ function EDITOR_finalizeEdit_Duplicate(cursor, indexLine_editOccurredOn) {
         }
     }
 
-    for (var i = cursor.editIndexLine + linesInsertedCount; i < EDITOR_lineEndPositionList.count; i++) {
+    for (var i = EDITOR_cursor_editIndexLine + linesInsertedCount; i < EDITOR_lineEndPositionList.count; i++) {
         EDITOR_lineEndPositionList.data[i] += insertionLength;
     }
 
@@ -2276,7 +2276,7 @@ function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(cursor,
     let startLineAndColumnIndices;
     if (EDITOR_cursor_editKind === ENUM_EditKind_RemoveTextNoBatching) {
         startLineAndColumnIndices = {
-            indexLine: cursor.editIndexLine,
+            indexLine: EDITOR_cursor_editIndexLine,
             indexColumn: cursor.editIndexColumn,
         };
     }
@@ -2395,7 +2395,7 @@ function EDITOR_finalizeEdit_ClearEditState(cursor) {
     EDITOR_cursor_editKind = ENUM_EditKind_None;
     EDITOR_cursor_editLength = 0;
     EDITOR_cursor_editPosition = 0;
-    cursor.editIndexLine = 0;
+    EDITOR_cursor_editIndexLine = 0;
     cursor.editIndexColumn = 0;
     cursor.editRenderedDisplacement = 0;
     cursor.END_editIndexLine = 0;
@@ -3844,7 +3844,7 @@ function EDITOR_insertGapBufferSpan(cursor) {
 function EDITOR_startEdit(cursor, editKind, editPosition, editLength) {
     EDITOR_cursor_editKind = editKind;
     EDITOR_cursor_editPosition = editPosition;
-    cursor.editIndexLine = EDITOR_cursor_indexLine;
+    EDITOR_cursor_editIndexLine = EDITOR_cursor_indexLine;
     cursor.editIndexColumn = EDITOR_cursor_indexColumn;
     EDITOR_cursor_editLength = editLength;
 
@@ -3862,7 +3862,7 @@ function EDITOR_startEdit(cursor, editKind, editPosition, editLength) {
  */
 function EDITOR_NOTcanBatch_insert(cursor, indexCursor) {
     return EDITOR_cursor_editKind != ENUM_EditKind_InsertLtr ||
-           EDITOR_cursor_indexLine !== cursor.editIndexLine ||
+           EDITOR_cursor_indexLine !== EDITOR_cursor_editIndexLine ||
            EDITOR_cursor_indexColumn !== cursor.editIndexColumn + EDITOR_cursor_editLength ||
            EDITOR_cursor_editLength >= EDITOR_cursor_GAP_BUFFER_CAPACITY ||
            cursor.hasSelection();
@@ -3889,7 +3889,7 @@ function EDITOR_NOTcanBatch_enter(cursor, indexCursor) {
  */
 function EDITOR_NOTcanBatch_backspace(cursor) {
     return EDITOR_cursor_editKind != ENUM_EditKind_BackspaceRtl ||
-           EDITOR_cursor_indexLine !== cursor.editIndexLine ||
+           EDITOR_cursor_indexLine !== EDITOR_cursor_editIndexLine ||
            EDITOR_cursor_indexColumn !== cursor.editIndexColumn ||
            cursor.hasSelection();
 }
@@ -3900,7 +3900,7 @@ function EDITOR_NOTcanBatch_backspace(cursor) {
  */
 function EDITOR_NOTcanBatch_delete(cursor) {
     return EDITOR_cursor_editKind != ENUM_EditKind_DeleteLtr ||
-           EDITOR_cursor_indexLine !== cursor.editIndexLine ||
+           EDITOR_cursor_indexLine !== EDITOR_cursor_editIndexLine ||
            EDITOR_cursor_indexColumn !== cursor.editIndexColumn ||
            cursor.hasSelection();
 }
@@ -4284,7 +4284,7 @@ function EDITOR_editEvent_checkFor_NOTcanBatch_Tab(event) {
             return EDITOR_editEvent_checkFor_NOTcanBatch_IndentLess();
         }
         else {
-            if (cursor.editIndexLine === EDITOR_cursor_indexLine &&
+            if (EDITOR_cursor_editIndexLine === EDITOR_cursor_indexLine &&
                 cursor.editIndexColumn + (4 * EDITOR_cursor_editLength) === EDITOR_cursor_indexColumn) {
                     return false;
             }
@@ -5794,7 +5794,7 @@ async function EDITOR_duplicateSelection(cursor) {
 
     EDITOR_cursor_editPosition = large;
     let large_lineAndColumnIndices = EDITOR_getLineAndColumnIndices(large);
-    cursor.editIndexLine = large_lineAndColumnIndices.indexLine;
+    EDITOR_cursor_editIndexLine = large_lineAndColumnIndices.indexLine;
     cursor.editIndexColumn = large_lineAndColumnIndices.indexColumn;
     EDITOR_cursor_editLength = length;
 
@@ -6195,7 +6195,7 @@ function EDITOR_paste(cursor, content) {
     let positionIndex = EDITOR_getPositionIndex(cursor);
 
     EDITOR_cursor_editPosition = positionIndex;
-    cursor.editIndexLine = EDITOR_cursor_indexLine;
+    EDITOR_cursor_editIndexLine = EDITOR_cursor_indexLine;
     cursor.editIndexColumn = EDITOR_cursor_indexColumn;
 
     cursor.EDITOR_paste_clipboardContent = content;
@@ -6426,7 +6426,7 @@ function EDITOR_tabKey(cursor) {
 
     if (EDITOR_cursor_editLength === 0) {
         EDITOR_cursor_editPosition = EDITOR_getPositionIndex(cursor);
-        cursor.editIndexLine = EDITOR_cursor_indexLine;
+        EDITOR_cursor_editIndexLine = EDITOR_cursor_indexLine;
         cursor.editIndexColumn = EDITOR_cursor_indexColumn;
     }
 
@@ -6610,7 +6610,7 @@ function EDITOR_render_do_EnterKey() {
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexLine_current = ((cursor.editIndexLine) + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+        let beltIndexLine_current = ((EDITOR_cursor_editIndexLine) + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
         if (beltIndexLine_current >= ArrayFrom_textElement_children_length || beltIndexLine_current < 0) beltIndexLine_current = -1;
         else beltIndexLine_current = (beltIndexLine_current + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
@@ -6662,7 +6662,7 @@ function EDITOR_render_do_EnterKey() {
         else {
             if (!shouldRenderEntireViewport) {
                 // ensure this conditional branch returns if handled, otherwise it will execute the fallback case erroneously
-                let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(cursor.editIndexLine);
+                let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_editIndexLine);
 
                 if (lastValidIndexColumn === cursor.editIndexColumn) { // end of line
                     
@@ -6690,7 +6690,7 @@ function EDITOR_render_do_EnterKey() {
                     let remember_cursorIndexLine = EDITOR_cursor_indexLine;
                     let remember_cursorIndexColumn = EDITOR_cursor_indexColumn;
 
-                    EDITOR_cursor_indexLine = cursor.editIndexLine;
+                    EDITOR_cursor_indexLine = EDITOR_cursor_editIndexLine;
                     EDITOR_cursor_indexColumn = cursor.editIndexColumn;
 
                     let spanClassName = '';
@@ -6792,7 +6792,7 @@ function EDITOR_EnterKey(cursor, ctrlKey, shiftKey) {
         cursor.enterKeyEventKind = ENUM_EnterKeyEventKind_None;
 
         EDITOR_cursor_editPosition = EDITOR_getPositionIndex_raw(cursor);
-        cursor.editIndexLine = EDITOR_cursor_indexLine;
+        EDITOR_cursor_editIndexLine = EDITOR_cursor_indexLine;
         cursor.editIndexColumn = EDITOR_cursor_indexColumn;
     }
 
@@ -7084,7 +7084,7 @@ function EDITOR_removeSelection(cursor) {
     EDITOR_RemoveSelection_smallLineAndColumnIndices = smallLineAndColumnIndices;
     EDITOR_cursor_indexLine = smallLineAndColumnIndices.indexLine;
     EDITOR_cursor_indexColumn = smallLineAndColumnIndices.indexColumn;
-    cursor.editIndexLine = smallLineAndColumnIndices.indexLine;
+    EDITOR_cursor_editIndexLine = smallLineAndColumnIndices.indexLine;
     cursor.editIndexColumn = smallLineAndColumnIndices.indexColumn;
 
     let largeLineAndColumnIndices = EDITOR_getLineAndColumnIndices(largePosition);
@@ -7727,7 +7727,7 @@ function EDITOR_state_do_Backspace(cursor, event) {
             EDITOR_cursor_indexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
             EDITOR_cursor_editPosition--;
             EDITOR_cursor_editLength++;
-            cursor.editIndexLine = EDITOR_cursor_indexLine;
+            EDITOR_cursor_editIndexLine = EDITOR_cursor_indexLine;
             cursor.editIndexColumn = EDITOR_cursor_indexColumn;
 
             cursor.editLineFeedCount++;

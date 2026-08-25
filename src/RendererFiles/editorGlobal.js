@@ -3862,16 +3862,17 @@ function EDITOR_postKeyboardMovementSelectionLogic(shiftKey) {
  * @param {*} shiftKey 
  */
 function EDITOR_arrowDown(shiftKey) {
+    let local_EDITOR_int_fields = EDITOR_int_fields;
     EDITOR_movementBasedCacheInvalidation();
     EDITOR_preKeyboardMovementSelectionLogic(shiftKey);
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] < EDITOR_lineEndPositionList.count - 1) {
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]++;
-        let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] > lastValidIndexColumn) {
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = lastValidIndexColumn;
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] < EDITOR_lineEndPositionList.count - 1) {
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]++;
+        let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+        if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] > lastValidIndexColumn) {
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = lastValidIndexColumn;
         }
         else {
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn];
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn];
         }
     }
     EDITOR_postKeyboardMovementSelectionLogic(shiftKey);
@@ -4024,63 +4025,66 @@ function EDITOR_editEvent(editKind, event, clipboardContent) {
 }
 
 function EDITOR_editEvent_theEditIself_InsertLtr(event) {
+    let local_EDITOR_int_fields = EDITOR_int_fields;
     EDITOR_movementBasedCacheInvalidation();
-    if (EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]) {
-        EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
-        EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]) {
+        local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
     }
     // You can do this because the function 'EDITOR_NOTcanBatch_insert' was already checked for all the cursors, if it is possible to batch, the editKind will stay InsertLtr otherwise it is finalized and set to None.
     // TODO: Use if === ENUM_EditKind_None for copy and paste safety / it might just even be more readable
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_InsertLtr) {
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_InsertLtr) {
         EDITOR_startEdit(ENUM_EditKind_InsertLtr, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
     }
     EDITOR_insertDo(event.key);
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
-    //EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] + EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
-    //EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = get_EDITOR_totalShift() + EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
+    //local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] + local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+    //local_EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = get_EDITOR_totalShift() + local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
     EDITOR_render_request(ENUM_RenderKind_InsertLtr);
 }
 
 function EDITOR_editEvent_theEditIself_DeleteLtr(event) {
+    let local_EDITOR_int_fields = EDITOR_int_fields;
     EDITOR_movementBasedCacheInvalidation();
-    if (EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]) {
-        EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
-        EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]) {
+        local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
     }
     if (EDITOR_cursor_hasSelection()) {
         EDITOR_removeSelection();
     }
     else {
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_DeleteLtr) {
+        if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_DeleteLtr) {
             EDITOR_startEdit(ENUM_EditKind_DeleteLtr, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
         }
         EDITOR_deleteDo(event);
     }
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
-    //EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] - EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
-    //EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = get_EDITOR_totalShift() - EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
+    //local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] - local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+    //local_EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = get_EDITOR_totalShift() - local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
 }
 
 function EDITOR_editEvent_theEditIself_BackspaceRtl(event) {
+    let local_EDITOR_int_fields = EDITOR_int_fields;
     EDITOR_movementBasedCacheInvalidation();
-    if (EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]) {
-        EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
-        EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]) {
+        local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
     }
     if (EDITOR_cursor_hasSelection()) {
         EDITOR_removeSelection();
     }
     else {
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_BackspaceRtl) {
+        if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_BackspaceRtl) {
             EDITOR_startEdit(ENUM_EditKind_BackspaceRtl, EDITOR_getPositionIndex_raw_cursor(), /*editLength*/ 0);
         }
         EDITOR_backspaceDo(event);
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
     }
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
-    //EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] - EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
-    //EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = get_EDITOR_totalShift() - EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
+    //local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] - local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+    //local_EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = get_EDITOR_totalShift() - local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
 }
 
 function EDITOR_editEvent_theEditIself_Tab(event) {
@@ -4402,14 +4406,17 @@ hmmm is google AI just hyping me up... I need to clarify that those few conditio
  * TODO: timing issue of async paste and copy
  */
 function EDITOR_onKeyDown(event) {
+
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
     // Explicitly inlining 'clearMulticursorState()' because it currently is and I just don't want to make a decision about this right now.
     // So what I can do is mark the code paragraph for later decision making.
-    EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = 0;
     EDITOR_offsetWithinSpan_withRespectToThisSpan = null;
-    EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] = 0;
 
     switch (event.key) {
         case 'ArrowLeft':
@@ -4487,38 +4494,41 @@ function EDITOR_onKeyDown_ArrowLeft(event) {
     event.stopPropagation();
 
     EDITOR_movementBasedCacheInvalidation();
-    if (EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]) {
-        EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
-        EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
+
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]) {
+        local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
     }
 
     if (EDITOR_cursor_hasSelection() && !event.shiftKey) {
         let small;
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
-            small = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+        if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
+            small = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
         }
         else {
-            small = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+            small = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
         }
         let lineAndColumnIndices = EDITOR_getLineAndColumnIndices(small);
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = lineAndColumnIndices.indexLine;
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = lineAndColumnIndices.indexColumn;
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexEndLine];
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexEndColumn];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = lineAndColumnIndices.indexLine;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = lineAndColumnIndices.indexColumn;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexEndLine];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorColumn] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexEndColumn];
     }
     else {
         EDITOR_preKeyboardMovementSelectionLogic(event.shiftKey);
-        if (event.ctrlKey & EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] > 0) {
-            let line = EDITOR_getLineBoundaryPositions(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
-            let indexPosition = line.start + EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
-            let originalCharacterKind = EDITOR_getCharacterPrevious_KIND(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], indexPosition);
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]--;
+        if (event.ctrlKey & local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] > 0) {
+            let line = EDITOR_getLineBoundaryPositions(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+            let indexPosition = line.start + local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+            let originalCharacterKind = EDITOR_getCharacterPrevious_KIND(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], indexPosition);
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]--;
             indexPosition--;
 
-            while (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] > 0) {
-                if (EDITOR_getCharacterPrevious_KIND(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], indexPosition) === originalCharacterKind) {
-                    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]--;
+            while (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] > 0) {
+                if (EDITOR_getCharacterPrevious_KIND(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], indexPosition) === originalCharacterKind) {
+                    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]--;
                     indexPosition--;
                 }
                 else {
@@ -4527,23 +4537,23 @@ function EDITOR_onKeyDown_ArrowLeft(event) {
             }
         }
         else {
-            if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] > 0) {
-                EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]--;
+            if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] > 0) {
+                local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]--;
             }
-            else if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] > 0) {
-                EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]--;
-                EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = EDITOR_getLastValidIndexColumn(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+            else if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] > 0) {
+                local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]--;
+                local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = EDITOR_getLastValidIndexColumn(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
             }
         }
         EDITOR_postKeyboardMovementSelectionLogic(event.shiftKey);
     }
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
     EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
         EDITOR_cursorBlink_startChecking();
     }
-    //EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] + EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
-    //EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = get_EDITOR_totalShift() + EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+    //local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] + local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+    //local_EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = get_EDITOR_totalShift() + local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
 }
 
 /** @returns {boolean} whether invoking function ought to return */

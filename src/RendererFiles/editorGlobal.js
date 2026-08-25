@@ -9292,4 +9292,8 @@ if anyone lives in new jersey that's where I live if anyone wants to meet up
 
 like hang out you know
 
+I'm getting recommended this one "Kernel Panic On Adderall | Mr. Robot"
+I can't stand this one you know how much I wish I were on adderall it's such a slap in the face
+for you to watch this so much that it gets recommended to me.
+
 */

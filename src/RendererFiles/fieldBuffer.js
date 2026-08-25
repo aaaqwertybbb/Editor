@@ -293,6 +293,8 @@ and if you have 100 smi's at the global scope the GC visits
 If you stick them all into a UInt...Array then the GC only has to visit the UInt...Array
 and then it knows that everything within that array is a primitive that doesn't have to be collected so it skips over them
 bringing 100 visits to just 1.
+
+The global variable access of the UInt...Array can be offset by only doing it once and storing a local copy within whatever function needs it multiple times / within a loop.
 */
 
 

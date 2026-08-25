@@ -6101,9 +6101,11 @@ function EDITOR_render_do_DuplicateOrPaste() {
 function EDITOR_paste(content) {
     let positionIndex = EDITOR_getPositionIndex_cursor();
 
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = positionIndex;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = positionIndex;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
 
     EDITOR_cursor_EDITOR_paste_clipboardContent = content;
 
@@ -6135,17 +6137,17 @@ function EDITOR_paste(content) {
     // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-    let beltIndexLine_current = ((EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]) + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+    let beltIndexLine_current = ((local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]) + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
     if (beltIndexLine_current >= ArrayFrom_textElement_children_length || beltIndexLine_current < 0) beltIndexLine_current = -1;
-    else beltIndexLine_current = (beltIndexLine_current + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+    else beltIndexLine_current = (beltIndexLine_current + EDITOR_beltIndexZero) % local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
     // TODO: This is an awkward explicit inlining of 'EDITOR_indexLineTo_beltIndexLine'...
     // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-    let beltIndexLine_first = ((EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine]) + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+    let beltIndexLine_first = ((local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine]) + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
     if (beltIndexLine_first >= ArrayFrom_textElement_children_length || beltIndexLine_first < 0) beltIndexLine_first = -1;
-    else beltIndexLine_first = (beltIndexLine_first + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+    else beltIndexLine_first = (beltIndexLine_first + EDITOR_beltIndexZero) % local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
     // TODO: Use PREVIOUS here from 'beltIndexLine_first'
     
@@ -6153,11 +6155,11 @@ function EDITOR_paste(content) {
     // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-    let beltIndexLine_last = ((EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1) + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+    let beltIndexLine_last = ((local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1) + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
     if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
-    else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+    else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
-    let last_valid_indexColumn_currentLine = EDITOR_getLastValidIndexColumn(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+    let last_valid_indexColumn_currentLine = EDITOR_getLastValidIndexColumn(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
 
     // TODO: An optimization to check whether you even need to redraw any lines perhaps is possible but it would add too much complexity at the moment and so it isn't being considered...
     // ...i.e.: if you're inserting so many lines that you know you'll scroll or that only a small amount of lines need to be redrawn due to predicting a scroll event.
@@ -6167,7 +6169,7 @@ function EDITOR_paste(content) {
 
     //let original_indexColumn_SpanTextContentRelative = w_indexColumn_SpanTextContentRelative;
     //let original_span_textContent_length = w_span.textContent.length;
-    //let original_tracked_syntax_start = positionIndex - EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] + w_indexColumn_Sum;
+    //let original_tracked_syntax_start = positionIndex - local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] + w_indexColumn_Sum;
 
     for (var sourceI = 0; sourceI < content.length; sourceI++) {
         switch (content[sourceI]) {

@@ -22,9 +22,7 @@ module.exports = function (babel) {
   
     
     
-    "set_EDITOR_indent_ORIGINAL_indentBy",
     
-    "set_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine",
     
     "set_EDITOR_indent_startingIndex",
     

@@ -1816,14 +1816,14 @@ function EDITOR_finalizeEdit_IndentMore(cursor, indexLine_editOccurredOn) {
     let startingIndex = EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex];
     set_EDITOR_indent_startingIndex(0);
     let SMALL_lineAndColumnIndices_indexLine = EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine];
-    set_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine(0);
+    EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] = 0;
 
     let ORIGINAL_incrementBy = (startingIndex + 1 - SMALL_lineAndColumnIndices_indexLine) * 4;
     let incrementBy = ORIGINAL_incrementBy;
 
     //let ORIGINAL_incrementBy = EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy];
     //let incrementBy = EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy];
-    //set_EDITOR_indent_ORIGINAL_indentBy(0);
+    //EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy] = 0;
 
     let bytes = EDITOR_on_tab_bytes;
     let bytesLength = 4;
@@ -1930,12 +1930,12 @@ function EDITOR_finalizeEdit_IndentLess(cursor, indexLine_editOccurredOn) {
 
     //let ORIGINAL_decrementBy = EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy];
     //let decrementBy = EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy];
-    //set_EDITOR_indent_ORIGINAL_indentBy(0);
+    //EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy] = 0;
 
     let startingIndex = EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex];
     set_EDITOR_indent_startingIndex(0);
     let SMALL_lineAndColumnIndices_indexLine = EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine];
-    set_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine(0);
+    EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] = 0;
 
     // !!!!!! watch out for the big breaks when hitting a tab presuming that_four is 4
     let that_four = 4;
@@ -1996,7 +1996,7 @@ function EDITOR_finalizeEdit_IndentLess(cursor, indexLine_editOccurredOn) {
 
     // Remember the total whitespace removed
     let ORIGINAL_decrementBy = DETERMINE_decrementBy;
-    //set_EDITOR_indent_ORIGINAL_indentBy(ORIGINAL_decrementBy);
+    //EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy] = ORIGINAL_decrementBy;
     let decrementBy = ORIGINAL_decrementBy;
 
     //// TODO: use better formatting
@@ -5848,7 +5848,7 @@ function EDITOR_indentMore(cursor) {
         return;
     }
 
-    set_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine(SMALL_lineAndColumnIndices.indexLine);
+    EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] = SMALL_lineAndColumnIndices.indexLine;
     set_EDITOR_indent_startingIndex(startingIndex);
 
     if (cursor.editLength === 0) {
@@ -6036,7 +6036,7 @@ function EDITOR_indentLess(cursor) {
         return;
     }
 
-    set_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine(SMALL_lineAndColumnIndices.indexLine);
+    EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] = SMALL_lineAndColumnIndices.indexLine;
     set_EDITOR_indent_startingIndex(startingIndex);
 
     if (cursor.editLength === 0) {

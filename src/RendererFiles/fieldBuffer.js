@@ -255,10 +255,8 @@ const INDEXOF_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrol
 const INDEXOF_EDITOR_contentWidth = 27;
 
 const INDEXOF_EDITOR_indent_ORIGINAL_indentBy = 28;
-const set_EDITOR_indent_ORIGINAL_indentBy = (int) => EDITOR_int_fields[28] = int;
 
 const INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine = 29;
-const set_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine = (int) => EDITOR_int_fields[29] = int;
 
 const INDEXOF_EDITOR_indent_startingIndex = 30;
 const set_EDITOR_indent_startingIndex = (int) => EDITOR_int_fields[30] = int;

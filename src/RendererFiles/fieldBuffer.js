@@ -168,47 +168,47 @@ const CONST_EDI_cursor_GAP_BUFFER_CAPACITY = 32;
 
 const GLOB_int_fields = new Uint32Array(64);
 
-const INDEXOF_EDI_lineHeight = 0;
-GLOB_int_fields[INDEXOF_EDI_lineHeight] = 20;
+const F_EDI_lineHeight = 0;
+GLOB_int_fields[F_EDI_lineHeight] = 20;
 
 /** The first line of text that you should see shown in the UI given the current scrollTop */
-const INDEXOF_EDI_virtualIndexLine = 1;
+const F_EDI_virtualIndexLine = 1;
 
 /** The value of 'EDI_baseElement.scrollTop' at the most recent scroll event that occurred */
-const INDEXOF_lastReadNumber_scrollTop = 2;
+const F_lastReadNumber_scrollTop = 2;
 
-const INDEXOF_EDI_ONSCROLLvirtualIndexLine = 3;
+const F_EDI_ONSCROLLvirtualIndexLine = 3;
 //throw new Error('-1');
 // This set used to be -1 to indicate a non existent value, 500 "seems to work" but a proof of it being an equivalent solution has not thoroughly been thought out, only a sort of "yeah that probably works" kinda vibe.
-GLOB_int_fields[INDEXOF_EDI_ONSCROLLvirtualIndexLine] = 500;
+GLOB_int_fields[F_EDI_ONSCROLLvirtualIndexLine] = 500;
 
 /** Also is used from 'EDI_render_do_SetText()', and 'EDI_render_do_Resize()', not just 'EDI_render_do_Scroll()' */
-const INDEXOF_EDI_scrollEndDeadline = 4;
+const F_EDI_scrollEndDeadline = 4;
 
-const INDEXOF_EDI_ONSCROLLscrollTop = 5;
+const F_EDI_ONSCROLLscrollTop = 5;
 //throw new Error('-1');
 // This set used to be -1 to indicate a non existent value, 500 "seems to work" but a proof of it being an equivalent solution has not thoroughly been thought out, only a sort of "yeah that probably works" kinda vibe.
-GLOB_int_fields[INDEXOF_EDI_ONSCROLLscrollTop] = 500;
+GLOB_int_fields[F_EDI_ONSCROLLscrollTop] = 500;
 
 
-const INDEXOF_EDI_virtualCount = 6;
+const F_EDI_virtualCount = 6;
 
-const INDEXOF_EDI_sum_diffPositive = 7;
+const F_EDI_sum_diffPositive = 7;
 
-const INDEXOF_EDI_ONSCROLLvirtualCount = 8;
-GLOB_int_fields[INDEXOF_EDI_ONSCROLLvirtualCount] = 0;
+const F_EDI_ONSCROLLvirtualCount = 8;
+GLOB_int_fields[F_EDI_ONSCROLLvirtualCount] = 0;
 
-const INDEXOF_EDI_sum_diffNegative = 9;
+const F_EDI_sum_diffNegative = 9;
 
-const INDEXOF_EDI_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber = 10;
+const F_EDI_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber = 10;
 
-const INDEXOF_EDI_drawn_count_of_digits_longest_line_number = 11;
+const F_EDI_drawn_count_of_digits_longest_line_number = 11;
 
-const INDEXOF_EDI_detail_smallPosition = 12;
+const F_EDI_detail_smallPosition = 12;
 
-const INDEXOF_EDI_detail_largePosition = 13;
+const F_EDI_detail_largePosition = 13;
 
-const INDEXOF_EDI_detailRank3OriginLine = 14;
+const F_EDI_detailRank3OriginLine = 14;
 
 /**
  * Pixels.
@@ -218,116 +218,116 @@ const INDEXOF_EDI_detailRank3OriginLine = 14;
  * 
  * Whereas the line height is a css variable (and thus could cause layout for the entire application whenever it changes).
  */
-const INDEXOF_EDI_gutterWidthStyleValue = 15;
-GLOB_int_fields[INDEXOF_EDI_gutterWidthStyleValue] = 32;
+const F_EDI_gutterWidthStyleValue = 15;
+GLOB_int_fields[F_EDI_gutterWidthStyleValue] = 32;
 
 /**
- * This is the sum of the 'INDEXOF_EDI_gutterWidthStyleValue()' in addition to paddig
+ * This is the sum of the 'F_EDI_gutterWidthStyleValue()' in addition to paddig
  * consider 'gutterWidthTotal_withPxUnits'
  */
-const INDEXOF_EDI_gutterWidthTotal = 16;
+const F_EDI_gutterWidthTotal = 16;
 /** WARNING: This will not set 'gutterWidthTotal_withPxUnits' and thus is somewhat prone to a mistake at some point. */
-GLOB_int_fields[INDEXOF_EDI_gutterWidthTotal] = 32;
+GLOB_int_fields[F_EDI_gutterWidthTotal] = 32;
 
-const INDEXOF_didChangeTextDocument_version = 17;
+const F_didChangeTextDocument_version = 17;
 
 /**
  * All the 'EDI_cursorList' loops are currently using the variable 'i'.
  * I'm experimenting with a few of the loops though such that at the start of every loop they set this variable equal to 'i'.
  * Then in any functions like getCharacter, I might be able to contextually find the character much faster.
  * */
-const INDEXOF_EDI_indexCursor = 18;
+const F_EDI_indexCursor = 18;
 
-const INDEXOF_EDI_offsetLine = 19;
+const F_EDI_offsetLine = 19;
 
-const INDEXOF_EDI_offsetColumn_withRespectToThisIndexLine = 20;
+const F_EDI_offsetColumn_withRespectToThisIndexLine = 20;
 
-const INDEXOF_EDI_offsetColumn = 21;
+const F_EDI_offsetColumn = 21;
 
-const INDEXOF_EDI_totalShift = 22;
+const F_EDI_totalShift = 22;
 
-const INDEXOF_EDI_offsetWithinSpan = 23;
+const F_EDI_offsetWithinSpan = 23;
 
-const INDEXOF_EDI_longestLine_indexLine = 24;
+const F_EDI_longestLine_indexLine = 24;
 
-const INDEXOF_EDI_longestLine_length = 25;
+const F_EDI_longestLine_length = 25;
 
 /**
- * The INDEXOF_EDI_contentWidth() is calculated via Math.ceil(someVar * otherVar) so this is faster to check whether content width will change rather than the multiplication and ceil.
+ * The F_EDI_contentWidth() is calculated via Math.ceil(someVar * otherVar) so this is faster to check whether content width will change rather than the multiplication and ceil.
  */
-const INDEXOF_EDI_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar = 26;
+const F_EDI_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar = 26;
 
-const INDEXOF_EDI_contentWidth = 27;
+const F_EDI_contentWidth = 27;
 
-const INDEXOF_EDI_indent_ORIGINAL_indentBy = 28;
+const F_EDI_indent_ORIGINAL_indentBy = 28;
 
-const INDEXOF_EDI_indent_SMALL_lineAndColumnIndices_indexLine = 29;
+const F_EDI_indent_SMALL_lineAndColumnIndices_indexLine = 29;
 
-const INDEXOF_EDI_indent_startingIndex = 30;
+const F_EDI_indent_startingIndex = 30;
 
-const INDEXOF_EDI_recentBoundingClientRect_left = 31;
+const F_EDI_recentBoundingClientRect_left = 31;
 
-const INDEXOF_EDI_recentBoundingClientRect_top = 32;
+const F_EDI_recentBoundingClientRect_top = 32;
 
-const INDEXOF_EDI_pooledTrackedSyntax_start = 33;
+const F_EDI_pooledTrackedSyntax_start = 33;
 
-const INDEXOF_EDI_pooledTrackedSyntax_length = 34;
+const F_EDI_pooledTrackedSyntax_length = 34;
 
 /**
  * Also is used from 'EDI_render_do_SetText()', and 'EDI_render_do_Resize()', not just 'EDI_render_do_Scroll()'
  * 
  * I'm gonna store this in the int32 array so that the editor scroll render function can access it from the already existing local reference of GLOB_int_fields.
  */
-const INDEXOF_EDI_intFalsey_isScrolling = 35;
+const F_EDI_intFalsey_isScrolling = 35;
 
 /**
  * I'm gonna store this in the int32 array so that the editor scroll render function can access it from the already existing local reference of GLOB_int_fields.
  */
-const INDEXOF_EDI_cursor_editKind = 36;
+const F_EDI_cursor_editKind = 36;
 
-const INDEXOF_EDI_cursor_indexLine = 37;
-const INDEXOF_EDI_cursor_indexColumn = 38;
+const F_EDI_cursor_indexLine = 37;
+const F_EDI_cursor_indexColumn = 38;
 
 /**
  * When moving cursor vertically, if the current column index cannot be matched due to the upcoming line being too short,
  * then this will allow a later vertical movement to a line that is long enough to match the original column rather than the minimized one.
  */
-const INDEXOF_EDI_cursor_STORED_indexColumn = 39;
+const F_EDI_cursor_STORED_indexColumn = 39;
 
-const INDEXOF_EDI_cursor_cursorTranslateYValue = 40;
-const INDEXOF_EDI_cursor_cursorTranslateXValue = 41;
+const F_EDI_cursor_cursorTranslateYValue = 40;
+const F_EDI_cursor_cursorTranslateXValue = 41;
 
-const INDEXOF_EDI_cursor_selectionAnchor = 42;
-const INDEXOF_EDI_cursor_selectionEnd = 43;
+const F_EDI_cursor_selectionAnchor = 42;
+const F_EDI_cursor_selectionEnd = 43;
 
-const INDEXOF_EDI_cursor_selectionIndexAnchorLine = 44;
-const INDEXOF_EDI_cursor_selectionIndexAnchorColumn = 45;
+const F_EDI_cursor_selectionIndexAnchorLine = 44;
+const F_EDI_cursor_selectionIndexAnchorColumn = 45;
 
-const INDEXOF_EDI_cursor_selectionIndexEndLine = 46;
-const INDEXOF_EDI_cursor_selectionIndexEndColumn = 47;
+const F_EDI_cursor_selectionIndexEndLine = 46;
+const F_EDI_cursor_selectionIndexEndColumn = 47;
 
-const INDEXOF_EDI_cursor_DRAWN_selectionAnchor = 48;
-const INDEXOF_EDI_cursor_DRAWN_selectionEnd = 49;
+const F_EDI_cursor_DRAWN_selectionAnchor = 48;
+const F_EDI_cursor_DRAWN_selectionEnd = 49;
 
-const INDEXOF_EDI_cursor_DRAWN_selection_virtualIndexLine = 50;
-const INDEXOF_EDI_cursor_DRAWN_selection_virtualCount = 51;
+const F_EDI_cursor_DRAWN_selection_virtualIndexLine = 50;
+const F_EDI_cursor_DRAWN_selection_virtualCount = 51;
 
-const INDEXOF_EDI_cursor_editLength = 52;
-const INDEXOF_EDI_cursor_editPosition = 53;
-const INDEXOF_EDI_cursor_editIndexLine = 54;
-const INDEXOF_EDI_cursor_editIndexColumn = 55;
+const F_EDI_cursor_editLength = 52;
+const F_EDI_cursor_editPosition = 53;
+const F_EDI_cursor_editIndexLine = 54;
+const F_EDI_cursor_editIndexColumn = 55;
 /**
  * the amount of characters that UI has changed with respect to the pending edit
  * per 'EDI_render_do', if the displacement is not the editLength then you know you need to "draw more of this edit" on the UI.
  * 
  * The awkward name is to avoid re-using similar words that already are used in other fields on this class.
  */
-const INDEXOF_EDI_cursor_editRenderedDisplacement = 56;
+const F_EDI_cursor_editRenderedDisplacement = 56;
 /** TODO: perhaps you could determine this some other way, but tracking it for the moment is easiest and necessary if I'm to not give up on getting an initial solution to work, given my current mood and etc... */
-const INDEXOF_EDI_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET = 57;
-const INDEXOF_EDI_cursor_END_editIndexLine = 58;
-const INDEXOF_EDI_cursor_END_editIndexColumn = 59;
-const INDEXOF_EDI_cursor_gapBufferCount = 60;
+const F_EDI_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET = 57;
+const F_EDI_cursor_END_editIndexLine = 58;
+const F_EDI_cursor_END_editIndexColumn = 59;
+const F_EDI_cursor_gapBufferCount = 60;
 
 /**
  * TODO: probably is sensible to use this for the enter key too but I'm firstly adding it for the sake of backspace so
@@ -341,13 +341,13 @@ const INDEXOF_EDI_cursor_gapBufferCount = 60;
  * and then it is a number 0 to ... the offset in the pending line end position list
  * and then you have another number too separately that says the length of line endings that this cursor contributed to modifying.
  */
-const INDEXOF_EDI_cursor_editLineFeedCount = 61;
+const F_EDI_cursor_editLineFeedCount = 61;
 /** same comment that pertains to EDI_cursor_EDI_paste_clipboardContent is somewhat relevant here */
-const INDEXOF_EDI_cursor_EDI_duplicate_small = 62;
+const F_EDI_cursor_EDI_duplicate_small = 62;
 /** same comment that pertains to EDI_cursor_EDI_paste_clipboardContent is somewhat relevant here */
-const INDEXOF_EDI_cursor_EDI_duplicate_length = 63;
+const F_EDI_cursor_EDI_duplicate_length = 63;
 
-// GLOB_int_fields[INDEXOF_EDI_cursor_EDI_duplicate_length]
+// GLOB_int_fields[F_EDI_cursor_EDI_duplicate_length]
 
 
 

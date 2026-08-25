@@ -9205,5 +9205,6 @@ Theprimeagen is the quote. Maybe he said 12 not 13 big deal what a stupid statem
 
 I think about it daily cause of how much I hate what he said
 
+I haven't done anything yet, but I'm now able to hoist the EDITOR_int_fields as a local variable anywhere it is used a lot.
 
 */

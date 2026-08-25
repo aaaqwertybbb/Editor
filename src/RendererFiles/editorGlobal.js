@@ -96,6 +96,9 @@ let EDITOR_cursor_cursorTranslateXValue = 0;
 let EDITOR_cursor_selectionAnchor = 0;
 let EDITOR_cursor_selectionEnd = 0;
 
+let EDITOR_cursor_DRAWN_selectionAnchor = 0;
+let EDITOR_cursor_DRAWN_selectionEnd = 0;
+
 class EDITOR_Cursor {
     /**
      * After invoking the constructor you likely would want to add to:
@@ -107,8 +110,8 @@ class EDITOR_Cursor {
      */
     constructor() {
         
-        this.DRAWN_selectionAnchor = 0;
-        this.DRAWN_selectionEnd = 0;
+        
+        
         this.DRAWN_selection_virtualIndexLine = 0;
         this.DRAWN_selection_virtualCount = 0;
         this.editKind = ENUM_EditKind_None;
@@ -223,8 +226,8 @@ class EDITOR_Cursor {
         EDITOR_cursor_cursorTranslateXValue = 0;
         EDITOR_cursor_selectionAnchor = 0;
         EDITOR_cursor_selectionEnd = 0;
-        this.DRAWN_selectionAnchor = 0;
-        this.DRAWN_selectionEnd = 0;
+        EDITOR_cursor_DRAWN_selectionAnchor = 0;
+        EDITOR_cursor_DRAWN_selectionEnd = 0;
         this.DRAWN_selection_virtualIndexLine = 0;
         this.DRAWN_selection_virtualCount = 0;
         this.editKind = ENUM_EditKind_None;
@@ -2953,18 +2956,18 @@ function EDITOR_clearSelectionStyle(cursor) {
  * @param {EDITOR_Cursor} cursor 
  */
 function EDITOR_createStyleForSelection(cursor) {
-    if (cursor.DRAWN_selectionAnchor !== EDITOR_cursor_selectionAnchor ||
-        cursor.DRAWN_selectionEnd !== EDITOR_cursor_selectionEnd ||
+    if (EDITOR_cursor_DRAWN_selectionAnchor !== EDITOR_cursor_selectionAnchor ||
+        EDITOR_cursor_DRAWN_selectionEnd !== EDITOR_cursor_selectionEnd ||
         cursor.DRAWN_selection_virtualCount !== EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] ||
         cursor.DRAWN_selection_virtualIndexLine !== EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine]) {
 
-        cursor.DRAWN_selectionAnchor = EDITOR_cursor_selectionAnchor;
-        cursor.DRAWN_selectionEnd = EDITOR_cursor_selectionEnd;
+        EDITOR_cursor_DRAWN_selectionAnchor = EDITOR_cursor_selectionAnchor;
+        EDITOR_cursor_DRAWN_selectionEnd = EDITOR_cursor_selectionEnd;
         cursor.DRAWN_selection_virtualCount = EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
         cursor.DRAWN_selection_virtualIndexLine = EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
 
         let shouldExistSelectionDiv;
-        if (cursor.DRAWN_selectionAnchor === cursor.DRAWN_selectionEnd) {
+        if (EDITOR_cursor_DRAWN_selectionAnchor === EDITOR_cursor_DRAWN_selectionEnd) {
             shouldExistSelectionDiv = false;
         }
         else {
@@ -3112,8 +3115,8 @@ function EDITOR_createStyleForSelection_indentMore(cursor) {
         lineSelectionDiv.style.width = widthNumberValue + 'px';
     }
 
-    cursor.DRAWN_selectionAnchor = EDITOR_cursor_selectionAnchor;
-    cursor.DRAWN_selectionEnd = EDITOR_cursor_selectionEnd;
+    EDITOR_cursor_DRAWN_selectionAnchor = EDITOR_cursor_selectionAnchor;
+    EDITOR_cursor_DRAWN_selectionEnd = EDITOR_cursor_selectionEnd;
 }
 
 function EDITOR_getLastValidIndexColumn(indexLine) {
@@ -5675,8 +5678,8 @@ function EDITOR_render_do_IndentLess() {
         }
 
         /////////////////////// P_3
-        cursor.DRAWN_selectionAnchor = EDITOR_cursor_selectionAnchor;
-        cursor.DRAWN_selectionEnd = EDITOR_cursor_selectionEnd;
+        EDITOR_cursor_DRAWN_selectionAnchor = EDITOR_cursor_selectionAnchor;
+        EDITOR_cursor_DRAWN_selectionEnd = EDITOR_cursor_selectionEnd;
         /////////////////////// P_3
     }
 }

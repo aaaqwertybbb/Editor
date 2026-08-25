@@ -8857,4 +8857,6 @@ because even if to others it looks like it goes nowhere
 I am aware that I might be doing the wrong thing
 and so I am prepared to just cross off an item on a list of bad ideas and then go on with things
 
+I'm confused I need to do lateral raises
+
 */

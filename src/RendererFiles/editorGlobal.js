@@ -4808,14 +4808,14 @@ function EDITOR_onKeyDown_PageDown(event) {
     event.stopPropagation();
 
     if (event.ctrlKey) {
-        EDITOR_primaryCursor.indexLine = EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+        EDITOR_cursor_indexLine = EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
         if (EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] > 1) {
             // this seems to more commonly have the cursor staying within the viewport rather than overlapping outside.
-            EDITOR_primaryCursor.indexLine--;
+            EDITOR_cursor_indexLine--;
         }
-        if (EDITOR_primaryCursor.indexLine >= EDITOR_lineEndPositionList.count) {
+        if (EDITOR_cursor_indexLine >= EDITOR_lineEndPositionList.count) {
             // TODO: You can't delete EOF can you? i.e.: cursor final position of file then delete?
-            EDITOR_primaryCursor.indexLine = EDITOR_lineEndPositionList.count - 1;
+            EDITOR_cursor_indexLine = EDITOR_lineEndPositionList.count - 1;
         }
         EDITOR_primaryCursor.indexColumn = 0;
         // TODO: allow someone to select via this keybind, but for now it causes a bad selection if you { 'Ctrl' + 'a' } then use it so I'm clearing any active selection here for now.
@@ -4831,14 +4831,14 @@ function EDITOR_onKeyDown_PageUp(event) {
     event.stopPropagation();
 
     if (event.ctrlKey) {        
-        EDITOR_primaryCursor.indexLine = EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+        EDITOR_cursor_indexLine = EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
         if (EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] > 1) {
             // this seems to more commonly have the cursor staying within the viewport rather than overlapping outside.
-            EDITOR_primaryCursor.indexLine++;
+            EDITOR_cursor_indexLine++;
         }
-        if (EDITOR_primaryCursor.indexLine >= EDITOR_lineEndPositionList.count) {
+        if (EDITOR_cursor_indexLine >= EDITOR_lineEndPositionList.count) {
             // TODO: You can't delete EOF can you? i.e.: cursor final position of file then delete?
-            EDITOR_primaryCursor.indexLine = EDITOR_lineEndPositionList.count - 1;
+            EDITOR_cursor_indexLine = EDITOR_lineEndPositionList.count - 1;
         }
         EDITOR_primaryCursor.indexColumn = 0;
         // TODO: allow someone to select via this keybind, but for now it causes a bad selection if you { 'Ctrl' + 'a' } then use it so I'm clearing any active selection here for now.
@@ -4925,7 +4925,7 @@ async function EDITOR_onKeyDown_keyLengthEqualsOne_ctrlKey(event) {
             EDITOR_primaryCursor.selectionAnchor = 0;
             EDITOR_primaryCursor.selectionEnd = EDITOR_textByteList.count;
             let selectionEndLineAndColumnIndices = EDITOR_getLineAndColumnIndices(EDITOR_primaryCursor.selectionEnd);
-            EDITOR_primaryCursor.indexLine = selectionEndLineAndColumnIndices.indexLine;
+            EDITOR_cursor_indexLine = selectionEndLineAndColumnIndices.indexLine;
             EDITOR_primaryCursor.indexColumn = selectionEndLineAndColumnIndices.indexColumn;
             EDITOR_render_request(ENUM_RenderKind_Cursor_flag_doNotScrollIntoView);
             break;
@@ -8026,7 +8026,7 @@ function EDITOR_moveCursor_indexLine_indexColumn(indexLine, indexColumn) {
         EDITOR_primaryCursor.indexColumn = indexColumn;
     }
 
-    EDITOR_primaryCursor.indexLine = indexLine;
+    EDITOR_cursor_indexLine = indexLine;
     
     // TODO: selectionAnchor = selectionEnd; EDITOR_drawCursor(cursor); # being the way to clear a selection should be documented / wrapped by a method for ease of use / readability?
     EDITOR_primaryCursor.selectionAnchor = EDITOR_primaryCursor.selectionEnd;
@@ -8686,11 +8686,11 @@ function EDITOR_mouseLeave() {
 }
 
 function EDITOR_requestLspComplete() {
-    window.myAPI.editorCompletionRequest(EDITOR_primaryCursor.indexLine, EDITOR_primaryCursor.indexColumn);
+    window.myAPI.editorCompletionRequest(EDITOR_cursor_indexLine, EDITOR_primaryCursor.indexColumn);
 }
 
 function EDITOR_doEditorGoToDefinitionRequest() {
-    window.myAPI.editorGoToDefinitionRequest(EDITOR_primaryCursor.indexLine, EDITOR_primaryCursor.indexColumn);
+    window.myAPI.editorGoToDefinitionRequest(EDITOR_cursor_indexLine, EDITOR_primaryCursor.indexColumn);
 }
 
 function EDITOR_requestLspHover() {

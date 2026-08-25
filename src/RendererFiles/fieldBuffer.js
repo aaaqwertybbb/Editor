@@ -43,42 +43,42 @@ it is as if I typed the expression body everywhere I typed the fat arrow functio
  * because the boolean variable could store anything so the gc still has to check that it still stores a primitive
  * and that takes time albeit a small amount of time.
  * 
- * TODO: index 8 is available because 'EDITOR_onScroll_bool' was removed.
+ * TODO: index 8 is available because 'EDI_onScroll_bool' was removed.
  */
-const EDITOR_byte_fields = new Uint8Array(8);
+const EDI_byte_fields = new Uint8Array(8);
 
 /** returns a number, beware '===' */
-const get_EDITOR_detailRank = () => EDITOR_byte_fields[0];
-const set_EDITOR_detailRank = (byte) => EDITOR_byte_fields[0] = byte;
+const get_EDI_detailRank = () => EDI_byte_fields[0];
+const set_EDI_detailRank = (byte) => EDI_byte_fields[0] = byte;
 
 /** returns a number, beware '===' */
-const get_EDITOR_recentBoundingClientRect_isNull_intFalsey = () => EDITOR_byte_fields[1];
-const set_EDITOR_recentBoundingClientRect_isNull_intFalsey = (byte) => EDITOR_byte_fields[1] = byte;
-set_EDITOR_recentBoundingClientRect_isNull_intFalsey(1);
+const get_EDI_recentBoundingClientRect_isNull_intFalsey = () => EDI_byte_fields[1];
+const set_EDI_recentBoundingClientRect_isNull_intFalsey = (byte) => EDI_byte_fields[1] = byte;
+set_EDI_recentBoundingClientRect_isNull_intFalsey(1);
 
 /** returns a number, beware '===' */
-const get_EDITOR_findOverlay_show = () => EDITOR_byte_fields[2];
-const set_EDITOR_findOverlay_show = (byte) => EDITOR_byte_fields[2] = byte;
+const get_EDI_findOverlay_show = () => EDI_byte_fields[2];
+const set_EDI_findOverlay_show = (byte) => EDI_byte_fields[2] = byte;
 
 /** returns a number, beware '===' */
-const get_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching = () => EDITOR_byte_fields[3];
-const set_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching = (byte) => EDITOR_byte_fields[3] = byte;
+const get_EDI_findOverlay_isBeingShownDueToMultiCursorMatching = () => EDI_byte_fields[3];
+const set_EDI_findOverlay_isBeingShownDueToMultiCursorMatching = (byte) => EDI_byte_fields[3] = byte;
 
 /** returns a number, beware '===' */
-const get_EDITOR_fileStartsWithBom = () => EDITOR_byte_fields[4];
-const set_EDITOR_fileStartsWithBom = (byte) => EDITOR_byte_fields[4] = byte;
+const get_EDI_fileStartsWithBom = () => EDI_byte_fields[4];
+const set_EDI_fileStartsWithBom = (byte) => EDI_byte_fields[4] = byte;
 
 /** returns a number, beware '===' */
-const get_EDITOR_findOverlay_wasSearched = () => EDITOR_byte_fields[5];
-const set_EDITOR_findOverlay_wasSearched = (byte) => EDITOR_byte_fields[5] = byte;
+const get_EDI_findOverlay_wasSearched = () => EDI_byte_fields[5];
+const set_EDI_findOverlay_wasSearched = (byte) => EDI_byte_fields[5] = byte;
 
 /** returns a number, beware '===' */
-const get_EDITOR_findOverlay_options_matchWord = () => EDITOR_byte_fields[6];
-const set_EDITOR_findOverlay_options_matchWord = (byte) => EDITOR_byte_fields[6] = byte;
+const get_EDI_findOverlay_options_matchWord = () => EDI_byte_fields[6];
+const set_EDI_findOverlay_options_matchWord = (byte) => EDI_byte_fields[6] = byte;
 
-const CONST_EDITOR_ASCII_LINE_FEED = 10;
-const CONST_EDITOR_ASCII_TAB = 9;
-const CONST_EDITOR_ASCII_SPACE = 32;
+const CONST_EDI_ASCII_LINE_FEED = 10;
+const CONST_EDI_ASCII_TAB = 9;
+const CONST_EDI_ASCII_SPACE = 32;
 
 /////////////////////
 
@@ -148,8 +148,8 @@ const CONST_js_QUESTIONMARK_num = 63;
 const CONST_js_CARET_str = '^';
 const CONST_js_CARET_num = 94;
 
-const CONST_EDITOR_gutterPaddingLeft = 3;
-const CONST_EDITOR_gutterPaddingRight = 6;
+const CONST_EDI_gutterPaddingLeft = 3;
+const CONST_EDI_gutterPaddingRight = 6;
 
 const CONST_DIALOG_minTop = 8;
 const CONST_DIALOG_minLeft = 8;
@@ -159,7 +159,7 @@ const CONST_DIALOG_minWidth = 100;
 /**
  * I'm not sure how large I want this, what matters is that I just have a size of anything for the time being, then can change this constant later.
  */
-const CONST_EDITOR_cursor_GAP_BUFFER_CAPACITY = 32;
+const CONST_EDI_cursor_GAP_BUFFER_CAPACITY = 32;
 
 
 ////////////////////////////
@@ -168,47 +168,47 @@ const CONST_EDITOR_cursor_GAP_BUFFER_CAPACITY = 32;
 
 const int_fields = new Uint32Array(64);
 
-const INDEXOF_EDITOR_lineHeight = 0;
-int_fields[INDEXOF_EDITOR_lineHeight] = 20;
+const INDEXOF_EDI_lineHeight = 0;
+int_fields[INDEXOF_EDI_lineHeight] = 20;
 
 /** The first line of text that you should see shown in the UI given the current scrollTop */
-const INDEXOF_EDITOR_virtualIndexLine = 1;
+const INDEXOF_EDI_virtualIndexLine = 1;
 
-/** The value of 'EDITOR_baseElement.scrollTop' at the most recent scroll event that occurred */
+/** The value of 'EDI_baseElement.scrollTop' at the most recent scroll event that occurred */
 const INDEXOF_lastReadNumber_scrollTop = 2;
 
-const INDEXOF_EDITOR_ONSCROLLvirtualIndexLine = 3;
+const INDEXOF_EDI_ONSCROLLvirtualIndexLine = 3;
 //throw new Error('-1');
 // This set used to be -1 to indicate a non existent value, 500 "seems to work" but a proof of it being an equivalent solution has not thoroughly been thought out, only a sort of "yeah that probably works" kinda vibe.
-int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine] = 500;
+int_fields[INDEXOF_EDI_ONSCROLLvirtualIndexLine] = 500;
 
-/** Also is used from 'EDITOR_render_do_SetText()', and 'EDITOR_render_do_Resize()', not just 'EDITOR_render_do_Scroll()' */
-const INDEXOF_EDITOR_scrollEndDeadline = 4;
+/** Also is used from 'EDI_render_do_SetText()', and 'EDI_render_do_Resize()', not just 'EDI_render_do_Scroll()' */
+const INDEXOF_EDI_scrollEndDeadline = 4;
 
-const INDEXOF_EDITOR_ONSCROLLscrollTop = 5;
+const INDEXOF_EDI_ONSCROLLscrollTop = 5;
 //throw new Error('-1');
 // This set used to be -1 to indicate a non existent value, 500 "seems to work" but a proof of it being an equivalent solution has not thoroughly been thought out, only a sort of "yeah that probably works" kinda vibe.
-int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop] = 500;
+int_fields[INDEXOF_EDI_ONSCROLLscrollTop] = 500;
 
 
-const INDEXOF_EDITOR_virtualCount = 6;
+const INDEXOF_EDI_virtualCount = 6;
 
-const INDEXOF_EDITOR_sum_diffPositive = 7;
+const INDEXOF_EDI_sum_diffPositive = 7;
 
-const INDEXOF_EDITOR_ONSCROLLvirtualCount = 8;
-int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount] = 0;
+const INDEXOF_EDI_ONSCROLLvirtualCount = 8;
+int_fields[INDEXOF_EDI_ONSCROLLvirtualCount] = 0;
 
-const INDEXOF_EDITOR_sum_diffNegative = 9;
+const INDEXOF_EDI_sum_diffNegative = 9;
 
-const INDEXOF_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber = 10;
+const INDEXOF_EDI_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber = 10;
 
-const INDEXOF_EDITOR_drawn_count_of_digits_longest_line_number = 11;
+const INDEXOF_EDI_drawn_count_of_digits_longest_line_number = 11;
 
-const INDEXOF_EDITOR_detail_smallPosition = 12;
+const INDEXOF_EDI_detail_smallPosition = 12;
 
-const INDEXOF_EDITOR_detail_largePosition = 13;
+const INDEXOF_EDI_detail_largePosition = 13;
 
-const INDEXOF_EDITOR_detailRank3OriginLine = 14;
+const INDEXOF_EDI_detailRank3OriginLine = 14;
 
 /**
  * Pixels.
@@ -218,116 +218,116 @@ const INDEXOF_EDITOR_detailRank3OriginLine = 14;
  * 
  * Whereas the line height is a css variable (and thus could cause layout for the entire application whenever it changes).
  */
-const INDEXOF_EDITOR_gutterWidthStyleValue = 15;
-int_fields[INDEXOF_EDITOR_gutterWidthStyleValue] = 32;
+const INDEXOF_EDI_gutterWidthStyleValue = 15;
+int_fields[INDEXOF_EDI_gutterWidthStyleValue] = 32;
 
 /**
- * This is the sum of the 'INDEXOF_EDITOR_gutterWidthStyleValue()' in addition to paddig
+ * This is the sum of the 'INDEXOF_EDI_gutterWidthStyleValue()' in addition to paddig
  * consider 'gutterWidthTotal_withPxUnits'
  */
-const INDEXOF_EDITOR_gutterWidthTotal = 16;
+const INDEXOF_EDI_gutterWidthTotal = 16;
 /** WARNING: This will not set 'gutterWidthTotal_withPxUnits' and thus is somewhat prone to a mistake at some point. */
-int_fields[INDEXOF_EDITOR_gutterWidthTotal] = 32;
+int_fields[INDEXOF_EDI_gutterWidthTotal] = 32;
 
 const INDEXOF_didChangeTextDocument_version = 17;
 
 /**
- * All the 'EDITOR_cursorList' loops are currently using the variable 'i'.
+ * All the 'EDI_cursorList' loops are currently using the variable 'i'.
  * I'm experimenting with a few of the loops though such that at the start of every loop they set this variable equal to 'i'.
  * Then in any functions like getCharacter, I might be able to contextually find the character much faster.
  * */
-const INDEXOF_EDITOR_indexCursor = 18;
+const INDEXOF_EDI_indexCursor = 18;
 
-const INDEXOF_EDITOR_offsetLine = 19;
+const INDEXOF_EDI_offsetLine = 19;
 
-const INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine = 20;
+const INDEXOF_EDI_offsetColumn_withRespectToThisIndexLine = 20;
 
-const INDEXOF_EDITOR_offsetColumn = 21;
+const INDEXOF_EDI_offsetColumn = 21;
 
-const INDEXOF_EDITOR_totalShift = 22;
+const INDEXOF_EDI_totalShift = 22;
 
-const INDEXOF_EDITOR_offsetWithinSpan = 23;
+const INDEXOF_EDI_offsetWithinSpan = 23;
 
-const INDEXOF_EDITOR_longestLine_indexLine = 24;
+const INDEXOF_EDI_longestLine_indexLine = 24;
 
-const INDEXOF_EDITOR_longestLine_length = 25;
+const INDEXOF_EDI_longestLine_length = 25;
 
 /**
- * The INDEXOF_EDITOR_contentWidth() is calculated via Math.ceil(someVar * otherVar) so this is faster to check whether content width will change rather than the multiplication and ceil.
+ * The INDEXOF_EDI_contentWidth() is calculated via Math.ceil(someVar * otherVar) so this is faster to check whether content width will change rather than the multiplication and ceil.
  */
-const INDEXOF_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar = 26;
+const INDEXOF_EDI_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar = 26;
 
-const INDEXOF_EDITOR_contentWidth = 27;
+const INDEXOF_EDI_contentWidth = 27;
 
-const INDEXOF_EDITOR_indent_ORIGINAL_indentBy = 28;
+const INDEXOF_EDI_indent_ORIGINAL_indentBy = 28;
 
-const INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine = 29;
+const INDEXOF_EDI_indent_SMALL_lineAndColumnIndices_indexLine = 29;
 
-const INDEXOF_EDITOR_indent_startingIndex = 30;
+const INDEXOF_EDI_indent_startingIndex = 30;
 
-const INDEXOF_EDITOR_recentBoundingClientRect_left = 31;
+const INDEXOF_EDI_recentBoundingClientRect_left = 31;
 
-const INDEXOF_EDITOR_recentBoundingClientRect_top = 32;
+const INDEXOF_EDI_recentBoundingClientRect_top = 32;
 
-const INDEXOF_EDITOR_pooledTrackedSyntax_start = 33;
+const INDEXOF_EDI_pooledTrackedSyntax_start = 33;
 
-const INDEXOF_EDITOR_pooledTrackedSyntax_length = 34;
+const INDEXOF_EDI_pooledTrackedSyntax_length = 34;
 
 /**
- * Also is used from 'EDITOR_render_do_SetText()', and 'EDITOR_render_do_Resize()', not just 'EDITOR_render_do_Scroll()'
+ * Also is used from 'EDI_render_do_SetText()', and 'EDI_render_do_Resize()', not just 'EDI_render_do_Scroll()'
  * 
  * I'm gonna store this in the int32 array so that the editor scroll render function can access it from the already existing local reference of int_fields.
  */
-const INDEXOF_EDITOR_intFalsey_isScrolling = 35;
+const INDEXOF_EDI_intFalsey_isScrolling = 35;
 
 /**
  * I'm gonna store this in the int32 array so that the editor scroll render function can access it from the already existing local reference of int_fields.
  */
-const INDEXOF_EDITOR_cursor_editKind = 36;
+const INDEXOF_EDI_cursor_editKind = 36;
 
-const INDEXOF_EDITOR_cursor_indexLine = 37;
-const INDEXOF_EDITOR_cursor_indexColumn = 38;
+const INDEXOF_EDI_cursor_indexLine = 37;
+const INDEXOF_EDI_cursor_indexColumn = 38;
 
 /**
  * When moving cursor vertically, if the current column index cannot be matched due to the upcoming line being too short,
  * then this will allow a later vertical movement to a line that is long enough to match the original column rather than the minimized one.
  */
-const INDEXOF_EDITOR_cursor_STORED_indexColumn = 39;
+const INDEXOF_EDI_cursor_STORED_indexColumn = 39;
 
-const INDEXOF_EDITOR_cursor_cursorTranslateYValue = 40;
-const INDEXOF_EDITOR_cursor_cursorTranslateXValue = 41;
+const INDEXOF_EDI_cursor_cursorTranslateYValue = 40;
+const INDEXOF_EDI_cursor_cursorTranslateXValue = 41;
 
-const INDEXOF_EDITOR_cursor_selectionAnchor = 42;
-const INDEXOF_EDITOR_cursor_selectionEnd = 43;
+const INDEXOF_EDI_cursor_selectionAnchor = 42;
+const INDEXOF_EDI_cursor_selectionEnd = 43;
 
-const INDEXOF_EDITOR_cursor_selectionIndexAnchorLine = 44;
-const INDEXOF_EDITOR_cursor_selectionIndexAnchorColumn = 45;
+const INDEXOF_EDI_cursor_selectionIndexAnchorLine = 44;
+const INDEXOF_EDI_cursor_selectionIndexAnchorColumn = 45;
 
-const INDEXOF_EDITOR_cursor_selectionIndexEndLine = 46;
-const INDEXOF_EDITOR_cursor_selectionIndexEndColumn = 47;
+const INDEXOF_EDI_cursor_selectionIndexEndLine = 46;
+const INDEXOF_EDI_cursor_selectionIndexEndColumn = 47;
 
-const INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor = 48;
-const INDEXOF_EDITOR_cursor_DRAWN_selectionEnd = 49;
+const INDEXOF_EDI_cursor_DRAWN_selectionAnchor = 48;
+const INDEXOF_EDI_cursor_DRAWN_selectionEnd = 49;
 
-const INDEXOF_EDITOR_cursor_DRAWN_selection_virtualIndexLine = 50;
-const INDEXOF_EDITOR_cursor_DRAWN_selection_virtualCount = 51;
+const INDEXOF_EDI_cursor_DRAWN_selection_virtualIndexLine = 50;
+const INDEXOF_EDI_cursor_DRAWN_selection_virtualCount = 51;
 
-const INDEXOF_EDITOR_cursor_editLength = 52;
-const INDEXOF_EDITOR_cursor_editPosition = 53;
-const INDEXOF_EDITOR_cursor_editIndexLine = 54;
-const INDEXOF_EDITOR_cursor_editIndexColumn = 55;
+const INDEXOF_EDI_cursor_editLength = 52;
+const INDEXOF_EDI_cursor_editPosition = 53;
+const INDEXOF_EDI_cursor_editIndexLine = 54;
+const INDEXOF_EDI_cursor_editIndexColumn = 55;
 /**
  * the amount of characters that UI has changed with respect to the pending edit
- * per 'EDITOR_render_do', if the displacement is not the editLength then you know you need to "draw more of this edit" on the UI.
+ * per 'EDI_render_do', if the displacement is not the editLength then you know you need to "draw more of this edit" on the UI.
  * 
  * The awkward name is to avoid re-using similar words that already are used in other fields on this class.
  */
-const INDEXOF_EDITOR_cursor_editRenderedDisplacement = 56;
+const INDEXOF_EDI_cursor_editRenderedDisplacement = 56;
 /** TODO: perhaps you could determine this some other way, but tracking it for the moment is easiest and necessary if I'm to not give up on getting an initial solution to work, given my current mood and etc... */
-const INDEXOF_EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET = 57;
-const INDEXOF_EDITOR_cursor_END_editIndexLine = 58;
-const INDEXOF_EDITOR_cursor_END_editIndexColumn = 59;
-const INDEXOF_EDITOR_cursor_gapBufferCount = 60;
+const INDEXOF_EDI_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET = 57;
+const INDEXOF_EDI_cursor_END_editIndexLine = 58;
+const INDEXOF_EDI_cursor_END_editIndexColumn = 59;
+const INDEXOF_EDI_cursor_gapBufferCount = 60;
 
 /**
  * TODO: probably is sensible to use this for the enter key too but I'm firstly adding it for the sake of backspace so
@@ -341,13 +341,13 @@ const INDEXOF_EDITOR_cursor_gapBufferCount = 60;
  * and then it is a number 0 to ... the offset in the pending line end position list
  * and then you have another number too separately that says the length of line endings that this cursor contributed to modifying.
  */
-const INDEXOF_EDITOR_cursor_editLineFeedCount = 61;
-/** same comment that pertains to EDITOR_cursor_EDITOR_paste_clipboardContent is somewhat relevant here */
-const INDEXOF_EDITOR_cursor_EDITOR_duplicate_small = 62;
-/** same comment that pertains to EDITOR_cursor_EDITOR_paste_clipboardContent is somewhat relevant here */
-const INDEXOF_EDITOR_cursor_EDITOR_duplicate_length = 63;
+const INDEXOF_EDI_cursor_editLineFeedCount = 61;
+/** same comment that pertains to EDI_cursor_EDI_paste_clipboardContent is somewhat relevant here */
+const INDEXOF_EDI_cursor_EDI_duplicate_small = 62;
+/** same comment that pertains to EDI_cursor_EDI_paste_clipboardContent is somewhat relevant here */
+const INDEXOF_EDI_cursor_EDI_duplicate_length = 63;
 
-// int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_length]
+// int_fields[INDEXOF_EDI_cursor_EDI_duplicate_length]
 
 
 
@@ -400,28 +400,28 @@ But I don't know
 
 
 
-const EDITOR_baseElement = document.getElementById('EDITOR');
+const EDI_baseElement = document.getElementById('EDITOR');
 
-let cached_EDITOR_virtualization_horizontal;
-let cached_EDITOR_virtualization_vertical;
-let cached_EDITOR_gutter;
-let cached_EDITOR_horizontal_scrollbar;
-let cached_EDITOR_horizontal_scrollbar_virtualization_boundary;
-let cached_EDITOR_body;
-let cached_EDITOR_presentation;
-let cached_EDITOR_cursorListElement;
-let cached_EDITOR_textElement;
+let cached_EDI_virtualization_horizontal;
+let cached_EDI_virtualization_vertical;
+let cached_EDI_gutter;
+let cached_EDI_horizontal_scrollbar;
+let cached_EDI_horizontal_scrollbar_virtualization_boundary;
+let cached_EDI_body;
+let cached_EDI_presentation;
+let cached_EDI_cursorListElement;
+let cached_EDI_textElement;
 
-const EDITOR_tab_tabsbytes = new Uint8Array(4);
-EDITOR_tab_tabsbytes[0] = CONST_EDITOR_ASCII_TAB;
-EDITOR_tab_tabsbytes[1] = 0;
-EDITOR_tab_tabsbytes[2] = 0;
-EDITOR_tab_tabsbytes[3] = 0;
-const EDITOR_tab_spacesbytes = new Uint8Array(4);
-EDITOR_tab_spacesbytes[0] = CONST_EDITOR_ASCII_SPACE;
-EDITOR_tab_spacesbytes[1] = CONST_EDITOR_ASCII_SPACE;
-EDITOR_tab_spacesbytes[2] = CONST_EDITOR_ASCII_SPACE;
-EDITOR_tab_spacesbytes[3] = CONST_EDITOR_ASCII_SPACE;
+const EDI_tab_tabsbytes = new Uint8Array(4);
+EDI_tab_tabsbytes[0] = CONST_EDI_ASCII_TAB;
+EDI_tab_tabsbytes[1] = 0;
+EDI_tab_tabsbytes[2] = 0;
+EDI_tab_tabsbytes[3] = 0;
+const EDI_tab_spacesbytes = new Uint8Array(4);
+EDI_tab_spacesbytes[0] = CONST_EDI_ASCII_SPACE;
+EDI_tab_spacesbytes[1] = CONST_EDI_ASCII_SPACE;
+EDI_tab_spacesbytes[2] = CONST_EDI_ASCII_SPACE;
+EDI_tab_spacesbytes[3] = CONST_EDI_ASCII_SPACE;
 
 /**
  * If you have an extension listed here, it is expected that the "function to invoke" exists.

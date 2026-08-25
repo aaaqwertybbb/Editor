@@ -6,7 +6,7 @@ import "./fieldBuffer"
 function JS_line_lex(div, substart, lineEnd, childIndex) {
     let pos = substart;
 
-    let bytes = EDITOR_textByteList.bytes;
+    let bytes = EDI_textByteList.bytes;
 
     let span;
     let textContent;
@@ -551,7 +551,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                 if (className) {
                     // is done when there IS a valid match, in order to write out any pending text that came prior to the keyword.
                     if (substart < wordstart) {
-                        flushTextContent = EDITOR_decoder.decode(bytes.subarray(substart, substart = wordstart));
+                        flushTextContent = EDI_decoder.decode(bytes.subarray(substart, substart = wordstart));
                         if (childIndex < div.children.length) {
                             span = div.children[childIndex++];
                             span.className = '';
@@ -584,7 +584,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                 if (bytes[pos + 1] === CONST_js_FORWARDSLASH_num) {
 
                     if (substart < pos) {
-                        flushTextContent = EDITOR_decoder.decode(bytes.subarray(substart, substart = pos));
+                        flushTextContent = EDI_decoder.decode(bytes.subarray(substart, substart = pos));
                         if (childIndex < div.children.length) {
                             span = div.children[childIndex++];
                             span.className = '';
@@ -614,7 +614,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
 
                     // TODO: I think checking this is redundant because you guaranteed at least one increment?
                     if (substart < pos) {
-                        textContent = EDITOR_decoder.decode(bytes.subarray(substart, substart = pos));
+                        textContent = EDI_decoder.decode(bytes.subarray(substart, substart = pos));
                         if (childIndex < div.children.length) {
                             span = div.children[childIndex++];
                             span.className = 'eC';
@@ -633,7 +633,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                 }
                 else if (bytes[pos + 1] === CONST_js_ASTERISK_num) {
                     if (substart < pos) { // write any text that came prior, and on the same line.
-                        flushTextContent = EDITOR_decoder.decode(bytes.subarray(substart, substart = pos));
+                        flushTextContent = EDI_decoder.decode(bytes.subarray(substart, substart = pos));
                         if (childIndex < div.children.length) {
                             span = div.children[childIndex++];
                             span.className = '';
@@ -678,7 +678,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                         }
                     }
 
-                    textContent = EDITOR_decoder.decode(bytes.subarray(substart, substart = pos));
+                    textContent = EDI_decoder.decode(bytes.subarray(substart, substart = pos));
                     if (childIndex < div.children.length) {
                         span = div.children[childIndex++];
                         span.className = 'eCm';
@@ -698,7 +698,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                 break;
             case CONST_js_DOUBLEQUOTE_num:
                 if (substart < pos) {
-                    flushTextContent = EDITOR_decoder.decode(bytes.subarray(substart, substart = pos));
+                    flushTextContent = EDI_decoder.decode(bytes.subarray(substart, substart = pos));
                     if (childIndex < div.children.length) {
                         span = div.children[childIndex++];
                         span.className = '';
@@ -731,7 +731,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                             break;
                     }
                 }
-                textContent = EDITOR_decoder.decode(bytes.subarray(substart, substart = pos));
+                textContent = EDI_decoder.decode(bytes.subarray(substart, substart = pos));
                 if (childIndex < div.children.length) {
                     span = div.children[childIndex++];
                     span.className = 'eS';
@@ -747,7 +747,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                 continue;
             case CONST_js_SINGLEQUOTE_num:
                 if (substart < pos) {
-                    flushTextContent = EDITOR_decoder.decode(bytes.subarray(substart, substart = pos));
+                    flushTextContent = EDI_decoder.decode(bytes.subarray(substart, substart = pos));
                     if (childIndex < div.children.length) {
                         span = div.children[childIndex++];
                         span.className = '';
@@ -780,7 +780,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                             break;
                     }
                 }
-                textContent = EDITOR_decoder.decode(bytes.subarray(substart, substart = pos));
+                textContent = EDI_decoder.decode(bytes.subarray(substart, substart = pos));
                 if (childIndex < div.children.length) {
                     span = div.children[childIndex++];
                     span.className = 'eS';
@@ -796,7 +796,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                 continue;
             case CONST_js_BACKTICK_num:
                 if (substart < pos) {
-                    flushTextContent = EDITOR_decoder.decode(bytes.subarray(substart, substart = pos));
+                    flushTextContent = EDI_decoder.decode(bytes.subarray(substart, substart = pos));
                     if (childIndex < div.children.length) {
                         span = div.children[childIndex++];
                         span.className = '';
@@ -829,7 +829,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                             break;
                     }
                 }
-                textContent = EDITOR_decoder.decode(bytes.subarray(substart, substart = pos));
+                textContent = EDI_decoder.decode(bytes.subarray(substart, substart = pos));
                 if (childIndex < div.children.length) {
                     span = div.children[childIndex++];
                     span.className = 'eSm';
@@ -895,7 +895,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                 }
                 else {
                     if (substart < pos) { // write any text that came prior, and on the same line.
-                        flushTextContent = EDITOR_decoder.decode(bytes.subarray(substart, substart = pos));
+                        flushTextContent = EDI_decoder.decode(bytes.subarray(substart, substart = pos));
                         if (childIndex < div.children.length) {
                             span = div.children[childIndex++];
                             span.className = '';
@@ -985,7 +985,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                 }
                 else {
                     if (substart < pos) { // write any text that came prior, and on the same line.
-                        flushTextContent = EDITOR_decoder.decode(bytes.subarray(substart, substart = pos));
+                        flushTextContent = EDI_decoder.decode(bytes.subarray(substart, substart = pos));
                         if (childIndex < div.children.length) {
                             span = div.children[childIndex++];
                             span.className = '';
@@ -1054,7 +1054,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
                 }
                 else {
                     if (substart < pos) { // write any text that came prior, and on the same line.
-                        flushTextContent = EDITOR_decoder.decode(bytes.subarray(substart, substart = pos));
+                        flushTextContent = EDI_decoder.decode(bytes.subarray(substart, substart = pos));
                         if (childIndex < div.children.length) {
                             span = div.children[childIndex++];
                             span.className = '';
@@ -1089,7 +1089,7 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
 
     // TODO: Consider the final pos? Is this gonna bug? I don't think it will.
     if (substart < pos) {
-        flushTextContent = EDITOR_decoder.decode(bytes.subarray(substart, substart = pos));
+        flushTextContent = EDI_decoder.decode(bytes.subarray(substart, substart = pos));
         if (childIndex < div.children.length) {
             span = div.children[childIndex++];
             span.className = '';
@@ -2197,14 +2197,14 @@ I did some exercises then about an hour long walk then showered...
                 div.appendChild(span);
             }
 
-            let trackedSyntaxEnd = int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length];
+            let trackedSyntaxEnd = int_fields[INDEXOF_EDI_pooledTrackedSyntax_start] + int_fields[INDEXOF_EDI_pooledTrackedSyntax_length];
             subend = trackedSyntaxEnd > divSpanTextContentLength ? divSpanTextContentLength : trackedSyntaxEnd;
             
             let length = subend - substart;
             span.textContent = divSpanTextContent.substring(substart, subend);
             substart += length;
             pos += length;
-            switch (EDITOR_pooledTrackedSyntax_trackedSyntaxKind) {
+            switch (EDI_pooledTrackedSyntax_trackedSyntaxKind) {
                 case ENUM_TrackedSyntaxKind_Comment:
                     span.className = 'eCM';
                     break;
@@ -2218,14 +2218,14 @@ I did some exercises then about an hour long walk then showered...
         }
         else {
             
-            if (trackedSyntax_I >= EDITOR_trackedSyntaxList.count_abstract) {
+            if (trackedSyntax_I >= EDI_trackedSyntaxList.count_abstract) {
                 createDoLexFlag = true;
                 trackedSyntaxExhausted = true;
                 subend = divSpanTextContentLength;
                 continue;
             }
 
-            EDITOR_trackedSyntaxList.getElementAt(trackedSyntax_I);
+            EDI_trackedSyntaxList.getElementAt(trackedSyntax_I);
 
             if (substart >= divSpanTextContentLength) {
                 createDoLexFlag = true;
@@ -2234,24 +2234,24 @@ I did some exercises then about an hour long walk then showered...
                 continue;
             }
 
-            if (int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] >= lineStart + divSpanTextContentLength) {
+            if (int_fields[INDEXOF_EDI_pooledTrackedSyntax_start] >= lineStart + divSpanTextContentLength) {
                 createDoLexFlag = true;
                 trackedSyntaxExhausted = true;
                 subend = divSpanTextContentLength;
                 continue;
             }
 
-            if (int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] < lineStart) {
+            if (int_fields[INDEXOF_EDI_pooledTrackedSyntax_start] + int_fields[INDEXOF_EDI_pooledTrackedSyntax_length] < lineStart) {
                 trackedSyntax_I++;
                 continue;
             }
 
-            if (int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] > lineStart + substart) {
+            if (int_fields[INDEXOF_EDI_pooledTrackedSyntax_start] > lineStart + substart) {
                 createDoLexFlag = true;
                 trackedSyntaxExhausted = false;
-                subend = int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] > lineStart + divSpanTextContentLength ? lineStart + divSpanTextContentLength : int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start]; // probably a nonsense line of code given the previous if statements
+                subend = int_fields[INDEXOF_EDI_pooledTrackedSyntax_start] > lineStart + divSpanTextContentLength ? lineStart + divSpanTextContentLength : int_fields[INDEXOF_EDI_pooledTrackedSyntax_start]; // probably a nonsense line of code given the previous if statements
                 continue;
-                //childIndex = EDITOR_language_line_lex(div, substart, subend, childIndex);
+                //childIndex = EDI_language_line_lex(div, substart, subend, childIndex);
                 //substart += (subend - substart);
             }
 
@@ -2261,13 +2261,13 @@ I did some exercises then about an hour long walk then showered...
                 
             }
 
-            if (int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] <= divSpanTextContentLength) {
+            if (int_fields[INDEXOF_EDI_pooledTrackedSyntax_start] + int_fields[INDEXOF_EDI_pooledTrackedSyntax_length] <= divSpanTextContentLength) {
                 trackedSyntax_I++;
                 continue;
             }
         
             //if (substart < divSpanTextContentLength) {
-            //    childIndex = EDITOR_language_line_lex(div, substart, divSpanTextContentLength, childIndex);
+            //    childIndex = EDI_language_line_lex(div, substart, divSpanTextContentLength, childIndex);
             //}
 
             //let aaa = divChildrenInitialLength - childIndex;

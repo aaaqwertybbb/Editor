@@ -218,11 +218,11 @@ body {
     border: 1px solid var(--primary-border-color);
 }
 
-#EDITOR_hack {
+#EDI_hack {
   width: calc(100% - 200px);
 }
 
-#EDITOR_debug {
+#EDI_debug {
   height: 1.5em;
   font-family: monospace;
 }
@@ -242,7 +242,7 @@ body {
 		outline: 1px solid pink;
 	}*/
 
-  /*#EDITOR:focus .EDITOR_cursor {
+  /*#EDITOR:focus .EDI_cursor {
     background-color: var(--editor-cursor-color-focused) !important;
   }*/
 
@@ -254,7 +254,7 @@ Most particularly renaming is being done to
 the class names that linearly scale in usage as you show more and more text.
 */
 
-/* .EDITOR_comment is being renamed to .eC (i.e.: Editor Comment) */
+/* .EDI_comment is being renamed to .eC (i.e.: Editor Comment) */
 .eC {
   color: var(--editor-syntax-comment-color);
 }
@@ -269,7 +269,7 @@ the class names that linearly scale in usage as you show more and more text.
   color: var(--editor-syntax-comment-color);
 }
 
-/* .EDITOR_string is being renamed to .eS (i.e.: Editor String) */
+/* .EDI_string is being renamed to .eS (i.e.: Editor String) */
 .eS {
   color: var(--editor-syntax-string-color);
 }
@@ -284,12 +284,12 @@ the class names that linearly scale in usage as you show more and more text.
   color: var(--editor-syntax-string-color);
 }
 
-/* .EDITOR_keyword is being renamed to .eK (i.e.: Editor Keyword) */
+/* .EDI_keyword is being renamed to .eK (i.e.: Editor Keyword) */
 .eK {
   color: var(--editor-syntax-keyword-color);
 }
 
-/* .EDITOR_keywordControl is being renamed to .eKC (i.e.: Editor KeywordControl) */
+/* .EDI_keywordControl is being renamed to .eKC (i.e.: Editor KeywordControl) */
 .eKC {
   color: var(--editor-syntax-keywordControl-color);
 }
@@ -327,17 +327,17 @@ TODO: Is it better to have one virtualization element that has both the width an
 ...or separate them? i.e.: is it easier to render an element that has a 1px width or height than both measurements being large?
 */
 
-#EDITOR_virtualization_vertical {
+#EDI_virtualization_vertical {
   width: 1px;
   position: absolute;
 }
 
-#EDITOR_virtualization_horizontal {
+#EDI_virtualization_horizontal {
   height: 1px;
   position: absolute;
 }
 
-#EDITOR_findOverlay {
+#EDI_findOverlay {
   /*width: 200px;
   height: 200px;*/
   position: absolute;
@@ -349,13 +349,13 @@ TODO: Is it better to have one virtualization element that has both the width an
   border: 1px solid var(--primary-border-color);
 }
 
-#EDITOR_horizontal_scrollbar_sticky {
+#EDI_horizontal_scrollbar_sticky {
   position: sticky;
   left: 0;
   top: 0;
 }
 
-#EDITOR_horizontal_scrollbar {
+#EDI_horizontal_scrollbar {
   position: absolute;
   overflow-x: scroll;
   height: 14px;
@@ -364,11 +364,11 @@ TODO: Is it better to have one virtualization element that has both the width an
   left: 37.5859px;
 }
 
-#EDITOR_horizontal_scrollbar_virtualization_boundary {
+#EDI_horizontal_scrollbar_virtualization_boundary {
   height: 1px;
 }
 
-#EDITOR_gutter_container {
+#EDI_gutter_container {
   position: absolute;
   display: contents;
   /*left: 0;*/
@@ -379,7 +379,7 @@ TODO: Is it better to have one virtualization element that has both the width an
 }
 
 /* can the gutter be used as vertical virtualization boundary? */
-#EDITOR_gutter_background_color {
+#EDI_gutter_background_color {
   position: sticky;
   left: 0;
   top: 0;
@@ -388,12 +388,12 @@ TODO: Is it better to have one virtualization element that has both the width an
   background-color: var(--gutter-background-color);
 }
 
-#EDITOR_gutter_sticky {
+#EDI_gutter_sticky {
   position: sticky;
   left: 0;
 }
 
-/* .EDITOR_gutterLine is being renamed to .eG (i.e.: Editor Gutter line) */
+/* .EDI_gutterLine is being renamed to .eG (i.e.: Editor Gutter line) */
 .eG {
   height: var(--EDITOR-line-height);
   position: absolute;
@@ -412,7 +412,7 @@ TODO: Is it better to have one virtualization element that has both the width an
   contain: size layout;
 }
 
-/* .EDITOR_line is being renamed to .eT (i.e.: Editor Text line) */
+/* .EDI_line is being renamed to .eT (i.e.: Editor Text line) */
 .eT {
   width: 100%;
   height: var(--EDITOR-line-height);
@@ -442,21 +442,21 @@ TODO: Is it better to have one virtualization element that has both the width an
   contain: size layout;
 }
 
-#EDITOR_body {
+#EDI_body {
   cursor: text;
   height: 100%;
   display: contents;
 }
 
-#EDITOR_presentation {
+#EDI_presentation {
   display: contents;
 }
 
-#EDITOR_cursorList {
+#EDI_cursorList {
   display: contents;
 }
 
-.EDITOR_caretRow {
+.EDI_caretRow {
   width: 100%;
   height: var(--EDITOR-line-height);
   outline: 1px solid var(--light-border-color);
@@ -466,7 +466,7 @@ TODO: Is it better to have one virtualization element that has both the width an
   contain: size layout;
 }
 
-.EDITOR_cursor {
+.EDI_cursor {
   width: 2.5px;
   height: var(--EDITOR-line-height);
   background-color: var(--primary-foreground-color);
@@ -478,7 +478,7 @@ TODO: Is it better to have one virtualization element that has both the width an
   will-change: opacity;
 }
 
-.EDITOR_cursor_focus {
+.EDI_cursor_focus {
   animation: blink-animation 1s linear infinite;
 }
 
@@ -491,7 +491,7 @@ TODO: Is it better to have one virtualization element that has both the width an
   }
 }
 
-#EDITOR_text {
+#EDI_text {
   white-space: pre;
   width: 0;
   height: 0;
@@ -581,9 +581,9 @@ The secret used by high-performance editors like VS Code is to split the virtual
 }*/
 
 /*
-#EDITOR_text, 
-#EDITOR_text div, 
-#EDITOR_text span {
+#EDI_text, 
+#EDI_text div, 
+#EDI_text span {
   /* Forces the browser to use fast, geometrically predictable text layout *//*
   text-rendering: optimizeSpeed !important;
   
@@ -613,9 +613,9 @@ Is every line being... I have transform per line this was alarming to read.
 yesterday I tried testing tab logic by typing tabs in vscode like a goober
 it probably inserted 4 spaces and I was like doh why am I still getting 0 CLS after adding tabs to my test?
 */
-#EDITOR_text, 
-#EDITOR_text div, 
-#EDITOR_text span {
+#EDI_text, 
+#EDI_text div, 
+#EDI_text span {
   /* Strictly forbids the browser from adjusting spacing between characters */
   letter-spacing: 0px !important;
   word-spacing: 0px !important;
@@ -627,13 +627,13 @@ it probably inserted 4 spaces and I was like doh why am I still getting 0 CLS af
   font-style: normal !important;
 }
 
-/* AI keeps recommending I put white-space pre on these specifically, I have it on '#EDITOR_text'... I am gonna put this here as a note to look into this later, I'm more focused on removing the control characters '\t' and '\0'. */
+/* AI keeps recommending I put white-space pre on these specifically, I have it on '#EDI_text'... I am gonna put this here as a note to look into this later, I'm more focused on removing the control characters '\t' and '\0'. */
 .eT, .eT span {
   /* Tells the browser's layout engine to render every space byte exactly as an isolated glyph */
   white-space: pre !important;
 }
 
-.EDITOR_selection {
+.EDI_selection {
     width: 100%;
     height: var(--EDITOR-line-height);
     position: absolute;

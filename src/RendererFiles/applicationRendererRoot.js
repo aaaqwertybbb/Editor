@@ -15,8 +15,8 @@ function init() {
 
     window.myAPI.onMessage(window_myAPI_onMessage);
 
-    const EDITOR_gotoF_button = document.getElementById('EDITOR_gotoF');
-    EDITOR_gotoF_button.addEventListener('click', window.myAPI.editorDocumentSymbolsRequest);
+    const EDI_gotoF_button = document.getElementById('EDI_gotoF');
+    EDI_gotoF_button.addEventListener('click', window.myAPI.editorDocumentSymbolsRequest);
     document.body.addEventListener('keydown', documentBody_onKeyDown);
 
     requestAnimationFrame(APP_render_init);
@@ -28,7 +28,7 @@ function init() {
 function APP_render_init() {
     APP_measureLineHeightAndCharacterWidth();
     EXPLORER_init();
-    EDITOR_init();
+    EDI_init();
 }
 
 function APP_measureLineHeightAndCharacterWidth() {
@@ -82,14 +82,14 @@ function APP_measureLineHeightAndCharacterWidth() {
 
 async function window_myAPI_onMessage(data) {
     if (data.method === 'textDocument/documentSymbol') {
-        EDITOR_documentSymbolResult = data.result;
-        if (!EDITOR_listComponent) {
-            EDITOR_listComponent = new ListComponent();
+        EDI_documentSymbolResult = data.result;
+        if (!EDI_listComponent) {
+            EDI_listComponent = new ListComponent();
         }
-        EDITOR_listComponent.setItems(APP_lineHeight, APP_lineHeight + 'px',
-            EDITOR_listComponent_drawItemAction,
-            EDITOR_listComponent_onkeydownAction,
-            EDITOR_listComponent_getItemsCountFunc);
+        EDI_listComponent.setItems(APP_lineHeight, APP_lineHeight + 'px',
+            EDI_listComponent_drawItemAction,
+            EDI_listComponent_onkeydownAction,
+            EDI_listComponent_getItemsCountFunc);
         return DIALOG_show_async(ENUM_DialogKind_DocumentSymbol, dialog_documentSymbol_onResizeAction);
     }
     else if (data.method === 'textDocument/CustomFullFileLexRequest') {
@@ -136,14 +136,14 @@ async function window_myAPI_onMessage(data) {
 
             let lineStart;
             //let lineEnd;
-            if (line < EDITOR_lineEndPositionList.count) {
+            if (line < EDI_lineEndPositionList.count) {
                 if (line === 0) {
                     lineStart = 0;
-                    //lineEnd = EDITOR_lineEndPositionList.data[line] - 0;
+                    //lineEnd = EDI_lineEndPositionList.data[line] - 0;
                 }
                 else {
-                    lineStart = (EDITOR_lineEndPositionList.data[line - 1] + 1);
-                    //lineEnd = EDITOR_lineEndPositionList.data[line];
+                    lineStart = (EDI_lineEndPositionList.data[line - 1] + 1);
+                    //lineEnd = EDI_lineEndPositionList.data[line];
                 }
             }
             else {
@@ -206,17 +206,17 @@ async function window_myAPI_onMessage(data) {
         //    }
         //}
 
-        EDITOR_trackedSyntaxList = trackedSyntaxList;
+        EDI_trackedSyntaxList = trackedSyntaxList;
     }
     else if (data.method === 'textDocument/hover') {
-        if (!EDITOR_mousemove_eventListener_isActive) {
+        if (!EDI_mousemove_eventListener_isActive) {
             TOOLTIP_show(data.result);
         }
     }
     else if (data.method === 'textDocument/definition') {
         let aaa = 2;
         if (data.result) {
-            EDITOR_moveCursor_indexLine_indexColumn(data.result.range.start.line, /*indexColumn*/ 0)
+            EDI_moveCursor_indexLine_indexColumn(data.result.range.start.line, /*indexColumn*/ 0)
         }
     }
     else if (data.method === 'textDocument/completion') {
@@ -233,34 +233,34 @@ async function window_myAPI_onMessage(data) {
     }
 }
 
-function EDITOR_listComponent_getItemsCountFunc() {
-    if (EDITOR_documentSymbolResult) {
-        return EDITOR_documentSymbolResult.length;
+function EDI_listComponent_getItemsCountFunc() {
+    if (EDI_documentSymbolResult) {
+        return EDI_documentSymbolResult.length;
     }
     else {
         return 0;
     }
 }
 
-function EDITOR_listComponent_onkeydownAction(div, index) {
+function EDI_listComponent_onkeydownAction(div, index) {
     if (index === -1) {
         // TODO: if (index === -1)
     }
     else {
         // TODO: Ensure that json parsing the title like this is a safe way of doing things
         const startPosition = JSON.parse(div.title);
-        EDITOR_moveCursor_indexLine_indexColumn(startPosition.line, startPosition.character);
+        EDI_moveCursor_indexLine_indexColumn(startPosition.line, startPosition.character);
     }
 }
 
-function EDITOR_listComponent_drawItemAction(div, index) {
+function EDI_listComponent_drawItemAction(div, index) {
     if (index === -1) {
         div.textContent = '';
         div.title = '';
         div.style.display = 'none';
     }
     else {
-        let item = EDITOR_documentSymbolResult[index];
+        let item = EDI_documentSymbolResult[index];
         div.textContent = item.name;
         div.title = JSON.stringify(item.range.start);
         div.style.display = '';
@@ -268,9 +268,9 @@ function EDITOR_listComponent_drawItemAction(div, index) {
 }
 
 function dialog_documentSymbol_onResizeAction() {
-    if (EDITOR_listComponent) {
-        EDITOR_listComponent.boundingClientRect = null;
-        EDITOR_listComponent.event_scroll();
+    if (EDI_listComponent) {
+        EDI_listComponent.boundingClientRect = null;
+        EDI_listComponent.event_scroll();
     }
 }
 
@@ -279,8 +279,8 @@ async function documentBody_onKeyDown(event) {
         case 's':
         case 'S':
             if (!event.ctrlKey) return;
-            const unvalidatedAbsolutePath = EDITOR_textSourceIdentifier;
-            const rawData = EDITOR_getFinalizedEditsAndRawSaveFileData();
+            const unvalidatedAbsolutePath = EDI_textSourceIdentifier;
+            const rawData = EDI_getFinalizedEditsAndRawSaveFileData();
             if (rawData.uint8arrayTextBytes) {
                 event.preventDefault();
                 event.stopPropagation();

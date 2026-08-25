@@ -1,6 +1,6 @@
 const ENUM_TrackedSyntaxKind_None = 0;
 const ENUM_TrackedSyntaxKind_String = 1;
-/** only multi-line-comments that span multiple lines are stored in EDITOR_trackedSyntaxList with the 'ENUM_TrackedSyntaxKind_Comment' */
+/** only multi-line-comments that span multiple lines are stored in EDI_trackedSyntaxList with the 'ENUM_TrackedSyntaxKind_Comment' */
 const ENUM_TrackedSyntaxKind_Comment = 2;
 
 class TrackedSyntaxList {
@@ -71,9 +71,9 @@ class TrackedSyntaxList {
      */
     getElementAt(index_abstract) {
         let index_literal = index_abstract * this.field_count;
-        EDITOR_pooledTrackedSyntax_trackedSyntaxKind = this.data_literal[index_literal + this.trackedSyntaxKind_offset];
-        int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] = this.data_literal[index_literal + this.start_offset];
-        int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] = this.data_literal[index_literal + this.length_offset];
+        EDI_pooledTrackedSyntax_trackedSyntaxKind = this.data_literal[index_literal + this.trackedSyntaxKind_offset];
+        int_fields[INDEXOF_EDI_pooledTrackedSyntax_start] = this.data_literal[index_literal + this.start_offset];
+        int_fields[INDEXOF_EDI_pooledTrackedSyntax_length] = this.data_literal[index_literal + this.length_offset];
     }
 
     getStart(index_abstract) {

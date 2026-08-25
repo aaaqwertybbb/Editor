@@ -17,7 +17,7 @@
           OpFoOrWo
       </button>
       |
-      <button id="EDITOR_gotoF">
+      <button id="EDI_gotoF">
         <!-- Use select to provide more meaning of what this UI does? -->
         Goto F
       </button>
@@ -27,8 +27,8 @@
       <!-- TODO: "Move" the tab index to the "TreeViewComponent"? -->
       <div id="EXPLORER">
       </div>
-      <div id="EDITOR_hack">
-        <!-- See #EDITOR_debug for #EDITOR_hack explanation -->
+      <div id="EDI_hack">
+        <!-- See #EDI_debug for #EDI_hack explanation -->
         
         <!--
         These are in the wrong order for "z axis" of like what it ontop of one another
@@ -40,27 +40,27 @@
         
         <div id="EDITOR" tabindex="0">
           
-          <!-- IMPORTANT: All child nodes are referenced by hardcoded numbers and cached from within 'EDITOR_init'. If you modify the children you need to update these hardcoded numbers respectively. -->
+          <!-- IMPORTANT: All child nodes are referenced by hardcoded numbers and cached from within 'EDI_init'. If you modify the children you need to update these hardcoded numbers respectively. -->
 
           <!-- TODO: can the horizontal scrollbar be leveraged as a horizontal virtualization element instead of having one explicitly for that purpose alone. -->
 
-          <div id="EDITOR_virtualization_horizontal"></div>
-          <div id="EDITOR_virtualization_vertical"></div>
-          <div id="EDITOR_horizontal_scrollbar_sticky">
-            <div id="EDITOR_horizontal_scrollbar">
-              <div id="EDITOR_horizontal_scrollbar_virtualization_boundary"></div>
+          <div id="EDI_virtualization_horizontal"></div>
+          <div id="EDI_virtualization_vertical"></div>
+          <div id="EDI_horizontal_scrollbar_sticky">
+            <div id="EDI_horizontal_scrollbar">
+              <div id="EDI_horizontal_scrollbar_virtualization_boundary"></div>
             </div>
           </div>
-          <div id="EDITOR_gutter_background_color"></div>
-          <div id="EDITOR_gutter_container"></div>
-          <div id="EDITOR_body">
-            <div id="EDITOR_presentation"></div>
-            <div id="EDITOR_cursorList"></div>
-            <div id="EDITOR_text"></div>
+          <div id="EDI_gutter_background_color"></div>
+          <div id="EDI_gutter_container"></div>
+          <div id="EDI_body">
+            <div id="EDI_presentation"></div>
+            <div id="EDI_cursorList"></div>
+            <div id="EDI_text"></div>
           </div>
         </div>
-        <div id="EDITOR_findOverlay" style="visibility: hidden;"></div>
-        <div id="EDITOR_debug">
+        <div id="EDI_findOverlay" style="visibility: hidden;"></div>
+        <div id="EDI_debug">
           <!--
           Not having this as a child to the #EDITOR is annoying,
           but I'd have to change around a good bit of code to make that work due to virtualization and possibly further etc...

@@ -6,161 +6,161 @@ module.exports = function (babel) {
   // List all the function names you want to inline
   const TARGET_FUNCTIONS = [
 
-    "get_EDITOR_detailRank",
-    "set_EDITOR_detailRank",
+    "get_EDI_detailRank",
+    "set_EDI_detailRank",
 
-    "get_EDITOR_recentBoundingClientRect_isNull_intFalsey",
-    "set_EDITOR_recentBoundingClientRect_isNull_intFalsey",
+    "get_EDI_recentBoundingClientRect_isNull_intFalsey",
+    "set_EDI_recentBoundingClientRect_isNull_intFalsey",
     
-    "get_EDITOR_findOverlay_show",
-    "set_EDITOR_findOverlay_show",
+    "get_EDI_findOverlay_show",
+    "set_EDI_findOverlay_show",
     
-    "get_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching",
-    "set_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching",
+    "get_EDI_findOverlay_isBeingShownDueToMultiCursorMatching",
+    "set_EDI_findOverlay_isBeingShownDueToMultiCursorMatching",
     
-    "get_EDITOR_fileStartsWithBom",
-    "set_EDITOR_fileStartsWithBom",
+    "get_EDI_fileStartsWithBom",
+    "set_EDI_fileStartsWithBom",
     
-    "get_EDITOR_findOverlay_wasSearched",
-    "set_EDITOR_findOverlay_wasSearched",
+    "get_EDI_findOverlay_wasSearched",
+    "set_EDI_findOverlay_wasSearched",
     
-    "get_EDITOR_findOverlay_options_matchWord",
-    "set_EDITOR_findOverlay_options_matchWord",
+    "get_EDI_findOverlay_options_matchWord",
+    "set_EDI_findOverlay_options_matchWord",
   ];
 
   // List all the variable names you want to inline
   const TARGET_VARIABLES = [
 
-    "INDEXOF_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber",
+    "INDEXOF_EDI_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber",
     
 
-    "INDEXOF_EDITOR_drawn_count_of_digits_longest_line_number",
+    "INDEXOF_EDI_drawn_count_of_digits_longest_line_number",
 
     
 
-    "INDEXOF_EDITOR_detailRank",
+    "INDEXOF_EDI_detailRank",
     
 
-    "INDEXOF_EDITOR_detail_smallPosition",
+    "INDEXOF_EDI_detail_smallPosition",
     
 
-    "INDEXOF_EDITOR_detail_largePosition",
+    "INDEXOF_EDI_detail_largePosition",
 
-    "INDEXOF_EDITOR_detailRank3OriginLine",
+    "INDEXOF_EDI_detailRank3OriginLine",
     
 
-    "INDEXOF_EDITOR_gutterWidthStyleValue",
+    "INDEXOF_EDI_gutterWidthStyleValue",
     
 
-    "INDEXOF_EDITOR_gutterWidthTotal",
+    "INDEXOF_EDI_gutterWidthTotal",
     
 
-    "INDEXOF_EDITOR_virtualIndexLine",
+    "INDEXOF_EDI_virtualIndexLine",
     
 
-    "INDEXOF_EDITOR_virtualCount",
+    "INDEXOF_EDI_virtualCount",
     
 
     "INDEXOF_didChangeTextDocument_version",
     
 
-    "INDEXOF_EDITOR_indexCursor",
+    "INDEXOF_EDI_indexCursor",
     
 
-    "INDEXOF_EDITOR_offsetLine",
+    "INDEXOF_EDI_offsetLine",
     
 
-    "INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine",
+    "INDEXOF_EDI_offsetColumn_withRespectToThisIndexLine",
     
 
-    "INDEXOF_EDITOR_offsetColumn",
+    "INDEXOF_EDI_offsetColumn",
     
 
-    "INDEXOF_EDITOR_totalShift",
+    "INDEXOF_EDI_totalShift",
     
 
-    "INDEXOF_EDITOR_offsetWithinSpan",
+    "INDEXOF_EDI_offsetWithinSpan",
     
 
-    "INDEXOF_EDITOR_ONSCROLLvirtualIndexLine",
+    "INDEXOF_EDI_ONSCROLLvirtualIndexLine",
     
 
     
 
-    "INDEXOF_EDITOR_ONSCROLLscrollTop",
+    "INDEXOF_EDI_ONSCROLLscrollTop",
     
 
-    "INDEXOF_EDITOR_longestLine_indexLine",
+    "INDEXOF_EDI_longestLine_indexLine",
     
     
-    "INDEXOF_EDITOR_longestLine_length",
+    "INDEXOF_EDI_longestLine_length",
     
 
-    "INDEXOF_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar",
+    "INDEXOF_EDI_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar",
     
 
-    "INDEXOF_EDITOR_contentWidth",
+    "INDEXOF_EDI_contentWidth",
     
 
-    "INDEXOF_EDITOR_indent_ORIGINAL_indentBy",
+    "INDEXOF_EDI_indent_ORIGINAL_indentBy",
     
 
-    "INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine",
+    "INDEXOF_EDI_indent_SMALL_lineAndColumnIndices_indexLine",
     
 
-    "INDEXOF_EDITOR_indent_startingIndex",
+    "INDEXOF_EDI_indent_startingIndex",
     
 
-    "INDEXOF_EDITOR_recentBoundingClientRect_left",
+    "INDEXOF_EDI_recentBoundingClientRect_left",
     
 
-    "INDEXOF_EDITOR_recentBoundingClientRect_top",
+    "INDEXOF_EDI_recentBoundingClientRect_top",
     
 
-    "INDEXOF_EDITOR_recentBoundingClientRect_isNull_intFalsey",
+    "INDEXOF_EDI_recentBoundingClientRect_isNull_intFalsey",
     
 
-    "INDEXOF_EDITOR_pooledTrackedSyntax_start",
+    "INDEXOF_EDI_pooledTrackedSyntax_start",
     
 
-    "INDEXOF_EDITOR_pooledTrackedSyntax_length",
+    "INDEXOF_EDI_pooledTrackedSyntax_length",
     
 
-    "INDEXOF_EDITOR_findOverlay_show",
+    "INDEXOF_EDI_findOverlay_show",
     
 
-    "INDEXOF_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching",
+    "INDEXOF_EDI_findOverlay_isBeingShownDueToMultiCursorMatching",
     
 
-    "INDEXOF_EDITOR_fileStartsWithBom",
+    "INDEXOF_EDI_fileStartsWithBom",
     
 
-    "INDEXOF_EDITOR_findOverlay_wasSearched",
+    "INDEXOF_EDI_findOverlay_wasSearched",
     
 
-    "INDEXOF_EDITOR_findOverlay_options_matchWord",
+    "INDEXOF_EDI_findOverlay_options_matchWord",
     
 
-    "INDEXOF_EDITOR_scrollEndDeadline",
+    "INDEXOF_EDI_scrollEndDeadline",
 
-    "INDEXOF_EDITOR_intFalsey_isScrolling",
+    "INDEXOF_EDI_intFalsey_isScrolling",
     
 
 
 
 
 
-    "INDEXOF_EDITOR_lineHeight",
-    "INDEXOF_EDITOR_virtualIndexLine",
-    "INDEXOF_EDITOR_virtualCount",
-    "INDEXOF_EDITOR_ONSCROLLvirtualIndexLine",
-    "INDEXOF_EDITOR_ONSCROLLvirtualCount",
-    "INDEXOF_EDITOR_ONSCROLLscrollTop",
-    "INDEXOF_EDITOR_longestLine_indexLine",
-    "INDEXOF_EDITOR_longestLine_length",
-    "INDEXOF_EDITOR_scrollEndDeadline",
-    "INDEXOF_EDITOR_sum_diffPositive",
-    "INDEXOF_EDITOR_sum_diffNegative",
+    "INDEXOF_EDI_lineHeight",
+    "INDEXOF_EDI_virtualIndexLine",
+    "INDEXOF_EDI_virtualCount",
+    "INDEXOF_EDI_ONSCROLLvirtualIndexLine",
+    "INDEXOF_EDI_ONSCROLLvirtualCount",
+    "INDEXOF_EDI_ONSCROLLscrollTop",
+    "INDEXOF_EDI_longestLine_indexLine",
+    "INDEXOF_EDI_longestLine_length",
+    "INDEXOF_EDI_scrollEndDeadline",
+    "INDEXOF_EDI_sum_diffPositive",
+    "INDEXOF_EDI_sum_diffNegative",
     "INDEXOF_lastReadNumber_scrollTop",
 
     "ENUM_AUTOCOMPLETErenderKind_None",
@@ -278,9 +278,9 @@ module.exports = function (babel) {
     "ENUM_ExtensionKind_None",
     "ENUM_ExtensionKind_JavaScript",
 
-    "CONST_EDITOR_ASCII_LINE_FEED",
-    "CONST_EDITOR_ASCII_TAB",
-    "CONST_EDITOR_ASCII_SPACE",
+    "CONST_EDI_ASCII_LINE_FEED",
+    "CONST_EDI_ASCII_TAB",
+    "CONST_EDI_ASCII_SPACE",
 
     "CONST_js_DOUBLEQUOTE_str",
     "CONST_js_SINGLEQUOTE_str",
@@ -328,8 +328,8 @@ module.exports = function (babel) {
     "CONST_js_QUESTIONMARK_num",
     "CONST_js_CARET_num",
 
-    "CONST_EDITOR_gutterPaddingLeft",
-    "CONST_EDITOR_gutterPaddingRight",
+    "CONST_EDI_gutterPaddingLeft",
+    "CONST_EDI_gutterPaddingRight",
 
 
     "CONST_DIALOG_minTop",
@@ -337,7 +337,7 @@ module.exports = function (babel) {
     "CONST_DIALOG_minHeight",
     "CONST_DIALOG_minWidth",
 
-    "CONST_EDITOR_cursor_GAP_BUFFER_CAPACITY",
+    "CONST_EDI_cursor_GAP_BUFFER_CAPACITY",
 
 
 
@@ -350,34 +350,34 @@ module.exports = function (babel) {
 
 
 
-    "INDEXOF_EDITOR_cursor_editKind",
-    "INDEXOF_EDITOR_cursor_indexLine",
-    "INDEXOF_EDITOR_cursor_indexColumn",
-    "INDEXOF_EDITOR_cursor_STORED_indexColumn",
-    "INDEXOF_EDITOR_cursor_cursorTranslateYValue",
-    "INDEXOF_EDITOR_cursor_cursorTranslateXValue",
-    "INDEXOF_EDITOR_cursor_selectionAnchor",
-    "INDEXOF_EDITOR_cursor_selectionEnd",
-    "INDEXOF_EDITOR_cursor_selectionIndexAnchorLine",
-    "INDEXOF_EDITOR_cursor_selectionIndexAnchorColumn",
-    "INDEXOF_EDITOR_cursor_selectionIndexEndLine",
-    "INDEXOF_EDITOR_cursor_selectionIndexEndColumn",
-    "INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor",
-    "INDEXOF_EDITOR_cursor_DRAWN_selectionEnd",
-    "INDEXOF_EDITOR_cursor_DRAWN_selection_virtualIndexLine",
-    "INDEXOF_EDITOR_cursor_DRAWN_selection_virtualCount",
-    "INDEXOF_EDITOR_cursor_editLength",
-    "INDEXOF_EDITOR_cursor_editPosition",
-    "INDEXOF_EDITOR_cursor_editIndexLine",
-    "INDEXOF_EDITOR_cursor_editIndexColumn",
-    "INDEXOF_EDITOR_cursor_editRenderedDisplacement",
-    "INDEXOF_EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET",
-    "INDEXOF_EDITOR_cursor_END_editIndexLine",
-    "INDEXOF_EDITOR_cursor_END_editIndexColumn",
-    "INDEXOF_EDITOR_cursor_gapBufferCount",
-    "INDEXOF_EDITOR_cursor_editLineFeedCount",
-    "INDEXOF_EDITOR_cursor_EDITOR_duplicate_small",
-    "INDEXOF_EDITOR_cursor_EDITOR_duplicate_length",
+    "INDEXOF_EDI_cursor_editKind",
+    "INDEXOF_EDI_cursor_indexLine",
+    "INDEXOF_EDI_cursor_indexColumn",
+    "INDEXOF_EDI_cursor_STORED_indexColumn",
+    "INDEXOF_EDI_cursor_cursorTranslateYValue",
+    "INDEXOF_EDI_cursor_cursorTranslateXValue",
+    "INDEXOF_EDI_cursor_selectionAnchor",
+    "INDEXOF_EDI_cursor_selectionEnd",
+    "INDEXOF_EDI_cursor_selectionIndexAnchorLine",
+    "INDEXOF_EDI_cursor_selectionIndexAnchorColumn",
+    "INDEXOF_EDI_cursor_selectionIndexEndLine",
+    "INDEXOF_EDI_cursor_selectionIndexEndColumn",
+    "INDEXOF_EDI_cursor_DRAWN_selectionAnchor",
+    "INDEXOF_EDI_cursor_DRAWN_selectionEnd",
+    "INDEXOF_EDI_cursor_DRAWN_selection_virtualIndexLine",
+    "INDEXOF_EDI_cursor_DRAWN_selection_virtualCount",
+    "INDEXOF_EDI_cursor_editLength",
+    "INDEXOF_EDI_cursor_editPosition",
+    "INDEXOF_EDI_cursor_editIndexLine",
+    "INDEXOF_EDI_cursor_editIndexColumn",
+    "INDEXOF_EDI_cursor_editRenderedDisplacement",
+    "INDEXOF_EDI_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET",
+    "INDEXOF_EDI_cursor_END_editIndexLine",
+    "INDEXOF_EDI_cursor_END_editIndexColumn",
+    "INDEXOF_EDI_cursor_gapBufferCount",
+    "INDEXOF_EDI_cursor_editLineFeedCount",
+    "INDEXOF_EDI_cursor_EDI_duplicate_small",
+    "INDEXOF_EDI_cursor_EDI_duplicate_length",
 
 
 

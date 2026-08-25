@@ -178,11 +178,11 @@ class DIALOG_FindAll_TreeViewDirector {
             
             await EXPLORER_openInEditor(absolutePath, /*shouldFocus*/ true);
             
-            if (intValue > EDITOR_lineEndPositionList.count) {
+            if (intValue > EDI_lineEndPositionList.count) {
                 return;
             }
 
-            EDITOR_moveCursor_indexLine_indexColumn(intValue, 0);
+            EDI_moveCursor_indexLine_indexColumn(intValue, 0);
         }
     }
     
@@ -450,10 +450,10 @@ function DIALOG_checkboxTrueTabsFalseSpaces_onchange() {
 
     DIALOG_Settings_trueTabs_falseSpaces = checkboxTrueTabsFalseSpaces.checked;
     if (DIALOG_Settings_trueTabs_falseSpaces) {
-        EDITOR_on_tab_bytes = EDITOR_tab_tabsbytes;
+        EDI_on_tab_bytes = EDI_tab_tabsbytes;
     }
     else {
-        EDITOR_on_tab_bytes = EDITOR_tab_spacesbytes;
+        EDI_on_tab_bytes = EDI_tab_spacesbytes;
     }
 }
 
@@ -462,35 +462,35 @@ function DIALOG_checkboxEditorDebugShowAdjacentCharacters_onchange() {
     if (!checkboxEditorDebugShowAdjacentCharacters) return;
 
     DIALOG_Settings_editorDebugShowAdjacentCharacters = checkboxEditorDebugShowAdjacentCharacters.checked;
-    EDITOR_drawCursor();
+    EDI_drawCursor();
 }
 
 async function DIALOG_DocumentSymbol_Create_async() {
     let dialogBody = document.getElementById('DIALOG_body');
     if (!dialogBody) return;
 
-    if (EDITOR_documentSymbolResult) {
+    if (EDI_documentSymbolResult) {
         let div = document.createElement('div');
-        div.textContent = 'EDITOR_documentSymbolResult.length: ' + EDITOR_documentSymbolResult.length;
+        div.textContent = 'EDI_documentSymbolResult.length: ' + EDI_documentSymbolResult.length;
         div.style.height = APP_lineHeight + 'px';
         div.style.whiteSpace = 'nowrap';
         dialogBody.appendChild(div);
-        EDITOR_listComponent.rootElement.style.height = `calc(100% - ${div.style.height})`;
-        EDITOR_listComponent.draw_create(dialogBody, null);
+        EDI_listComponent.rootElement.style.height = `calc(100% - ${div.style.height})`;
+        EDI_listComponent.draw_create(dialogBody, null);
     }
     else {
-        dialogBody.textContent = 'EDITOR_documentSymbolResult is falsey';
+        dialogBody.textContent = 'EDI_documentSymbolResult is falsey';
     }
 }
 
 async function DIALOG_DocumentSymbol_Delete_async() {
     let dialogBody = document.getElementById('DIALOG_body');
     if (!dialogBody) return;
-    if (EDITOR_listComponent) {
-        EDITOR_listComponent.draw_delete();
-        EDITOR_listComponent = null;
+    if (EDI_listComponent) {
+        EDI_listComponent.draw_delete();
+        EDI_listComponent = null;
     }
-    EDITOR_documentSymbolResult = null;
+    EDI_documentSymbolResult = null;
 }
 
 //let DEBUG_listData = null;
@@ -528,7 +528,7 @@ async function DIALOG_Debug_Create_async() {
 //            //else {
 //            //    // TODO: Ensure that json parsing the title like this is a safe way of doing things
 //            //    const startPosition = JSON.parse(div.title);
-//            //    EDITOR_moveCursor_indexLine_indexColumn(startPosition.line, startPosition.character);
+//            //    EDI_moveCursor_indexLine_indexColumn(startPosition.line, startPosition.character);
 //            //}
 //        },
 //        /*getItemsCountFunc*/ () => {

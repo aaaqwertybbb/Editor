@@ -342,7 +342,7 @@ async function optionOnClick(indexClicked, elementClicked) {
                 await EXPLORER_MenuOnClick(indexClicked, elementClicked);
                 break;
             case 'EDITOR':
-                await EDITOR_MenuOnClick(indexClicked, elementClicked);
+                await EDI_MenuOnClick(indexClicked, elementClicked);
                 break;
             case 'EXPLORER_pickFolderOrWorkspaceButton':
                 await EXPLORER_pickFolderOrWorkspaceButton_MenuOnClick(indexClicked, elementClicked);

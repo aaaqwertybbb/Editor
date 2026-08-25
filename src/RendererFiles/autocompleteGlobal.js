@@ -539,8 +539,8 @@ function AUTOCOMPLETE_events_onkeydown(event) {
             break;
         default:
             AUTOCOMPLETE_hide();
-            if (EDITOR_baseElement) {
-                EDITOR_baseElement.focus();
+            if (EDI_baseElement) {
+                EDI_baseElement.focus();
             }
             break;
     }

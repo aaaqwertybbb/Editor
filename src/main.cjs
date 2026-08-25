@@ -388,27 +388,27 @@ function MAIN_initializeLanguageServer() {
  * 
  * Tabs are stored as '\t\0\0\0', all line feeds converted to '\n'.
  * 
- * textonly is in reference to conversion of the raw storage of the text editor such that a tab of '\t\0\0\0' is returned as just '\t', and all line feeds as EDITOR_lineEndString
+ * textonly is in reference to conversion of the raw storage of the text editor such that a tab of '\t\0\0\0' is returned as just '\t', and all line feeds as EDI_lineEndString
  * 
  * @returns {string}
  */
-function MAIN_decode_experimental_textonly(bytes, start, length, EDITOR_lineEndString, EDITOR_fileStartsWithBom) {
+function MAIN_decode_experimental_textonly(bytes, start, length, EDI_lineEndString, EDI_fileStartsWithBom) {
 
 	// TODO: consider the garbage collection overhead of saving out a large file, and whether chunking would be preferable
 
-	let EDITOR_decode_pooled_stringBuilder_array;
+	let EDI_decode_pooled_stringBuilder_array;
 	
 	// TODO: if you push the string does it bork any optimizations that the runtime can make for storage of single character strings or something is this a thing?
 
-	if (EDITOR_fileStartsWithBom) {
-		EDITOR_decode_pooled_stringBuilder_array = new Array(length + 1);
-		EDITOR_decode_pooled_stringBuilder_array.push("\uFEFF");
+	if (EDI_fileStartsWithBom) {
+		EDI_decode_pooled_stringBuilder_array = new Array(length + 1);
+		EDI_decode_pooled_stringBuilder_array.push("\uFEFF");
 	}
 	else {
-		EDITOR_decode_pooled_stringBuilder_array = new Array(length);
+		EDI_decode_pooled_stringBuilder_array = new Array(length);
 	}
 
-	let EDITOR_decoder = new TextDecoder();
+	let EDI_decoder = new TextDecoder();
 
     let end = start + length;
 	
@@ -421,304 +421,304 @@ function MAIN_decode_experimental_textonly(bytes, start, length, EDITOR_lineEndS
 			case 0: // NUL
 				break;
 			case 9: // TAB
-				EDITOR_decode_pooled_stringBuilder_array.push('\t');
+				EDI_decode_pooled_stringBuilder_array.push('\t');
 				break;
 			case 10: // LF
-				EDITOR_decode_pooled_stringBuilder_array.push(EDITOR_lineEndString);
+				EDI_decode_pooled_stringBuilder_array.push(EDI_lineEndString);
 				break;
 			case 32: // Space
-				EDITOR_decode_pooled_stringBuilder_array.push(' ');
+				EDI_decode_pooled_stringBuilder_array.push(' ');
 				break;
 			case 33: // !
-				EDITOR_decode_pooled_stringBuilder_array.push('!');
+				EDI_decode_pooled_stringBuilder_array.push('!');
 				break;
 			case 34: // "
-				EDITOR_decode_pooled_stringBuilder_array.push('"');
+				EDI_decode_pooled_stringBuilder_array.push('"');
 				break;
 			case 35: // #
-				EDITOR_decode_pooled_stringBuilder_array.push('#');
+				EDI_decode_pooled_stringBuilder_array.push('#');
 				break;
 			case 36: // $ (I think???)
-				EDITOR_decode_pooled_stringBuilder_array.push('$');
+				EDI_decode_pooled_stringBuilder_array.push('$');
 				break;
 			case 37: // %
-				EDITOR_decode_pooled_stringBuilder_array.push('%');
+				EDI_decode_pooled_stringBuilder_array.push('%');
 				break;
 			case 38: // & (I think???)
-				EDITOR_decode_pooled_stringBuilder_array.push('&');
+				EDI_decode_pooled_stringBuilder_array.push('&');
 				break;
 			case 39: // ' (I think???)
-				EDITOR_decode_pooled_stringBuilder_array.push('\'');
+				EDI_decode_pooled_stringBuilder_array.push('\'');
 				break;
 			case 40: // (
-				EDITOR_decode_pooled_stringBuilder_array.push('(');
+				EDI_decode_pooled_stringBuilder_array.push('(');
 				break;
 			case 41: // )
-				EDITOR_decode_pooled_stringBuilder_array.push(')');
+				EDI_decode_pooled_stringBuilder_array.push(')');
 				break;
 			case 42: // *
-				EDITOR_decode_pooled_stringBuilder_array.push('*');
+				EDI_decode_pooled_stringBuilder_array.push('*');
 				break;
 			case 43: // +
-				EDITOR_decode_pooled_stringBuilder_array.push('+');
+				EDI_decode_pooled_stringBuilder_array.push('+');
 				break;
 			case 44: // , (I think???)
-				EDITOR_decode_pooled_stringBuilder_array.push(',');
+				EDI_decode_pooled_stringBuilder_array.push(',');
 				break;
 			case 45: // -
-				EDITOR_decode_pooled_stringBuilder_array.push('-');
+				EDI_decode_pooled_stringBuilder_array.push('-');
 				break;
 			case 46: // .
-				EDITOR_decode_pooled_stringBuilder_array.push('.');
+				EDI_decode_pooled_stringBuilder_array.push('.');
 				break;
 			case 47: // /
-				EDITOR_decode_pooled_stringBuilder_array.push('/');
+				EDI_decode_pooled_stringBuilder_array.push('/');
 				break;
 			case 48: // 0
-				EDITOR_decode_pooled_stringBuilder_array.push('0');
+				EDI_decode_pooled_stringBuilder_array.push('0');
 				break;
 			case 49: // 1
-				EDITOR_decode_pooled_stringBuilder_array.push('1');
+				EDI_decode_pooled_stringBuilder_array.push('1');
 				break;
 			case 50: // 2
-				EDITOR_decode_pooled_stringBuilder_array.push('2');
+				EDI_decode_pooled_stringBuilder_array.push('2');
 				break;
 			case 51: // 3
-				EDITOR_decode_pooled_stringBuilder_array.push('3');
+				EDI_decode_pooled_stringBuilder_array.push('3');
 				break;
 			case 52: // 4
-				EDITOR_decode_pooled_stringBuilder_array.push('4');
+				EDI_decode_pooled_stringBuilder_array.push('4');
 				break;
 			case 53: // 5
-				EDITOR_decode_pooled_stringBuilder_array.push('5');
+				EDI_decode_pooled_stringBuilder_array.push('5');
 				break;
 			case 54: // 6
-				EDITOR_decode_pooled_stringBuilder_array.push('6');
+				EDI_decode_pooled_stringBuilder_array.push('6');
 				break;
 			case 55: // 7
-				EDITOR_decode_pooled_stringBuilder_array.push('7');
+				EDI_decode_pooled_stringBuilder_array.push('7');
 				break;
 			case 56: // 8
-				EDITOR_decode_pooled_stringBuilder_array.push('8');
+				EDI_decode_pooled_stringBuilder_array.push('8');
 				break;
 			case 57: // 9
-				EDITOR_decode_pooled_stringBuilder_array.push('9');
+				EDI_decode_pooled_stringBuilder_array.push('9');
 				break;
 			case 58: // :
-				EDITOR_decode_pooled_stringBuilder_array.push(':');
+				EDI_decode_pooled_stringBuilder_array.push(':');
 				break;
 			case 59: // ;
-				EDITOR_decode_pooled_stringBuilder_array.push(';');
+				EDI_decode_pooled_stringBuilder_array.push(';');
 				break;
 			case 60: // <
-				EDITOR_decode_pooled_stringBuilder_array.push('<');
+				EDI_decode_pooled_stringBuilder_array.push('<');
 				break;
 			case 61: // =
-				EDITOR_decode_pooled_stringBuilder_array.push('=');
+				EDI_decode_pooled_stringBuilder_array.push('=');
 				break;
 			case 62: // >
-				EDITOR_decode_pooled_stringBuilder_array.push('>');
+				EDI_decode_pooled_stringBuilder_array.push('>');
 				break;
 			case 63: // ?
-				EDITOR_decode_pooled_stringBuilder_array.push('?');
+				EDI_decode_pooled_stringBuilder_array.push('?');
 				break;
 			case 64: // @
-				EDITOR_decode_pooled_stringBuilder_array.push('@');
+				EDI_decode_pooled_stringBuilder_array.push('@');
 				break;
 			case 65: // A
-				EDITOR_decode_pooled_stringBuilder_array.push('A');
+				EDI_decode_pooled_stringBuilder_array.push('A');
 				break;
 			case 66: // B
-				EDITOR_decode_pooled_stringBuilder_array.push('B');
+				EDI_decode_pooled_stringBuilder_array.push('B');
 				break;
 			case 67: // C
-				EDITOR_decode_pooled_stringBuilder_array.push('C');
+				EDI_decode_pooled_stringBuilder_array.push('C');
 				break;
 			case 68: // D
-				EDITOR_decode_pooled_stringBuilder_array.push('D');
+				EDI_decode_pooled_stringBuilder_array.push('D');
 				break;
 			case 69: // E
-				EDITOR_decode_pooled_stringBuilder_array.push('E');
+				EDI_decode_pooled_stringBuilder_array.push('E');
 				break;
 			case 70: // F
-				EDITOR_decode_pooled_stringBuilder_array.push('F');
+				EDI_decode_pooled_stringBuilder_array.push('F');
 				break;
 			case 71: // G
-				EDITOR_decode_pooled_stringBuilder_array.push('G');
+				EDI_decode_pooled_stringBuilder_array.push('G');
 				break;
 			case 72: // H
-				EDITOR_decode_pooled_stringBuilder_array.push('H');
+				EDI_decode_pooled_stringBuilder_array.push('H');
 				break;
 			case 73: // I
-				EDITOR_decode_pooled_stringBuilder_array.push('I');
+				EDI_decode_pooled_stringBuilder_array.push('I');
 				break;
 			case 74: // J
-				EDITOR_decode_pooled_stringBuilder_array.push('J');
+				EDI_decode_pooled_stringBuilder_array.push('J');
 				break;
 			case 75: // K
-				EDITOR_decode_pooled_stringBuilder_array.push('K');
+				EDI_decode_pooled_stringBuilder_array.push('K');
 				break;
 			case 76: // L
-				EDITOR_decode_pooled_stringBuilder_array.push('L');
+				EDI_decode_pooled_stringBuilder_array.push('L');
 				break;
 			case 77: // M
-				EDITOR_decode_pooled_stringBuilder_array.push('M');
+				EDI_decode_pooled_stringBuilder_array.push('M');
 				break;
 			case 78: // N
-				EDITOR_decode_pooled_stringBuilder_array.push('N');
+				EDI_decode_pooled_stringBuilder_array.push('N');
 				break;
 			case 79: // O
-				EDITOR_decode_pooled_stringBuilder_array.push('O');
+				EDI_decode_pooled_stringBuilder_array.push('O');
 				break;
 			case 80: // P
-				EDITOR_decode_pooled_stringBuilder_array.push('P');
+				EDI_decode_pooled_stringBuilder_array.push('P');
 				break;
 			case 81: // Q
-				EDITOR_decode_pooled_stringBuilder_array.push('Q');
+				EDI_decode_pooled_stringBuilder_array.push('Q');
 				break;
 			case 82: // R
-				EDITOR_decode_pooled_stringBuilder_array.push('R');
+				EDI_decode_pooled_stringBuilder_array.push('R');
 				break;
 			case 83: // S
-				EDITOR_decode_pooled_stringBuilder_array.push('S');
+				EDI_decode_pooled_stringBuilder_array.push('S');
 				break;
 			case 84: // T
-				EDITOR_decode_pooled_stringBuilder_array.push('T');
+				EDI_decode_pooled_stringBuilder_array.push('T');
 				break;
 			case 85: // U
-				EDITOR_decode_pooled_stringBuilder_array.push('U');
+				EDI_decode_pooled_stringBuilder_array.push('U');
 				break;
 			case 86: // V
-				EDITOR_decode_pooled_stringBuilder_array.push('V');
+				EDI_decode_pooled_stringBuilder_array.push('V');
 				break;
 			case 87: // W
-				EDITOR_decode_pooled_stringBuilder_array.push('W');
+				EDI_decode_pooled_stringBuilder_array.push('W');
 				break;
 			case 88: // X
-				EDITOR_decode_pooled_stringBuilder_array.push('X');
+				EDI_decode_pooled_stringBuilder_array.push('X');
 				break;
 			case 89: // Y
-				EDITOR_decode_pooled_stringBuilder_array.push('Y');
+				EDI_decode_pooled_stringBuilder_array.push('Y');
 				break;
 			case 90: // Z
-				EDITOR_decode_pooled_stringBuilder_array.push('Z');
+				EDI_decode_pooled_stringBuilder_array.push('Z');
 				break;
 			case 91: // [
-				EDITOR_decode_pooled_stringBuilder_array.push('[');
+				EDI_decode_pooled_stringBuilder_array.push('[');
 				break;
 			case 92: // \
-				EDITOR_decode_pooled_stringBuilder_array.push('\\');
+				EDI_decode_pooled_stringBuilder_array.push('\\');
 				break;
 			case 93: // ]
-				EDITOR_decode_pooled_stringBuilder_array.push(']');
+				EDI_decode_pooled_stringBuilder_array.push(']');
 				break;
 			case 94: // ^
-				EDITOR_decode_pooled_stringBuilder_array.push('^');
+				EDI_decode_pooled_stringBuilder_array.push('^');
 				break;
 			case 95: // _
-				EDITOR_decode_pooled_stringBuilder_array.push('_');
+				EDI_decode_pooled_stringBuilder_array.push('_');
 				break;
 			case 96: // `
-				EDITOR_decode_pooled_stringBuilder_array.push('`');
+				EDI_decode_pooled_stringBuilder_array.push('`');
 				break;
 			case 97: // a
-				EDITOR_decode_pooled_stringBuilder_array.push('a');
+				EDI_decode_pooled_stringBuilder_array.push('a');
 				break;
 			case 98: // b
-				EDITOR_decode_pooled_stringBuilder_array.push('b');
+				EDI_decode_pooled_stringBuilder_array.push('b');
 				break;
 			case 99: // c
-				EDITOR_decode_pooled_stringBuilder_array.push('c');
+				EDI_decode_pooled_stringBuilder_array.push('c');
 				break;
 			case 100: // d
-				EDITOR_decode_pooled_stringBuilder_array.push('d');
+				EDI_decode_pooled_stringBuilder_array.push('d');
 				break;
 			case 101: // e
-				EDITOR_decode_pooled_stringBuilder_array.push('e');
+				EDI_decode_pooled_stringBuilder_array.push('e');
 				break;
 			case 102: // f
-				EDITOR_decode_pooled_stringBuilder_array.push('f');
+				EDI_decode_pooled_stringBuilder_array.push('f');
 				break;
 			case 103: // g
-				EDITOR_decode_pooled_stringBuilder_array.push('g');
+				EDI_decode_pooled_stringBuilder_array.push('g');
 				break;
 			case 104: // h
-				EDITOR_decode_pooled_stringBuilder_array.push('h');
+				EDI_decode_pooled_stringBuilder_array.push('h');
 				break;
 			case 105: // i
-				EDITOR_decode_pooled_stringBuilder_array.push('i');
+				EDI_decode_pooled_stringBuilder_array.push('i');
 				break;
 			case 106: // j
-				EDITOR_decode_pooled_stringBuilder_array.push('j');
+				EDI_decode_pooled_stringBuilder_array.push('j');
 				break;
 			case 107: // k
-				EDITOR_decode_pooled_stringBuilder_array.push('k');
+				EDI_decode_pooled_stringBuilder_array.push('k');
 				break;
 			case 108: // l
-				EDITOR_decode_pooled_stringBuilder_array.push('l');
+				EDI_decode_pooled_stringBuilder_array.push('l');
 				break;
 			case 109: // m
-				EDITOR_decode_pooled_stringBuilder_array.push('m');
+				EDI_decode_pooled_stringBuilder_array.push('m');
 				break;
 			case 110: // n
-				EDITOR_decode_pooled_stringBuilder_array.push('n');
+				EDI_decode_pooled_stringBuilder_array.push('n');
 				break;
 			case 111: // o
-				EDITOR_decode_pooled_stringBuilder_array.push('o');
+				EDI_decode_pooled_stringBuilder_array.push('o');
 				break;
 			case 112: // p
-				EDITOR_decode_pooled_stringBuilder_array.push('p');
+				EDI_decode_pooled_stringBuilder_array.push('p');
 				break;
 			case 113: // q
-				EDITOR_decode_pooled_stringBuilder_array.push('q');
+				EDI_decode_pooled_stringBuilder_array.push('q');
 				break;
 			case 114: // r
-				EDITOR_decode_pooled_stringBuilder_array.push('r');
+				EDI_decode_pooled_stringBuilder_array.push('r');
 				break;
 			case 115: // s
-				EDITOR_decode_pooled_stringBuilder_array.push('s');
+				EDI_decode_pooled_stringBuilder_array.push('s');
 				break;
 			case 116: // t
-				EDITOR_decode_pooled_stringBuilder_array.push('t');
+				EDI_decode_pooled_stringBuilder_array.push('t');
 				break;
 			case 117: // u
-				EDITOR_decode_pooled_stringBuilder_array.push('u');
+				EDI_decode_pooled_stringBuilder_array.push('u');
 				break;
 			case 118: // v
-				EDITOR_decode_pooled_stringBuilder_array.push('v');
+				EDI_decode_pooled_stringBuilder_array.push('v');
 				break;
 			case 119: // w
-				EDITOR_decode_pooled_stringBuilder_array.push('w');
+				EDI_decode_pooled_stringBuilder_array.push('w');
 				break;
 			case 120: // x
-				EDITOR_decode_pooled_stringBuilder_array.push('x');
+				EDI_decode_pooled_stringBuilder_array.push('x');
 				break;
 			case 121: // y
-				EDITOR_decode_pooled_stringBuilder_array.push('y');
+				EDI_decode_pooled_stringBuilder_array.push('y');
 				break;
 			case 122: // z
-				EDITOR_decode_pooled_stringBuilder_array.push('z');
+				EDI_decode_pooled_stringBuilder_array.push('z');
 				break;
 			case 123: // {
-				EDITOR_decode_pooled_stringBuilder_array.push('{');
+				EDI_decode_pooled_stringBuilder_array.push('{');
 				break;
 			case 124: // |
-				EDITOR_decode_pooled_stringBuilder_array.push('|');
+				EDI_decode_pooled_stringBuilder_array.push('|');
 				break;
 			case 125: // }
-				EDITOR_decode_pooled_stringBuilder_array.push('}');
+				EDI_decode_pooled_stringBuilder_array.push('}');
 				break;
 			case 126: // ~
-				EDITOR_decode_pooled_stringBuilder_array.push('~');
+				EDI_decode_pooled_stringBuilder_array.push('~');
 				break;
 			default:
-				EDITOR_decode_pooled_stringBuilder_array.push(
-					EDITOR_decoder.decode(bytes.subarray(i, i + 1)));
+				EDI_decode_pooled_stringBuilder_array.push(
+					EDI_decoder.decode(bytes.subarray(i, i + 1)));
 				break;
 		}
 	}
 	
-	return EDITOR_decode_pooled_stringBuilder_array.join('');
+	return EDI_decode_pooled_stringBuilder_array.join('');
 }
 
 /**
@@ -1191,12 +1191,12 @@ async function setClipboard(event, text) {
 	}
 }
 
-async function editorSetClipboard(event, uint8Array, offset, length, EDITOR_lineEndString) {
+async function editorSetClipboard(event, uint8Array, offset, length, EDI_lineEndString) {
 	try {
-		if (!EDITOR_lineEndString)
-			EDITOR_lineEndString = '\n';
+		if (!EDI_lineEndString)
+			EDI_lineEndString = '\n';
 
-		clipboard.writeText(MAIN_decode_experimental_textonly(uint8Array, offset, length, EDITOR_lineEndString));
+		clipboard.writeText(MAIN_decode_experimental_textonly(uint8Array, offset, length, EDI_lineEndString));
 	}
 	catch (err) {
 		console.error("Error setting clipboard:", err);
@@ -1703,7 +1703,7 @@ async function saveFile(event, absolutePath, text) {
 	}
 }
 
-async function editorSaveFile(event, absolutePath, uint8Array, count, EDITOR_lineEndString, EDITOR_fileStartsWithBom) {
+async function editorSaveFile(event, absolutePath, uint8Array, count, EDI_lineEndString, EDI_fileStartsWithBom) {
 	if (!isValidAbsolutePath(absolutePath)) return;
 
 	try {
@@ -1712,10 +1712,10 @@ async function editorSaveFile(event, absolutePath, uint8Array, count, EDITOR_lin
 			throw new Error('The destination path is a directory');
 		}
 
-		if (!EDITOR_lineEndString)
-			EDITOR_lineEndString = '\n';
+		if (!EDI_lineEndString)
+			EDI_lineEndString = '\n';
 
-		fs.writeFile(absolutePath, MAIN_decode_experimental_textonly(uint8Array, /*start*/ 0, count, EDITOR_lineEndString, EDITOR_fileStartsWithBom), () => {});
+		fs.writeFile(absolutePath, MAIN_decode_experimental_textonly(uint8Array, /*start*/ 0, count, EDI_lineEndString, EDI_fileStartsWithBom), () => {});
 	}
 	catch (err) {
 		console.error("Error saving file:", err);

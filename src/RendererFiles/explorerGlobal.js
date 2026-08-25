@@ -732,25 +732,25 @@ function EXPLORER_setShow(shouldShow) {
     if (!EXPLORER_Element) return;
 
 	if (shouldShow && !EXPLORER_show) {
-		let editorHackElement = document.getElementById('EDITOR_hack');
+		let editorHackElement = document.getElementById('EDI_hack');
 		EXPLORER_Element.style.width = '200px';
 		EXPLORER_Element.style.visibility = '';
 		editorHackElement.style.width = 'calc(100% - 200px)';
 		EXPLORER_show = shouldShow;
 		let toggleShowExplorerButton = document.getElementById('HEADER_toggleShowExplorer');
 		toggleShowExplorerButton.checked = EXPLORER_show;
-		EDITOR_onResize();
+		EDI_onResize();
 	}
 	else if (!shouldShow && EXPLORER_show) {
 		// !show is redundant, but exists for readability.
-		let editorHackElement = document.getElementById('EDITOR_hack');
+		let editorHackElement = document.getElementById('EDI_hack');
 		EXPLORER_Element.style.width = '0px';
 		EXPLORER_Element.style.visibility = 'hidden';
 		editorHackElement.style.width = '100%';
 		EXPLORER_show = shouldShow;
 		let toggleShowExplorerButton = document.getElementById('HEADER_toggleShowExplorer');
 		toggleShowExplorerButton.checked = EXPLORER_show;
-		EDITOR_onResize();
+		EDI_onResize();
 	}
 }
 
@@ -761,12 +761,12 @@ async function EXPLORER_openInEditor(absolutePath, shouldFocus) {
         return;
     }
 
-    EDITOR_setText(
+    EDI_setText(
         itHasBom.text,
         itHasBom.fileStartsWithBom,
         /*textSourceIdentifier*/ absolutePath,
         /*FORMATTED_textSourceIdentifier*/ itHasBom.formattedAbsolutePath,
-        /*extensionKind*/ EDITOR_toExtensionKind(itHasBom.extension));
+        /*extensionKind*/ EDI_toExtensionKind(itHasBom.extension));
     if (shouldFocus) {
         let editor = document.getElementById('EDITOR');
         if (editor) {

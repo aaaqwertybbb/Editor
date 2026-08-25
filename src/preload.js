@@ -47,7 +47,7 @@ contextBridge.exposeInMainWorld('myAPI', {
   // I've seen people saying you can access the clipboard the same way as the main process from renderer process
   // but I'm not touching that at the moment.
   setClipboard: text => ipcRenderer.invoke('set-clipboard', text),
-  editorSetClipboard: (uint8Array, offset, length, EDITOR_lineEndString) => ipcRenderer.invoke('editor-set-clipboard', uint8Array, offset, length, EDITOR_lineEndString),
+  editorSetClipboard: (uint8Array, offset, length, EDI_lineEndString) => ipcRenderer.invoke('editor-set-clipboard', uint8Array, offset, length, EDI_lineEndString),
   readClipboard: () => ipcRenderer.invoke('read-clipboard'),
   findAll: (search, matchWord) => ipcRenderer.invoke('find-all', search, matchWord),
   findAllGetPositions: (absolutePath, search, matchWord) => ipcRenderer.invoke('find-all-getPositions', absolutePath, search, matchWord),
@@ -55,6 +55,6 @@ contextBridge.exposeInMainWorld('myAPI', {
   deleteFile: (absolutePath, isDirectory) => ipcRenderer.invoke('delete-file', absolutePath, isDirectory),
   renameFile: (absolutePath, filename, isDirectory) => ipcRenderer.invoke('rename-file', absolutePath, filename, isDirectory),
   saveFile: (unvalidatedAbsolutePath, text) => ipcRenderer.invoke('save-file', unvalidatedAbsolutePath, text),
-  editorSaveFile: (unvalidatedAbsolutePath, uint8Array, count, EDITOR_lineEndString, EDITOR_fileStartsWithBom) => ipcRenderer.invoke('editor-save-file', unvalidatedAbsolutePath, uint8Array, count, EDITOR_lineEndString, EDITOR_fileStartsWithBom),
+  editorSaveFile: (unvalidatedAbsolutePath, uint8Array, count, EDI_lineEndString, EDI_fileStartsWithBom) => ipcRenderer.invoke('editor-save-file', unvalidatedAbsolutePath, uint8Array, count, EDI_lineEndString, EDI_fileStartsWithBom),
   copyClipboardAbsolutePathToDirectory: (directory, menuOptionCut_id) => ipcRenderer.invoke('copy-clipboard-absolute-path-to-directory', directory, menuOptionCut_id),
 })

@@ -1512,20 +1512,20 @@ function EDITOR_drawHorizontalScrollbar() {
         cached_EDITOR_horizontal_scrollbar.style.width = EDITOR_horizontal_scrollbar_widthValue + 'px';
     }
 
-    if (EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] !== get_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar()) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] !== EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar]) {
         
         set_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar(EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length]);
 
         set_EDITOR_contentWidth(Math.ceil(EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] * EDITOR_characterWidth));
 
-        if ((get_EDITOR_contentWidth() < (EDITOR_baseElement.clientWidth - get_EDITOR_gutterWidthTotal())) && (EDITOR_baseElement.clientWidth - get_EDITOR_gutterWidthTotal() > 0)) {
-            set_EDITOR_contentWidth(Math.floor(EDITOR_baseElement.clientWidth - get_EDITOR_gutterWidthTotal()));
+        if ((get_EDITOR_contentWidth() < (EDITOR_baseElement.clientWidth - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal])) && (EDITOR_baseElement.clientWidth - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] > 0)) {
+            set_EDITOR_contentWidth(Math.floor(EDITOR_baseElement.clientWidth - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal]));
         }
 
         let local_cached_EDITOR_horizontal_scrollbar_virtualization_boundary_style_width = get_EDITOR_contentWidth() + 'px';
 
         cached_EDITOR_horizontal_scrollbar_virtualization_boundary.style.width = local_cached_EDITOR_horizontal_scrollbar_virtualization_boundary_style_width;
-        cached_EDITOR_virtualization_horizontal.style.width = get_EDITOR_contentWidth() + get_EDITOR_gutterWidthTotal() + 'px';
+        cached_EDITOR_virtualization_horizontal.style.width = get_EDITOR_contentWidth() + EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] + 'px';
 
         for (let i = 0; i < ArrayFrom_textElement_children_length; i++) {
             ArrayFrom_textElement_children[i].style.width = local_cached_EDITOR_horizontal_scrollbar_virtualization_boundary_style_width;
@@ -3276,7 +3276,7 @@ function EDITOR_onMouseMove_WRAPIT(event) {
         // TODO: Consider short circuiting at via event.clientX and clientY by tracking the necessary thresholds for the cursor position to pass rather than the previous and current indices. (you can possibly thereby skip the calculation of the indices entirely for the redundant events).
         // TODO: Is it correct to use the cursor's indexLine and indexColumn directly as a means of determining redundancy? I worry about odd interactions, but I have no proof that such an odd interaction could exist.
 
-        let rX = event.clientX - get_EDITOR_recentBoundingClientRect_left() - get_EDITOR_gutterWidthTotal() + lastReadNumber_scrollLeft;
+        let rX = event.clientX - get_EDITOR_recentBoundingClientRect_left() - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] + lastReadNumber_scrollLeft;
         let rY = event.clientY - get_EDITOR_recentBoundingClientRect_top() + EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
 
         let indexColumn = Math.round(rX / EDITOR_characterWidth);

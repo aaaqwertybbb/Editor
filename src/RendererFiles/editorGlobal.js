@@ -187,6 +187,13 @@ let EDITOR_cursor_editLineFeedCount = 0;
  */
 let EDITOR_cursor_edit_flagLineChanged = -1;
 
+/**
+ * TODO: Consider putting this at the editor level and then delay setting it to null until all cursors have made use of it?...
+ * ...an NRE is thrown with this at the editor level so I'm moving it per cursor but...
+ * Then again it is only multiple references, not multiple separate objects...
+ */
+let EDITOR_cursor_EDITOR_paste_clipboardContent = null;
+
 class EDITOR_Cursor {
     /**
      * After invoking the constructor you likely would want to add to:
@@ -197,16 +204,11 @@ class EDITOR_Cursor {
      * `EDITOR_cursorList.splice(index, 0, cursorInstance)`
      */
     constructor() {
-        /**
-         * TODO: Consider putting this at the editor level and then delay setting it to null until all cursors have made use of it?...
-         * ...an NRE is thrown with this at the editor level so I'm moving it per cursor but...
-         * Then again it is only multiple references, not multiple separate objects...
-         */
-        this.EDITOR_paste_clipboardContent = null;
+        
 
-        /** same comment that pertains to this.EDITOR_paste_clipboardContent is somewhat relevant here */
+        /** same comment that pertains to EDITOR_cursor_EDITOR_paste_clipboardContent is somewhat relevant here */
         this.EDITOR_duplicate_small = 0;
-        /** same comment that pertains to this.EDITOR_paste_clipboardContent is somewhat relevant here */
+        /** same comment that pertains to EDITOR_cursor_EDITOR_paste_clipboardContent is somewhat relevant here */
         this.EDITOR_duplicate_length = 0;
     }
 
@@ -252,7 +254,7 @@ class EDITOR_Cursor {
         EDITOR_cursor_editLineFeedCount = 0;
         EDITOR_cursor_edit_flagLineChanged = -1;
 
-        this.EDITOR_paste_clipboardContent = null;
+        EDITOR_cursor_EDITOR_paste_clipboardContent = null;
 
         this.EDITOR_duplicate_small = 0;
         this.EDITOR_duplicate_length = 0;
@@ -2179,8 +2181,8 @@ function EDITOR_finalizeEdit_Paste(cursor, indexLine_editOccurredOn) {
     
     EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(EDITOR_cursor_editPosition, EDITOR_cursor_editLength);
     
-    let content = cursor.EDITOR_paste_clipboardContent;
-    cursor.EDITOR_paste_clipboardContent = null;
+    let content = EDITOR_cursor_EDITOR_paste_clipboardContent;
+    EDITOR_cursor_EDITOR_paste_clipboardContent = null;
 
     let linesInsertedCount = 0;
     let insertionLength = 0;
@@ -5852,7 +5854,7 @@ function EDITOR_render_do_DuplicateOrPaste() {
         }
         else if (EDITOR_cursor_editKind === ENUM_EditKind_Paste) {
             large = EDITOR_getPositionIndex_raw(cursor);
-            let clipboardContent = cursor.EDITOR_paste_clipboardContent;
+            let clipboardContent = EDITOR_cursor_EDITOR_paste_clipboardContent;
             let clipboardContentLength = clipboardContent.length;
 
             let lengthBytes = 0;
@@ -6200,7 +6202,7 @@ function EDITOR_paste(cursor, content) {
     EDITOR_cursor_editIndexLine = EDITOR_cursor_indexLine;
     EDITOR_cursor_editIndexColumn = EDITOR_cursor_indexColumn;
 
-    cursor.EDITOR_paste_clipboardContent = content;
+    EDITOR_cursor_EDITOR_paste_clipboardContent = content;
 
     // TODO: Consider having this string available rather than making it everytime this function is invoked.
     let EDITOR_on_tab_string = '';

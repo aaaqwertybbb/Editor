@@ -2098,8 +2098,10 @@ function EDITOR_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
 }
 
 function EDITOR_finalizeEdit_Paste(indexLine_editOccurredOn) {
+
+    let local_EDITOR_int_fields = EDITOR_int_fields;
     
-    EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition], EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]);
+    EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition], local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]);
     
     let content = EDITOR_cursor_EDITOR_paste_clipboardContent;
     EDITOR_cursor_EDITOR_paste_clipboardContent = null;
@@ -2110,12 +2112,12 @@ function EDITOR_finalizeEdit_Paste(indexLine_editOccurredOn) {
     for (var sourceI = 0; sourceI < content.length; sourceI++) {
         switch (content[sourceI]) {
             case '\t':
-                EDITOR_textByteList.insertBytes(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] + insertionLength, EDITOR_tab_tabsbytes, /*offset*/ 0, /*length*/ 4);
+                EDITOR_textByteList.insertBytes(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] + insertionLength, EDITOR_tab_tabsbytes, /*offset*/ 0, /*length*/ 4);
                 insertionLength += 4;
                 break;
             case '\n':
-                EDITOR_textByteList.insert(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] + insertionLength, CONST_EDITOR_ASCII_LINE_FEED);
-                EDITOR_lineEndPositionList.insert(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] + linesInsertedCount, EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] + insertionLength);
+                EDITOR_textByteList.insert(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] + insertionLength, CONST_EDITOR_ASCII_LINE_FEED);
+                EDITOR_lineEndPositionList.insert(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] + linesInsertedCount, local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] + insertionLength);
                 insertionLength++;
                 linesInsertedCount++;
                 break;
@@ -2123,19 +2125,19 @@ function EDITOR_finalizeEdit_Paste(indexLine_editOccurredOn) {
                 if (sourceI < content.length - 1 && content[sourceI + 1] === '\n') {
                     sourceI++;
                 }
-                EDITOR_textByteList.insert(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] + insertionLength, CONST_EDITOR_ASCII_LINE_FEED);
-                EDITOR_lineEndPositionList.insert(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] + linesInsertedCount, EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] + insertionLength);
+                EDITOR_textByteList.insert(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] + insertionLength, CONST_EDITOR_ASCII_LINE_FEED);
+                EDITOR_lineEndPositionList.insert(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] + linesInsertedCount, local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] + insertionLength);
                 insertionLength++;
                 linesInsertedCount++;
                 break;
             default:
-                EDITOR_textByteList.insert(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] + insertionLength, content.charCodeAt(sourceI));
+                EDITOR_textByteList.insert(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] + insertionLength, content.charCodeAt(sourceI));
                 insertionLength++;
                 break;
         }
     }
 
-    for (var i = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] + linesInsertedCount; i < EDITOR_lineEndPositionList.count; i++) {
+    for (var i = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] + linesInsertedCount; i < EDITOR_lineEndPositionList.count; i++) {
         EDITOR_lineEndPositionList.data[i] += insertionLength;
     }
 
@@ -2146,18 +2148,20 @@ function EDITOR_finalizeEdit_Paste(indexLine_editOccurredOn) {
 
 function EDITOR_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
 
-    EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition], EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]);
+    let local_EDITOR_int_fields = EDITOR_int_fields;
 
-    let small = EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_small];
-    let length = EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_length];
+    EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition], local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]);
 
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_small] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_length] = 0;
+    let small = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_small];
+    let length = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_length];
+
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_small] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_length] = 0;
 
     let linesInsertedCount = 0;
     let insertionLength = 0;
 
-    EDITOR_textByteList.duplicateWithin(small, EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition], length);
+    EDITOR_textByteList.duplicateWithin(small, local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition], length);
     
     // TODO: cursor between '\t\0\0\0' is presumed to be the concern of the editor, duplication logic presumes correctness i.e.: that if the '\t' is selected that the '\0\0\0' that come after is selected too...
     // ...and that no partial selection over those characters could ever occur.
@@ -2170,7 +2174,7 @@ function EDITOR_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
                 insertionLength += 4; // ??? I think this is copy pasted from 'paste' logic where the tab would change to 4 characters total, in the case of duplication you get what you select.
                 break;
             case CONST_EDITOR_ASCII_LINE_FEED:
-                EDITOR_lineEndPositionList.insert(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] + linesInsertedCount, EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] + insertionLength);
+                EDITOR_lineEndPositionList.insert(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] + linesInsertedCount, local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] + insertionLength);
                 insertionLength++;
                 linesInsertedCount++;
                 break;
@@ -2180,7 +2184,7 @@ function EDITOR_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
         }
     }
 
-    for (var i = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] + linesInsertedCount; i < EDITOR_lineEndPositionList.count; i++) {
+    for (var i = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] + linesInsertedCount; i < EDITOR_lineEndPositionList.count; i++) {
         EDITOR_lineEndPositionList.data[i] += insertionLength;
     }
 

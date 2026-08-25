@@ -9312,4 +9312,6 @@ and then it just was what it was I now only get prescribed 450
 I commonly think I wanna not take any of the lithium but I stick with the 450 to look good on paper
 to some degree
 
+"this one is a good boy he takes his lithium"
+
 */

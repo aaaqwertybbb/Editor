@@ -434,7 +434,6 @@ function EDITOR_render_do_cursor_flag_scrollIntoViewExplicit(timestamp) {
     let notShouldScrollIntoView = false;
     let flag_scrollIntoViewExplicit = false;
 
-    EDITOR_renderKindArray.shift();
     flag_scrollIntoViewExplicit = true;
 
     if (flag_scrollIntoViewExplicit) {
@@ -446,17 +445,7 @@ function EDITOR_render_do_cursor_flag_scrollIntoViewExplicit(timestamp) {
 
 function EDITOR_render_do_cursor_flag_doNotScrollIntoView(timestamp) {
     EDITOR_cursorBlinkLastTimestamp = timestamp;
-    let notShouldScrollIntoView = false;
-    let flag_scrollIntoViewExplicit = false;
-
-    EDITOR_renderKindArray.shift();
-    notShouldScrollIntoView = true;
-
-    if (flag_scrollIntoViewExplicit) {
-        // TODO: consider setting 'notShouldScrollIntoView' to false to avoid two scroll into views redundantly?
-        EDITOR_scrollCursorIntoView();
-    }
-    EDITOR_drawCursor(notShouldScrollIntoView);
+    EDITOR_drawCursor(true);
 }
 
 function EDITOR_render_do_InsertLtr() {
@@ -3247,7 +3236,7 @@ function EDITOR_onMouseMoveDetailRankOne(indexLineClicked, indexColumnClicked) {
 
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = EDITOR_getPositionIndex_cursor();
 
-    EDITOR_render_request(ENUM_RenderKind_Cursor_n);
+    EDITOR_render_request(ENUM_RenderKind_Cursor_flag_doNotScrollIntoView);
 }
 
 function getCharacter_raw(positionIndex) {
@@ -3404,7 +3393,7 @@ function EDITOR_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
             }
         }
 
-        EDITOR_render_request(ENUM_RenderKind_Cursor_n);
+        EDITOR_render_request(ENUM_RenderKind_Cursor_flag_doNotScrollIntoView);
     }
     else {
         if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] > local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
@@ -3449,7 +3438,7 @@ function EDITOR_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
             local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = local_EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition];
         }
 
-        EDITOR_render_request(ENUM_RenderKind_Cursor_n);
+        EDITOR_render_request(ENUM_RenderKind_Cursor_flag_doNotScrollIntoView);
     }
 }
 
@@ -3479,7 +3468,7 @@ function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked)
             local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = local_EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition];
         }
 
-        EDITOR_render_request(ENUM_RenderKind_Cursor_n);
+        EDITOR_render_request(ENUM_RenderKind_Cursor_flag_doNotScrollIntoView);
     }
     else if (indexLineClicked < local_EDITOR_int_fields[INDEXOF_EDITOR_detailRank3OriginLine]) {
         if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
@@ -3490,7 +3479,7 @@ function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked)
 
             local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = local_EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition];
 
-            EDITOR_render_request(ENUM_RenderKind_Cursor_n);
+            EDITOR_render_request(ENUM_RenderKind_Cursor_flag_doNotScrollIntoView);
         }
 
         local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLineClicked;
@@ -3498,7 +3487,7 @@ function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked)
 
         local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = EDITOR_getPositionIndex_Overload(indexLineClicked, 0);
 
-        EDITOR_render_request(ENUM_RenderKind_Cursor_n);
+        EDITOR_render_request(ENUM_RenderKind_Cursor_flag_doNotScrollIntoView);
     }
     else if (indexLineClicked > local_EDITOR_int_fields[INDEXOF_EDITOR_detailRank3OriginLine]) {
 
@@ -3528,7 +3517,7 @@ function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked)
             local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = positionIndex;
         }
 
-        EDITOR_render_request(ENUM_RenderKind_Cursor_n);
+        EDITOR_render_request(ENUM_RenderKind_Cursor_flag_doNotScrollIntoView);
     }
 }
 

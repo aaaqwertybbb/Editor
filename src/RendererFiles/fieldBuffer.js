@@ -428,33 +428,33 @@ EDI_tab_spacesbytes[3] = CONST_EDI_ASCII_SPACE;
  * As of right now any patterns to naming the function that gets invoked are tentative.
  * But I am not checking whether JS_full_lex or JS_line_lex exist, I'm just switching on ExtensionKind and presuming that function exists.
  */
-const ENUM_ExtensionKind_None = 0;
-const ENUM_ExtensionKind_JavaScript = 1;
+const ExtensionKind_None = 0;
+const ExtensionKind_JavaScript = 1;
 
 /**
  * DeleteLtr and BackspaceRtl are both forms of removing text,
  * their edits are stored the same (i.e.: both in "the form of a delete" keypress)
  * The kind delete/backspace tells you how to restore the cursor when doing a ctrl+z and etc...?
  */
-const ENUM_EditKind_None = 0;
-const ENUM_EditKind_InsertLtr = 1;
-const ENUM_EditKind_DeleteLtr = 2;
-const ENUM_EditKind_BackspaceRtl = 3;
-const ENUM_EditKind_RemoveTextNoBatching = 4;
-const ENUM_EditKind_Tab = 5;
-const ENUM_EditKind_IndentMore = 6;
-const ENUM_EditKind_IndentLess = 7;
-const ENUM_EditKind_Enter = 8;
-const ENUM_EditKind_Paste = 9;
-const ENUM_EditKind_Duplicate = 10;
+const EditKind_None = 0;
+const EditKind_InsertLtr = 1;
+const EditKind_DeleteLtr = 2;
+const EditKind_BackspaceRtl = 3;
+const EditKind_RemoveTextNoBatching = 4;
+const EditKind_Tab = 5;
+const EditKind_IndentMore = 6;
+const EditKind_IndentLess = 7;
+const EditKind_Enter = 8;
+const EditKind_Paste = 9;
+const EditKind_Duplicate = 10;
 
 /**
  * TODO: Long term this likely should be removed and all enter key logic reduced into an insertion but this will help in the time being.
  */
-const ENUM_EnterKeyEventKind_None = 0;
-const ENUM_EnterKeyEventKind_StartOfLine = 1;
-const ENUM_EnterKeyEventKind_EndOfLine = 2;
-const ENUM_EnterKeyEventKind_AmongALine = 3;
+const EnterKeyEventKind_None = 0;
+const EnterKeyEventKind_StartOfLine = 1;
+const EnterKeyEventKind_EndOfLine = 2;
+const EnterKeyEventKind_AmongALine = 3;
 
 /**
  * Do not change the order/values of these, they are used in equality comparisons, the larger the number says when double clicking between a character and a punctuation
@@ -462,41 +462,41 @@ const ENUM_EnterKeyEventKind_AmongALine = 3;
  * 
  * TODO: Bug only 1 character selected when punctuation then letterOrDigit click between them the letterOrDigit is more than 1 contiguous only 1 selected.
  */
-const ENUM_CharacterKind_None = 0;
-const ENUM_CharacterKind_Whitespace = 1;
-const ENUM_CharacterKind_Punctuation = 2;
-const ENUM_CharacterKind_LetterOrDigit = 3;
+const CharacterKind_None = 0;
+const CharacterKind_Whitespace = 1;
+const CharacterKind_Punctuation = 2;
+const CharacterKind_LetterOrDigit = 3;
 
 // see editorGlobal.js:
 // > const count_of_wellknown_renderKinds = ...;
 //
-// ENUM_RenderKind_Cursor_n is to say
+// RenderKind_Cursor_n is to say
 // renderKind - (count_of_wellknown_renderKinds - 1) => render the cursor at cursorList[result];
 // ...
 // maybe I'll change this to be the id of the cursor at some point cause I'm not sure if it holds up with cursor movement possibly changing their order in the list.
 // but for now...
-const ENUM_RenderKind_None = 0;
-const ENUM_RenderKind_Scroll = 1;
-const ENUM_RenderKind_Resize = 2;
-const ENUM_RenderKind_InsertLtr = 3;
-const ENUM_RenderKind_TabKey = 4;
-const ENUM_RenderKind_IndentMore = 5;
-const ENUM_RenderKind_IndentLess = 6;
-const ENUM_RenderKind_BackspaceRtl = 7;
-const ENUM_RenderKind_DeleteLtr = 8;
-const ENUM_RenderKind_RemoveSelection = 9;
-const ENUM_RenderKind_Enter = 10;
-const ENUM_RenderKind_DuplicateOrPaste = 11;
-const ENUM_RenderKind_Clear = 12;
-const ENUM_RenderKind_SetText = 13;
-const ENUM_RenderKind_CreateViewport = 14;
-const ENUM_RenderKind_SyntaxHighlighting = 15;
+const RenderKind_None = 0;
+const RenderKind_Scroll = 1;
+const RenderKind_Resize = 2;
+const RenderKind_InsertLtr = 3;
+const RenderKind_TabKey = 4;
+const RenderKind_IndentMore = 5;
+const RenderKind_IndentLess = 6;
+const RenderKind_BackspaceRtl = 7;
+const RenderKind_DeleteLtr = 8;
+const RenderKind_RemoveSelection = 9;
+const RenderKind_Enter = 10;
+const RenderKind_DuplicateOrPaste = 11;
+const RenderKind_Clear = 12;
+const RenderKind_SetText = 13;
+const RenderKind_CreateViewport = 14;
+const RenderKind_SyntaxHighlighting = 15;
 /** non-primaryCursors won't scroll into view, */
-const ENUM_RenderKind_Cursor_flag_scrollIntoViewExplicit = 16;
-/** To have a cursor not scroll into view add request this render immediately after the 'ENUM_RenderKind_Cursor_n'. */
-const ENUM_RenderKind_Cursor_flag_doNotScrollIntoView = 17;
+const RenderKind_Cursor_flag_scrollIntoViewExplicit = 16;
+/** To have a cursor not scroll into view add request this render immediately after the 'RenderKind_Cursor_n'. */
+const RenderKind_Cursor_flag_doNotScrollIntoView = 17;
 /** Add the index of the cursor */
-const ENUM_RenderKind_Cursor_n = 18;
+const RenderKind_Cursor_n = 18;
 
 
 

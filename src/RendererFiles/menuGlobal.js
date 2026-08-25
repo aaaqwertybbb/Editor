@@ -1,27 +1,27 @@
-const ENUM_CommandKind_None = 0;
-const ENUM_CommandKind_Submenu = 1;
-const ENUM_CommandKind_Copy = 2;
-const ENUM_CommandKind_CopyAbsolutePath = 3;
-const ENUM_CommandKind_Cut = 4;
-const ENUM_CommandKind_Paste = 5;
-const ENUM_CommandKind_NewFile_Directory = 6;
-const ENUM_CommandKind_NewFile_File = 7;
-const ENUM_CommandKind_DeleteFile_Directory = 8;
-const ENUM_CommandKind_DeleteFile_File = 9;
-const ENUM_CommandKind_RenameFile_Directory = 10;
-const ENUM_CommandKind_RenameFile_File = 11;
-const ENUM_CommandKind_Find = 12;
-const ENUM_CommandKind_SelectFolder = 13;
-const ENUM_CommandKind_SelectWorkspace = 14;
+const CommandKind_None = 0;
+const CommandKind_Submenu = 1;
+const CommandKind_Copy = 2;
+const CommandKind_CopyAbsolutePath = 3;
+const CommandKind_Cut = 4;
+const CommandKind_Paste = 5;
+const CommandKind_NewFile_Directory = 6;
+const CommandKind_NewFile_File = 7;
+const CommandKind_DeleteFile_Directory = 8;
+const CommandKind_DeleteFile_File = 9;
+const CommandKind_RenameFile_Directory = 10;
+const CommandKind_RenameFile_File = 11;
+const CommandKind_Find = 12;
+const CommandKind_SelectFolder = 13;
+const CommandKind_SelectWorkspace = 14;
 
 /**
  * This needs to wrap the list.js?
  */
 class MenuOption {
-    commandKind = ENUM_CommandKind_None;
+    commandKind = CommandKind_None;
     text = '';
     /**
-     * If submenu is not null, the commandKind will be overriden to be ENUM_CommandKind_Submenu
+     * If submenu is not null, the commandKind will be overriden to be CommandKind_Submenu
      * @type {MenuOption[]}
      */
     submenu = null;
@@ -29,7 +29,7 @@ class MenuOption {
     /**
      * @param {CommandKind} commandKind 
      * @param {string} text 
-     * @param {MenuOption[]} submenu If submenu is not null, the commandKind will be overriden to be ENUM_CommandKind_Submenu
+     * @param {MenuOption[]} submenu If submenu is not null, the commandKind will be overriden to be CommandKind_Submenu
      */
     constructor(commandKind, text, submenu) {
         this.commandKind = commandKind;
@@ -97,15 +97,15 @@ let MENU_onHideAction = null;
 
 let MENU_last_handled_ticketId = 0;
 
-const ENUM_MENUrenderKind_None = 0;
-const ENUM_MENUrenderKind_Cursor = 1;
-const ENUM_MENUrenderKind_Set = 2;
-const ENUM_MENUrenderKind_Hide = 3;
+const MENUrenderKind_None = 0;
+const MENUrenderKind_Cursor = 1;
+const MENUrenderKind_Set = 2;
+const MENUrenderKind_Hide = 3;
 
 function MENU_render_request(renderKind) {
     if (MENU_renderKindArray[MENU_renderKindArray.length - 1] !== renderKind) {
         MENU_renderKindArray.push(renderKind);
-        if (renderKind === ENUM_MENUrenderKind_Set) MENU_renderKind_Set_countOfPendingRequests++;
+        if (renderKind === MENUrenderKind_Set) MENU_renderKind_Set_countOfPendingRequests++;
     }
     
     if (!MENU_isRenderPending) {
@@ -119,14 +119,14 @@ function MENU_render_do() {
     
     while (renderKind = MENU_renderKindArray.shift()) {
         switch (renderKind) {
-            case ENUM_MENUrenderKind_Cursor:
+            case MENUrenderKind_Cursor:
                 MENU_render_do_Cursor();
                 break;
-            case ENUM_MENUrenderKind_Set:
+            case MENUrenderKind_Set:
                 if (MENU_renderKind_Set_countOfPendingRequests-- > 1) break;
                 MENU_render_do_Set();
                 break;
-            case ENUM_MENUrenderKind_Hide:
+            case MENUrenderKind_Hide:
                 MENU_render_do_Hide();
                 break;
         }
@@ -181,7 +181,7 @@ async function menuHide(shouldRestoreFocus) {
     // ...I'm anxious and can't think straight I swear...
     MENU_last_handled_ticketId = MENU_ticketId_drawn;
     await MENU_state_do_hide(shouldRestoreFocus);
-    MENU_render_request(ENUM_MENUrenderKind_Hide);
+    MENU_render_request(MENUrenderKind_Hide);
 }
 
 function MENU_render_do_Set() {
@@ -216,7 +216,7 @@ function MENU_render_do_Set() {
             optionElement.textContent = entry.text;
 
             if (entry.submenu) {
-                optionElement.setAttribute("data-command-kind", ENUM_CommandKind_Submenu);
+                optionElement.setAttribute("data-command-kind", CommandKind_Submenu);
                 optionElement.textContent += '>';
             }
             else {
@@ -314,7 +314,7 @@ async function menuSet(context, target, optionList, left, top, NOTshouldFocus, i
 
     MENU_recentBoundingClientRectTop = null;
 
-    MENU_render_request(ENUM_MENUrenderKind_Set);
+    MENU_render_request(MENUrenderKind_Set);
 }
 
 function MENU_onMouseMove(event) {
@@ -402,7 +402,7 @@ function MENU_state_do_Cursor(index) {
 
 function MENU_setCursorIndex(index) {
     MENU_state_do_Cursor(index);
-    MENU_render_request(ENUM_MENUrenderKind_Cursor);
+    MENU_render_request(MENUrenderKind_Cursor);
 }
 
 // My only public C# repo is terrible too lol

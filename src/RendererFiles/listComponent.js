@@ -1,5 +1,5 @@
-const ENUM_LISTrenderKind_None = 0;
-const ENUM_LISTrenderKind_Cursor = 1;
+const LISTrenderKind_None = 0;
+const LISTrenderKind_Cursor = 1;
 
 class ListComponent {
     constructor() {
@@ -70,7 +70,7 @@ class ListComponent {
         // Synchronously exhaust the item queue for this animation frame
         while (renderKind = this.LIST_renderKindArray.shift()) {
             switch (renderKind) {
-                case ENUM_LISTrenderKind_Cursor:
+                case LISTrenderKind_Cursor:
                     this.LIST_render_do_Cursor();
                     break;
             }
@@ -426,7 +426,7 @@ class ListComponent {
     state_cursor_setIndex(indexItem) {
         if (this.cursorIndex === indexItem) return;
         this.cursorIndex = indexItem;
-        this.LIST_render_request(ENUM_LISTrenderKind_Cursor);
+        this.LIST_render_request(LISTrenderKind_Cursor);
     }
 
     /**

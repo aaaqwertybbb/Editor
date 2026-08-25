@@ -1,7 +1,7 @@
-const ENUM_TrackedSyntaxKind_None = 0;
-const ENUM_TrackedSyntaxKind_String = 1;
-/** only multi-line-comments that span multiple lines are stored in EDI_trackedSyntaxList with the 'ENUM_TrackedSyntaxKind_Comment' */
-const ENUM_TrackedSyntaxKind_Comment = 2;
+const TrackedSyntaxKind_None = 0;
+const TrackedSyntaxKind_String = 1;
+/** only multi-line-comments that span multiple lines are stored in EDI_trackedSyntaxList with the 'TrackedSyntaxKind_Comment' */
+const TrackedSyntaxKind_Comment = 2;
 
 class TrackedSyntaxList {
     data_literal;

@@ -3,15 +3,15 @@
 
 /** See the "interface TreeViewDirector" towards the bottom of this file */
 
-const ENUM_TREEVIEWrenderKind_None = 0;
-const ENUM_TREEVIEWrenderKind_Cursor = 1;
-const ENUM_TREEVIEWrenderKind_Create = 2;
-const ENUM_TREEVIEWrenderKind_Batch = 3;
-const ENUM_TREEVIEWrenderKind_Scroll = 4;
-const ENUM_TREEVIEWrenderKind_SetItems = 5;
-const ENUM_TREEVIEWrenderKind_FullReset = 6;
-const ENUM_TREEVIEWrenderKind_Scroll_PullDataDrawResult = 7;
-const ENUM_TREEVIEWrenderKind_Resize = 8;
+const TREEVIEWrenderKind_None = 0;
+const TREEVIEWrenderKind_Cursor = 1;
+const TREEVIEWrenderKind_Create = 2;
+const TREEVIEWrenderKind_Batch = 3;
+const TREEVIEWrenderKind_Scroll = 4;
+const TREEVIEWrenderKind_SetItems = 5;
+const TREEVIEWrenderKind_FullReset = 6;
+const TREEVIEWrenderKind_Scroll_PullDataDrawResult = 7;
+const TREEVIEWrenderKind_Resize = 8;
 
 /**
  * The director maintains a flat optimized list of every element i.e.: represent each element in a uint8array and each one is a byte that maps to the actual.
@@ -96,28 +96,28 @@ class TreeViewComponent {
         // Synchronously exhaust the item queue for this animation frame
         while (renderKind = this.TREEVIEW_renderKindArray.shift()) {
             switch (renderKind) {
-                case ENUM_TREEVIEWrenderKind_Cursor:
+                case TREEVIEWrenderKind_Cursor:
                     this.TREEVIEW_render_do_Cursor();
                     break;
-                case ENUM_TREEVIEWrenderKind_Create:
+                case TREEVIEWrenderKind_Create:
                     this.TREEVIEW_render_do_Create(timestamp);
                     break;
-                case ENUM_TREEVIEWrenderKind_Batch:
+                case TREEVIEWrenderKind_Batch:
                     this.TREEVIEW_render_do_Batch(timestamp);
                     break;
-                case ENUM_TREEVIEWrenderKind_Scroll:
+                case TREEVIEWrenderKind_Scroll:
                     this.TREEVIEW_render_do_Scroll(timestamp);
                     break;
-                case ENUM_TREEVIEWrenderKind_Scroll_PullDataDrawResult:
+                case TREEVIEWrenderKind_Scroll_PullDataDrawResult:
                     this.TREEVIEW_render_do_Scroll_PullDataDrawResult();
                     break;
-                case ENUM_TREEVIEWrenderKind_SetItems:
+                case TREEVIEWrenderKind_SetItems:
                     this.TREEVIEW_render_do_SetItems();
                     break;
-                case ENUM_TREEVIEWrenderKind_FullReset:
+                case TREEVIEWrenderKind_FullReset:
                     this.TREEVIEW_render_do_FullReset(timestamp);
                     break;
-                case ENUM_TREEVIEWrenderKind_Resize:
+                case TREEVIEWrenderKind_Resize:
                     this.TREEVIEW_render_do_Resize(timestamp);
                     break;
             }
@@ -154,7 +154,7 @@ class TreeViewComponent {
         this.SET_ITEMS_director = director;
         this.SET_ITEMS_itemHeightNumber = itemHeightNumber;
         this.SET_ITEMS_itemHeightStyleAttributeValueString = itemHeightStyleAttributeValueString;
-        this.TREEVIEW_render_request(ENUM_TREEVIEWrenderKind_SetItems);
+        this.TREEVIEW_render_request(TREEVIEWrenderKind_SetItems);
     }
 
     TREEVIEW_render_do_Create(timestamp) {
@@ -199,7 +199,7 @@ class TreeViewComponent {
     draw_create_request(parentElement, insertBeforeThisChild) {
         this.TREEVIEW_draw_create_request_parentElement = parentElement;
         this.TREEVIEW_draw_create_request_insertBeforeThisChild = insertBeforeThisChild;
-        this.TREEVIEW_render_request(ENUM_TREEVIEWrenderKind_Create);
+        this.TREEVIEW_render_request(TREEVIEWrenderKind_Create);
     }
 
     TREEVIEW_render_do_Batch(timestamp) {
@@ -317,7 +317,7 @@ class TreeViewComponent {
         this.length = length;
         this.onePositiveDiff_twoNegativeDiff_orThreeFullScreen = onePositiveDiff_twoNegativeDiff_orThreeFullScreen;
         this.caseThreeOrigin = caseThreeOrigin;
-        this.TREEVIEW_render_request(ENUM_TREEVIEWrenderKind_Batch);
+        this.TREEVIEW_render_request(TREEVIEWrenderKind_Batch);
     }
 
     TREEVIEW_render_do_FullReset(timestamp) {
@@ -385,7 +385,7 @@ class TreeViewComponent {
      * so it is easier to just invoke this directly when you change totalCount?
      */
     draw_render_fullReset_request() {
-        this.TREEVIEW_render_request(ENUM_TREEVIEWrenderKind_FullReset);
+        this.TREEVIEW_render_request(TREEVIEWrenderKind_FullReset);
     }
 
     /**
@@ -592,13 +592,13 @@ class TreeViewComponent {
      * TODO: intra-app resizes or movements will also invoke this; i.e.: if a list is shown in a dialog and the dialog is resized or moved.
      */
     event_windowResize() {
-        this.TREEVIEW_render_request(ENUM_TREEVIEWrenderKind_Resize);
+        this.TREEVIEW_render_request(TREEVIEWrenderKind_Resize);
     }
 
     event_scroll() {
         this.lastReadNumber_scrollLeft = this.rootElement.scrollLeft;
         this.lastReadNumber_scrollTop = this.rootElement.scrollTop;
-        this.TREEVIEW_render_request(ENUM_TREEVIEWrenderKind_Scroll);
+        this.TREEVIEW_render_request(TREEVIEWrenderKind_Scroll);
     }
 
     ensure_boundingClientRect() {
@@ -640,7 +640,7 @@ class TreeViewComponent {
     state_cursor_setIndex(index) {
         if (this.cursorIndex === index) return;
         this.cursorIndex = index;
-        this.TREEVIEW_render_request(ENUM_TREEVIEWrenderKind_Cursor);
+        this.TREEVIEW_render_request(TREEVIEWrenderKind_Cursor);
     }
 
     /**
@@ -713,11 +713,11 @@ class TreeViewComponent {
     */
 }
 
-const ENUM_TreeViewNodeKind_None = 0;
-const ENUM_TreeViewNodeKind_isExpandable_isExpanded = 1;
-const ENUM_TreeViewNodeKind_isExpandable_NOTisExpanded = 2;
-const ENUM_TreeViewNodeKind_NOTisExpandable_isExpanded = 3;
-const ENUM_TreeViewNodeKind_NOTisExpandable_NOTisExpanded = 4;
+const TreeViewNodeKind_None = 0;
+const TreeViewNodeKind_isExpandable_isExpanded = 1;
+const TreeViewNodeKind_isExpandable_NOTisExpanded = 2;
+const TreeViewNodeKind_NOTisExpandable_isExpanded = 3;
+const TreeViewNodeKind_NOTisExpandable_NOTisExpanded = 4;
 
 class TreeViewNodeList {
     data_literal;
@@ -950,6 +950,6 @@ class TreeViewNodeList {
     }
 }
 
-let TreeView_pooledNode_nodeKind = ENUM_TreeViewNodeKind_None;
+let TreeView_pooledNode_nodeKind = TreeViewNodeKind_None;
 let TreeView_pooledNode_key = 0;
 let TreeView_pooledNode_depth = 0;

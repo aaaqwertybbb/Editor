@@ -77,7 +77,7 @@ const EDI_decoder = new TextDecoder();
 let gutterWidthTotal_withPxUnits;
 
 // TODO: This assignment isn't necessary, it was already the default value;
-GLOB_int_fields[F_EDI_cursor_editKind] = ENUM_EditKind_None;
+GLOB_int_fields[F_EDI_cursor_editKind] = EditKind_None;
 
 let EDI_cursor_cursorId = 1;//EDI_cursor_STATIC_CURSOR_ID++;
 let EDI_cursor_htmlId = "EDI_cursor-" + EDI_cursor_cursorId;
@@ -123,7 +123,7 @@ let EDI_cursor_enterKey_newLinePlusIndentation_byteList = null;
 
 let EDI_cursor_cached_indentation_string = null;
 
-let EDI_cursor_enterKeyEventKind = ENUM_EnterKeyEventKind_None;
+let EDI_cursor_enterKeyEventKind = EnterKeyEventKind_None;
 
 /**
  * This purposefully avoids the wording "edit length" in order to avoid accident / confusing / hard to read code
@@ -166,7 +166,7 @@ function EDI_cursor_clear() {
     intFields[F_EDI_cursor_DRAWN_selectionEnd] = 0;
     intFields[F_EDI_cursor_DRAWN_selection_virtualIndexLine] = 0;
     intFields[F_EDI_cursor_DRAWN_selection_virtualCount] = 0;
-    intFields[F_EDI_cursor_editKind] = ENUM_EditKind_None;
+    intFields[F_EDI_cursor_editKind] = EditKind_None;
     intFields[F_EDI_cursor_editLength] = 0;
     intFields[F_EDI_cursor_editPosition] = 0;
     intFields[F_EDI_cursor_editIndexLine] = 0;
@@ -180,7 +180,7 @@ function EDI_cursor_clear() {
 
     EDI_cursor_enterKey_newLinePlusIndentation_byteList = null;
     EDI_cursor_cached_indentation_string = null;
-    EDI_cursor_enterKeyEventKind = ENUM_EnterKeyEventKind_None;
+    EDI_cursor_enterKeyEventKind = EnterKeyEventKind_None;
 
     intFields[F_EDI_cursor_editLineFeedCount] = 0;
     EDI_cursor_edit_flagLineChanged = -1;
@@ -215,7 +215,7 @@ let EDI_lineEndPositionList = new UInt32List(128);
 
 let EDI_textSourceIdentifier = '';
 let EDI_FORMATTED_textSourceIdentifier = '';
-let EDI_extensionKind = ENUM_ExtensionKind_None;
+let EDI_extensionKind = ExtensionKind_None;
 
 let EDI_lineEndString = null;
 
@@ -230,7 +230,7 @@ let EDI_onResize_hasTrailingCall = false;
 
 let EDI_offsetWithinSpan_withRespectToThisSpan = null;
 
-let EDI_pooledTrackedSyntax_trackedSyntaxKind = ENUM_TrackedSyntaxKind_None;
+let EDI_pooledTrackedSyntax_trackedSyntaxKind = TrackedSyntaxKind_None;
 
 let EDI_characterWidth = 8;
 let EDI_horizontal_scrollbar_widthValue = 0;
@@ -355,65 +355,65 @@ function EDI_render_do(timestamp) {
 
     while (renderKind = EDI_renderKindArray.shift()) {
         switch (renderKind) {
-            case ENUM_RenderKind_Scroll:
+            case RenderKind_Scroll:
                 EDI_render_do_Scroll(timestamp);
                 break;
-            case ENUM_RenderKind_Resize:
+            case RenderKind_Resize:
                 EDI_render_do_Resize(timestamp);
                 break;
-            case ENUM_RenderKind_InsertLtr:
+            case RenderKind_InsertLtr:
                 EDI_render_do_InsertLtr();
                 break;
-            case ENUM_RenderKind_TabKey:
+            case RenderKind_TabKey:
                 EDI_render_do_TabKey();
                 break;
-            case ENUM_RenderKind_IndentMore:
+            case RenderKind_IndentMore:
                 EDI_render_do_IndentMore();
                 break;
-            case ENUM_RenderKind_IndentLess:
+            case RenderKind_IndentLess:
                 EDI_render_do_IndentLess();
                 break;
-            case ENUM_RenderKind_BackspaceRtl:
+            case RenderKind_BackspaceRtl:
                 EDI_render_do_Backspace();
                 break;
-            case ENUM_RenderKind_DeleteLtr:
+            case RenderKind_DeleteLtr:
                 EDI_render_do_Delete();
                 break;
-            case ENUM_RenderKind_RemoveSelection:
+            case RenderKind_RemoveSelection:
                 EDI_render_do_RemoveSelection();
                 break;
-            case ENUM_RenderKind_Enter:
+            case RenderKind_Enter:
                 EDI_render_do_EnterKey();
                 break;
-            case ENUM_RenderKind_DuplicateOrPaste:
+            case RenderKind_DuplicateOrPaste:
                 EDI_render_do_DuplicateOrPaste();
                 break;
-            case ENUM_RenderKind_Clear:
+            case RenderKind_Clear:
                 EDI_render_do_Clear();
                 break;
-            case ENUM_RenderKind_SetText:
+            case RenderKind_SetText:
                 EDI_render_do_SetText(timestamp);
                 break;
-            case ENUM_RenderKind_CreateViewport:
+            case RenderKind_CreateViewport:
                 EDI_render_do_CreateViewport();
                 break;
-            case ENUM_RenderKind_SyntaxHighlighting:
+            case RenderKind_SyntaxHighlighting:
                 EDI_render_do_SyntaxHighlighting();
                 break;
-            case ENUM_RenderKind_Cursor_flag_scrollIntoViewExplicit:
+            case RenderKind_Cursor_flag_scrollIntoViewExplicit:
                 EDI_render_do_cursor_flag_scrollIntoViewExplicit(timestamp);
                 break;
-            case ENUM_RenderKind_Cursor_flag_doNotScrollIntoView:
+            case RenderKind_Cursor_flag_doNotScrollIntoView:
                 EDI_render_do_cursor_flag_doNotScrollIntoView(timestamp);
                 break;
             // Don't include these you're wasting stackframe space.
             // You could perhaps "debug mode" check for these
-            //case ENUM_RenderKind_None: // this is a duplicate case ???
-            //case ENUM_RenderKind_Cursor_flag_doNotScrollIntoView: // TODO: This is a silent error
-            //case ENUM_RenderKind_Cursor_flag_scrollIntoViewExplicit: // TODO: This is a silent error
+            //case RenderKind_None: // this is a duplicate case ???
+            //case RenderKind_Cursor_flag_doNotScrollIntoView: // TODO: This is a silent error
+            //case RenderKind_Cursor_flag_scrollIntoViewExplicit: // TODO: This is a silent error
             //    break;
-            case ENUM_RenderKind_Cursor_n:
-                // the 'default case' is ENUM_RenderKind_Cursor_n:
+            case RenderKind_Cursor_n:
+                // the 'default case' is RenderKind_Cursor_n:
                 EDI_render_do_cursor(timestamp);
                 break;
             //default:
@@ -450,7 +450,7 @@ function EDI_render_do_cursor_flag_doNotScrollIntoView(timestamp) {
 
 function EDI_render_do_InsertLtr() {
     let intFields = GLOB_int_fields;
-    if (intFields[F_EDI_cursor_editKind] !== ENUM_EditKind_InsertLtr) {
+    if (intFields[F_EDI_cursor_editKind] !== EditKind_InsertLtr) {
         return;
     }
     if (intFields[F_EDI_cursor_editRenderedDisplacement] < intFields[F_EDI_cursor_editLength]) {
@@ -572,7 +572,7 @@ function EDI_render_do_CreateViewport() {
 }
 
 function EDI_createViewport() {
-    EDI_render_request(ENUM_RenderKind_CreateViewport);
+    EDI_render_request(RenderKind_CreateViewport);
 }
 
 /**
@@ -629,7 +629,7 @@ function EDI_onScroll_WRAPIT() {
     lastReadNumber_scrollLeft = EDI_baseElement.scrollLeft;
     GLOB_int_fields[F_lastReadNumber_scrollTop] = EDI_baseElement.scrollTop;
 
-    EDI_render_request(ENUM_RenderKind_Scroll);
+    EDI_render_request(RenderKind_Scroll);
 }
 
 /**
@@ -733,7 +733,7 @@ function EDI_render_do_Scroll(timestamp) {
     intFields[F_EDI_ONSCROLLscrollTop] = intFields[F_lastReadNumber_scrollTop]; // TODO: Move this to the scroll event handler (probably-maybe)
 
     // TODO: Move this to the leading edge? (maybe)
-    if (intFields[F_EDI_cursor_editKind] !== ENUM_EditKind_None) {
+    if (intFields[F_EDI_cursor_editKind] !== EditKind_None) {
         // TODO: Timing issue, someone typing while they scroll
         // TODO: You need to finalize all the cursors not just the primary
         // TODO: You probably need to "check all the cursors" too not just the primary
@@ -937,7 +937,7 @@ function EDI_render_do_ScrollTrailingEdgeCheck(timestamp) {
 function EDI_onScroll_TrailingEdge() {
     GLOB_int_fields[F_EDI_intFalsey_isScrolling] = 0;
     isCheckingTrailingEdge = false; // Reset the flag here
-    EDI_render_request(ENUM_RenderKind_SyntaxHighlighting);
+    EDI_render_request(RenderKind_SyntaxHighlighting);
 }
 
 
@@ -1197,7 +1197,7 @@ function EDI_state_clear() {
     set_EDI_recentBoundingClientRect_isNull_intFalsey(1);
     EDI_textSourceIdentifier = '';
     EDI_FORMATTED_textSourceIdentifier = '';
-    EDI_extensionKind = ENUM_ExtensionKind_None;
+    EDI_extensionKind = ExtensionKind_None;
     set_EDI_fileStartsWithBom(false);
     EDI_lineEndString = null;
     EDI_lineEndPositionList.clear();
@@ -1219,7 +1219,7 @@ function EDI_state_clear() {
 
 function EDI_clear() {
     EDI_state_clear();
-    EDI_render_request(ENUM_RenderKind_Clear);
+    EDI_render_request(RenderKind_Clear);
 }
 
 function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMATTED_textSourceIdentifier, extensionKind, lineEndString) {
@@ -1311,7 +1311,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     update_verticalVirtualizationBoundary();
 
     //switch (EDI_extensionKind) {
-    //    case ENUM_ExtensionKind_JavaScript:
+    //    case ExtensionKind_JavaScript:
     //        // This 'JS_full_lex' only runs when you open a file for the first time.
     //        // The logic likely has some JIT overhead that is long term persistent in the GC. I have no proof of this but I need to look into it.
     //        // If so, moving this to be an LSP request to get the initial list of tracked syntax could be a massive improvement.
@@ -1344,7 +1344,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
  */
 function EDI_setText(text, fileStartsWithBom, textSourceIdentifier, FORMATTED_textSourceIdentifier, extensionKind, lineEndString) {
     EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMATTED_textSourceIdentifier, extensionKind, lineEndString);
-    EDI_render_request(ENUM_RenderKind_SetText);
+    EDI_render_request(RenderKind_SetText);
 }
 
 /**
@@ -1393,7 +1393,7 @@ function update_virtualCount() {
 function EDI_drawGutter_Width() {
     let intFields = GLOB_int_fields;
     let count = EDI_lineEndPositionList.count;
-    if (EDI_cursor_enterKeyEventKind !== ENUM_EnterKeyEventKind_None) {
+    if (EDI_cursor_enterKeyEventKind !== EnterKeyEventKind_None) {
         count += 1;
     }
     let digitCountOfLargestLineNumber = positiveNumbersOnly_countDigitsLoop(count);
@@ -1517,30 +1517,30 @@ function EDI_finalizeEdit() {
     let indexLine_editOccurredOn = -1;
 
     switch (GLOB_int_fields[F_EDI_cursor_editKind]) {
-        case ENUM_EditKind_InsertLtr:
+        case EditKind_InsertLtr:
             indexLine_editOccurredOn = EDI_finalizeEdit_InsertLtr(indexLine_editOccurredOn);
             break;
-        case ENUM_EditKind_Enter:
+        case EditKind_Enter:
             indexLine_editOccurredOn = EDI_finalizeEdit_Enter(indexLine_editOccurredOn);
             return;
-        case ENUM_EditKind_Tab:
+        case EditKind_Tab:
             indexLine_editOccurredOn = EDI_finalizeEdit_Tab(indexLine_editOccurredOn);
             return;
-        case ENUM_EditKind_IndentMore:
+        case EditKind_IndentMore:
             indexLine_editOccurredOn = EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn);
             return;
-        case ENUM_EditKind_IndentLess:
+        case EditKind_IndentLess:
             indexLine_editOccurredOn = EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn);
             break;
-        case ENUM_EditKind_Paste:
+        case EditKind_Paste:
             indexLine_editOccurredOn = EDI_finalizeEdit_Paste(indexLine_editOccurredOn);
             return;
-        case ENUM_EditKind_Duplicate:
+        case EditKind_Duplicate:
             indexLine_editOccurredOn = EDI_finalizeEdit_Duplicate(indexLine_editOccurredOn);
             return;
-        case ENUM_EditKind_DeleteLtr:
-        case ENUM_EditKind_BackspaceRtl:
-        case ENUM_EditKind_RemoveTextNoBatching:
+        case EditKind_DeleteLtr:
+        case EditKind_BackspaceRtl:
+        case EditKind_RemoveTextNoBatching:
             indexLine_editOccurredOn = EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_editOccurredOn);
             break;
     }
@@ -1609,7 +1609,7 @@ function EDI_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
         if (intFields[F_EDI_cursor_editPosition] <= intFields[F_EDI_pooledTrackedSyntax_start]) {
             EDI_trackedSyntaxList.setStart(i, intFields[F_EDI_pooledTrackedSyntax_start] + intFields[F_EDI_cursor_editLength]);
         }
-        else if (EDI_pooledTrackedSyntax_trackedSyntaxKind === ENUM_TrackedSyntaxKind_Comment &&
+        else if (EDI_pooledTrackedSyntax_trackedSyntaxKind === TrackedSyntaxKind_Comment &&
                 intFields[F_EDI_cursor_editPosition] === intFields[F_EDI_pooledTrackedSyntax_start] + 1) {
 
             // TODO: Insertion of '*' probably shouldn't remove.
@@ -1660,8 +1660,8 @@ function EDI_finalizeEdit_Enter(indexLine_editOccurredOn) {
 
     EDI_trackedSyntaxList_inefficientUpdateStartAndLength(intFields[F_EDI_cursor_editPosition], intFields[F_EDI_cursor_editLength]);
 
-    // throws an exception if 'ENUM_EnterKeyEventKind_None' (...or falsey).
-    if (!EDI_cursor_enterKeyEventKind || EDI_cursor_enterKeyEventKind === ENUM_EnterKeyEventKind_None) { EDI_finalizeEdit_ClearEditState(); throw new Error('if (!enterKeyEventKind...)'); }
+    // throws an exception if 'EnterKeyEventKind_None' (...or falsey).
+    if (!EDI_cursor_enterKeyEventKind || EDI_cursor_enterKeyEventKind === EnterKeyEventKind_None) { EDI_finalizeEdit_ClearEditState(); throw new Error('if (!enterKeyEventKind...)'); }
 
     EDI_textByteList.insertBytes(intFields[F_EDI_cursor_editPosition], EDI_cursor_enterKey_newLinePlusIndentation_byteList.bytes, /*offset*/ 0, EDI_cursor_enterKey_newLinePlusIndentation_byteList.count);
 
@@ -2188,7 +2188,7 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
 
     // TODO: surely u'd get this before doing the edit?
     let startLineAndColumnIndices;
-    if (intFields[F_EDI_cursor_editKind] === ENUM_EditKind_RemoveTextNoBatching) {
+    if (intFields[F_EDI_cursor_editKind] === EditKind_RemoveTextNoBatching) {
         startLineAndColumnIndices = {
             indexLine: intFields[F_EDI_cursor_editIndexLine],
             indexColumn: intFields[F_EDI_cursor_editIndexColumn],
@@ -2198,7 +2198,7 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
         startLineAndColumnIndices = EDI_getLineAndColumnIndices_raw(intFields[F_EDI_cursor_editPosition]);
     }
     let endLineAndColumnIndices;
-    if (intFields[F_EDI_cursor_editKind] === ENUM_EditKind_RemoveTextNoBatching) {
+    if (intFields[F_EDI_cursor_editKind] === EditKind_RemoveTextNoBatching) {
         endLineAndColumnIndices = {
             indexLine: intFields[F_EDI_cursor_END_editIndexLine],
             indexColumn: intFields[F_EDI_cursor_END_editIndexColumn],
@@ -2249,11 +2249,11 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
             // TODO: This needs to remove more than 1 at a time
             EDI_trackedSyntaxList.removeAt(i, 1);
         }
-        else if (EDI_pooledTrackedSyntax_trackedSyntaxKind === ENUM_TrackedSyntaxKind_Comment &&
+        else if (EDI_pooledTrackedSyntax_trackedSyntaxKind === TrackedSyntaxKind_Comment &&
                 (intFields[F_EDI_pooledTrackedSyntax_start] + 1) >= intFields[F_EDI_cursor_editPosition] && (intFields[F_EDI_pooledTrackedSyntax_start] + 1) < intFields[F_EDI_cursor_editPosition] + intFields[F_EDI_cursor_editLength]) {
             // TODO: You can invalidate a >1 char long by removing beyond just the first unless a character afterwards falls into place that is valid by chance
             //
-            // only multi-line-comments that span multiple lines are stored in EDI_trackedSyntaxList with the 'ENUM_TrackedSyntaxKind_Comment'
+            // only multi-line-comments that span multiple lines are stored in EDI_trackedSyntaxList with the 'TrackedSyntaxKind_Comment'
             //
             EDI_trackedSyntaxList.removeAt(i, 1);
         }
@@ -2308,7 +2308,7 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
 function EDI_finalizeEdit_ClearEditState() {
     let intFields = GLOB_int_fields;
 
-    intFields[F_EDI_cursor_editKind] = ENUM_EditKind_None;
+    intFields[F_EDI_cursor_editKind] = EditKind_None;
     intFields[F_EDI_cursor_editLength] = 0;
     intFields[F_EDI_cursor_editPosition] = 0;
     intFields[F_EDI_cursor_editIndexLine] = 0;
@@ -2393,12 +2393,12 @@ function EDI_readLineEndPositionList(indexLine) {
     // If you need to determine the text without finalizing an edit, you DO have to loop forwards right?
     if (GLOB_int_fields[F_EDI_cursor_editLength] > 0 & GLOB_int_fields[F_EDI_cursor_editPosition] <= lineEndPositionIndex) {
         switch (GLOB_int_fields[F_EDI_cursor_editKind]) {
-            case ENUM_EditKind_InsertLtr:
+            case EditKind_InsertLtr:
                 lineEndPositionIndex += GLOB_int_fields[F_EDI_cursor_editLength];
                 break;
-            case ENUM_EditKind_DeleteLtr:
-            case ENUM_EditKind_BackspaceRtl:
-            case ENUM_EditKind_RemoveTextNoBatching:
+            case EditKind_DeleteLtr:
+            case EditKind_BackspaceRtl:
+            case EditKind_RemoveTextNoBatching:
                 lineEndPositionIndex -= GLOB_int_fields[F_EDI_cursor_editLength];
                 break;
         }
@@ -2473,10 +2473,10 @@ function EDI_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_I) 
                 span.textContent = EDI_decoder.decode(EDI_textByteList.bytes.subarray(substart, subend));
                 substart += (subend - substart);
                 switch (EDI_pooledTrackedSyntax_trackedSyntaxKind) {
-                    case ENUM_TrackedSyntaxKind_Comment:
+                    case TrackedSyntaxKind_Comment:
                         span.className = 'eCM';
                         break;
-                    case ENUM_TrackedSyntaxKind_String:
+                    case TrackedSyntaxKind_String:
                         span.className = 'eSM';
                         break;
                     default:
@@ -2705,7 +2705,7 @@ function positiveNumbersOnly_countDigitsLoop(number) {
 }
 
 function EDI_draw_all_cursors() {
-    EDI_render_request(ENUM_RenderKind_Cursor_n);
+    EDI_render_request(RenderKind_Cursor_n);
 }
 
 /**
@@ -3236,7 +3236,7 @@ function EDI_onMouseMoveDetailRankOne(indexLineClicked, indexColumnClicked) {
 
     GLOB_int_fields[F_EDI_cursor_selectionEnd] = EDI_getPositionIndex_cursor();
 
-    EDI_render_request(ENUM_RenderKind_Cursor_flag_doNotScrollIntoView);
+    EDI_render_request(RenderKind_Cursor_flag_doNotScrollIntoView);
 }
 
 function getCharacter_raw(positionIndex) {
@@ -3275,7 +3275,7 @@ function getCharacter(positionIndex) {
     let totalShift = 0;
     // If you need to determine the text without finalizing an edit, you DO have to loop forwards right?
     switch (GLOB_int_fields[F_EDI_cursor_editKind]) {
-        case ENUM_EditKind_InsertLtr:
+        case EditKind_InsertLtr:
             if (positionIndex >= GLOB_int_fields[F_EDI_cursor_editPosition] & positionIndex < GLOB_int_fields[F_EDI_cursor_editPosition] + GLOB_int_fields[F_EDI_cursor_editLength]) {
                 // TODO: I hear fromCharCode is faster than 'String.fromCodePoint(...)' thus I'm seeing if it is sufficient for my current personal usage...
                 // ...long term it presumably fails for characters that I don't tend to type, but until then this is working so I'll just use fromCharCode.
@@ -3287,9 +3287,9 @@ function getCharacter(positionIndex) {
                 totalShift += GLOB_int_fields[F_EDI_cursor_editLength];
             }
             break;
-        case ENUM_EditKind_DeleteLtr:
-        case ENUM_EditKind_BackspaceRtl:
-        case ENUM_EditKind_RemoveTextNoBatching:
+        case EditKind_DeleteLtr:
+        case EditKind_BackspaceRtl:
+        case EditKind_RemoveTextNoBatching:
             totalShift -= GLOB_int_fields[F_EDI_cursor_editLength];
             break;
     }
@@ -3340,7 +3340,7 @@ function EDI_getCharacterPrevious_KIND(indexColumn, positionIndex) {
         return EDI_getCharacterKind(EDI_getCharacterPrevious(indexColumn, positionIndex));
     }
     else {
-        return ENUM_CharacterKind_None;
+        return CharacterKind_None;
     }
 }
 
@@ -3349,7 +3349,7 @@ function EDI_getCharacterCurrent_KIND(indexColumn, positionIndex, lineEnd) {
         return EDI_getCharacterKind(EDI_getCharacterCurrent(indexColumn, positionIndex, lineEnd));
     }
     else {
-        return ENUM_CharacterKind_None;
+        return CharacterKind_None;
     }
 }
 
@@ -3393,7 +3393,7 @@ function EDI_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
             }
         }
 
-        EDI_render_request(ENUM_RenderKind_Cursor_flag_doNotScrollIntoView);
+        EDI_render_request(RenderKind_Cursor_flag_doNotScrollIntoView);
     }
     else {
         if (intFields[F_EDI_cursor_selectionAnchor] > intFields[F_EDI_cursor_selectionEnd]) {
@@ -3438,7 +3438,7 @@ function EDI_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
             intFields[F_EDI_cursor_selectionEnd] = intFields[F_EDI_detail_largePosition];
         }
 
-        EDI_render_request(ENUM_RenderKind_Cursor_flag_doNotScrollIntoView);
+        EDI_render_request(RenderKind_Cursor_flag_doNotScrollIntoView);
     }
 }
 
@@ -3468,7 +3468,7 @@ function EDI_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked) {
             intFields[F_EDI_cursor_selectionAnchor] = intFields[F_EDI_detail_largePosition];
         }
 
-        EDI_render_request(ENUM_RenderKind_Cursor_flag_doNotScrollIntoView);
+        EDI_render_request(RenderKind_Cursor_flag_doNotScrollIntoView);
     }
     else if (indexLineClicked < intFields[F_EDI_detailRank3OriginLine]) {
         if (intFields[F_EDI_cursor_selectionAnchor] < intFields[F_EDI_cursor_selectionEnd]) {
@@ -3479,7 +3479,7 @@ function EDI_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked) {
 
             intFields[F_EDI_cursor_selectionEnd] = intFields[F_EDI_detail_smallPosition];
 
-            EDI_render_request(ENUM_RenderKind_Cursor_flag_doNotScrollIntoView);
+            EDI_render_request(RenderKind_Cursor_flag_doNotScrollIntoView);
         }
 
         intFields[F_EDI_cursor_indexLine] = indexLineClicked;
@@ -3487,7 +3487,7 @@ function EDI_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked) {
 
         intFields[F_EDI_cursor_selectionEnd] = EDI_getPositionIndex_Overload(indexLineClicked, 0);
 
-        EDI_render_request(ENUM_RenderKind_Cursor_flag_doNotScrollIntoView);
+        EDI_render_request(RenderKind_Cursor_flag_doNotScrollIntoView);
     }
     else if (indexLineClicked > intFields[F_EDI_detailRank3OriginLine]) {
 
@@ -3517,7 +3517,7 @@ function EDI_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked) {
             intFields[F_EDI_cursor_selectionEnd] = positionIndex;
         }
 
-        EDI_render_request(ENUM_RenderKind_Cursor_flag_doNotScrollIntoView);
+        EDI_render_request(RenderKind_Cursor_flag_doNotScrollIntoView);
     }
 }
 
@@ -3561,7 +3561,7 @@ function EDI_onMouseDownDetailRankOne(event_button, event_shiftKey, indexLineCli
         }
     }
 
-    EDI_render_request(ENUM_RenderKind_Cursor_n);
+    EDI_render_request(RenderKind_Cursor_n);
 }
 
 function EDI_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLineClicked, indexColumnClicked) {
@@ -3618,7 +3618,7 @@ function EDI_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLineCli
             intFields[F_EDI_cursor_selectionEnd] = tempPositionIndex;
         }
 
-        EDI_render_request(ENUM_RenderKind_Cursor_n);
+        EDI_render_request(RenderKind_Cursor_n);
     }
     else if (leftCharacterKind > rightCharacterKind) {
         let goalCharacterKind = leftCharacterKind;
@@ -3639,7 +3639,7 @@ function EDI_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLineCli
 
         intFields[F_EDI_cursor_selectionEnd] = originalPositionIndex;
 
-        EDI_render_request(ENUM_RenderKind_Cursor_n);
+        EDI_render_request(RenderKind_Cursor_n);
     }
     else {
         let goalCharacterKind = rightCharacterKind;
@@ -3666,7 +3666,7 @@ function EDI_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLineCli
             intFields[F_EDI_cursor_selectionEnd] = positionIndex;
         }
 
-        EDI_render_request(ENUM_RenderKind_Cursor_n);
+        EDI_render_request(RenderKind_Cursor_n);
     }
 
     if (intFields[F_EDI_cursor_selectionAnchor] < intFields[F_EDI_cursor_selectionEnd]) {
@@ -3697,14 +3697,14 @@ function EDI_onMouseDownDetailRankThree(event_button, event_shiftKey, indexLineC
     if (intFields[F_EDI_cursor_indexLine] === EDI_lineEndPositionList.count - 1) {
         let line = EDI_getLineBoundaryPositions(intFields[F_EDI_cursor_indexLine]);
         intFields[F_EDI_cursor_selectionEnd] = line.end;
-        EDI_render_request(ENUM_RenderKind_Cursor_n);
+        EDI_render_request(RenderKind_Cursor_n);
     }
     else {
         intFields[F_EDI_cursor_indexLine]++;
         intFields[F_EDI_cursor_indexColumn] = 0;
         let line = EDI_getLineBoundaryPositions(intFields[F_EDI_cursor_indexLine]);
         intFields[F_EDI_cursor_selectionEnd] = line.start;
-        EDI_render_request(ENUM_RenderKind_Cursor_n);
+        EDI_render_request(RenderKind_Cursor_n);
     }
 
     if (intFields[F_EDI_cursor_selectionAnchor] < intFields[F_EDI_cursor_selectionEnd]) {
@@ -3759,7 +3759,7 @@ function EDI_startEdit(editKind, editPosition, editLength) {
     intFields[F_EDI_cursor_editLength] = editLength;
 
     switch (editKind) {
-        case ENUM_EditKind_InsertLtr:
+        case EditKind_InsertLtr:
             EDI_insertGapBufferSpan();
             break;
     }
@@ -3770,7 +3770,7 @@ function EDI_startEdit(editKind, editPosition, editLength) {
  */
 function EDI_NOTcanBatch_insert() {
     let intFields = GLOB_int_fields;
-    return intFields[F_EDI_cursor_editKind] != ENUM_EditKind_InsertLtr ||
+    return intFields[F_EDI_cursor_editKind] != EditKind_InsertLtr ||
            intFields[F_EDI_cursor_indexLine] !== intFields[F_EDI_cursor_editIndexLine] ||
            intFields[F_EDI_cursor_indexColumn] !== intFields[F_EDI_cursor_editIndexColumn] + intFields[F_EDI_cursor_editLength] ||
            intFields[F_EDI_cursor_editLength] >= CONST_EDI_cursor_GAP_BUFFER_CAPACITY ||
@@ -3783,7 +3783,7 @@ function EDI_NOTcanBatch_insert() {
 function EDI_NOTcanBatch_enter() {
     let intFields = GLOB_int_fields;
     return true || // turn off batching until it works. The initial enter event is what matters everything else can be recreated based on the amount of lineFeeds that were inserted.
-           intFields[F_EDI_cursor_editKind] != ENUM_EditKind_Enter ||
+           intFields[F_EDI_cursor_editKind] != EditKind_Enter ||
            intFields[F_EDI_cursor_indexLine] !== intFields[F_EDI_cursor_END_editIndexLine] ||
            intFields[F_EDI_cursor_indexColumn] !== intFields[F_EDI_cursor_END_editIndexColumn] ||
            intFields[F_EDI_cursor_editLength] >= CONST_EDI_cursor_GAP_BUFFER_CAPACITY ||
@@ -3796,7 +3796,7 @@ function EDI_NOTcanBatch_enter() {
  */
 function EDI_NOTcanBatch_backspace() {
     let intFields = GLOB_int_fields;
-    return intFields[F_EDI_cursor_editKind] != ENUM_EditKind_BackspaceRtl ||
+    return intFields[F_EDI_cursor_editKind] != EditKind_BackspaceRtl ||
            intFields[F_EDI_cursor_indexLine] !== intFields[F_EDI_cursor_editIndexLine] ||
            intFields[F_EDI_cursor_indexColumn] !== intFields[F_EDI_cursor_editIndexColumn] ||
            EDI_cursor_hasSelection();
@@ -3807,7 +3807,7 @@ function EDI_NOTcanBatch_backspace() {
  */
 function EDI_NOTcanBatch_delete() {
     let intFields = GLOB_int_fields;
-    return intFields[F_EDI_cursor_editKind] != ENUM_EditKind_DeleteLtr ||
+    return intFields[F_EDI_cursor_editKind] != EditKind_DeleteLtr ||
            intFields[F_EDI_cursor_indexLine] !== intFields[F_EDI_cursor_editIndexLine] ||
            intFields[F_EDI_cursor_indexColumn] !== intFields[F_EDI_cursor_editIndexColumn] ||
            EDI_cursor_hasSelection();
@@ -3879,7 +3879,7 @@ function EDI_arrowDown(shiftKey) {
  * TODO: I believe this function to be an unoptimized solution, just that there are more pressing matters to attend to.
  */
 function EDI_movementBasedCacheInvalidation() {
-    if (GLOB_int_fields[F_EDI_cursor_editKind] === ENUM_EditKind_Enter) {
+    if (GLOB_int_fields[F_EDI_cursor_editKind] === EditKind_Enter) {
         //
         // this only happens once even if you have many cursors because the next cursor that enters this function would be and editKind of None.
         //
@@ -3913,8 +3913,8 @@ function EDI_editEvent(editKind, event, clipboardContent) {
 
         shouldFinalizeAllCursors = false;
         
-        if ((editKind === ENUM_EditKind_Tab && GLOB_int_fields[F_EDI_cursor_editKind] === ENUM_EditKind_IndentMore) ||
-            (editKind === ENUM_EditKind_Tab && GLOB_int_fields[F_EDI_cursor_editKind] === ENUM_EditKind_IndentLess && event.shiftKey)) {
+        if ((editKind === EditKind_Tab && GLOB_int_fields[F_EDI_cursor_editKind] === EditKind_IndentMore) ||
+            (editKind === EditKind_Tab && GLOB_int_fields[F_EDI_cursor_editKind] === EditKind_IndentLess && event.shiftKey)) {
 
                 // TODO: IndentLess when no selection however shiftTab then it does indentLess even still but I haven't gone out of the way to handle that hack...
                 // ...maybe it'll be covered maybe it won't.
@@ -3928,8 +3928,8 @@ function EDI_editEvent(editKind, event, clipboardContent) {
 
     // If you have delete/backspace you need to ONLY remove the selection if it exists not remove selection then delete/backspace
     // but insert needs to remove selection AND insert.
-    if (editKind === ENUM_EditKind_InsertLtr || editKind === ENUM_EditKind_Enter || editKind === ENUM_EditKind_Paste) {
-        // check for ENUM_EditKind_None => selection
+    if (editKind === EditKind_InsertLtr || editKind === EditKind_Enter || editKind === EditKind_Paste) {
+        // check for EditKind_None => selection
         // if so then attempt to remove selection foreach cursor
         // then finalize all those newly made selection removal edits
         if (atLeastOneCursorHasASelection) {
@@ -3946,31 +3946,31 @@ function EDI_editEvent(editKind, event, clipboardContent) {
 
     // check for NOTcanBatch... I don't want the switch in the for loop... if you have a selection then you have a not can batch?
     switch (editKind) {
-        case ENUM_EditKind_InsertLtr:
+        case EditKind_InsertLtr:
             shouldFinalizeAllCursors = EDI_editEvent_checkFor_NOTcanBatch_InsertLtr();
             break;
-        case ENUM_EditKind_DeleteLtr:
+        case EditKind_DeleteLtr:
             shouldFinalizeAllCursors = EDI_editEvent_checkFor_NOTcanBatch_DeleteLtr();
             break;
-        case ENUM_EditKind_BackspaceRtl:
+        case EditKind_BackspaceRtl:
             shouldFinalizeAllCursors = EDI_editEvent_checkFor_NOTcanBatch_BackspaceRtl();
             break;
-        case ENUM_EditKind_Tab:
+        case EditKind_Tab:
             shouldFinalizeAllCursors = EDI_editEvent_checkFor_NOTcanBatch_Tab(event);
             break;
-        case ENUM_EditKind_IndentMore:
+        case EditKind_IndentMore:
             shouldFinalizeAllCursors = EDI_editEvent_checkFor_NOTcanBatch_IndentMore();
             break;
-        case ENUM_EditKind_IndentLess:
+        case EditKind_IndentLess:
             shouldFinalizeAllCursors = EDI_editEvent_checkFor_NOTcanBatch_IndentLess();
             break;
-        case ENUM_EditKind_Enter:
+        case EditKind_Enter:
             shouldFinalizeAllCursors = EDI_editEvent_checkFor_NOTcanBatch_Enter(event);
             break;
-        case ENUM_EditKind_Paste:
+        case EditKind_Paste:
             shouldFinalizeAllCursors = true;
             break;
-        case ENUM_EditKind_Duplicate:
+        case EditKind_Duplicate:
             shouldFinalizeAllCursors = true;
             break;
         default:
@@ -3983,25 +3983,25 @@ function EDI_editEvent(editKind, event, clipboardContent) {
 
     // start/continue edit... I don't want the switch in the for loop
     switch (editKind) {
-        case ENUM_EditKind_InsertLtr:
+        case EditKind_InsertLtr:
             EDI_editEvent_theEditIself_InsertLtr(event);
             break;
-        case ENUM_EditKind_DeleteLtr:
+        case EditKind_DeleteLtr:
             EDI_editEvent_theEditIself_DeleteLtr(event);
             break;
-        case ENUM_EditKind_BackspaceRtl:
+        case EditKind_BackspaceRtl:
             EDI_editEvent_theEditIself_BackspaceRtl(event);
             break;
-        case ENUM_EditKind_Tab:
+        case EditKind_Tab:
             EDI_editEvent_theEditIself_Tab(event);
             break;
-        case ENUM_EditKind_Enter:
+        case EditKind_Enter:
             EDI_editEvent_theEditIself_Enter(event);
             break;
-        case ENUM_EditKind_Paste:
+        case EditKind_Paste:
             EDI_editEvent_theEditIself_Paste(clipboardContent);
             break;
-        case ENUM_EditKind_Duplicate:
+        case EditKind_Duplicate:
             EDI_editEvent_theEditIself_Duplicate();
             break;
         default:
@@ -4021,16 +4021,16 @@ function EDI_editEvent_theEditIself_InsertLtr(event) {
         intFields[F_EDI_offsetColumn] = 0;
     }
     // You can do this because the function 'EDI_NOTcanBatch_insert' was already checked for all the cursors, if it is possible to batch, the editKind will stay InsertLtr otherwise it is finalized and set to None.
-    // TODO: Use if === ENUM_EditKind_None for copy and paste safety / it might just even be more readable
-    if (intFields[F_EDI_cursor_editKind] !== ENUM_EditKind_InsertLtr) {
-        EDI_startEdit(ENUM_EditKind_InsertLtr, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
+    // TODO: Use if === EditKind_None for copy and paste safety / it might just even be more readable
+    if (intFields[F_EDI_cursor_editKind] !== EditKind_InsertLtr) {
+        EDI_startEdit(EditKind_InsertLtr, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
     }
     EDI_insertDo(event.key);
     intFields[F_EDI_cursor_STORED_indexColumn] = intFields[F_EDI_cursor_indexColumn];
-    EDI_render_request(ENUM_RenderKind_Cursor_n);
+    EDI_render_request(RenderKind_Cursor_n);
     //intFields[F_EDI_offsetColumn] = intFields[F_EDI_offsetColumn] + intFields[F_EDI_cursor_editLength];
     //intFields[F_EDI_totalShift] = get_EDI_totalShift() + intFields[F_EDI_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
-    EDI_render_request(ENUM_RenderKind_InsertLtr);
+    EDI_render_request(RenderKind_InsertLtr);
 }
 
 function EDI_editEvent_theEditIself_DeleteLtr(event) {
@@ -4044,12 +4044,12 @@ function EDI_editEvent_theEditIself_DeleteLtr(event) {
         EDI_removeSelection();
     }
     else {
-        if (intFields[F_EDI_cursor_editKind] !== ENUM_EditKind_DeleteLtr) {
-            EDI_startEdit(ENUM_EditKind_DeleteLtr, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
+        if (intFields[F_EDI_cursor_editKind] !== EditKind_DeleteLtr) {
+            EDI_startEdit(EditKind_DeleteLtr, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
         }
         EDI_deleteDo(event);
     }
-    EDI_render_request(ENUM_RenderKind_Cursor_n);
+    EDI_render_request(RenderKind_Cursor_n);
     //intFields[F_EDI_offsetColumn] = intFields[F_EDI_offsetColumn] - intFields[F_EDI_cursor_editLength];
     //intFields[F_EDI_totalShift] = get_EDI_totalShift() - intFields[F_EDI_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
 }
@@ -4065,13 +4065,13 @@ function EDI_editEvent_theEditIself_BackspaceRtl(event) {
         EDI_removeSelection();
     }
     else {
-        if (intFields[F_EDI_cursor_editKind] !== ENUM_EditKind_BackspaceRtl) {
-            EDI_startEdit(ENUM_EditKind_BackspaceRtl, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
+        if (intFields[F_EDI_cursor_editKind] !== EditKind_BackspaceRtl) {
+            EDI_startEdit(EditKind_BackspaceRtl, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
         }
         EDI_backspaceDo(event);
         intFields[F_EDI_cursor_STORED_indexColumn] = intFields[F_EDI_cursor_indexColumn];
     }
-    EDI_render_request(ENUM_RenderKind_Cursor_n);
+    EDI_render_request(RenderKind_Cursor_n);
     //intFields[F_EDI_offsetColumn] = intFields[F_EDI_offsetColumn] - intFields[F_EDI_cursor_editLength];
     //intFields[F_EDI_totalShift] = get_EDI_totalShift() - intFields[F_EDI_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
 }
@@ -4080,14 +4080,14 @@ function EDI_editEvent_theEditIself_Tab(event) {
     EDI_movementBasedCacheInvalidation();
     if (EDI_cursor_hasSelection()) {
         if (event.shiftKey) {
-            if (GLOB_int_fields[F_EDI_cursor_editKind] !== ENUM_EditKind_IndentLess) {
-                EDI_startEdit(ENUM_EditKind_IndentLess, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
+            if (GLOB_int_fields[F_EDI_cursor_editKind] !== EditKind_IndentLess) {
+                EDI_startEdit(EditKind_IndentLess, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
             }
             EDI_indentLess();
         }
         else {
-            if (GLOB_int_fields[F_EDI_cursor_editKind] !== ENUM_EditKind_IndentMore) {
-                EDI_startEdit(ENUM_EditKind_IndentMore, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
+            if (GLOB_int_fields[F_EDI_cursor_editKind] !== EditKind_IndentMore) {
+                EDI_startEdit(EditKind_IndentMore, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
             }
             EDI_indentMore();
         }
@@ -4099,47 +4099,47 @@ function EDI_editEvent_theEditIself_Tab(event) {
             // ...everything is buggy and it is very anxiety inducing and for the time being I guess it just has to be that way as I transition
             // towards a useable editor all the features are coming together but there's this awkward phase of "I can start using it but also not really" or something I just idk.
             EDI_onMouseDownDetailRankThree(0, false, GLOB_int_fields[F_EDI_cursor_indexLine], GLOB_int_fields[F_EDI_cursor_indexColumn]);
-            if (GLOB_int_fields[F_EDI_cursor_editKind] !== ENUM_EditKind_IndentLess) {
-                EDI_startEdit(ENUM_EditKind_IndentLess, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
+            if (GLOB_int_fields[F_EDI_cursor_editKind] !== EditKind_IndentLess) {
+                EDI_startEdit(EditKind_IndentLess, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
             }
             EDI_indentLess();
         }
         else {
-            if (GLOB_int_fields[F_EDI_cursor_editKind] !== ENUM_EditKind_Tab) {
-                EDI_startEdit(ENUM_EditKind_Tab, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
+            if (GLOB_int_fields[F_EDI_cursor_editKind] !== EditKind_Tab) {
+                EDI_startEdit(EditKind_Tab, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
             }
             EDI_tabKey();
         }
     }
-    EDI_render_request(ENUM_RenderKind_Cursor_n);
+    EDI_render_request(RenderKind_Cursor_n);
 }
 
 function EDI_editEvent_theEditIself_Enter(event) {
-    if (GLOB_int_fields[F_EDI_cursor_editKind] !== ENUM_EditKind_Enter) {
-        EDI_startEdit(ENUM_EditKind_Enter, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
+    if (GLOB_int_fields[F_EDI_cursor_editKind] !== EditKind_Enter) {
+        EDI_startEdit(EditKind_Enter, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
     }
     EDI_EnterKey(event.ctrlKey, event.shiftKey);
     GLOB_int_fields[F_EDI_cursor_STORED_indexColumn] = GLOB_int_fields[F_EDI_cursor_indexColumn];
-    EDI_render_request(ENUM_RenderKind_Cursor_n);
+    EDI_render_request(RenderKind_Cursor_n);
     //GLOB_int_fields[F_EDI_offsetLine] = GLOB_int_fields[F_EDI_offsetLine] + 1;
 }
 
 function EDI_editEvent_theEditIself_Paste(clipboardContent) {
-    if (GLOB_int_fields[F_EDI_cursor_editKind] !== ENUM_EditKind_Enter) {
-        EDI_startEdit(ENUM_EditKind_Paste, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
+    if (GLOB_int_fields[F_EDI_cursor_editKind] !== EditKind_Enter) {
+        EDI_startEdit(EditKind_Paste, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
     }
     EDI_paste(clipboardContent);
     GLOB_int_fields[F_EDI_cursor_STORED_indexColumn] = GLOB_int_fields[F_EDI_cursor_indexColumn];
-    EDI_render_request(ENUM_RenderKind_Cursor_n);
+    EDI_render_request(RenderKind_Cursor_n);
 }
 
 function EDI_editEvent_theEditIself_Duplicate() {
-    if (GLOB_int_fields[F_EDI_cursor_editKind] !== ENUM_EditKind_Duplicate) {
-        EDI_startEdit(ENUM_EditKind_Duplicate, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
+    if (GLOB_int_fields[F_EDI_cursor_editKind] !== EditKind_Duplicate) {
+        EDI_startEdit(EditKind_Duplicate, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
     }
     EDI_duplicateSelection();
     GLOB_int_fields[F_EDI_cursor_STORED_indexColumn] = GLOB_int_fields[F_EDI_cursor_indexColumn];
-    EDI_render_request(ENUM_RenderKind_Cursor_n);
+    EDI_render_request(RenderKind_Cursor_n);
 }
 
 /** @returns {boolean} 'shouldFinalizeAllCursors' */
@@ -4197,7 +4197,7 @@ function EDI_editEvent_checkFor_NOTcanBatch_Tab(event) {
  * 
  */
 function EDI_editEvent_checkFor_NOTcanBatch_IndentMore() {
-    if (GLOB_int_fields[F_EDI_cursor_editKind] === ENUM_EditKind_IndentLess) {
+    if (GLOB_int_fields[F_EDI_cursor_editKind] === EditKind_IndentLess) {
         return true;
     }
     
@@ -4248,7 +4248,7 @@ function EDI_editEvent_checkFor_NOTcanBatch_IndentMore() {
  * 
  */
 function EDI_editEvent_checkFor_NOTcanBatch_IndentLess() {
-    if (GLOB_int_fields[F_EDI_cursor_editKind] === ENUM_EditKind_IndentMore) {
+    if (GLOB_int_fields[F_EDI_cursor_editKind] === EditKind_IndentMore) {
         return true;
     }
     
@@ -4441,21 +4441,21 @@ function EDI_onKeyDown(event) {
             EDI_onKeyDown_PageUp(event);
             break;
         case 'Delete':
-            EDI_editEvent(ENUM_EditKind_DeleteLtr, event);
+            EDI_editEvent(EditKind_DeleteLtr, event);
             break;
         case 'Backspace':
-            EDI_editEvent(ENUM_EditKind_BackspaceRtl, event);
+            EDI_editEvent(EditKind_BackspaceRtl, event);
             break;
         case 'Escape':
             EDI_finalizeAllCursors_andClearNonPrimaryCursors();
             break;
         case 'Tab':
             event.preventDefault();
-            EDI_editEvent(ENUM_EditKind_Tab, event);
+            EDI_editEvent(EditKind_Tab, event);
             break;
         case 'Enter':
             // Enter key relies on cached data that would be cleared, pattern doesn't match on purpose
-            EDI_editEvent(ENUM_EditKind_Enter, event);
+            EDI_editEvent(EditKind_Enter, event);
             break;
         case 'F12':
             EDI_doEditorGoToDefinitionRequest();
@@ -4471,7 +4471,7 @@ function EDI_onKeyDown(event) {
                 }
                 else {
                     event.preventDefault();
-                    EDI_editEvent(ENUM_EditKind_InsertLtr, event);
+                    EDI_editEvent(EditKind_InsertLtr, event);
                 }
             }
             break;
@@ -4537,7 +4537,7 @@ function EDI_onKeyDown_ArrowLeft(event) {
         EDI_postKeyboardMovementSelectionLogic(event.shiftKey);
     }
     intFields[F_EDI_cursor_STORED_indexColumn] = intFields[F_EDI_cursor_indexColumn];
-    EDI_render_request(ENUM_RenderKind_Cursor_n);
+    EDI_render_request(RenderKind_Cursor_n);
     if (!EDI_isChecking_cursorBlinkTrailingEdge) {
         EDI_cursorBlink_startChecking();
     }
@@ -4555,7 +4555,7 @@ function EDI_onKeyDown_ArrowDown(event) {
     }
     else {
         EDI_arrowDown(/*shiftKey*/ event.shiftKey);
-        EDI_render_request(ENUM_RenderKind_Cursor_n);
+        EDI_render_request(RenderKind_Cursor_n);
         if (!EDI_isChecking_cursorBlinkTrailingEdge) {
             EDI_cursorBlink_startChecking();
         }
@@ -4585,7 +4585,7 @@ function EDI_onKeyDown_ArrowUp(event) {
             }
         }
         EDI_postKeyboardMovementSelectionLogic(event.shiftKey);
-        EDI_render_request(ENUM_RenderKind_Cursor_n);
+        EDI_render_request(RenderKind_Cursor_n);
         if (!EDI_isChecking_cursorBlinkTrailingEdge) {
             EDI_cursorBlink_startChecking();
         }
@@ -4653,7 +4653,7 @@ function EDI_onKeyDown_ArrowRight(event) {
         EDI_postKeyboardMovementSelectionLogic(event.shiftKey);
     }
     intFields[F_EDI_cursor_STORED_indexColumn] = intFields[F_EDI_cursor_indexColumn];
-    EDI_render_request(ENUM_RenderKind_Cursor_n);
+    EDI_render_request(RenderKind_Cursor_n);
     if (!EDI_isChecking_cursorBlinkTrailingEdge) {
         EDI_cursorBlink_startChecking();
     }
@@ -4683,7 +4683,7 @@ function EDI_onKeyDown_Home(event) {
     }
     EDI_postKeyboardMovementSelectionLogic(event.shiftKey);
     GLOB_int_fields[F_EDI_cursor_STORED_indexColumn] = GLOB_int_fields[F_EDI_cursor_indexColumn];
-    EDI_render_request(ENUM_RenderKind_Cursor_n);
+    EDI_render_request(RenderKind_Cursor_n);
     if (!EDI_isChecking_cursorBlinkTrailingEdge) {
         EDI_cursorBlink_startChecking();
     }
@@ -4703,7 +4703,7 @@ function EDI_onKeyDown_End(event) {
     GLOB_int_fields[F_EDI_cursor_indexColumn] = EDI_getLastValidIndexColumn(GLOB_int_fields[F_EDI_cursor_indexLine]);
     EDI_postKeyboardMovementSelectionLogic(event.shiftKey);
     GLOB_int_fields[F_EDI_cursor_STORED_indexColumn] = GLOB_int_fields[F_EDI_cursor_indexColumn];
-    EDI_render_request(ENUM_RenderKind_Cursor_n);
+    EDI_render_request(RenderKind_Cursor_n);
     if (!EDI_isChecking_cursorBlinkTrailingEdge) {
         EDI_cursorBlink_startChecking();
     }
@@ -4726,7 +4726,7 @@ function EDI_onKeyDown_PageDown(event) {
         GLOB_int_fields[F_EDI_cursor_indexColumn] = 0;
         // TODO: allow someone to select via this keybind, but for now it causes a bad selection if you { 'Ctrl' + 'a' } then use it so I'm clearing any active selection here for now.
         GLOB_int_fields[F_EDI_cursor_selectionAnchor] = GLOB_int_fields[F_EDI_cursor_selectionEnd];
-        EDI_render_request(ENUM_RenderKind_Cursor_n);
+        EDI_render_request(RenderKind_Cursor_n);
         if (!EDI_isChecking_cursorBlinkTrailingEdge) {
             EDI_cursorBlink_startChecking();
         }
@@ -4749,7 +4749,7 @@ function EDI_onKeyDown_PageUp(event) {
         GLOB_int_fields[F_EDI_cursor_indexColumn] = 0;
         // TODO: allow someone to select via this keybind, but for now it causes a bad selection if you { 'Ctrl' + 'a' } then use it so I'm clearing any active selection here for now.
         GLOB_int_fields[F_EDI_cursor_selectionAnchor] = GLOB_int_fields[F_EDI_cursor_selectionEnd];
-        EDI_render_request(ENUM_RenderKind_Cursor_n);
+        EDI_render_request(RenderKind_Cursor_n);
         if (!EDI_isChecking_cursorBlinkTrailingEdge) {
             EDI_cursorBlink_startChecking();
         }
@@ -4802,7 +4802,7 @@ async function EDI_onKeyDown_keyLengthEqualsOne_ctrlKey(event) {
             EDI_finalizeAllCursors();
             await EDI_copySelection();
             EDI_removeSelection(); // TODO: Multicursor bad
-            EDI_render_request(ENUM_RenderKind_Cursor_n);
+            EDI_render_request(RenderKind_Cursor_n);
             if (!EDI_isChecking_cursorBlinkTrailingEdge) {
                 EDI_cursorBlink_startChecking(); // TODO: this one is especially questionable since it invoked 'EDI_removeSelection' prior to the draw cursor?
             }
@@ -4813,14 +4813,14 @@ async function EDI_onKeyDown_keyLengthEqualsOne_ctrlKey(event) {
             event.stopPropagation();
 
             let clipboard = await window.myAPI.readClipboard();
-            EDI_editEvent(ENUM_EditKind_Paste, event, clipboard);
+            EDI_editEvent(EditKind_Paste, event, clipboard);
             break;
         case 'd':
 
             event.preventDefault();
             event.stopPropagation();
 
-            EDI_editEvent(ENUM_EditKind_Duplicate, event);
+            EDI_editEvent(EditKind_Duplicate, event);
             break;
         case 'a':
 
@@ -4833,7 +4833,7 @@ async function EDI_onKeyDown_keyLengthEqualsOne_ctrlKey(event) {
             let selectionEndLineAndColumnIndices = EDI_getLineAndColumnIndices(GLOB_int_fields[F_EDI_cursor_selectionEnd]);
             GLOB_int_fields[F_EDI_cursor_indexLine] = selectionEndLineAndColumnIndices.indexLine;
             GLOB_int_fields[F_EDI_cursor_indexColumn] = selectionEndLineAndColumnIndices.indexColumn;
-            EDI_render_request(ENUM_RenderKind_Cursor_flag_doNotScrollIntoView);
+            EDI_render_request(RenderKind_Cursor_flag_doNotScrollIntoView);
             break;
         case 'f':
 
@@ -4931,10 +4931,10 @@ function EDI_onMouseDown(event) {
 
 function EDI_onContextMenu() {
     let optionList = [
-        new MenuOption(ENUM_CommandKind_Cut, 'Cut', null),
-        new MenuOption(ENUM_CommandKind_Copy, 'Copy', null),
-        new MenuOption(ENUM_CommandKind_Paste, 'Paste', null),
-        new MenuOption(ENUM_CommandKind_Find, 'Find', null),
+        new MenuOption(CommandKind_Cut, 'Cut', null),
+        new MenuOption(CommandKind_Copy, 'Copy', null),
+        new MenuOption(CommandKind_Paste, 'Paste', null),
+        new MenuOption(CommandKind_Find, 'Find', null),
     ];
 
     let menuLeft = GLOB_int_fields[F_EDI_recentBoundingClientRect_left] + GLOB_int_fields[F_EDI_gutterWidthTotal] + GLOB_int_fields[F_EDI_cursor_cursorTranslateXValue] - lastReadNumber_scrollLeft;
@@ -5320,7 +5320,7 @@ function EDI_render_do_IndentMore() {
         EDI_on_tab_string += String.fromCharCode(EDI_on_tab_bytes[i]);
     }
 
-    if (intFields[F_EDI_cursor_editKind] !== ENUM_EditKind_IndentMore) {
+    if (intFields[F_EDI_cursor_editKind] !== EditKind_IndentMore) {
         return;
     }
     if (intFields[F_EDI_cursor_editRenderedDisplacement] < intFields[F_EDI_cursor_editLength]) {
@@ -5462,7 +5462,7 @@ function EDI_indentMore() {
     //}
 
     GLOB_int_fields[F_EDI_cursor_editLength]++;
-    EDI_render_request(ENUM_RenderKind_IndentMore);
+    EDI_render_request(RenderKind_IndentMore);
 }
 
 function EDI_render_do_IndentLess() {
@@ -5472,7 +5472,7 @@ function EDI_render_do_IndentLess() {
     let startingIndex = intFields[F_EDI_indent_startingIndex] = startingIndex;
     let SMALL_lineAndColumnIndices_indexLine = intFields[F_EDI_indent_SMALL_lineAndColumnIndices_indexLine];
 
-    if (intFields[F_EDI_cursor_editKind] !== ENUM_EditKind_IndentLess) {
+    if (intFields[F_EDI_cursor_editKind] !== EditKind_IndentLess) {
         return;
     }
     if (intFields[F_EDI_cursor_editRenderedDisplacement] < intFields[F_EDI_cursor_editLength]) {
@@ -5634,7 +5634,7 @@ function EDI_indentLess() {
     //}
 
     GLOB_int_fields[F_EDI_cursor_editLength]++;
-    EDI_render_request(ENUM_RenderKind_IndentLess);
+    EDI_render_request(RenderKind_IndentLess);
 }
 
 /**
@@ -5704,7 +5704,7 @@ async function EDI_duplicateSelection() {
     intFields[F_EDI_cursor_selectionEnd] = large + length;
 
     // TODO: The previous render logic was actually moving the cursor as well. Just something to keep in mind, you might see a bug related to this.
-    EDI_render_request(ENUM_RenderKind_DuplicateOrPaste);
+    EDI_render_request(RenderKind_DuplicateOrPaste);
 }
 
 function EDI_render_do_DuplicateOrPaste() {
@@ -5728,10 +5728,10 @@ function EDI_render_do_DuplicateOrPaste() {
 
     let hasSeenLinefeed = false;
 
-    if (intFields[F_EDI_cursor_editKind] !== ENUM_EditKind_Duplicate && intFields[F_EDI_cursor_editKind] !== ENUM_EditKind_Paste) {
+    if (intFields[F_EDI_cursor_editKind] !== EditKind_Duplicate && intFields[F_EDI_cursor_editKind] !== EditKind_Paste) {
         return;
     }
-    if (intFields[F_EDI_cursor_editRenderedDisplacement] < intFields[F_EDI_cursor_editLength] || intFields[F_EDI_cursor_editKind] === ENUM_EditKind_Paste /* Paste has an editLength of 0 currently */) {
+    if (intFields[F_EDI_cursor_editRenderedDisplacement] < intFields[F_EDI_cursor_editLength] || intFields[F_EDI_cursor_editKind] === EditKind_Paste /* Paste has an editLength of 0 currently */) {
 
         let small = intFields[F_EDI_cursor_EDI_duplicate_small];
         let length = intFields[F_EDI_cursor_EDI_duplicate_length];
@@ -5742,10 +5742,10 @@ function EDI_render_do_DuplicateOrPaste() {
         let byteArray;
 
         // TODO: re-use the paste byte array
-        if (intFields[F_EDI_cursor_editKind] === ENUM_EditKind_Duplicate) {
+        if (intFields[F_EDI_cursor_editKind] === EditKind_Duplicate) {
             byteArray = EDI_textByteList.bytes.subarray(small, large);
         }
-        else if (intFields[F_EDI_cursor_editKind] === ENUM_EditKind_Paste) {
+        else if (intFields[F_EDI_cursor_editKind] === EditKind_Paste) {
             large = EDI_getPositionIndex_raw_cursor();
             let clipboardContent = EDI_cursor_EDI_paste_clipboardContent;
             let clipboardContentLength = clipboardContent.length;
@@ -6247,7 +6247,7 @@ function EDI_paste(content) {
     }
 
     // TODO: The previous render logic was actually moving the cursor as well. Just something to keep in mind, you might see a bug related to this.
-    EDI_render_request(ENUM_RenderKind_DuplicateOrPaste);
+    EDI_render_request(RenderKind_DuplicateOrPaste);
 }
 
 /**
@@ -6264,7 +6264,7 @@ function EDI_duplicate_and_paste_handleNotHasSeenLinefeed(hasSeenLinefeed, origi
             if (original_indexColumn_SpanTextContentRelative >= 2 && (original_indexColumn_SpanTextContentRelative <= original_span_textContent_length - 2)) {
                 w_span.className = 'eCM';
                 let indexOfGreaterThanOrEqual = EDI_trackedSyntaxReposition_find(indexPosition);
-                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_Comment, indexPosition - GLOB_int_fields[F_EDI_cursor_indexColumn] + w_indexColumn_Sum, original_span_textContent_length);
+                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_Comment, indexPosition - GLOB_int_fields[F_EDI_cursor_indexColumn] + w_indexColumn_Sum, original_span_textContent_length);
                 return true;
             }
             return false;
@@ -6274,7 +6274,7 @@ function EDI_duplicate_and_paste_handleNotHasSeenLinefeed(hasSeenLinefeed, origi
             if (original_indexColumn_SpanTextContentRelative >= 1 && (original_indexColumn_SpanTextContentRelative <= original_span_textContent_length - 1)) {
                 w_span.className = 'eSM';
                 let indexOfGreaterThanOrEqual = EDI_trackedSyntaxReposition_find(indexPosition);
-                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_String, indexPosition - GLOB_int_fields[F_EDI_cursor_indexColumn] + w_indexColumn_Sum, original_span_textContent_length);
+                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_String, indexPosition - GLOB_int_fields[F_EDI_cursor_indexColumn] + w_indexColumn_Sum, original_span_textContent_length);
                 return true;
             }
             return false;
@@ -6286,10 +6286,10 @@ function EDI_duplicate_and_paste_handleNotHasSeenLinefeed(hasSeenLinefeed, origi
 }
 
 function EDI_render_do_TabKey() {
-    if (GLOB_int_fields[F_EDI_cursor_editKind] !== ENUM_EditKind_Tab) {
+    if (GLOB_int_fields[F_EDI_cursor_editKind] !== EditKind_Tab) {
         return;
     }
-    if (GLOB_int_fields[F_EDI_cursor_editRenderedDisplacement] < GLOB_int_fields[F_EDI_cursor_editLength] || GLOB_int_fields[F_EDI_cursor_editKind] === ENUM_EditKind_Tab) {
+    if (GLOB_int_fields[F_EDI_cursor_editRenderedDisplacement] < GLOB_int_fields[F_EDI_cursor_editLength] || GLOB_int_fields[F_EDI_cursor_editKind] === EditKind_Tab) {
 
         GLOB_int_fields[F_EDI_cursor_indexColumn] -= 4; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
 
@@ -6327,7 +6327,7 @@ function EDI_tabKey() {
 
     GLOB_int_fields[F_EDI_cursor_indexColumn] += 4; // this has to come after the 'walkLineUntilIndexColumn' invocation.
 
-    EDI_render_request(ENUM_RenderKind_TabKey);
+    EDI_render_request(RenderKind_TabKey);
 }
 
 /**
@@ -6467,7 +6467,7 @@ function EDI_render_do_EnterKey() {
 
     update_verticalVirtualizationBoundary();
 
-    if (intFields[F_EDI_cursor_editKind] !== ENUM_EditKind_Enter) {
+    if (intFields[F_EDI_cursor_editKind] !== EditKind_Enter) {
         return;
     }
 
@@ -6601,7 +6601,7 @@ function EDI_render_do_EnterKey() {
                                 w_span.className = 'eCM';
                                 let indexPosition = EDI_getPositionIndex_raw_cursor();
                                 let indexOfGreaterThanOrEqual = EDI_trackedSyntaxReposition_find(indexPosition);
-                                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_Comment, indexPosition - intFields[F_EDI_cursor_indexColumn] + w_indexColumn_Sum, w_span.textContent.length);
+                                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_Comment, indexPosition - intFields[F_EDI_cursor_indexColumn] + w_indexColumn_Sum, w_span.textContent.length);
                                 shouldPreserveCssClassWhenSplittingAmongLine = true;
                             }
                             break;
@@ -6613,7 +6613,7 @@ function EDI_render_do_EnterKey() {
                                 w_span.className = 'eSM';
                                 let indexPosition = EDI_getPositionIndex_raw_cursor();
                                 let indexOfGreaterThanOrEqual = EDI_trackedSyntaxReposition_find(indexPosition);
-                                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_String, indexPosition - intFields[F_EDI_cursor_indexColumn] + w_indexColumn_Sum, w_span.textContent.length);
+                                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_String, indexPosition - intFields[F_EDI_cursor_indexColumn] + w_indexColumn_Sum, w_span.textContent.length);
                                 shouldPreserveCssClassWhenSplittingAmongLine = true;
                             }
                             break;
@@ -6685,7 +6685,7 @@ function EDI_EnterKey(ctrlKey, shiftKey) {
 
     if (GLOB_int_fields[F_EDI_cursor_editLength] === 0) {
 
-        EDI_cursor_enterKeyEventKind = ENUM_EnterKeyEventKind_None;
+        EDI_cursor_enterKeyEventKind = EnterKeyEventKind_None;
 
         GLOB_int_fields[F_EDI_cursor_editPosition] = EDI_getPositionIndex_raw_cursor();
         GLOB_int_fields[F_EDI_cursor_editIndexLine] = GLOB_int_fields[F_EDI_cursor_indexLine];
@@ -6696,7 +6696,7 @@ function EDI_EnterKey(ctrlKey, shiftKey) {
     
     if (GLOB_int_fields[F_EDI_cursor_indexColumn] === 0) { // start of line
         if (EDI_cursor_enterKeyEventKind === 0) {
-            EDI_cursor_enterKeyEventKind = ENUM_EnterKeyEventKind_StartOfLine;
+            EDI_cursor_enterKeyEventKind = EnterKeyEventKind_StartOfLine;
         }
 
         if (!ctrlKey)
@@ -6707,8 +6707,8 @@ function EDI_EnterKey(ctrlKey, shiftKey) {
 
         if (EDI_cursor_enterKeyEventKind === 0) {
             EDI_cursor_enterKeyEventKind = lastValidIndexColumn === GLOB_int_fields[F_EDI_cursor_indexColumn]
-                ? ENUM_EnterKeyEventKind_EndOfLine
-                : ENUM_EnterKeyEventKind_AmongALine;
+                ? EnterKeyEventKind_EndOfLine
+                : EnterKeyEventKind_AmongALine;
         }
         
         GLOB_int_fields[F_EDI_cursor_indexLine]++;
@@ -6721,7 +6721,7 @@ function EDI_EnterKey(ctrlKey, shiftKey) {
     GLOB_int_fields[F_EDI_cursor_END_editIndexLine] = GLOB_int_fields[F_EDI_cursor_indexLine];
     GLOB_int_fields[F_EDI_cursor_END_editIndexColumn] = GLOB_int_fields[F_EDI_cursor_indexColumn];
 
-    EDI_render_request(ENUM_RenderKind_Enter);
+    EDI_render_request(RenderKind_Enter);
 }
 
 /**
@@ -6821,7 +6821,7 @@ function EDI_render_do_Resize(timestamp) {
 }
 
 function EDI_onResize() {
-    EDI_render_request(ENUM_RenderKind_Resize);
+    EDI_render_request(RenderKind_Resize);
 }
 
 // 1. The Entry Point (Replaces WRAPIT)
@@ -6952,7 +6952,7 @@ function EDI_removeSelection() {
 
     let intFields = GLOB_int_fields;
 
-    if (intFields[F_EDI_cursor_editKind] != ENUM_EditKind_None) {
+    if (intFields[F_EDI_cursor_editKind] != EditKind_None) {
         // TODO: multicursor confusion scenario is likely to happy due to this code, but the code isn't related enough for me to change it yet.
         EDI_finalizeEdit();
     }
@@ -6976,7 +6976,7 @@ function EDI_removeSelection() {
 
     let editLength = largePosition - smallPosition;
     // editLength is 0 in this ...startEdit invocation intentionally, you cannot set the editLength until the end (TODO: remember what the exact reason was and put it here... I think it was because 'EDI_readLineEndPositionList' function is used rather than reading directly)
-    EDI_startEdit(ENUM_EditKind_RemoveTextNoBatching, smallPosition, /*editLength*/ 0);
+    EDI_startEdit(EditKind_RemoveTextNoBatching, smallPosition, /*editLength*/ 0);
 
     let smallLineAndColumnIndices = EDI_getLineAndColumnIndices(smallPosition);
     EDI_RemoveSelection_smallLineAndColumnIndices = smallLineAndColumnIndices;
@@ -6997,7 +6997,7 @@ function EDI_removeSelection() {
     
     intFields[F_EDI_cursor_STORED_indexColumn] = intFields[F_EDI_cursor_indexColumn];
 
-    EDI_render_request(ENUM_RenderKind_RemoveSelection);
+    EDI_render_request(RenderKind_RemoveSelection);
 }
 
 function EDI_render_do_RemoveSelection() {
@@ -7016,7 +7016,7 @@ function EDI_render_do_RemoveSelection() {
     ///////////
     ///////////
 
-    if (intFields[F_EDI_cursor_editKind] !== ENUM_EditKind_RemoveTextNoBatching) {
+    if (intFields[F_EDI_cursor_editKind] !== EditKind_RemoveTextNoBatching) {
         return;
     }
     if (intFields[F_EDI_cursor_editRenderedDisplacement] < intFields[F_EDI_cursor_editLength]) {
@@ -7312,11 +7312,11 @@ comments from EDI_removeSelection(cursor) that may or may not be useful idk I ju
     }
 */
 
-/** TODO: this is nearly identical to backspace, the difference is the check 'if (GLOB_int_fields[F_EDI_cursor_editKind] !== ENUM_EditKind_DeleteLtr)', thus dedupe the logic or no? */
+/** TODO: this is nearly identical to backspace, the difference is the check 'if (GLOB_int_fields[F_EDI_cursor_editKind] !== EditKind_DeleteLtr)', thus dedupe the logic or no? */
 function EDI_render_do_Delete() {
     let intFields = GLOB_int_fields;
 
-    if (intFields[F_EDI_cursor_editKind] !== ENUM_EditKind_DeleteLtr) {
+    if (intFields[F_EDI_cursor_editKind] !== EditKind_DeleteLtr) {
         return;
     }
     if (intFields[F_EDI_cursor_editRenderedDisplacement] < intFields[F_EDI_cursor_editLength]) {
@@ -7453,7 +7453,7 @@ function EDI_state_do_Delete(event) {
 
             EDI_cursor_edit_flagLineChanged = intFields[F_EDI_cursor_editLength];
 
-            EDI_render_request(ENUM_RenderKind_DeleteLtr);
+            EDI_render_request(RenderKind_DeleteLtr);
         }
         else {
             // Start of file
@@ -7472,10 +7472,10 @@ function EDI_state_do_Delete(event) {
                 originalCharacterKind = getCharacter_kind_raw(tempPosition);
             }
             else {
-                originalCharacterKind = ENUM_CharacterKind_None;
+                originalCharacterKind = CharacterKind_None;
             }
 
-            let thisCharacterKind = ENUM_CharacterKind_None;
+            let thisCharacterKind = CharacterKind_None;
             
             tempIndexColumn++;
             tempPosition++;
@@ -7486,7 +7486,7 @@ function EDI_state_do_Delete(event) {
                     thisCharacterKind = getCharacter_kind_raw(tempPosition);
                 }
                 else {
-                    thisCharacterKind = ENUM_CharacterKind_None;
+                    thisCharacterKind = CharacterKind_None;
                 }
                 if (thisCharacterKind !== originalCharacterKind) {
                     break;
@@ -7500,7 +7500,7 @@ function EDI_state_do_Delete(event) {
             intFields[F_EDI_cursor_editLength]++;
         }
 
-        EDI_render_request(ENUM_RenderKind_DeleteLtr);
+        EDI_render_request(RenderKind_DeleteLtr);
     }
 }
 
@@ -7516,7 +7516,7 @@ function EDI_render_do_Backspace() {
 
     let intFields = GLOB_int_fields;
 
-    if (intFields[F_EDI_cursor_editKind] !== ENUM_EditKind_BackspaceRtl) {
+    if (intFields[F_EDI_cursor_editKind] !== EditKind_BackspaceRtl) {
         return;
     }
 
@@ -7669,7 +7669,7 @@ function EDI_state_do_Backspace(event) {
         }
     }
 
-    EDI_render_request(ENUM_RenderKind_BackspaceRtl);
+    EDI_render_request(RenderKind_BackspaceRtl);
 }
 
 /**
@@ -7679,10 +7679,10 @@ function EDI_state_do_Backspace(event) {
 function EDI_backspaceDo(event) {
     EDI_state_do_Backspace(event);
 
-    // EDI_render_request(ENUM_RenderKind_BackspaceRtl);
+    // EDI_render_request(RenderKind_BackspaceRtl);
     //
     // This is too confusing for me to read given my current mood / energy levels. (I tell myself it is just my current mood / energy levels to cope with my incompetence)
-    // I'm just gonna isolate the code that doesn't remove a lineEnd and get that part working with 'EDI_render_request(ENUM_RenderKind_BackspaceRtl);'
+    // I'm just gonna isolate the code that doesn't remove a lineEnd and get that part working with 'EDI_render_request(RenderKind_BackspaceRtl);'
     // first.
 
     // I'm exhausted I'll probably do non-lineEnd delete key then be done
@@ -7875,14 +7875,14 @@ function EDI_getCharacterKind(character) {
         case '7':
         case '8':
         case '9':
-            return ENUM_CharacterKind_LetterOrDigit;
+            return CharacterKind_LetterOrDigit;
         case ' ':
         case '\t':
         case '\r':
         case '\n':
-            return ENUM_CharacterKind_Whitespace;
+            return CharacterKind_Whitespace;
         default:
-            return ENUM_CharacterKind_Punctuation;
+            return CharacterKind_Punctuation;
     }
 }
 
@@ -7893,22 +7893,22 @@ async function EDI_MenuOnClick(indexClicked, elementClicked) {
     }
 
     switch (commandKind) {
-        case ENUM_CommandKind_Cut:
+        case CommandKind_Cut:
             EDI_finalizeAllCursors();
             await EDI_copySelection();
             EDI_removeSelection();
-            EDI_render_request(ENUM_RenderKind_Cursor_n);
+            EDI_render_request(RenderKind_Cursor_n);
             return;
-        case ENUM_CommandKind_Copy:
+        case CommandKind_Copy:
             EDI_finalizeAllCursors();
             return EDI_copySelection();
-        case ENUM_CommandKind_Paste:
+        case CommandKind_Paste:
             EDI_finalizeAllCursors();
             let clipboard = await window.myAPI.readClipboard();
             EDI_paste(clipboard);
-            EDI_render_request(ENUM_RenderKind_Cursor_n);
+            EDI_render_request(RenderKind_Cursor_n);
             return;
-        case ENUM_CommandKind_Find:
+        case CommandKind_Find:
             EDI_findOverlay_showSetter(!get_EDI_findOverlay_show());
             return;
     }
@@ -7939,7 +7939,7 @@ function EDI_moveCursor_indexLine_indexColumn(indexLine, indexColumn) {
     
     // TODO: selectionAnchor = selectionEnd; EDI_drawCursor(); # being the way to clear a selection should be documented / wrapped by a method for ease of use / readability?
     GLOB_int_fields[F_EDI_cursor_selectionAnchor] = GLOB_int_fields[F_EDI_cursor_selectionEnd];
-    EDI_render_request(ENUM_RenderKind_Cursor_n);
+    EDI_render_request(RenderKind_Cursor_n);
 }
 
 /**
@@ -8274,15 +8274,15 @@ function EDI_toExtensionKind(extensionWithPeriod) {
     switch (extensionWithPeriod) {
         case '.js':
         case '.cjs':
-            return ENUM_ExtensionKind_JavaScript;
+            return ExtensionKind_JavaScript;
         default:
-            return ENUM_ExtensionKind_None;
+            return ExtensionKind_None;
     }
 }
 
 function EDI_language_line_lex_SET(extensionKind) {
     switch (extensionKind) {
-        case ENUM_ExtensionKind_JavaScript:
+        case ExtensionKind_JavaScript:
             EDI_language_line_lex = JS_line_lex;
             break;
         default:

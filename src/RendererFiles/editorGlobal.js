@@ -119,6 +119,9 @@ let EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET = 0;
 let EDITOR_cursor_END_editIndexLine = 0;
 let EDITOR_cursor_END_editIndexColumn = 0;
 
+let EDITOR_cursor_cursorId = EDITOR_cursor_STATIC_CURSOR_ID++;
+let EDITOR_cursor_htmlId = "EDITOR_cursor-" + EDITOR_cursor_cursorId;
+
 class EDITOR_Cursor {
     /**
      * After invoking the constructor you likely would want to add to:
@@ -129,12 +132,6 @@ class EDITOR_Cursor {
      * `EDITOR_cursorList.splice(index, 0, cursorInstance)`
      */
     constructor() {
-        
-        
-        // TODO: This is supposed to say 'cursorId'
-        this.cursorIndex = EDITOR_cursor_STATIC_CURSOR_ID++;
-        this.htmlId = "EDITOR_cursor-" + this.cursorIndex;
-        
         /**
          * When this is cleared the information is not removed, only 'gapBufferCount' is set to 0.
          */
@@ -144,14 +141,14 @@ class EDITOR_Cursor {
         this.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
 
         this.caretRow = document.createElement('div');
-        this.caretRow.id = "EDITOR_caretRow-" + this.cursorIndex;
+        this.caretRow.id = "EDITOR_caretRow-" + EDITOR_cursor_cursorId;
         this.caretRow.className = "EDITOR_caretRow";
         this.caretRow.style.left = gutterWidthTotal_withPxUnits;
         if (cached_EDITOR_horizontal_scrollbar_virtualization_boundary) {
             this.caretRow.style.width = cached_EDITOR_horizontal_scrollbar_virtualization_boundary.style.width;
         }
         this.cursorElement = document.createElement('div');
-        this.cursorElement.id = "EDITOR_cursor-" + this.cursorIndex;
+        this.cursorElement.id = "EDITOR_cursor-" + EDITOR_cursor_cursorId;
         this.cursorElement.className = "EDITOR_cursor";
         
         this.caretRow.appendChild(this.cursorElement);
@@ -2941,7 +2938,7 @@ function EDITOR_clearSelectionStyle(cursor) {
     let shouldExistSelectionDiv = false;
     if (cursor.selectionDivExists) {
         for (var i = 0; i < cached_EDITOR_presentation.children.length; i++) {
-            if (cached_EDITOR_presentation.children[i].id === cursor.htmlId) {
+            if (cached_EDITOR_presentation.children[i].id === EDITOR_cursor_htmlId) {
                 let textSelectionDiv = cached_EDITOR_presentation.children[i];
                 if (!shouldExistSelectionDiv) {
                     cached_EDITOR_presentation.removeChild(textSelectionDiv);
@@ -2979,7 +2976,7 @@ function EDITOR_createStyleForSelection(cursor) {
 
         if (cursor.selectionDivExists) {
             for (var i = 0; i < cached_EDITOR_presentation.children.length; i++) {
-                if (cached_EDITOR_presentation.children[i].id === cursor.htmlId) {
+                if (cached_EDITOR_presentation.children[i].id === EDITOR_cursor_htmlId) {
                     textSelectionDiv = cached_EDITOR_presentation.children[i];
                     if (!shouldExistSelectionDiv) {
                         cached_EDITOR_presentation.removeChild(textSelectionDiv);
@@ -2991,7 +2988,7 @@ function EDITOR_createStyleForSelection(cursor) {
         }
         else if (shouldExistSelectionDiv) {
             textSelectionDiv = document.createElement('div')
-            textSelectionDiv.id = cursor.htmlId;
+            textSelectionDiv.id = EDITOR_cursor_htmlId;
             textSelectionDiv.style.display = 'contents';
             cached_EDITOR_presentation.appendChild(textSelectionDiv);
             cursor.selectionDivExists = true;
@@ -3097,7 +3094,7 @@ function EDITOR_createStyleForSelection_indentMore(cursor) {
     let textSelectionDiv;
     if (cursor.selectionDivExists) {
         for (var i = 0; i < cached_EDITOR_presentation.children.length; i++) {
-            if (cached_EDITOR_presentation.children[i].id === cursor.htmlId) {
+            if (cached_EDITOR_presentation.children[i].id === EDITOR_cursor_htmlId) {
                 textSelectionDiv = cached_EDITOR_presentation.children[i];
                 break;
             }
@@ -5585,7 +5582,7 @@ function EDITOR_render_do_IndentLess() {
         let textSelectionDiv;
         if (cursor.selectionDivExists) {
             for (var i = 0; i < cached_EDITOR_presentation.children.length; i++) {
-                if (cached_EDITOR_presentation.children[i].id === cursor.htmlId) {
+                if (cached_EDITOR_presentation.children[i].id === EDITOR_cursor_htmlId) {
                     textSelectionDiv = cached_EDITOR_presentation.children[i];
                     break;
                 }

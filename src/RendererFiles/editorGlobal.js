@@ -9203,4 +9203,6 @@ I hear tech youtubers say these things all the time they're such clowns on this 
 
 Theprimeagen is the quote. Maybe he said 12 not 13 big deal what a stupid statement
 
+I think about it daily cause of how much I hate what he said
+
 */

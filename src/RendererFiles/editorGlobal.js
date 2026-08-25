@@ -3463,7 +3463,7 @@ function EDITOR_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
 
     if (nextPositionIndex <= EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]) {
         if (cursor.selectionAnchor < cursor.selectionEnd) {
-            cursor.selectionAnchor = get_EDITOR_detail_largePosition();
+            cursor.selectionAnchor = EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition];
         }
 
         cursor.indexLine = indexLineClicked;
@@ -3503,7 +3503,7 @@ function EDITOR_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
             cursor.selectionAnchor = EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition];
         }
 
-        if (nextPositionIndex >= get_EDITOR_detail_largePosition()) {
+        if (nextPositionIndex >= EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition]) {
             cursor.indexLine = indexLineClicked;
             cursor.indexColumn = indexColumnClicked;
             let positionIndex = nextPositionIndex;
@@ -3535,10 +3535,10 @@ function EDITOR_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
             }
         }
         else {
-            let largeLineAndColumnIndices = EDITOR_getLineAndColumnIndices(get_EDITOR_detail_largePosition());
+            let largeLineAndColumnIndices = EDITOR_getLineAndColumnIndices(EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition]);
             cursor.indexLine = largeLineAndColumnIndices.indexLine;
             cursor.indexColumn = largeLineAndColumnIndices.indexColumn;
-            cursor.selectionEnd = get_EDITOR_detail_largePosition();
+            cursor.selectionEnd = EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition];
         }
 
         let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
@@ -3550,7 +3550,7 @@ function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked)
     let cursor = EDITOR_primaryCursor;
 
     // TODO: I remember this being bugged I think it makes sense why. You're checking if the cursor is exactly at the threshold rather than determining if the distance from previous event to this one puts you past the threshold.
-    if (indexLineClicked === get_EDITOR_detailRank3OriginLine()) {
+    if (indexLineClicked === EDITOR_int_fields[INDEXOF_EDITOR_detailRank3OriginLine]) {
         // TODO: 'cursor.positionIndex' is incorrect there is no such field, but was this referring to the clicked position or the position that the cursor currently is at...
         // ...it is presumed to be the position that the cursor is currently at because it would explain the bug where if you move the cursor somewhere that the mouse move events don't get
         // sent then bring your mouse back into a place where they do you'll snap ahead by some indices and skip the threshold and it visually bugs.
@@ -3567,14 +3567,14 @@ function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked)
             cursor.selectionEnd = EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition];
         }
 
-        if (cursor.selectionAnchor !== get_EDITOR_detail_largePosition()) {
-            cursor.selectionAnchor = get_EDITOR_detail_largePosition();
+        if (cursor.selectionAnchor !== EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition]) {
+            cursor.selectionAnchor = EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition];
         }
 
         let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
         EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
     }
-    else if (indexLineClicked < get_EDITOR_detailRank3OriginLine()) {
+    else if (indexLineClicked < EDITOR_int_fields[INDEXOF_EDITOR_detailRank3OriginLine]) {
         if (cursor.selectionAnchor < cursor.selectionEnd) {
             let smallLineAndColumnPositionIndices = EDITOR_getLineAndColumnIndices(EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]);
 
@@ -3595,7 +3595,7 @@ function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked)
         let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
         EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
     }
-    else if (indexLineClicked > get_EDITOR_detailRank3OriginLine()) {
+    else if (indexLineClicked > EDITOR_int_fields[INDEXOF_EDITOR_detailRank3OriginLine]) {
 
         if (cursor.selectionAnchor !== EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]) {
             cursor.selectionAnchor = EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition];
@@ -4024,7 +4024,7 @@ function EDITOR_createCursorAtNextMatchSelection() {
 		if (upcomingNumber > total || upcomingNumber < 1) {
 			upcomingNumber = 1;
 		}
-        if (get_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber() === upcomingNumber) {
+        if (EDITOR_int_fields[INDEXOF_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber] === upcomingNumber) {
             return;
         }
 	}
@@ -4075,7 +4075,7 @@ function EDITOR_createCursorAtNextMatchSelection() {
 
     let postPosition = EDITOR_getPositionIndex(EDITOR_primaryCursor);
 
-    if (prePosition != postPosition && postPosition != get_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber()) {
+    if (prePosition != postPosition && postPosition != EDITOR_int_fields[INDEXOF_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber]) {
         let input = document.getElementById('EDITOR_findOverlay_input_elementId');
         if (!input || !input.value) return;
 

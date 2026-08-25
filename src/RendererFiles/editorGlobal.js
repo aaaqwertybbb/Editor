@@ -3784,12 +3784,12 @@ function EDITOR_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLine
     }
 
     if (cursor.selectionAnchor < cursor.selectionEnd) {
-        set_EDITOR_detail_smallPosition(cursor.selectionAnchor);
-        set_EDITOR_detail_largePosition(cursor.selectionEnd);
+        EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition] = cursor.selectionAnchor;
+        EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition] = cursor.selectionEnd;
     }
     else {
-        set_EDITOR_detail_smallPosition(cursor.selectionEnd);
-        set_EDITOR_detail_largePosition(cursor.selectionAnchor);
+        EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition] = cursor.selectionEnd;
+        EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition] = cursor.selectionAnchor;
     }
 }
 
@@ -3824,12 +3824,12 @@ function EDITOR_onMouseDownDetailRankThree(event_button, event_shiftKey, indexLi
     }
 
     if (cursor.selectionAnchor < cursor.selectionEnd) {
-        set_EDITOR_detail_smallPosition(cursor.selectionAnchor);
-        set_EDITOR_detail_largePosition(cursor.selectionEnd);
+        EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition] = cursor.selectionAnchor;
+        EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition] = cursor.selectionEnd;
     }
     else {
-        set_EDITOR_detail_smallPosition(cursor.selectionEnd);
-        set_EDITOR_detail_largePosition(cursor.selectionAnchor);
+        EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition] = cursor.selectionEnd;
+        EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition] = cursor.selectionAnchor;
     }
 }
 
@@ -4005,7 +4005,7 @@ function EDITOR_createCursorAtNextMatchSelection() {
 	    if (!spanCurrent) return;
         let current = parseInt(spanCurrent.textContent, 10);
         if (current) {
-            set_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber(current);
+            EDITOR_int_fields[INDEXOF_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber] = current;
         }
         else {
             EDITOR_findOverlay_showSetter(false);
@@ -8834,7 +8834,7 @@ function EDITOR_measureLineHeightAndCharacterWidth() {
     measureElement.innerHTML = 'A'.repeat(len);
     let measureElementBoundingClientRect = measureElement.getBoundingClientRect();
     EDITOR_characterWidth = measureElementBoundingClientRect.width / len; // 7.146002258917298
-    set_EDITOR_lineHeight(Math.ceil(measureElementBoundingClientRect.height)); // 15
+    EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] = Math.ceil(measureElementBoundingClientRect.height); // 15
 
     wrapper.removeChild(measureElement);
     cached_EDITOR_textElement.removeChild(wrapper);

@@ -163,9 +163,8 @@ const CONST_DIALOG_minWidth = 100;
 
 const EDITOR_int_fields = new Uint32Array(64);
 
-const set_EDITOR_lineHeight = (int) => EDITOR_int_fields[0] = int;
 const INDEXOF_EDITOR_lineHeight = 0;
-set_EDITOR_lineHeight(20);
+EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] = 20;
 
 /** The first line of text that you should see shown in the UI given the current scrollTop */
 const set_EDITOR_virtualIndexLine = (int) => EDITOR_int_fields[1] = int;
@@ -201,17 +200,13 @@ EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount] = 0;
 
 const INDEXOF_EDITOR_sum_diffNegative = 9;
 
-const set_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber = (int) => EDITOR_int_fields[10] = int;
 const INDEXOF_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber = 10;
 
 const INDEXOF_EDITOR_drawn_count_of_digits_longest_line_number = 11;
-const set_EDITOR_drawn_count_of_digits_longest_line_number = (int) => EDITOR_int_fields[11] = int;
 
 const INDEXOF_EDITOR_detail_smallPosition = 12;
-const set_EDITOR_detail_smallPosition = (int) => EDITOR_int_fields[12] = int;
 
 const INDEXOF_EDITOR_detail_largePosition = 13;
-const set_EDITOR_detail_largePosition = (int) => EDITOR_int_fields[13] = int;
 
 const INDEXOF_EDITOR_detailRank3OriginLine = 14;
 const set_EDITOR_detailRank3OriginLine = (int) => EDITOR_int_fields[14] = int;

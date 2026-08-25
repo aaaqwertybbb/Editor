@@ -5,17 +5,10 @@ module.exports = function (babel) {
 
   // List all the function names you want to inline
   const TARGET_FUNCTIONS = [
-    "set_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber",
-
-    "set_EDITOR_drawn_count_of_digits_longest_line_number",
-
-    "set_EDITOR_lineHeight",
 
     "set_EDITOR_detailRank",
 
-    "set_EDITOR_detail_smallPosition",
     
-    "set_EDITOR_detail_largePosition",
 
     "set_EDITOR_detailRank3OriginLine",
 

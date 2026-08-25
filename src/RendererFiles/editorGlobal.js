@@ -5720,6 +5720,8 @@ async function EDITOR_duplicateSelection() {
 
 function EDITOR_render_do_DuplicateOrPaste() {
 
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
     // Word
     // Tab
     // LineFeed
@@ -5737,24 +5739,24 @@ function EDITOR_render_do_DuplicateOrPaste() {
 
     let hasSeenLinefeed = false;
 
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Duplicate && EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Paste) {
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Duplicate && local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Paste) {
         return;
     }
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] || EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_Paste /* Paste has an editLength of 0 currently */) {
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] || local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_Paste /* Paste has an editLength of 0 currently */) {
 
-        let small = EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_small];
-        let length = EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_length];
+        let small = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_small];
+        let length = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_length];
         let large = small + length;
         
-        // TODO: update the 'EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]'
+        // TODO: update the 'local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]'
 
         let byteArray;
 
         // TODO: re-use the paste byte array
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_Duplicate) {
+        if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_Duplicate) {
             byteArray = EDITOR_textByteList.bytes.subarray(small, large);
         }
-        else if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_Paste) {
+        else if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_Paste) {
             large = EDITOR_getPositionIndex_raw_cursor();
             let clipboardContent = EDITOR_cursor_EDITOR_paste_clipboardContent;
             let clipboardContentLength = clipboardContent.length;
@@ -5788,8 +5790,8 @@ function EDITOR_render_do_DuplicateOrPaste() {
 
             byteArray = new Uint8Array(lengthBytes);
             length = lengthBytes;
-            // TODO: You need 'EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]' when finalizing the cursor right? It isn't set until this point for Paste edits.
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] = lengthBytes;
+            // TODO: You need 'local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]' when finalizing the cursor right? It isn't set until this point for Paste edits.
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] = lengthBytes;
 
             // I'm gonna re-use lengthBytes to populate the array to avoid messing something up just to get a different variable with the name of maybe 'offsetBytes' or some such.
             lengthBytes = 0;
@@ -5849,17 +5851,17 @@ function EDITOR_render_do_DuplicateOrPaste() {
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexLine_current = ((EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]) + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+        let beltIndexLine_current = ((local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]) + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
         if (beltIndexLine_current >= ArrayFrom_textElement_children_length || beltIndexLine_current < 0) beltIndexLine_current = -1;
-        else beltIndexLine_current = (beltIndexLine_current + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+        else beltIndexLine_current = (beltIndexLine_current + EDITOR_beltIndexZero) % local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
         // TODO: This is an awkward explicit inlining of 'EDITOR_indexLineTo_beltIndexLine'...
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexLine_first = ((EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine]) + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+        let beltIndexLine_first = ((local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine]) + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
         if (beltIndexLine_first >= ArrayFrom_textElement_children_length || beltIndexLine_first < 0) beltIndexLine_first = -1;
-        else beltIndexLine_first = (beltIndexLine_first + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+        else beltIndexLine_first = (beltIndexLine_first + EDITOR_beltIndexZero) % local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
         // TODO: Use PREVIOUS here from 'beltIndexLine_first'
 
@@ -5867,12 +5869,12 @@ function EDITOR_render_do_DuplicateOrPaste() {
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexLine_last = ((EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1) + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+        let beltIndexLine_last = ((local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1) + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
         if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
-        else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+        else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
 
-        let last_valid_indexColumn_currentLine = EDITOR_getLastValidIndexColumn(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+        let last_valid_indexColumn_currentLine = EDITOR_getLastValidIndexColumn(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
 
         // TODO: An optimization to check whether you even need to redraw any lines perhaps is possible but it would add too much complexity at the moment and so it isn't being considered...
         // ...i.e.: if you're inserting so many lines that you know you'll scroll or that only a small amount of lines need to be redrawn due to predicting a scroll event.
@@ -5882,7 +5884,7 @@ function EDITOR_render_do_DuplicateOrPaste() {
 
         let original_indexColumn_SpanTextContentRelative = w_indexColumn_SpanTextContentRelative;
         let original_span_textContent_length = w_span.textContent.length;
-        let original_tracked_syntax_start = positionIndex - EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] + w_indexColumn_Sum;
+        let original_tracked_syntax_start = positionIndex - local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] + w_indexColumn_Sum;
 
         let offset = 0;
 
@@ -5956,8 +5958,8 @@ function EDITOR_render_do_DuplicateOrPaste() {
             }
         }
 
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] = insertionLength;
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = large;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] = insertionLength;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = large;
 
         if (linesInsertedCount > 0) {
             update_verticalVirtualizationBoundary(EDITOR_lineEndPositionList.count + linesInsertedCount);
@@ -5985,7 +5987,7 @@ function EDITOR_render_do_DuplicateOrPaste() {
                     break;
                 }
 
-                if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] === 0 && last_valid_indexColumn_currentLine !== 0) { // start of line
+                if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] === 0 && last_valid_indexColumn_currentLine !== 0) { // start of line
                     
                     EDITOR_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, beltIndexLine_current);
                     cached_EDITOR_textElement.children[beltIndexLine_current].appendChild(document.createElement('span'));
@@ -5998,14 +6000,14 @@ function EDITOR_render_do_DuplicateOrPaste() {
                     w_indexColumn_Goal = 0;
                     w_indexColumn_Sum = 0;
                     w_indexColumn_SpanTextContentRelative = 0;
-                    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]++;
-                    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
+                    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]++;
+                    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
 
                     continue;
                 }
                 else {
                     // ensure this conditional branch continues if handled, otherwise it will execute the fallback case erroneously
-                    if (last_valid_indexColumn_currentLine === EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]) { // end of line
+                    if (last_valid_indexColumn_currentLine === local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]) { // end of line
 
                         beltIndexLine_current = (beltIndexLine_current + 1) % ArrayFrom_textElement_children_length;
                         
@@ -6020,8 +6022,8 @@ function EDITOR_render_do_DuplicateOrPaste() {
                         w_indexColumn_Goal = 0;
                         w_indexColumn_Sum = 0;
                         w_indexColumn_SpanTextContentRelative = 0;
-                        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]++;
-                        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
+                        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]++;
+                        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
                         last_valid_indexColumn_currentLine = 0;
                         
 
@@ -6069,8 +6071,8 @@ function EDITOR_render_do_DuplicateOrPaste() {
                         w_indexColumn_Goal = 0;
                         w_indexColumn_Sum = 0;
                         w_indexColumn_SpanTextContentRelative = 0;
-                        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]++;
-                        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
+                        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]++;
+                        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
                         // last_valid_indexColumn_currentLine is being set when splitting the text.
 
                         continue;
@@ -6087,7 +6089,7 @@ function EDITOR_render_do_DuplicateOrPaste() {
                 word +
                 w_span.textContent.slice(w_indexColumn_SpanTextContentRelative);
 
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] += wordLength;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] += wordLength;
             w_indexColumn_SpanTextContentRelative += wordLength;
         }
     }

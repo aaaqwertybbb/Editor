@@ -161,7 +161,7 @@ module.exports = function (babel) {
     "fEDI_scrollEndDeadline",
     "fEDI_sum_diffPositive",
     "fEDI_sum_diffNegative",
-    "F_lastReadNumber_scrollTop",
+    "fEDI_lastReadNumber_scrollTop",
 
     "AUTOCOMPLETErenderKind_None",
     "AUTOCOMPLETErenderKind_Show",

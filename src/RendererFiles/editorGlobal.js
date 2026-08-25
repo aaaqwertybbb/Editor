@@ -479,7 +479,7 @@ function EDI_render_do_Clear() {
     prevVli = 0;
     currVli = gINT_FIELDS[fEDI_virtualCount];
     // TODO: Duplicated setting of scrolltop; this case and just baseline everytime vertical scrolls it is done in this method elsewhere
-    gINT_FIELDS[fEDI_ONSCROLLscrollTop] = gINT_FIELDS[F_lastReadNumber_scrollTop];
+    gINT_FIELDS[fEDI_ONSCROLLscrollTop] = gINT_FIELDS[fEDI_lastReadNumber_scrollTop];
     EDI_render_do_CreateViewport();
 }
 
@@ -519,7 +519,7 @@ function EDI_render_do_CreateViewport() {
 
     let intFields = gINT_FIELDS;
 
-    let remember_scrollTop = intFields[F_lastReadNumber_scrollTop];
+    let remember_scrollTop = intFields[fEDI_lastReadNumber_scrollTop];
     let remember_scrollLeft = lastReadNumber_scrollLeft;
 
     EDI_baseElement.scrollTop = 0;
@@ -628,7 +628,7 @@ function EDI_onScroll_WRAPIT() {
     // thus it is thought you might as well touch scrollLeft too here, if you're going down this path.
     //
     lastReadNumber_scrollLeft = EDI_baseElement.scrollLeft;
-    gINT_FIELDS[F_lastReadNumber_scrollTop] = EDI_baseElement.scrollTop;
+    gINT_FIELDS[fEDI_lastReadNumber_scrollTop] = EDI_baseElement.scrollTop;
 
     EDI_render_request(RenderKind_Scroll);
 }
@@ -707,7 +707,7 @@ function EDI_render_do_Scroll(timestamp) {
     let local_lineHeight = intFields[fEDI_lineHeight];
 
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
-    intFields[fEDI_virtualIndexLine] = (Math.floor(intFields[F_lastReadNumber_scrollTop] / local_lineHeight));
+    intFields[fEDI_virtualIndexLine] = (Math.floor(intFields[fEDI_lastReadNumber_scrollTop] / local_lineHeight));
     
     // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 1 of 4)
     let local_prevVli = intFields[fEDI_ONSCROLLvirtualIndexLine];
@@ -731,7 +731,7 @@ function EDI_render_do_Scroll(timestamp) {
         local_currVli = currVli;
     }
 
-    intFields[fEDI_ONSCROLLscrollTop] = intFields[F_lastReadNumber_scrollTop]; // TODO: Move this to the scroll event handler (probably-maybe)
+    intFields[fEDI_ONSCROLLscrollTop] = intFields[fEDI_lastReadNumber_scrollTop]; // TODO: Move this to the scroll event handler (probably-maybe)
 
     // TODO: Move this to the leading edge? (maybe)
     if (intFields[fEDI_cursor_editKind] !== EditKind_None) {
@@ -866,7 +866,7 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
 
     EDI_finalizeAllCursors();
 
-    if (intFields[fEDI_ONSCROLLscrollTop] === intFields[F_lastReadNumber_scrollTop] &&
+    if (intFields[fEDI_ONSCROLLscrollTop] === intFields[fEDI_lastReadNumber_scrollTop] &&
         prevVli === intFields[fEDI_virtualIndexLine] &&
         intFields[fEDI_ONSCROLLvirtualCount] === intFields[fEDI_virtualCount]) {
             // TODO: this is directly tied to a scroll event on EDI_baseElement so handle it from there perhaps?
@@ -1228,7 +1228,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     let intFields = gINT_FIELDS;
 
     EDI_baseElement.scrollTop = 0;
-    intFields[F_lastReadNumber_scrollTop] = 0;
+    intFields[fEDI_lastReadNumber_scrollTop] = 0;
     EDI_baseElement.scrollLeft = 0;
     lastReadNumber_scrollLeft = 0;
     
@@ -1367,9 +1367,9 @@ function update_VirtualIndexLine() {
     // thus it is thought you might as well touch scrollLeft too here, if you're going down this path.
     //
     lastReadNumber_scrollLeft = EDI_baseElement.scrollLeft;
-    gINT_FIELDS[F_lastReadNumber_scrollTop] = EDI_baseElement.scrollTop;
+    gINT_FIELDS[fEDI_lastReadNumber_scrollTop] = EDI_baseElement.scrollTop;
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
-    gINT_FIELDS[fEDI_virtualIndexLine] = Math.floor(gINT_FIELDS[F_lastReadNumber_scrollTop] / gINT_FIELDS[fEDI_lineHeight]);
+    gINT_FIELDS[fEDI_virtualIndexLine] = Math.floor(gINT_FIELDS[fEDI_lastReadNumber_scrollTop] / gINT_FIELDS[fEDI_lineHeight]);
 }
 
 function update_virtualCount() {
@@ -3181,7 +3181,7 @@ function EDI_onMouseMove_WRAPIT(event) {
         // TODO: Is it correct to use the cursor's indexLine and indexColumn directly as a means of determining redundancy? I worry about odd interactions, but I have no proof that such an odd interaction could exist.
 
         let rX = event.clientX - intFields[fEDI_recentBoundingClientRect_left] - intFields[fEDI_gutterWidthTotal] + lastReadNumber_scrollLeft;
-        let rY = event.clientY - intFields[fEDI_recentBoundingClientRect_top] + intFields[F_lastReadNumber_scrollTop];
+        let rY = event.clientY - intFields[fEDI_recentBoundingClientRect_top] + intFields[fEDI_lastReadNumber_scrollTop];
 
         let indexColumn = Math.round(rX / EDI_characterWidth);
         let indexLine = Math.floor(rY / intFields[fEDI_lineHeight]);
@@ -4880,7 +4880,7 @@ function EDI_onMouseDown(event) {
         EDI_baseElement.addEventListener('mousemove', EDI_onMouseMove_WRAPIT);
     }
 
-    let rY = event.clientY - gINT_FIELDS[fEDI_recentBoundingClientRect_top] + gINT_FIELDS[F_lastReadNumber_scrollTop];
+    let rY = event.clientY - gINT_FIELDS[fEDI_recentBoundingClientRect_top] + gINT_FIELDS[fEDI_lastReadNumber_scrollTop];
     let rX = event.clientX - gINT_FIELDS[fEDI_recentBoundingClientRect_left] - gINT_FIELDS[fEDI_gutterWidthTotal] + lastReadNumber_scrollLeft;
     
     let indexLine = Math.floor(rY / gINT_FIELDS[fEDI_lineHeight]);
@@ -4939,7 +4939,7 @@ function EDI_onContextMenu() {
     ];
 
     let menuLeft = gINT_FIELDS[fEDI_recentBoundingClientRect_left] + gINT_FIELDS[fEDI_gutterWidthTotal] + gINT_FIELDS[fEDI_cursor_cursorTranslateXValue] - lastReadNumber_scrollLeft;
-    let menuTop = gINT_FIELDS[fEDI_recentBoundingClientRect_top] + gINT_FIELDS[fEDI_cursor_cursorTranslateYValue] + gINT_FIELDS[fEDI_lineHeight] - gINT_FIELDS[F_lastReadNumber_scrollTop];
+    let menuTop = gINT_FIELDS[fEDI_recentBoundingClientRect_top] + gINT_FIELDS[fEDI_cursor_cursorTranslateYValue] + gINT_FIELDS[fEDI_lineHeight] - gINT_FIELDS[fEDI_lastReadNumber_scrollTop];
 
     return menuSet('EDITOR', null, optionList, menuLeft, menuTop);
 }
@@ -7776,7 +7776,7 @@ function EDI_scrollCursorIntoView() {
     let scrollX = 0;
     let scrollY = 0;
 
-    let local_lastReadNumber_scrollTop = gINT_FIELDS[F_lastReadNumber_scrollTop];
+    let local_lastReadNumber_scrollTop = gINT_FIELDS[fEDI_lastReadNumber_scrollTop];
 
     if (gINT_FIELDS[fEDI_cursor_cursorTranslateYValue] < local_lastReadNumber_scrollTop) {
         scrollY = gINT_FIELDS[fEDI_cursor_cursorTranslateYValue] - local_lastReadNumber_scrollTop;
@@ -8619,7 +8619,7 @@ function EDI_requestLspHover() {
         set_EDI_recentBoundingClientRect_isNull_intFalsey(0);
     }
 
-    let rY = event_clientY - gINT_FIELDS[fEDI_recentBoundingClientRect_top] + gINT_FIELDS[F_lastReadNumber_scrollTop];
+    let rY = event_clientY - gINT_FIELDS[fEDI_recentBoundingClientRect_top] + gINT_FIELDS[fEDI_lastReadNumber_scrollTop];
     let rX = event_clientX - gINT_FIELDS[fEDI_recentBoundingClientRect_left] - gINT_FIELDS[fEDI_gutterWidthTotal] + lastReadNumber_scrollLeft;
     
     let indexLine = Math.floor(rY / gINT_FIELDS[fEDI_lineHeight]);

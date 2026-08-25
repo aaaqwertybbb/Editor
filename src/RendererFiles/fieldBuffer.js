@@ -175,7 +175,7 @@ gINT_FIELDS[fEDI_lineHeight] = 20;
 const fEDI_virtualIndexLine = 1;
 
 /** The value of 'EDI_baseElement.scrollTop' at the most recent scroll event that occurred */
-const F_lastReadNumber_scrollTop = 2;
+const fEDI_lastReadNumber_scrollTop = 2;
 
 const fEDI_ONSCROLLvirtualIndexLine = 3;
 //throw new Error('-1');

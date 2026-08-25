@@ -238,10 +238,8 @@ const INDEXOF_EDITOR_offsetLine = 19;
 const INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine = 20;
 
 const INDEXOF_EDITOR_offsetColumn = 21;
-const set_EDITOR_offsetColumn = (int) => EDITOR_int_fields[21] = int;
 
 const INDEXOF_EDITOR_totalShift = 22;
-const set_EDITOR_totalShift = (int) => EDITOR_int_fields[22] = int;
 
 const INDEXOF_EDITOR_offsetWithinSpan = 23;
 const set_EDITOR_offsetWithinSpan = (int) => EDITOR_int_fields[23] = int;

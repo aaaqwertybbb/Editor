@@ -13,10 +13,6 @@ module.exports = function (babel) {
     
     
     
-    "set_EDITOR_offsetColumn",
-    
-    "set_EDITOR_totalShift",
-    
     "set_EDITOR_offsetWithinSpan",
     
     

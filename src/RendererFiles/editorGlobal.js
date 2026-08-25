@@ -1282,8 +1282,8 @@ function EDITOR_state_clear() {
     EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = 0;
-    set_EDITOR_offsetColumn(0);
-    set_EDITOR_totalShift(0);
+    EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = 0;
     EDITOR_offsetWithinSpan_withRespectToThisSpan = null;
     set_EDITOR_offsetWithinSpan(0);
     
@@ -4327,7 +4327,7 @@ function EDITOR_editEvent_theEditIself_InsertLtr(event) {
         EDITOR_movementBasedCacheInvalidation(cursor);
         if (get_EDITOR_offsetColumn_withRespectToThisIndexLine() !== cursor.indexLine) {
             EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = cursor.indexLine;
-            set_EDITOR_offsetColumn(0);
+            EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
         }
         // You can do this because the function 'EDITOR_NOTcanBatch_insert' was already checked for all the cursors, if it is possible to batch, the editKind will stay InsertLtr otherwise it is finalized and set to None.
         // TODO: Use if === ENUM_EditKind_None for copy and paste safety / it might just even be more readable
@@ -4337,8 +4337,8 @@ function EDITOR_editEvent_theEditIself_InsertLtr(event) {
         EDITOR_insertDo(cursor, event.key);
         cursor.STORED_indexColumn = cursor.indexColumn;
         EDITOR_render_request(ENUM_RenderKind_Cursor_n + i);
-        //set_EDITOR_offsetColumn(EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] + cursor.editLength);
-        //set_EDITOR_totalShift(get_EDITOR_totalShift() + cursor.editLength); // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
+        //EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] + cursor.editLength;
+        //EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = get_EDITOR_totalShift() + cursor.editLength; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
         EDITOR_render_request(ENUM_RenderKind_InsertLtr);
     }
 }
@@ -4350,7 +4350,7 @@ function EDITOR_editEvent_theEditIself_DeleteLtr(event) {
         EDITOR_movementBasedCacheInvalidation(cursor);
         if (get_EDITOR_offsetColumn_withRespectToThisIndexLine() !== cursor.indexLine) {
             EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = cursor.indexLine;
-            set_EDITOR_offsetColumn(0);
+            EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
         }
         if (cursor.hasSelection()) {
             EDITOR_removeSelection(cursor);
@@ -4362,8 +4362,8 @@ function EDITOR_editEvent_theEditIself_DeleteLtr(event) {
             EDITOR_deleteDo(cursor, event);
         }
         EDITOR_render_request(ENUM_RenderKind_Cursor_n + i);
-        //set_EDITOR_offsetColumn(EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] - cursor.editLength);
-        //set_EDITOR_totalShift(get_EDITOR_totalShift() - cursor.editLength); // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
+        //EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] - cursor.editLength;
+        //EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = get_EDITOR_totalShift() - cursor.editLength; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
     }
 }
 
@@ -4374,7 +4374,7 @@ function EDITOR_editEvent_theEditIself_BackspaceRtl(event) {
         EDITOR_movementBasedCacheInvalidation(cursor);
         if (get_EDITOR_offsetColumn_withRespectToThisIndexLine() !== cursor.indexLine) {
             EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = cursor.indexLine;
-            set_EDITOR_offsetColumn(0);
+            EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
         }
         if (cursor.hasSelection()) {
             EDITOR_removeSelection(cursor);
@@ -4387,8 +4387,8 @@ function EDITOR_editEvent_theEditIself_BackspaceRtl(event) {
             cursor.STORED_indexColumn = cursor.indexColumn;
         }
         EDITOR_render_request(ENUM_RenderKind_Cursor_n + i);
-        //set_EDITOR_offsetColumn(EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] - cursor.editLength);
-        //set_EDITOR_totalShift(get_EDITOR_totalShift() - cursor.editLength); // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
+        //EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] - cursor.editLength;
+        //EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = get_EDITOR_totalShift() - cursor.editLength; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
     }
 }
 
@@ -4754,8 +4754,8 @@ function EDITOR_onKeyDown(event) {
     EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = 0;
-    set_EDITOR_offsetColumn(0);
-    set_EDITOR_totalShift(0);
+    EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = 0;
     EDITOR_offsetWithinSpan_withRespectToThisSpan = null;
     set_EDITOR_offsetWithinSpan(0);
 
@@ -4840,7 +4840,7 @@ function EDITOR_onKeyDown_ArrowLeft(event) {
         EDITOR_movementBasedCacheInvalidation(cursor);
         if (get_EDITOR_offsetColumn_withRespectToThisIndexLine() !== cursor.indexLine) {
             EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = cursor.indexLine;
-            set_EDITOR_offsetColumn(0);
+            EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
         }
 
         if (cursor.hasSelection() && !event.shiftKey) {
@@ -4893,8 +4893,8 @@ function EDITOR_onKeyDown_ArrowLeft(event) {
         if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
             EDITOR_cursorBlink_startChecking();
         }
-        //set_EDITOR_offsetColumn(EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] + cursor.editLength);
-        //set_EDITOR_totalShift(get_EDITOR_totalShift() + cursor.editLength);
+        //EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] + cursor.editLength;
+        //EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = get_EDITOR_totalShift() + cursor.editLength;
     }
 }
 
@@ -4980,7 +4980,7 @@ function EDITOR_onKeyDown_ArrowRight(event) {
         EDITOR_movementBasedCacheInvalidation(cursor);
         if (get_EDITOR_offsetColumn_withRespectToThisIndexLine() !== cursor.indexLine) {
             EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = cursor.indexLine;
-            set_EDITOR_offsetColumn(0);
+            EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
         }
 
         if (cursor.hasSelection() && !event.shiftKey) {
@@ -5034,8 +5034,8 @@ function EDITOR_onKeyDown_ArrowRight(event) {
         if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
             EDITOR_cursorBlink_startChecking();
         }
-        //set_EDITOR_offsetColumn(EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] + cursor.editLength);
-        //set_EDITOR_totalShift(get_EDITOR_totalShift() + cursor.editLength);
+        //EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] + cursor.editLength;
+        //EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = get_EDITOR_totalShift() + cursor.editLength;
     }
 }
 
@@ -5276,7 +5276,7 @@ function EDITOR_onMouseDown(event) {
     
     // TODO: You might want to do this inside 'EDITOR_finalizeAllCursors_andClearNonPrimaryCursors();' at the end... I'm not sure.
     EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = 0;
-    set_EDITOR_offsetColumn(0);
+    EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] = 0;
 
     if (get_EDITOR_recentBoundingClientRect_isNull_intFalsey()) {

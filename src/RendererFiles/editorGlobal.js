@@ -9251,4 +9251,8 @@ I think I'm gonna remove all the multicursor logic,
 I messed with it a lot anyways so even what little did work probably no longer does
 and I wanna get things perfect single cursor first I think.
 
+The key was not defining them in terms of eachother but instead just taking an initial position
+as if no other edits existed in reverse order and then from there you're just modifying the length of the edit
+and since no cursors overlapped it all "just worked".
+
 */

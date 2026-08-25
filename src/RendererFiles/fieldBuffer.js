@@ -311,8 +311,15 @@ const INDEXOF_EDITOR_cursor_editLength = 52;
 const INDEXOF_EDITOR_cursor_editPosition = 53;
 const INDEXOF_EDITOR_cursor_editIndexLine = 54;
 const INDEXOF_EDITOR_cursor_editIndexColumn = 55;
+/**
+ * the amount of characters that UI has changed with respect to the pending edit
+ * per 'EDITOR_render_do', if the displacement is not the editLength then you know you need to "draw more of this edit" on the UI.
+ * 
+ * The awkward name is to avoid re-using similar words that already are used in other fields on this class.
+ */
+const INDEXOF_EDITOR_cursor_editRenderedDisplacement = 56;
 
-// EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn]
+// EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]
 
 
 

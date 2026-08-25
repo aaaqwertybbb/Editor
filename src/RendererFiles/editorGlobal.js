@@ -86,13 +86,6 @@ let EDITOR_cursor_GAP_BUFFER_CAPACITY = 32;
 // TODO: This assignment isn't necessary, it was already the default value;
 EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] = ENUM_EditKind_None;
 
-/**
- * the amount of characters that UI has changed with respect to the pending edit
- * per 'EDITOR_render_do', if the displacement is not the editLength then you know you need to "draw more of this edit" on the UI.
- * 
- * The awkward name is to avoid re-using similar words that already are used in other fields on this class.
- */
-let EDITOR_cursor_editRenderedDisplacement = 0;
 /** TODO: perhaps you could determine this some other way, but tracking it for the moment is easiest and necessary if I'm to not give up on getting an initial solution to work, given my current mood and etc... */
 let EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET = 0;
 let EDITOR_cursor_END_editIndexLine = 0;
@@ -208,7 +201,7 @@ function EDITOR_cursor_clear() {
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = 0;
-    EDITOR_cursor_editRenderedDisplacement = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] = 0;
     EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET = 0;
     EDITOR_cursor_END_editIndexLine = 0;
     EDITOR_cursor_END_editIndexColumn = 0;
@@ -500,17 +493,17 @@ function EDITOR_render_do_InsertLtr() {
     if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_InsertLtr) {
         return;
     }
-    if (EDITOR_cursor_editRenderedDisplacement < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
         if (EDITOR_cursor_gapBufferWriteToSpanElement) {
 
-            let x = EDITOR_decoder.decode(EDITOR_cursor_gapBuffer.subarray(EDITOR_cursor_editRenderedDisplacement, EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]));
+            let x = EDITOR_decoder.decode(EDITOR_cursor_gapBuffer.subarray(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement], EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]));
 
             EDITOR_cursor_gapBufferWriteToSpanElement.textContent = 
-                EDITOR_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex/* + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]*/) + EDITOR_cursor_editRenderedDisplacement) +
+                EDITOR_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex/* + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]*/) + EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]) +
                 x +
-                EDITOR_cursor_gapBufferWriteToSpanElement.textContent.slice((EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex/* + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]*/) + EDITOR_cursor_editRenderedDisplacement);
+                EDITOR_cursor_gapBufferWriteToSpanElement.textContent.slice((EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex/* + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]*/) + EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]);
 
-            EDITOR_cursor_editRenderedDisplacement = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
         }
     }
 }
@@ -1688,7 +1681,7 @@ function EDITOR_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
 }
 
 function EDITOR_finalizeEdit_Enter(indexLine_editOccurredOn) {
-    if (EDITOR_cursor_editRenderedDisplacement !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
         EDITOR_render_do_EnterKey();
     }
 
@@ -2336,7 +2329,7 @@ function EDITOR_finalizeEdit_ClearEditState() {
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = 0;
-    EDITOR_cursor_editRenderedDisplacement = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] = 0;
     EDITOR_cursor_END_editIndexLine = 0;
     EDITOR_cursor_END_editIndexColumn = 0;
     EDITOR_cursor_gapBufferCount = 0;
@@ -5304,8 +5297,8 @@ function EDITOR_render_do_IndentMore() {
     if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_IndentMore) {
         return;
     }
-    if (EDITOR_cursor_editRenderedDisplacement < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
-        EDITOR_cursor_editRenderedDisplacement++;
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
+        EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]++;
         for (var lineI = startingIndex; lineI >= SMALL_lineAndColumnIndices_indexLine; lineI--) {
             let linePos = EDITOR_getLineBoundaryPositions(lineI);
 
@@ -5454,9 +5447,9 @@ function EDITOR_render_do_IndentLess() {
     if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_IndentLess) {
         return;
     }
-    if (EDITOR_cursor_editRenderedDisplacement < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
         
-        EDITOR_cursor_editRenderedDisplacement++;
+        EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]++;
 
         /////////////////////// P_1
         let textSelectionDiv;
@@ -5705,13 +5698,13 @@ function EDITOR_render_do_DuplicateOrPaste() {
     if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Duplicate && EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Paste) {
         return;
     }
-    if (EDITOR_cursor_editRenderedDisplacement < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] || EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_Paste /* Paste has an editLength of 0 currently */) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] || EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_Paste /* Paste has an editLength of 0 currently */) {
 
         let small = EDITOR_cursor_EDITOR_duplicate_small;
         let length = EDITOR_cursor_EDITOR_duplicate_length;
         let large = small + length;
         
-        // TODO: update the 'EDITOR_cursor_editRenderedDisplacement'
+        // TODO: update the 'EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]'
 
         let byteArray;
 
@@ -6261,7 +6254,7 @@ function EDITOR_render_do_TabKey() {
     if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Tab) {
         return;
     }
-    if (EDITOR_cursor_editRenderedDisplacement < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] || EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_Tab) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] || EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_Tab) {
 
         EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] -= 4; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
 
@@ -6443,15 +6436,15 @@ function EDITOR_render_do_EnterKey() {
     // - for loop
     // - or preferably a shift by some count other than just one
     //
-    if (EDITOR_cursor_editRenderedDisplacement < EDITOR_cursor_editLineFeedCount) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < EDITOR_cursor_editLineFeedCount) {
 
         // TODO: This is missing a loop or etc... as was also stated elsewhere.
         // ...
-        // Thus 'EDITOR_cursor_editRenderedDisplacement' is being incremented by 1 only.
+        // Thus 'EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]' is being incremented by 1 only.
         // i.e.: This is wrong because if more than one enter key event was rendered as an edit length > 1 there's probably gonna be a rendering issue
         // and the invocation of 'EDITOR_render_do_EnterKey' from finalize edit will cause confusion because a length of 2 could pass given certain timing of events.
         //
-        EDITOR_cursor_editRenderedDisplacement++;
+        EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]++;
 
         // TODO: You're gonna have to tighten the virtualization logic?
 
@@ -6982,7 +6975,7 @@ function EDITOR_render_do_RemoveSelection() {
     if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_RemoveTextNoBatching) {
         return;
     }
-    if (EDITOR_cursor_editRenderedDisplacement < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
         let original_edit_length = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
         EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] = 0;
 
@@ -7280,15 +7273,15 @@ function EDITOR_render_do_Delete() {
     if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_DeleteLtr) {
         return;
     }
-    if (EDITOR_cursor_editRenderedDisplacement < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
         walkLineUntilIndexColumn();
 
         if (!w_span || w_indexColumn_SpanTextContentRelative < 0) {
             // TODO: this
         }
         else {
-            let remaining = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] - EDITOR_cursor_editRenderedDisplacement;
-            EDITOR_cursor_editRenderedDisplacement = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+            let remaining = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] - EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement];
+            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
             while (remaining > 0) {
                 // When the cursor is at the end of a span, there is no text to delete, because the text starts in the next span.
                 let available = w_span.textContent.length - w_indexColumn_SpanTextContentRelative;
@@ -7476,15 +7469,15 @@ function EDITOR_render_do_Backspace() {
         return;
     }
 
-    if (EDITOR_cursor_editRenderedDisplacement < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
         walkLineUntilIndexColumn();
 
         if (!w_span || w_indexColumn_SpanTextContentRelative < 0) {
             // TODO: this
         }
         else {
-            let remaining = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] - EDITOR_cursor_editRenderedDisplacement;
-            EDITOR_cursor_editRenderedDisplacement = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+            let remaining = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] - EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement];
+            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
             while (remaining > 0) {
                 let available = w_span.textContent.length - w_indexColumn_SpanTextContentRelative;
                 let count = remaining > available ? available : remaining;

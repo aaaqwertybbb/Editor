@@ -3185,14 +3185,16 @@ function EDITOR_getLineEnd_pos_raw(indexLine) {
 function EDITOR_onMouseMove_WRAPIT(event) {
     if ((event.buttons & 1) && !get_EDITOR_recentBoundingClientRect_isNull_intFalsey()) {
 
+        let local_EDITOR_int_fields = EDITOR_int_fields;
+
         // TODO: Consider short circuiting at via event.clientX and clientY by tracking the necessary thresholds for the cursor position to pass rather than the previous and current indices. (you can possibly thereby skip the calculation of the indices entirely for the redundant events).
         // TODO: Is it correct to use the cursor's indexLine and indexColumn directly as a means of determining redundancy? I worry about odd interactions, but I have no proof that such an odd interaction could exist.
 
-        let rX = event.clientX - EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] + lastReadNumber_scrollLeft;
-        let rY = event.clientY - EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] + EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
+        let rX = event.clientX - local_EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] - local_EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] + lastReadNumber_scrollLeft;
+        let rY = event.clientY - local_EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] + local_EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
 
         let indexColumn = Math.round(rX / EDITOR_characterWidth);
-        let indexLine = Math.floor(rY / EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]);
+        let indexLine = Math.floor(rY / local_EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]);
 
         if (indexColumn < 0) {
             indexColumn = 0;
@@ -3211,12 +3213,12 @@ function EDITOR_onMouseMove_WRAPIT(event) {
             indexColumn = lastValidIndexColumn;
         }
 
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] === indexLine && EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] === indexColumn) {
+        if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] === indexLine && local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] === indexColumn) {
             return;
         }
         
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLine;
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = indexColumn;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLine;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = indexColumn;
 
         if (get_EDITOR_detailRank() === 3) {
             EDITOR_onMouseMoveDetailRankThree(indexLine, indexColumn);

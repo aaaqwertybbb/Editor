@@ -411,7 +411,7 @@ function EDITOR_init() {
     EDITOR_gutterBackgroundColor.style.paddingLeft = gutterPaddingLeft;
     EDITOR_gutterBackgroundColor.style.paddingRight = gutterPaddingRight;
 
-    set_EDITOR_gutterWidthStyleValue(EDITOR_characterWidth);
+    EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthStyleValue] = EDITOR_characterWidth;
     let gutterWidth = EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthStyleValue] + 'px';
 
     EDITOR_drawGutter_Width();
@@ -570,11 +570,11 @@ function EDITOR_render_do_SetText(timestamp) {
 
     EDITOR_render_do_Scroll(timestamp)
 
-    prevVli = EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine]; // If I delay setting 'set_EDITOR_ONSCROLLvirtualIndexLine()' then I can just use that. I can't bear to do that right now though. I'm just gonna make this variable.
+    prevVli = EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine];
     currVli = EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
-    set_EDITOR_ONSCROLLvirtualIndexLine(EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine]);
+    EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
 
-    set_EDITOR_scrollEndDeadline(timestamp + 1000);
+    EDITOR_int_fields[INDEXOF_EDITOR_scrollEndDeadline] = timestamp + 1000;
     if (!isCheckingTrailingEdge) {
         isCheckingTrailingEdge = true;
         requestAnimationFrame(EDITOR_render_do_ScrollTrailingEdgeCheck);
@@ -675,7 +675,7 @@ function EDITOR_createViewport() {
  * 
  * If the scroll and mouse down events are handled prior to my rAF
  * 
- * and I've moved all the set_EDITOR_virtualIndexLine logic from here to the rAF
+ * and I've moved all the EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] logic from here to the rAF
  * then the user will "click the wrong line".
  * 
  * "I don't want to limit the speed of editing to that of the screen's refresh rate"
@@ -1718,7 +1718,7 @@ function EDITOR_finalizeEdit_InsertLtr(cursor, indexLine_editOccurredOn) {
     let lineAndColumnIndices = EDITOR_getLineAndColumnIndices(cursor.editPosition);
     // TODO: Account for any '\t\0\0\0' that exist on the line
     let text = EDITOR_decoder.decode(cursor.gapBuffer.subarray(0, cursor.gapBufferCount));
-    set_didChangeTextDocument_version(EDITOR_int_fields[INDEXOF_didChangeTextDocument_version] + 1);
+    EDITOR_int_fields[INDEXOF_didChangeTextDocument_version] = EDITOR_int_fields[INDEXOF_didChangeTextDocument_version] + 1;
     let version = EDITOR_int_fields[INDEXOF_didChangeTextDocument_version];
 
     // --- CLEAN INTEGRATION ---
@@ -2368,7 +2368,7 @@ function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(cursor,
     let textSourceIdentifier = EDITOR_FORMATTED_textSourceIdentifier;
     // TODO: Account for any '\t\0\0\0' that exist on the line            
     let text = '';
-    set_didChangeTextDocument_version(EDITOR_int_fields[INDEXOF_didChangeTextDocument_version] + 1);
+    EDITOR_int_fields[INDEXOF_didChangeTextDocument_version] = EDITOR_int_fields[INDEXOF_didChangeTextDocument_version] + 1;
     let version = EDITOR_int_fields[INDEXOF_didChangeTextDocument_version];
 
     // --- CLEAN INTEGRATION ---
@@ -3806,7 +3806,7 @@ function EDITOR_onMouseDownDetailRankThree(event_button, event_shiftKey, indexLi
     
     cursor.selectionAnchor = EDITOR_getPositionIndex_Overload(cursor.indexLine, 0);
     
-    set_EDITOR_detailRank3OriginLine(cursor.indexLine);
+    EDITOR_int_fields[INDEXOF_EDITOR_detailRank3OriginLine] = cursor.indexLine;
 
     if (cursor.indexLine === EDITOR_lineEndPositionList.count - 1) {
         let line = EDITOR_getLineBoundaryPositions(cursor.indexLine);
@@ -7232,7 +7232,7 @@ function EDITOR_render_do_Resize(timestamp) {
 
         isScrolling = false;
 
-        set_EDITOR_scrollEndDeadline(timestamp + 1000);
+        EDITOR_int_fields[INDEXOF_EDITOR_scrollEndDeadline] = timestamp + 1000;
 
         EDITOR_render_do_Scroll(timestamp); //EDITOR_onScroll_WRAPIT();
         // # Redraw cursor selection virtualization

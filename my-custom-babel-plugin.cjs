@@ -10,17 +10,11 @@ module.exports = function (babel) {
 
     
 
-    "set_EDITOR_detailRank3OriginLine",
 
-    "set_EDITOR_gutterWidthStyleValue",
     
-    "set_EDITOR_gutterWidthTotal",
     
-    "set_EDITOR_virtualIndexLine",
     
-    "set_EDITOR_virtualCount",
     
-    "set_didChangeTextDocument_version",
     
     "set_EDITOR_indexCursor",
     
@@ -34,11 +28,9 @@ module.exports = function (babel) {
     
     "set_EDITOR_offsetWithinSpan",
     
-    "set_EDITOR_ONSCROLLvirtualIndexLine",
     
     "set_EDITOR_ONSCROLLvirtualCount",
     
-    "set_EDITOR_ONSCROLLscrollTop",
     
     "set_EDITOR_longestLine_indexLine",
     
@@ -74,7 +66,6 @@ module.exports = function (babel) {
     
     "set_EDITOR_findOverlay_options_matchWord",
     
-    "set_EDITOR_scrollEndDeadline",
 
 
 

@@ -167,30 +167,25 @@ const INDEXOF_EDITOR_lineHeight = 0;
 EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] = 20;
 
 /** The first line of text that you should see shown in the UI given the current scrollTop */
-const set_EDITOR_virtualIndexLine = (int) => EDITOR_int_fields[1] = int;
 const INDEXOF_EDITOR_virtualIndexLine = 1;
 
 /** The value of 'EDITOR_baseElement.scrollTop' at the most recent scroll event that occurred */
 const INDEXOF_lastReadNumber_scrollTop = 2;
 
-const set_EDITOR_ONSCROLLvirtualIndexLine = (int) => EDITOR_int_fields[3] = int;
 const INDEXOF_EDITOR_ONSCROLLvirtualIndexLine = 3;
 //throw new Error('-1');
 // This set used to be -1 to indicate a non existent value, 500 "seems to work" but a proof of it being an equivalent solution has not thoroughly been thought out, only a sort of "yeah that probably works" kinda vibe.
-set_EDITOR_ONSCROLLvirtualIndexLine(500);
+EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine] = 500;
 
-/** Also is used from 'EDITOR_render_do_SetText()', and 'EDITOR_render_do_Resize()', not just 'EDITOR_render_do_Scroll()' */
-const set_EDITOR_scrollEndDeadline = (int) => EDITOR_int_fields[4] = int;
 /** Also is used from 'EDITOR_render_do_SetText()', and 'EDITOR_render_do_Resize()', not just 'EDITOR_render_do_Scroll()' */
 const INDEXOF_EDITOR_scrollEndDeadline = 4;
 
-const set_EDITOR_ONSCROLLscrollTop = (int) => EDITOR_int_fields[5] = int;
 const INDEXOF_EDITOR_ONSCROLLscrollTop = 5;
 //throw new Error('-1');
 // This set used to be -1 to indicate a non existent value, 500 "seems to work" but a proof of it being an equivalent solution has not thoroughly been thought out, only a sort of "yeah that probably works" kinda vibe.
-set_EDITOR_ONSCROLLscrollTop(500);
+EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop] = 500;
 
-const set_EDITOR_virtualCount = (int) => EDITOR_int_fields[6] = int;
+
 const INDEXOF_EDITOR_virtualCount = 6;
 
 const INDEXOF_EDITOR_sum_diffPositive = 7;
@@ -209,7 +204,6 @@ const INDEXOF_EDITOR_detail_smallPosition = 12;
 const INDEXOF_EDITOR_detail_largePosition = 13;
 
 const INDEXOF_EDITOR_detailRank3OriginLine = 14;
-const set_EDITOR_detailRank3OriginLine = (int) => EDITOR_int_fields[14] = int;
 
 /**
  * Pixels.
@@ -220,8 +214,7 @@ const set_EDITOR_detailRank3OriginLine = (int) => EDITOR_int_fields[14] = int;
  * Whereas the line height is a css variable (and thus could cause layout for the entire application whenever it changes).
  */
 const INDEXOF_EDITOR_gutterWidthStyleValue = 15;
-const set_EDITOR_gutterWidthStyleValue = (int) => EDITOR_int_fields[15] = int;
-set_EDITOR_gutterWidthStyleValue(32);
+EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthStyleValue] = 32;
 
 /**
  * This is the sum of the 'INDEXOF_EDITOR_gutterWidthStyleValue()' in addition to paddig
@@ -229,11 +222,9 @@ set_EDITOR_gutterWidthStyleValue(32);
  */
 const INDEXOF_EDITOR_gutterWidthTotal = 16;
 /** WARNING: This will not set 'gutterWidthTotal_withPxUnits' and thus is somewhat prone to a mistake at some point. */
-const set_EDITOR_gutterWidthTotal = (int) => EDITOR_int_fields[16] = int;
-set_EDITOR_gutterWidthTotal(32);
+EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] = 32;
 
 const INDEXOF_didChangeTextDocument_version = 17;
-const set_didChangeTextDocument_version = (int) => EDITOR_int_fields[17] = int;
 
 /**
  * All the 'EDITOR_cursorList' loops are currently using the variable 'i'.

@@ -325,8 +325,6 @@ let w_div = null;
 let w_beltIndexLine = -1;
 
 /** Also is used from 'EDITOR_render_do_SetText()', and 'EDITOR_render_do_Resize()', not just 'EDITOR_render_do_Scroll()' */
-let isScrolling = false;
-/** Also is used from 'EDITOR_render_do_SetText()', and 'EDITOR_render_do_Resize()', not just 'EDITOR_render_do_Scroll()' */
 let isCheckingTrailingEdge = false;
 
 let prevVli;
@@ -795,7 +793,8 @@ function EDITOR_render_do_Scroll(timestamp) {
     // TODO: Instead of adding 1000 here you should do it when you check the debounce
     local_EDITOR_int_fields[INDEXOF_EDITOR_scrollEndDeadline] = timestamp + 1000; // TODO: Move this to the scroll event handler (probably-maybe)
 
-    if (!isScrolling) {
+    // TODO: !... vs checking for 0 or 1
+    if (!local_EDITOR_int_fields[INDEXOF_EDITOR_intFalsey_isScrolling]) {
         // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 2 of 4)
         // ...and here the locals are passed to the LeadingEdge because only when performing the LeadingEdge do you need to use the global versions.
 
@@ -930,9 +929,9 @@ function EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli) {
     prevVli = local_prevVli;
     currVli = local_currVli;
 
-    isScrolling = true;
+    EDITOR_int_fields[INDEXOF_EDITOR_intFalsey_isScrolling] = 1;
 
-    // TODO: If you can prove that the leading edge or 'isScrolling' is "equivalent" to 'isCheckingTrailingEdge' then you can reduce the code here.
+    // TODO: If you can prove that the leading edge or 'EDITOR_int_fields[INDEXOF_EDITOR_intFalsey_isScrolling]' is "equivalent" to 'isCheckingTrailingEdge' then you can reduce the code here.
     //
     // If we aren't tracking the trailing edge yet, start the rAF countdown loop
     if (!isCheckingTrailingEdge) {
@@ -1009,10 +1008,10 @@ function EDITOR_render_do_ScrollTrailingEdgeCheck(timestamp) {
 }
 
 /**
- * must set 'isScrolling = false;' within this function.
+ * must set 'EDITOR_int_fields[INDEXOF_EDITOR_intFalsey_isScrolling] = 0;' within this function.
  */
 function EDITOR_onScroll_TrailingEdge() {
-    isScrolling = false;
+    EDITOR_int_fields[INDEXOF_EDITOR_intFalsey_isScrolling] = 0;
     isCheckingTrailingEdge = false; // Reset the flag here
     EDITOR_render_request(ENUM_RenderKind_SyntaxHighlighting);
 }
@@ -7230,7 +7229,7 @@ function EDITOR_render_do_Resize(timestamp) {
         // why 'update_verticalVirtualizationBoundary' here???
         update_verticalVirtualizationBoundary(EDITOR_lineEndPositionList.count + 1);
 
-        isScrolling = false;
+        EDITOR_int_fields[INDEXOF_EDITOR_intFalsey_isScrolling] = 0;
 
         EDITOR_int_fields[INDEXOF_EDITOR_scrollEndDeadline] = timestamp + 1000;
 
@@ -9235,5 +9234,10 @@ in order to verify that every smi is infact a smi prior moving to the next node.
 "how will you implement multiple editors at the same time"
 
 "..."
+
+----
+
+you "optimize away the smi's" while still having smi const definitions because you
+use babel to inline and delete the const definitions.
 
 */

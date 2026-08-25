@@ -268,6 +268,13 @@ const INDEXOF_EDITOR_pooledTrackedSyntax_start = 33;
 
 const INDEXOF_EDITOR_pooledTrackedSyntax_length = 34;
 
+/**
+ * Also is used from 'EDITOR_render_do_SetText()', and 'EDITOR_render_do_Resize()', not just 'EDITOR_render_do_Scroll()'
+ * 
+ * I'm gonna store this in the int32 array so that the editor scroll render function can access it from the already existing local reference of EDITOR_int_fields.
+ */
+const INDEXOF_EDITOR_intFalsey_isScrolling = 35;
+
 
 
 

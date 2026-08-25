@@ -142,6 +142,8 @@ module.exports = function (babel) {
     
 
     "INDEXOF_EDITOR_scrollEndDeadline",
+
+    "INDEXOF_EDITOR_intFalsey_isScrolling",
     
 
 

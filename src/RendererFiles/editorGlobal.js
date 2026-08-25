@@ -3365,85 +3365,88 @@ function EDITOR_getCharacterCurrent_KIND(indexColumn, positionIndex, lineEnd) {
 }
 
 function EDITOR_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
+
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
     let nextPositionIndex = EDITOR_getPositionIndex_Overload(indexLineClicked, indexColumnClicked);
 
-    if (nextPositionIndex <= EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]) {
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition];
+    if (nextPositionIndex <= local_EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]) {
+        if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = local_EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition];
         }
 
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLineClicked;
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = indexColumnClicked;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLineClicked;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = indexColumnClicked;
         let positionIndex = nextPositionIndex;
 
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = positionIndex;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = positionIndex;
 
-        if (nextPositionIndex < EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]) {
-            let goalCharacterKind = EDITOR_getCharacterCurrent_KIND(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], positionIndex, EDITOR_getLineEnd_pos(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]));
+        if (nextPositionIndex < local_EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]) {
+            let goalCharacterKind = EDITOR_getCharacterCurrent_KIND(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], positionIndex, EDITOR_getLineEnd_pos(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]));
 
             let leftWasFound = false;
 
             let tempPositionIndex = positionIndex;
 
-            while (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] > 0) {
-                let leftCharacterKind = EDITOR_getCharacterPrevious_KIND(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], tempPositionIndex);
+            while (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] > 0) {
+                let leftCharacterKind = EDITOR_getCharacterPrevious_KIND(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], tempPositionIndex);
                 if (leftCharacterKind !== goalCharacterKind) {
-                    EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = tempPositionIndex;
+                    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = tempPositionIndex;
                     leftWasFound = true;
                     break;
                 }
                 tempPositionIndex--;
-                EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]--;
+                local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]--;
             }
 
             if (!leftWasFound) {
-                EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = tempPositionIndex;
+                local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = tempPositionIndex;
             }
         }
 
         EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     }
     else {
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] > EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition];
+        if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] > local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = local_EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition];
         }
 
-        if (nextPositionIndex >= EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition]) {
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLineClicked;
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = indexColumnClicked;
+        if (nextPositionIndex >= local_EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition]) {
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLineClicked;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = indexColumnClicked;
             let positionIndex = nextPositionIndex;
 
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = positionIndex;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = positionIndex;
 
-            let leftCharacterKind = EDITOR_getCharacterPrevious_KIND(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], positionIndex);
+            let leftCharacterKind = EDITOR_getCharacterPrevious_KIND(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], positionIndex);
             let goalCharacterKind = leftCharacterKind;
 
-            let line = EDITOR_getLineBoundaryPositions(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+            let line = EDITOR_getLineBoundaryPositions(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
             lineLength = line.end - line.start;
             let rightWasFound = false;
 
             let tempPositionIndex = positionIndex;
-            while (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] < lineLength) {
-                let rightCharacterKind = EDITOR_getCharacterCurrent_KIND(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], tempPositionIndex, line.end);
+            while (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] < lineLength) {
+                let rightCharacterKind = EDITOR_getCharacterCurrent_KIND(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], tempPositionIndex, line.end);
                 if (rightCharacterKind !== goalCharacterKind) {
-                    EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = tempPositionIndex;
+                    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = tempPositionIndex;
                     rightWasFound = true;
                     break;
                 }
                 tempPositionIndex++;
-                EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]++;
+                local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]++;
             }
 
             if (!rightWasFound) {
                 // end of line
-                EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = tempPositionIndex;
+                local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = tempPositionIndex;
             }
         }
         else {
-            let largeLineAndColumnIndices = EDITOR_getLineAndColumnIndices(EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition]);
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = largeLineAndColumnIndices.indexLine;
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = largeLineAndColumnIndices.indexColumn;
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition];
+            let largeLineAndColumnIndices = EDITOR_getLineAndColumnIndices(local_EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition]);
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = largeLineAndColumnIndices.indexLine;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = largeLineAndColumnIndices.indexColumn;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = local_EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition];
         }
 
         EDITOR_render_request(ENUM_RenderKind_Cursor_n);

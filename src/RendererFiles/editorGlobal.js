@@ -194,24 +194,13 @@ let EDITOR_cursor_edit_flagLineChanged = -1;
  */
 let EDITOR_cursor_EDITOR_paste_clipboardContent = null;
 
+/** same comment that pertains to EDITOR_cursor_EDITOR_paste_clipboardContent is somewhat relevant here */
+let EDITOR_cursor_EDITOR_duplicate_small = 0;
+/** same comment that pertains to EDITOR_cursor_EDITOR_paste_clipboardContent is somewhat relevant here */
+let EDITOR_cursor_EDITOR_duplicate_length = 0;
+
+
 class EDITOR_Cursor {
-    /**
-     * After invoking the constructor you likely would want to add to:
-     * - cached_EDITOR_cursorListElement,
-     * - EDITOR_cursorList,
-     * 
-     * `cached_EDITOR_cursorListElement.appendChild(EDITOR_cursor_caretRow)`
-     * `EDITOR_cursorList.splice(index, 0, cursorInstance)`
-     */
-    constructor() {
-        
-
-        /** same comment that pertains to EDITOR_cursor_EDITOR_paste_clipboardContent is somewhat relevant here */
-        this.EDITOR_duplicate_small = 0;
-        /** same comment that pertains to EDITOR_cursor_EDITOR_paste_clipboardContent is somewhat relevant here */
-        this.EDITOR_duplicate_length = 0;
-    }
-
     hasSelection() {
         return EDITOR_cursor_selectionAnchor >= 0 &&
                EDITOR_cursor_selectionEnd >= 0 &&
@@ -256,8 +245,8 @@ class EDITOR_Cursor {
 
         EDITOR_cursor_EDITOR_paste_clipboardContent = null;
 
-        this.EDITOR_duplicate_small = 0;
-        this.EDITOR_duplicate_length = 0;
+        EDITOR_cursor_EDITOR_duplicate_small = 0;
+        EDITOR_cursor_EDITOR_duplicate_length = 0;
     }
 }
 
@@ -2231,11 +2220,11 @@ function EDITOR_finalizeEdit_Duplicate(cursor, indexLine_editOccurredOn) {
 
     EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(EDITOR_cursor_editPosition, EDITOR_cursor_editLength);
 
-    let small = cursor.EDITOR_duplicate_small;
-    let length = cursor.EDITOR_duplicate_length;
+    let small = EDITOR_cursor_EDITOR_duplicate_small;
+    let length = EDITOR_cursor_EDITOR_duplicate_length;
 
-    cursor.EDITOR_duplicate_small = 0;
-    cursor.EDITOR_duplicate_length = 0;
+    EDITOR_cursor_EDITOR_duplicate_small = 0;
+    EDITOR_cursor_EDITOR_duplicate_length = 0;
 
     let linesInsertedCount = 0;
     let insertionLength = 0;
@@ -5805,8 +5794,8 @@ async function EDITOR_duplicateSelection(cursor) {
     EDITOR_cursor_indexLine = large_lineAndColumnIndices.indexLine;
     EDITOR_cursor_indexColumn = large_lineAndColumnIndices.indexColumn;
 
-    cursor.EDITOR_duplicate_small = small;
-    cursor.EDITOR_duplicate_length = length;
+    EDITOR_cursor_EDITOR_duplicate_small = small;
+    EDITOR_cursor_EDITOR_duplicate_length = length;
 
     EDITOR_cursor_selectionAnchor = large;
     EDITOR_cursor_selectionEnd = large + length;
@@ -5840,8 +5829,8 @@ function EDITOR_render_do_DuplicateOrPaste() {
     }
     if (EDITOR_cursor_editRenderedDisplacement < EDITOR_cursor_editLength || EDITOR_cursor_editKind === ENUM_EditKind_Paste /* Paste has an editLength of 0 currently */) {
 
-        let small = cursor.EDITOR_duplicate_small;
-        let length = cursor.EDITOR_duplicate_length;
+        let small = EDITOR_cursor_EDITOR_duplicate_small;
+        let length = EDITOR_cursor_EDITOR_duplicate_length;
         let large = small + length;
         
         // TODO: update the 'EDITOR_cursor_editRenderedDisplacement'

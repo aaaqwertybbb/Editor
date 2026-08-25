@@ -8940,4 +8940,12 @@ same for the editor's syntax highlighting
 
 The delay to see the syntax highlighting is too much and various other things need to be better first.
 
+I'm trying to continue I might be done today I mood crash
+
+and everything is messing with my head like the youtube recommendations I keep seeing
+'Ava tests Caleb | "Are you a good person?" | ...'
+
+and I keep taking this as though you're questioning whether I'm a good person
+and that you lean towards the idea that I'm a bad person
+
 */

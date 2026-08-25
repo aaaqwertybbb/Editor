@@ -9176,27 +9176,5 @@ ugh why does the text disappear when I resize until I scroll enough to refill th
 I'm annoyed cause I've seen this bug before and I can't remember.
 If I can get this then I think today was a 10/10
 
-=====
-
-
-Breakfast:
-1 lb of 98% fat free ground chicken with sriracha
-4 strawberry nutrigrain bars
-
-Dinner:
-1 lb of 98% fat free ground chicken with sriracha
-4 strawberry nutrigrain bars
-
-====
-
-The nutrigrain bars are perfect for 3 reasons:
-- They have some nutrients added
-- They are packaged, so I can reserve my stress resilience for when I cook the chicken twice a day and the carbohydrates are a 0% disturbance
-- And nearby where I live is Bayshore hospital. I've been in they're "psych ward" like 6 times in my life.
-  Each time I was there it was like a week long.
-  But they had an unlimited supply of fig newton bars
-  And so these nutrigrain bars give me a nostalgic feeling, not fomo-anxiety-nostalgia, but comforting-nostalgia
-
-
 
 */

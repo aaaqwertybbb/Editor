@@ -6460,21 +6460,25 @@ function EDITOR_lineWasInsertedValidateGutter() {
  * @param {*} insertionCount 
  */
 function EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(indexPosition, insertionCount) {
+    let local_EDITOR_int_fields = EDITOR_int_fields;
     for (var i = 0; i < EDITOR_trackedSyntaxList.count_abstract; i++) {
         EDITOR_trackedSyntaxList.getElementAt(i);
-        if (indexPosition <= EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start]) {
-            EDITOR_trackedSyntaxList.setStart(i, EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + insertionCount);
+        if (indexPosition <= local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start]) {
+            EDITOR_trackedSyntaxList.setStart(i, local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + insertionCount);
         }
-        else if (indexPosition > EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] && indexPosition < EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length]) {
-            EDITOR_trackedSyntaxList.setLength(i, EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] + insertionCount);
+        else if (indexPosition > local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] && indexPosition < local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length]) {
+            EDITOR_trackedSyntaxList.setLength(i, local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] + insertionCount);
         }
     }
 }
 
 function EDITOR_render_do_EnterKey() {
+
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
     update_verticalVirtualizationBoundary();
 
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Enter) {
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_Enter) {
         return;
     }
 
@@ -6482,15 +6486,15 @@ function EDITOR_render_do_EnterKey() {
     // - for loop
     // - or preferably a shift by some count other than just one
     //
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount]) {
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount]) {
 
         // TODO: This is missing a loop or etc... as was also stated elsewhere.
         // ...
-        // Thus 'EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]' is being incremented by 1 only.
+        // Thus 'local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]' is being incremented by 1 only.
         // i.e.: This is wrong because if more than one enter key event was rendered as an edit length > 1 there's probably gonna be a rendering issue
         // and the invocation of 'EDITOR_render_do_EnterKey' from finalize edit will cause confusion because a length of 2 could pass given certain timing of events.
         //
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]++;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]++;
 
         // TODO: You're gonna have to tighten the virtualization logic?
 
@@ -6498,9 +6502,9 @@ function EDITOR_render_do_EnterKey() {
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexLine_firstTilde = ((EDITOR_lineEndPositionList.count) + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+        let beltIndexLine_firstTilde = ((EDITOR_lineEndPositionList.count) + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
         if (beltIndexLine_firstTilde >= ArrayFrom_textElement_children_length || beltIndexLine_firstTilde < 0) beltIndexLine_firstTilde = -1;
-        else beltIndexLine_firstTilde = (beltIndexLine_firstTilde + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+        else beltIndexLine_firstTilde = (beltIndexLine_firstTilde + EDITOR_beltIndexZero) % local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
         if (beltIndexLine_firstTilde >= 0) {
             cached_EDITOR_gutter.children[beltIndexLine_firstTilde].textContent = EDITOR_lineEndPositionList.count + 1;
@@ -6512,24 +6516,24 @@ function EDITOR_render_do_EnterKey() {
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexLine_current = ((EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine]) + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+        let beltIndexLine_current = ((local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine]) + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
         if (beltIndexLine_current >= ArrayFrom_textElement_children_length || beltIndexLine_current < 0) beltIndexLine_current = -1;
-        else beltIndexLine_current = (beltIndexLine_current + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+        else beltIndexLine_current = (beltIndexLine_current + EDITOR_beltIndexZero) % local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
         if (beltIndexLine_current < 0)
             shouldRenderEntireViewport = true;
 
         // There are some cases that I don't feel like thinking about at the moment, this if statement singles them out.
-        if (EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] <= 1 || cached_EDITOR_textElement.children.length !== EDITOR_int_fields[INDEXOF_EDITOR_virtualCount])
+        if (local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] <= 1 || cached_EDITOR_textElement.children.length !== local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount])
             shouldRenderEntireViewport = true;
 
         // TODO: This is an awkward explicit inlining of 'EDITOR_indexLineTo_beltIndexLine'...
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexLine_first = ((EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine]) + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+        let beltIndexLine_first = ((local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine]) + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
         if (beltIndexLine_first >= ArrayFrom_textElement_children_length || beltIndexLine_first < 0) beltIndexLine_first = -1;
-        else beltIndexLine_first = (beltIndexLine_first + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+        else beltIndexLine_first = (beltIndexLine_first + EDITOR_beltIndexZero) % local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
         // TODO: Use PREVIOUS here from 'beltIndexLine_first'
 
@@ -6537,9 +6541,9 @@ function EDITOR_render_do_EnterKey() {
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexLine_last = ((EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1) + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+        let beltIndexLine_last = ((local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1) + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
         if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
-        else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+        else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
         // TODO: reminder for when virtualization padding is improved, this function might need to be looked at.
         // TODO: Track the enter keystroke the same as any other insertion edit and have it pending until it needs to be finalized.
@@ -6554,7 +6558,7 @@ function EDITOR_render_do_EnterKey() {
 
         // Is holding down ctrl+enter / shift+enter batchable?
 
-        if (!shouldRenderEntireViewport && EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] === 0) { // start of line
+        if (!shouldRenderEntireViewport && local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] === 0) { // start of line
             EDITOR_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, beltIndexLine_current);
             cached_EDITOR_textElement.children[beltIndexLine_current].appendChild(document.createElement('span'));
 
@@ -6564,9 +6568,9 @@ function EDITOR_render_do_EnterKey() {
         else {
             if (!shouldRenderEntireViewport) {
                 // ensure this conditional branch returns if handled, otherwise it will execute the fallback case erroneously
-                let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine]);
+                let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine]);
 
-                if (lastValidIndexColumn === EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn]) { // end of line
+                if (lastValidIndexColumn === local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn]) { // end of line
                     
                     let next_beltIndexLine = (beltIndexLine_current + 1) % ArrayFrom_textElement_children_length;
 
@@ -6582,18 +6586,18 @@ function EDITOR_render_do_EnterKey() {
 
 
                     // among a line uses 'walkLineUntilIndexColumn', this function takes a cursor and accesses the fields: 'indexLine', and 'indexColumn'.
-                    // This is problematic because one needs to use EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] for this renderKind.
+                    // This is problematic because one needs to use local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] for this renderKind.
                     // Since only this case needs the logic I'm going to isolate it to here.
                     //
                     // Remember 'indexLine', and 'indexColumn'.
                     // Set them to the edit respective fields.
                     // Prior to returning from this function restore the original 'indexLine', and 'indexColumn'.
 
-                    let remember_cursorIndexLine = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
-                    let remember_cursorIndexColumn = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+                    let remember_cursorIndexLine = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
+                    let remember_cursorIndexColumn = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
 
-                    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine];
-                    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn];
+                    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine];
+                    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn];
 
                     let spanClassName = '';
                     let spanText = EDITOR_cursor_cached_indentation_string;
@@ -6608,7 +6612,7 @@ function EDITOR_render_do_EnterKey() {
                                 w_span.className = 'eCM';
                                 let indexPosition = EDITOR_getPositionIndex_raw_cursor();
                                 let indexOfGreaterThanOrEqual = EDITOR_trackedSyntaxReposition_find(indexPosition);
-                                EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_Comment, indexPosition - EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] + w_indexColumn_Sum, w_span.textContent.length);
+                                EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_Comment, indexPosition - local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] + w_indexColumn_Sum, w_span.textContent.length);
                                 shouldPreserveCssClassWhenSplittingAmongLine = true;
                             }
                             break;
@@ -6620,7 +6624,7 @@ function EDITOR_render_do_EnterKey() {
                                 w_span.className = 'eSM';
                                 let indexPosition = EDITOR_getPositionIndex_raw_cursor();
                                 let indexOfGreaterThanOrEqual = EDITOR_trackedSyntaxReposition_find(indexPosition);
-                                EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_String, indexPosition - EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] + w_indexColumn_Sum, w_span.textContent.length);
+                                EDITOR_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, ENUM_TrackedSyntaxKind_String, indexPosition - local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] + w_indexColumn_Sum, w_span.textContent.length);
                                 shouldPreserveCssClassWhenSplittingAmongLine = true;
                             }
                             break;
@@ -6659,8 +6663,8 @@ function EDITOR_render_do_EnterKey() {
 
                     EDITOR_lineWasInsertedValidateGutter();
 
-                    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = remember_cursorIndexLine;
-                    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = remember_cursorIndexColumn;
+                    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = remember_cursorIndexLine;
+                    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = remember_cursorIndexColumn;
                     return;
                 }
             }

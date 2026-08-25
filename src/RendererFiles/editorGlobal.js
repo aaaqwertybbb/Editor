@@ -142,7 +142,7 @@ let EDI_cursor_edit_flagLineChanged = -1;
 let EDI_cursor_EDI_paste_clipboardContent = null;
 
 function EDI_cursor_hasSelection() {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
     return ints[fEDI_cursor_selectionAnchor] >= 0 &&
             ints[fEDI_cursor_selectionEnd] >= 0 &&
             ints[fEDI_cursor_selectionAnchor] != ints[fEDI_cursor_selectionEnd];
@@ -154,7 +154,7 @@ function EDI_cursor_hasSelection() {
  * Somewhat duplicated code: This messes with the language features if I invoke clear() in the constructor, it puts "| undefined" on all the types.
  */
 function EDI_cursor_clear() {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
     ints[fEDI_cursor_indexLine] = 0;
     ints[fEDI_cursor_indexColumn] = 0;
     ints[fEDI_cursor_STORED_indexColumn] = 0;
@@ -450,7 +450,7 @@ function EDI_render_do_cursor_flag_doNotScrollIntoView(timestamp) {
 }
 
 function EDI_render_do_InsertLtr() {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
     if (ints[fEDI_cursor_editKind] !== EditKind_InsertLtr) {
         return;
     }
@@ -517,7 +517,7 @@ function EDI_render_request(renderKind) {
 
 function EDI_render_do_CreateViewport() {
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     let remember_scrollTop = ints[fEDI_lastReadNumber_scrollTop];
     let remember_scrollLeft = lastReadNumber_scrollLeft;
@@ -703,7 +703,7 @@ function EDI_onScroll_WRAPIT() {
  * 
  */
 function EDI_render_do_Scroll(timestamp) {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
     let local_lineHeight = ints[fEDI_lineHeight];
 
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
@@ -847,7 +847,7 @@ function EDI_render_do_Scroll(timestamp) {
  * @returns true if scrollTop (and a few other details) have not changed, thus indicating the invoker should immediately return from their own rather than continuing with scroll logic.
  */
 function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
     
     // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 2 of 4)
     // ...and here the locals are moved to the global scope.
@@ -957,7 +957,7 @@ but there is 0 reasoning, understanding, or measurements behind my decision.
 
 function EDI_render_do_SyntaxHighlighting() {
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     let local_sum_diffNegative = ints[fEDI_sum_diffNegative];
     let local_sum_diffPositive = ints[fEDI_sum_diffPositive];
@@ -1186,7 +1186,7 @@ More accurately the ones that seem to not have an importance of position, they d
 
 function EDI_state_clear() {
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     // the smi would exist on the object instance all near one another if you just used a class
     // it is essentially the field buffer but you don't eat a global scope variable lookup at any point
@@ -1225,7 +1225,7 @@ function EDI_clear() {
 
 function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMATTED_textSourceIdentifier, extensionKind, lineEndString) {
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     EDI_baseElement.scrollTop = 0;
     ints[fEDI_lastReadNumber_scrollTop] = 0;
@@ -1392,7 +1392,7 @@ function update_virtualCount() {
  * The confusion, if there is any, comes from the dependent UI in some scenarios being required independently of whether drawGutter changes. And at other times they're solely dependent on whether drawGutter changes.
  */
 function EDI_drawGutter_Width() {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
     let count = EDI_lineEndPositionList.count;
     if (EDI_cursor_enterKeyEventKind !== EnterKeyEventKind_None) {
         count += 1;
@@ -1429,7 +1429,7 @@ function EDI_drawGutter_Width() {
  * then at that point you redraw this.
  */
 function EDI_drawHorizontalScrollbar() {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
     if (DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left !== ints[fEDI_gutterWidthTotal]) {
         EDI_horizontal_scrollbar.style.left = gutterWidthTotal_withPxUnits;
         DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left = ints[fEDI_gutterWidthTotal];
@@ -1589,7 +1589,7 @@ function EDI_finalizeEdit() {
 }
 
 function EDI_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     for (let i = EDI_lineEndPositionList.count - 1; i >= 0; i--) {
         if (ints[fEDI_cursor_editPosition] <= EDI_lineEndPositionList.data[i]) {
@@ -1651,7 +1651,7 @@ function EDI_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
 }
 
 function EDI_finalizeEdit_Enter(indexLine_editOccurredOn) {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     if (ints[fEDI_cursor_editRenderedDisplacement] !== ints[fEDI_cursor_editLength]) {
         EDI_render_do_EnterKey();
@@ -1714,7 +1714,7 @@ function EDI_finalizeEdit_Tab(indexLine_editOccurredOn) {
 
 function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     let startingIndex = ints[fEDI_indent_startingIndex];
     ints[fEDI_indent_startingIndex] = 0;
@@ -1823,7 +1823,7 @@ function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
 
 function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     // Both indentMore and indentLess have logic in the initial event that needs to be moved here.
     // Nevertheless there is a difference between indentLess and indentMore in that you cannot simply
@@ -2089,7 +2089,7 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
 
 function EDI_finalizeEdit_Paste(indexLine_editOccurredOn) {
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
     
     EDI_trackedSyntaxList_inefficientUpdateStartAndLength(ints[fEDI_cursor_editPosition], ints[fEDI_cursor_editLength]);
     
@@ -2138,7 +2138,7 @@ function EDI_finalizeEdit_Paste(indexLine_editOccurredOn) {
 
 function EDI_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     EDI_trackedSyntaxList_inefficientUpdateStartAndLength(ints[fEDI_cursor_editPosition], ints[fEDI_cursor_editLength]);
 
@@ -2185,7 +2185,7 @@ function EDI_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
 
 function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_editOccurredOn) {
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     // TODO: surely u'd get this before doing the edit?
     let startLineAndColumnIndices;
@@ -2307,7 +2307,7 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
 }
 
 function EDI_finalizeEdit_ClearEditState() {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     ints[fEDI_cursor_editKind] = EditKind_None;
     ints[fEDI_cursor_editLength] = 0;
@@ -2419,7 +2419,7 @@ function EDI_readLineEndPositionList(indexLine) {
  */
 function EDI_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_I) {
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
 	let childIndex = 0;
 
@@ -2618,7 +2618,7 @@ function EDI_drawViewPort_FindTrackedSyntax_StartingIndex(indexLineAaa) {
 
     // TODO: 'indexLineAaa' and 'indexLineBbb'; babel compiler error when both were named indexLine.
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
     let local_EDI_trackedSyntaxList = EDI_trackedSyntaxList;
 
     let line = EDI_getLineBoundaryPositions(indexLineAaa);
@@ -2720,7 +2720,7 @@ function EDI_draw_all_cursors() {
  * @param {boolean} NOTscrollCursorIntoView 
  */
 function EDI_drawCursor(NOTscrollCursorIntoView) {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     ints[fEDI_cursor_cursorTranslateYValue] = (ints[fEDI_cursor_indexLine] + ints[fEDI_offsetLine]) * ints[fEDI_lineHeight];
     ints[fEDI_cursor_cursorTranslateXValue] = (ints[fEDI_cursor_indexColumn] + ints[fEDI_offsetColumn]) * EDI_characterWidth;
@@ -2869,7 +2869,7 @@ function EDI_clearSelectionStyle() {
 }
 
 function EDI_createStyleForSelection() {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     if (ints[fEDI_cursor_DRAWN_selectionAnchor] !== ints[fEDI_cursor_selectionAnchor] ||
         ints[fEDI_cursor_DRAWN_selectionEnd] !== ints[fEDI_cursor_selectionEnd] ||
@@ -3175,7 +3175,7 @@ function EDI_getLineEnd_pos_raw(indexLine) {
 function EDI_onMouseMove_WRAPIT(event) {
     if ((event.buttons & 1) && !get_EDI_recentBoundingClientRect_isNull_intFalsey()) {
 
-        let ints = gINT_FIELDS;
+        const ints = gINT_FIELDS;
 
         // TODO: Consider short circuiting at via event.clientX and clientY by tracking the necessary thresholds for the cursor position to pass rather than the previous and current indices. (you can possibly thereby skip the calculation of the indices entirely for the redundant events).
         // TODO: Is it correct to use the cursor's indexLine and indexColumn directly as a means of determining redundancy? I worry about odd interactions, but I have no proof that such an odd interaction could exist.
@@ -3356,7 +3356,7 @@ function EDI_getCharacterCurrent_KIND(indexColumn, positionIndex, lineEnd) {
 
 function EDI_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     let nextPositionIndex = EDI_getPositionIndex_Overload(indexLineClicked, indexColumnClicked);
 
@@ -3445,7 +3445,7 @@ function EDI_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
 
 function EDI_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked) {
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     // TODO: I remember this being bugged I think it makes sense why. You're checking if the cursor is exactly at the threshold rather than determining if the distance from previous event to this one puts you past the threshold.
     if (indexLineClicked === ints[fEDI_detailRank3OriginLine]) {
@@ -3571,7 +3571,7 @@ function EDI_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLineCli
         return;
     }
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     ints[fEDI_cursor_indexLine] = indexLineClicked;
     ints[fEDI_cursor_indexColumn] = indexColumnClicked;
@@ -3686,7 +3686,7 @@ function EDI_onMouseDownDetailRankThree(event_button, event_shiftKey, indexLineC
         return;
     }
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     ints[fEDI_cursor_indexLine] = indexLineClicked;
     ints[fEDI_cursor_indexColumn] = indexColumnClicked;
@@ -3752,7 +3752,7 @@ function EDI_insertGapBufferSpan() {
  * @param {*} editLength 
  */
 function EDI_startEdit(editKind, editPosition, editLength) {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
     ints[fEDI_cursor_editKind] = editKind;
     ints[fEDI_cursor_editPosition] = editPosition;
     ints[fEDI_cursor_editIndexLine] = ints[fEDI_cursor_indexLine];
@@ -3770,7 +3770,7 @@ function EDI_startEdit(editKind, editPosition, editLength) {
  * @returns 
  */
 function EDI_NOTcanBatch_insert() {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
     return ints[fEDI_cursor_editKind] != EditKind_InsertLtr ||
            ints[fEDI_cursor_indexLine] !== ints[fEDI_cursor_editIndexLine] ||
            ints[fEDI_cursor_indexColumn] !== ints[fEDI_cursor_editIndexColumn] + ints[fEDI_cursor_editLength] ||
@@ -3782,7 +3782,7 @@ function EDI_NOTcanBatch_insert() {
  * @returns 
  */
 function EDI_NOTcanBatch_enter() {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
     return true || // turn off batching until it works. The initial enter event is what matters everything else can be recreated based on the amount of lineFeeds that were inserted.
            ints[fEDI_cursor_editKind] != EditKind_Enter ||
            ints[fEDI_cursor_indexLine] !== ints[fEDI_cursor_END_editIndexLine] ||
@@ -3796,7 +3796,7 @@ function EDI_NOTcanBatch_enter() {
  * @returns 
  */
 function EDI_NOTcanBatch_backspace() {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
     return ints[fEDI_cursor_editKind] != EditKind_BackspaceRtl ||
            ints[fEDI_cursor_indexLine] !== ints[fEDI_cursor_editIndexLine] ||
            ints[fEDI_cursor_indexColumn] !== ints[fEDI_cursor_editIndexColumn] ||
@@ -3807,7 +3807,7 @@ function EDI_NOTcanBatch_backspace() {
  * @returns 
  */
 function EDI_NOTcanBatch_delete() {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
     return ints[fEDI_cursor_editKind] != EditKind_DeleteLtr ||
            ints[fEDI_cursor_indexLine] !== ints[fEDI_cursor_editIndexLine] ||
            ints[fEDI_cursor_indexColumn] !== ints[fEDI_cursor_editIndexColumn] ||
@@ -3820,7 +3820,7 @@ function EDI_NOTcanBatch_delete() {
 function EDI_preKeyboardMovementSelectionLogic(shiftKey) {
     if (shiftKey) {
         if (!EDI_cursor_hasSelection()) {
-            let ints = gINT_FIELDS;
+            const ints = gINT_FIELDS;
             ints[fEDI_cursor_selectionAnchor] = EDI_getPositionIndex_cursor();
             ints[fEDI_cursor_selectionIndexAnchorLine] = ints[fEDI_cursor_indexLine];
             ints[fEDI_cursor_selectionIndexAnchorColumn] = ints[fEDI_cursor_indexColumn];
@@ -3828,7 +3828,7 @@ function EDI_preKeyboardMovementSelectionLogic(shiftKey) {
     }
     else {
         if (EDI_cursor_hasSelection()) {
-            let ints = gINT_FIELDS;
+            const ints = gINT_FIELDS;
             ints[fEDI_cursor_selectionAnchor] = ints[fEDI_cursor_selectionEnd];
             ints[fEDI_cursor_selectionIndexAnchorLine] = ints[fEDI_cursor_selectionIndexEndLine];
             ints[fEDI_cursor_selectionIndexAnchorColumn] = ints[fEDI_cursor_selectionIndexEndColumn];
@@ -3841,7 +3841,7 @@ function EDI_preKeyboardMovementSelectionLogic(shiftKey) {
  */
 function EDI_postKeyboardMovementSelectionLogic(shiftKey) {
     if (shiftKey) {
-        let ints = gINT_FIELDS;
+        const ints = gINT_FIELDS;
         ints[fEDI_cursor_selectionEnd] = EDI_getPositionIndex_cursor();
         ints[fEDI_cursor_selectionIndexEndLine] = ints[fEDI_cursor_indexLine];
         ints[fEDI_cursor_selectionIndexEndColumn] = ints[fEDI_cursor_indexColumn];
@@ -3852,7 +3852,7 @@ function EDI_postKeyboardMovementSelectionLogic(shiftKey) {
  * @param {*} shiftKey 
  */
 function EDI_arrowDown(shiftKey) {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
     EDI_movementBasedCacheInvalidation();
     EDI_preKeyboardMovementSelectionLogic(shiftKey);
     if (ints[fEDI_cursor_indexLine] < EDI_lineEndPositionList.count - 1) {
@@ -4015,7 +4015,7 @@ function EDI_editEvent(editKind, event, clipboardContent) {
 }
 
 function EDI_editEvent_theEditIself_InsertLtr(event) {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
     EDI_movementBasedCacheInvalidation();
     if (ints[fEDI_offsetColumn_withRespectToThisIndexLine] !== ints[fEDI_cursor_indexLine]) {
         ints[fEDI_offsetColumn_withRespectToThisIndexLine] = ints[fEDI_cursor_indexLine];
@@ -4035,7 +4035,7 @@ function EDI_editEvent_theEditIself_InsertLtr(event) {
 }
 
 function EDI_editEvent_theEditIself_DeleteLtr(event) {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
     EDI_movementBasedCacheInvalidation();
     if (ints[fEDI_offsetColumn_withRespectToThisIndexLine] !== ints[fEDI_cursor_indexLine]) {
         ints[fEDI_offsetColumn_withRespectToThisIndexLine] = ints[fEDI_cursor_indexLine];
@@ -4056,7 +4056,7 @@ function EDI_editEvent_theEditIself_DeleteLtr(event) {
 }
 
 function EDI_editEvent_theEditIself_BackspaceRtl(event) {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
     EDI_movementBasedCacheInvalidation();
     if (ints[fEDI_offsetColumn_withRespectToThisIndexLine] !== ints[fEDI_cursor_indexLine]) {
         ints[fEDI_offsetColumn_withRespectToThisIndexLine] = ints[fEDI_cursor_indexLine];
@@ -4397,7 +4397,7 @@ hmmm is google AI just hyping me up... I need to clarify that those few conditio
  */
 function EDI_onKeyDown(event) {
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     // Explicitly inlining 'clearMulticursorState()' because it currently is and I just don't want to make a decision about this right now.
     // So what I can do is mark the code paragraph for later decision making.
@@ -4485,7 +4485,7 @@ function EDI_onKeyDown_ArrowLeft(event) {
 
     EDI_movementBasedCacheInvalidation();
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     if (ints[fEDI_offsetColumn_withRespectToThisIndexLine] !== ints[fEDI_cursor_indexLine]) {
         ints[fEDI_offsetColumn_withRespectToThisIndexLine] = ints[fEDI_cursor_indexLine];
@@ -4600,7 +4600,7 @@ function EDI_onKeyDown_ArrowRight(event) {
 
     EDI_movementBasedCacheInvalidation();
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     if (ints[fEDI_offsetColumn_withRespectToThisIndexLine] !== ints[fEDI_cursor_indexLine]) {
         ints[fEDI_offsetColumn_withRespectToThisIndexLine] = ints[fEDI_cursor_indexLine];
@@ -5303,7 +5303,7 @@ function EDI_btnNext_onclick() {
 
 function EDI_render_do_IndentMore() {
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     // When you're done with IndentLess batch editing correctly.
     // You still need to come back to the render for
@@ -5468,7 +5468,7 @@ function EDI_indentMore() {
 
 function EDI_render_do_IndentLess() {
     
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     let startingIndex = ints[fEDI_indent_startingIndex] = startingIndex;
     let SMALL_lineAndColumnIndices_indexLine = ints[fEDI_indent_SMALL_lineAndColumnIndices_indexLine];
@@ -5666,7 +5666,7 @@ async function EDI_copySelection() {
  */
 async function EDI_duplicateSelection() {
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
 	if (!EDI_cursor_hasSelection()) {
 		// TODO: This code has a bug and doesn't work with multicursor... EDI_onMouseDownDetailRankThree needs to accept a cursor rather than acting on EDI_primaryCursor...
@@ -5710,7 +5710,7 @@ async function EDI_duplicateSelection() {
 
 function EDI_render_do_DuplicateOrPaste() {
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     // Word
     // Tab
@@ -6091,7 +6091,7 @@ function EDI_render_do_DuplicateOrPaste() {
 function EDI_paste(content) {
     let positionIndex = EDI_getPositionIndex_cursor();
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     ints[fEDI_cursor_editPosition] = positionIndex;
     ints[fEDI_cursor_editIndexLine] = ints[fEDI_cursor_indexLine];
@@ -6450,7 +6450,7 @@ function EDI_lineWasInsertedValidateGutter() {
  * @param {*} insertionCount 
  */
 function EDI_trackedSyntaxList_inefficientUpdateStartAndLength(indexPosition, insertionCount) {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
     for (var i = 0; i < EDI_trackedSyntaxList.count_abstract; i++) {
         EDI_trackedSyntaxList.getElementAt(i);
         if (indexPosition <= ints[fEDI_pooledTrackedSyntax_start]) {
@@ -6464,7 +6464,7 @@ function EDI_trackedSyntaxList_inefficientUpdateStartAndLength(indexPosition, in
 
 function EDI_render_do_EnterKey() {
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     update_verticalVirtualizationBoundary();
 
@@ -6951,7 +6951,7 @@ And then I got response of
  */
 function EDI_removeSelection() {
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     if (ints[fEDI_cursor_editKind] != EditKind_None) {
         // TODO: multicursor confusion scenario is likely to happy due to this code, but the code isn't related enough for me to change it yet.
@@ -7003,7 +7003,7 @@ function EDI_removeSelection() {
 
 function EDI_render_do_RemoveSelection() {
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     let smallPosition = EDI_RemoveSelection_smallPosition;
     let largePosition = EDI_RemoveSelection_largePosition;
@@ -7315,7 +7315,7 @@ comments from EDI_removeSelection(cursor) that may or may not be useful idk I ju
 
 /** TODO: this is nearly identical to backspace, the difference is the check 'if (gINT_FIELDS[fEDI_cursor_editKind] !== EditKind_DeleteLtr)', thus dedupe the logic or no? */
 function EDI_render_do_Delete() {
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     if (ints[fEDI_cursor_editKind] !== EditKind_DeleteLtr) {
         return;
@@ -7424,7 +7424,7 @@ function EDI_state_do_Delete(event) {
         return;
     }
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     let virtual_cursorIndexLine = ints[fEDI_cursor_indexLine] + ints[fEDI_cursor_editLineFeedCount];
 
@@ -7515,7 +7515,7 @@ function EDI_deleteDo(event) {
 
 function EDI_render_do_Backspace() {
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     if (ints[fEDI_cursor_editKind] !== EditKind_BackspaceRtl) {
         return;
@@ -7618,7 +7618,7 @@ function EDI_state_do_Backspace(event) {
         return;
     }
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
     
     if (ints[fEDI_cursor_indexColumn] === 0) {
         if (ints[fEDI_cursor_indexLine] > 0) {
@@ -7725,7 +7725,7 @@ function EDI_insertDo(character) {
 
 function EDI_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine() {
 
-    let ints = gINT_FIELDS;
+    const ints = gINT_FIELDS;
 
     // binary search for 'if (ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_pooledTrackedSyntax_length] > positionIndex)'
     let indexTrackedSyntax = EDI_drawViewPort_FindTrackedSyntax_StartingIndex(ints[fEDI_cursor_indexLine]);
@@ -8884,5 +8884,9 @@ Don't look at me I'm desparate.
 Omg desperate*
 
 I should start using const
+
+'const ints'
+
+I'm also gonna try changing the color theme in VSCode maybe that's what is holding me back
 
 */

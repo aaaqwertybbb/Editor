@@ -2773,7 +2773,7 @@ function EDITOR_drawCursor(NOTscrollCursorIntoView) {
     EDITOR_cursor_caretRow.style.transform = `translateY(${EDITOR_cursor_cursorTranslateYValue}px)`;
     EDITOR_cursor_cursorElement.style.transform = `translateX(${EDITOR_cursor_cursorTranslateXValue}px)`;
 
-    EDITOR_createStyleForSelection(r);
+    EDITOR_createStyleForSelection();
 
     let text = '';
 

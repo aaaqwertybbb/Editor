@@ -318,8 +318,10 @@ const INDEXOF_EDITOR_cursor_editIndexColumn = 55;
  * The awkward name is to avoid re-using similar words that already are used in other fields on this class.
  */
 const INDEXOF_EDITOR_cursor_editRenderedDisplacement = 56;
+/** TODO: perhaps you could determine this some other way, but tracking it for the moment is easiest and necessary if I'm to not give up on getting an initial solution to work, given my current mood and etc... */
+const INDEXOF_EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET = 57;
 
-// EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]
+// EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET]
 
 
 

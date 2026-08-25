@@ -86,8 +86,8 @@ let EDITOR_cursor_GAP_BUFFER_CAPACITY = 32;
 // TODO: This assignment isn't necessary, it was already the default value;
 EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] = ENUM_EditKind_None;
 
-/** TODO: perhaps you could determine this some other way, but tracking it for the moment is easiest and necessary if I'm to not give up on getting an initial solution to work, given my current mood and etc... */
-let EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET = 0;
+
+let  = 0;
 let EDITOR_cursor_END_editIndexLine = 0;
 let EDITOR_cursor_END_editIndexColumn = 0;
 
@@ -202,7 +202,7 @@ function EDITOR_cursor_clear() {
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] = 0;
-    EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET] = 0;
     EDITOR_cursor_END_editIndexLine = 0;
     EDITOR_cursor_END_editIndexColumn = 0;
 

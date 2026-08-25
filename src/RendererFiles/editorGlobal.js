@@ -2879,18 +2879,20 @@ function EDITOR_clearSelectionStyle() {
 }
 
 function EDITOR_createStyleForSelection() {
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] ||
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionEnd] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] ||
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selection_virtualCount] !== EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] ||
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selection_virtualIndexLine] !== EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine]) {
+    let local_EDITOR_int_fields = EDITOR_int_fields;
 
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionEnd] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selection_virtualCount] = EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selection_virtualIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] ||
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionEnd] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] ||
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selection_virtualCount] !== local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] ||
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selection_virtualIndexLine] !== local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine]) {
+
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionEnd] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selection_virtualCount] = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selection_virtualIndexLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
 
         let shouldExistSelectionDiv;
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor] === EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionEnd]) {
+        if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor] === local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionEnd]) {
             shouldExistSelectionDiv = false;
         }
         else {
@@ -2923,22 +2925,22 @@ function EDITOR_createStyleForSelection() {
 
         // TODO: only somewhat simple viewport based virtualization is implemented from what I remember. i.e.: I think the divs are re-used, but every div is redrawn for the viewport, rather than only recalculating the css for the divs that came or left the viewport.
 
-        let start = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+        let start = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
         let startLineAndColumnIndices = EDITOR_getLineAndColumnIndices(start);
         let startLine = startLineAndColumnIndices.indexLine;
         let startColumn = startLineAndColumnIndices.indexColumn;
 
-        let end = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+        let end = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
         let endLineAndColumnIndices = EDITOR_getLineAndColumnIndices(end);
         let INCLUSIVEendLine = endLineAndColumnIndices.indexLine;
         let INCLUSIVEendColumn = endLineAndColumnIndices.indexColumn;
 
         // # Virtualization
-        if (startLine < EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine]) {
-            startLine = EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+        if (startLine < local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine]) {
+            startLine = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
             startColumn = 0;
         }
-        let lastIndexLineBeingShown = EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1;
+        let lastIndexLineBeingShown = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1;
         if (INCLUSIVEendLine > lastIndexLineBeingShown) {
             INCLUSIVEendLine = lastIndexLineBeingShown;
             INCLUSIVEendColumn = EDITOR_getLastValidIndexColumn(INCLUSIVEendLine);
@@ -2981,7 +2983,7 @@ function EDITOR_createStyleForSelection() {
             lineSelectionDiv = textSelectionDiv.children[childDivIndex++];
             lineSelectionDiv.className = 'EDITOR_selection';
             lineSelectionDiv.style.left = gutterWidthTotal_withPxUnits;
-            lineSelectionDiv.style.transform = `translate(${startColumn * EDITOR_characterWidth}px, ${EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] * startLine}px)`;
+            lineSelectionDiv.style.transform = `translate(${startColumn * EDITOR_characterWidth}px, ${local_EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] * startLine}px)`;
             lineSelectionDiv.style.width = (INCLUSIVEendColumn - startColumn) * EDITOR_characterWidth + 'px';
         }
         else {
@@ -2989,7 +2991,7 @@ function EDITOR_createStyleForSelection() {
             lineSelectionDiv = textSelectionDiv.children[childDivIndex++];
             lineSelectionDiv.className = 'EDITOR_selection';
             lineSelectionDiv.style.left = gutterWidthTotal_withPxUnits;
-            lineSelectionDiv.style.transform = `translate(${startColumn * EDITOR_characterWidth}px, ${EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] * startLine}px)`;
+            lineSelectionDiv.style.transform = `translate(${startColumn * EDITOR_characterWidth}px, ${local_EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] * startLine}px)`;
             let line = EDITOR_getLineBoundaryPositions(startLine);
             let lineLength = line.end - line.start;
             lineSelectionDiv.style.width = (lineLength + 1 - startColumn) * EDITOR_characterWidth + 'px';
@@ -2999,7 +3001,7 @@ function EDITOR_createStyleForSelection() {
                 lineSelectionDiv = textSelectionDiv.children[childDivIndex++];
                 lineSelectionDiv.className = 'EDITOR_selection';
                 lineSelectionDiv.style.left = gutterWidthTotal_withPxUnits;
-                lineSelectionDiv.style.transform = `translateY(${EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] * lineI}px)`;
+                lineSelectionDiv.style.transform = `translateY(${local_EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] * lineI}px)`;
                 let line = EDITOR_getLineBoundaryPositions(lineI);
                 let lineLength = line.end - line.start;
                 lineSelectionDiv.style.width = (lineLength + 1) * EDITOR_characterWidth + 'px';
@@ -3009,7 +3011,7 @@ function EDITOR_createStyleForSelection() {
             lineSelectionDiv = textSelectionDiv.children[childDivIndex++];
             lineSelectionDiv.className = 'EDITOR_selection';
             lineSelectionDiv.style.left = gutterWidthTotal_withPxUnits;
-            lineSelectionDiv.style.transform = `translateY(${EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] * INCLUSIVEendLine}px)`;
+            lineSelectionDiv.style.transform = `translateY(${local_EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] * INCLUSIVEendLine}px)`;
             lineSelectionDiv.style.width = INCLUSIVEendColumn * EDITOR_characterWidth + 'px';
         }
     }

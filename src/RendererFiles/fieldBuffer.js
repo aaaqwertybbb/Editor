@@ -301,8 +301,11 @@ const INDEXOF_EDITOR_cursor_selectionIndexAnchorColumn = 45;
 const INDEXOF_EDITOR_cursor_selectionIndexEndLine = 46;
 const INDEXOF_EDITOR_cursor_selectionIndexEndColumn = 47;
 
+const INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor = 48;
+const INDEXOF_EDITOR_cursor_DRAWN_selectionEnd = 49;
 
-// EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexEndColumn]
+
+// EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionEnd]
 
 
 

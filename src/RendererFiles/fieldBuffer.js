@@ -302,6 +302,8 @@ Or maybe it only was if the prototype was large?
 
 I remember a bit now so for correctness: I'm pretty sure it is more a matter of
 if there's a large class or something that is close to a global variable in terms of accessing the property speed but I don't know.
+
+Class property accessing is slower than that of a local variable, and approaches the time of accessing a global variable for large enough classes
 */
 
 

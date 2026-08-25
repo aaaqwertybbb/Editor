@@ -309,8 +309,9 @@ const INDEXOF_EDITOR_cursor_DRAWN_selection_virtualCount = 51;
 
 const INDEXOF_EDITOR_cursor_editLength = 52;
 const INDEXOF_EDITOR_cursor_editPosition = 53;
+const INDEXOF_EDITOR_cursor_editIndexLine = 54;
 
-// EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]
+// EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine]
 
 
 

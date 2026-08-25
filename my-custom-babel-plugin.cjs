@@ -338,6 +338,59 @@ module.exports = function (babel) {
     "CONST_DIALOG_minWidth",
 
     "CONST_EDITOR_cursor_GAP_BUFFER_CAPACITY",
+
+
+
+
+
+
+
+
+
+
+
+
+    "INDEXOF_EDITOR_cursor_editKind",
+    "INDEXOF_EDITOR_cursor_indexLine",
+    "INDEXOF_EDITOR_cursor_indexColumn",
+    "INDEXOF_EDITOR_cursor_STORED_indexColumn",
+    "INDEXOF_EDITOR_cursor_cursorTranslateYValue",
+    "INDEXOF_EDITOR_cursor_cursorTranslateXValue",
+    "INDEXOF_EDITOR_cursor_selectionAnchor",
+    "INDEXOF_EDITOR_cursor_selectionEnd",
+    "INDEXOF_EDITOR_cursor_selectionIndexAnchorLine",
+    "INDEXOF_EDITOR_cursor_selectionIndexAnchorColumn",
+    "INDEXOF_EDITOR_cursor_selectionIndexEndLine",
+    "INDEXOF_EDITOR_cursor_selectionIndexEndColumn",
+    "INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor",
+    "INDEXOF_EDITOR_cursor_DRAWN_selectionEnd",
+    "INDEXOF_EDITOR_cursor_DRAWN_selection_virtualIndexLine",
+    "INDEXOF_EDITOR_cursor_DRAWN_selection_virtualCount",
+    "INDEXOF_EDITOR_cursor_editLength",
+    "INDEXOF_EDITOR_cursor_editPosition",
+    "INDEXOF_EDITOR_cursor_editIndexLine",
+    "INDEXOF_EDITOR_cursor_editIndexColumn",
+    "INDEXOF_EDITOR_cursor_editRenderedDisplacement",
+    "INDEXOF_EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET",
+    "INDEXOF_EDITOR_cursor_END_editIndexLine",
+    "INDEXOF_EDITOR_cursor_END_editIndexColumn",
+    "INDEXOF_EDITOR_cursor_gapBufferCount",
+    "INDEXOF_EDITOR_cursor_editLineFeedCount",
+    "INDEXOF_EDITOR_cursor_EDITOR_duplicate_small",
+    "INDEXOF_EDITOR_cursor_EDITOR_duplicate_length",
+
+
+
+
+
+
+
+
+
+
+
+
+
   ];
 
   return {

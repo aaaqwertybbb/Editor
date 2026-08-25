@@ -3581,41 +3581,43 @@ function EDITOR_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLine
         return;
     }
 
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLineClicked;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = indexColumnClicked;
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLineClicked;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = indexColumnClicked;
     let positionIndex = EDITOR_getPositionIndex_cursor();
     
-    let line = EDITOR_getLineBoundaryPositions(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+    let line = EDITOR_getLineBoundaryPositions(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
 
-    let leftCharacterKind = EDITOR_getCharacterPrevious_KIND(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], positionIndex);
-    let rightCharacterKind = EDITOR_getCharacterCurrent_KIND(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], positionIndex, line.end);
+    let leftCharacterKind = EDITOR_getCharacterPrevious_KIND(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], positionIndex);
+    let rightCharacterKind = EDITOR_getCharacterCurrent_KIND(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], positionIndex, line.end);
 
     if (leftCharacterKind === rightCharacterKind) {
         let goalCharacterKind = rightCharacterKind;
 
-        let tempIndexColumn = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
-        let tempPositionIndex = EDITOR_getPositionIndex_Overload(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine], tempIndexColumn);
+        let tempIndexColumn = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+        let tempPositionIndex = EDITOR_getPositionIndex_Overload(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine], tempIndexColumn);
         while (tempIndexColumn > 0) {
             tempIndexColumn--;
             tempPositionIndex--;
             leftCharacterKind = EDITOR_getCharacterPrevious_KIND(tempIndexColumn, tempPositionIndex);
             if (leftCharacterKind !== goalCharacterKind) {
-                EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = tempPositionIndex;
+                local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = tempPositionIndex;
                 break;
             }
         }
 
         let lineLength = line.end - line.start;
         let rightWasFound = false;
-        tempIndexColumn = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
-        tempPositionIndex = EDITOR_getPositionIndex_Overload(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine], tempIndexColumn);
+        tempIndexColumn = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+        tempPositionIndex = EDITOR_getPositionIndex_Overload(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine], tempIndexColumn);
         while (tempIndexColumn < lineLength) {
             tempIndexColumn++;
             tempPositionIndex++;
             rightCharacterKind = EDITOR_getCharacterCurrent_KIND(tempIndexColumn, tempPositionIndex, line.end);
             if (rightCharacterKind !== goalCharacterKind) {
-                EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = tempIndexColumn;
-                EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = tempPositionIndex;
+                local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = tempIndexColumn;
+                local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = tempPositionIndex;
                 rightWasFound = true;
                 break;
             }
@@ -3623,8 +3625,8 @@ function EDITOR_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLine
 
         if (!rightWasFound) {
             // end of line
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = tempIndexColumn;
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = tempPositionIndex;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = tempIndexColumn;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = tempPositionIndex;
         }
 
         EDITOR_render_request(ENUM_RenderKind_Cursor_n);
@@ -3632,39 +3634,39 @@ function EDITOR_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLine
     else if (leftCharacterKind > rightCharacterKind) {
         let goalCharacterKind = leftCharacterKind;
 
-        let tempIndexColumn = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
-        let originalPositionIndex = EDITOR_getPositionIndex_Overload(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine], tempIndexColumn);
+        let tempIndexColumn = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+        let originalPositionIndex = EDITOR_getPositionIndex_Overload(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine], tempIndexColumn);
         let tempPositionIndex = originalPositionIndex;
 
-        while (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] > 0) {
+        while (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] > 0) {
             tempIndexColumn--;
             tempPositionIndex--;
             leftCharacterKind = EDITOR_getCharacterPrevious_KIND(tempIndexColumn, tempPositionIndex);
             if (leftCharacterKind !== goalCharacterKind) {
-                EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = tempPositionIndex;
+                local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = tempPositionIndex;
                 break;
             }
         }
 
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = originalPositionIndex;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = originalPositionIndex;
 
         EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     }
     else {
         let goalCharacterKind = rightCharacterKind;
 
-        let positionIndex = EDITOR_getPositionIndex_Overload(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine], EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]);
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = positionIndex;
+        let positionIndex = EDITOR_getPositionIndex_Overload(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine], local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]);
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = positionIndex;
 
         let lineLength = line.end - line.start;
         let rightWasFound = false;
 
-        while (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] < lineLength) {
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]++;
+        while (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] < lineLength) {
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]++;
             positionIndex++;
-            rightCharacterKind = EDITOR_getCharacterCurrent_KIND(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], positionIndex, line.end);
+            rightCharacterKind = EDITOR_getCharacterCurrent_KIND(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], positionIndex, line.end);
             if (rightCharacterKind !== goalCharacterKind) {
-                EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = positionIndex;
+                local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = positionIndex;
                 rightWasFound = true;
                 break;
             }
@@ -3672,19 +3674,19 @@ function EDITOR_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLine
 
         if (!rightWasFound) {
             // end of line
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = positionIndex;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = positionIndex;
         }
 
         EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     }
 
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
-        EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
-        EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
+        local_EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
     }
     else {
-        EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
-        EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
     }
 }
 

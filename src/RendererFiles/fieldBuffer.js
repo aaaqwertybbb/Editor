@@ -245,17 +245,14 @@ const INDEXOF_EDITOR_offsetWithinSpan = 23;
 
 const INDEXOF_EDITOR_longestLine_indexLine = 24;
 
-const set_EDITOR_longestLine_length = (int) => EDITOR_int_fields[25] = int;
 const INDEXOF_EDITOR_longestLine_length = 25;
 
 /**
  * The INDEXOF_EDITOR_contentWidth() is calculated via Math.ceil(someVar * otherVar) so this is faster to check whether content width will change rather than the multiplication and ceil.
  */
 const INDEXOF_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar = 26;
-const set_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar = (int) => EDITOR_int_fields[26] = int;
 
 const INDEXOF_EDITOR_contentWidth = 27;
-const set_EDITOR_contentWidth = (int) => EDITOR_int_fields[27] = int;
 
 const INDEXOF_EDITOR_indent_ORIGINAL_indentBy = 28;
 const set_EDITOR_indent_ORIGINAL_indentBy = (int) => EDITOR_int_fields[28] = int;

@@ -416,7 +416,7 @@ function EDITOR_init() {
 
     EDITOR_drawGutter_Width();
 
-    set_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar(1); // necessary for the first render, otherwise the if statement sees 0 !== 0.
+    EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar] = 1; // necessary for the first render, otherwise the if statement sees 0 !== 0.
     EDITOR_drawHorizontalScrollbar();
     EDITOR_draw_all_cursors();
 
@@ -1275,7 +1275,7 @@ function EDITOR_state_clear() {
     EDITOR_lineEndPositionList.clear();
     EDITOR_textByteList.clear();
     EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine] = 0;
-    set_EDITOR_longestLine_length(0);
+    EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] = 0;
     
     // Explicitly inlining 'clearMulticursorState()' because it currently is and I just don't want to make a decision about this right now.
     // So what I can do is mark the code paragraph for later decision making.
@@ -1514,12 +1514,12 @@ function EDITOR_drawHorizontalScrollbar() {
 
     if (EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] !== EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar]) {
         
-        set_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar(EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length]);
+        EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar] = EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length];
 
-        set_EDITOR_contentWidth(Math.ceil(EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] * EDITOR_characterWidth));
+        EDITOR_int_fields[INDEXOF_EDITOR_contentWidth] = Math.ceil(EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] * EDITOR_characterWidth);
 
         if ((EDITOR_int_fields[INDEXOF_EDITOR_contentWidth] < (EDITOR_baseElement.clientWidth - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal])) && (EDITOR_baseElement.clientWidth - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] > 0)) {
-            set_EDITOR_contentWidth(Math.floor(EDITOR_baseElement.clientWidth - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal]));
+            EDITOR_int_fields[INDEXOF_EDITOR_contentWidth] = Math.floor(EDITOR_baseElement.clientWidth - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal]);
         }
 
         let local_cached_EDITOR_horizontal_scrollbar_virtualization_boundary_style_width = EDITOR_int_fields[INDEXOF_EDITOR_contentWidth] + 'px';
@@ -1734,7 +1734,7 @@ function EDITOR_finalizeEdit_InsertLtr(cursor, indexLine_editOccurredOn) {
     // -------------------------
 
     if (indexLine_editOccurredOn === EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine]) {
-        set_EDITOR_longestLine_length(EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] + cursor.editLength);
+        EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] = EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] + cursor.editLength;
     }
 
     EDITOR_finalizeEdit_ClearEditState(cursor);
@@ -2384,7 +2384,7 @@ function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(cursor,
     // -------------------------
 
     if (indexLine_editOccurredOn === EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine]) {
-        set_EDITOR_longestLine_length(EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] - cursor.editLength);
+        EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] = EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] - cursor.editLength;
     }
 
     EDITOR_finalizeEdit_ClearEditState(cursor);

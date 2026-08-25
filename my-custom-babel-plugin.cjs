@@ -19,11 +19,8 @@ module.exports = function (babel) {
     
     
     
-    "set_EDITOR_longestLine_length",
+  
     
-    "set_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar",
-    
-    "set_EDITOR_contentWidth",
     
     "set_EDITOR_indent_ORIGINAL_indentBy",
     

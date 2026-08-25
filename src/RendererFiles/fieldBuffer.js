@@ -402,15 +402,15 @@ But I don't know
 
 const EDI_baseElement = document.getElementById('EDITOR');
 
-let cached_EDI_virtualization_horizontal;
-let cached_EDI_virtualization_vertical;
-let cached_EDI_gutter;
-let cached_EDI_horizontal_scrollbar;
-let cached_EDI_horizontal_scrollbar_virtualization_boundary;
-let cached_EDI_body;
-let cached_EDI_presentation;
-let cached_EDI_cursorListElement;
-let cached_EDI_textElement;
+let EDI_virtualization_horizontal;
+let EDI_virtualization_vertical;
+let EDI_gutter;
+let EDI_horizontal_scrollbar;
+let EDI_horizontal_scrollbar_virtualization_boundary;
+let EDI_body;
+let EDI_presentation;
+let EDI_cursorListElement;
+let EDI_textElement;
 
 const EDI_tab_tabsbytes = new Uint8Array(4);
 EDI_tab_tabsbytes[0] = CONST_EDI_ASCII_TAB;

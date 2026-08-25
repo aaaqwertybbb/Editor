@@ -94,8 +94,8 @@ let EDI_cursor_caretRow = document.createElement('div');
 EDI_cursor_caretRow.id = "EDI_caretRow-" + EDI_cursor_cursorId;
 EDI_cursor_caretRow.className = "EDI_caretRow";
 EDI_cursor_caretRow.style.left = gutterWidthTotal_withPxUnits;
-if (cached_EDI_horizontal_scrollbar_virtualization_boundary) {
-    EDI_cursor_caretRow.style.width = cached_EDI_horizontal_scrollbar_virtualization_boundary.style.width;
+if (EDI_horizontal_scrollbar_virtualization_boundary) {
+    EDI_cursor_caretRow.style.width = EDI_horizontal_scrollbar_virtualization_boundary.style.width;
 }
 
 let EDI_cursor_cursorElement = document.createElement('div');
@@ -277,7 +277,7 @@ let ArrayFrom_textElement_children_length = 0;
 const count_of_wellknown_renderKinds = 19;
 
 /** 'EDI_init' and 'EDI_drawHorizontalScrollbar' related */
-let DRAWN_NUMBER_cached_EDI_horizontal_scrollbar_style_left;
+let DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left;
 
 // Move some 'EDI_removeSelection()' state here so I can access it in the render function.
 // TODO: Don't do this long term, I need a simple bridge for this state so I can just get started otherwise I'll spend the rest of my life procrastinating.
@@ -302,21 +302,21 @@ let EDI_mousemove_eventListener_isActive = false;
 
 function EDI_init() {
 
-    cached_EDI_virtualization_horizontal = EDI_baseElement.children[0];
-    cached_EDI_virtualization_vertical = EDI_baseElement.children[1];
-    cached_EDI_gutter = EDI_baseElement.children[4];
+    EDI_virtualization_horizontal = EDI_baseElement.children[0];
+    EDI_virtualization_vertical = EDI_baseElement.children[1];
+    EDI_gutter = EDI_baseElement.children[4];
 
-    cached_EDI_horizontal_scrollbar = EDI_baseElement.children[2].children[0];
-    cached_EDI_horizontal_scrollbar.style.left = '0px';
-    DRAWN_NUMBER_cached_EDI_horizontal_scrollbar_style_left = 0;
+    EDI_horizontal_scrollbar = EDI_baseElement.children[2].children[0];
+    EDI_horizontal_scrollbar.style.left = '0px';
+    DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left = 0;
 
-    cached_EDI_horizontal_scrollbar_virtualization_boundary = EDI_baseElement.children[2].children[0].children[0];
-    cached_EDI_body = EDI_baseElement.children[5];
-    cached_EDI_presentation = EDI_baseElement.children[5].children[0];
-    cached_EDI_cursorListElement = EDI_baseElement.children[5].children[1];
-    cached_EDI_textElement = EDI_baseElement.children[5].children[2];
+    EDI_horizontal_scrollbar_virtualization_boundary = EDI_baseElement.children[2].children[0].children[0];
+    EDI_body = EDI_baseElement.children[5];
+    EDI_presentation = EDI_baseElement.children[5].children[0];
+    EDI_cursorListElement = EDI_baseElement.children[5].children[1];
+    EDI_textElement = EDI_baseElement.children[5].children[2];
 
-    cached_EDI_cursorListElement.appendChild(EDI_cursor_caretRow);
+    EDI_cursorListElement.appendChild(EDI_cursor_caretRow);
 
     EDI_measureLineHeightAndCharacterWidth();
     EDI_measureBaseElement();
@@ -324,8 +324,8 @@ function EDI_init() {
     let gutterPaddingLeft = CONST_EDI_gutterPaddingLeft + 'px';
     let gutterPaddingRight = CONST_EDI_gutterPaddingRight + 'px';
 
-    cached_EDI_gutter.style.paddingLeft = gutterPaddingLeft;
-    cached_EDI_gutter.style.paddingRight = gutterPaddingRight;
+    EDI_gutter.style.paddingLeft = gutterPaddingLeft;
+    EDI_gutter.style.paddingRight = gutterPaddingRight;
 
     EDI_gutterBackgroundColor.style.paddingLeft = gutterPaddingLeft;
     EDI_gutterBackgroundColor.style.paddingRight = gutterPaddingRight;
@@ -471,8 +471,8 @@ function EDI_render_do_InsertLtr() {
 function EDI_render_do_Clear() {
     EDI_drawCursor();
     EDI_clearSelectionStyle();
-    cached_EDI_textElement.innerHTML = '';
-    cached_EDI_gutter.innerHTML = '';
+    EDI_textElement.innerHTML = '';
+    EDI_gutter.innerHTML = '';
 
     // Force case 3
     prevVli = 0;
@@ -527,8 +527,8 @@ function EDI_render_do_CreateViewport() {
 
     intFields[F_EDI_ONSCROLLvirtualCount] = intFields[F_EDI_virtualCount];
 
-    cached_EDI_gutter.innerHTML = '';
-    cached_EDI_textElement.innerHTML = '';
+    EDI_gutter.innerHTML = '';
+    EDI_textElement.innerHTML = '';
 
     EDI_beltIndexZero = 0;
     let translateY = `translateY(0px)`;
@@ -547,22 +547,22 @@ function EDI_render_do_CreateViewport() {
             gutterLineElement.textContent = indexLine + 1;
         }
         gutterLineElement.className = 'eG';
-        cached_EDI_gutter.appendChild(gutterLineElement);
+        EDI_gutter.appendChild(gutterLineElement);
         gutterLineElement.style.top = top;
         gutterLineElement.style.width = gutterWidth;
 
         let div = document.createElement('div');
         div.className = 'eT';
-        cached_EDI_textElement.appendChild(div);
+        EDI_textElement.appendChild(div);
         div.style.transform = translateY;
         div.style.left = left;
-        div.style.width = cached_EDI_horizontal_scrollbar_virtualization_boundary.style.width;
+        div.style.width = EDI_horizontal_scrollbar_virtualization_boundary.style.width;
 
         div.appendChild(document.createElement('span'));
     }
 
-    ArrayFrom_gutter_children = Array.from(cached_EDI_gutter.children);
-    ArrayFrom_textElement_children = Array.from(cached_EDI_textElement.children);
+    ArrayFrom_gutter_children = Array.from(EDI_gutter.children);
+    ArrayFrom_textElement_children = Array.from(EDI_textElement.children);
     ArrayFrom_textElement_children_length = ArrayFrom_textElement_children.length;
 
     EDI_drawHorizontalScrollbar(); // TODO: The 'setting EDI_baseElement.scrollLeft' line appearing after 'EDI_drawHorizontalScrollbar();' in this function strikes me as odd when skimming the code. (1 of 2)
@@ -870,8 +870,8 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
         intFields[F_EDI_ONSCROLLvirtualCount] === intFields[F_EDI_virtualCount]) {
             // TODO: this is directly tied to a scroll event on EDI_baseElement so handle it from there perhaps?
             // TODO: this code is duplicated inside EDI_drawHorizontalScrollbar, reduce duplication?
-            if (cached_EDI_horizontal_scrollbar.scrollLeft !== lastReadNumber_scrollLeft) {
-                cached_EDI_horizontal_scrollbar.scrollLeft = lastReadNumber_scrollLeft;
+            if (EDI_horizontal_scrollbar.scrollLeft !== lastReadNumber_scrollLeft) {
+                EDI_horizontal_scrollbar.scrollLeft = lastReadNumber_scrollLeft;
             }
             return true;
     }
@@ -1354,7 +1354,7 @@ function EDI_setText(text, fileStartsWithBom, textSourceIdentifier, FORMATTED_te
  */
 function update_verticalVirtualizationBoundary(lineCount) {
     if (!lineCount) lineCount = EDI_lineEndPositionList.count;
-    cached_EDI_virtualization_vertical.style.height = ((lineCount + GLOB_int_fields[F_EDI_virtualCount] - 1) * GLOB_int_fields[F_EDI_lineHeight]) + 'px';
+    EDI_virtualization_vertical.style.height = ((lineCount + GLOB_int_fields[F_EDI_virtualCount] - 1) * GLOB_int_fields[F_EDI_lineHeight]) + 'px';
 }
 
 /**
@@ -1406,7 +1406,7 @@ function EDI_drawGutter_Width() {
     gutterWidthTotal_withPxUnits = `${intFields[F_EDI_gutterWidthTotal]}px`;
 
     let gutterWidth = intFields[F_EDI_gutterWidthStyleValue] + 'px';
-    cached_EDI_gutter.style.width = gutterWidth;
+    EDI_gutter.style.width = gutterWidth;
     EDI_gutterBackgroundColor.style.width = gutterWidth;
 
     for (let i = 0; i < ArrayFrom_textElement_children_length/*a 'ArrayFrom_gutter_children_length' would always be equal to the textElement equivalent*/; i++) {
@@ -1429,14 +1429,14 @@ function EDI_drawGutter_Width() {
  */
 function EDI_drawHorizontalScrollbar() {
     let intFields = GLOB_int_fields;
-    if (DRAWN_NUMBER_cached_EDI_horizontal_scrollbar_style_left !== intFields[F_EDI_gutterWidthTotal]) {
-        cached_EDI_horizontal_scrollbar.style.left = gutterWidthTotal_withPxUnits;
-        DRAWN_NUMBER_cached_EDI_horizontal_scrollbar_style_left = intFields[F_EDI_gutterWidthTotal];
+    if (DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left !== intFields[F_EDI_gutterWidthTotal]) {
+        EDI_horizontal_scrollbar.style.left = gutterWidthTotal_withPxUnits;
+        DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left = intFields[F_EDI_gutterWidthTotal];
     }
 
     if (EDI_horizontal_scrollbar_widthValue !== (EDI_baseElement.clientWidth - intFields[F_EDI_gutterWidthTotal])) {
         EDI_horizontal_scrollbar_widthValue = EDI_baseElement.clientWidth - intFields[F_EDI_gutterWidthTotal];
-        cached_EDI_horizontal_scrollbar.style.width = EDI_horizontal_scrollbar_widthValue + 'px';
+        EDI_horizontal_scrollbar.style.width = EDI_horizontal_scrollbar_widthValue + 'px';
     }
 
     if (intFields[F_EDI_longestLine_length] !== intFields[F_EDI_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar]) {
@@ -1449,23 +1449,23 @@ function EDI_drawHorizontalScrollbar() {
             intFields[F_EDI_contentWidth] = Math.floor(EDI_baseElement.clientWidth - intFields[F_EDI_gutterWidthTotal]);
         }
 
-        let local_cached_EDI_horizontal_scrollbar_virtualization_boundary_style_width = intFields[F_EDI_contentWidth] + 'px';
+        let local_EDI_horizontal_scrollbar_virtualization_boundary_style_width = intFields[F_EDI_contentWidth] + 'px';
 
-        cached_EDI_horizontal_scrollbar_virtualization_boundary.style.width = local_cached_EDI_horizontal_scrollbar_virtualization_boundary_style_width;
-        cached_EDI_virtualization_horizontal.style.width = intFields[F_EDI_contentWidth] + intFields[F_EDI_gutterWidthTotal] + 'px';
+        EDI_horizontal_scrollbar_virtualization_boundary.style.width = local_EDI_horizontal_scrollbar_virtualization_boundary_style_width;
+        EDI_virtualization_horizontal.style.width = intFields[F_EDI_contentWidth] + intFields[F_EDI_gutterWidthTotal] + 'px';
 
         for (let i = 0; i < ArrayFrom_textElement_children_length; i++) {
-            ArrayFrom_textElement_children[i].style.width = local_cached_EDI_horizontal_scrollbar_virtualization_boundary_style_width;
+            ArrayFrom_textElement_children[i].style.width = local_EDI_horizontal_scrollbar_virtualization_boundary_style_width;
         }
 
-        EDI_cursor_caretRow.style.width = local_cached_EDI_horizontal_scrollbar_virtualization_boundary_style_width;
+        EDI_cursor_caretRow.style.width = local_EDI_horizontal_scrollbar_virtualization_boundary_style_width;
     }
     
     // TODO: this is directly tied to a scroll event on EDI_baseElement so handle it from there perhaps?
     // TODO: this code is duplicated inside EDI_onScroll_WRAPIT when it returns early due to nothing vertically having changed, reduce duplication?
     // TODO: 'lastReadNumber_scrollLeft' here?
-    if (cached_EDI_horizontal_scrollbar.scrollLeft !== EDI_baseElement.scrollLeft) {
-        cached_EDI_horizontal_scrollbar.scrollLeft = EDI_baseElement.scrollLeft;
+    if (EDI_horizontal_scrollbar.scrollLeft !== EDI_baseElement.scrollLeft) {
+        EDI_horizontal_scrollbar.scrollLeft = EDI_baseElement.scrollLeft;
     }
 }
 
@@ -1551,8 +1551,8 @@ function EDI_finalizeEdit() {
     // You need to NOT do this when you are working with multiple cursors however, because it bugs everything out.
     // 
     if (indexLine_editOccurredOn >= 0 && indexLine_editOccurredOn < EDI_lineEndPositionList.count) {
-        if (cached_EDI_gutter.children.length === GLOB_int_fields[F_EDI_virtualCount] &&
-            cached_EDI_textElement.children.length === GLOB_int_fields[F_EDI_virtualCount]) {
+        if (EDI_gutter.children.length === GLOB_int_fields[F_EDI_virtualCount] &&
+            EDI_textElement.children.length === GLOB_int_fields[F_EDI_virtualCount]) {
 
                 // TODO: The 'awkward explicit inlining' for this case isn't seemingly working...
                 // ...I need to type 'function' then more characters until I hit 32 and force a finalization of the edit due to the length being too long.
@@ -1571,9 +1571,9 @@ function EDI_finalizeEdit() {
                 else beltIndexLine = (beltIndexLine + EDI_beltIndexZero) % GLOB_int_fields[F_EDI_virtualCount];
 
                 if (beltIndexLine >= 0) {
-                    let gutterLineElement = cached_EDI_gutter.children[beltIndexLine];
+                    let gutterLineElement = EDI_gutter.children[beltIndexLine];
                     gutterLineElement.innerHTML = '';
-                    let textLineElement = cached_EDI_textElement.children[beltIndexLine];
+                    let textLineElement = EDI_textElement.children[beltIndexLine];
                     textLineElement.innerHTML = '';
                     EDI_drawLine(indexLine_editOccurredOn, gutterLineElement, textLineElement);
                 }
@@ -2854,11 +2854,11 @@ function EDI_getLineAndColumnIndices(positionIndex) {
 function EDI_clearSelectionStyle() {
     let shouldExistSelectionDiv = false;
     if (EDI_cursor_selectionDivExists) {
-        for (var i = 0; i < cached_EDI_presentation.children.length; i++) {
-            if (cached_EDI_presentation.children[i].id === EDI_cursor_htmlId) {
-                let textSelectionDiv = cached_EDI_presentation.children[i];
+        for (var i = 0; i < EDI_presentation.children.length; i++) {
+            if (EDI_presentation.children[i].id === EDI_cursor_htmlId) {
+                let textSelectionDiv = EDI_presentation.children[i];
                 if (!shouldExistSelectionDiv) {
-                    cached_EDI_presentation.removeChild(textSelectionDiv);
+                    EDI_presentation.removeChild(textSelectionDiv);
                     EDI_cursor_selectionDivExists = false;
                 }
                 break;
@@ -2891,11 +2891,11 @@ function EDI_createStyleForSelection() {
         let textSelectionDiv;
 
         if (EDI_cursor_selectionDivExists) {
-            for (var i = 0; i < cached_EDI_presentation.children.length; i++) {
-                if (cached_EDI_presentation.children[i].id === EDI_cursor_htmlId) {
-                    textSelectionDiv = cached_EDI_presentation.children[i];
+            for (var i = 0; i < EDI_presentation.children.length; i++) {
+                if (EDI_presentation.children[i].id === EDI_cursor_htmlId) {
+                    textSelectionDiv = EDI_presentation.children[i];
                     if (!shouldExistSelectionDiv) {
-                        cached_EDI_presentation.removeChild(textSelectionDiv);
+                        EDI_presentation.removeChild(textSelectionDiv);
                         EDI_cursor_selectionDivExists = false;
                     }
                     break;
@@ -2906,7 +2906,7 @@ function EDI_createStyleForSelection() {
             textSelectionDiv = document.createElement('div')
             textSelectionDiv.id = EDI_cursor_htmlId;
             textSelectionDiv.style.display = 'contents';
-            cached_EDI_presentation.appendChild(textSelectionDiv);
+            EDI_presentation.appendChild(textSelectionDiv);
             EDI_cursor_selectionDivExists = true;
         }
 
@@ -3009,9 +3009,9 @@ function EDI_createStyleForSelection() {
 function EDI_createStyleForSelection_indentMore() {
     let textSelectionDiv;
     if (EDI_cursor_selectionDivExists) {
-        for (var i = 0; i < cached_EDI_presentation.children.length; i++) {
-            if (cached_EDI_presentation.children[i].id === EDI_cursor_htmlId) {
-                textSelectionDiv = cached_EDI_presentation.children[i];
+        for (var i = 0; i < EDI_presentation.children.length; i++) {
+            if (EDI_presentation.children[i].id === EDI_cursor_htmlId) {
+                textSelectionDiv = EDI_presentation.children[i];
                 break;
             }
         }
@@ -4947,12 +4947,12 @@ function EDI_onWheel(event) {
     if (event.shiftKey) {
         EDI_baseElement.scrollBy(event.deltaY, 0);
         // TODO: 'lastReadNumber_scrollLeft' here?
-        cached_EDI_horizontal_scrollbar.scrollLeft = EDI_baseElement.scrollLeft;
+        EDI_horizontal_scrollbar.scrollLeft = EDI_baseElement.scrollLeft;
     }
 }
 
 function EDI_horizontal_scrollbar_onScroll() {
-    EDI_baseElement.scrollLeft = cached_EDI_horizontal_scrollbar.scrollLeft;
+    EDI_baseElement.scrollLeft = EDI_horizontal_scrollbar.scrollLeft;
 }
 
 function EDI_findOverlay_doSearch() {
@@ -5340,7 +5340,7 @@ function EDI_render_do_IndentMore() {
             else beltIndexLine = (beltIndexLine + EDI_beltIndexZero) % intFields[F_EDI_virtualCount];
 
             if (beltIndexLine >= 0) {
-                    let div = cached_EDI_textElement.children[beltIndexLine];
+                    let div = EDI_textElement.children[beltIndexLine];
                     let span;
                     if (div.children[0].className === '') {
                         span = div.children[0];
@@ -5482,9 +5482,9 @@ function EDI_render_do_IndentLess() {
         /////////////////////// P_1
         let textSelectionDiv;
         if (EDI_cursor_selectionDivExists) {
-            for (var i = 0; i < cached_EDI_presentation.children.length; i++) {
-                if (cached_EDI_presentation.children[i].id === EDI_cursor_htmlId) {
-                    textSelectionDiv = cached_EDI_presentation.children[i];
+            for (var i = 0; i < EDI_presentation.children.length; i++) {
+                if (EDI_presentation.children[i].id === EDI_cursor_htmlId) {
+                    textSelectionDiv = EDI_presentation.children[i];
                     break;
                 }
             }
@@ -5570,7 +5570,7 @@ function EDI_render_do_IndentLess() {
             else beltIndexLine = (beltIndexLine + EDI_beltIndexZero) % intFields[F_EDI_virtualCount];
 
             if (beltIndexLine >= 0) {
-                    let div = cached_EDI_textElement.children[beltIndexLine];
+                    let div = EDI_textElement.children[beltIndexLine];
                     let span = div.children[0];
                     span.textContent = span.textContent.slice(innerRemoveCount);
             }
@@ -5979,10 +5979,10 @@ function EDI_render_do_DuplicateOrPaste() {
                 if (intFields[F_EDI_cursor_indexColumn] === 0 && last_valid_indexColumn_currentLine !== 0) { // start of line
                     
                     EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, beltIndexLine_current);
-                    cached_EDI_textElement.children[beltIndexLine_current].appendChild(document.createElement('span'));
+                    EDI_textElement.children[beltIndexLine_current].appendChild(document.createElement('span'));
 
                     beltIndexLine_current = (beltIndexLine_current + 1) % ArrayFrom_textElement_children_length;
-                    let lineDiv = cached_EDI_textElement.children[beltIndexLine_current];
+                    let lineDiv = EDI_textElement.children[beltIndexLine_current];
                     w_div = lineDiv;
                     w_indexSpan = 0;
                     w_span = lineDiv.children[w_indexSpan];
@@ -6002,9 +6002,9 @@ function EDI_render_do_DuplicateOrPaste() {
                         
                         EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, beltIndexLine_current);
                         let span = document.createElement('span');
-                        cached_EDI_textElement.children[beltIndexLine_current].appendChild(span);
+                        EDI_textElement.children[beltIndexLine_current].appendChild(span);
 
-                        let lineDiv = cached_EDI_textElement.children[beltIndexLine_current];
+                        let lineDiv = EDI_textElement.children[beltIndexLine_current];
                         w_div = lineDiv;
                         w_indexSpan = 0;
                         w_span = lineDiv.children[w_indexSpan];
@@ -6041,7 +6041,7 @@ function EDI_render_do_DuplicateOrPaste() {
 
                         EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, beltIndexLine_current);
 
-                        let aaa = cached_EDI_textElement.children[beltIndexLine_current];
+                        let aaa = EDI_textElement.children[beltIndexLine_current];
                         let span = document.createElement('span');
                         span.className = spanClassName;
                         span.textContent = spanText;
@@ -6053,7 +6053,7 @@ function EDI_render_do_DuplicateOrPaste() {
                             aaa.appendChild(w_div.children[rememberIndex]);
                         }
 
-                        let lineDiv = cached_EDI_textElement.children[beltIndexLine_current];
+                        let lineDiv = EDI_textElement.children[beltIndexLine_current];
                         w_div = lineDiv;
                         w_indexSpan = 0;
                         w_span = lineDiv.children[w_indexSpan];
@@ -6405,11 +6405,11 @@ function EDI_lineWasInsertedValidateGutter() {
     //     - [ ] 'break' when you start moving '~' lines to '~' lines.
     //     - [ ] When you move from 'existing lines of text' to '~' lines, you need to set the line number of that '~' line.
     // 
-    //if (cached_EDI_gutter.children.length > 0 && cached_EDI_gutter.children.length === GLOB_int_fields[F_EDI_virtualCount]) {
-    //    if (cached_EDI_gutter.children[cached_EDI_gutter.children.length - 1].textContent === '~') {
-    //        let successFoundTildeAtIndex = cached_EDI_gutter.children.length - 1;
-    //        for (let i = cached_EDI_gutter.children.length - 2; i >= 0; i--) {
-    //            if (cached_EDI_gutter.children[i].textContent === '~') {
+    //if (EDI_gutter.children.length > 0 && EDI_gutter.children.length === GLOB_int_fields[F_EDI_virtualCount]) {
+    //    if (EDI_gutter.children[EDI_gutter.children.length - 1].textContent === '~') {
+    //        let successFoundTildeAtIndex = EDI_gutter.children.length - 1;
+    //        for (let i = EDI_gutter.children.length - 2; i >= 0; i--) {
+    //            if (EDI_gutter.children[i].textContent === '~') {
     //                successFoundTildeAtIndex = i;
     //            }
     //            else {
@@ -6418,8 +6418,8 @@ function EDI_lineWasInsertedValidateGutter() {
     //            }
     //        }
     //        if (successFoundTildeAtIndex > 0) {
-    //            let number = parseInt(cached_EDI_gutter.children[successFoundTildeAtIndex - 1].textContent);
-    //            cached_EDI_gutter.children[successFoundTildeAtIndex].textContent = number + 1;
+    //            let number = parseInt(EDI_gutter.children[successFoundTildeAtIndex - 1].textContent);
+    //            EDI_gutter.children[successFoundTildeAtIndex].textContent = number + 1;
     //        }
     //    }
     //}
@@ -6496,7 +6496,7 @@ function EDI_render_do_EnterKey() {
         else beltIndexLine_firstTilde = (beltIndexLine_firstTilde + EDI_beltIndexZero) % intFields[F_EDI_virtualCount];
 
         if (beltIndexLine_firstTilde >= 0) {
-            cached_EDI_gutter.children[beltIndexLine_firstTilde].textContent = EDI_lineEndPositionList.count + 1;
+            EDI_gutter.children[beltIndexLine_firstTilde].textContent = EDI_lineEndPositionList.count + 1;
         }
         
         let shouldRenderEntireViewport = false;
@@ -6513,7 +6513,7 @@ function EDI_render_do_EnterKey() {
             shouldRenderEntireViewport = true;
 
         // There are some cases that I don't feel like thinking about at the moment, this if statement singles them out.
-        if (intFields[F_EDI_virtualCount] <= 1 || cached_EDI_textElement.children.length !== intFields[F_EDI_virtualCount])
+        if (intFields[F_EDI_virtualCount] <= 1 || EDI_textElement.children.length !== intFields[F_EDI_virtualCount])
             shouldRenderEntireViewport = true;
 
         // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
@@ -6549,7 +6549,7 @@ function EDI_render_do_EnterKey() {
 
         if (!shouldRenderEntireViewport && intFields[F_EDI_cursor_editIndexColumn] === 0) { // start of line
             EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, beltIndexLine_current);
-            cached_EDI_textElement.children[beltIndexLine_current].appendChild(document.createElement('span'));
+            EDI_textElement.children[beltIndexLine_current].appendChild(document.createElement('span'));
 
             EDI_lineWasInsertedValidateGutter();
             return;
@@ -6566,7 +6566,7 @@ function EDI_render_do_EnterKey() {
                     EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, next_beltIndexLine);
                     let span = document.createElement('span');
                     span.textContent = EDI_cursor_cached_indentation_string;
-                    cached_EDI_textElement.children[next_beltIndexLine].appendChild(span);
+                    EDI_textElement.children[next_beltIndexLine].appendChild(span);
 
                     EDI_lineWasInsertedValidateGutter();
                     return;
@@ -6638,7 +6638,7 @@ function EDI_render_do_EnterKey() {
 
                     EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, next_beltIndexLine);
 
-                    let aaa = cached_EDI_textElement.children[next_beltIndexLine];
+                    let aaa = EDI_textElement.children[next_beltIndexLine];
                     let span = document.createElement('span');
                     span.className = spanClassName;
                     span.textContent = spanText;
@@ -6740,15 +6740,15 @@ function EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, incl
     // - for some reason only had a virtualization count of '1',
     // you might need to run this logic otherwise an enter key at column index 0 of a line wouldn't show any changes.
     // 
-    let lastDiv = cached_EDI_textElement.children[beltIndexLine_last];
+    let lastDiv = EDI_textElement.children[beltIndexLine_last];
     for (let i = lastDiv.children.length - 1; i >= 0; i--) {
         lastDiv.removeChild(lastDiv.children[i]);
     }
 
     for (let i = beltIndexLine_last; i !== inclusiveSmallestBeltIndexLineToShift;) {
-        let destinationDiv = cached_EDI_textElement.children[i];
+        let destinationDiv = EDI_textElement.children[i];
         i = (i - 1 + ArrayFrom_textElement_children_length) % ArrayFrom_textElement_children_length;
-        let sourceDiv = cached_EDI_textElement.children[i];
+        let sourceDiv = EDI_textElement.children[i];
         destinationDiv.replaceChildren(...sourceDiv.childNodes);
     }
 }
@@ -6772,21 +6772,21 @@ function EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last
     }
 
     for (let destinationIndex = smallestBeltIndexLineToReceive; destinationIndex !== breakingPoint;) {
-        let destinationDiv = cached_EDI_textElement.children[destinationIndex];
+        let destinationDiv = EDI_textElement.children[destinationIndex];
         let sourceIndex = destinationIndex;
         for (let i = 0; i < distance; i++) {
             sourceIndex = (sourceIndex + 1) % ArrayFrom_textElement_children_length;
         }
-        destinationDiv.replaceChildren(...cached_EDI_textElement.children[sourceIndex].childNodes);
-        if (cached_EDI_gutter.children[sourceIndex].textContent === '~') {
-            cached_EDI_gutter.children[destinationIndex].textContent = '~';
+        destinationDiv.replaceChildren(...EDI_textElement.children[sourceIndex].childNodes);
+        if (EDI_gutter.children[sourceIndex].textContent === '~') {
+            EDI_gutter.children[destinationIndex].textContent = '~';
         }
         destinationIndex = (destinationIndex + 1) % ArrayFrom_textElement_children_length;
     }
 
     let beltIndexLine = breakingPoint;
     for (let i = 0; ; i++) {
-        EDI_drawLine(local_virtualIndexLine + local_virtualCount - (distance - i), cached_EDI_gutter.children[beltIndexLine], cached_EDI_textElement.children[beltIndexLine]);
+        EDI_drawLine(local_virtualIndexLine + local_virtualCount - (distance - i), EDI_gutter.children[beltIndexLine], EDI_textElement.children[beltIndexLine]);
         if (beltIndexLine === beltIndexLine_last) break; // awkward positioning of this break, it seems somewhat necessary but need to take time to read the code further and try to have it moved somewhere more sensible.
         beltIndexLine = (beltIndexLine + 1) % ArrayFrom_textElement_children_length;
     }
@@ -7218,7 +7218,7 @@ function EDI_render_do_RemoveSelection() {
                     }
                     visibleLinesRemovedCount++;
                     //largeLineDiv.innerHTML = '';
-                    //cached_EDI_textElement.appendChild(largeLineDiv);
+                    //EDI_textElement.appendChild(largeLineDiv);
                 }
                 else { // - [ ] keeping, !removing
 
@@ -7293,13 +7293,13 @@ comments from EDI_removeSelection(cursor) that may or may not be useful idk I ju
 
         let beltIndexLine_last = EDI_indexLineTo_beltIndexLine(GLOB_int_fields[F_EDI_virtualIndexLine] + GLOB_int_fields[F_EDI_virtualCount] - 1);
 
-        if (cached_EDI_textElement.children.length === cached_EDI_gutter.children.length) {
+        if (EDI_textElement.children.length === EDI_gutter.children.length) {
             for (let i = 0; i < visibleLinesRemovedCount; i++) {
                 // TODO: wrap around suspect?
-                let gutterLineElement = cached_EDI_gutter.children[beltIndexLine_last - i];
+                let gutterLineElement = EDI_gutter.children[beltIndexLine_last - i];
                 gutterLineElement.innerHTML = ''; // I don't believe this will have already been cleared.
                 // TODO: wrap around suspect?
-                let textLineElement = cached_EDI_textElement.children[beltIndexLine_last - i];
+                let textLineElement = EDI_textElement.children[beltIndexLine_last - i];
                 textLineElement.innerHTML = ''; // Might already be cleared, furthermore might ALWAYS be cleared.
                 EDI_drawLine(largestDrawnIndexLine - i, gutterLineElement, textLineElement);
             }
@@ -7375,7 +7375,7 @@ function EDI_render_do_Delete() {
 
                             if (beltIndexLine_next >= 0) {
                                 let keepingDiv = w_div;
-                                let removingDiv = cached_EDI_textElement.children[beltIndexLine_next];
+                                let removingDiv = EDI_textElement.children[beltIndexLine_next];
 
                                 let rememberRemovingDivLength = removingDiv.children.length;
                                 for (let k = 0; k < rememberRemovingDivLength; k++) {
@@ -7569,7 +7569,7 @@ function EDI_render_do_Backspace() {
 
                             if (beltIndexLine_next >= 0) {
                                 let keepingDiv = w_div;
-                                let removingDiv = cached_EDI_textElement.children[beltIndexLine_next];
+                                let removingDiv = EDI_textElement.children[beltIndexLine_next];
 
                                 let rememberRemovingDivLength = removingDiv.children.length;
                                 for (let k = 0; k < rememberRemovingDivLength; k++) {
@@ -8398,7 +8398,7 @@ function EDI_measureLineHeightAndCharacterWidth() {
     wrapper.style.visibility = 'hidden'; // Keeps it completely invisible to the user
 
     wrapper.appendChild(measureElement);
-    cached_EDI_textElement.appendChild(wrapper);
+    EDI_textElement.appendChild(wrapper);
 
     let len = 396;
     measureElement.innerHTML = 'A'.repeat(len);
@@ -8407,7 +8407,7 @@ function EDI_measureLineHeightAndCharacterWidth() {
     GLOB_int_fields[F_EDI_lineHeight] = Math.ceil(measureElementBoundingClientRect.height); // 15
 
     wrapper.removeChild(measureElement);
-    cached_EDI_textElement.removeChild(wrapper);
+    EDI_textElement.removeChild(wrapper);
 
     const root = document.documentElement;
     const computedStyles = window.getComputedStyle(root);
@@ -8428,7 +8428,7 @@ function EDI_registerHandlers() {
 
     EDI_baseElement.addEventListener('contextmenu', EDI_onContextMenu);
     window.addEventListener('resize', EDI_onResize_WRAPIT);
-    cached_EDI_horizontal_scrollbar.addEventListener('scroll', EDI_horizontal_scrollbar_onScroll, { passive: true });
+    EDI_horizontal_scrollbar.addEventListener('scroll', EDI_horizontal_scrollbar_onScroll, { passive: true });
 
     // Attach a single listener to your text container (Event Delegation)
     EDI_baseElement.addEventListener('mouseover', EDI_mouseOver);

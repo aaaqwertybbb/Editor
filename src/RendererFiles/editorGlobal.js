@@ -122,6 +122,12 @@ let EDITOR_cursor_END_editIndexColumn = 0;
 let EDITOR_cursor_cursorId = EDITOR_cursor_STATIC_CURSOR_ID++;
 let EDITOR_cursor_htmlId = "EDITOR_cursor-" + EDITOR_cursor_cursorId;
 
+/**
+ * When this is cleared the information is not removed, only 'gapBufferCount' is set to 0.
+ */
+let EDITOR_cursor_gapBuffer = new Uint8Array(EDITOR_cursor_GAP_BUFFER_CAPACITY);
+let EDITOR_cursor_gapBufferCount = 0;
+
 class EDITOR_Cursor {
     /**
      * After invoking the constructor you likely would want to add to:
@@ -132,11 +138,8 @@ class EDITOR_Cursor {
      * `EDITOR_cursorList.splice(index, 0, cursorInstance)`
      */
     constructor() {
-        /**
-         * When this is cleared the information is not removed, only 'gapBufferCount' is set to 0.
-         */
-        this.gapBuffer = new Uint8Array(EDITOR_cursor_GAP_BUFFER_CAPACITY);
-        this.gapBufferCount = 0;
+        
+        
         this.gapBufferWriteToSpanElement = null;
         this.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
 
@@ -238,7 +241,7 @@ class EDITOR_Cursor {
         EDITOR_cursor_END_editIndexLine = 0;
         EDITOR_cursor_END_editIndexColumn = 0;
 
-        this.gapBufferCount = 0;
+        EDITOR_cursor_gapBufferCount = 0;
 
         this.enterKey_newLinePlusIndentation_byteList = null;
         this.cached_indentation_string = null;
@@ -536,7 +539,7 @@ function EDITOR_render_do_InsertLtr() {
     if (EDITOR_cursor_editRenderedDisplacement < EDITOR_cursor_editLength) {
         if (cursor.gapBufferWriteToSpanElement) {
 
-            let x = EDITOR_decoder.decode(cursor.gapBuffer.subarray(EDITOR_cursor_editRenderedDisplacement, EDITOR_cursor_editLength));
+            let x = EDITOR_decoder.decode(EDITOR_cursor_gapBuffer.subarray(EDITOR_cursor_editRenderedDisplacement, EDITOR_cursor_editLength));
 
             cursor.gapBufferWriteToSpanElement.textContent = 
                 cursor.gapBufferWriteToSpanElement.textContent.slice(0, (cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex/* + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]*/) + EDITOR_cursor_editRenderedDisplacement) +
@@ -1694,12 +1697,12 @@ function EDITOR_finalizeEdit_InsertLtr(cursor, indexLine_editOccurredOn) {
             EDITOR_trackedSyntaxList.setLength(i, EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] + EDITOR_cursor_editLength);
         }
     }
-    EDITOR_textByteList.insertBytes(EDITOR_cursor_editPosition, cursor.gapBuffer, /*offset*/ 0, /*length*/ cursor.gapBufferCount);
+    EDITOR_textByteList.insertBytes(EDITOR_cursor_editPosition, EDITOR_cursor_gapBuffer, /*offset*/ 0, /*length*/ EDITOR_cursor_gapBufferCount);
 
     let textSourceIdentifier = EDITOR_FORMATTED_textSourceIdentifier;
     let lineAndColumnIndices = EDITOR_getLineAndColumnIndices(EDITOR_cursor_editPosition);
     // TODO: Account for any '\t\0\0\0' that exist on the line
-    let text = EDITOR_decoder.decode(cursor.gapBuffer.subarray(0, cursor.gapBufferCount));
+    let text = EDITOR_decoder.decode(EDITOR_cursor_gapBuffer.subarray(0, EDITOR_cursor_gapBufferCount));
     EDITOR_int_fields[INDEXOF_didChangeTextDocument_version] = EDITOR_int_fields[INDEXOF_didChangeTextDocument_version] + 1;
     let version = EDITOR_int_fields[INDEXOF_didChangeTextDocument_version];
 
@@ -2397,7 +2400,7 @@ function EDITOR_finalizeEdit_ClearEditState(cursor) {
     EDITOR_cursor_editRenderedDisplacement = 0;
     EDITOR_cursor_END_editIndexLine = 0;
     EDITOR_cursor_END_editIndexColumn = 0;
-    cursor.gapBufferCount = 0;
+    EDITOR_cursor_gapBufferCount = 0;
     cursor.gapBufferWriteToSpanElement = null;
     cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
     cursor.editLineFeedCount = 0;
@@ -3366,7 +3369,7 @@ function getCharacter(positionIndex) {
                 // ...long term it presumably fails for characters that I don't tend to type, but until then this is working so I'll just use fromCharCode.
                 //
                 // TODO: This takes a spread/array; if I give it a single byte does it allocate a length of 1 array every invocation?
-                return String.fromCharCode(cursor.gapBuffer[positionIndex - EDITOR_cursor_editPosition]);
+                return String.fromCharCode(EDITOR_cursor_gapBuffer[positionIndex - EDITOR_cursor_editPosition]);
             }
             else if (EDITOR_cursor_editPosition <= positionIndex) {
                 totalShift += EDITOR_cursor_editLength;
@@ -7803,18 +7806,18 @@ function EDITOR_insertDo(cursor, character) {
 
     if (cursor.gapBufferWriteToSpanElement) {
         cursor.gapBufferWriteToSpanElement.textContent = 
-            cursor.gapBufferWriteToSpanElement.textContent.slice(0, (cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]) + cursor.gapBufferCount) +
+            cursor.gapBufferWriteToSpanElement.textContent.slice(0, (cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]) + EDITOR_cursor_gapBufferCount) +
             character +
-            cursor.gapBufferWriteToSpanElement.textContent.slice((cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]) + cursor.gapBufferCount);
+            cursor.gapBufferWriteToSpanElement.textContent.slice((cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]) + EDITOR_cursor_gapBufferCount);
     }*/
 
-    cursor.gapBuffer[cursor.gapBufferCount] = character.charCodeAt(0);
-    cursor.gapBufferCount++;
+    EDITOR_cursor_gapBuffer[EDITOR_cursor_gapBufferCount] = character.charCodeAt(0);
+    EDITOR_cursor_gapBufferCount++;
 
     EDITOR_cursor_editLength++;
     EDITOR_cursor_indexColumn++;
 
-    EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] = EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] + cursor.gapBufferCount;
+    EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] = EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] + EDITOR_cursor_gapBufferCount;
 }
 
 function EDITOR_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine(cursor) {

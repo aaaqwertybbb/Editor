@@ -9276,4 +9276,11 @@ Provided that I haven't consumed cleaning products due to neglegent wandering ar
 of my brother while he carried them then I'll be fine.
 I'm low key on the edge of panic and trying to be calm.
 
+And then tomorrow morning for breakfast I have to make the 1 lb of chicken then carry it on a plate from the kitchen
+to my room where the hallway I pass through he was standing in while holding the cleaning products
+and I worry that there are residue in the air that will come down like dust onto the plate while I walk through
+I tried to put a paper plate over my plate earlier like a few hours ago when it happened just today
+but I couldn't bring myself to do it so I hid in an opposite corner and ate a lb of chicken straight while standing
+and scarfed it down before the panic set in.
+
 */

@@ -9306,4 +9306,7 @@ and then continually asked them for a higher dose until they dosed me with 450mg
 
 it isn't anything like adderall but when you feel good it just feels a bit good-er
 
+lithium 450 mg, they gave me 900 mg but I told the doctor I'm only gonna take 1 from now on
+and then it just was what it was I now only get prescribed 450
+
 */

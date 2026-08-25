@@ -275,7 +275,13 @@ const INDEXOF_EDITOR_pooledTrackedSyntax_length = 34;
  */
 const INDEXOF_EDITOR_intFalsey_isScrolling = 35;
 
+/**
+ * I'm gonna store this in the int32 array so that the editor scroll render function can access it from the already existing local reference of EDITOR_int_fields.
+ */
 const INDEXOF_EDITOR_cursor_editKind = 36;
+
+// TODO: Sort the field buffer entries so that everything the scroll render function needs is next to eachother...
+// ... / figure out details of caching so you read them all in one go if possible.
 
 
 

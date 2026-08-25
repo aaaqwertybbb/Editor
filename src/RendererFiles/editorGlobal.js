@@ -9309,4 +9309,7 @@ it isn't anything like adderall but when you feel good it just feels a bit good-
 lithium 450 mg, they gave me 900 mg but I told the doctor I'm only gonna take 1 from now on
 and then it just was what it was I now only get prescribed 450
 
+I commonly think I wanna not take any of the lithium but I stick with the 450 to look good on paper
+to some degree
+
 */

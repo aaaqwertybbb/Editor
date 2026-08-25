@@ -322,8 +322,23 @@ const INDEXOF_EDITOR_cursor_editRenderedDisplacement = 56;
 const INDEXOF_EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET = 57;
 const INDEXOF_EDITOR_cursor_END_editIndexLine = 58;
 const INDEXOF_EDITOR_cursor_END_editIndexColumn = 59;
+const INDEXOF_EDITOR_cursor_gapBufferCount = 60;
 
-// EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexColumn]
+/**
+ * TODO: probably is sensible to use this for the enter key too but I'm firstly adding it for the sake of backspace so
+ * I don't have to waste time looping over the removed text to find the line end positions that are being removed.
+ * (I could do some kind of other tracking but I chose not to for no particular reason, well I think I chose this one out of laziness and that the other solutions long term like a
+ *  list at the editor level 1 of them that is shared among all cursors is probably better or something.)
+ * 
+ * ========
+ * 
+ * TODO: Cursor should store this as -1 to signify false,
+ * and then it is a number 0 to ... the offset in the pending line end position list
+ * and then you have another number too separately that says the length of line endings that this cursor contributed to modifying.
+ */
+const INDEXOF_EDITOR_cursor_editLineFeedCount = 61;
+
+// EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount]
 
 
 

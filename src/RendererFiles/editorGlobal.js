@@ -93,7 +93,6 @@ let EDITOR_cursor_htmlId = "EDITOR_cursor-" + EDITOR_cursor_cursorId;
  * When this is cleared the information is not removed, only 'gapBufferCount' is set to 0.
  */
 let EDITOR_cursor_gapBuffer = new Uint8Array(EDITOR_cursor_GAP_BUFFER_CAPACITY);
-let EDITOR_cursor_gapBufferCount = 0;
 
 let EDITOR_cursor_gapBufferWriteToSpanElement = null;
 let EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
@@ -132,20 +131,6 @@ let EDITOR_cursor_enterKey_newLinePlusIndentation_byteList = null;
 let EDITOR_cursor_cached_indentation_string = null;
 
 let EDITOR_cursor_enterKeyEventKind = ENUM_EnterKeyEventKind_None;
-
-/**
- * TODO: probably is sensible to use this for the enter key too but I'm firstly adding it for the sake of backspace so
- * I don't have to waste time looping over the removed text to find the line end positions that are being removed.
- * (I could do some kind of other tracking but I chose not to for no particular reason, well I think I chose this one out of laziness and that the other solutions long term like a
- *  list at the editor level 1 of them that is shared among all cursors is probably better or something.)
- * 
- * ========
- * 
- * TODO: Cursor should store this as -1 to signify false,
- * and then it is a number 0 to ... the offset in the pending line end position list
- * and then you have another number too separately that says the length of line endings that this cursor contributed to modifying.
- */
-let EDITOR_cursor_editLineFeedCount = 0;
 
 /**
  * This purposefully avoids the wording "edit length" in order to avoid accident / confusing / hard to read code
@@ -201,13 +186,13 @@ function EDITOR_cursor_clear() {
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexLine] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexColumn] = 0;
 
-    EDITOR_cursor_gapBufferCount = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_gapBufferCount] = 0;
 
     EDITOR_cursor_enterKey_newLinePlusIndentation_byteList = null;
     EDITOR_cursor_cached_indentation_string = null;
     EDITOR_cursor_enterKeyEventKind = ENUM_EnterKeyEventKind_None;
 
-    EDITOR_cursor_editLineFeedCount = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount] = 0;
     EDITOR_cursor_edit_flagLineChanged = -1;
 
     EDITOR_cursor_EDITOR_paste_clipboardContent = null;
@@ -1645,12 +1630,12 @@ function EDITOR_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
             EDITOR_trackedSyntaxList.setLength(i, EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] + EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]);
         }
     }
-    EDITOR_textByteList.insertBytes(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition], EDITOR_cursor_gapBuffer, /*offset*/ 0, /*length*/ EDITOR_cursor_gapBufferCount);
+    EDITOR_textByteList.insertBytes(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition], EDITOR_cursor_gapBuffer, /*offset*/ 0, /*length*/ EDITOR_int_fields[INDEXOF_EDITOR_cursor_gapBufferCount]);
 
     let textSourceIdentifier = EDITOR_FORMATTED_textSourceIdentifier;
     let lineAndColumnIndices = EDITOR_getLineAndColumnIndices(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]);
     // TODO: Account for any '\t\0\0\0' that exist on the line
-    let text = EDITOR_decoder.decode(EDITOR_cursor_gapBuffer.subarray(0, EDITOR_cursor_gapBufferCount));
+    let text = EDITOR_decoder.decode(EDITOR_cursor_gapBuffer.subarray(0, EDITOR_int_fields[INDEXOF_EDITOR_cursor_gapBufferCount]));
     EDITOR_int_fields[INDEXOF_didChangeTextDocument_version] = EDITOR_int_fields[INDEXOF_didChangeTextDocument_version] + 1;
     let version = EDITOR_int_fields[INDEXOF_didChangeTextDocument_version];
 
@@ -2221,7 +2206,7 @@ function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLi
         endLineAndColumnIndices = EDITOR_getLineAndColumnIndices_raw(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] + EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]);
     }
 
-    if (EDITOR_cursor_editLineFeedCount > 0) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount] > 0) {
         let count = 0;
         let lastMatchedIndexLine = 0;
         for (let i = EDITOR_lineEndPositionList_PENDING.count - 1; i >= 0; i--) {
@@ -2327,10 +2312,10 @@ function EDITOR_finalizeEdit_ClearEditState() {
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexLine] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexColumn] = 0;
-    EDITOR_cursor_gapBufferCount = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_gapBufferCount] = 0;
     EDITOR_cursor_gapBufferWriteToSpanElement = null;
     EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
-    EDITOR_cursor_editLineFeedCount = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount] = 0;
     EDITOR_lineEndPositionList_PENDING.clear();
 }
 
@@ -6431,7 +6416,7 @@ function EDITOR_render_do_EnterKey() {
     // - for loop
     // - or preferably a shift by some count other than just one
     //
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < EDITOR_cursor_editLineFeedCount) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount]) {
 
         // TODO: This is missing a loop or etc... as was also stated elsewhere.
         // ...
@@ -6672,7 +6657,7 @@ function EDITOR_EnterKey(ctrlKey, shiftKey) {
 
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = insertionCount - 1;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] += insertionCount;
-    EDITOR_cursor_editLineFeedCount++;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount]++;
 
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
@@ -7005,7 +6990,7 @@ function EDITOR_render_do_RemoveSelection() {
             let lineEnding = EDITOR_readLineEndPositionList(iVarDependent);
             if (lineEnding >= EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] && lineEnding < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] + editLength) {
                 linesRemovedCount++;
-                EDITOR_cursor_editLineFeedCount++;
+                EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount]++;
                 EDITOR_lineEndPositionList_PENDING.insert(EDITOR_lineEndPositionList_PENDING.count, lineEnding);
 
                 if (possibleTrackedSyntaxToSpanSingleLine) {
@@ -7372,7 +7357,7 @@ function EDITOR_state_do_Delete(event) {
         return;
     }
 
-    let virtual_cursorIndexLine = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] + EDITOR_cursor_editLineFeedCount;
+    let virtual_cursorIndexLine = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] + EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount];
 
     let virtual_cursorIndexColumn;
     if (EDITOR_cursor_edit_flagLineChanged === -1) {
@@ -7395,7 +7380,7 @@ function EDITOR_state_do_Delete(event) {
             // flag the current editlength whenever u change lines so you can check the editlength relative to the line
 
             EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
-            EDITOR_cursor_editLineFeedCount++;
+            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount]++;
             EDITOR_lineEndPositionList_PENDING.insert(EDITOR_lineEndPositionList_PENDING.count, lineEnd);
 
             EDITOR_cursor_edit_flagLineChanged = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
@@ -7576,7 +7561,7 @@ function EDITOR_state_do_Backspace(event) {
             EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
             EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
 
-            EDITOR_cursor_editLineFeedCount++;
+            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount]++;
             EDITOR_lineEndPositionList_PENDING.insert(0, EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]);
         }
         else {
@@ -7650,18 +7635,18 @@ function EDITOR_insertDo(character) {
 
     if (EDITOR_cursor_gapBufferWriteToSpanElement) {
         EDITOR_cursor_gapBufferWriteToSpanElement.textContent = 
-            EDITOR_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]) + EDITOR_cursor_gapBufferCount) +
+            EDITOR_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]) + EDITOR_int_fields[INDEXOF_EDITOR_cursor_gapBufferCount]) +
             character +
-            EDITOR_cursor_gapBufferWriteToSpanElement.textContent.slice((EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]) + EDITOR_cursor_gapBufferCount);
+            EDITOR_cursor_gapBufferWriteToSpanElement.textContent.slice((EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]) + EDITOR_int_fields[INDEXOF_EDITOR_cursor_gapBufferCount]);
     }*/
 
-    EDITOR_cursor_gapBuffer[EDITOR_cursor_gapBufferCount] = character.charCodeAt(0);
-    EDITOR_cursor_gapBufferCount++;
+    EDITOR_cursor_gapBuffer[EDITOR_int_fields[INDEXOF_EDITOR_cursor_gapBufferCount]] = character.charCodeAt(0);
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_gapBufferCount]++;
 
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]++;
 
-    EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] = EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] + EDITOR_cursor_gapBufferCount;
+    EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] = EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] + EDITOR_int_fields[INDEXOF_EDITOR_cursor_gapBufferCount];
 }
 
 function EDITOR_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine() {

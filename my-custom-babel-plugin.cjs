@@ -31,136 +31,136 @@ module.exports = function (babel) {
   // List all the variable names you want to inline
   const TARGET_VARIABLES = [
 
-    "F_EDI_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber",
+    "fEDI_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber",
     
 
-    "F_EDI_drawn_count_of_digits_longest_line_number",
+    "fEDI_drawn_count_of_digits_longest_line_number",
 
     
 
-    "F_EDI_detailRank",
+    "fEDI_detailRank",
     
 
-    "F_EDI_detail_smallPosition",
+    "fEDI_detail_smallPosition",
     
 
-    "F_EDI_detail_largePosition",
+    "fEDI_detail_largePosition",
 
-    "F_EDI_detailRank3OriginLine",
+    "fEDI_detailRank3OriginLine",
     
 
-    "F_EDI_gutterWidthStyleValue",
+    "fEDI_gutterWidthStyleValue",
     
 
-    "F_EDI_gutterWidthTotal",
+    "fEDI_gutterWidthTotal",
     
 
-    "F_EDI_virtualIndexLine",
+    "fEDI_virtualIndexLine",
     
 
-    "F_EDI_virtualCount",
+    "fEDI_virtualCount",
     
 
     "F_didChangeTextDocument_version",
     
 
-    "F_EDI_indexCursor",
+    "fEDI_indexCursor",
     
 
-    "F_EDI_offsetLine",
+    "fEDI_offsetLine",
     
 
-    "F_EDI_offsetColumn_withRespectToThisIndexLine",
+    "fEDI_offsetColumn_withRespectToThisIndexLine",
     
 
-    "F_EDI_offsetColumn",
+    "fEDI_offsetColumn",
     
 
-    "F_EDI_totalShift",
+    "fEDI_totalShift",
     
 
-    "F_EDI_offsetWithinSpan",
+    "fEDI_offsetWithinSpan",
     
 
-    "F_EDI_ONSCROLLvirtualIndexLine",
+    "fEDI_ONSCROLLvirtualIndexLine",
     
 
     
 
-    "F_EDI_ONSCROLLscrollTop",
+    "fEDI_ONSCROLLscrollTop",
     
 
-    "F_EDI_longestLine_indexLine",
+    "fEDI_longestLine_indexLine",
     
     
-    "F_EDI_longestLine_length",
+    "fEDI_longestLine_length",
     
 
-    "F_EDI_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar",
+    "fEDI_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar",
     
 
-    "F_EDI_contentWidth",
+    "fEDI_contentWidth",
     
 
-    "F_EDI_indent_ORIGINAL_indentBy",
+    "fEDI_indent_ORIGINAL_indentBy",
     
 
-    "F_EDI_indent_SMALL_lineAndColumnIndices_indexLine",
+    "fEDI_indent_SMALL_lineAndColumnIndices_indexLine",
     
 
-    "F_EDI_indent_startingIndex",
+    "fEDI_indent_startingIndex",
     
 
-    "F_EDI_recentBoundingClientRect_left",
+    "fEDI_recentBoundingClientRect_left",
     
 
-    "F_EDI_recentBoundingClientRect_top",
+    "fEDI_recentBoundingClientRect_top",
     
 
-    "F_EDI_recentBoundingClientRect_isNull_intFalsey",
+    "fEDI_recentBoundingClientRect_isNull_intFalsey",
     
 
-    "F_EDI_pooledTrackedSyntax_start",
+    "fEDI_pooledTrackedSyntax_start",
     
 
-    "F_EDI_pooledTrackedSyntax_length",
+    "fEDI_pooledTrackedSyntax_length",
     
 
-    "F_EDI_findOverlay_show",
+    "fEDI_findOverlay_show",
     
 
-    "F_EDI_findOverlay_isBeingShownDueToMultiCursorMatching",
+    "fEDI_findOverlay_isBeingShownDueToMultiCursorMatching",
     
 
-    "F_EDI_fileStartsWithBom",
+    "fEDI_fileStartsWithBom",
     
 
-    "F_EDI_findOverlay_wasSearched",
+    "fEDI_findOverlay_wasSearched",
     
 
-    "F_EDI_findOverlay_options_matchWord",
+    "fEDI_findOverlay_options_matchWord",
     
 
-    "F_EDI_scrollEndDeadline",
+    "fEDI_scrollEndDeadline",
 
-    "F_EDI_intFalsey_isScrolling",
+    "fEDI_intFalsey_isScrolling",
     
 
 
 
 
 
-    "F_EDI_lineHeight",
-    "F_EDI_virtualIndexLine",
-    "F_EDI_virtualCount",
-    "F_EDI_ONSCROLLvirtualIndexLine",
-    "F_EDI_ONSCROLLvirtualCount",
-    "F_EDI_ONSCROLLscrollTop",
-    "F_EDI_longestLine_indexLine",
-    "F_EDI_longestLine_length",
-    "F_EDI_scrollEndDeadline",
-    "F_EDI_sum_diffPositive",
-    "F_EDI_sum_diffNegative",
+    "fEDI_lineHeight",
+    "fEDI_virtualIndexLine",
+    "fEDI_virtualCount",
+    "fEDI_ONSCROLLvirtualIndexLine",
+    "fEDI_ONSCROLLvirtualCount",
+    "fEDI_ONSCROLLscrollTop",
+    "fEDI_longestLine_indexLine",
+    "fEDI_longestLine_length",
+    "fEDI_scrollEndDeadline",
+    "fEDI_sum_diffPositive",
+    "fEDI_sum_diffNegative",
     "F_lastReadNumber_scrollTop",
 
     "AUTOCOMPLETErenderKind_None",
@@ -350,34 +350,34 @@ module.exports = function (babel) {
 
 
 
-    "F_EDI_cursor_editKind",
-    "F_EDI_cursor_indexLine",
-    "F_EDI_cursor_indexColumn",
-    "F_EDI_cursor_STORED_indexColumn",
-    "F_EDI_cursor_cursorTranslateYValue",
-    "F_EDI_cursor_cursorTranslateXValue",
-    "F_EDI_cursor_selectionAnchor",
-    "F_EDI_cursor_selectionEnd",
-    "F_EDI_cursor_selectionIndexAnchorLine",
-    "F_EDI_cursor_selectionIndexAnchorColumn",
-    "F_EDI_cursor_selectionIndexEndLine",
-    "F_EDI_cursor_selectionIndexEndColumn",
-    "F_EDI_cursor_DRAWN_selectionAnchor",
-    "F_EDI_cursor_DRAWN_selectionEnd",
-    "F_EDI_cursor_DRAWN_selection_virtualIndexLine",
-    "F_EDI_cursor_DRAWN_selection_virtualCount",
-    "F_EDI_cursor_editLength",
-    "F_EDI_cursor_editPosition",
-    "F_EDI_cursor_editIndexLine",
-    "F_EDI_cursor_editIndexColumn",
-    "F_EDI_cursor_editRenderedDisplacement",
-    "F_EDI_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET",
-    "F_EDI_cursor_END_editIndexLine",
-    "F_EDI_cursor_END_editIndexColumn",
-    "F_EDI_cursor_gapBufferCount",
-    "F_EDI_cursor_editLineFeedCount",
-    "F_EDI_cursor_EDI_duplicate_small",
-    "F_EDI_cursor_EDI_duplicate_length",
+    "fEDI_cursor_editKind",
+    "fEDI_cursor_indexLine",
+    "fEDI_cursor_indexColumn",
+    "fEDI_cursor_STORED_indexColumn",
+    "fEDI_cursor_cursorTranslateYValue",
+    "fEDI_cursor_cursorTranslateXValue",
+    "fEDI_cursor_selectionAnchor",
+    "fEDI_cursor_selectionEnd",
+    "fEDI_cursor_selectionIndexAnchorLine",
+    "fEDI_cursor_selectionIndexAnchorColumn",
+    "fEDI_cursor_selectionIndexEndLine",
+    "fEDI_cursor_selectionIndexEndColumn",
+    "fEDI_cursor_DRAWN_selectionAnchor",
+    "fEDI_cursor_DRAWN_selectionEnd",
+    "fEDI_cursor_DRAWN_selection_virtualIndexLine",
+    "fEDI_cursor_DRAWN_selection_virtualCount",
+    "fEDI_cursor_editLength",
+    "fEDI_cursor_editPosition",
+    "fEDI_cursor_editIndexLine",
+    "fEDI_cursor_editIndexColumn",
+    "fEDI_cursor_editRenderedDisplacement",
+    "fEDI_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET",
+    "fEDI_cursor_END_editIndexLine",
+    "fEDI_cursor_END_editIndexColumn",
+    "fEDI_cursor_gapBufferCount",
+    "fEDI_cursor_editLineFeedCount",
+    "fEDI_cursor_EDI_duplicate_small",
+    "fEDI_cursor_EDI_duplicate_length",
 
 
 

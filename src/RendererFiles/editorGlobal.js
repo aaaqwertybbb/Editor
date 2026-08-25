@@ -9224,4 +9224,9 @@ and every surface you eat off of has a residue of cleaning chemicals
 and you put food on the plate that plate activates the inert residue of the cleaning chemicals
 causing them to mix into the food and then you consume it
 
+If someone is holding a bucket full of cleaning chemicals and they walk through a hallway.
+
+Do those cleaning chemicals coat the air and get onto my food if I walk by to my room
+with a plate of food in my hands?
+
 */

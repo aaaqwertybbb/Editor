@@ -145,6 +145,23 @@ EDITOR_cursor_cursorElement.className = "EDITOR_cursor";
 
 EDITOR_cursor_caretRow.appendChild(EDITOR_cursor_cursorElement);
 
+/**
+ * Upon an enter keystroke this is inserted onto the newly added line.
+ * 
+ * The value is stored here to avoid high overhead from indentation matching when holding down the Enter key.
+ * 
+ * TODO: ^ that being said, you preferably wouldn't store this string allocation long term. If a more "localized" caching can be implemented, that would be preferable. (or the timing upon which this is set to null)
+ * 
+ * TODO: Don't null this just change the count to 0 and use a separate bool to indicate "nullness". UNLESS if clearing cache and this is for some reason MASSIVE idk maybe > 256 then maybe clear it idk
+ * 
+ * TODO: clear these when setting text, if not already? My code isn't working so I can't give a better TODO than this
+ * 
+ * @type {ByteList | null}
+ */
+let EDITOR_cursor_enterKey_newLinePlusIndentation_byteList = null;
+
+let EDITOR_cursor_cached_indentation_string = null;
+
 class EDITOR_Cursor {
     /**
      * After invoking the constructor you likely would want to add to:
@@ -156,22 +173,6 @@ class EDITOR_Cursor {
      */
     constructor() {
         
-
-        /**
-         * Upon an enter keystroke this is inserted onto the newly added line.
-         * 
-         * The value is stored here to avoid high overhead from indentation matching when holding down the Enter key.
-         * 
-         * TODO: ^ that being said, you preferably wouldn't store this string allocation long term. If a more "localized" caching can be implemented, that would be preferable. (or the timing upon which this is set to null)
-         * 
-         * TODO: Don't null this just change the count to 0 and use a separate bool to indicate "nullness". UNLESS if clearing cache and this is for some reason MASSIVE idk maybe > 256 then maybe clear it idk
-         * 
-         * TODO: clear these when setting text, if not already? My code isn't working so I can't give a better TODO than this
-         * 
-         * @type {ByteList | null}
-         */
-        this.enterKey_newLinePlusIndentation_byteList = null;
-        this.cached_indentation_string = null;
         this.enterKeyEventKind = ENUM_EnterKeyEventKind_None;
 
         /**
@@ -244,8 +245,8 @@ class EDITOR_Cursor {
 
         EDITOR_cursor_gapBufferCount = 0;
 
-        this.enterKey_newLinePlusIndentation_byteList = null;
-        this.cached_indentation_string = null;
+        EDITOR_cursor_enterKey_newLinePlusIndentation_byteList = null;
+        EDITOR_cursor_cached_indentation_string = null;
         this.enterKeyEventKind = ENUM_EnterKeyEventKind_None;
 
         this.editLineFeedCount = 0;
@@ -1743,7 +1744,7 @@ function EDITOR_finalizeEdit_Enter(cursor, indexLine_editOccurredOn) {
     // throws an exception if 'ENUM_EnterKeyEventKind_None' (...or falsey).
     if (!cursor.enterKeyEventKind || cursor.enterKeyEventKind === ENUM_EnterKeyEventKind_None) { EDITOR_finalizeEdit_ClearEditState(cursor); throw new Error('if (!enterKeyEventKind...)'); }
 
-    EDITOR_textByteList.insertBytes(EDITOR_cursor_editPosition, cursor.enterKey_newLinePlusIndentation_byteList.bytes, /*offset*/ 0, cursor.enterKey_newLinePlusIndentation_byteList.count);
+    EDITOR_textByteList.insertBytes(EDITOR_cursor_editPosition, EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.bytes, /*offset*/ 0, EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.count);
 
     for (var i = EDITOR_cursor_editIndexLine; i < EDITOR_lineEndPositionList.count; i++) {
         EDITOR_lineEndPositionList.data[i] += EDITOR_cursor_editLength;
@@ -3880,7 +3881,7 @@ function EDITOR_NOTcanBatch_enter(cursor, indexCursor) {
            EDITOR_cursor_indexLine !== EDITOR_cursor_END_editIndexLine ||
            EDITOR_cursor_indexColumn !== EDITOR_cursor_END_editIndexColumn ||
            EDITOR_cursor_editLength >= EDITOR_cursor_GAP_BUFFER_CAPACITY ||
-           !cursor.enterKey_newLinePlusIndentation_byteList ||
+           !EDITOR_cursor_enterKey_newLinePlusIndentation_byteList ||
            cursor.hasSelection();
 }
 
@@ -3985,8 +3986,8 @@ function EDITOR_movementBasedCacheInvalidation(cursor) {
         //
         EDITOR_finalizeAllCursors();
     }
-    cursor.enterKey_newLinePlusIndentation_byteList = null;
-    cursor.cached_indentation_string = null;
+    EDITOR_cursor_enterKey_newLinePlusIndentation_byteList = null;
+    EDITOR_cursor_cached_indentation_string = null;
     set_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching(false);
 }
 
@@ -6470,8 +6471,8 @@ function EDITOR_findEndExclusiveIndentationIndexColumn(cursor) {
  * @returns 
  */
 function EDITOR_cacheIndentation(cursor) {
-    cursor.enterKey_newLinePlusIndentation_byteList = new ByteList(32);
-    cursor.enterKey_newLinePlusIndentation_byteList.insert(cursor.enterKey_newLinePlusIndentation_byteList.count, CONST_EDITOR_ASCII_LINE_FEED);
+    EDITOR_cursor_enterKey_newLinePlusIndentation_byteList = new ByteList(32);
+    EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.insert(EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.count, CONST_EDITOR_ASCII_LINE_FEED);
     let indentationBuilder = [];
     let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(EDITOR_cursor_indexLine);
     let line = EDITOR_getLineBoundaryPositions(EDITOR_cursor_indexLine);
@@ -6489,15 +6490,15 @@ function EDITOR_cacheIndentation(cursor) {
         let c = getCharacter(line.start + i);
         switch (c) {
             case ' ':
-                cursor.enterKey_newLinePlusIndentation_byteList.insert(cursor.enterKey_newLinePlusIndentation_byteList.count, CONST_EDITOR_ASCII_SPACE);
+                EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.insert(EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.count, CONST_EDITOR_ASCII_SPACE);
                 indentationBuilder.push(c);
                 break;
             case '\t':
-                cursor.enterKey_newLinePlusIndentation_byteList.insert(cursor.enterKey_newLinePlusIndentation_byteList.count, CONST_EDITOR_ASCII_TAB);
+                EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.insert(EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.count, CONST_EDITOR_ASCII_TAB);
                 indentationBuilder.push(c);
                 break;
             case '\0': // tabs are stored as: '\t\0\0\0'
-                cursor.enterKey_newLinePlusIndentation_byteList.insert(cursor.enterKey_newLinePlusIndentation_byteList.count, 0);
+                EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.insert(EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.count, 0);
                 indentationBuilder.push(c);
                 break;
             default:
@@ -6505,7 +6506,7 @@ function EDITOR_cacheIndentation(cursor) {
         }
     }
 
-    cursor.cached_indentation_string = indentationBuilder.join('');
+    EDITOR_cursor_cached_indentation_string = indentationBuilder.join('');
 }
 
 function EDITOR_lineWasInsertedValidateGutter() {
@@ -6671,7 +6672,7 @@ function EDITOR_render_do_EnterKey() {
 
                     EDITOR_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, next_beltIndexLine);
                     let span = document.createElement('span');
-                    span.textContent = cursor.cached_indentation_string;
+                    span.textContent = EDITOR_cursor_cached_indentation_string;
                     cached_EDITOR_textElement.children[next_beltIndexLine].appendChild(span);
 
                     EDITOR_lineWasInsertedValidateGutter();
@@ -6695,7 +6696,7 @@ function EDITOR_render_do_EnterKey() {
                     EDITOR_cursor_indexColumn = EDITOR_cursor_editIndexColumn;
 
                     let spanClassName = '';
-                    let spanText = cursor.cached_indentation_string;
+                    let spanText = EDITOR_cursor_cached_indentation_string;
 
                     walkLineUntilIndexColumn(cursor);
 
@@ -6782,7 +6783,7 @@ function EDITOR_render_do_EnterKey() {
  * - "among a line":
  */
 function EDITOR_EnterKey(cursor, ctrlKey, shiftKey) {
-    if (!cursor.enterKey_newLinePlusIndentation_byteList)
+    if (!EDITOR_cursor_enterKey_newLinePlusIndentation_byteList)
         EDITOR_cacheIndentation(cursor);
 
     if (ctrlKey) EDITOR_cursor_indexColumn = 0;
@@ -6797,7 +6798,7 @@ function EDITOR_EnterKey(cursor, ctrlKey, shiftKey) {
         EDITOR_cursor_editIndexColumn = EDITOR_cursor_indexColumn;
     }
 
-    let insertionCount = cursor.enterKey_newLinePlusIndentation_byteList.count;
+    let insertionCount = EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.count;
     
     if (EDITOR_cursor_indexColumn === 0) { // start of line
         if (cursor.enterKeyEventKind === 0) {

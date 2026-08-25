@@ -8933,4 +8933,11 @@ but you rendered them forwards so you could track the cumulative offsets caused 
 And since I'll only have 1 cursor, I'm gonna de-smi-ify it so I can go all in on this no-smi idea just to see how far it goes
 and then probably abandon the idea at that point once I've seen that it barely changes anything and classes or etc... idk
 
+Removing all the multicursor logic feels a bit upsetting
+but I need to get the explorer to scroll and have the text available as you do it
+
+same for the editor's syntax highlighting
+
+The delay to see the syntax highlighting is too much and various other things need to be better first.
+
 */

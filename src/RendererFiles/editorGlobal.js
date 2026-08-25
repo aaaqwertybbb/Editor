@@ -131,29 +131,31 @@ let EDITOR_cursor_gapBufferCount = 0;
 let EDITOR_cursor_gapBufferWriteToSpanElement = null;
 let EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
 
+let EDITOR_cursor_caretRow = document.createElement('div');
+EDITOR_cursor_caretRow.id = "EDITOR_caretRow-" + EDITOR_cursor_cursorId;
+EDITOR_cursor_caretRow.className = "EDITOR_caretRow";
+EDITOR_cursor_caretRow.style.left = gutterWidthTotal_withPxUnits;
+if (cached_EDITOR_horizontal_scrollbar_virtualization_boundary) {
+    EDITOR_cursor_caretRow.style.width = cached_EDITOR_horizontal_scrollbar_virtualization_boundary.style.width;
+}
+
+let EDITOR_cursor_cursorElement = document.createElement('div');
+EDITOR_cursor_cursorElement.id = "EDITOR_cursor-" + EDITOR_cursor_cursorId;
+EDITOR_cursor_cursorElement.className = "EDITOR_cursor";
+
+EDITOR_cursor_caretRow.appendChild(EDITOR_cursor_cursorElement);
+
 class EDITOR_Cursor {
     /**
      * After invoking the constructor you likely would want to add to:
      * - cached_EDITOR_cursorListElement,
      * - EDITOR_cursorList,
      * 
-     * `cached_EDITOR_cursorListElement.appendChild(cursorInstance.caretRow)`
+     * `cached_EDITOR_cursorListElement.appendChild(EDITOR_cursor_caretRow)`
      * `EDITOR_cursorList.splice(index, 0, cursorInstance)`
      */
     constructor() {
         
-        this.caretRow = document.createElement('div');
-        this.caretRow.id = "EDITOR_caretRow-" + EDITOR_cursor_cursorId;
-        this.caretRow.className = "EDITOR_caretRow";
-        this.caretRow.style.left = gutterWidthTotal_withPxUnits;
-        if (cached_EDITOR_horizontal_scrollbar_virtualization_boundary) {
-            this.caretRow.style.width = cached_EDITOR_horizontal_scrollbar_virtualization_boundary.style.width;
-        }
-        this.cursorElement = document.createElement('div');
-        this.cursorElement.id = "EDITOR_cursor-" + EDITOR_cursor_cursorId;
-        this.cursorElement.className = "EDITOR_cursor";
-        
-        this.caretRow.appendChild(this.cursorElement);
 
         /**
          * Upon an enter keystroke this is inserted onto the newly added line.
@@ -385,7 +387,7 @@ function EDITOR_init() {
     cached_EDITOR_cursorListElement = EDITOR_baseElement.children[5].children[1];
     cached_EDITOR_textElement = EDITOR_baseElement.children[5].children[2];
 
-    cached_EDITOR_cursorListElement.appendChild(EDITOR_primaryCursor.caretRow);
+    cached_EDITOR_cursorListElement.appendChild(EDITOR_cursor_caretRow);
 
     EDITOR_measureLineHeightAndCharacterWidth();
     EDITOR_measureBaseElement();
@@ -1492,7 +1494,7 @@ function EDITOR_drawGutter_Width() {
         ArrayFrom_textElement_children[i].style.left = gutterWidthTotal_withPxUnits;
     }
 
-    EDITOR_primaryCursor.caretRow.style.left = gutterWidthTotal_withPxUnits;
+    EDITOR_cursor_caretRow.style.left = gutterWidthTotal_withPxUnits;
 
     return true;
 }
@@ -1532,7 +1534,7 @@ function EDITOR_drawHorizontalScrollbar() {
             ArrayFrom_textElement_children[i].style.width = local_cached_EDITOR_horizontal_scrollbar_virtualization_boundary_style_width;
         }
 
-        EDITOR_primaryCursor.caretRow.style.width = local_cached_EDITOR_horizontal_scrollbar_virtualization_boundary_style_width;
+        EDITOR_cursor_caretRow.style.width = local_cached_EDITOR_horizontal_scrollbar_virtualization_boundary_style_width;
     }
     
     // TODO: this is directly tied to a scroll event on EDITOR_baseElement so handle it from there perhaps?
@@ -2805,8 +2807,8 @@ function EDITOR_drawCursor(cursor, NOTscrollCursorIntoView) {
     EDITOR_cursor_cursorTranslateYValue = (EDITOR_cursor_indexLine + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) * EDITOR_int_fields[INDEXOF_EDITOR_lineHeight];
     EDITOR_cursor_cursorTranslateXValue = (EDITOR_cursor_indexColumn + EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn]) * EDITOR_characterWidth;
 
-    cursor.caretRow.style.transform = `translateY(${EDITOR_cursor_cursorTranslateYValue}px)`;
-    cursor.cursorElement.style.transform = `translateX(${EDITOR_cursor_cursorTranslateXValue}px)`;
+    EDITOR_cursor_caretRow.style.transform = `translateY(${EDITOR_cursor_cursorTranslateYValue}px)`;
+    EDITOR_cursor_cursorElement.style.transform = `translateX(${EDITOR_cursor_cursorTranslateXValue}px)`;
 
     EDITOR_createStyleForSelection(cursor);
 
@@ -4425,7 +4427,7 @@ function EDITOR_cursorBlink_trailingEdge(timestamp) {
     if (time >= 500) {
         EDITOR_isChecking_cursorBlinkTrailingEdge = false;
         // TODO: This is a timing issue of the rAF vs you losing focus on the editor.
-        EDITOR_primaryCursor.cursorElement.classList.add('EDITOR_cursor_focus');
+        EDITOR_cursor_cursorElement.classList.add('EDITOR_cursor_focus');
         EDITOR_cursorBlinkLastTimestamp = 0;
     }
     else {
@@ -4435,7 +4437,7 @@ function EDITOR_cursorBlink_trailingEdge(timestamp) {
 
 function EDITOR_cursorBlink_startChecking() {
     EDITOR_isChecking_cursorBlinkTrailingEdge = true;
-    EDITOR_primaryCursor.cursorElement.classList.remove('EDITOR_cursor_focus');
+    EDITOR_cursor_cursorElement.classList.remove('EDITOR_cursor_focus');
     requestAnimationFrame(EDITOR_cursorBlink_trailingEdge);
 }
 
@@ -8745,11 +8747,11 @@ function EDITOR_hideTooltip() {
 }
 
 function EDITOR_onfocus() {
-    EDITOR_primaryCursor.cursorElement.classList.add('EDITOR_cursor_focus');
+    EDITOR_cursor_cursorElement.classList.add('EDITOR_cursor_focus');
 }
 
 function EDITOR_onblur() {
-    EDITOR_primaryCursor.cursorElement.classList.remove('EDITOR_cursor_focus');
+    EDITOR_cursor_cursorElement.classList.remove('EDITOR_cursor_focus');
 }
 
 /*

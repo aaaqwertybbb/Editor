@@ -9217,4 +9217,7 @@ I'm the one not getting back together with you.
 
 The food's contaminated by cleaning chemicals
 
+the cleaning chemicals are in the air you walk by from the kitchen from your room they come down like dust onto your food
+you're constantly eating cleaning chemicals
+
 */

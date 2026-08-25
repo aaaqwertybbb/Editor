@@ -9207,4 +9207,10 @@ I think about it daily cause of how much I hate what he said
 
 I haven't done anything yet, but I'm now able to hoist the EDITOR_int_fields as a local variable anywhere it is used a lot.
 
+====
+
+"what you're doing is stupid just make a class"
+
+But, nobody will know just how stupid it really is quite like I will after suffering through this all
+
 */

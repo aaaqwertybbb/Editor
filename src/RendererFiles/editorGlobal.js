@@ -966,8 +966,11 @@ but there is 0 reasoning, understanding, or measurements behind my decision.
 */
 
 function EDITOR_render_do_SyntaxHighlighting() {
-    let local_sum_diffNegative = EDITOR_int_fields[INDEXOF_EDITOR_sum_diffNegative];
-    let local_sum_diffPositive = EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive];
+
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
+    let local_sum_diffNegative = local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffNegative];
+    let local_sum_diffPositive = local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive];
     let total_diff = local_sum_diffNegative + local_sum_diffPositive;
 
     /*
@@ -982,22 +985,22 @@ function EDITOR_render_do_SyntaxHighlighting() {
     I'm gonna rain check that one... I'm thinking about more than 1 instance of an overlap breaking that math
     */
     
-    EDITOR_int_fields[INDEXOF_EDITOR_sum_diffNegative] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffNegative] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive] = 0;
 
     if (total_diff === 0) return;
 
     let i = 0;
     
     let beltIndexCurrent = EDITOR_beltIndexZero;
-    let indexLine = EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+    let indexLine = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
 
     let i_bounded = 0;
 
     let bothButNotFull = false;
 
-    if (total_diff >= EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]) {
-        total_diff = EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+    if (total_diff >= local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]) {
+        total_diff = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
         i_bounded = total_diff;
     }
     else {
@@ -1011,7 +1014,7 @@ function EDITOR_render_do_SyntaxHighlighting() {
             let local_sum_diffPositive_MINUS_ONE = local_sum_diffPositive - 1; // I want to end on the inclusive lower bound dom element.
 
             beltIndexCurrent = (beltIndexCurrent - 1 + ArrayFrom_textElement_children_length) % ArrayFrom_textElement_children_length;
-            indexLine = indexLine + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1;
+            indexLine = indexLine + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1;
             
             for (; i < local_sum_diffPositive_MINUS_ONE; i++) {
                 beltIndexCurrent = (beltIndexCurrent - 1 + ArrayFrom_textElement_children_length) % ArrayFrom_textElement_children_length;
@@ -1078,7 +1081,7 @@ function EDITOR_render_do_SyntaxHighlighting() {
     }
 
     if (bothButNotFull) {
-        EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive] = local_sum_diffPositive;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive] = local_sum_diffPositive;
         EDITOR_render_do_SyntaxHighlighting();
     }
 }
@@ -1193,6 +1196,8 @@ More accurately the ones that seem to not have an importance of position, they d
 
 function EDITOR_state_clear() {
 
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
     // the smi would exist on the object instance all near one another if you just used a class
     // it is essentially the field buffer but you don't eat a global scope variable lookup at any point
     // and you have to incur 1 extra object at all times but that ought to be negligible.
@@ -1208,17 +1213,17 @@ function EDITOR_state_clear() {
     EDITOR_lineEndString = null;
     EDITOR_lineEndPositionList.clear();
     EDITOR_textByteList.clear();
-    EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] = 0;
     
     // Explicitly inlining 'clearMulticursorState()' because it currently is and I just don't want to make a decision about this right now.
     // So what I can do is mark the code paragraph for later decision making.
-    EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = 0;
     EDITOR_offsetWithinSpan_withRespectToThisSpan = null;
-    EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] = 0;
     
     EDITOR_trackedSyntaxList.clear();
 }
@@ -1397,20 +1402,21 @@ function update_virtualCount() {
  * The confusion, if there is any, comes from the dependent UI in some scenarios being required independently of whether drawGutter changes. And at other times they're solely dependent on whether drawGutter changes.
  */
 function EDITOR_drawGutter_Width() {
+    let local_EDITOR_int_fields = EDITOR_int_fields;
     let count = EDITOR_lineEndPositionList.count;
     if (EDITOR_cursor_enterKeyEventKind !== ENUM_EnterKeyEventKind_None) {
         count += 1;
     }
     let digitCountOfLargestLineNumber = positiveNumbersOnly_countDigitsLoop(count);
-    if (EDITOR_int_fields[INDEXOF_EDITOR_drawn_count_of_digits_longest_line_number] === digitCountOfLargestLineNumber) return false;
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_drawn_count_of_digits_longest_line_number] === digitCountOfLargestLineNumber) return false;
 
-    EDITOR_int_fields[INDEXOF_EDITOR_drawn_count_of_digits_longest_line_number] = digitCountOfLargestLineNumber;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_drawn_count_of_digits_longest_line_number] = digitCountOfLargestLineNumber;
 
-    EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthStyleValue] = Math.ceil(digitCountOfLargestLineNumber * EDITOR_characterWidth);
-    EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] = EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthStyleValue] + CONST_EDITOR_gutterPaddingLeft + CONST_EDITOR_gutterPaddingRight;
-    gutterWidthTotal_withPxUnits = `${EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal]}px`;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthStyleValue] = Math.ceil(digitCountOfLargestLineNumber * EDITOR_characterWidth);
+    local_EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] = local_EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthStyleValue] + CONST_EDITOR_gutterPaddingLeft + CONST_EDITOR_gutterPaddingRight;
+    gutterWidthTotal_withPxUnits = `${local_EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal]}px`;
 
-    let gutterWidth = EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthStyleValue] + 'px';
+    let gutterWidth = local_EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthStyleValue] + 'px';
     cached_EDITOR_gutter.style.width = gutterWidth;
     EDITOR_gutterBackgroundColor.style.width = gutterWidth;
 
@@ -1433,30 +1439,31 @@ function EDITOR_drawGutter_Width() {
  * then at that point you redraw this.
  */
 function EDITOR_drawHorizontalScrollbar() {
-    if (DRAWN_NUMBER_cached_EDITOR_horizontal_scrollbar_style_left !== EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal]) {
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+    if (DRAWN_NUMBER_cached_EDITOR_horizontal_scrollbar_style_left !== local_EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal]) {
         cached_EDITOR_horizontal_scrollbar.style.left = gutterWidthTotal_withPxUnits;
-        DRAWN_NUMBER_cached_EDITOR_horizontal_scrollbar_style_left = EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal];
+        DRAWN_NUMBER_cached_EDITOR_horizontal_scrollbar_style_left = local_EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal];
     }
 
-    if (EDITOR_horizontal_scrollbar_widthValue !== (EDITOR_baseElement.clientWidth - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal])) {
-        EDITOR_horizontal_scrollbar_widthValue = EDITOR_baseElement.clientWidth - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal];
+    if (EDITOR_horizontal_scrollbar_widthValue !== (EDITOR_baseElement.clientWidth - local_EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal])) {
+        EDITOR_horizontal_scrollbar_widthValue = EDITOR_baseElement.clientWidth - local_EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal];
         cached_EDITOR_horizontal_scrollbar.style.width = EDITOR_horizontal_scrollbar_widthValue + 'px';
     }
 
-    if (EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] !== EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar]) {
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] !== local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar]) {
         
-        EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar] = EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar] = local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length];
 
-        EDITOR_int_fields[INDEXOF_EDITOR_contentWidth] = Math.ceil(EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] * EDITOR_characterWidth);
+        local_EDITOR_int_fields[INDEXOF_EDITOR_contentWidth] = Math.ceil(local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] * EDITOR_characterWidth);
 
-        if ((EDITOR_int_fields[INDEXOF_EDITOR_contentWidth] < (EDITOR_baseElement.clientWidth - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal])) && (EDITOR_baseElement.clientWidth - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] > 0)) {
-            EDITOR_int_fields[INDEXOF_EDITOR_contentWidth] = Math.floor(EDITOR_baseElement.clientWidth - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal]);
+        if ((local_EDITOR_int_fields[INDEXOF_EDITOR_contentWidth] < (EDITOR_baseElement.clientWidth - local_EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal])) && (EDITOR_baseElement.clientWidth - local_EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] > 0)) {
+            local_EDITOR_int_fields[INDEXOF_EDITOR_contentWidth] = Math.floor(EDITOR_baseElement.clientWidth - local_EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal]);
         }
 
-        let local_cached_EDITOR_horizontal_scrollbar_virtualization_boundary_style_width = EDITOR_int_fields[INDEXOF_EDITOR_contentWidth] + 'px';
+        let local_cached_EDITOR_horizontal_scrollbar_virtualization_boundary_style_width = local_EDITOR_int_fields[INDEXOF_EDITOR_contentWidth] + 'px';
 
         cached_EDITOR_horizontal_scrollbar_virtualization_boundary.style.width = local_cached_EDITOR_horizontal_scrollbar_virtualization_boundary_style_width;
-        cached_EDITOR_virtualization_horizontal.style.width = EDITOR_int_fields[INDEXOF_EDITOR_contentWidth] + EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] + 'px';
+        cached_EDITOR_virtualization_horizontal.style.width = local_EDITOR_int_fields[INDEXOF_EDITOR_contentWidth] + local_EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] + 'px';
 
         for (let i = 0; i < ArrayFrom_textElement_children_length; i++) {
             ArrayFrom_textElement_children[i].style.width = local_cached_EDITOR_horizontal_scrollbar_virtualization_boundary_style_width;
@@ -1592,9 +1599,11 @@ function EDITOR_finalizeEdit() {
 }
 
 function EDITOR_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
     for (let i = EDITOR_lineEndPositionList.count - 1; i >= 0; i--) {
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] <= EDITOR_lineEndPositionList.data[i]) {
-            EDITOR_lineEndPositionList.data[i] += EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+        if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] <= EDITOR_lineEndPositionList.data[i]) {
+            EDITOR_lineEndPositionList.data[i] += local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
         }
         else {
             if (i === EDITOR_lineEndPositionList.count - 1) {
@@ -1608,27 +1617,27 @@ function EDITOR_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
     }
     for (var i = 0; i < EDITOR_trackedSyntaxList.count_abstract; i++) {
         EDITOR_trackedSyntaxList.getElementAt(i);
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] <= EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start]) {
-            EDITOR_trackedSyntaxList.setStart(i, EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]);
+        if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] <= local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start]) {
+            EDITOR_trackedSyntaxList.setStart(i, local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]);
         }
         else if (EDITOR_pooledTrackedSyntax_trackedSyntaxKind === ENUM_TrackedSyntaxKind_Comment &&
-                EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] === EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + 1) {
+                local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] === local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + 1) {
 
             // TODO: Insertion of '*' probably shouldn't remove.
             EDITOR_trackedSyntaxList.removeAt(i, 1);
         }
-        else if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] > EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] && EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] < EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length]) {
-            EDITOR_trackedSyntaxList.setLength(i, EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] + EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]);
+        else if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] > local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] && local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] < local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length]) {
+            EDITOR_trackedSyntaxList.setLength(i, local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] + local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]);
         }
     }
-    EDITOR_textByteList.insertBytes(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition], EDITOR_cursor_gapBuffer, /*offset*/ 0, /*length*/ EDITOR_int_fields[INDEXOF_EDITOR_cursor_gapBufferCount]);
+    EDITOR_textByteList.insertBytes(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition], EDITOR_cursor_gapBuffer, /*offset*/ 0, /*length*/ local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_gapBufferCount]);
 
     let textSourceIdentifier = EDITOR_FORMATTED_textSourceIdentifier;
-    let lineAndColumnIndices = EDITOR_getLineAndColumnIndices(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]);
+    let lineAndColumnIndices = EDITOR_getLineAndColumnIndices(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]);
     // TODO: Account for any '\t\0\0\0' that exist on the line
-    let text = EDITOR_decoder.decode(EDITOR_cursor_gapBuffer.subarray(0, EDITOR_int_fields[INDEXOF_EDITOR_cursor_gapBufferCount]));
-    EDITOR_int_fields[INDEXOF_didChangeTextDocument_version] = EDITOR_int_fields[INDEXOF_didChangeTextDocument_version] + 1;
-    let version = EDITOR_int_fields[INDEXOF_didChangeTextDocument_version];
+    let text = EDITOR_decoder.decode(EDITOR_cursor_gapBuffer.subarray(0, local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_gapBufferCount]));
+    local_EDITOR_int_fields[INDEXOF_didChangeTextDocument_version] = local_EDITOR_int_fields[INDEXOF_didChangeTextDocument_version] + 1;
+    let version = local_EDITOR_int_fields[INDEXOF_didChangeTextDocument_version];
 
     // --- CLEAN INTEGRATION ---
     enqueueLSPNotification({
@@ -1642,8 +1651,8 @@ function EDITOR_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
     });
     // -------------------------
 
-    if (indexLine_editOccurredOn === EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine]) {
-        EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] = EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] + EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+    if (indexLine_editOccurredOn === local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine]) {
+        local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] = local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] + local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
     }
 
     EDITOR_finalizeEdit_ClearEditState();

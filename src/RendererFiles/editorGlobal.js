@@ -7627,24 +7627,26 @@ function EDITOR_state_do_Backspace(event) {
         EDITOR_removeSelection();
         return;
     }
+
+    let local_EDITOR_int_fields = EDITOR_int_fields;
     
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] === 0) {
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] > 0) {
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] === 0) {
+        if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] > 0) {
 
             // TODO: multicursor bugs are more likely to occur with this logic:
             // TODO: this logic is extremely suspect given editIndexLine and editIndexColumn...
             // ...as well if you move the cursor during a pending edit then finalize does it edit the correct positions?
             //
             // wrap to previous line
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]--;
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = EDITOR_getLastValidIndexColumn(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]--;
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]--;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = EDITOR_getLastValidIndexColumn(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]--;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
 
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount]++;
-            EDITOR_lineEndPositionList_PENDING.insert(0, EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]);
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount]++;
+            EDITOR_lineEndPositionList_PENDING.insert(0, local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]);
         }
         else {
             return;
@@ -7652,29 +7654,29 @@ function EDITOR_state_do_Backspace(event) {
     }
     else {
         if (event.ctrlKey) {
-            // EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] is intended to be equal due to the batch requirements / a new edit would also be equal.
+            // local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] is intended to be equal due to the batch requirements / a new edit would also be equal.
 
-            let originalCharacterKind = getCharacter_kind_raw(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] - 1);
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]--;
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]--;
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn]--;
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
+            let originalCharacterKind = getCharacter_kind_raw(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] - 1);
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]--;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]--;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn]--;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
 
-            while (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] > 0) {
-                if (getCharacter_kind_raw(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] - 1) !== originalCharacterKind) {
+            while (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] > 0) {
+                if (getCharacter_kind_raw(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] - 1) !== originalCharacterKind) {
                     break;
                 }
-                EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]--;
-                EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]--;
-                EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn]--;
-                EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
+                local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]--;
+                local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]--;
+                local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn]--;
+                local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
             }
         }
         else {
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] -= 1;
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] -= 1;
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] -= 1;
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] -= 1;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] -= 1;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] -= 1;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
         }
     }
 

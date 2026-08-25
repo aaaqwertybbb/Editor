@@ -337,8 +337,12 @@ const INDEXOF_EDITOR_cursor_gapBufferCount = 60;
  * and then you have another number too separately that says the length of line endings that this cursor contributed to modifying.
  */
 const INDEXOF_EDITOR_cursor_editLineFeedCount = 61;
+/** same comment that pertains to EDITOR_cursor_EDITOR_paste_clipboardContent is somewhat relevant here */
+const INDEXOF_EDITOR_cursor_EDITOR_duplicate_small = 62;
+/** same comment that pertains to EDITOR_cursor_EDITOR_paste_clipboardContent is somewhat relevant here */
+const INDEXOF_EDITOR_cursor_EDITOR_duplicate_length = 63;
 
-// EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount]
+// EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_length]
 
 
 

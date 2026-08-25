@@ -148,11 +148,6 @@ let EDITOR_cursor_edit_flagLineChanged = -1;
  */
 let EDITOR_cursor_EDITOR_paste_clipboardContent = null;
 
-/** same comment that pertains to EDITOR_cursor_EDITOR_paste_clipboardContent is somewhat relevant here */
-let EDITOR_cursor_EDITOR_duplicate_small = 0;
-/** same comment that pertains to EDITOR_cursor_EDITOR_paste_clipboardContent is somewhat relevant here */
-let EDITOR_cursor_EDITOR_duplicate_length = 0;
-
 function EDITOR_cursor_hasSelection() {
     return EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] >= 0 &&
             EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] >= 0 &&
@@ -197,8 +192,8 @@ function EDITOR_cursor_clear() {
 
     EDITOR_cursor_EDITOR_paste_clipboardContent = null;
 
-    EDITOR_cursor_EDITOR_duplicate_small = 0;
-    EDITOR_cursor_EDITOR_duplicate_length = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_small] = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_length] = 0;
 }
 
 const EDITOR_debug = document.getElementById('EDITOR_debug');
@@ -2142,11 +2137,11 @@ function EDITOR_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
 
     EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition], EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]);
 
-    let small = EDITOR_cursor_EDITOR_duplicate_small;
-    let length = EDITOR_cursor_EDITOR_duplicate_length;
+    let small = EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_small];
+    let length = EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_length];
 
-    EDITOR_cursor_EDITOR_duplicate_small = 0;
-    EDITOR_cursor_EDITOR_duplicate_length = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_small] = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_length] = 0;
 
     let linesInsertedCount = 0;
     let insertionLength = 0;
@@ -5646,8 +5641,8 @@ async function EDITOR_duplicateSelection() {
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = large_lineAndColumnIndices.indexLine;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = large_lineAndColumnIndices.indexColumn;
 
-    EDITOR_cursor_EDITOR_duplicate_small = small;
-    EDITOR_cursor_EDITOR_duplicate_length = length;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_small] = small;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_length] = length;
 
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = large;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = large + length;
@@ -5680,8 +5675,8 @@ function EDITOR_render_do_DuplicateOrPaste() {
     }
     if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] || EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_Paste /* Paste has an editLength of 0 currently */) {
 
-        let small = EDITOR_cursor_EDITOR_duplicate_small;
-        let length = EDITOR_cursor_EDITOR_duplicate_length;
+        let small = EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_small];
+        let length = EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_length];
         let large = small + length;
         
         // TODO: update the 'EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]'

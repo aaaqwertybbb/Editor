@@ -3762,11 +3762,12 @@ function EDITOR_insertGapBufferSpan() {
  * @param {*} editLength 
  */
 function EDITOR_startEdit(editKind, editPosition, editLength) {
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] = editKind;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = editPosition;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] = editLength;
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] = editKind;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = editPosition;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] = editLength;
 
     switch (editKind) {
         case ENUM_EditKind_InsertLtr:
@@ -3779,10 +3780,11 @@ function EDITOR_startEdit(editKind, editPosition, editLength) {
  * @returns 
  */
 function EDITOR_NOTcanBatch_insert() {
-    return EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_InsertLtr ||
-           EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] ||
-           EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] + EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] ||
-           EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] >= CONST_EDITOR_cursor_GAP_BUFFER_CAPACITY ||
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+    return local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_InsertLtr ||
+           local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] ||
+           local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] + local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] ||
+           local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] >= CONST_EDITOR_cursor_GAP_BUFFER_CAPACITY ||
            EDITOR_cursor_hasSelection();
 }
 
@@ -3790,11 +3792,12 @@ function EDITOR_NOTcanBatch_insert() {
  * @returns 
  */
 function EDITOR_NOTcanBatch_enter() {
+    let local_EDITOR_int_fields = EDITOR_int_fields;
     return true || // turn off batching until it works. The initial enter event is what matters everything else can be recreated based on the amount of lineFeeds that were inserted.
-           EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_Enter ||
-           EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexLine] ||
-           EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexColumn] ||
-           EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] >= CONST_EDITOR_cursor_GAP_BUFFER_CAPACITY ||
+           local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_Enter ||
+           local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexLine] ||
+           local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexColumn] ||
+           local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] >= CONST_EDITOR_cursor_GAP_BUFFER_CAPACITY ||
            !EDITOR_cursor_enterKey_newLinePlusIndentation_byteList ||
            EDITOR_cursor_hasSelection();
 }
@@ -3803,9 +3806,10 @@ function EDITOR_NOTcanBatch_enter() {
  * @returns 
  */
 function EDITOR_NOTcanBatch_backspace() {
-    return EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_BackspaceRtl ||
-           EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] ||
-           EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] ||
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+    return local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_BackspaceRtl ||
+           local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] ||
+           local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] ||
            EDITOR_cursor_hasSelection();
 }
 
@@ -3813,9 +3817,10 @@ function EDITOR_NOTcanBatch_backspace() {
  * @returns 
  */
 function EDITOR_NOTcanBatch_delete() {
-    return EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_DeleteLtr ||
-           EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] ||
-           EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] ||
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+    return local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_DeleteLtr ||
+           local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] ||
+           local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] ||
            EDITOR_cursor_hasSelection();
 }
 
@@ -3825,16 +3830,18 @@ function EDITOR_NOTcanBatch_delete() {
 function EDITOR_preKeyboardMovementSelectionLogic(shiftKey) {
     if (shiftKey) {
         if (!EDITOR_cursor_hasSelection()) {
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = EDITOR_getPositionIndex_cursor();
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+            let local_EDITOR_int_fields = EDITOR_int_fields;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = EDITOR_getPositionIndex_cursor();
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorColumn] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
         }
     }
     else {
         if (EDITOR_cursor_hasSelection()) {
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexEndLine];
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexEndColumn];
+            let local_EDITOR_int_fields = EDITOR_int_fields;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexEndLine];
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorColumn] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexEndColumn];
         }
     }
 }
@@ -3844,9 +3851,10 @@ function EDITOR_preKeyboardMovementSelectionLogic(shiftKey) {
  */
 function EDITOR_postKeyboardMovementSelectionLogic(shiftKey) {
     if (shiftKey) {
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = EDITOR_getPositionIndex_cursor();
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexEndLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexEndColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+        let local_EDITOR_int_fields = EDITOR_int_fields;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = EDITOR_getPositionIndex_cursor();
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexEndLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexEndColumn] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
     }
 }
 

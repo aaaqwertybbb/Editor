@@ -15,7 +15,6 @@ module.exports = function (babel) {
     
     
     
-    "set_EDITOR_ONSCROLLvirtualCount",
     
     
     
@@ -24,17 +23,14 @@ module.exports = function (babel) {
     
     
     
-    "set_EDITOR_indent_startingIndex",
+
     
-    "set_EDITOR_recentBoundingClientRect_left",
     
-    "set_EDITOR_recentBoundingClientRect_top",
+
     
     "set_EDITOR_recentBoundingClientRect_isNull_intFalsey",
     
-    "set_EDITOR_pooledTrackedSyntax_start",
     
-    "set_EDITOR_pooledTrackedSyntax_length",
     
     "set_EDITOR_findOverlay_show",
     

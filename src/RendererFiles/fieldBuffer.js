@@ -259,19 +259,14 @@ const INDEXOF_EDITOR_indent_ORIGINAL_indentBy = 28;
 const INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine = 29;
 
 const INDEXOF_EDITOR_indent_startingIndex = 30;
-const set_EDITOR_indent_startingIndex = (int) => EDITOR_int_fields[30] = int;
 
 const INDEXOF_EDITOR_recentBoundingClientRect_left = 31;
-const set_EDITOR_recentBoundingClientRect_left = (int) => EDITOR_int_fields[31] = int;
 
 const INDEXOF_EDITOR_recentBoundingClientRect_top = 32;
-const set_EDITOR_recentBoundingClientRect_top = (int) => EDITOR_int_fields[32] = int;
 
 const INDEXOF_EDITOR_pooledTrackedSyntax_start = 33;
-const set_EDITOR_pooledTrackedSyntax_start = (int) => EDITOR_int_fields[33] = int;
 
 const INDEXOF_EDITOR_pooledTrackedSyntax_length = 34;
-const set_EDITOR_pooledTrackedSyntax_length = (int) => EDITOR_int_fields[34] = int;
 
 
 

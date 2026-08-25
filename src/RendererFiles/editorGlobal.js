@@ -1814,7 +1814,7 @@ function EDITOR_finalizeEdit_Tab(cursor, indexLine_editOccurredOn) {
 function EDITOR_finalizeEdit_IndentMore(cursor, indexLine_editOccurredOn) {
 
     let startingIndex = EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex];
-    set_EDITOR_indent_startingIndex(0);
+    EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex] = 0;
     let SMALL_lineAndColumnIndices_indexLine = EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine];
     EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] = 0;
 
@@ -1933,7 +1933,7 @@ function EDITOR_finalizeEdit_IndentLess(cursor, indexLine_editOccurredOn) {
     //EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy] = 0;
 
     let startingIndex = EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex];
-    set_EDITOR_indent_startingIndex(0);
+    EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex] = 0;
     let SMALL_lineAndColumnIndices_indexLine = EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine];
     EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] = 0;
 
@@ -5281,8 +5281,8 @@ function EDITOR_onMouseDown(event) {
 
     if (get_EDITOR_recentBoundingClientRect_isNull_intFalsey()) {
         let boundingClientRect = EDITOR_baseElement.getBoundingClientRect();
-        set_EDITOR_recentBoundingClientRect_left(boundingClientRect.left);
-        set_EDITOR_recentBoundingClientRect_top(boundingClientRect.top);
+        EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] = boundingClientRect.left;
+        EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] = boundingClientRect.top;
         set_EDITOR_recentBoundingClientRect_isNull_intFalsey(0);
     }
 
@@ -5849,7 +5849,7 @@ function EDITOR_indentMore(cursor) {
     }
 
     EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] = SMALL_lineAndColumnIndices.indexLine;
-    set_EDITOR_indent_startingIndex(startingIndex);
+    EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex] = startingIndex;
 
     if (cursor.editLength === 0) {
         EDITOR_indentLess_startingLinePos_end = startingLinePos.end;
@@ -6037,7 +6037,7 @@ function EDITOR_indentLess(cursor) {
     }
 
     EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] = SMALL_lineAndColumnIndices.indexLine;
-    set_EDITOR_indent_startingIndex(startingIndex);
+    EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex] = startingIndex;
 
     if (cursor.editLength === 0) {
         EDITOR_indentLess_startingLinePos_end = startingLinePos.end;
@@ -9043,8 +9043,8 @@ function EDITOR_requestLspHover() {
     ///////////
     if (get_EDITOR_recentBoundingClientRect_isNull_intFalsey()) {
         let boundingClientRect = EDITOR_baseElement.getBoundingClientRect();
-        set_EDITOR_recentBoundingClientRect_left(boundingClientRect.left);
-        set_EDITOR_recentBoundingClientRect_top(boundingClientRect.top);
+        EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] = boundingClientRect.left;
+        EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] = boundingClientRect.top;
         set_EDITOR_recentBoundingClientRect_isNull_intFalsey(0);
     }
 

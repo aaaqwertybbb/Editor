@@ -3696,33 +3696,35 @@ function EDITOR_onMouseDownDetailRankThree(event_button, event_shiftKey, indexLi
         return;
     }
 
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLineClicked;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = indexColumnClicked;
-    
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = EDITOR_getPositionIndex_Overload(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine], 0);
-    
-    EDITOR_int_fields[INDEXOF_EDITOR_detailRank3OriginLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
+    let local_EDITOR_int_fields = EDITOR_int_fields;
 
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] === EDITOR_lineEndPositionList.count - 1) {
-        let line = EDITOR_getLineBoundaryPositions(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = line.end;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLineClicked;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = indexColumnClicked;
+    
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = EDITOR_getPositionIndex_Overload(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine], 0);
+    
+    local_EDITOR_int_fields[INDEXOF_EDITOR_detailRank3OriginLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
+
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] === EDITOR_lineEndPositionList.count - 1) {
+        let line = EDITOR_getLineBoundaryPositions(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = line.end;
         EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     }
     else {
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]++;
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
-        let line = EDITOR_getLineBoundaryPositions(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = line.start;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]++;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
+        let line = EDITOR_getLineBoundaryPositions(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = line.start;
         EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     }
 
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
-        EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
-        EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
+        local_EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
     }
     else {
-        EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
-        EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
     }
 }
 

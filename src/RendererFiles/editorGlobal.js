@@ -412,7 +412,7 @@ function EDITOR_init() {
     EDITOR_gutterBackgroundColor.style.paddingRight = gutterPaddingRight;
 
     set_EDITOR_gutterWidthStyleValue(EDITOR_characterWidth);
-    let gutterWidth = get_EDITOR_gutterWidthStyleValue() + 'px';
+    let gutterWidth = EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthStyleValue] + 'px';
 
     EDITOR_drawGutter_Width();
 
@@ -537,9 +537,9 @@ function EDITOR_render_do_InsertLtr() {
                 let x = EDITOR_decoder.decode(cursor.gapBuffer.subarray(cursor.editRenderedDisplacement, cursor.editLength));
 
                 cursor.gapBufferWriteToSpanElement.textContent = 
-                    cursor.gapBufferWriteToSpanElement.textContent.slice(0, (cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex/* + get_EDITOR_offsetWithinSpan()*/) + cursor.editRenderedDisplacement) +
+                    cursor.gapBufferWriteToSpanElement.textContent.slice(0, (cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex/* + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]*/) + cursor.editRenderedDisplacement) +
                     x +
-                    cursor.gapBufferWriteToSpanElement.textContent.slice((cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex/* + get_EDITOR_offsetWithinSpan()*/) + cursor.editRenderedDisplacement);
+                    cursor.gapBufferWriteToSpanElement.textContent.slice((cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex/* + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]*/) + cursor.editRenderedDisplacement);
 
                 cursor.editRenderedDisplacement = cursor.editLength;
             }
@@ -612,7 +612,7 @@ function EDITOR_render_do_CreateViewport() {
     EDITOR_beltIndexZero = 0;
     let translateY = `translateY(0px)`;
     let left = gutterWidthTotal_withPxUnits;
-    let gutterWidth = `${get_EDITOR_gutterWidthStyleValue()}px`;
+    let gutterWidth = `${EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthStyleValue]}px`;
 
     for (var i = 0; i < local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]; i++) {
 
@@ -8135,9 +8135,9 @@ function EDITOR_insertDo(cursor, character) {
 
     if (cursor.gapBufferWriteToSpanElement) {
         cursor.gapBufferWriteToSpanElement.textContent = 
-            cursor.gapBufferWriteToSpanElement.textContent.slice(0, (cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + get_EDITOR_offsetWithinSpan()) + cursor.gapBufferCount) +
+            cursor.gapBufferWriteToSpanElement.textContent.slice(0, (cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]) + cursor.gapBufferCount) +
             character +
-            cursor.gapBufferWriteToSpanElement.textContent.slice((cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + get_EDITOR_offsetWithinSpan()) + cursor.gapBufferCount);
+            cursor.gapBufferWriteToSpanElement.textContent.slice((cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]) + cursor.gapBufferCount);
     }*/
 
     cursor.gapBuffer[cursor.gapBufferCount] = character.charCodeAt(0);
@@ -8146,7 +8146,7 @@ function EDITOR_insertDo(cursor, character) {
     cursor.editLength++;
     cursor.indexColumn++;
 
-    set_EDITOR_offsetWithinSpan(get_EDITOR_offsetWithinSpan() + cursor.gapBufferCount);
+    set_EDITOR_offsetWithinSpan(EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] + cursor.gapBufferCount);
 }
 
 function EDITOR_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine(cursor) {

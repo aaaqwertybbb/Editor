@@ -2700,31 +2700,33 @@ function EDITOR_draw_all_cursors() {
  * @param {boolean} NOTscrollCursorIntoView 
  */
 function EDITOR_drawCursor(NOTscrollCursorIntoView) {
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] = (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) * EDITOR_int_fields[INDEXOF_EDITOR_lineHeight];
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] = (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] + EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn]) * EDITOR_characterWidth;
+    let local_EDITOR_int_fields = EDITOR_int_fields;
 
-    EDITOR_cursor_caretRow.style.transform = `translateY(${EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue]}px)`;
-    EDITOR_cursor_cursorElement.style.transform = `translateX(${EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue]}px)`;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] = (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) * local_EDITOR_int_fields[INDEXOF_EDITOR_lineHeight];
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] = (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn]) * EDITOR_characterWidth;
+
+    EDITOR_cursor_caretRow.style.transform = `translateY(${local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue]}px)`;
+    EDITOR_cursor_cursorElement.style.transform = `translateX(${local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue]}px)`;
 
     EDITOR_createStyleForSelection();
 
     let text = '';
 
-    text += '(' + EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] + ', ' + EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] + ')';
+    text += '(' + local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] + ', ' + local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] + ')';
     
     if (DIALOG_Settings_editorDebugShowAdjacentCharacters) {
-        let previous = EDITOR_getCharacterPrevious(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], EDITOR_getPositionIndex_cursor());
+        let previous = EDITOR_getCharacterPrevious(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], EDITOR_getPositionIndex_cursor());
         if (previous === '\n') previous = '\\n';
         else if (previous === '\t') previous = '\\t';
-        let current = EDITOR_getCharacterCurrent(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], EDITOR_getPositionIndex_cursor(), EDITOR_getLineEnd_pos(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]));
+        let current = EDITOR_getCharacterCurrent(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn], EDITOR_getPositionIndex_cursor(), EDITOR_getLineEnd_pos(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]));
         if (current === '\n') current = '\\n';
         else if (current === '\t') current = '\\t';
         text += ' | (' + previous + ', ' + current + ')';
     }
     
-    text += ' | (' + EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] + ')';
+    text += ' | (' + local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] + ')';
 
-    text += ' | (' + EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine] + ', ' + EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] + ')';
+    text += ' | (' + local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine] + ', ' + local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] + ')';
 
     EDITOR_debug.replaceChildren(text);
 

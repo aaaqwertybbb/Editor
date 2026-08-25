@@ -1296,7 +1296,6 @@ function EDITOR_state_clear() {
     
     // Explicitly inlining 'clearMulticursorState()' because it currently is and I just don't want to make a decision about this right now.
     // So what I can do is mark the code paragraph for later decision making.
-    EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
@@ -2801,7 +2800,7 @@ function positiveNumbersOnly_countDigitsLoop(number) {
 }
 
 function EDITOR_draw_all_cursors() {
-    EDITOR_render_request(ENUM_RenderKind_Cursor_n + 0);
+    EDITOR_render_request(ENUM_RenderKind_Cursor_n);
 }
 
 /**
@@ -3336,8 +3335,7 @@ function EDITOR_onMouseMoveDetailRankOne(indexLineClicked, indexColumnClicked) {
 
     cursor.selectionEnd = EDITOR_getPositionIndex(cursor);
 
-    let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
-    EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
+    EDITOR_render_request(ENUM_RenderKind_Cursor_n);
 }
 
 function getCharacter_raw(positionIndex) {
@@ -3494,8 +3492,7 @@ function EDITOR_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
             }
         }
 
-        let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
-        EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
+        EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     }
     else {
         if (cursor.selectionAnchor > cursor.selectionEnd) {
@@ -3540,8 +3537,7 @@ function EDITOR_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
             cursor.selectionEnd = EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition];
         }
 
-        let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
-        EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
+        EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     }
 }
 
@@ -3570,8 +3566,7 @@ function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked)
             cursor.selectionAnchor = EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition];
         }
 
-        let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
-        EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
+        EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     }
     else if (indexLineClicked < EDITOR_int_fields[INDEXOF_EDITOR_detailRank3OriginLine]) {
         if (cursor.selectionAnchor < cursor.selectionEnd) {
@@ -3582,8 +3577,7 @@ function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked)
 
             cursor.selectionEnd = EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition];
 
-            let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
-            EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
+            EDITOR_render_request(ENUM_RenderKind_Cursor_n);
         }
 
         cursor.indexLine = indexLineClicked;
@@ -3591,8 +3585,7 @@ function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked)
 
         cursor.selectionEnd = EDITOR_getPositionIndex_Overload(indexLineClicked, 0);
 
-        let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
-        EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
+        EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     }
     else if (indexLineClicked > EDITOR_int_fields[INDEXOF_EDITOR_detailRank3OriginLine]) {
 
@@ -3622,8 +3615,7 @@ function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked)
             cursor.selectionEnd = positionIndex;
         }
 
-        let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
-        EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
+        EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     }
 }
 
@@ -3670,8 +3662,7 @@ function EDITOR_onMouseDownDetailRankOne(event_button, event_shiftKey, indexLine
         }
     }
 
-    let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
-    EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
+    EDITOR_render_request(ENUM_RenderKind_Cursor_n);
 }
 
 function EDITOR_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLineClicked, indexColumnClicked) {
@@ -3728,8 +3719,7 @@ function EDITOR_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLine
             cursor.selectionEnd = tempPositionIndex;
         }
 
-        let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
-        EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
+        EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     }
     else if (leftCharacterKind > rightCharacterKind) {
         let goalCharacterKind = leftCharacterKind;
@@ -3750,8 +3740,7 @@ function EDITOR_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLine
 
         cursor.selectionEnd = originalPositionIndex;
 
-        let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
-        EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
+        EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     }
     else {
         let goalCharacterKind = rightCharacterKind;
@@ -3778,8 +3767,7 @@ function EDITOR_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLine
             cursor.selectionEnd = positionIndex;
         }
 
-        let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
-        EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
+        EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     }
 
     if (cursor.selectionAnchor < cursor.selectionEnd) {
@@ -3810,16 +3798,14 @@ function EDITOR_onMouseDownDetailRankThree(event_button, event_shiftKey, indexLi
     if (cursor.indexLine === EDITOR_lineEndPositionList.count - 1) {
         let line = EDITOR_getLineBoundaryPositions(cursor.indexLine);
         cursor.selectionEnd = line.end;
-        let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
-        EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
+        EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     }
     else {
         cursor.indexLine++;
         cursor.indexColumn = 0;
         let line = EDITOR_getLineBoundaryPositions(cursor.indexLine);
         cursor.selectionEnd = line.start;
-        let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
-        EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
+        EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     }
 
     if (cursor.selectionAnchor < cursor.selectionEnd) {
@@ -4136,7 +4122,6 @@ function EDITOR_editEvent(editKind, event, clipboardContent) {
 
 function EDITOR_editEvent_theEditIself_InsertLtr(event) {
     let cursor = EDITOR_primaryCursor;
-    EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = i;
     EDITOR_movementBasedCacheInvalidation(cursor);
     if (EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== cursor.indexLine) {
         EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = cursor.indexLine;
@@ -4149,7 +4134,7 @@ function EDITOR_editEvent_theEditIself_InsertLtr(event) {
     }
     EDITOR_insertDo(cursor, event.key);
     cursor.STORED_indexColumn = cursor.indexColumn;
-    EDITOR_render_request(ENUM_RenderKind_Cursor_n + i);
+    EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     //EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] + cursor.editLength;
     //EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = get_EDITOR_totalShift() + cursor.editLength; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
     EDITOR_render_request(ENUM_RenderKind_InsertLtr);
@@ -4157,7 +4142,6 @@ function EDITOR_editEvent_theEditIself_InsertLtr(event) {
 
 function EDITOR_editEvent_theEditIself_DeleteLtr(event) {
     let cursor = EDITOR_primaryCursor;
-    EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = i;
     EDITOR_movementBasedCacheInvalidation(cursor);
     if (EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== cursor.indexLine) {
         EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = cursor.indexLine;
@@ -4172,14 +4156,13 @@ function EDITOR_editEvent_theEditIself_DeleteLtr(event) {
         }
         EDITOR_deleteDo(cursor, event);
     }
-    EDITOR_render_request(ENUM_RenderKind_Cursor_n + i);
+    EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     //EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] - cursor.editLength;
     //EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = get_EDITOR_totalShift() - cursor.editLength; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
 }
 
 function EDITOR_editEvent_theEditIself_BackspaceRtl(event) {
     let cursor = EDITOR_primaryCursor;
-    EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = i;
     EDITOR_movementBasedCacheInvalidation(cursor);
     if (EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== cursor.indexLine) {
         EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = cursor.indexLine;
@@ -4195,7 +4178,7 @@ function EDITOR_editEvent_theEditIself_BackspaceRtl(event) {
         EDITOR_backspaceDo(cursor, event);
         cursor.STORED_indexColumn = cursor.indexColumn;
     }
-    EDITOR_render_request(ENUM_RenderKind_Cursor_n + i);
+    EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     //EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] - cursor.editLength;
     //EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = get_EDITOR_totalShift() - cursor.editLength; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
 }
@@ -4236,7 +4219,7 @@ function EDITOR_editEvent_theEditIself_Tab(event) {
             EDITOR_tabKey(cursor);
         }
     }
-    EDITOR_render_request(ENUM_RenderKind_Cursor_n + i);
+    EDITOR_render_request(ENUM_RenderKind_Cursor_n);
 }
 
 function EDITOR_editEvent_theEditIself_Enter(event) {
@@ -4246,7 +4229,7 @@ function EDITOR_editEvent_theEditIself_Enter(event) {
     }
     EDITOR_EnterKey(cursor, event.ctrlKey, event.shiftKey);
     cursor.STORED_indexColumn = cursor.indexColumn;
-    EDITOR_render_request(ENUM_RenderKind_Cursor_n + i);
+    EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     //EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] = EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] + 1;
 }
 
@@ -4257,7 +4240,7 @@ function EDITOR_editEvent_theEditIself_Paste(clipboardContent) {
     }
     EDITOR_paste(cursor, clipboardContent);
     cursor.STORED_indexColumn = cursor.indexColumn;
-    EDITOR_render_request(ENUM_RenderKind_Cursor_n + i);
+    EDITOR_render_request(ENUM_RenderKind_Cursor_n);
 }
 
 function EDITOR_editEvent_theEditIself_Duplicate() {
@@ -4267,7 +4250,7 @@ function EDITOR_editEvent_theEditIself_Duplicate() {
     }
     EDITOR_duplicateSelection(cursor);
     cursor.STORED_indexColumn = cursor.indexColumn;
-    EDITOR_render_request(ENUM_RenderKind_Cursor_n + i);
+    EDITOR_render_request(ENUM_RenderKind_Cursor_n);
 }
 
 /** @returns {boolean} 'shouldFinalizeAllCursors' */
@@ -4533,7 +4516,6 @@ hmmm is google AI just hyping me up... I need to clarify that those few conditio
 function EDITOR_onKeyDown(event) {
     // Explicitly inlining 'clearMulticursorState()' because it currently is and I just don't want to make a decision about this right now.
     // So what I can do is mark the code paragraph for later decision making.
-    EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
@@ -4617,7 +4599,6 @@ function EDITOR_onKeyDown_ArrowLeft(event) {
     event.stopPropagation();
             
     let cursor = EDITOR_primaryCursor;
-    EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = i;
     EDITOR_movementBasedCacheInvalidation(cursor);
     if (EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== cursor.indexLine) {
         EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = cursor.indexLine;
@@ -4670,7 +4651,7 @@ function EDITOR_onKeyDown_ArrowLeft(event) {
         EDITOR_postKeyboardMovementSelectionLogic(cursor, event.shiftKey);
     }
     cursor.STORED_indexColumn = cursor.indexColumn;
-    EDITOR_render_request(ENUM_RenderKind_Cursor_n + i);
+    EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
         EDITOR_cursorBlink_startChecking();
     }
@@ -4688,7 +4669,7 @@ function EDITOR_onKeyDown_ArrowDown(event) {
     }
     else {
         EDITOR_arrowDown(EDITOR_primaryCursor, /*shiftKey*/ event.shiftKey);
-        EDITOR_render_request(ENUM_RenderKind_Cursor_n + i);
+        EDITOR_render_request(ENUM_RenderKind_Cursor_n);
         if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
             EDITOR_cursorBlink_startChecking();
         }
@@ -4719,7 +4700,7 @@ function EDITOR_onKeyDown_ArrowUp(event) {
             }
         }
         EDITOR_postKeyboardMovementSelectionLogic(cursor, event.shiftKey);
-        EDITOR_render_request(ENUM_RenderKind_Cursor_n + i);
+        EDITOR_render_request(ENUM_RenderKind_Cursor_n);
         if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
             EDITOR_cursorBlink_startChecking();
         }
@@ -4732,7 +4713,6 @@ function EDITOR_onKeyDown_ArrowRight(event) {
     event.stopPropagation();
 
     let cursor = EDITOR_primaryCursor;
-    EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = i;
     EDITOR_movementBasedCacheInvalidation(cursor);
     if (EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== cursor.indexLine) {
         EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = cursor.indexLine;
@@ -4786,7 +4766,7 @@ function EDITOR_onKeyDown_ArrowRight(event) {
         EDITOR_postKeyboardMovementSelectionLogic(cursor, event.shiftKey);
     }
     cursor.STORED_indexColumn = cursor.indexColumn;
-    EDITOR_render_request(ENUM_RenderKind_Cursor_n + i);
+    EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
         EDITOR_cursorBlink_startChecking();
     }
@@ -4816,7 +4796,7 @@ function EDITOR_onKeyDown_Home(event) {
     }
     EDITOR_postKeyboardMovementSelectionLogic(cursor, event.shiftKey);
     cursor.STORED_indexColumn = cursor.indexColumn;
-    EDITOR_render_request(ENUM_RenderKind_Cursor_n + i);
+    EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
         EDITOR_cursorBlink_startChecking();
     }
@@ -4836,7 +4816,7 @@ function EDITOR_onKeyDown_End(event) {
     cursor.indexColumn = EDITOR_getLastValidIndexColumn(cursor.indexLine);
     EDITOR_postKeyboardMovementSelectionLogic(cursor, event.shiftKey);
     cursor.STORED_indexColumn = cursor.indexColumn;
-    EDITOR_render_request(ENUM_RenderKind_Cursor_n + i);
+    EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
         EDITOR_cursorBlink_startChecking();
     }
@@ -4859,8 +4839,7 @@ function EDITOR_onKeyDown_PageDown(event) {
         EDITOR_primaryCursor.indexColumn = 0;
         // TODO: allow someone to select via this keybind, but for now it causes a bad selection if you { 'Ctrl' + 'a' } then use it so I'm clearing any active selection here for now.
         EDITOR_primaryCursor.selectionAnchor = EDITOR_primaryCursor.selectionEnd;
-        let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
-        EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
+        EDITOR_render_request(ENUM_RenderKind_Cursor_n);
         if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
             EDITOR_cursorBlink_startChecking();
         }
@@ -4883,8 +4862,7 @@ function EDITOR_onKeyDown_PageUp(event) {
         EDITOR_primaryCursor.indexColumn = 0;
         // TODO: allow someone to select via this keybind, but for now it causes a bad selection if you { 'Ctrl' + 'a' } then use it so I'm clearing any active selection here for now.
         EDITOR_primaryCursor.selectionAnchor = EDITOR_primaryCursor.selectionEnd;
-        let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
-        EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
+        EDITOR_render_request(ENUM_RenderKind_Cursor_n);
         if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
             EDITOR_cursorBlink_startChecking();
         }
@@ -4919,7 +4897,6 @@ function EDITOR_onKeyDown_PageUp(event) {
  *             - problematic case is that you need to lock the editor UI while the paste is being completed.
 */
 async function EDITOR_onKeyDown_keyLengthEqualsOne_ctrlKey(event) {
-    let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
     EDITOR_movementBasedCacheInvalidation(EDITOR_primaryCursor);
     switch (event.key) {
         case 'c':
@@ -4938,7 +4915,7 @@ async function EDITOR_onKeyDown_keyLengthEqualsOne_ctrlKey(event) {
             EDITOR_finalizeAllCursors();
             await EDITOR_copySelection(EDITOR_primaryCursor);
             EDITOR_removeSelection(EDITOR_primaryCursor); // TODO: Multicursor bad
-            EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
+            EDITOR_render_request(ENUM_RenderKind_Cursor_n);
             if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
                 EDITOR_cursorBlink_startChecking(); // TODO: this one is especially questionable since it invoked 'EDITOR_removeSelection' prior to the draw cursor?
             }
@@ -5000,7 +4977,6 @@ function EDITOR_onMouseDown(event) {
     EDITOR_movementBasedCacheInvalidation(EDITOR_primaryCursor);
     
     // TODO: You might want to do this inside 'EDITOR_finalizeAllCursors_andClearNonPrimaryCursors();' at the end... I'm not sure.
-    EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_offsetLine] = 0;
 
@@ -8026,14 +8002,12 @@ async function EDITOR_MenuOnClick(indexClicked, elementClicked) {
         return;
     }
 
-    let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
-
     switch (commandKind) {
         case ENUM_CommandKind_Cut:
             EDITOR_finalizeAllCursors();
             await EDITOR_copySelection(EDITOR_primaryCursor);
             EDITOR_removeSelection(EDITOR_primaryCursor);
-            EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
+            EDITOR_render_request(ENUM_RenderKind_Cursor_n);
             return;
         case ENUM_CommandKind_Copy:
             EDITOR_finalizeAllCursors();
@@ -8042,7 +8016,7 @@ async function EDITOR_MenuOnClick(indexClicked, elementClicked) {
             EDITOR_finalizeAllCursors();
             let clipboard = await window.myAPI.readClipboard();
             EDITOR_paste(EDITOR_primaryCursor, clipboard);
-            EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
+            EDITOR_render_request(ENUM_RenderKind_Cursor_n);
             return;
         case ENUM_CommandKind_Find:
             EDITOR_findOverlay_showSetter(!get_EDITOR_findOverlay_show());
@@ -8075,8 +8049,7 @@ function EDITOR_moveCursor_indexLine_indexColumn(indexLine, indexColumn) {
     
     // TODO: selectionAnchor = selectionEnd; EDITOR_drawCursor(cursor); # being the way to clear a selection should be documented / wrapped by a method for ease of use / readability?
     EDITOR_primaryCursor.selectionAnchor = EDITOR_primaryCursor.selectionEnd;
-    let indexCursor = 0; // TODO: Actually get the correct indexCursor instead of just hardcoding '0'
-    EDITOR_render_request(ENUM_RenderKind_Cursor_n + indexCursor);
+    EDITOR_render_request(ENUM_RenderKind_Cursor_n);
 }
 
 /**

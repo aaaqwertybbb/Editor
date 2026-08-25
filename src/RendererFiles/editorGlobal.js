@@ -83,9 +83,6 @@ let EDITOR_cursor_STATIC_CURSOR_ID = 1;
  */
 let EDITOR_cursor_GAP_BUFFER_CAPACITY = 32;
 
-let EDITOR_cursor_selectionIndexAnchorLine = 0;
-let EDITOR_cursor_selectionIndexAnchorColumn = 0;
-
 let EDITOR_cursor_selectionIndexEndLine = 0;
 let EDITOR_cursor_selectionIndexEndColumn = 0;
 
@@ -3835,15 +3832,15 @@ function EDITOR_preKeyboardMovementSelectionLogic(shiftKey) {
     if (shiftKey) {
         if (!EDITOR_cursor_hasSelection()) {
             EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = EDITOR_getPositionIndex_cursor();
-            EDITOR_cursor_selectionIndexAnchorLine = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
-            EDITOR_cursor_selectionIndexAnchorColumn = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
+            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
         }
     }
     else {
         if (EDITOR_cursor_hasSelection()) {
             EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
-            EDITOR_cursor_selectionIndexAnchorLine = EDITOR_cursor_selectionIndexEndLine;
-            EDITOR_cursor_selectionIndexAnchorColumn = EDITOR_cursor_selectionIndexEndColumn;
+            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorLine] = EDITOR_cursor_selectionIndexEndLine;
+            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorColumn] = EDITOR_cursor_selectionIndexEndColumn;
         }
     }
 }
@@ -4505,8 +4502,8 @@ function EDITOR_onKeyDown_ArrowLeft(event) {
         EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = lineAndColumnIndices.indexLine;
         EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = lineAndColumnIndices.indexColumn;
         EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
-        EDITOR_cursor_selectionIndexAnchorLine = EDITOR_cursor_selectionIndexEndLine;
-        EDITOR_cursor_selectionIndexAnchorColumn = EDITOR_cursor_selectionIndexEndColumn;
+        EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorLine] = EDITOR_cursor_selectionIndexEndLine;
+        EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorColumn] = EDITOR_cursor_selectionIndexEndColumn;
     }
     else {
         EDITOR_preKeyboardMovementSelectionLogic(event.shiftKey);
@@ -4617,8 +4614,8 @@ function EDITOR_onKeyDown_ArrowRight(event) {
         EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = lineAndColumnIndices.indexLine;
         EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = lineAndColumnIndices.indexColumn;
         EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
-        EDITOR_cursor_selectionIndexAnchorLine = EDITOR_cursor_selectionIndexEndLine;
-        EDITOR_cursor_selectionIndexAnchorColumn = EDITOR_cursor_selectionIndexEndColumn;
+        EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorLine] = EDITOR_cursor_selectionIndexEndLine;
+        EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorColumn] = EDITOR_cursor_selectionIndexEndColumn;
     }
     else {
         EDITOR_preKeyboardMovementSelectionLogic(event.shiftKey);

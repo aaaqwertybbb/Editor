@@ -295,8 +295,11 @@ const INDEXOF_EDITOR_cursor_cursorTranslateXValue = 41;
 const INDEXOF_EDITOR_cursor_selectionAnchor = 42;
 const INDEXOF_EDITOR_cursor_selectionEnd = 43;
 
+const INDEXOF_EDITOR_cursor_selectionIndexAnchorLine = 44;
+const INDEXOF_EDITOR_cursor_selectionIndexAnchorColumn = 45;
 
-// EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]
+
+// EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorColumn]
 
 
 

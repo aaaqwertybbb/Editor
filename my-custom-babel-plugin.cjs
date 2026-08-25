@@ -5,126 +5,204 @@ module.exports = function (babel) {
 
   // List all the function names you want to inline
   const TARGET_FUNCTIONS = [
+    "set_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber",
+
+    "set_EDITOR_drawn_count_of_digits_longest_line_number",
+
+    "set_EDITOR_lineHeight",
+
+    "set_EDITOR_detailRank",
+
+    "set_EDITOR_detail_smallPosition",
     
+    "set_EDITOR_detail_largePosition",
+
+    "set_EDITOR_detailRank3OriginLine",
+
+    "set_EDITOR_gutterWidthStyleValue",
+    
+    "set_EDITOR_gutterWidthTotal",
+    
+    "set_EDITOR_virtualIndexLine",
+    
+    "set_EDITOR_virtualCount",
+    
+    "set_didChangeTextDocument_version",
+    
+    "set_EDITOR_indexCursor",
+    
+    "set_EDITOR_offsetLine",
+    
+    "set_EDITOR_offsetColumn_withRespectToThisIndexLine",
+    
+    "set_EDITOR_offsetColumn",
+    
+    "set_EDITOR_totalShift",
+    
+    "set_EDITOR_offsetWithinSpan",
+    
+    "set_EDITOR_ONSCROLLvirtualIndexLine",
+    
+    "set_EDITOR_ONSCROLLvirtualCount",
+    
+    "set_EDITOR_ONSCROLLscrollTop",
+    
+    "set_EDITOR_longestLine_indexLine",
+    
+    "set_EDITOR_longestLine_length",
+    
+    "set_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar",
+    
+    "set_EDITOR_contentWidth",
+    
+    "set_EDITOR_indent_ORIGINAL_indentBy",
+    
+    "set_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine",
+    
+    "set_EDITOR_indent_startingIndex",
+    
+    "set_EDITOR_recentBoundingClientRect_left",
+    
+    "set_EDITOR_recentBoundingClientRect_top",
+    
+    "set_EDITOR_recentBoundingClientRect_isNull_intFalsey",
+    
+    "set_EDITOR_pooledTrackedSyntax_start",
+    
+    "set_EDITOR_pooledTrackedSyntax_length",
+    
+    "set_EDITOR_findOverlay_show",
+    
+    "set_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching",
+    
+    "set_EDITOR_fileStartsWithBom",
+    
+    "set_EDITOR_findOverlay_wasSearched",
+    
+    "set_EDITOR_findOverlay_options_matchWord",
+    
+    "set_EDITOR_scrollEndDeadline",
+
+
+
+
   ];
 
   // List all the variable names you want to inline
   const TARGET_VARIABLES = [
 
     "INDEXOF_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber",
-    "set_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber",
+    
 
     "INDEXOF_EDITOR_drawn_count_of_digits_longest_line_number",
-    "set_EDITOR_drawn_count_of_digits_longest_line_number",
 
-    "set_EDITOR_lineHeight",
+    
 
     "INDEXOF_EDITOR_detailRank",
-    "set_EDITOR_detailRank",
+    
 
     "INDEXOF_EDITOR_detail_smallPosition",
-    "set_EDITOR_detail_smallPosition",
+    
 
     "INDEXOF_EDITOR_detail_largePosition",
-    "set_EDITOR_detail_largePosition",
 
     "INDEXOF_EDITOR_detailRank3OriginLine",
-    "set_EDITOR_detailRank3OriginLine",
+    
 
     "INDEXOF_EDITOR_gutterWidthStyleValue",
-    "set_EDITOR_gutterWidthStyleValue",
+    
 
     "INDEXOF_EDITOR_gutterWidthTotal",
-    "set_EDITOR_gutterWidthTotal",
+    
 
     "INDEXOF_EDITOR_virtualIndexLine",
-    "set_EDITOR_virtualIndexLine",
+    
 
     "INDEXOF_EDITOR_virtualCount",
-    "set_EDITOR_virtualCount",
+    
 
     "INDEXOF_didChangeTextDocument_version",
-    "set_didChangeTextDocument_version",
+    
 
     "INDEXOF_EDITOR_indexCursor",
-    "set_EDITOR_indexCursor",
+    
 
     "INDEXOF_EDITOR_offsetLine",
-    "set_EDITOR_offsetLine",
+    
 
     "INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine",
-    "set_EDITOR_offsetColumn_withRespectToThisIndexLine",
+    
 
     "INDEXOF_EDITOR_offsetColumn",
-    "set_EDITOR_offsetColumn",
+    
 
     "INDEXOF_EDITOR_totalShift",
-    "set_EDITOR_totalShift",
+    
 
     "INDEXOF_EDITOR_offsetWithinSpan",
-    "set_EDITOR_offsetWithinSpan",
+    
 
     "INDEXOF_EDITOR_ONSCROLLvirtualIndexLine",
-    "set_EDITOR_ONSCROLLvirtualIndexLine",
+    
 
-    "set_EDITOR_ONSCROLLvirtualCount",
+    
 
     "INDEXOF_EDITOR_ONSCROLLscrollTop",
-    "set_EDITOR_ONSCROLLscrollTop",
+    
 
     "INDEXOF_EDITOR_longestLine_indexLine",
-    "set_EDITOR_longestLine_indexLine",
+    
     
     "INDEXOF_EDITOR_longestLine_length",
-    "set_EDITOR_longestLine_length",
+    
 
     "INDEXOF_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar",
-    "set_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar",
+    
 
     "INDEXOF_EDITOR_contentWidth",
-    "set_EDITOR_contentWidth",
+    
 
     "INDEXOF_EDITOR_indent_ORIGINAL_indentBy",
-    "set_EDITOR_indent_ORIGINAL_indentBy",
+    
 
     "INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine",
-    "set_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine",
+    
 
     "INDEXOF_EDITOR_indent_startingIndex",
-    "set_EDITOR_indent_startingIndex",
+    
 
     "INDEXOF_EDITOR_recentBoundingClientRect_left",
-    "set_EDITOR_recentBoundingClientRect_left",
+    
 
     "INDEXOF_EDITOR_recentBoundingClientRect_top",
-    "set_EDITOR_recentBoundingClientRect_top",
+    
 
     "INDEXOF_EDITOR_recentBoundingClientRect_isNull_intFalsey",
-    "set_EDITOR_recentBoundingClientRect_isNull_intFalsey",
+    
 
     "INDEXOF_EDITOR_pooledTrackedSyntax_start",
-    "set_EDITOR_pooledTrackedSyntax_start",
+    
 
     "INDEXOF_EDITOR_pooledTrackedSyntax_length",
-    "set_EDITOR_pooledTrackedSyntax_length",
+    
 
     "INDEXOF_EDITOR_findOverlay_show",
-    "set_EDITOR_findOverlay_show",
+    
 
     "INDEXOF_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching",
-    "set_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching",
+    
 
     "INDEXOF_EDITOR_fileStartsWithBom",
-    "set_EDITOR_fileStartsWithBom",
+    
 
     "INDEXOF_EDITOR_findOverlay_wasSearched",
-    "set_EDITOR_findOverlay_wasSearched",
+    
 
     "INDEXOF_EDITOR_findOverlay_options_matchWord",
-    "set_EDITOR_findOverlay_options_matchWord",
+    
 
     "INDEXOF_EDITOR_scrollEndDeadline",
-    "set_EDITOR_scrollEndDeadline",
+    
 
 
 

@@ -142,9 +142,10 @@ let EDITOR_cursor_edit_flagLineChanged = -1;
 let EDITOR_cursor_EDITOR_paste_clipboardContent = null;
 
 function EDITOR_cursor_hasSelection() {
-    return EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] >= 0 &&
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] >= 0 &&
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] != EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+    return local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] >= 0 &&
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] >= 0 &&
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] != local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
 }
 
 /**
@@ -153,40 +154,41 @@ function EDITOR_cursor_hasSelection() {
  * Somewhat duplicated code: This messes with the language features if I invoke clear() in the constructor, it puts "| undefined" on all the types.
  */
 function EDITOR_cursor_clear() {
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionEnd] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selection_virtualIndexLine] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selection_virtualCount] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] = ENUM_EditKind_None;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexLine] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexColumn] = 0;
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionEnd] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selection_virtualIndexLine] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selection_virtualCount] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] = ENUM_EditKind_None;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexLine] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexColumn] = 0;
 
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_gapBufferCount] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_gapBufferCount] = 0;
 
     EDITOR_cursor_enterKey_newLinePlusIndentation_byteList = null;
     EDITOR_cursor_cached_indentation_string = null;
     EDITOR_cursor_enterKeyEventKind = ENUM_EnterKeyEventKind_None;
 
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLineFeedCount] = 0;
     EDITOR_cursor_edit_flagLineChanged = -1;
 
     EDITOR_cursor_EDITOR_paste_clipboardContent = null;
 
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_small] = 0;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_length] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_small] = 0;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_length] = 0;
 }
 
 const EDITOR_debug = document.getElementById('EDITOR_debug');
@@ -458,20 +460,21 @@ function EDITOR_render_do_cursor_flag_doNotScrollIntoView(timestamp) {
 }
 
 function EDITOR_render_do_InsertLtr() {
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_InsertLtr) {
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_InsertLtr) {
         return;
     }
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
         if (EDITOR_cursor_gapBufferWriteToSpanElement) {
 
-            let x = EDITOR_decoder.decode(EDITOR_cursor_gapBuffer.subarray(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement], EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]));
+            let x = EDITOR_decoder.decode(EDITOR_cursor_gapBuffer.subarray(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement], local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]));
 
             EDITOR_cursor_gapBufferWriteToSpanElement.textContent = 
-                EDITOR_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex/* + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]*/) + EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]) +
+                EDITOR_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex/* + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]*/) + local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]) +
                 x +
-                EDITOR_cursor_gapBufferWriteToSpanElement.textContent.slice((EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex/* + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]*/) + EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]);
+                EDITOR_cursor_gapBufferWriteToSpanElement.textContent.slice((EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex/* + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]*/) + local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]);
 
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
         }
     }
 }

@@ -13,13 +13,11 @@ module.exports = function (babel) {
     
     
     
-    "set_EDITOR_offsetWithinSpan",
     
     
     "set_EDITOR_ONSCROLLvirtualCount",
     
     
-    "set_EDITOR_longestLine_indexLine",
     
     "set_EDITOR_longestLine_length",
     

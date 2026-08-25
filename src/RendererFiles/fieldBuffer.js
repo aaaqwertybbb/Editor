@@ -242,9 +242,7 @@ const INDEXOF_EDITOR_offsetColumn = 21;
 const INDEXOF_EDITOR_totalShift = 22;
 
 const INDEXOF_EDITOR_offsetWithinSpan = 23;
-const set_EDITOR_offsetWithinSpan = (int) => EDITOR_int_fields[23] = int;
 
-const set_EDITOR_longestLine_indexLine = (int) => EDITOR_int_fields[24] = int;
 const INDEXOF_EDITOR_longestLine_indexLine = 24;
 
 const set_EDITOR_longestLine_length = (int) => EDITOR_int_fields[25] = int;

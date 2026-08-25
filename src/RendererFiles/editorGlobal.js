@@ -1274,7 +1274,7 @@ function EDITOR_state_clear() {
     EDITOR_lineEndString = null;
     EDITOR_lineEndPositionList.clear();
     EDITOR_textByteList.clear();
-    set_EDITOR_longestLine_indexLine(0);
+    EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine] = 0;
     set_EDITOR_longestLine_length(0);
     
     // Explicitly inlining 'clearMulticursorState()' because it currently is and I just don't want to make a decision about this right now.
@@ -1285,7 +1285,7 @@ function EDITOR_state_clear() {
     EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = 0;
     EDITOR_offsetWithinSpan_withRespectToThisSpan = null;
-    set_EDITOR_offsetWithinSpan(0);
+    EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] = 0;
     
     EDITOR_trackedSyntaxList.clear();
 }
@@ -1765,7 +1765,7 @@ function EDITOR_finalizeEdit_Enter(cursor, indexLine_editOccurredOn) {
 
     // You need to consider if the longest line gets split
     if (cursor.editIndexLine <= EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine])
-        set_EDITOR_longestLine_indexLine(EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine] + 1);
+        EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine] = EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine] + 1;
 
     EDITOR_lineEndPositionList.insert(cursor.editIndexLine, cursor.editPosition);
 
@@ -4757,7 +4757,7 @@ function EDITOR_onKeyDown(event) {
     EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_totalShift] = 0;
     EDITOR_offsetWithinSpan_withRespectToThisSpan = null;
-    set_EDITOR_offsetWithinSpan(0);
+    EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] = 0;
 
     switch (event.key) {
         case 'ArrowLeft':
@@ -8129,7 +8129,7 @@ function EDITOR_insertDo(cursor, character) {
     */
     
     /*if (cursor.gapBufferWriteToSpanElement !== EDITOR_offsetWithinSpan_withRespectToThisSpan) {
-        set_EDITOR_offsetWithinSpan(0);
+        EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] = 0;
         EDITOR_offsetWithinSpan_withRespectToThisSpan = cursor.gapBufferWriteToSpanElement;
     }
 
@@ -8146,7 +8146,7 @@ function EDITOR_insertDo(cursor, character) {
     cursor.editLength++;
     cursor.indexColumn++;
 
-    set_EDITOR_offsetWithinSpan(EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] + cursor.gapBufferCount);
+    EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] = EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] + cursor.gapBufferCount;
 }
 
 function EDITOR_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine(cursor) {

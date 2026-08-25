@@ -3308,13 +3308,13 @@ function EDITOR_onMouseMove_WRAPIT(event) {
         cursor.indexLine = indexLine;
         cursor.indexColumn = indexColumn;
 
-        if (EDITOR_int_fields[INDEXOF_EDITOR_detailRank] === 3) {
+        if (get_EDITOR_detailRank() === 3) {
             EDITOR_onMouseMoveDetailRankThree(indexLine, indexColumn);
         }
-        else if (EDITOR_int_fields[INDEXOF_EDITOR_detailRank] === 2) {
+        else if (get_EDITOR_detailRank() === 2) {
             EDITOR_onMouseMoveDetailRankTwo(indexLine, indexColumn);
         }
-        else if (EDITOR_int_fields[INDEXOF_EDITOR_detailRank] === 1) {
+        else if (get_EDITOR_detailRank() === 1) {
             EDITOR_onMouseMoveDetailRankOne(indexLine, indexColumn);
         }
 

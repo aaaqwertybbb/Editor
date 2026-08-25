@@ -555,7 +555,7 @@ function EDITOR_render_do_Clear() {
 
     // Force case 3
     prevVli = 0;
-    currVli = get_EDITOR_virtualCount();
+    currVli = EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
     // TODO: Duplicated setting of scrolltop; this case and just baseline everytime vertical scrolls it is done in this method elsewhere
     EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop] = EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
     EDITOR_render_do_CreateViewport();
@@ -604,7 +604,7 @@ function EDITOR_render_do_CreateViewport() {
     EDITOR_baseElement.scrollLeft = 0;
     lastReadNumber_scrollLeft = 0;
 
-    local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount] = get_EDITOR_virtualCount();
+    local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount] = EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
     cached_EDITOR_gutter.innerHTML = '';
     cached_EDITOR_textElement.innerHTML = '';
@@ -837,7 +837,7 @@ function EDITOR_render_do_Scroll(timestamp) {
 
         local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive] += diff;
 
-        // Note: this case has 'vertical = (prevVli + get_EDITOR_virtualCount()) * local_lineHeight;' I believe 'get_EDITOR_virtualCount' === 'local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount]' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
+        // Note: this case has 'vertical = (prevVli + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]) * local_lineHeight;' I believe 'get_EDITOR_virtualCount' === 'local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount]' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
         lowerBound = local_prevVli + local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount];
         upperBound = lowerBound + diff;
 
@@ -1062,8 +1062,8 @@ function EDITOR_render_do_SyntaxHighlighting() {
 
     let bothButNotFull = false;
 
-    if (total_diff >= get_EDITOR_virtualCount()) {
-        total_diff = get_EDITOR_virtualCount();
+    if (total_diff >= EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]) {
+        total_diff = EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
         i_bounded = total_diff;
     }
     else {
@@ -1077,7 +1077,7 @@ function EDITOR_render_do_SyntaxHighlighting() {
             let local_sum_diffPositive_MINUS_ONE = local_sum_diffPositive - 1; // I want to end on the inclusive lower bound dom element.
 
             beltIndexCurrent = (beltIndexCurrent - 1 + ArrayFrom_textElement_children_length) % ArrayFrom_textElement_children_length;
-            indexLine = indexLine + get_EDITOR_virtualCount() - 1;
+            indexLine = indexLine + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1;
             
             for (; i < local_sum_diffPositive_MINUS_ONE; i++) {
                 beltIndexCurrent = (beltIndexCurrent - 1 + ArrayFrom_textElement_children_length) % ArrayFrom_textElement_children_length;
@@ -1219,10 +1219,10 @@ More accurately the ones that seem to not have an importance of position, they d
     //     - [ ] [BABEL] Note: The code generator has deoptimised the styling of C:\Users\hunte\Repos\New folder (3)\Edit\preprocessor\__PREPROCESSEDbundle__.js as it exceeds the max of 500KB.
     //     - ... I don't actually know if they're counting whitespace as part of that 500KB, I'd presume they are so you should stop doing it. At least when it comes to the comments that are indented, and you include the indentation for no reason even though you removed the comment.
 
-//if (diff > 0 && diff < get_EDITOR_virtualCount()) {
+//if (diff > 0 && diff < EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]) {
     //    
     //}
-    //else if (diff < 0 && (diff *= -1) < get_EDITOR_virtualCount()) {
+    //else if (diff < 0 && (diff *= -1) < EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]) {
     //    
     //}
     //else {
@@ -1234,7 +1234,7 @@ More accurately the ones that seem to not have an importance of position, they d
     //}
 
     //You know there's diff many lines to syntax highlight.
-    //You can guess that is diff < get_EDITOR_virtualCount()
+    //You can guess that is diff < EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]
     //that you'll start at 'EDITOR_beltIndexZero'
     //and loop diff amount of times.
 //
@@ -1401,10 +1401,10 @@ function EDITOR_state_setText(text, fileStartsWithBom, textSourceIdentifier, FOR
     // ...I believe this works because when you change the text you guarantee a virtual index line of '0' because the scrollTop gets moved to 0...
     // ...the partial solution is to set it to anything other than '0' so the editor detects that a line of text needs to be drawn...
     // ...but this isn't enough because you want the editor to draw every line, thus you make the difference...
-    // ...in the virtual index line equal to the count of lines being displayed, i.e.: set virtual index line to 'get_EDITOR_virtualCount()'...
+    // ...in the virtual index line equal to the count of lines being displayed, i.e.: set virtual index line to 'EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]'...
     // ...then it sees the new value for virtual index line is 0...
-    // ...the difference between the previous and new value is 'get_EDITOR_virtualCount()'...
-    // ...thus 'get_EDITOR_virtualCount()' amount of lines get redrawn...
+    // ...the difference between the previous and new value is 'EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]'...
+    // ...thus 'EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]' amount of lines get redrawn...
     // ...i.e.: the entire viewport is redrawn with the new file's text.
     local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualIndexLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 }
@@ -1518,14 +1518,14 @@ function EDITOR_drawHorizontalScrollbar() {
 
         set_EDITOR_contentWidth(Math.ceil(EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] * EDITOR_characterWidth));
 
-        if ((get_EDITOR_contentWidth() < (EDITOR_baseElement.clientWidth - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal])) && (EDITOR_baseElement.clientWidth - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] > 0)) {
+        if ((EDITOR_int_fields[INDEXOF_EDITOR_contentWidth] < (EDITOR_baseElement.clientWidth - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal])) && (EDITOR_baseElement.clientWidth - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] > 0)) {
             set_EDITOR_contentWidth(Math.floor(EDITOR_baseElement.clientWidth - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal]));
         }
 
-        let local_cached_EDITOR_horizontal_scrollbar_virtualization_boundary_style_width = get_EDITOR_contentWidth() + 'px';
+        let local_cached_EDITOR_horizontal_scrollbar_virtualization_boundary_style_width = EDITOR_int_fields[INDEXOF_EDITOR_contentWidth] + 'px';
 
         cached_EDITOR_horizontal_scrollbar_virtualization_boundary.style.width = local_cached_EDITOR_horizontal_scrollbar_virtualization_boundary_style_width;
-        cached_EDITOR_virtualization_horizontal.style.width = get_EDITOR_contentWidth() + EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] + 'px';
+        cached_EDITOR_virtualization_horizontal.style.width = EDITOR_int_fields[INDEXOF_EDITOR_contentWidth] + EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] + 'px';
 
         for (let i = 0; i < ArrayFrom_textElement_children_length; i++) {
             ArrayFrom_textElement_children[i].style.width = local_cached_EDITOR_horizontal_scrollbar_virtualization_boundary_style_width;
@@ -1642,8 +1642,8 @@ function EDITOR_finalizeEdit(cursor) {
     // 
     if (EDITOR_cursorList.length === 1) {
         if (indexLine_editOccurredOn >= 0 && indexLine_editOccurredOn < EDITOR_lineEndPositionList.count) {
-            if (cached_EDITOR_gutter.children.length === get_EDITOR_virtualCount() &&
-                cached_EDITOR_textElement.children.length === get_EDITOR_virtualCount()) {
+            if (cached_EDITOR_gutter.children.length === EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] &&
+                cached_EDITOR_textElement.children.length === EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]) {
 
                     // TODO: The 'awkward explicit inlining' for this case isn't seemingly working...
                     // ...I need to type 'function' then more characters until I hit 32 and force a finalization of the edit due to the length being too long.
@@ -1659,7 +1659,7 @@ function EDITOR_finalizeEdit(cursor) {
                     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
                     let beltIndexLine = (indexLine_editOccurredOn + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
                     if (beltIndexLine >= ArrayFrom_textElement_children_length || beltIndexLine < 0) beltIndexLine = -1;
-                    else beltIndexLine = (beltIndexLine + EDITOR_beltIndexZero) % get_EDITOR_virtualCount();
+                    else beltIndexLine = (beltIndexLine + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
                     if (beltIndexLine >= 0) {
                         let gutterLineElement = cached_EDITOR_gutter.children[beltIndexLine];
@@ -2629,7 +2629,7 @@ function walkLineUntilIndexColumn(cursor) {
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
     w_beltIndexLine = (cursor.indexLine + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
     if (w_beltIndexLine >= ArrayFrom_textElement_children_length || w_beltIndexLine < 0) w_beltIndexLine = -1;
-    else w_beltIndexLine = (w_beltIndexLine + EDITOR_beltIndexZero) % get_EDITOR_virtualCount();
+    else w_beltIndexLine = (w_beltIndexLine + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
     
     if (w_beltIndexLine < 0) {
         w_indexColumn_Goal = -1;
@@ -2973,12 +2973,12 @@ function EDITOR_clearSelectionStyle(cursor) {
 function EDITOR_createStyleForSelection(cursor) {
     if (cursor.DRAWN_selectionAnchor !== cursor.selectionAnchor ||
         cursor.DRAWN_selectionEnd !== cursor.selectionEnd ||
-        cursor.DRAWN_selection_virtualCount !== get_EDITOR_virtualCount() ||
+        cursor.DRAWN_selection_virtualCount !== EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] ||
         cursor.DRAWN_selection_virtualIndexLine !== get_EDITOR_virtualIndexLine()) {
 
         cursor.DRAWN_selectionAnchor = cursor.selectionAnchor;
         cursor.DRAWN_selectionEnd = cursor.selectionEnd;
-        cursor.DRAWN_selection_virtualCount = get_EDITOR_virtualCount();
+        cursor.DRAWN_selection_virtualCount = EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
         cursor.DRAWN_selection_virtualIndexLine = get_EDITOR_virtualIndexLine();
 
         let shouldExistSelectionDiv;
@@ -3030,7 +3030,7 @@ function EDITOR_createStyleForSelection(cursor) {
             startLine = get_EDITOR_virtualIndexLine();
             startColumn = 0;
         }
-        let lastIndexLineBeingShown = get_EDITOR_virtualIndexLine() + get_EDITOR_virtualCount() - 1;
+        let lastIndexLineBeingShown = get_EDITOR_virtualIndexLine() + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1;
         if (INCLUSIVEendLine > lastIndexLineBeingShown) {
             INCLUSIVEendLine = lastIndexLineBeingShown;
             INCLUSIVEendColumn = EDITOR_getLastValidIndexColumn(INCLUSIVEendLine);
@@ -5104,8 +5104,8 @@ function EDITOR_onKeyDown_PageDown(event) {
     event.stopPropagation();
 
     if (event.ctrlKey) {
-        EDITOR_primaryCursor.indexLine = get_EDITOR_virtualIndexLine() + get_EDITOR_virtualCount();
-        if (get_EDITOR_virtualCount() > 1) {
+        EDITOR_primaryCursor.indexLine = get_EDITOR_virtualIndexLine() + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+        if (EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] > 1) {
             // this seems to more commonly have the cursor staying within the viewport rather than overlapping outside.
             EDITOR_primaryCursor.indexLine--;
         }
@@ -5129,7 +5129,7 @@ function EDITOR_onKeyDown_PageUp(event) {
 
     if (event.ctrlKey) {        
         EDITOR_primaryCursor.indexLine = get_EDITOR_virtualIndexLine();
-        if (get_EDITOR_virtualCount() > 1) {
+        if (EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] > 1) {
             // this seems to more commonly have the cursor staying within the viewport rather than overlapping outside.
             EDITOR_primaryCursor.indexLine++;
         }
@@ -5749,7 +5749,7 @@ function EDITOR_render_do_IndentMore() {
                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
                 let beltIndexLine = (lineI + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
                 if (beltIndexLine >= ArrayFrom_textElement_children_length || beltIndexLine < 0) beltIndexLine = -1;
-                else beltIndexLine = (beltIndexLine + EDITOR_beltIndexZero) % get_EDITOR_virtualCount();
+                else beltIndexLine = (beltIndexLine + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
                 if (beltIndexLine >= 0) {
                         let div = cached_EDITOR_textElement.children[beltIndexLine];
@@ -5983,7 +5983,7 @@ function EDITOR_render_do_IndentLess() {
                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
                 let beltIndexLine = (lineI + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
                 if (beltIndexLine >= ArrayFrom_textElement_children_length || beltIndexLine < 0) beltIndexLine = -1;
-                else beltIndexLine = (beltIndexLine + EDITOR_beltIndexZero) % get_EDITOR_virtualCount();
+                else beltIndexLine = (beltIndexLine + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
                 if (beltIndexLine >= 0) {
                         let div = cached_EDITOR_textElement.children[beltIndexLine];
@@ -6261,7 +6261,7 @@ function EDITOR_render_do_DuplicateOrPaste() {
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
             let beltIndexLine_current = ((cursor.indexLine) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
             if (beltIndexLine_current >= ArrayFrom_textElement_children_length || beltIndexLine_current < 0) beltIndexLine_current = -1;
-            else beltIndexLine_current = (beltIndexLine_current + EDITOR_beltIndexZero) % get_EDITOR_virtualCount();
+            else beltIndexLine_current = (beltIndexLine_current + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
             // TODO: This is an awkward explicit inlining of 'EDITOR_indexLineTo_beltIndexLine'...
             // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
@@ -6269,7 +6269,7 @@ function EDITOR_render_do_DuplicateOrPaste() {
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
             let beltIndexLine_first = ((get_EDITOR_virtualIndexLine()) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
             if (beltIndexLine_first >= ArrayFrom_textElement_children_length || beltIndexLine_first < 0) beltIndexLine_first = -1;
-            else beltIndexLine_first = (beltIndexLine_first + EDITOR_beltIndexZero) % get_EDITOR_virtualCount();
+            else beltIndexLine_first = (beltIndexLine_first + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
             // TODO: Use PREVIOUS here from 'beltIndexLine_first'
 
@@ -6277,9 +6277,9 @@ function EDITOR_render_do_DuplicateOrPaste() {
             // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-            let beltIndexLine_last = ((get_EDITOR_virtualIndexLine() + get_EDITOR_virtualCount() - 1) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
+            let beltIndexLine_last = ((get_EDITOR_virtualIndexLine() + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
             if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
-            else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % get_EDITOR_virtualCount();
+            else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
 
             let last_valid_indexColumn_currentLine = EDITOR_getLastValidIndexColumn(cursor.indexLine);
@@ -6547,7 +6547,7 @@ function EDITOR_paste(cursor, content) {
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
     let beltIndexLine_current = ((cursor.indexLine) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
     if (beltIndexLine_current >= ArrayFrom_textElement_children_length || beltIndexLine_current < 0) beltIndexLine_current = -1;
-    else beltIndexLine_current = (beltIndexLine_current + EDITOR_beltIndexZero) % get_EDITOR_virtualCount();
+    else beltIndexLine_current = (beltIndexLine_current + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
     // TODO: This is an awkward explicit inlining of 'EDITOR_indexLineTo_beltIndexLine'...
     // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
@@ -6555,7 +6555,7 @@ function EDITOR_paste(cursor, content) {
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
     let beltIndexLine_first = ((get_EDITOR_virtualIndexLine()) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
     if (beltIndexLine_first >= ArrayFrom_textElement_children_length || beltIndexLine_first < 0) beltIndexLine_first = -1;
-    else beltIndexLine_first = (beltIndexLine_first + EDITOR_beltIndexZero) % get_EDITOR_virtualCount();
+    else beltIndexLine_first = (beltIndexLine_first + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
     // TODO: Use PREVIOUS here from 'beltIndexLine_first'
     
@@ -6563,9 +6563,9 @@ function EDITOR_paste(cursor, content) {
     // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-    let beltIndexLine_last = ((get_EDITOR_virtualIndexLine() + get_EDITOR_virtualCount() - 1) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
+    let beltIndexLine_last = ((get_EDITOR_virtualIndexLine() + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
     if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
-    else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % get_EDITOR_virtualCount();
+    else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
     let last_valid_indexColumn_currentLine = EDITOR_getLastValidIndexColumn(cursor.indexLine);
 
@@ -6832,7 +6832,7 @@ function EDITOR_lineWasInsertedValidateGutter() {
     //     - [ ] 'break' when you start moving '~' lines to '~' lines.
     //     - [ ] When you move from 'existing lines of text' to '~' lines, you need to set the line number of that '~' line.
     // 
-    //if (cached_EDITOR_gutter.children.length > 0 && cached_EDITOR_gutter.children.length === get_EDITOR_virtualCount()) {
+    //if (cached_EDITOR_gutter.children.length > 0 && cached_EDITOR_gutter.children.length === EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]) {
     //    if (cached_EDITOR_gutter.children[cached_EDITOR_gutter.children.length - 1].textContent === '~') {
     //        let successFoundTildeAtIndex = cached_EDITOR_gutter.children.length - 1;
     //        for (let i = cached_EDITOR_gutter.children.length - 2; i >= 0; i--) {
@@ -6918,7 +6918,7 @@ function EDITOR_render_do_EnterKey() {
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
             let beltIndexLine_firstTilde = ((EDITOR_lineEndPositionList.count) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
             if (beltIndexLine_firstTilde >= ArrayFrom_textElement_children_length || beltIndexLine_firstTilde < 0) beltIndexLine_firstTilde = -1;
-            else beltIndexLine_firstTilde = (beltIndexLine_firstTilde + EDITOR_beltIndexZero) % get_EDITOR_virtualCount();
+            else beltIndexLine_firstTilde = (beltIndexLine_firstTilde + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
             if (beltIndexLine_firstTilde >= 0) {
                 cached_EDITOR_gutter.children[beltIndexLine_firstTilde].textContent = EDITOR_lineEndPositionList.count + 1;
@@ -6932,13 +6932,13 @@ function EDITOR_render_do_EnterKey() {
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
             let beltIndexLine_current = ((cursor.editIndexLine) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
             if (beltIndexLine_current >= ArrayFrom_textElement_children_length || beltIndexLine_current < 0) beltIndexLine_current = -1;
-            else beltIndexLine_current = (beltIndexLine_current + EDITOR_beltIndexZero) % get_EDITOR_virtualCount();
+            else beltIndexLine_current = (beltIndexLine_current + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
             if (beltIndexLine_current < 0)
                 shouldRenderEntireViewport = true;
 
             // There are some cases that I don't feel like thinking about at the moment, this if statement singles them out.
-            if (get_EDITOR_virtualCount() <= 1 || cached_EDITOR_textElement.children.length !== get_EDITOR_virtualCount())
+            if (EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] <= 1 || cached_EDITOR_textElement.children.length !== EDITOR_int_fields[INDEXOF_EDITOR_virtualCount])
                 shouldRenderEntireViewport = true;
 
             // TODO: This is an awkward explicit inlining of 'EDITOR_indexLineTo_beltIndexLine'...
@@ -6947,7 +6947,7 @@ function EDITOR_render_do_EnterKey() {
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
             let beltIndexLine_first = ((get_EDITOR_virtualIndexLine()) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
             if (beltIndexLine_first >= ArrayFrom_textElement_children_length || beltIndexLine_first < 0) beltIndexLine_first = -1;
-            else beltIndexLine_first = (beltIndexLine_first + EDITOR_beltIndexZero) % get_EDITOR_virtualCount();
+            else beltIndexLine_first = (beltIndexLine_first + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
             // TODO: Use PREVIOUS here from 'beltIndexLine_first'
 
@@ -6955,9 +6955,9 @@ function EDITOR_render_do_EnterKey() {
             // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-            let beltIndexLine_last = ((get_EDITOR_virtualIndexLine() + get_EDITOR_virtualCount() - 1) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
+            let beltIndexLine_last = ((get_EDITOR_virtualIndexLine() + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
             if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
-            else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % get_EDITOR_virtualCount();
+            else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
             // TODO: reminder for when virtualization padding is improved, this function might need to be looked at.
             // TODO: Track the enter keystroke the same as any other insertion edit and have it pending until it needs to be finalized.
@@ -7187,7 +7187,7 @@ function EDITOR_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_l
 
     // TODO: Does 'coalesce assignment' exist, and is it equivalent?
     if (!local_virtualIndexLine) local_virtualIndexLine = get_EDITOR_virtualIndexLine();
-    if (!local_virtualCount) local_virtualCount = get_EDITOR_virtualCount();
+    if (!local_virtualCount) local_virtualCount = EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
     // TODO: if smallestBeltIndexLineToReceive < 0 throw an error?
 
@@ -7224,9 +7224,9 @@ function EDITOR_render_do_Resize(timestamp) {
 
     EDITOR_measureBaseElement();
 
-    let remember_virtualCount = get_EDITOR_virtualCount();
+    let remember_virtualCount = EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
     update_virtualCount();
-    if (get_EDITOR_virtualCount() !== remember_virtualCount) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] !== remember_virtualCount) {
         // why 'update_verticalVirtualizationBoundary' here???
         update_verticalVirtualizationBoundary(EDITOR_lineEndPositionList.count + 1);
 
@@ -7525,7 +7525,7 @@ function EDITOR_render_do_RemoveSelection() {
             }
 
             let finalLineEndPosition = EDITOR_readLineEndPositionList(cursor.indexLine + linesRemovedCount);
-            let largestDrawnIndexLine = get_EDITOR_virtualIndexLine() + get_EDITOR_virtualCount() - 1;
+            let largestDrawnIndexLine = get_EDITOR_virtualIndexLine() + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1;
             let visibleLinesRemovedCount = 0;
 
             // 5 stages
@@ -7668,15 +7668,15 @@ function EDITOR_render_do_RemoveSelection() {
                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
                 let beltIndexLine_current = ((smallLineAndColumnIndices.indexLine + 1) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
                 if (beltIndexLine_current >= ArrayFrom_textElement_children_length || beltIndexLine_current < 0) beltIndexLine_current = -1;
-                else beltIndexLine_current = (beltIndexLine_current + EDITOR_beltIndexZero) % get_EDITOR_virtualCount();
+                else beltIndexLine_current = (beltIndexLine_current + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
                 // TODO: This is an awkward explicit inlining of 'EDITOR_indexLineTo_beltIndexLine'...
                 // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
                 // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-                let beltIndexLine_last = ((get_EDITOR_virtualIndexLine() + get_EDITOR_virtualCount() - 1) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
+                let beltIndexLine_last = ((get_EDITOR_virtualIndexLine() + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
                 if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
-                else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % get_EDITOR_virtualCount();
+                else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
                 // TODO: This will be wrong because you'd need to explicitly redraw the large selection line index.
                 EDITOR_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last, beltIndexLine_current, linesRemovedCount);
@@ -7717,7 +7717,7 @@ comments from EDITOR_removeSelection(cursor) that may or may not be useful idk I
         // Each case might be the same solution I don't know I just need time to think I'm completely exhausted but ima figure it out by just typing everything out and overtime it will happen
         // 
 
-        let beltIndexLine_last = EDITOR_indexLineTo_beltIndexLine(get_EDITOR_virtualIndexLine() + get_EDITOR_virtualCount() - 1);
+        let beltIndexLine_last = EDITOR_indexLineTo_beltIndexLine(get_EDITOR_virtualIndexLine() + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1);
 
         if (cached_EDITOR_textElement.children.length === cached_EDITOR_gutter.children.length) {
             for (let i = 0; i < visibleLinesRemovedCount; i++) {
@@ -7797,7 +7797,7 @@ function EDITOR_render_do_Delete() {
                                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
                                 let beltIndexLine_next = ((cursor.indexLine + 1) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
                                 if (beltIndexLine_next >= ArrayFrom_textElement_children_length || beltIndexLine_next < 0) beltIndexLine_next = -1;
-                                else beltIndexLine_next = (beltIndexLine_next + EDITOR_beltIndexZero) % get_EDITOR_virtualCount();
+                                else beltIndexLine_next = (beltIndexLine_next + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
                                 if (beltIndexLine_next >= 0) {
                                     let keepingDiv = w_div;
@@ -7822,9 +7822,9 @@ function EDITOR_render_do_Delete() {
                                     // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
                                     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                                     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-                                    let beltIndexLine_last = ((get_EDITOR_virtualIndexLine() + get_EDITOR_virtualCount() - 1) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
+                                    let beltIndexLine_last = ((get_EDITOR_virtualIndexLine() + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
                                     if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
-                                    else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % get_EDITOR_virtualCount();
+                                    else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
                                     EDITOR_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last, beltIndexLine_next, 1);
                                 }
@@ -7991,7 +7991,7 @@ function EDITOR_render_do_Backspace() {
                                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
                                 let beltIndexLine_next = ((cursor.indexLine + 1) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
                                 if (beltIndexLine_next >= ArrayFrom_textElement_children_length || beltIndexLine_next < 0) beltIndexLine_next = -1;
-                                else beltIndexLine_next = (beltIndexLine_next + EDITOR_beltIndexZero) % get_EDITOR_virtualCount();
+                                else beltIndexLine_next = (beltIndexLine_next + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
                                 if (beltIndexLine_next >= 0) {
                                     let keepingDiv = w_div;
@@ -8016,9 +8016,9 @@ function EDITOR_render_do_Backspace() {
                                     // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
                                     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                                     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-                                    let beltIndexLine_last = ((get_EDITOR_virtualIndexLine() + get_EDITOR_virtualCount() - 1) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
+                                    let beltIndexLine_last = ((get_EDITOR_virtualIndexLine() + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1) + get_EDITOR_offsetLine()) - get_EDITOR_virtualIndexLine();
                                     if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
-                                    else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % get_EDITOR_virtualCount();
+                                    else beltIndexLine_last = (beltIndexLine_last + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
                                     EDITOR_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last, beltIndexLine_next, 1);
                                 }

@@ -5313,6 +5313,8 @@ function EDITOR_btnNext_onclick() {
 
 function EDITOR_render_do_IndentMore() {
 
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
     // When you're done with IndentLess batch editing correctly.
     // You still need to come back to the render for
     // - [ ] IndentMore and
@@ -5320,8 +5322,8 @@ function EDITOR_render_do_IndentMore() {
     //
     // and ensure that they render properly. This currently if two edits get done in a single "rAF" the second is cancelled for redundancy yet each one only handles 1 editDisplacement so you missed 1 displacement.
 
-    let startingIndex = EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex];
-    let SMALL_lineAndColumnIndices_indexLine = EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine];
+    let startingIndex = local_EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex];
+    let SMALL_lineAndColumnIndices_indexLine = local_EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine];
 
     // TODO: Consider having this string available rather than making it everytime this function is invoked.
     let EDITOR_on_tab_string = '';
@@ -5329,11 +5331,11 @@ function EDITOR_render_do_IndentMore() {
         EDITOR_on_tab_string += String.fromCharCode(EDITOR_on_tab_bytes[i]);
     }
 
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_IndentMore) {
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_IndentMore) {
         return;
     }
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]++;
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]++;
         for (var lineI = startingIndex; lineI >= SMALL_lineAndColumnIndices_indexLine; lineI--) {
             let linePos = EDITOR_getLineBoundaryPositions(lineI);
 
@@ -5344,9 +5346,9 @@ function EDITOR_render_do_IndentMore() {
             // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-            let beltIndexLine = (lineI + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+            let beltIndexLine = (lineI + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
             if (beltIndexLine >= ArrayFrom_textElement_children_length || beltIndexLine < 0) beltIndexLine = -1;
-            else beltIndexLine = (beltIndexLine + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+            else beltIndexLine = (beltIndexLine + EDITOR_beltIndexZero) % local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
             if (beltIndexLine >= 0) {
                     let div = cached_EDITOR_textElement.children[beltIndexLine];
@@ -5475,16 +5477,18 @@ function EDITOR_indentMore() {
 }
 
 function EDITOR_render_do_IndentLess() {
+    
+    let local_EDITOR_int_fields = EDITOR_int_fields;
 
-    let startingIndex = EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex] = startingIndex;
-    let SMALL_lineAndColumnIndices_indexLine = EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine];
+    let startingIndex = local_EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex] = startingIndex;
+    let SMALL_lineAndColumnIndices_indexLine = local_EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine];
 
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_IndentLess) {
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] !== ENUM_EditKind_IndentLess) {
         return;
     }
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] < local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
         
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]++;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement]++;
 
         /////////////////////// P_1
         let textSelectionDiv;
@@ -5572,9 +5576,9 @@ function EDITOR_render_do_IndentLess() {
             // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-            let beltIndexLine = (lineI + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
+            let beltIndexLine = (lineI + local_EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) - local_EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine];
             if (beltIndexLine >= ArrayFrom_textElement_children_length || beltIndexLine < 0) beltIndexLine = -1;
-            else beltIndexLine = (beltIndexLine + EDITOR_beltIndexZero) % EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+            else beltIndexLine = (beltIndexLine + EDITOR_beltIndexZero) % local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
             if (beltIndexLine >= 0) {
                     let div = cached_EDITOR_textElement.children[beltIndexLine];
@@ -5584,8 +5588,8 @@ function EDITOR_render_do_IndentLess() {
         }
 
         /////////////////////// P_3
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionEnd] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionAnchor] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_DRAWN_selectionEnd] = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
         /////////////////////// P_3
     }
 }
@@ -5671,14 +5675,17 @@ async function EDITOR_copySelection() {
  * Invoking 'EDITOR_finalizeAllCursors()' is a good idea prior to invoking this. Long term perhaps this won't be so important.
  */
 async function EDITOR_duplicateSelection() {
+
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
 	if (!EDITOR_cursor_hasSelection()) {
 		// TODO: This code has a bug and doesn't work with multicursor... EDITOR_onMouseDownDetailRankThree needs to accept a cursor rather than acting on EDITOR_primaryCursor...
         // ...these days the todo is somewhat incorrect, it takes cursor now, but you'd need to check whether this causes the selection of two cursors to overlap.
-    	EDITOR_onMouseDownDetailRankThree(0, false, EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine], EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]);
+    	EDITOR_onMouseDownDetailRankThree(0, false, local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine], local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]);
 	}
 
-	let selectionAnchor = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
-    let selectionEnd = EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
+	let selectionAnchor = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor];
+    let selectionEnd = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd];
     let small;
     let large;
     if (selectionAnchor < selectionEnd) {
@@ -5692,20 +5699,20 @@ async function EDITOR_duplicateSelection() {
 
     let length = large - small;
 
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = large;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = large;
     let large_lineAndColumnIndices = EDITOR_getLineAndColumnIndices(large);
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = large_lineAndColumnIndices.indexLine;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = large_lineAndColumnIndices.indexColumn;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] = length;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = large_lineAndColumnIndices.indexLine;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = large_lineAndColumnIndices.indexColumn;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] = length;
 
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = large_lineAndColumnIndices.indexLine;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = large_lineAndColumnIndices.indexColumn;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = large_lineAndColumnIndices.indexLine;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = large_lineAndColumnIndices.indexColumn;
 
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_small] = small;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_length] = length;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_small] = small;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_EDITOR_duplicate_length] = length;
 
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = large;
-    EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = large + length;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = large;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = large + length;
 
     // TODO: The previous render logic was actually moving the cursor as well. Just something to keep in mind, you might see a bug related to this.
     EDITOR_render_request(ENUM_RenderKind_DuplicateOrPaste);

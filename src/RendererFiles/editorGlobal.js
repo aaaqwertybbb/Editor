@@ -1733,7 +1733,7 @@ function EDITOR_finalizeEdit_InsertLtr(cursor, indexLine_editOccurredOn) {
     });
     // -------------------------
 
-    if (indexLine_editOccurredOn === get_EDITOR_longestLine_indexLine()) {
+    if (indexLine_editOccurredOn === EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine]) {
         set_EDITOR_longestLine_length(EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] + cursor.editLength);
     }
 
@@ -1764,8 +1764,8 @@ function EDITOR_finalizeEdit_Enter(cursor, indexLine_editOccurredOn) {
     }
 
     // You need to consider if the longest line gets split
-    if (cursor.editIndexLine <= get_EDITOR_longestLine_indexLine())
-        set_EDITOR_longestLine_indexLine(get_EDITOR_longestLine_indexLine() + 1);
+    if (cursor.editIndexLine <= EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine])
+        set_EDITOR_longestLine_indexLine(EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine] + 1);
 
     EDITOR_lineEndPositionList.insert(cursor.editIndexLine, cursor.editPosition);
 
@@ -1813,9 +1813,9 @@ function EDITOR_finalizeEdit_Tab(cursor, indexLine_editOccurredOn) {
  */
 function EDITOR_finalizeEdit_IndentMore(cursor, indexLine_editOccurredOn) {
 
-    let startingIndex = get_EDITOR_indent_startingIndex();
+    let startingIndex = EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex];
     set_EDITOR_indent_startingIndex(0);
-    let SMALL_lineAndColumnIndices_indexLine = get_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine();
+    let SMALL_lineAndColumnIndices_indexLine = EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine];
     set_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine(0);
 
     let ORIGINAL_incrementBy = (startingIndex + 1 - SMALL_lineAndColumnIndices_indexLine) * 4;
@@ -1932,9 +1932,9 @@ function EDITOR_finalizeEdit_IndentLess(cursor, indexLine_editOccurredOn) {
     //let decrementBy = get_EDITOR_indent_ORIGINAL_indentBy();
     //set_EDITOR_indent_ORIGINAL_indentBy(0);
 
-    let startingIndex = get_EDITOR_indent_startingIndex();
+    let startingIndex = EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex];
     set_EDITOR_indent_startingIndex(0);
-    let SMALL_lineAndColumnIndices_indexLine = get_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine();
+    let SMALL_lineAndColumnIndices_indexLine = EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine];
     set_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine(0);
 
     // !!!!!! watch out for the big breaks when hitting a tab presuming that_four is 4
@@ -2383,7 +2383,7 @@ function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(cursor,
     });
     // -------------------------
 
-    if (indexLine_editOccurredOn === get_EDITOR_longestLine_indexLine()) {
+    if (indexLine_editOccurredOn === EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine]) {
         set_EDITOR_longestLine_length(EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] - cursor.editLength);
     }
 
@@ -2842,7 +2842,7 @@ function EDITOR_drawCursor(cursor, NOTscrollCursorIntoView) {
         
         text += ' | (' + cursor.editLength + ')';
 
-        text += ' | (' + get_EDITOR_longestLine_indexLine() + ', ' + EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] + ')';
+        text += ' | (' + EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine] + ', ' + EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] + ')';
 
         EDITOR_debug.replaceChildren(text);
 
@@ -4578,8 +4578,8 @@ function EDITOR_editEvent_checkFor_NOTcanBatch_IndentMore() {
     // TODO: '..._EDITOR_indent_ORIGINAL_indentBy()' is no longer in use
 
     // # Determine the total count of text that will be inserted, prior to actually beginning the edit.
-    if (get_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine() === SMALL_lineAndColumnIndices.indexLine &&
-        get_EDITOR_indent_startingIndex() === startingIndex) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] === SMALL_lineAndColumnIndices.indexLine &&
+        EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex] === startingIndex) {
 
             return false;
     }
@@ -4632,8 +4632,8 @@ function EDITOR_editEvent_checkFor_NOTcanBatch_IndentLess() {
     }
 
     // # Determine the total count of text that will be inserted, prior to actually beginning the edit.
-    if (get_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine() === SMALL_lineAndColumnIndices.indexLine &&
-        get_EDITOR_indent_startingIndex() === startingIndex) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] === SMALL_lineAndColumnIndices.indexLine &&
+        EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex] === startingIndex) {
 
             return false;
     }

@@ -9314,4 +9314,9 @@ to some degree
 
 "this one is a good boy he takes his lithium"
 
+The main lyric from brokencyde monster inside me that I like is:
+"but I'm having trouble hating cuz I had it while thinking how mother fucking sad I felt
+ I woulda gave it up if I didn't have a doubt ... cause I'm getting tired of all the lies
+ and trust this life's enough for me and I despise you much I'm blind ..."
+
 */

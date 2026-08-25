@@ -9229,4 +9229,9 @@ If someone is holding a bucket full of cleaning chemicals and they walk through 
 Do those cleaning chemicals coat the air and get onto my food if I walk by to my room
 with a plate of food in my hands?
 
+He also went into the kitchen while my mom was cooking food with and he was carrying the cleaning chemicals.
+Is the cleaning chemicals in the food?
+
+I ate a leftovers.
+
 */

@@ -6,13 +6,10 @@ module.exports = function (babel) {
   // List all the function names you want to inline
   const TARGET_FUNCTIONS = [
     
-    
+  ];
 
-    // TODO: this is in here twice (it appears again as another entry later)... why?
-    "set_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber",
-
-
-
+  // List all the variable names you want to inline
+  const TARGET_VARIABLES = [
 
     "get_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber",
     "set_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber",
@@ -20,7 +17,6 @@ module.exports = function (babel) {
     "get_EDITOR_drawn_count_of_digits_longest_line_number",
     "set_EDITOR_drawn_count_of_digits_longest_line_number",
 
-    "get_EDITOR_lineHeight",
     "set_EDITOR_lineHeight",
 
     "get_EDITOR_detailRank",
@@ -71,7 +67,6 @@ module.exports = function (babel) {
     "get_EDITOR_ONSCROLLvirtualIndexLine",
     "set_EDITOR_ONSCROLLvirtualIndexLine",
 
-    "get_EDITOR_ONSCROLLvirtualCount",
     "set_EDITOR_ONSCROLLvirtualCount",
 
     "get_EDITOR_ONSCROLLscrollTop",
@@ -131,18 +126,9 @@ module.exports = function (babel) {
     "get_EDITOR_scrollEndDeadline",
     "set_EDITOR_scrollEndDeadline",
 
-    "get_EDITOR_sum_diffPositive",
-    "set_EDITOR_sum_diffPositive",
 
-    "get_EDITOR_sum_diffNegative",
-    "set_EDITOR_sum_diffNegative",
 
-    "get_lastReadNumber_scrollTop",
-    "set_lastReadNumber_scrollTop",
-  ];
 
-  // List all the variable names you want to inline
-  const TARGET_VARIABLES = [
 
     "INDEXOF_EDITOR_lineHeight",
     "INDEXOF_EDITOR_virtualIndexLine",

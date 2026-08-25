@@ -176,10 +176,6 @@ const set_EDITOR_virtualIndexLine = (int) => EDITOR_int_fields[1] = int;
 const INDEXOF_EDITOR_virtualIndexLine = 1;
 
 /** The value of 'EDITOR_baseElement.scrollTop' at the most recent scroll event that occurred */
-const get_lastReadNumber_scrollTop = () => EDITOR_int_fields[2];
-/** The value of 'EDITOR_baseElement.scrollTop' at the most recent scroll event that occurred */
-const set_lastReadNumber_scrollTop = (int) => EDITOR_int_fields[2] = int;
-/** The value of 'EDITOR_baseElement.scrollTop' at the most recent scroll event that occurred */
 const INDEXOF_lastReadNumber_scrollTop = 2;
 
 const get_EDITOR_ONSCROLLvirtualIndexLine = () => EDITOR_int_fields[3];
@@ -207,17 +203,11 @@ const get_EDITOR_virtualCount = () => EDITOR_int_fields[6];
 const set_EDITOR_virtualCount = (int) => EDITOR_int_fields[6] = int;
 const INDEXOF_EDITOR_virtualCount = 6;
 
-const get_EDITOR_sum_diffPositive = () => EDITOR_int_fields[7];
-const set_EDITOR_sum_diffPositive = (int) => EDITOR_int_fields[7] = int;
 const INDEXOF_EDITOR_sum_diffPositive = 7;
 
-const get_EDITOR_ONSCROLLvirtualCount = () => EDITOR_int_fields[8];
-const set_EDITOR_ONSCROLLvirtualCount = (int) => EDITOR_int_fields[8] = int;
 const INDEXOF_EDITOR_ONSCROLLvirtualCount = 8;
-set_EDITOR_ONSCROLLvirtualCount(0);
+EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount] = 0;
 
-const get_EDITOR_sum_diffNegative = () => EDITOR_int_fields[9];
-const set_EDITOR_sum_diffNegative = (int) => EDITOR_int_fields[9] = int;
 const INDEXOF_EDITOR_sum_diffNegative = 9;
 
 const get_EDITOR_findOverlay_isBeingShownDueToMultiCursorMatching_originMatchNumber = () => EDITOR_int_fields[10];

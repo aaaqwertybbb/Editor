@@ -557,7 +557,7 @@ function EDITOR_render_do_Clear() {
     prevVli = 0;
     currVli = get_EDITOR_virtualCount();
     // TODO: Duplicated setting of scrolltop; this case and just baseline everytime vertical scrolls it is done in this method elsewhere
-    set_EDITOR_ONSCROLLscrollTop(get_lastReadNumber_scrollTop());
+    EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLscrollTop] = EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
     EDITOR_render_do_CreateViewport();
 }
 
@@ -706,7 +706,7 @@ function EDITOR_onScroll_WRAPIT() {
     // thus it is thought you might as well touch scrollLeft too here, if you're going down this path.
     //
     lastReadNumber_scrollLeft = EDITOR_baseElement.scrollLeft;
-    set_lastReadNumber_scrollTop(EDITOR_baseElement.scrollTop);
+    EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop] = EDITOR_baseElement.scrollTop;
 
     EDITOR_render_request(ENUM_RenderKind_Scroll);
 }
@@ -837,7 +837,7 @@ function EDITOR_render_do_Scroll(timestamp) {
 
         local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive] += diff;
 
-        // Note: this case has 'vertical = (prevVli + get_EDITOR_virtualCount()) * local_lineHeight;' I believe 'get_EDITOR_virtualCount' === 'get_EDITOR_ONSCROLLvirtualCount' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
+        // Note: this case has 'vertical = (prevVli + get_EDITOR_virtualCount()) * local_lineHeight;' I believe 'get_EDITOR_virtualCount' === 'local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount]' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
         lowerBound = local_prevVli + local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount];
         upperBound = lowerBound + diff;
 
@@ -1032,8 +1032,8 @@ but there is 0 reasoning, understanding, or measurements behind my decision.
 */
 
 function EDITOR_render_do_SyntaxHighlighting() {
-    let local_sum_diffNegative = get_EDITOR_sum_diffNegative();
-    let local_sum_diffPositive = get_EDITOR_sum_diffPositive();
+    let local_sum_diffNegative = EDITOR_int_fields[INDEXOF_EDITOR_sum_diffNegative];
+    let local_sum_diffPositive = EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive];
     let total_diff = local_sum_diffNegative + local_sum_diffPositive;
 
     /*
@@ -1048,8 +1048,8 @@ function EDITOR_render_do_SyntaxHighlighting() {
     I'm gonna rain check that one... I'm thinking about more than 1 instance of an overlap breaking that math
     */
     
-    set_EDITOR_sum_diffNegative(0);
-    set_EDITOR_sum_diffPositive(0);
+    EDITOR_int_fields[INDEXOF_EDITOR_sum_diffNegative] = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive] = 0;
 
     if (total_diff === 0) return;
 
@@ -1144,7 +1144,7 @@ function EDITOR_render_do_SyntaxHighlighting() {
     }
 
     if (bothButNotFull) {
-        set_EDITOR_sum_diffPositive(local_sum_diffPositive);
+        EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive] = local_sum_diffPositive;
         EDITOR_render_do_SyntaxHighlighting();
     }
 }
@@ -1427,7 +1427,7 @@ function EDITOR_setText(text, fileStartsWithBom, textSourceIdentifier, FORMATTED
  */
 function update_verticalVirtualizationBoundary(lineCount) {
     if (!lineCount) lineCount = EDITOR_lineEndPositionList.count;
-    cached_EDITOR_virtualization_vertical.style.height = ((lineCount + get_EDITOR_virtualCount() - 1) * get_EDITOR_lineHeight()) + 'px';
+    cached_EDITOR_virtualization_vertical.style.height = ((lineCount + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] - 1) * EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]) + 'px';
 }
 
 /**
@@ -1439,13 +1439,13 @@ function update_VirtualIndexLine() {
     // thus it is thought you might as well touch scrollLeft too here, if you're going down this path.
     //
     lastReadNumber_scrollLeft = EDITOR_baseElement.scrollLeft;
-    set_lastReadNumber_scrollTop(EDITOR_baseElement.scrollTop);
+    EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop] = EDITOR_baseElement.scrollTop;
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
-    set_EDITOR_virtualIndexLine(Math.floor(get_lastReadNumber_scrollTop() / get_EDITOR_lineHeight()));
+    EDITOR_int_fields[INDEXOF_EDITOR_virtualIndexLine] = Math.floor(EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop] / EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]);
 }
 
 function update_virtualCount() {
-    set_EDITOR_virtualCount(Math.ceil(lastReadNumber_offsetHeight / get_EDITOR_lineHeight()));
+    EDITOR_int_fields[INDEXOF_EDITOR_virtualCount] = Math.ceil(lastReadNumber_offsetHeight / EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]);
 }
 
 /**
@@ -1469,15 +1469,15 @@ function EDITOR_drawGutter_Width() {
         count += 1;
     }
     let digitCountOfLargestLineNumber = positiveNumbersOnly_countDigitsLoop(count);
-    if (get_EDITOR_drawn_count_of_digits_longest_line_number() === digitCountOfLargestLineNumber) return false;
+    if (EDITOR_int_fields[INDEXOF_EDITOR_drawn_count_of_digits_longest_line_number] === digitCountOfLargestLineNumber) return false;
 
-    set_EDITOR_drawn_count_of_digits_longest_line_number(digitCountOfLargestLineNumber);
+    EDITOR_int_fields[INDEXOF_EDITOR_drawn_count_of_digits_longest_line_number] = digitCountOfLargestLineNumber;
 
-    set_EDITOR_gutterWidthStyleValue(Math.ceil(digitCountOfLargestLineNumber * EDITOR_characterWidth));
-    set_EDITOR_gutterWidthTotal(get_EDITOR_gutterWidthStyleValue() + CONST_EDITOR_gutterPaddingLeft + CONST_EDITOR_gutterPaddingRight);
-    gutterWidthTotal_withPxUnits = `${get_EDITOR_gutterWidthTotal()}px`;
+    EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthStyleValue] = Math.ceil(digitCountOfLargestLineNumber * EDITOR_characterWidth);
+    EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] = EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthStyleValue] + CONST_EDITOR_gutterPaddingLeft + CONST_EDITOR_gutterPaddingRight;
+    gutterWidthTotal_withPxUnits = `${EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal]}px`;
 
-    let gutterWidth = get_EDITOR_gutterWidthStyleValue() + 'px';
+    let gutterWidth = EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthStyleValue] + 'px';
     cached_EDITOR_gutter.style.width = gutterWidth;
     EDITOR_gutterBackgroundColor.style.width = gutterWidth;
 
@@ -1502,21 +1502,21 @@ function EDITOR_drawGutter_Width() {
  * then at that point you redraw this.
  */
 function EDITOR_drawHorizontalScrollbar() {
-    if (DRAWN_NUMBER_cached_EDITOR_horizontal_scrollbar_style_left !== get_EDITOR_gutterWidthTotal()) {
+    if (DRAWN_NUMBER_cached_EDITOR_horizontal_scrollbar_style_left !== EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal]) {
         cached_EDITOR_horizontal_scrollbar.style.left = gutterWidthTotal_withPxUnits;
-        DRAWN_NUMBER_cached_EDITOR_horizontal_scrollbar_style_left = get_EDITOR_gutterWidthTotal();
+        DRAWN_NUMBER_cached_EDITOR_horizontal_scrollbar_style_left = EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal];
     }
 
-    if (EDITOR_horizontal_scrollbar_widthValue !== (EDITOR_baseElement.clientWidth - get_EDITOR_gutterWidthTotal())) {
-        EDITOR_horizontal_scrollbar_widthValue = EDITOR_baseElement.clientWidth - get_EDITOR_gutterWidthTotal();
+    if (EDITOR_horizontal_scrollbar_widthValue !== (EDITOR_baseElement.clientWidth - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal])) {
+        EDITOR_horizontal_scrollbar_widthValue = EDITOR_baseElement.clientWidth - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal];
         cached_EDITOR_horizontal_scrollbar.style.width = EDITOR_horizontal_scrollbar_widthValue + 'px';
     }
 
-    if (get_EDITOR_longestLine_length() !== get_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar()) {
+    if (EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] !== get_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar()) {
         
-        set_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar(get_EDITOR_longestLine_length());
+        set_EDITOR_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar(EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length]);
 
-        set_EDITOR_contentWidth(Math.ceil(get_EDITOR_longestLine_length() * EDITOR_characterWidth));
+        set_EDITOR_contentWidth(Math.ceil(EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] * EDITOR_characterWidth));
 
         if ((get_EDITOR_contentWidth() < (EDITOR_baseElement.clientWidth - get_EDITOR_gutterWidthTotal())) && (EDITOR_baseElement.clientWidth - get_EDITOR_gutterWidthTotal() > 0)) {
             set_EDITOR_contentWidth(Math.floor(EDITOR_baseElement.clientWidth - get_EDITOR_gutterWidthTotal()));
@@ -1734,7 +1734,7 @@ function EDITOR_finalizeEdit_InsertLtr(cursor, indexLine_editOccurredOn) {
     // -------------------------
 
     if (indexLine_editOccurredOn === get_EDITOR_longestLine_indexLine()) {
-        set_EDITOR_longestLine_length(get_EDITOR_longestLine_length() + cursor.editLength);
+        set_EDITOR_longestLine_length(EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] + cursor.editLength);
     }
 
     EDITOR_finalizeEdit_ClearEditState(cursor);
@@ -2384,7 +2384,7 @@ function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(cursor,
     // -------------------------
 
     if (indexLine_editOccurredOn === get_EDITOR_longestLine_indexLine()) {
-        set_EDITOR_longestLine_length(get_EDITOR_longestLine_length() - cursor.editLength);
+        set_EDITOR_longestLine_length(EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] - cursor.editLength);
     }
 
     EDITOR_finalizeEdit_ClearEditState(cursor);
@@ -2842,7 +2842,7 @@ function EDITOR_drawCursor(cursor, NOTscrollCursorIntoView) {
         
         text += ' | (' + cursor.editLength + ')';
 
-        text += ' | (' + get_EDITOR_longestLine_indexLine() + ', ' + get_EDITOR_longestLine_length() + ')';
+        text += ' | (' + get_EDITOR_longestLine_indexLine() + ', ' + EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] + ')';
 
         EDITOR_debug.replaceChildren(text);
 
@@ -3277,7 +3277,7 @@ function EDITOR_onMouseMove_WRAPIT(event) {
         // TODO: Is it correct to use the cursor's indexLine and indexColumn directly as a means of determining redundancy? I worry about odd interactions, but I have no proof that such an odd interaction could exist.
 
         let rX = event.clientX - get_EDITOR_recentBoundingClientRect_left() - get_EDITOR_gutterWidthTotal() + lastReadNumber_scrollLeft;
-        let rY = event.clientY - get_EDITOR_recentBoundingClientRect_top() + get_lastReadNumber_scrollTop();
+        let rY = event.clientY - get_EDITOR_recentBoundingClientRect_top() + EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
 
         let indexColumn = Math.round(rX / EDITOR_characterWidth);
         let indexLine = Math.floor(rY / get_EDITOR_lineHeight());
@@ -5291,8 +5291,8 @@ function EDITOR_onMouseDown(event) {
         EDITOR_baseElement.addEventListener('mousemove', EDITOR_onMouseMove_WRAPIT);
     }
 
-    let rY = event.clientY - get_EDITOR_recentBoundingClientRect_top() + get_lastReadNumber_scrollTop();
-    let rX = event.clientX - get_EDITOR_recentBoundingClientRect_left() - get_EDITOR_gutterWidthTotal() + lastReadNumber_scrollLeft;
+    let rY = event.clientY - EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] + EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
+    let rX = event.clientX - EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] + lastReadNumber_scrollLeft;
     
     let indexLine = Math.floor(rY / get_EDITOR_lineHeight());
     let indexColumn = Math.round(rX / EDITOR_characterWidth);
@@ -5349,8 +5349,8 @@ function EDITOR_onContextMenu() {
         new MenuOption(ENUM_CommandKind_Find, 'Find', null),
     ];
 
-    let menuLeft = get_EDITOR_recentBoundingClientRect_left() + get_EDITOR_gutterWidthTotal() + EDITOR_primaryCursor.cursorTranslateXValue - lastReadNumber_scrollLeft;
-    let menuTop = get_EDITOR_recentBoundingClientRect_top() + EDITOR_primaryCursor.cursorTranslateYValue + get_EDITOR_lineHeight() - get_lastReadNumber_scrollTop();
+    let menuLeft = EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] + EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] + EDITOR_primaryCursor.cursorTranslateXValue - lastReadNumber_scrollLeft;
+    let menuTop = EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] + EDITOR_primaryCursor.cursorTranslateYValue + EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] - EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
 
     return menuSet('EDITOR', null, optionList, menuLeft, menuTop);
 }
@@ -8202,7 +8202,7 @@ function EDITOR_scrollCursorIntoView(cursor) {
     let scrollX = 0;
     let scrollY = 0;
 
-    let local_lastReadNumber_scrollTop = get_lastReadNumber_scrollTop();
+    let local_lastReadNumber_scrollTop = EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
 
     if (cursor.cursorTranslateYValue < local_lastReadNumber_scrollTop) {
         scrollY = cursor.cursorTranslateYValue - local_lastReadNumber_scrollTop;
@@ -9048,8 +9048,8 @@ function EDITOR_requestLspHover() {
         set_EDITOR_recentBoundingClientRect_isNull_intFalsey(0);
     }
 
-    let rY = event_clientY - get_EDITOR_recentBoundingClientRect_top() + get_lastReadNumber_scrollTop();
-    let rX = event_clientX - get_EDITOR_recentBoundingClientRect_left() - get_EDITOR_gutterWidthTotal() + lastReadNumber_scrollLeft;
+    let rY = event_clientY - EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] + EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
+    let rX = event_clientX - EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] + lastReadNumber_scrollLeft;
     
     let indexLine = Math.floor(rY / get_EDITOR_lineHeight());
     let indexColumn = Math.round(rX / EDITOR_characterWidth);

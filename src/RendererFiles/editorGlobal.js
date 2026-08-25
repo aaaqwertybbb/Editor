@@ -114,6 +114,10 @@ let EDITOR_cursor_editIndexColumn = 0;
  * The awkward name is to avoid re-using similar words that already are used in other fields on this class.
  */
 let EDITOR_cursor_editRenderedDisplacement = 0;
+/** TODO: perhaps you could determine this some other way, but tracking it for the moment is easiest and necessary if I'm to not give up on getting an initial solution to work, given my current mood and etc... */
+let EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET = 0;
+let EDITOR_cursor_END_editIndexLine = 0;
+let EDITOR_cursor_END_editIndexColumn = 0;
 
 class EDITOR_Cursor {
     /**
@@ -124,12 +128,9 @@ class EDITOR_Cursor {
      * `cached_EDITOR_cursorListElement.appendChild(cursorInstance.caretRow)`
      * `EDITOR_cursorList.splice(index, 0, cursorInstance)`
      */
-    constructor() {        
+    constructor() {
         
-        /** TODO: perhaps you could determine this some other way, but tracking it for the moment is easiest and necessary if I'm to not give up on getting an initial solution to work, given my current mood and etc... */
-        this.editRenderedDisplacement_INDEX_LINE_OFFSET = 0;
-        this.END_editIndexLine = 0;
-        this.END_editIndexColumn = 0;
+        
         // TODO: This is supposed to say 'cursorId'
         this.cursorIndex = EDITOR_cursor_STATIC_CURSOR_ID++;
         this.htmlId = "EDITOR_cursor-" + this.cursorIndex;
@@ -236,9 +237,9 @@ class EDITOR_Cursor {
         EDITOR_cursor_editIndexLine = 0;
         EDITOR_cursor_editIndexColumn = 0;
         EDITOR_cursor_editRenderedDisplacement = 0;
-        this.editRenderedDisplacement_INDEX_LINE_OFFSET = 0;
-        this.END_editIndexLine = 0;
-        this.END_editIndexColumn = 0;
+        EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET = 0;
+        EDITOR_cursor_END_editIndexLine = 0;
+        EDITOR_cursor_END_editIndexColumn = 0;
 
         this.gapBufferCount = 0;
 
@@ -2285,8 +2286,8 @@ function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(cursor,
     let endLineAndColumnIndices;
     if (EDITOR_cursor_editKind === ENUM_EditKind_RemoveTextNoBatching) {
         endLineAndColumnIndices = {
-            indexLine: cursor.END_editIndexLine,
-            indexColumn: cursor.END_editIndexColumn,
+            indexLine: EDITOR_cursor_END_editIndexLine,
+            indexColumn: EDITOR_cursor_END_editIndexColumn,
         };
     }
     else {
@@ -2397,8 +2398,8 @@ function EDITOR_finalizeEdit_ClearEditState(cursor) {
     EDITOR_cursor_editIndexLine = 0;
     EDITOR_cursor_editIndexColumn = 0;
     EDITOR_cursor_editRenderedDisplacement = 0;
-    cursor.END_editIndexLine = 0;
-    cursor.END_editIndexColumn = 0;
+    EDITOR_cursor_END_editIndexLine = 0;
+    EDITOR_cursor_END_editIndexColumn = 0;
     cursor.gapBufferCount = 0;
     cursor.gapBufferWriteToSpanElement = null;
     cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
@@ -3875,8 +3876,8 @@ function EDITOR_NOTcanBatch_insert(cursor, indexCursor) {
 function EDITOR_NOTcanBatch_enter(cursor, indexCursor) {
     return true || // turn off batching until it works. The initial enter event is what matters everything else can be recreated based on the amount of lineFeeds that were inserted.
            EDITOR_cursor_editKind != ENUM_EditKind_Enter ||
-           EDITOR_cursor_indexLine !== cursor.END_editIndexLine ||
-           EDITOR_cursor_indexColumn !== cursor.END_editIndexColumn ||
+           EDITOR_cursor_indexLine !== EDITOR_cursor_END_editIndexLine ||
+           EDITOR_cursor_indexColumn !== EDITOR_cursor_END_editIndexColumn ||
            EDITOR_cursor_editLength >= EDITOR_cursor_GAP_BUFFER_CAPACITY ||
            !cursor.enterKey_newLinePlusIndentation_byteList ||
            cursor.hasSelection();
@@ -6821,8 +6822,8 @@ function EDITOR_EnterKey(cursor, ctrlKey, shiftKey) {
     EDITOR_cursor_editLength += insertionCount;
     cursor.editLineFeedCount++;
 
-    cursor.END_editIndexLine = EDITOR_cursor_indexLine;
-    cursor.END_editIndexColumn = EDITOR_cursor_indexColumn;
+    EDITOR_cursor_END_editIndexLine = EDITOR_cursor_indexLine;
+    EDITOR_cursor_END_editIndexColumn = EDITOR_cursor_indexColumn;
 
     EDITOR_render_request(ENUM_RenderKind_Enter);
 }
@@ -7088,8 +7089,8 @@ function EDITOR_removeSelection(cursor) {
 
     let largeLineAndColumnIndices = EDITOR_getLineAndColumnIndices(largePosition);
     EDITOR_RemoveSelection_largeLineAndColumnIndices = largeLineAndColumnIndices;
-    cursor.END_editIndexLine = largeLineAndColumnIndices.indexLine;
-    cursor.END_editIndexColumn = largeLineAndColumnIndices.indexColumn;
+    EDITOR_cursor_END_editIndexLine = largeLineAndColumnIndices.indexLine;
+    EDITOR_cursor_END_editIndexColumn = largeLineAndColumnIndices.indexColumn;
 
     EDITOR_cursor_indexLine = smallLineAndColumnIndices.indexLine;
     EDITOR_cursor_indexColumn = smallLineAndColumnIndices.indexColumn;

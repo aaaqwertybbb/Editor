@@ -9272,4 +9272,8 @@ Zeb Brady "He's never tired" and I see now "Ze... it's cool."
 Someone likes what is called basket ball diaries? I've never seen it but
 "I'll be a good boy"
 
+Provided that I haven't consumed cleaning products due to neglegent wandering around the house
+of my brother while he carried them then I'll be fine.
+I'm low key on the edge of panic and trying to be calm.
+
 */

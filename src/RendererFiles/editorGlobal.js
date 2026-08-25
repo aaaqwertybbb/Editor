@@ -1661,28 +1661,30 @@ function EDITOR_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
 }
 
 function EDITOR_finalizeEdit_Enter(indexLine_editOccurredOn) {
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] !== local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) {
         EDITOR_render_do_EnterKey();
     }
 
     // TODO: A notification needs to sent to the LSP here
 
-    EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition], EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]);
+    EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition], local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]);
 
     // throws an exception if 'ENUM_EnterKeyEventKind_None' (...or falsey).
     if (!EDITOR_cursor_enterKeyEventKind || EDITOR_cursor_enterKeyEventKind === ENUM_EnterKeyEventKind_None) { EDITOR_finalizeEdit_ClearEditState(); throw new Error('if (!enterKeyEventKind...)'); }
 
-    EDITOR_textByteList.insertBytes(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition], EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.bytes, /*offset*/ 0, EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.count);
+    EDITOR_textByteList.insertBytes(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition], EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.bytes, /*offset*/ 0, EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.count);
 
-    for (var i = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine]; i < EDITOR_lineEndPositionList.count; i++) {
-        EDITOR_lineEndPositionList.data[i] += EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+    for (var i = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine]; i < EDITOR_lineEndPositionList.count; i++) {
+        EDITOR_lineEndPositionList.data[i] += local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
     }
 
     // You need to consider if the longest line gets split
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] <= EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine])
-        EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine] = EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine] + 1;
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] <= local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine])
+        local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine] = local_EDITOR_int_fields[INDEXOF_EDITOR_longestLine_indexLine] + 1;
 
-    EDITOR_lineEndPositionList.insert(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine], EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]);
+    EDITOR_lineEndPositionList.insert(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine], local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]);
 
     EDITOR_finalizeEdit_ClearEditState();
 
@@ -1722,26 +1724,28 @@ function EDITOR_finalizeEdit_Tab(indexLine_editOccurredOn) {
 
 function EDITOR_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
 
-    let startingIndex = EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex];
-    EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex] = 0;
-    let SMALL_lineAndColumnIndices_indexLine = EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine];
-    EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] = 0;
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
+    let startingIndex = local_EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex];
+    local_EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex] = 0;
+    let SMALL_lineAndColumnIndices_indexLine = local_EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine];
+    local_EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] = 0;
 
     let ORIGINAL_incrementBy = (startingIndex + 1 - SMALL_lineAndColumnIndices_indexLine) * 4;
     let incrementBy = ORIGINAL_incrementBy;
 
-    //let ORIGINAL_incrementBy = EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy];
-    //let incrementBy = EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy];
-    //EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy] = 0;
+    //let ORIGINAL_incrementBy = local_EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy];
+    //let incrementBy = local_EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy];
+    //local_EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy] = 0;
 
     let bytes = EDITOR_on_tab_bytes;
     let bytesLength = 4;
 
-    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] > 1) {
-        ORIGINAL_incrementBy *= EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
-        incrementBy *= EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] > 1) {
+        ORIGINAL_incrementBy *= local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+        incrementBy *= local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
 
-        bytesLength *= EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+        bytesLength *= local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
         bytes = new Uint8Array(bytesLength);
         let src_bytes = EDITOR_on_tab_bytes;
         // TODO: typed array function usage
@@ -1797,9 +1801,9 @@ function EDITOR_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
             }
         }
         EDITOR_trackedSyntaxList.getElementAt(trackedSyntaxReposition_i);
-        if (linePos.start > EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] && linePos.start < EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length]) {
+        if (linePos.start > local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] && linePos.start < local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length]) {
             // # Then, you immediately know the trackedSyntax that encompasses the insertion (if it exists), so you increment its length by the text inserted on that respective line.
-            EDITOR_trackedSyntaxList.setLength(trackedSyntaxReposition_i, EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] + 4);
+            EDITOR_trackedSyntaxList.setLength(trackedSyntaxReposition_i, local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] + 4);
         }
 
         // # Insert the text on the respective line.

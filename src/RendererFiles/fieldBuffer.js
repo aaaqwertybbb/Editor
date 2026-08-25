@@ -281,7 +281,6 @@ const INDEXOF_EDITOR_intFalsey_isScrolling = 35;
 const INDEXOF_EDITOR_cursor_editKind = 36;
 
 const INDEXOF_EDITOR_cursor_indexLine = 37;
-
 const INDEXOF_EDITOR_cursor_indexColumn = 38;
 
 /**
@@ -291,8 +290,13 @@ const INDEXOF_EDITOR_cursor_indexColumn = 38;
 const INDEXOF_EDITOR_cursor_STORED_indexColumn = 39;
 
 const INDEXOF_EDITOR_cursor_cursorTranslateYValue = 40;
-
 const INDEXOF_EDITOR_cursor_cursorTranslateXValue = 41;
+
+const INDEXOF_EDITOR_cursor_selectionAnchor = 42;
+const INDEXOF_EDITOR_cursor_selectionEnd = 43;
+
+
+// EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]
 
 
 

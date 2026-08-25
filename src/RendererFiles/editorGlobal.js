@@ -128,6 +128,9 @@ let EDITOR_cursor_htmlId = "EDITOR_cursor-" + EDITOR_cursor_cursorId;
 let EDITOR_cursor_gapBuffer = new Uint8Array(EDITOR_cursor_GAP_BUFFER_CAPACITY);
 let EDITOR_cursor_gapBufferCount = 0;
 
+let EDITOR_cursor_gapBufferWriteToSpanElement = null;
+let EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
+
 class EDITOR_Cursor {
     /**
      * After invoking the constructor you likely would want to add to:
@@ -139,10 +142,6 @@ class EDITOR_Cursor {
      */
     constructor() {
         
-        
-        this.gapBufferWriteToSpanElement = null;
-        this.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
-
         this.caretRow = document.createElement('div');
         this.caretRow.id = "EDITOR_caretRow-" + EDITOR_cursor_cursorId;
         this.caretRow.className = "EDITOR_caretRow";
@@ -537,14 +536,14 @@ function EDITOR_render_do_InsertLtr() {
         return;
     }
     if (EDITOR_cursor_editRenderedDisplacement < EDITOR_cursor_editLength) {
-        if (cursor.gapBufferWriteToSpanElement) {
+        if (EDITOR_cursor_gapBufferWriteToSpanElement) {
 
             let x = EDITOR_decoder.decode(EDITOR_cursor_gapBuffer.subarray(EDITOR_cursor_editRenderedDisplacement, EDITOR_cursor_editLength));
 
-            cursor.gapBufferWriteToSpanElement.textContent = 
-                cursor.gapBufferWriteToSpanElement.textContent.slice(0, (cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex/* + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]*/) + EDITOR_cursor_editRenderedDisplacement) +
+            EDITOR_cursor_gapBufferWriteToSpanElement.textContent = 
+                EDITOR_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex/* + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]*/) + EDITOR_cursor_editRenderedDisplacement) +
                 x +
-                cursor.gapBufferWriteToSpanElement.textContent.slice((cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex/* + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]*/) + EDITOR_cursor_editRenderedDisplacement);
+                EDITOR_cursor_gapBufferWriteToSpanElement.textContent.slice((EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex/* + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]*/) + EDITOR_cursor_editRenderedDisplacement);
 
             EDITOR_cursor_editRenderedDisplacement = EDITOR_cursor_editLength;
         }
@@ -2401,8 +2400,8 @@ function EDITOR_finalizeEdit_ClearEditState(cursor) {
     EDITOR_cursor_END_editIndexLine = 0;
     EDITOR_cursor_END_editIndexColumn = 0;
     EDITOR_cursor_gapBufferCount = 0;
-    cursor.gapBufferWriteToSpanElement = null;
-    cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
+    EDITOR_cursor_gapBufferWriteToSpanElement = null;
+    EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
     cursor.editLineFeedCount = 0;
     EDITOR_lineEndPositionList_PENDING.clear();
 }
@@ -3813,24 +3812,24 @@ function EDITOR_onMouseDownDetailRankThree(event_button, event_shiftKey, indexLi
 function EDITOR_insertGapBufferSpan(cursor) {
     walkLineUntilIndexColumn(cursor);
     if (w_indexColumn_Goal === -1 || !w_div || w_div.children.length === 0) {
-        cursor.gapBufferWriteToSpanElement = null;
-        cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
+        EDITOR_cursor_gapBufferWriteToSpanElement = null;
+        EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
         return;
     }
 
     if (w_indexColumn_Goal == 0) {
         // TODO: Ensure 'w_div.children[0]' is equal to the 'w_span' and then change this line to use 'w_span'
-        cursor.gapBufferWriteToSpanElement = w_span;
-        cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
+        EDITOR_cursor_gapBufferWriteToSpanElement = w_span;
+        EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
     }
     else {
-        cursor.gapBufferWriteToSpanElement = w_div.children[w_indexSpan];
+        EDITOR_cursor_gapBufferWriteToSpanElement = w_div.children[w_indexSpan];
 
-        if (w_indexColumn_Goal === w_indexColumn_Sum + cursor.gapBufferWriteToSpanElement.textContent.length) {
-            cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = cursor.gapBufferWriteToSpanElement.textContent.length;
+        if (w_indexColumn_Goal === w_indexColumn_Sum + EDITOR_cursor_gapBufferWriteToSpanElement.textContent.length) {
+            EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = EDITOR_cursor_gapBufferWriteToSpanElement.textContent.length;
         }
         else {
-            cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = w_indexColumn_SpanTextContentRelative;
+            EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = w_indexColumn_SpanTextContentRelative;
         }
     }
 }
@@ -7799,16 +7798,16 @@ function EDITOR_insertDo(cursor, character) {
     And then this removes 1 of the slice invocations, rather than inserting "possibly" among the existing textContent.
     */
     
-    /*if (cursor.gapBufferWriteToSpanElement !== EDITOR_offsetWithinSpan_withRespectToThisSpan) {
+    /*if (EDITOR_cursor_gapBufferWriteToSpanElement !== EDITOR_offsetWithinSpan_withRespectToThisSpan) {
         EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan] = 0;
-        EDITOR_offsetWithinSpan_withRespectToThisSpan = cursor.gapBufferWriteToSpanElement;
+        EDITOR_offsetWithinSpan_withRespectToThisSpan = EDITOR_cursor_gapBufferWriteToSpanElement;
     }
 
-    if (cursor.gapBufferWriteToSpanElement) {
-        cursor.gapBufferWriteToSpanElement.textContent = 
-            cursor.gapBufferWriteToSpanElement.textContent.slice(0, (cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]) + EDITOR_cursor_gapBufferCount) +
+    if (EDITOR_cursor_gapBufferWriteToSpanElement) {
+        EDITOR_cursor_gapBufferWriteToSpanElement.textContent = 
+            EDITOR_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]) + EDITOR_cursor_gapBufferCount) +
             character +
-            cursor.gapBufferWriteToSpanElement.textContent.slice((cursor.gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]) + EDITOR_cursor_gapBufferCount);
+            EDITOR_cursor_gapBufferWriteToSpanElement.textContent.slice((EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + EDITOR_int_fields[INDEXOF_EDITOR_offsetWithinSpan]) + EDITOR_cursor_gapBufferCount);
     }*/
 
     EDITOR_cursor_gapBuffer[EDITOR_cursor_gapBufferCount] = character.charCodeAt(0);

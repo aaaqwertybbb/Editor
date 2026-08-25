@@ -9213,4 +9213,23 @@ I haven't done anything yet, but I'm now able to hoist the EDITOR_int_fields as 
 
 But, nobody will know just how stupid it really is quite like I will after suffering through this all
 
+====
+
+"
+I optimized away the smi's by storing them all in a UInt32Array
+so that the GC when doing a collection no longer has to visit every smi variable
+in order to verify that every smi is infact a smi prior moving to the next node.
+"
+
+...
+
+"yeah I can no longer maintain the code every change is a massive pain, it isn't readable, and
+ I might even be wrong about my original idea because the truth is that I have no idea what I'm doing."
+
+"but I optimized away accessing properties on a class"
+
+"and as for the global access of the array you can hoist it as a local variable in any function that frequently references it over and over"
+
+"it's the worst idea I've ever had"
+
 */

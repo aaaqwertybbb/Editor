@@ -304,6 +304,11 @@ I remember a bit now so for correctness: I'm pretty sure it is more a matter of
 if there's a large class or something that is close to a global variable in terms of accessing the property speed but I don't know.
 
 Class property accessing is slower than that of a local variable, and approaches the time of accessing a global variable for large enough classes
+
+I think that's the wording, and they try to make it match the speed of a local variable but it is slower
+and the engine has tricks to try and bring the speed similar to a local.
+
+But I don't know
 */
 
 

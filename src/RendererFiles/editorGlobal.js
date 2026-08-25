@@ -497,9 +497,9 @@ function EDITOR_render_do_cursor_flag_scrollIntoViewExplicit(timestamp) {
 
     if (flag_scrollIntoViewExplicit) {
         // TODO: consider setting 'notShouldScrollIntoView' to false to avoid two scroll into views redundantly?
-        EDITOR_scrollCursorIntoView(cursor);
+        EDITOR_scrollCursorIntoView();
     }
-    EDITOR_drawCursor(cursor, notShouldScrollIntoView);
+    EDITOR_drawCursor(notShouldScrollIntoView);
 }
 
 function EDITOR_render_do_cursor_flag_doNotScrollIntoView(timestamp) {
@@ -512,9 +512,9 @@ function EDITOR_render_do_cursor_flag_doNotScrollIntoView(timestamp) {
 
     if (flag_scrollIntoViewExplicit) {
         // TODO: consider setting 'notShouldScrollIntoView' to false to avoid two scroll into views redundantly?
-        EDITOR_scrollCursorIntoView(cursor);
+        EDITOR_scrollCursorIntoView();
     }
-    EDITOR_drawCursor(cursor, notShouldScrollIntoView);
+    EDITOR_drawCursor(notShouldScrollIntoView);
 }
 
 function EDITOR_render_do_InsertLtr() {
@@ -804,7 +804,7 @@ function EDITOR_render_do_Scroll(timestamp) {
         // TODO: Timing issue, someone typing while they scroll
         // TODO: You need to finalize all the cursors not just the primary
         // TODO: You probably need to "check all the cursors" too not just the primary
-        EDITOR_finalizeEdit(EDITOR_primaryCursor);
+        EDITOR_finalizeEdit();
     }
 
     // TODO: Consider moving the 0 diff case to the soonest possible line to skip as much code as possible.
@@ -1547,7 +1547,7 @@ function EDITOR_drawHorizontalScrollbar() {
  * ...then you remove the safeguard for 1 feature at a time.
  */
 function EDITOR_finalizeAllCursors() {
-    EDITOR_finalizeEdit(EDITOR_primaryCursor);
+    EDITOR_finalizeEdit();
 }
 
 /**
@@ -1559,7 +1559,7 @@ function EDITOR_finalizeAllCursors() {
  * TODO: a good name for this function
  */
 function EDITOR_finalizeAllCursors_andClearNonPrimaryCursors() {
-    EDITOR_finalizeEdit(EDITOR_primaryCursor);
+    EDITOR_finalizeEdit();
 }
 
 /**
@@ -1567,7 +1567,7 @@ function EDITOR_finalizeAllCursors_andClearNonPrimaryCursors() {
  * 
  * @param {EDITOR_Cursor} cursor 
  */
-function EDITOR_finalizeEdit(cursor) {
+function EDITOR_finalizeEdit() {
     /**
      * Later code needs to know the line index that the removal occurred on.
      * In a naive approach, presume every edit only spans a single line.
@@ -1580,30 +1580,30 @@ function EDITOR_finalizeEdit(cursor) {
 
     switch (EDITOR_cursor_editKind) {
         case ENUM_EditKind_InsertLtr:
-            indexLine_editOccurredOn = EDITOR_finalizeEdit_InsertLtr(cursor, indexLine_editOccurredOn);
+            indexLine_editOccurredOn = EDITOR_finalizeEdit_InsertLtr(indexLine_editOccurredOn);
             break;
         case ENUM_EditKind_Enter:
-            indexLine_editOccurredOn = EDITOR_finalizeEdit_Enter(cursor, indexLine_editOccurredOn);
+            indexLine_editOccurredOn = EDITOR_finalizeEdit_Enter(indexLine_editOccurredOn);
             return;
         case ENUM_EditKind_Tab:
-            indexLine_editOccurredOn = EDITOR_finalizeEdit_Tab(cursor, indexLine_editOccurredOn);
+            indexLine_editOccurredOn = EDITOR_finalizeEdit_Tab(indexLine_editOccurredOn);
             return;
         case ENUM_EditKind_IndentMore:
-            indexLine_editOccurredOn = EDITOR_finalizeEdit_IndentMore(cursor, indexLine_editOccurredOn);
+            indexLine_editOccurredOn = EDITOR_finalizeEdit_IndentMore(indexLine_editOccurredOn);
             return;
         case ENUM_EditKind_IndentLess:
-            indexLine_editOccurredOn = EDITOR_finalizeEdit_IndentLess(cursor, indexLine_editOccurredOn);
+            indexLine_editOccurredOn = EDITOR_finalizeEdit_IndentLess(indexLine_editOccurredOn);
             break;
         case ENUM_EditKind_Paste:
-            indexLine_editOccurredOn = EDITOR_finalizeEdit_Paste(cursor, indexLine_editOccurredOn);
+            indexLine_editOccurredOn = EDITOR_finalizeEdit_Paste(indexLine_editOccurredOn);
             return;
         case ENUM_EditKind_Duplicate:
-            indexLine_editOccurredOn = EDITOR_finalizeEdit_Duplicate(cursor, indexLine_editOccurredOn);
+            indexLine_editOccurredOn = EDITOR_finalizeEdit_Duplicate(indexLine_editOccurredOn);
             return;
         case ENUM_EditKind_DeleteLtr:
         case ENUM_EditKind_BackspaceRtl:
         case ENUM_EditKind_RemoveTextNoBatching:
-            indexLine_editOccurredOn = EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(cursor, indexLine_editOccurredOn);
+            indexLine_editOccurredOn = EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_editOccurredOn);
             break;
     }
 
@@ -1652,7 +1652,7 @@ function EDITOR_finalizeEdit(cursor) {
 /**
  * @param {EDITOR_Cursor} cursor 
  */
-function EDITOR_finalizeEdit_InsertLtr(cursor, indexLine_editOccurredOn) {
+function EDITOR_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
     for (let i = EDITOR_lineEndPositionList.count - 1; i >= 0; i--) {
         if (EDITOR_cursor_editPosition <= EDITOR_lineEndPositionList.data[i]) {
             EDITOR_lineEndPositionList.data[i] += EDITOR_cursor_editLength;
@@ -1707,7 +1707,7 @@ function EDITOR_finalizeEdit_InsertLtr(cursor, indexLine_editOccurredOn) {
         EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] = EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] + EDITOR_cursor_editLength;
     }
 
-    EDITOR_finalizeEdit_ClearEditState(cursor);
+    EDITOR_finalizeEdit_ClearEditState();
 
     return indexLine_editOccurredOn;
 }
@@ -1715,7 +1715,7 @@ function EDITOR_finalizeEdit_InsertLtr(cursor, indexLine_editOccurredOn) {
 /**
  * @param {EDITOR_Cursor} cursor 
  */
-function EDITOR_finalizeEdit_Enter(cursor, indexLine_editOccurredOn) {
+function EDITOR_finalizeEdit_Enter(indexLine_editOccurredOn) {
     if (EDITOR_cursor_editRenderedDisplacement !== EDITOR_cursor_editLength) {
         EDITOR_render_do_EnterKey();
     }
@@ -1725,7 +1725,7 @@ function EDITOR_finalizeEdit_Enter(cursor, indexLine_editOccurredOn) {
     EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(EDITOR_cursor_editPosition, EDITOR_cursor_editLength);
 
     // throws an exception if 'ENUM_EnterKeyEventKind_None' (...or falsey).
-    if (!EDITOR_cursor_enterKeyEventKind || EDITOR_cursor_enterKeyEventKind === ENUM_EnterKeyEventKind_None) { EDITOR_finalizeEdit_ClearEditState(cursor); throw new Error('if (!enterKeyEventKind...)'); }
+    if (!EDITOR_cursor_enterKeyEventKind || EDITOR_cursor_enterKeyEventKind === ENUM_EnterKeyEventKind_None) { EDITOR_finalizeEdit_ClearEditState(); throw new Error('if (!enterKeyEventKind...)'); }
 
     EDITOR_textByteList.insertBytes(EDITOR_cursor_editPosition, EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.bytes, /*offset*/ 0, EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.count);
 
@@ -1739,7 +1739,7 @@ function EDITOR_finalizeEdit_Enter(cursor, indexLine_editOccurredOn) {
 
     EDITOR_lineEndPositionList.insert(EDITOR_cursor_editIndexLine, EDITOR_cursor_editPosition);
 
-    EDITOR_finalizeEdit_ClearEditState(cursor);
+    EDITOR_finalizeEdit_ClearEditState();
 
     return indexLine_editOccurredOn;
 }
@@ -1747,7 +1747,7 @@ function EDITOR_finalizeEdit_Enter(cursor, indexLine_editOccurredOn) {
 /**
  * @param {EDITOR_Cursor} cursor 
  */
-function EDITOR_finalizeEdit_Tab(cursor, indexLine_editOccurredOn) {
+function EDITOR_finalizeEdit_Tab(indexLine_editOccurredOn) {
 
     let that_four = 4;
 
@@ -1773,7 +1773,7 @@ function EDITOR_finalizeEdit_Tab(cursor, indexLine_editOccurredOn) {
         EDITOR_lineEndPositionList.data[i] += that_four;
     }
 
-    EDITOR_finalizeEdit_ClearEditState(cursor);
+    EDITOR_finalizeEdit_ClearEditState();
 
     return indexLine_editOccurredOn;
 }
@@ -1781,7 +1781,7 @@ function EDITOR_finalizeEdit_Tab(cursor, indexLine_editOccurredOn) {
 /**
  * @param {EDITOR_Cursor} cursor 
  */
-function EDITOR_finalizeEdit_IndentMore(cursor, indexLine_editOccurredOn) {
+function EDITOR_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
 
     let startingIndex = EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex];
     EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex] = 0;
@@ -1883,7 +1883,7 @@ function EDITOR_finalizeEdit_IndentMore(cursor, indexLine_editOccurredOn) {
         EDITOR_lineEndPositionList.data[lineI] += ORIGINAL_incrementBy;
     }
 
-    EDITOR_finalizeEdit_ClearEditState(cursor);
+    EDITOR_finalizeEdit_ClearEditState();
 
     return indexLine_editOccurredOn;
 }
@@ -1891,7 +1891,7 @@ function EDITOR_finalizeEdit_IndentMore(cursor, indexLine_editOccurredOn) {
 /**
  * @param {EDITOR_Cursor} cursor 
  */
-function EDITOR_finalizeEdit_IndentLess(cursor, indexLine_editOccurredOn) {
+function EDITOR_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
 
     // Both indentMore and indentLess have logic in the initial event that needs to be moved here.
     // Nevertheless there is a difference between indentLess and indentMore in that you cannot simply
@@ -2150,7 +2150,7 @@ function EDITOR_finalizeEdit_IndentLess(cursor, indexLine_editOccurredOn) {
         EDITOR_lineEndPositionList.data[lineI] -= ORIGINAL_decrementBy;
     }
 
-    EDITOR_finalizeEdit_ClearEditState(cursor);
+    EDITOR_finalizeEdit_ClearEditState();
 
     return indexLine_editOccurredOn;
 }
@@ -2158,7 +2158,7 @@ function EDITOR_finalizeEdit_IndentLess(cursor, indexLine_editOccurredOn) {
 /**
  * @param {EDITOR_Cursor} cursor 
  */
-function EDITOR_finalizeEdit_Paste(cursor, indexLine_editOccurredOn) {
+function EDITOR_finalizeEdit_Paste(indexLine_editOccurredOn) {
     
     EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(EDITOR_cursor_editPosition, EDITOR_cursor_editLength);
     
@@ -2200,7 +2200,7 @@ function EDITOR_finalizeEdit_Paste(cursor, indexLine_editOccurredOn) {
         EDITOR_lineEndPositionList.data[i] += insertionLength;
     }
 
-    EDITOR_finalizeEdit_ClearEditState(cursor);
+    EDITOR_finalizeEdit_ClearEditState();
 
     return indexLine_editOccurredOn;
 }
@@ -2208,7 +2208,7 @@ function EDITOR_finalizeEdit_Paste(cursor, indexLine_editOccurredOn) {
 /**
  * @param {EDITOR_Cursor} cursor 
  */
-function EDITOR_finalizeEdit_Duplicate(cursor, indexLine_editOccurredOn) {
+function EDITOR_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
 
     EDITOR_trackedSyntaxList_inefficientUpdateStartAndLength(EDITOR_cursor_editPosition, EDITOR_cursor_editLength);
 
@@ -2248,7 +2248,7 @@ function EDITOR_finalizeEdit_Duplicate(cursor, indexLine_editOccurredOn) {
         EDITOR_lineEndPositionList.data[i] += insertionLength;
     }
 
-    EDITOR_finalizeEdit_ClearEditState(cursor);
+    EDITOR_finalizeEdit_ClearEditState();
 
     return indexLine_editOccurredOn;
 }
@@ -2256,7 +2256,7 @@ function EDITOR_finalizeEdit_Duplicate(cursor, indexLine_editOccurredOn) {
 /**
  * @param {EDITOR_Cursor} cursor 
  */
-function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(cursor, indexLine_editOccurredOn) {
+function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_editOccurredOn) {
     // TODO: surely u'd get this before doing the edit?
     let startLineAndColumnIndices;
     if (EDITOR_cursor_editKind === ENUM_EditKind_RemoveTextNoBatching) {
@@ -2357,7 +2357,7 @@ function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(cursor,
         EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] = EDITOR_int_fields[INDEXOF_EDITOR_longestLine_length] - EDITOR_cursor_editLength;
     }
 
-    EDITOR_finalizeEdit_ClearEditState(cursor);
+    EDITOR_finalizeEdit_ClearEditState();
 
     return indexLine_editOccurredOn;
 
@@ -2376,7 +2376,7 @@ function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(cursor,
     */
 }
 
-function EDITOR_finalizeEdit_ClearEditState(cursor) {
+function EDITOR_finalizeEdit_ClearEditState() {
     EDITOR_cursor_editKind = ENUM_EditKind_None;
     EDITOR_cursor_editLength = 0;
     EDITOR_cursor_editPosition = 0;
@@ -2786,7 +2786,7 @@ function EDITOR_draw_all_cursors() {
  * @param {EDITOR_Cursor} cursor 
  * @param {boolean} NOTscrollCursorIntoView 
  */
-function EDITOR_drawCursor(cursor, NOTscrollCursorIntoView) {
+function EDITOR_drawCursor(NOTscrollCursorIntoView) {
     EDITOR_cursor_cursorTranslateYValue = (EDITOR_cursor_indexLine + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) * EDITOR_int_fields[INDEXOF_EDITOR_lineHeight];
     EDITOR_cursor_cursorTranslateXValue = (EDITOR_cursor_indexColumn + EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn]) * EDITOR_characterWidth;
 
@@ -2817,7 +2817,7 @@ function EDITOR_drawCursor(cursor, NOTscrollCursorIntoView) {
         EDITOR_debug.replaceChildren(text);
 
         if (!NOTscrollCursorIntoView) {
-            EDITOR_scrollCursorIntoView(cursor);
+            EDITOR_scrollCursorIntoView();
         }
     }
 }
@@ -7003,7 +7003,7 @@ And then I got response of
 function EDITOR_removeSelection(cursor) {
     if (EDITOR_cursor_editKind != ENUM_EditKind_None) {
         // TODO: multicursor confusion scenario is likely to happy due to this code, but the code isn't related enough for me to change it yet.
-        EDITOR_finalizeEdit(cursor);
+        EDITOR_finalizeEdit();
     }
 
     let smallPosition;
@@ -7813,7 +7813,7 @@ function EDITOR_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine(cursor) {
 /**
  * @param {EDITOR_Cursor} cursor 
  */
-function EDITOR_scrollCursorIntoView(cursor) {
+function EDITOR_scrollCursorIntoView() {
     let scrollX = 0;
     let scrollY = 0;
 

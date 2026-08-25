@@ -9251,4 +9251,7 @@ But why is my brother gotta be testing me like this
 
 I don't wanna see any chemicals
 
+"they're cleaning chemicals for the car and they're cap'd and he's just holding them"
+nah that aint it just get out of here don't bring any chemicals around the food
+
 */

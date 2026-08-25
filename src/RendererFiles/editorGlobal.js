@@ -9254,4 +9254,12 @@ I don't wanna see any chemicals
 "they're cleaning chemicals for the car and they're cap'd and he's just holding them"
 nah that aint it just get out of here don't bring any chemicals around the food
 
+I just got recommended "Lisa Loeb & Nine Stories - Do You Sleep?"
+
+I recognize that from another song something like "stay I missed you" I don't listen to her
+so I know that both songs are being recommended to me due to an overlap in viewed youtube videos
+between me and you.
+
+I go to sleep everynight in bed for 9 hours of sleep every night.
+
 */

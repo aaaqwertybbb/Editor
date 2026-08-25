@@ -9243,4 +9243,10 @@ And you'll have to endure that reduced quality of life it is all the "perfect" s
 Not enough damage to notice but enough damage that you end up with chronic
 fatigue that you cannot explain
 
+I've been on point eating the 2lbs of 98% fat free ground chicken
+using the stuff they have in the kitchen like the pans or something that you put it on
+then put the pan on the burner or some such
+
+But why is my brother gotta be testing me like this
+
 */

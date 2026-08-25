@@ -4325,7 +4325,7 @@ function EDITOR_editEvent_theEditIself_InsertLtr(event) {
         let cursor = EDITOR_cursorList[i];
         EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = i;
         EDITOR_movementBasedCacheInvalidation(cursor);
-        if (get_EDITOR_offsetColumn_withRespectToThisIndexLine() !== cursor.indexLine) {
+        if (EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== cursor.indexLine) {
             EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = cursor.indexLine;
             EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
         }
@@ -4348,7 +4348,7 @@ function EDITOR_editEvent_theEditIself_DeleteLtr(event) {
         let cursor = EDITOR_cursorList[i];
         EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = i;
         EDITOR_movementBasedCacheInvalidation(cursor);
-        if (get_EDITOR_offsetColumn_withRespectToThisIndexLine() !== cursor.indexLine) {
+        if (EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== cursor.indexLine) {
             EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = cursor.indexLine;
             EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
         }
@@ -4372,7 +4372,7 @@ function EDITOR_editEvent_theEditIself_BackspaceRtl(event) {
         let cursor = EDITOR_cursorList[i];
         EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = i;
         EDITOR_movementBasedCacheInvalidation(cursor);
-        if (get_EDITOR_offsetColumn_withRespectToThisIndexLine() !== cursor.indexLine) {
+        if (EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== cursor.indexLine) {
             EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = cursor.indexLine;
             EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
         }
@@ -4838,7 +4838,7 @@ function EDITOR_onKeyDown_ArrowLeft(event) {
         let cursor = EDITOR_cursorList[i];
         EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = i;
         EDITOR_movementBasedCacheInvalidation(cursor);
-        if (get_EDITOR_offsetColumn_withRespectToThisIndexLine() !== cursor.indexLine) {
+        if (EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== cursor.indexLine) {
             EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = cursor.indexLine;
             EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
         }
@@ -4978,7 +4978,7 @@ function EDITOR_onKeyDown_ArrowRight(event) {
         let cursor = EDITOR_cursorList[i];
         EDITOR_int_fields[INDEXOF_EDITOR_indexCursor] = i;
         EDITOR_movementBasedCacheInvalidation(cursor);
-        if (get_EDITOR_offsetColumn_withRespectToThisIndexLine() !== cursor.indexLine) {
+        if (EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] !== cursor.indexLine) {
             EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = cursor.indexLine;
             EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
         }
@@ -5721,8 +5721,8 @@ function EDITOR_render_do_IndentMore() {
     //
     // and ensure that they render properly. This currently if two edits get done in a single "rAF" the second is cancelled for redundancy yet each one only handles 1 editDisplacement so you missed 1 displacement.
 
-    let startingIndex = get_EDITOR_indent_startingIndex(startingIndex);
-    let SMALL_lineAndColumnIndices_indexLine = get_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine(SMALL_lineAndColumnIndices.indexLine);
+    let startingIndex = EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex];
+    let SMALL_lineAndColumnIndices_indexLine = EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine];
 
     // TODO: Consider having this string available rather than making it everytime this function is invoked.
     let EDITOR_on_tab_string = '';
@@ -5883,8 +5883,8 @@ function EDITOR_indentMore(cursor) {
 
 function EDITOR_render_do_IndentLess() {
 
-    let startingIndex = get_EDITOR_indent_startingIndex(startingIndex);
-    let SMALL_lineAndColumnIndices_indexLine = get_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine(SMALL_lineAndColumnIndices.indexLine);
+    let startingIndex = EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex] = startingIndex;
+    let SMALL_lineAndColumnIndices_indexLine = EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine];
 
     for (let cursorI = EDITOR_cursorList.length - 1; cursorI >= 0; cursorI--) {
         let cursor = EDITOR_cursorList[cursorI];

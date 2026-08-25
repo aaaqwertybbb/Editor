@@ -86,11 +86,6 @@ let EDITOR_cursor_GAP_BUFFER_CAPACITY = 32;
 // TODO: This assignment isn't necessary, it was already the default value;
 EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] = ENUM_EditKind_None;
 
-
-let  = 0;
-let EDITOR_cursor_END_editIndexLine = 0;
-let EDITOR_cursor_END_editIndexColumn = 0;
-
 let EDITOR_cursor_cursorId = EDITOR_cursor_STATIC_CURSOR_ID++;
 let EDITOR_cursor_htmlId = "EDITOR_cursor-" + EDITOR_cursor_cursorId;
 
@@ -203,8 +198,8 @@ function EDITOR_cursor_clear() {
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET] = 0;
-    EDITOR_cursor_END_editIndexLine = 0;
-    EDITOR_cursor_END_editIndexColumn = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexLine] = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexColumn] = 0;
 
     EDITOR_cursor_gapBufferCount = 0;
 
@@ -2218,8 +2213,8 @@ function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLi
     let endLineAndColumnIndices;
     if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_RemoveTextNoBatching) {
         endLineAndColumnIndices = {
-            indexLine: EDITOR_cursor_END_editIndexLine,
-            indexColumn: EDITOR_cursor_END_editIndexColumn,
+            indexLine: EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexLine],
+            indexColumn: EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexColumn],
         };
     }
     else {
@@ -2330,8 +2325,8 @@ function EDITOR_finalizeEdit_ClearEditState() {
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement] = 0;
-    EDITOR_cursor_END_editIndexLine = 0;
-    EDITOR_cursor_END_editIndexColumn = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexLine] = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexColumn] = 0;
     EDITOR_cursor_gapBufferCount = 0;
     EDITOR_cursor_gapBufferWriteToSpanElement = null;
     EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
@@ -3778,8 +3773,8 @@ function EDITOR_NOTcanBatch_insert() {
 function EDITOR_NOTcanBatch_enter() {
     return true || // turn off batching until it works. The initial enter event is what matters everything else can be recreated based on the amount of lineFeeds that were inserted.
            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_Enter ||
-           EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] !== EDITOR_cursor_END_editIndexLine ||
-           EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] !== EDITOR_cursor_END_editIndexColumn ||
+           EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexLine] ||
+           EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexColumn] ||
            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] >= EDITOR_cursor_GAP_BUFFER_CAPACITY ||
            !EDITOR_cursor_enterKey_newLinePlusIndentation_byteList ||
            EDITOR_cursor_hasSelection();
@@ -6679,8 +6674,8 @@ function EDITOR_EnterKey(ctrlKey, shiftKey) {
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] += insertionCount;
     EDITOR_cursor_editLineFeedCount++;
 
-    EDITOR_cursor_END_editIndexLine = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
-    EDITOR_cursor_END_editIndexColumn = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
 
     EDITOR_render_request(ENUM_RenderKind_Enter);
 }
@@ -6945,8 +6940,8 @@ function EDITOR_removeSelection() {
 
     let largeLineAndColumnIndices = EDITOR_getLineAndColumnIndices(largePosition);
     EDITOR_RemoveSelection_largeLineAndColumnIndices = largeLineAndColumnIndices;
-    EDITOR_cursor_END_editIndexLine = largeLineAndColumnIndices.indexLine;
-    EDITOR_cursor_END_editIndexColumn = largeLineAndColumnIndices.indexColumn;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexLine] = largeLineAndColumnIndices.indexLine;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexColumn] = largeLineAndColumnIndices.indexColumn;
 
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = smallLineAndColumnIndices.indexLine;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = smallLineAndColumnIndices.indexColumn;

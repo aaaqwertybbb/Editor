@@ -320,8 +320,10 @@ const INDEXOF_EDITOR_cursor_editIndexColumn = 55;
 const INDEXOF_EDITOR_cursor_editRenderedDisplacement = 56;
 /** TODO: perhaps you could determine this some other way, but tracking it for the moment is easiest and necessary if I'm to not give up on getting an initial solution to work, given my current mood and etc... */
 const INDEXOF_EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET = 57;
+const INDEXOF_EDITOR_cursor_END_editIndexLine = 58;
+const INDEXOF_EDITOR_cursor_END_editIndexColumn = 59;
 
-// EDITOR_int_fields[INDEXOF_EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET]
+// EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexColumn]
 
 
 

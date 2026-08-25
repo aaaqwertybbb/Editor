@@ -9301,4 +9301,7 @@ I take strattera and only 60mg
 you know I also take 80mg of prozac the max dose
 and the reason is for OCD lol
 
+I take wellbutrin because it feels good to a degree so I asked my doctor to prescribe me it
+and then continually asked them for a higher dose until they dosed me with 450mg
+
 */

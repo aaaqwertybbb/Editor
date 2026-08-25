@@ -602,7 +602,7 @@ function EDITOR_render_do_CreateViewport() {
     EDITOR_baseElement.scrollLeft = 0;
     lastReadNumber_scrollLeft = 0;
 
-    local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount] = EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
+    local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount] = local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount];
 
     cached_EDITOR_gutter.innerHTML = '';
     cached_EDITOR_textElement.innerHTML = '';
@@ -610,7 +610,7 @@ function EDITOR_render_do_CreateViewport() {
     EDITOR_beltIndexZero = 0;
     let translateY = `translateY(0px)`;
     let left = gutterWidthTotal_withPxUnits;
-    let gutterWidth = `${EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthStyleValue]}px`;
+    let gutterWidth = `${local_EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthStyleValue]}px`;
 
     for (var i = 0; i < local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]; i++) {
 
@@ -836,7 +836,7 @@ function EDITOR_render_do_Scroll(timestamp) {
 
         local_EDITOR_int_fields[INDEXOF_EDITOR_sum_diffPositive] += diff;
 
-        // Note: this case has 'vertical = (prevVli + EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]) * local_lineHeight;' I believe 'local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]' === 'local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount]' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
+        // Note: this case has 'vertical = (prevVli + local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]) * local_lineHeight;' I believe 'local_EDITOR_int_fields[INDEXOF_EDITOR_virtualCount]' === 'local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount]' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
         lowerBound = local_prevVli + local_EDITOR_int_fields[INDEXOF_EDITOR_ONSCROLLvirtualCount];
         upperBound = lowerBound + diff;
 
@@ -929,9 +929,9 @@ function EDITOR_onScroll_LeadingEdge(local_prevVli, local_currVli) {
     prevVli = local_prevVli;
     currVli = local_currVli;
 
-    EDITOR_int_fields[INDEXOF_EDITOR_intFalsey_isScrolling] = 1;
+    local_EDITOR_int_fields[INDEXOF_EDITOR_intFalsey_isScrolling] = 1;
 
-    // TODO: If you can prove that the leading edge or 'EDITOR_int_fields[INDEXOF_EDITOR_intFalsey_isScrolling]' is "equivalent" to 'isCheckingTrailingEdge' then you can reduce the code here.
+    // TODO: If you can prove that the leading edge or 'local_EDITOR_int_fields[INDEXOF_EDITOR_intFalsey_isScrolling]' is "equivalent" to 'isCheckingTrailingEdge' then you can reduce the code here.
     //
     // If we aren't tracking the trailing edge yet, start the rAF countdown loop
     if (!isCheckingTrailingEdge) {
@@ -2716,29 +2716,32 @@ function EDITOR_drawViewPort_FindTrackedSyntax_StartingIndex(indexLineAaa) {
 
     // TODO: 'indexLineAaa' and 'indexLineBbb'; babel compiler error when both were named indexLine.
 
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+    let local_EDITOR_trackedSyntaxList = EDITOR_trackedSyntaxList;
+
     let line = EDITOR_getLineBoundaryPositions(indexLineAaa);
     let positionIndex = line.start;
 
     let left = 0;
-    let right = EDITOR_trackedSyntaxList.count_abstract - 1;
+    let right = local_EDITOR_trackedSyntaxList.count_abstract - 1;
 
     let indexLineBbb = -1;
 
     while (left <= right) {
         const mid = Math.floor((left + right) / 2);
 
-        EDITOR_trackedSyntaxList.getElementAt(mid);
+        local_EDITOR_trackedSyntaxList.getElementAt(mid);
         
-        if (EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] > positionIndex) {
+        if (local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] > positionIndex) {
             indexLineBbb = mid;
 
-            if (EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] === positionIndex) {
+            if (local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] === positionIndex) {
                 break;
             }
             
             right = mid - 1;
         }
-        else if (EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] <= positionIndex) {
+        else if (local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] <= positionIndex) {
             left = mid + 1;
         }
         else {
@@ -2755,15 +2758,17 @@ function EDITOR_drawViewPort_FindTrackedSyntax_StartingIndex(indexLineAaa) {
  */
 function EDITOR_trackedSyntaxReposition_find(positionIndex) {
 
+    let local_EDITOR_trackedSyntaxList = EDITOR_trackedSyntaxList;
+
     let left = 0;
-    let right = EDITOR_trackedSyntaxList.count_abstract - 1;
+    let right = local_EDITOR_trackedSyntaxList.count_abstract - 1;
 
     let indexLine = -1;
 
     while (left <= right) {
         const mid = Math.floor((left + right) / 2);
 
-        let start = EDITOR_trackedSyntaxList.getStart(mid);
+        let start = local_EDITOR_trackedSyntaxList.getStart(mid);
         
         if (positionIndex <= start) {
             indexLine = mid;
@@ -3168,6 +3173,8 @@ function EDITOR_getLastValidIndexColumn_raw(indexLine) {
  * NOTE: In performance critical sections this code is explicitly inlined and modified to be as performant as it seemingly can get for that specific section of code.
  * 
  * @returns an object with properties 'start' inclusive, 'end' exclusive
+ * 
+ * TODO: Remove this function or move the output to two entries of 'EDITOR_int_fields'
  */
 function EDITOR_getLineBoundaryPositions(indexLine) {
     if (indexLine < EDITOR_lineEndPositionList.count) {

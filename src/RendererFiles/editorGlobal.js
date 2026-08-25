@@ -9262,6 +9262,6 @@ but that's what all that column and line offset logic was for
 I found the minimum necessary "in terms of eachother" that was necessary.
 
 And that worked because you started the edit in reverse so they didn't clobber eachother
-but you rendered then forwards so you could track the cumulative offsets caused by prior cursors.
+but you rendered them forwards so you could track the cumulative offsets caused by prior cursors.
 
 */

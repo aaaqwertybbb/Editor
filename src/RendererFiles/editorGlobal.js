@@ -147,6 +147,8 @@ EDITOR_cursor_cursorElement.className = "EDITOR_cursor";
 
 EDITOR_cursor_caretRow.appendChild(EDITOR_cursor_cursorElement);
 
+let EDITOR_cursor_selectionDivExists;
+
 /**
  * Upon an enter keystroke this is inserted onto the newly added line.
  * 
@@ -208,7 +210,7 @@ function EDITOR_cursor_hasSelection() {
 }
 
 /**
- * The code that clears the editor is dependent on this method NOT clearing 'cursor.selectionDivExists'
+ * The code that clears the editor is dependent on this method NOT clearing 'EDITOR_cursor_selectionDivExists'
  * 
  * Somewhat duplicated code: This messes with the language features if I invoke clear() in the constructor, it puts "| undefined" on all the types.
  */
@@ -537,8 +539,8 @@ function EDITOR_render_do_InsertLtr() {
 }
 
 function EDITOR_render_do_Clear() {
-    EDITOR_drawCursor(EDITOR_primaryCursor);
-    EDITOR_clearSelectionStyle(EDITOR_primaryCursor);
+    EDITOR_drawCursor();
+    EDITOR_clearSelectionStyle();
     cached_EDITOR_textElement.innerHTML = '';
     cached_EDITOR_gutter.innerHTML = '';
 
@@ -2917,19 +2919,19 @@ function EDITOR_getLineAndColumnIndices(positionIndex) {
 }
 
 /**
- * This function only clears both the 'cursor.selectionDivExists' and the HTML associated with the selection NOT the actual selection position properties of the cursor.
+ * This function only clears both the 'EDITOR_cursor_selectionDivExists' and the HTML associated with the selection NOT the actual selection position properties of the cursor.
  * 
  * @param {EDITOR_Cursor} cursor 
  */
-function EDITOR_clearSelectionStyle(cursor) {
+function EDITOR_clearSelectionStyle() {
     let shouldExistSelectionDiv = false;
-    if (cursor.selectionDivExists) {
+    if (EDITOR_cursor_selectionDivExists) {
         for (var i = 0; i < cached_EDITOR_presentation.children.length; i++) {
             if (cached_EDITOR_presentation.children[i].id === EDITOR_cursor_htmlId) {
                 let textSelectionDiv = cached_EDITOR_presentation.children[i];
                 if (!shouldExistSelectionDiv) {
                     cached_EDITOR_presentation.removeChild(textSelectionDiv);
-                    cursor.selectionDivExists = false;
+                    EDITOR_cursor_selectionDivExists = false;
                 }
                 break;
             }
@@ -2961,13 +2963,13 @@ function EDITOR_createStyleForSelection(cursor) {
 
         let textSelectionDiv;
 
-        if (cursor.selectionDivExists) {
+        if (EDITOR_cursor_selectionDivExists) {
             for (var i = 0; i < cached_EDITOR_presentation.children.length; i++) {
                 if (cached_EDITOR_presentation.children[i].id === EDITOR_cursor_htmlId) {
                     textSelectionDiv = cached_EDITOR_presentation.children[i];
                     if (!shouldExistSelectionDiv) {
                         cached_EDITOR_presentation.removeChild(textSelectionDiv);
-                        cursor.selectionDivExists = false;
+                        EDITOR_cursor_selectionDivExists = false;
                     }
                     break;
                 }
@@ -2978,10 +2980,10 @@ function EDITOR_createStyleForSelection(cursor) {
             textSelectionDiv.id = EDITOR_cursor_htmlId;
             textSelectionDiv.style.display = 'contents';
             cached_EDITOR_presentation.appendChild(textSelectionDiv);
-            cursor.selectionDivExists = true;
+            EDITOR_cursor_selectionDivExists = true;
         }
 
-        if (!cursor.selectionDivExists) return;
+        if (!EDITOR_cursor_selectionDivExists) return;
 
         // TODO: only somewhat simple viewport based virtualization is implemented from what I remember. i.e.: I think the divs are re-used, but every div is redrawn for the viewport, rather than only recalculating the css for the divs that came or left the viewport.
 
@@ -3079,7 +3081,7 @@ function EDITOR_createStyleForSelection(cursor) {
 
 function EDITOR_createStyleForSelection_indentMore(cursor) {
     let textSelectionDiv;
-    if (cursor.selectionDivExists) {
+    if (EDITOR_cursor_selectionDivExists) {
         for (var i = 0; i < cached_EDITOR_presentation.children.length; i++) {
             if (cached_EDITOR_presentation.children[i].id === EDITOR_cursor_htmlId) {
                 textSelectionDiv = cached_EDITOR_presentation.children[i];
@@ -5534,7 +5536,7 @@ function EDITOR_render_do_IndentLess() {
 
         /////////////////////// P_1
         let textSelectionDiv;
-        if (cursor.selectionDivExists) {
+        if (EDITOR_cursor_selectionDivExists) {
             for (var i = 0; i < cached_EDITOR_presentation.children.length; i++) {
                 if (cached_EDITOR_presentation.children[i].id === EDITOR_cursor_htmlId) {
                     textSelectionDiv = cached_EDITOR_presentation.children[i];

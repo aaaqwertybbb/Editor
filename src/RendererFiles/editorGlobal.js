@@ -8862,4 +8862,15 @@ I'm confused I need to do lateral raises
 
 Maybe I should go to bed wtf have I been doing the last hour or so
 
+====
+
+Google AI
+
+> I have an electron app that uses vanilla JS. When I do 'npm run start', does the code get interpreted or is it compiled or...?
+
+< When you run npm run start in your Electron app, your JavaScript code is interpreted and compiled just-in-time (JIT) by Google's V8 engine, exactly like it is inside a standard Google Chrome browser.
+<
+< ...
+
+
 */

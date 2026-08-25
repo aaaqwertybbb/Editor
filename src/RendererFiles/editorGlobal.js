@@ -794,7 +794,8 @@ function EDITOR_render_do_Scroll(timestamp) {
     // TODO: Instead of adding 1000 here you should do it when you check the debounce
     local_EDITOR_int_fields[INDEXOF_EDITOR_scrollEndDeadline] = timestamp + 1000; // TODO: Move this to the scroll event handler (probably-maybe)
 
-    // TODO: !... vs checking for 0 or 1
+    // TODO: !... vs checking for 0 or 1... '===', then '!', then '=='
+    // because '===' skips any check for type coercion
     if (local_EDITOR_int_fields[INDEXOF_EDITOR_intFalsey_isScrolling] === 0) {
         // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 2 of 4)
         // ...and here the locals are passed to the LeadingEdge because only when performing the LeadingEdge do you need to use the global versions.

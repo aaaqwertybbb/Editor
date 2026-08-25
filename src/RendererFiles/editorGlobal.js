@@ -199,13 +199,14 @@ let EDITOR_cursor_EDITOR_duplicate_small = 0;
 /** same comment that pertains to EDITOR_cursor_EDITOR_paste_clipboardContent is somewhat relevant here */
 let EDITOR_cursor_EDITOR_duplicate_length = 0;
 
+function EDITOR_cursor_hasSelection() {
+    return EDITOR_cursor_selectionAnchor >= 0 &&
+            EDITOR_cursor_selectionEnd >= 0 &&
+            EDITOR_cursor_selectionAnchor != EDITOR_cursor_selectionEnd;
+}
 
 class EDITOR_Cursor {
-    hasSelection() {
-        return EDITOR_cursor_selectionAnchor >= 0 &&
-               EDITOR_cursor_selectionEnd >= 0 &&
-               EDITOR_cursor_selectionAnchor != EDITOR_cursor_selectionEnd;
-    }
+    
     
     /**
      * The code that clears the editor is dependent on this method NOT clearing 'cursor.selectionDivExists'
@@ -3623,10 +3624,10 @@ function EDITOR_getPositionIndex_raw(cursor) {
 function EDITOR_onMouseDownDetailRankOne(event_button, event_shiftKey, indexLineClicked, indexColumnClicked) {
     let cursor = EDITOR_primaryCursor;
 
-    let selectionPlusContextMenuCase = event_button === 2 && cursor.hasSelection();
+    let selectionPlusContextMenuCase = event_button === 2 && EDITOR_cursor_hasSelection();
 
     if (event_shiftKey && !selectionPlusContextMenuCase) {
-        if (!cursor.hasSelection()) {
+        if (!EDITOR_cursor_hasSelection()) {
             EDITOR_cursor_selectionAnchor = EDITOR_getPositionIndex(cursor);
         }
     }
@@ -3858,7 +3859,7 @@ function EDITOR_NOTcanBatch_insert(cursor, indexCursor) {
            EDITOR_cursor_indexLine !== EDITOR_cursor_editIndexLine ||
            EDITOR_cursor_indexColumn !== EDITOR_cursor_editIndexColumn + EDITOR_cursor_editLength ||
            EDITOR_cursor_editLength >= EDITOR_cursor_GAP_BUFFER_CAPACITY ||
-           cursor.hasSelection();
+           EDITOR_cursor_hasSelection();
 }
 
 /**
@@ -3873,7 +3874,7 @@ function EDITOR_NOTcanBatch_enter(cursor, indexCursor) {
            EDITOR_cursor_indexColumn !== EDITOR_cursor_END_editIndexColumn ||
            EDITOR_cursor_editLength >= EDITOR_cursor_GAP_BUFFER_CAPACITY ||
            !EDITOR_cursor_enterKey_newLinePlusIndentation_byteList ||
-           cursor.hasSelection();
+           EDITOR_cursor_hasSelection();
 }
 
 /**
@@ -3884,7 +3885,7 @@ function EDITOR_NOTcanBatch_backspace(cursor) {
     return EDITOR_cursor_editKind != ENUM_EditKind_BackspaceRtl ||
            EDITOR_cursor_indexLine !== EDITOR_cursor_editIndexLine ||
            EDITOR_cursor_indexColumn !== EDITOR_cursor_editIndexColumn ||
-           cursor.hasSelection();
+           EDITOR_cursor_hasSelection();
 }
 
 /**
@@ -3895,7 +3896,7 @@ function EDITOR_NOTcanBatch_delete(cursor) {
     return EDITOR_cursor_editKind != ENUM_EditKind_DeleteLtr ||
            EDITOR_cursor_indexLine !== EDITOR_cursor_editIndexLine ||
            EDITOR_cursor_indexColumn !== EDITOR_cursor_editIndexColumn ||
-           cursor.hasSelection();
+           EDITOR_cursor_hasSelection();
 }
 
 /**
@@ -3904,14 +3905,14 @@ function EDITOR_NOTcanBatch_delete(cursor) {
  */
 function EDITOR_preKeyboardMovementSelectionLogic(cursor, shiftKey) {
     if (shiftKey) {
-        if (!cursor.hasSelection()) {
+        if (!EDITOR_cursor_hasSelection()) {
             EDITOR_cursor_selectionAnchor = EDITOR_getPositionIndex(cursor);
             cursor.selectionIndexAnchorLine = EDITOR_cursor_indexLine;
             cursor.selectionIndexAnchorColumn = EDITOR_cursor_indexColumn;
         }
     }
     else {
-        if (cursor.hasSelection()) {
+        if (EDITOR_cursor_hasSelection()) {
             EDITOR_cursor_selectionAnchor = EDITOR_cursor_selectionEnd;
             cursor.selectionIndexAnchorLine = cursor.selectionIndexEndLine;
             cursor.selectionIndexAnchorColumn = cursor.selectionIndexEndColumn;
@@ -3992,7 +3993,7 @@ function EDITOR_editEvent(editKind, event, clipboardContent) {
     let shouldFinalizeAllCursors = false;
     let atLeastOneCursorHasASelection = false;
     let cursor = EDITOR_primaryCursor;
-    if (cursor.hasSelection()) {
+    if (EDITOR_cursor_hasSelection()) {
         shouldFinalizeAllCursors = true;
         atLeastOneCursorHasASelection = true;
     }
@@ -4022,7 +4023,7 @@ function EDITOR_editEvent(editKind, event, clipboardContent) {
         if (atLeastOneCursorHasASelection) {
             shouldFinalizeAllCursors = true;
             let cursor = EDITOR_primaryCursor;
-            if (cursor.hasSelection()) {
+            if (EDITOR_cursor_hasSelection()) {
                 EDITOR_removeSelection(cursor);
             }
         }
@@ -4128,7 +4129,7 @@ function EDITOR_editEvent_theEditIself_DeleteLtr(event) {
         EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = EDITOR_cursor_indexLine;
         EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
     }
-    if (cursor.hasSelection()) {
+    if (EDITOR_cursor_hasSelection()) {
         EDITOR_removeSelection(cursor);
     }
     else {
@@ -4149,7 +4150,7 @@ function EDITOR_editEvent_theEditIself_BackspaceRtl(event) {
         EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn_withRespectToThisIndexLine] = EDITOR_cursor_indexLine;
         EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
     }
-    if (cursor.hasSelection()) {
+    if (EDITOR_cursor_hasSelection()) {
         EDITOR_removeSelection(cursor);
     }
     else {
@@ -4167,7 +4168,7 @@ function EDITOR_editEvent_theEditIself_BackspaceRtl(event) {
 function EDITOR_editEvent_theEditIself_Tab(event) {
     let cursor = EDITOR_primaryCursor;
     EDITOR_movementBasedCacheInvalidation(cursor);
-    if (cursor.hasSelection()) {
+    if (EDITOR_cursor_hasSelection()) {
         if (event.shiftKey) {
             if (EDITOR_cursor_editKind !== ENUM_EditKind_IndentLess) {
                 EDITOR_startEdit(cursor, ENUM_EditKind_IndentLess, EDITOR_getPositionIndex_raw(cursor), /*editLength*/ 0);
@@ -4265,14 +4266,14 @@ function EDITOR_editEvent_checkFor_NOTcanBatch_BackspaceRtl() {
 function EDITOR_editEvent_checkFor_NOTcanBatch_Tab(event) {
     let cursor = EDITOR_primaryCursor;
 
-    if (cursor.hasSelection() && !event.shiftKey) {
+    if (EDITOR_cursor_hasSelection() && !event.shiftKey) {
         return EDITOR_editEvent_checkFor_NOTcanBatch_IndentMore();
     }
-    else if (cursor.hasSelection() && event.shiftKey) {
-        // TODO: write 'if (cursor.hasSelection())' then nest these in the same wrapping if statement.
+    else if (EDITOR_cursor_hasSelection() && event.shiftKey) {
+        // TODO: write 'if (EDITOR_cursor_hasSelection())' then nest these in the same wrapping if statement.
         return EDITOR_editEvent_checkFor_NOTcanBatch_IndentLess();
     }
-    else if (!cursor.hasSelection()) {
+    else if (!EDITOR_cursor_hasSelection()) {
         if (event.shiftKey) {
             return EDITOR_editEvent_checkFor_NOTcanBatch_IndentLess();
         }
@@ -4586,7 +4587,7 @@ function EDITOR_onKeyDown_ArrowLeft(event) {
         EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
     }
 
-    if (cursor.hasSelection() && !event.shiftKey) {
+    if (EDITOR_cursor_hasSelection() && !event.shiftKey) {
         let small;
         if (EDITOR_cursor_selectionAnchor < EDITOR_cursor_selectionEnd) {
             small = EDITOR_cursor_selectionAnchor;
@@ -4700,7 +4701,7 @@ function EDITOR_onKeyDown_ArrowRight(event) {
         EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] = 0;
     }
 
-    if (cursor.hasSelection() && !event.shiftKey) {
+    if (EDITOR_cursor_hasSelection() && !event.shiftKey) {
         let large;
         if (EDITOR_cursor_selectionAnchor < EDITOR_cursor_selectionEnd) {
             large = EDITOR_cursor_selectionEnd;
@@ -5074,7 +5075,7 @@ function EDITOR_findOverlay_doSearch() {
     let nextMatchNumber = -1;
     let nextMatchPos;
 
-    if (EDITOR_primaryCursor.hasSelection()) {
+    if (EDITOR_cursor_hasSelection()) {
         let small = EDITOR_cursor_selectionAnchor;
         let large = EDITOR_cursor_selectionEnd;
         if (EDITOR_cursor_selectionAnchor > EDITOR_cursor_selectionEnd) {
@@ -5278,7 +5279,7 @@ function EDITOR_findOverlay_showSetter(showValue) {
 	    divOptions.appendChild(label_for_checkboxMatchWord);
 	    EDITOR_findOverlay.appendChild(divOptions);
         
-        if (EDITOR_primaryCursor.hasSelection()) {
+        if (EDITOR_cursor_hasSelection()) {
         	EDITOR_finalizeAllCursors();
             let selectionAnchor = EDITOR_cursor_selectionAnchor;
             let selectionEnd = EDITOR_cursor_selectionEnd;
@@ -5740,7 +5741,7 @@ function EDITOR_indentLess(cursor) {
  * @param {*} cursor 
  */
 async function EDITOR_copySelection(cursor) {
-	if (!cursor.hasSelection()) {
+	if (!EDITOR_cursor_hasSelection()) {
 		// TODO: This code has a bug and doesn't work with multicursor... EDITOR_onMouseDownDetailRankThree needs to accept a cursor rather than acting on EDITOR_primaryCursor
     	EDITOR_onMouseDownDetailRankThree(0, false, EDITOR_cursor_indexLine, EDITOR_cursor_indexColumn);
 	}
@@ -5764,7 +5765,7 @@ async function EDITOR_copySelection(cursor) {
  * @param {EDITOR_Cursor} cursor 
  */
 async function EDITOR_duplicateSelection(cursor) {
-	if (!cursor.hasSelection()) {
+	if (!EDITOR_cursor_hasSelection()) {
 		// TODO: This code has a bug and doesn't work with multicursor... EDITOR_onMouseDownDetailRankThree needs to accept a cursor rather than acting on EDITOR_primaryCursor...
         // ...these days the todo is somewhat incorrect, it takes cursor now, but you'd need to check whether this causes the selection of two cursors to overlap.
     	EDITOR_onMouseDownDetailRankThree(0, false, EDITOR_cursor_indexLine, EDITOR_cursor_indexColumn);
@@ -7512,7 +7513,7 @@ function EDITOR_render_do_Delete() {
 
 /** @param {EDITOR_Cursor} cursor  */
 function EDITOR_state_do_Delete(cursor, event) {
-    if (cursor.hasSelection()) {
+    if (EDITOR_cursor_hasSelection()) {
         EDITOR_removeSelection(cursor);
         return;
     }
@@ -7703,7 +7704,7 @@ function EDITOR_render_do_Backspace() {
 }
 
 function EDITOR_state_do_Backspace(cursor, event) {
-    if (cursor.hasSelection()) {
+    if (EDITOR_cursor_hasSelection()) {
         EDITOR_removeSelection(cursor);
         return;
     }

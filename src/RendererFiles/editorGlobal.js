@@ -8872,5 +8872,11 @@ Google AI
 <
 < ...
 
+> Does the length of my identifiers effect the speed of interpretation? Or the size of the compiled code? Or...?
+
+< The length of your identifiers (variable, function, and class names) does not affect the execution speed of your Electron app, but it does have a microscopic effect on initial file size and parse time.
+<
+< ...
+
 
 */

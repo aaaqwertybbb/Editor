@@ -1718,8 +1718,8 @@ function EDITOR_finalizeEdit_InsertLtr(cursor, indexLine_editOccurredOn) {
     let lineAndColumnIndices = EDITOR_getLineAndColumnIndices(cursor.editPosition);
     // TODO: Account for any '\t\0\0\0' that exist on the line
     let text = EDITOR_decoder.decode(cursor.gapBuffer.subarray(0, cursor.gapBufferCount));
-    set_didChangeTextDocument_version(get_didChangeTextDocument_version() + 1);
-    let version = get_didChangeTextDocument_version();
+    set_didChangeTextDocument_version(EDITOR_int_fields[INDEXOF_didChangeTextDocument_version] + 1);
+    let version = EDITOR_int_fields[INDEXOF_didChangeTextDocument_version];
 
     // --- CLEAN INTEGRATION ---
     enqueueLSPNotification({
@@ -1821,8 +1821,8 @@ function EDITOR_finalizeEdit_IndentMore(cursor, indexLine_editOccurredOn) {
     let ORIGINAL_incrementBy = (startingIndex + 1 - SMALL_lineAndColumnIndices_indexLine) * 4;
     let incrementBy = ORIGINAL_incrementBy;
 
-    //let ORIGINAL_incrementBy = get_EDITOR_indent_ORIGINAL_indentBy();
-    //let incrementBy = get_EDITOR_indent_ORIGINAL_indentBy();
+    //let ORIGINAL_incrementBy = EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy];
+    //let incrementBy = EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy];
     //set_EDITOR_indent_ORIGINAL_indentBy(0);
 
     let bytes = EDITOR_on_tab_bytes;
@@ -1928,8 +1928,8 @@ function EDITOR_finalizeEdit_IndentLess(cursor, indexLine_editOccurredOn) {
     // multiply by n to get the decrement because it deals with the existence of whitespace to be removed so you need to actually sum this as you handle each event
     // so that when you get to the finalize you have it all sum'd up (although yes this logic probably doesn't even belong in the event but it is there and 1 thing at a time).
 
-    //let ORIGINAL_decrementBy = get_EDITOR_indent_ORIGINAL_indentBy();
-    //let decrementBy = get_EDITOR_indent_ORIGINAL_indentBy();
+    //let ORIGINAL_decrementBy = EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy];
+    //let decrementBy = EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy];
     //set_EDITOR_indent_ORIGINAL_indentBy(0);
 
     let startingIndex = EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex];
@@ -2368,8 +2368,8 @@ function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(cursor,
     let textSourceIdentifier = EDITOR_FORMATTED_textSourceIdentifier;
     // TODO: Account for any '\t\0\0\0' that exist on the line            
     let text = '';
-    set_didChangeTextDocument_version(get_didChangeTextDocument_version() + 1);
-    let version = get_didChangeTextDocument_version();
+    set_didChangeTextDocument_version(EDITOR_int_fields[INDEXOF_didChangeTextDocument_version] + 1);
+    let version = EDITOR_int_fields[INDEXOF_didChangeTextDocument_version];
 
     // --- CLEAN INTEGRATION ---
     enqueueLSPNotification({
@@ -2643,7 +2643,7 @@ function walkLineUntilIndexColumn(cursor) {
     }
     
     let div = ArrayFrom_textElement_children[w_beltIndexLine];
-    let indexColumn_Goal = cursor.indexColumn + get_EDITOR_offsetColumn();
+    let indexColumn_Goal = cursor.indexColumn + EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn];
     let indexColumn_Sum = 0;
 
     for (var indexSpan = 0; indexSpan < div.children.length; indexSpan++) {
@@ -2817,8 +2817,8 @@ function EDITOR_draw_all_cursors() {
  * @param {boolean} NOTscrollCursorIntoView 
  */
 function EDITOR_drawCursor(cursor, NOTscrollCursorIntoView) {
-    cursor.cursorTranslateYValue = (cursor.indexLine + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) * get_EDITOR_lineHeight();
-    cursor.cursorTranslateXValue = (cursor.indexColumn + get_EDITOR_offsetColumn()) * EDITOR_characterWidth;
+    cursor.cursorTranslateYValue = (cursor.indexLine + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) * EDITOR_int_fields[INDEXOF_EDITOR_lineHeight];
+    cursor.cursorTranslateXValue = (cursor.indexColumn + EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn]) * EDITOR_characterWidth;
 
     cursor.caretRow.style.transform = `translateY(${cursor.cursorTranslateYValue}px)`;
     cursor.cursorElement.style.transform = `translateX(${cursor.cursorTranslateXValue}px)`;
@@ -3073,7 +3073,7 @@ function EDITOR_createStyleForSelection(cursor) {
             lineSelectionDiv = textSelectionDiv.children[childDivIndex++];
             lineSelectionDiv.className = 'EDITOR_selection';
             lineSelectionDiv.style.left = gutterWidthTotal_withPxUnits;
-            lineSelectionDiv.style.transform = `translate(${startColumn * EDITOR_characterWidth}px, ${get_EDITOR_lineHeight() * startLine}px)`;
+            lineSelectionDiv.style.transform = `translate(${startColumn * EDITOR_characterWidth}px, ${EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] * startLine}px)`;
             lineSelectionDiv.style.width = (INCLUSIVEendColumn - startColumn) * EDITOR_characterWidth + 'px';
         }
         else {
@@ -3081,7 +3081,7 @@ function EDITOR_createStyleForSelection(cursor) {
             lineSelectionDiv = textSelectionDiv.children[childDivIndex++];
             lineSelectionDiv.className = 'EDITOR_selection';
             lineSelectionDiv.style.left = gutterWidthTotal_withPxUnits;
-            lineSelectionDiv.style.transform = `translate(${startColumn * EDITOR_characterWidth}px, ${get_EDITOR_lineHeight() * startLine}px)`;
+            lineSelectionDiv.style.transform = `translate(${startColumn * EDITOR_characterWidth}px, ${EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] * startLine}px)`;
             let line = EDITOR_getLineBoundaryPositions(startLine);
             let lineLength = line.end - line.start;
             lineSelectionDiv.style.width = (lineLength + 1 - startColumn) * EDITOR_characterWidth + 'px';
@@ -3091,7 +3091,7 @@ function EDITOR_createStyleForSelection(cursor) {
                 lineSelectionDiv = textSelectionDiv.children[childDivIndex++];
                 lineSelectionDiv.className = 'EDITOR_selection';
                 lineSelectionDiv.style.left = gutterWidthTotal_withPxUnits;
-                lineSelectionDiv.style.transform = `translateY(${get_EDITOR_lineHeight() * lineI}px)`;
+                lineSelectionDiv.style.transform = `translateY(${EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] * lineI}px)`;
                 let line = EDITOR_getLineBoundaryPositions(lineI);
                 let lineLength = line.end - line.start;
                 lineSelectionDiv.style.width = (lineLength + 1) * EDITOR_characterWidth + 'px';
@@ -3101,7 +3101,7 @@ function EDITOR_createStyleForSelection(cursor) {
             lineSelectionDiv = textSelectionDiv.children[childDivIndex++];
             lineSelectionDiv.className = 'EDITOR_selection';
             lineSelectionDiv.style.left = gutterWidthTotal_withPxUnits;
-            lineSelectionDiv.style.transform = `translateY(${get_EDITOR_lineHeight() * INCLUSIVEendLine}px)`;
+            lineSelectionDiv.style.transform = `translateY(${EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] * INCLUSIVEendLine}px)`;
             lineSelectionDiv.style.width = INCLUSIVEendColumn * EDITOR_characterWidth + 'px';
         }
     }
@@ -3280,7 +3280,7 @@ function EDITOR_onMouseMove_WRAPIT(event) {
         let rY = event.clientY - get_EDITOR_recentBoundingClientRect_top() + EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
 
         let indexColumn = Math.round(rX / EDITOR_characterWidth);
-        let indexLine = Math.floor(rY / get_EDITOR_lineHeight());
+        let indexLine = Math.floor(rY / EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]);
 
         if (indexColumn < 0) {
             indexColumn = 0;
@@ -4337,7 +4337,7 @@ function EDITOR_editEvent_theEditIself_InsertLtr(event) {
         EDITOR_insertDo(cursor, event.key);
         cursor.STORED_indexColumn = cursor.indexColumn;
         EDITOR_render_request(ENUM_RenderKind_Cursor_n + i);
-        //set_EDITOR_offsetColumn(get_EDITOR_offsetColumn() + cursor.editLength);
+        //set_EDITOR_offsetColumn(EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] + cursor.editLength);
         //set_EDITOR_totalShift(get_EDITOR_totalShift() + cursor.editLength); // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
         EDITOR_render_request(ENUM_RenderKind_InsertLtr);
     }
@@ -4362,7 +4362,7 @@ function EDITOR_editEvent_theEditIself_DeleteLtr(event) {
             EDITOR_deleteDo(cursor, event);
         }
         EDITOR_render_request(ENUM_RenderKind_Cursor_n + i);
-        //set_EDITOR_offsetColumn(get_EDITOR_offsetColumn() - cursor.editLength);
+        //set_EDITOR_offsetColumn(EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] - cursor.editLength);
         //set_EDITOR_totalShift(get_EDITOR_totalShift() - cursor.editLength); // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
     }
 }
@@ -4387,7 +4387,7 @@ function EDITOR_editEvent_theEditIself_BackspaceRtl(event) {
             cursor.STORED_indexColumn = cursor.indexColumn;
         }
         EDITOR_render_request(ENUM_RenderKind_Cursor_n + i);
-        //set_EDITOR_offsetColumn(get_EDITOR_offsetColumn() - cursor.editLength);
+        //set_EDITOR_offsetColumn(EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] - cursor.editLength);
         //set_EDITOR_totalShift(get_EDITOR_totalShift() - cursor.editLength); // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
     }
 }
@@ -4893,7 +4893,7 @@ function EDITOR_onKeyDown_ArrowLeft(event) {
         if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
             EDITOR_cursorBlink_startChecking();
         }
-        //set_EDITOR_offsetColumn(get_EDITOR_offsetColumn() + cursor.editLength);
+        //set_EDITOR_offsetColumn(EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] + cursor.editLength);
         //set_EDITOR_totalShift(get_EDITOR_totalShift() + cursor.editLength);
     }
 }
@@ -4904,7 +4904,7 @@ function EDITOR_onKeyDown_ArrowDown(event) {
     event.stopPropagation();
     if (event.ctrlKey) {
         // TODO: raf or something this scrollBy?
-        EDITOR_baseElement.scrollBy(0, get_EDITOR_lineHeight());
+        EDITOR_baseElement.scrollBy(0, EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]);
     }
     else if (event.altKey) {
         if (event.shiftKey) {
@@ -4936,7 +4936,7 @@ function EDITOR_onKeyDown_ArrowUp(event) {
     event.stopPropagation();
     if (event.ctrlKey) {
         // TODO: raf or something this scrollBy?
-        EDITOR_baseElement.scrollBy(0, -1 * get_EDITOR_lineHeight());
+        EDITOR_baseElement.scrollBy(0, -1 * EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]);
     }
     else {
         let firstCursor = EDITOR_cursorList[0];
@@ -5034,7 +5034,7 @@ function EDITOR_onKeyDown_ArrowRight(event) {
         if (!EDITOR_isChecking_cursorBlinkTrailingEdge) {
             EDITOR_cursorBlink_startChecking();
         }
-        //set_EDITOR_offsetColumn(get_EDITOR_offsetColumn() + cursor.editLength);
+        //set_EDITOR_offsetColumn(EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn] + cursor.editLength);
         //set_EDITOR_totalShift(get_EDITOR_totalShift() + cursor.editLength);
     }
 }
@@ -5294,7 +5294,7 @@ function EDITOR_onMouseDown(event) {
     let rY = event.clientY - EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] + EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
     let rX = event.clientX - EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] + lastReadNumber_scrollLeft;
     
-    let indexLine = Math.floor(rY / get_EDITOR_lineHeight());
+    let indexLine = Math.floor(rY / EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]);
     let indexColumn = Math.round(rX / EDITOR_characterWidth);
 
     if (indexLine < 0) {
@@ -8214,7 +8214,7 @@ function EDITOR_scrollCursorIntoView(cursor) {
         // make the bottom touch then add lineHeight is probably the algorithm to get a perfect fill maybe do lineHeight * 2 skip an event when spamming arrowDown?
         let currentBottom = local_lastReadNumber_scrollTop + lastReadNumber_offsetHeight;
         let changeToMakeBottomTouch = cursor.cursorTranslateYValue - currentBottom;
-        scrollY = changeToMakeBottomTouch + (2 * get_EDITOR_lineHeight());
+        scrollY = changeToMakeBottomTouch + (2 * EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]);
     }
 
     if (cursor.cursorTranslateXValue < lastReadNumber_scrollLeft) {
@@ -8841,7 +8841,7 @@ function EDITOR_measureLineHeightAndCharacterWidth() {
 
     const root = document.documentElement;
     const computedStyles = window.getComputedStyle(root);
-    let teLineHeight = get_EDITOR_lineHeight() + 'px';
+    let teLineHeight = EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] + 'px';
     let propertyName = '--EDITOR-line-height';
     if (computedStyles.getPropertyValue(propertyName) !== teLineHeight) {
         // avoid layout with if statement
@@ -9051,7 +9051,7 @@ function EDITOR_requestLspHover() {
     let rY = event_clientY - EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] + EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
     let rX = event_clientX - EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] - EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] + lastReadNumber_scrollLeft;
     
-    let indexLine = Math.floor(rY / get_EDITOR_lineHeight());
+    let indexLine = Math.floor(rY / EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]);
     let indexColumn = Math.round(rX / EDITOR_characterWidth);
 
     if (indexLine < 0) return;

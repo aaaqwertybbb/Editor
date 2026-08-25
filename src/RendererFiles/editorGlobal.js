@@ -331,7 +331,6 @@ function EDI_init() {
     EDI_gutterBackgroundColor.style.paddingRight = gutterPaddingRight;
 
     gINT_FIELDS[F_EDI_gutterWidthStyleValue] = EDI_characterWidth;
-    let gutterWidth = gINT_FIELDS[F_EDI_gutterWidthStyleValue] + 'px';
 
     EDI_drawGutter_Width();
 

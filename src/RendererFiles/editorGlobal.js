@@ -86,7 +86,6 @@ let EDITOR_cursor_GAP_BUFFER_CAPACITY = 32;
 // TODO: This assignment isn't necessary, it was already the default value;
 EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] = ENUM_EditKind_None;
 
-let EDITOR_cursor_editIndexColumn = 0;
 /**
  * the amount of characters that UI has changed with respect to the pending edit
  * per 'EDITOR_render_do', if the displacement is not the editLength then you know you need to "draw more of this edit" on the UI.
@@ -208,7 +207,7 @@ function EDITOR_cursor_clear() {
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = 0;
-    EDITOR_cursor_editIndexColumn = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = 0;
     EDITOR_cursor_editRenderedDisplacement = 0;
     EDITOR_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET = 0;
     EDITOR_cursor_END_editIndexLine = 0;
@@ -2217,7 +2216,7 @@ function EDITOR_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLi
     if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] === ENUM_EditKind_RemoveTextNoBatching) {
         startLineAndColumnIndices = {
             indexLine: EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine],
-            indexColumn: EDITOR_cursor_editIndexColumn,
+            indexColumn: EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn],
         };
     }
     else {
@@ -2336,7 +2335,7 @@ function EDITOR_finalizeEdit_ClearEditState() {
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = 0;
-    EDITOR_cursor_editIndexColumn = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = 0;
     EDITOR_cursor_editRenderedDisplacement = 0;
     EDITOR_cursor_END_editIndexLine = 0;
     EDITOR_cursor_END_editIndexColumn = 0;
@@ -3759,7 +3758,7 @@ function EDITOR_startEdit(editKind, editPosition, editLength) {
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] = editKind;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = editPosition;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
-    EDITOR_cursor_editIndexColumn = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] = editLength;
 
     switch (editKind) {
@@ -3775,7 +3774,7 @@ function EDITOR_startEdit(editKind, editPosition, editLength) {
 function EDITOR_NOTcanBatch_insert() {
     return EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_InsertLtr ||
            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] ||
-           EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] !== EDITOR_cursor_editIndexColumn + EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] ||
+           EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] + EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] ||
            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] >= EDITOR_cursor_GAP_BUFFER_CAPACITY ||
            EDITOR_cursor_hasSelection();
 }
@@ -3799,7 +3798,7 @@ function EDITOR_NOTcanBatch_enter() {
 function EDITOR_NOTcanBatch_backspace() {
     return EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_BackspaceRtl ||
            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] ||
-           EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] !== EDITOR_cursor_editIndexColumn ||
+           EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] ||
            EDITOR_cursor_hasSelection();
 }
 
@@ -3809,7 +3808,7 @@ function EDITOR_NOTcanBatch_backspace() {
 function EDITOR_NOTcanBatch_delete() {
     return EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_DeleteLtr ||
            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] ||
-           EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] !== EDITOR_cursor_editIndexColumn ||
+           EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] ||
            EDITOR_cursor_hasSelection();
 }
 
@@ -4174,7 +4173,7 @@ function EDITOR_editEvent_checkFor_NOTcanBatch_Tab(event) {
         }
         else {
             if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] === EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] &&
-                EDITOR_cursor_editIndexColumn + (4 * EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) === EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]) {
+                EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] + (4 * EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]) === EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]) {
                     return false;
             }
         }
@@ -5668,7 +5667,7 @@ async function EDITOR_duplicateSelection() {
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = large;
     let large_lineAndColumnIndices = EDITOR_getLineAndColumnIndices(large);
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = large_lineAndColumnIndices.indexLine;
-    EDITOR_cursor_editIndexColumn = large_lineAndColumnIndices.indexColumn;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = large_lineAndColumnIndices.indexColumn;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] = length;
 
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = large_lineAndColumnIndices.indexLine;
@@ -6067,7 +6066,7 @@ function EDITOR_paste(content) {
 
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = positionIndex;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
-    EDITOR_cursor_editIndexColumn = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
 
     EDITOR_cursor_EDITOR_paste_clipboardContent = content;
 
@@ -6293,7 +6292,7 @@ function EDITOR_tabKey() {
     if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] === 0) {
         EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = EDITOR_getPositionIndex_cursor();
         EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
-        EDITOR_cursor_editIndexColumn = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+        EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
     }
 
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
@@ -6516,7 +6515,7 @@ function EDITOR_render_do_EnterKey() {
 
         // Is holding down ctrl+enter / shift+enter batchable?
 
-        if (!shouldRenderEntireViewport && EDITOR_cursor_editIndexColumn === 0) { // start of line
+        if (!shouldRenderEntireViewport && EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] === 0) { // start of line
             EDITOR_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, beltIndexLine_current);
             cached_EDITOR_textElement.children[beltIndexLine_current].appendChild(document.createElement('span'));
 
@@ -6528,7 +6527,7 @@ function EDITOR_render_do_EnterKey() {
                 // ensure this conditional branch returns if handled, otherwise it will execute the fallback case erroneously
                 let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine]);
 
-                if (lastValidIndexColumn === EDITOR_cursor_editIndexColumn) { // end of line
+                if (lastValidIndexColumn === EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn]) { // end of line
                     
                     let next_beltIndexLine = (beltIndexLine_current + 1) % ArrayFrom_textElement_children_length;
 
@@ -6544,7 +6543,7 @@ function EDITOR_render_do_EnterKey() {
 
 
                     // among a line uses 'walkLineUntilIndexColumn', this function takes a cursor and accesses the fields: 'indexLine', and 'indexColumn'.
-                    // This is problematic because one needs to use EDITOR_cursor_editIndexColumn for this renderKind.
+                    // This is problematic because one needs to use EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] for this renderKind.
                     // Since only this case needs the logic I'm going to isolate it to here.
                     //
                     // Remember 'indexLine', and 'indexColumn'.
@@ -6555,7 +6554,7 @@ function EDITOR_render_do_EnterKey() {
                     let remember_cursorIndexColumn = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
 
                     EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine];
-                    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = EDITOR_cursor_editIndexColumn;
+                    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn];
 
                     let spanClassName = '';
                     let spanText = EDITOR_cursor_cached_indentation_string;
@@ -6658,7 +6657,7 @@ function EDITOR_EnterKey(ctrlKey, shiftKey) {
 
         EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] = EDITOR_getPositionIndex_raw_cursor();
         EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
-        EDITOR_cursor_editIndexColumn = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+        EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
     }
 
     let insertionCount = EDITOR_cursor_enterKey_newLinePlusIndentation_byteList.count;
@@ -6949,7 +6948,7 @@ function EDITOR_removeSelection() {
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = smallLineAndColumnIndices.indexLine;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = smallLineAndColumnIndices.indexColumn;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = smallLineAndColumnIndices.indexLine;
-    EDITOR_cursor_editIndexColumn = smallLineAndColumnIndices.indexColumn;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = smallLineAndColumnIndices.indexColumn;
 
     let largeLineAndColumnIndices = EDITOR_getLineAndColumnIndices(largePosition);
     EDITOR_RemoveSelection_largeLineAndColumnIndices = largeLineAndColumnIndices;
@@ -7587,7 +7586,7 @@ function EDITOR_state_do_Backspace(event) {
             EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]--;
             EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
             EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine];
-            EDITOR_cursor_editIndexColumn = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] = EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
 
             EDITOR_cursor_editLineFeedCount++;
             EDITOR_lineEndPositionList_PENDING.insert(0, EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]);
@@ -7603,7 +7602,7 @@ function EDITOR_state_do_Backspace(event) {
             let originalCharacterKind = getCharacter_kind_raw(EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] - 1);
             EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]--;
             EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]--;
-            EDITOR_cursor_editIndexColumn--;
+            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn]--;
             EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
 
             while (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] > 0) {
@@ -7612,14 +7611,14 @@ function EDITOR_state_do_Backspace(event) {
                 }
                 EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn]--;
                 EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition]--;
-                EDITOR_cursor_editIndexColumn--;
+                EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn]--;
                 EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
             }
         }
         else {
             EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] -= 1;
             EDITOR_int_fields[INDEXOF_EDITOR_cursor_editPosition] -= 1;
-            EDITOR_cursor_editIndexColumn -= 1;
+            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] -= 1;
             EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength]++;
         }
     }

@@ -9264,4 +9264,7 @@ I found the minimum necessary "in terms of eachother" that was necessary.
 And that worked because you started the edit in reverse so they didn't clobber eachother
 but you rendered them forwards so you could track the cumulative offsets caused by prior cursors.
 
+And since I'll only have 1 cursor, I'm gonna de-smi-ify it so I can go all in on this no-smi idea just to see how far it goes
+and then probably abandon the idea at that point once I've seen that it barely changes anything and classes or etc... idk
+
 */

@@ -9176,4 +9176,26 @@ ugh why does the text disappear when I resize until I scroll enough to refill th
 I'm annoyed cause I've seen this bug before and I can't remember.
 If I can get this then I think today was a 10/10
 
+=====
+
+Anxiety has been a bit high for me.
+I'm not overly concerned with getting a large throughput today.
+
+I strongly believe that coding for 13 hours each day is a foolish thing to do.
+"If you don't code for 13 hours each day someone else will"
+
+The workload ebs and flows.
+
+The key is to show up consistently and at minimum achieve some degree of "fatigue".
+
+And you feel out whether you're fatigued for the day based on various heuristics
+such as "I've been doing this for an hour, okay I'm more likely to be in a fatigued state but I cannot actually use this
+         heuristic as definitive proof I'm just feeling out whether the fatigue has been achieved
+         because one day to another the work I'm doing for that hour varies in complexity and etc... let me check other heuristics
+         that I use for whether I've sufficiently fatigued myself for the day."
+
+And I do this EVERY DAY
+
+So I show up an hour, that's massive, especially if I've honestly felt the fatigue for that day.
+
 */

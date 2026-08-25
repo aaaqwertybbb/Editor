@@ -76,8 +76,6 @@ const EDITOR_decoder = new TextDecoder();
 
 let gutterWidthTotal_withPxUnits;
 
-let EDITOR_cursor_STATIC_CURSOR_ID = 1;
-
 /**
  * I'm not sure how large I want this, what matters is that I just have a size of anything for the time being, then can change this constant later.
  */
@@ -86,7 +84,7 @@ let EDITOR_cursor_GAP_BUFFER_CAPACITY = 32;
 // TODO: This assignment isn't necessary, it was already the default value;
 EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] = ENUM_EditKind_None;
 
-let EDITOR_cursor_cursorId = EDITOR_cursor_STATIC_CURSOR_ID++;
+let EDITOR_cursor_cursorId = 1;//EDITOR_cursor_STATIC_CURSOR_ID++;
 let EDITOR_cursor_htmlId = "EDITOR_cursor-" + EDITOR_cursor_cursorId;
 
 /**

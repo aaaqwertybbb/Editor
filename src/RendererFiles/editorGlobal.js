@@ -9319,4 +9319,8 @@ The main lyric from brokencyde monster inside me that I like is:
  I woulda gave it up if I didn't have a doubt ... cause I'm getting tired of all the lies
  and trust this life's enough for me and I despise you much I'm blind ..."
 
+ Something like that. I don't quite like the "I hate you" lyrics but that part
+ I tried to listen to the lyrics with my ears but I can't understand what they're saying.
+ Something like that.
+
 */

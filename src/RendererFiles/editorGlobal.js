@@ -9205,6 +9205,6 @@ Theprimeagen is the quote. Maybe he said 12 not 13 big deal what a stupid statem
 
 I think about it daily cause of how much I hate what he said
 
-
+I actually don't wanna have that comment in the repo cause it will manifest arthritis or nerve problems
 
 */

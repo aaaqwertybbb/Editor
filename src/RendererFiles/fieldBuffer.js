@@ -295,6 +295,10 @@ and then it knows that everything within that array is a primitive that doesn't 
 bringing 100 visits to just 1.
 
 The global variable access of the UInt...Array can be offset by only doing it once and storing a local copy within whatever function needs it multiple times / within a loop.
+
+Accessing a property on a class is not equivalent to accessing a variable.
+I don't know the difference but property accessing of a class is similar to accessing a global variable?
+Or maybe it only was if the prototype was large?
 */
 
 

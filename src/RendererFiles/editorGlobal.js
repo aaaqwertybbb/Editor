@@ -8948,4 +8948,15 @@ and everything is messing with my head like the youtube recommendations I keep s
 and I keep taking this as though you're questioning whether I'm a good person
 and that you lean towards the idea that I'm a bad person
 
+====
+
+Ultimately once I've done these I'll just have crossed them off
+a list of bad ideas and not have to do them ever again
+
+and I care about eating the 2 lbs of 98% fat free ground chicken everyday until sep 16
+so I don't even really care if what I'm doing goes nowhere right now
+because even if to others it looks like it goes nowhere
+I am aware that I might be doing the wrong thing
+and so I am prepared to just cross off an item on a list of bad ideas and then go on with things
+
 */

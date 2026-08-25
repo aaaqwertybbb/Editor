@@ -45,36 +45,36 @@ it is as if I typed the expression body everywhere I typed the fat arrow functio
  * 
  * TODO: index 8 is available because 'EDI_onScroll_bool' was removed.
  */
-const EDI_byte_fields = new Uint8Array(8);
+const gBYTE_FIELDS = new Uint8Array(8);
 
 /** returns a number, beware '===' */
-const get_EDI_detailRank = () => EDI_byte_fields[0];
-const set_EDI_detailRank = (byte) => EDI_byte_fields[0] = byte;
+const get_EDI_detailRank = () => gBYTE_FIELDS[0];
+const set_EDI_detailRank = (byte) => gBYTE_FIELDS[0] = byte;
 
 /** returns a number, beware '===' */
-const get_EDI_recentBoundingClientRect_isNull_intFalsey = () => EDI_byte_fields[1];
-const set_EDI_recentBoundingClientRect_isNull_intFalsey = (byte) => EDI_byte_fields[1] = byte;
+const get_EDI_recentBoundingClientRect_isNull_intFalsey = () => gBYTE_FIELDS[1];
+const set_EDI_recentBoundingClientRect_isNull_intFalsey = (byte) => gBYTE_FIELDS[1] = byte;
 set_EDI_recentBoundingClientRect_isNull_intFalsey(1);
 
 /** returns a number, beware '===' */
-const get_EDI_findOverlay_show = () => EDI_byte_fields[2];
-const set_EDI_findOverlay_show = (byte) => EDI_byte_fields[2] = byte;
+const get_EDI_findOverlay_show = () => gBYTE_FIELDS[2];
+const set_EDI_findOverlay_show = (byte) => gBYTE_FIELDS[2] = byte;
 
 /** returns a number, beware '===' */
-const get_EDI_findOverlay_isBeingShownDueToMultiCursorMatching = () => EDI_byte_fields[3];
-const set_EDI_findOverlay_isBeingShownDueToMultiCursorMatching = (byte) => EDI_byte_fields[3] = byte;
+const get_EDI_findOverlay_isBeingShownDueToMultiCursorMatching = () => gBYTE_FIELDS[3];
+const set_EDI_findOverlay_isBeingShownDueToMultiCursorMatching = (byte) => gBYTE_FIELDS[3] = byte;
 
 /** returns a number, beware '===' */
-const get_EDI_fileStartsWithBom = () => EDI_byte_fields[4];
-const set_EDI_fileStartsWithBom = (byte) => EDI_byte_fields[4] = byte;
+const get_EDI_fileStartsWithBom = () => gBYTE_FIELDS[4];
+const set_EDI_fileStartsWithBom = (byte) => gBYTE_FIELDS[4] = byte;
 
 /** returns a number, beware '===' */
-const get_EDI_findOverlay_wasSearched = () => EDI_byte_fields[5];
-const set_EDI_findOverlay_wasSearched = (byte) => EDI_byte_fields[5] = byte;
+const get_EDI_findOverlay_wasSearched = () => gBYTE_FIELDS[5];
+const set_EDI_findOverlay_wasSearched = (byte) => gBYTE_FIELDS[5] = byte;
 
 /** returns a number, beware '===' */
-const get_EDI_findOverlay_options_matchWord = () => EDI_byte_fields[6];
-const set_EDI_findOverlay_options_matchWord = (byte) => EDI_byte_fields[6] = byte;
+const get_EDI_findOverlay_options_matchWord = () => gBYTE_FIELDS[6];
+const set_EDI_findOverlay_options_matchWord = (byte) => gBYTE_FIELDS[6] = byte;
 
 const CONST_EDI_ASCII_LINE_FEED = 10;
 const CONST_EDI_ASCII_TAB = 9;

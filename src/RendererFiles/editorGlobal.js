@@ -76,11 +76,6 @@ const EDITOR_decoder = new TextDecoder();
 
 let gutterWidthTotal_withPxUnits;
 
-/**
- * I'm not sure how large I want this, what matters is that I just have a size of anything for the time being, then can change this constant later.
- */
-let EDITOR_cursor_GAP_BUFFER_CAPACITY = 32;
-
 // TODO: This assignment isn't necessary, it was already the default value;
 EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] = ENUM_EditKind_None;
 
@@ -90,7 +85,7 @@ let EDITOR_cursor_htmlId = "EDITOR_cursor-" + EDITOR_cursor_cursorId;
 /**
  * When this is cleared the information is not removed, only 'gapBufferCount' is set to 0.
  */
-let EDITOR_cursor_gapBuffer = new Uint8Array(EDITOR_cursor_GAP_BUFFER_CAPACITY);
+let EDITOR_cursor_gapBuffer = new Uint8Array(CONST_EDITOR_cursor_GAP_BUFFER_CAPACITY);
 
 let EDITOR_cursor_gapBufferWriteToSpanElement = null;
 let EDITOR_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
@@ -3741,7 +3736,7 @@ function EDITOR_NOTcanBatch_insert() {
     return EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_InsertLtr ||
            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexLine] ||
            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_editIndexColumn] + EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] ||
-           EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] >= EDITOR_cursor_GAP_BUFFER_CAPACITY ||
+           EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] >= CONST_EDITOR_cursor_GAP_BUFFER_CAPACITY ||
            EDITOR_cursor_hasSelection();
 }
 
@@ -3753,7 +3748,7 @@ function EDITOR_NOTcanBatch_enter() {
            EDITOR_int_fields[INDEXOF_EDITOR_cursor_editKind] != ENUM_EditKind_Enter ||
            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexLine] ||
            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] !== EDITOR_int_fields[INDEXOF_EDITOR_cursor_END_editIndexColumn] ||
-           EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] >= EDITOR_cursor_GAP_BUFFER_CAPACITY ||
+           EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength] >= CONST_EDITOR_cursor_GAP_BUFFER_CAPACITY ||
            !EDITOR_cursor_enterKey_newLinePlusIndentation_byteList ||
            EDITOR_cursor_hasSelection();
 }

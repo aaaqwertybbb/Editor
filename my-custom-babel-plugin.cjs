@@ -336,6 +336,8 @@ module.exports = function (babel) {
     "CONST_DIALOG_minLeft",
     "CONST_DIALOG_minHeight",
     "CONST_DIALOG_minWidth",
+
+    "CONST_EDITOR_cursor_GAP_BUFFER_CAPACITY",
   ];
 
   return {

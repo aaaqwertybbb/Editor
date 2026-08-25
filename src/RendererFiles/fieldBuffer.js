@@ -156,6 +156,11 @@ const CONST_DIALOG_minLeft = 8;
 const CONST_DIALOG_minHeight = 100;
 const CONST_DIALOG_minWidth = 100;
 
+/**
+ * I'm not sure how large I want this, what matters is that I just have a size of anything for the time being, then can change this constant later.
+ */
+const CONST_EDITOR_cursor_GAP_BUFFER_CAPACITY = 32;
+
 
 ////////////////////////////
 ////////////////////////////

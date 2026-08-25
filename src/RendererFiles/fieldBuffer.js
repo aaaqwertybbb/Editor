@@ -286,7 +286,14 @@ const INDEXOF_EDITOR_cursor_editKind = 36;
 // TODO: Move all the other smi's here
 // TODO: a local copy of 'EDITOR_int_fields' is likely always a meaningful performance gain once you've moved everything because of how much state is being stored here, but it still depends maybe some functions only access it once or something etc...
 
-
+/*
+The smi's are when you do a collection you start at the roots
+and if you have 100 smi's at the global scope the GC visits
+100 smi's in order to check that they truly are smi's and that is the non-zero cost.
+If you stick them all into a UInt...Array then the GC only has to visit the UInt...Array
+and then it knows that everything within that array is a primitive that doesn't have to be collected so it skips over them
+bringing 100 visits to just 1.
+*/
 
 
 

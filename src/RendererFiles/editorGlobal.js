@@ -9220,4 +9220,8 @@ The food's contaminated by cleaning chemicals
 the cleaning chemicals are in the air you walk by from the kitchen from your room they come down like dust onto your food
 you're constantly eating cleaning chemicals
 
+and every surface you eat off of has a residue of cleaning chemicals
+and you put food on the plate that plate activates the inert residue of the cleaning chemicals
+causing them to mix into the food and then you consume it
+
 */

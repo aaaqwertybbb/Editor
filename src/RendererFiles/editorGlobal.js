@@ -9198,4 +9198,7 @@ And I do this EVERY DAY
 
 So I show up an hour, that's massive, especially if I've honestly felt the fatigue for that day.
 
+"If you don't code for 13 hours each day someone else will"
+I hear tech youtubers say these things all the time they're such clowns on this end.
+
 */

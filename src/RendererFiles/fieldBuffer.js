@@ -290,6 +290,9 @@ const INDEXOF_EDITOR_cursor_indexColumn = 38;
  */
 const INDEXOF_EDITOR_cursor_STORED_indexColumn = 39;
 
+const INDEXOF_EDITOR_cursor_cursorTranslateYValue = 40;
+
+const INDEXOF_EDITOR_cursor_cursorTranslateXValue = 41;
 
 
 

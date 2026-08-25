@@ -83,9 +83,6 @@ let EDITOR_cursor_STATIC_CURSOR_ID = 1;
  */
 let EDITOR_cursor_GAP_BUFFER_CAPACITY = 32;
 
-let EDITOR_cursor_cursorTranslateYValue = 0;
-let EDITOR_cursor_cursorTranslateXValue = 0;
-
 let EDITOR_cursor_selectionAnchor = 0;
 let EDITOR_cursor_selectionEnd = 0;
 
@@ -217,8 +214,8 @@ function EDITOR_cursor_clear() {
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
     EDITOR_int_fields[INDEXOF_EDITOR_cursor_STORED_indexColumn] = 0;
-    EDITOR_cursor_cursorTranslateYValue = 0;
-    EDITOR_cursor_cursorTranslateXValue = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] = 0;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] = 0;
     EDITOR_cursor_selectionAnchor = 0;
     EDITOR_cursor_selectionEnd = 0;
     EDITOR_cursor_DRAWN_selectionAnchor = 0;
@@ -2761,11 +2758,11 @@ function EDITOR_draw_all_cursors() {
  * @param {boolean} NOTscrollCursorIntoView 
  */
 function EDITOR_drawCursor(NOTscrollCursorIntoView) {
-    EDITOR_cursor_cursorTranslateYValue = (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) * EDITOR_int_fields[INDEXOF_EDITOR_lineHeight];
-    EDITOR_cursor_cursorTranslateXValue = (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] + EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn]) * EDITOR_characterWidth;
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] = (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] + EDITOR_int_fields[INDEXOF_EDITOR_offsetLine]) * EDITOR_int_fields[INDEXOF_EDITOR_lineHeight];
+    EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] = (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] + EDITOR_int_fields[INDEXOF_EDITOR_offsetColumn]) * EDITOR_characterWidth;
 
-    EDITOR_cursor_caretRow.style.transform = `translateY(${EDITOR_cursor_cursorTranslateYValue}px)`;
-    EDITOR_cursor_cursorElement.style.transform = `translateX(${EDITOR_cursor_cursorTranslateXValue}px)`;
+    EDITOR_cursor_caretRow.style.transform = `translateY(${EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue]}px)`;
+    EDITOR_cursor_cursorElement.style.transform = `translateX(${EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue]}px)`;
 
     EDITOR_createStyleForSelection();
 
@@ -4942,8 +4939,8 @@ function EDITOR_onContextMenu() {
         new MenuOption(ENUM_CommandKind_Find, 'Find', null),
     ];
 
-    let menuLeft = EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] + EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] + EDITOR_cursor_cursorTranslateXValue - lastReadNumber_scrollLeft;
-    let menuTop = EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] + EDITOR_cursor_cursorTranslateYValue + EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] - EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
+    let menuLeft = EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_left] + EDITOR_int_fields[INDEXOF_EDITOR_gutterWidthTotal] + EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] - lastReadNumber_scrollLeft;
+    let menuTop = EDITOR_int_fields[INDEXOF_EDITOR_recentBoundingClientRect_top] + EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] + EDITOR_int_fields[INDEXOF_EDITOR_lineHeight] - EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
 
     return menuSet('EDITOR', null, optionList, menuLeft, menuTop);
 }
@@ -7750,29 +7747,29 @@ function EDITOR_scrollCursorIntoView() {
 
     let local_lastReadNumber_scrollTop = EDITOR_int_fields[INDEXOF_lastReadNumber_scrollTop];
 
-    if (EDITOR_cursor_cursorTranslateYValue < local_lastReadNumber_scrollTop) {
-        scrollY = EDITOR_cursor_cursorTranslateYValue - local_lastReadNumber_scrollTop;
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] < local_lastReadNumber_scrollTop) {
+        scrollY = EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] - local_lastReadNumber_scrollTop;
     }
-    else if (EDITOR_cursor_cursorTranslateYValue >= local_lastReadNumber_scrollTop + lastReadNumber_offsetHeight) {
+    else if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] >= local_lastReadNumber_scrollTop + lastReadNumber_offsetHeight) {
         // I want to use clientHeight but I don't have any logic for no scrollbar thus single page fitting text might bug out and trigger
         // scrollBy over and over.
 
         // make the bottom touch then add lineHeight is probably the algorithm to get a perfect fill maybe do lineHeight * 2 skip an event when spamming arrowDown?
         let currentBottom = local_lastReadNumber_scrollTop + lastReadNumber_offsetHeight;
-        let changeToMakeBottomTouch = EDITOR_cursor_cursorTranslateYValue - currentBottom;
+        let changeToMakeBottomTouch = EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateYValue] - currentBottom;
         scrollY = changeToMakeBottomTouch + (2 * EDITOR_int_fields[INDEXOF_EDITOR_lineHeight]);
     }
 
-    if (EDITOR_cursor_cursorTranslateXValue < lastReadNumber_scrollLeft) {
-        scrollX = EDITOR_cursor_cursorTranslateXValue - lastReadNumber_scrollLeft;
+    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] < lastReadNumber_scrollLeft) {
+        scrollX = EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] - lastReadNumber_scrollLeft;
     }
-    else if (EDITOR_cursor_cursorTranslateXValue >= lastReadNumber_scrollLeft + lastReadNumber_offsetWidth) {
+    else if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] >= lastReadNumber_scrollLeft + lastReadNumber_offsetWidth) {
         // I want to use clientWidth but I don't have any logic for no scrollbar thus single page fitting text might bug out and trigger
         // scrollBy over and over.
 
         // make the right touch then add characterWidth is probably the algorithm to get a perfect fill maybe do characterWidth * 2 skip an event when spamming arrowRight?
         let currentRight = lastReadNumber_scrollLeft + lastReadNumber_offsetWidth;
-        let changeToMakeRightTouch = EDITOR_cursor_cursorTranslateXValue - currentRight;
+        let changeToMakeRightTouch = EDITOR_int_fields[INDEXOF_EDITOR_cursor_cursorTranslateXValue] - currentRight;
         scrollX = changeToMakeRightTouch + (4 * EDITOR_characterWidth);
     }
 

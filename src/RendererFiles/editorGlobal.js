@@ -3455,75 +3455,77 @@ function EDITOR_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
 
 function EDITOR_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked) {
 
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
     // TODO: I remember this being bugged I think it makes sense why. You're checking if the cursor is exactly at the threshold rather than determining if the distance from previous event to this one puts you past the threshold.
-    if (indexLineClicked === EDITOR_int_fields[INDEXOF_EDITOR_detailRank3OriginLine]) {
+    if (indexLineClicked === local_EDITOR_int_fields[INDEXOF_EDITOR_detailRank3OriginLine]) {
         // TODO: 'cursor.positionIndex' is incorrect there is no such field, but was this referring to the clicked position or the position that the cursor currently is at...
         // ...it is presumed to be the position that the cursor is currently at because it would explain the bug where if you move the cursor somewhere that the mouse move events don't get
         // sent then bring your mouse back into a place where they do you'll snap ahead by some indices and skip the threshold and it visually bugs.
         // You could attach to I think it is window? but then I'm wondering if a race condition could ever occur.
         // so you'd probably want to do both attach to window and protect against large movements that skip the exact threshold when transitioning.
         //
-        if (EDITOR_getPositionIndex_raw_cursor() !== EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]) {
-            let smallLineAndColumnPositionIndices = EDITOR_getLineAndColumnIndices(EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]);
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = smallLineAndColumnPositionIndices.indexLine;
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = smallLineAndColumnPositionIndices.indexColumn;
+        if (EDITOR_getPositionIndex_raw_cursor() !== local_EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]) {
+            let smallLineAndColumnPositionIndices = EDITOR_getLineAndColumnIndices(local_EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]);
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = smallLineAndColumnPositionIndices.indexLine;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = smallLineAndColumnPositionIndices.indexColumn;
         }
 
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] !== EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]) {
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition];
+        if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] !== local_EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]) {
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = local_EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition];
         }
 
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] !== EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition]) {
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition];
+        if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] !== local_EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition]) {
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = local_EDITOR_int_fields[INDEXOF_EDITOR_detail_largePosition];
         }
 
         EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     }
-    else if (indexLineClicked < EDITOR_int_fields[INDEXOF_EDITOR_detailRank3OriginLine]) {
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
-            let smallLineAndColumnPositionIndices = EDITOR_getLineAndColumnIndices(EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]);
+    else if (indexLineClicked < local_EDITOR_int_fields[INDEXOF_EDITOR_detailRank3OriginLine]) {
+        if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
+            let smallLineAndColumnPositionIndices = EDITOR_getLineAndColumnIndices(local_EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]);
 
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = smallLineAndColumnPositionIndices.indexLine;
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = smallLineAndColumnPositionIndices.indexColumn;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = smallLineAndColumnPositionIndices.indexLine;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = smallLineAndColumnPositionIndices.indexColumn;
 
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition];
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = local_EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition];
 
             EDITOR_render_request(ENUM_RenderKind_Cursor_n);
         }
 
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLineClicked;
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLineClicked;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
 
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = EDITOR_getPositionIndex_Overload(indexLineClicked, 0);
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = EDITOR_getPositionIndex_Overload(indexLineClicked, 0);
 
         EDITOR_render_request(ENUM_RenderKind_Cursor_n);
     }
-    else if (indexLineClicked > EDITOR_int_fields[INDEXOF_EDITOR_detailRank3OriginLine]) {
+    else if (indexLineClicked > local_EDITOR_int_fields[INDEXOF_EDITOR_detailRank3OriginLine]) {
 
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] !== EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]) {
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition];
+        if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] !== local_EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition]) {
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] = local_EDITOR_int_fields[INDEXOF_EDITOR_detail_smallPosition];
         }
 
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLineClicked;
-        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = indexColumnClicked;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] = indexLineClicked;
+        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = indexColumnClicked;
         let positionIndex = EDITOR_getPositionIndex_Overload(indexLineClicked, indexColumnClicked);
 
         // move to end of line...
-        let line = EDITOR_getLineBoundaryPositions(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+        let line = EDITOR_getLineBoundaryPositions(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
         let lineLength = line.end - line.start;
-        positionIndex += lineLength - EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
+        positionIndex += lineLength - local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn];
 
-        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] === EDITOR_lineEndPositionList.count - 1) {
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = lineLength;
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = positionIndex;
+        if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] === EDITOR_lineEndPositionList.count - 1) {
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = lineLength;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = positionIndex;
         }
         else {
             // wrap to the next line
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]++;
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]++;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] = 0;
             positionIndex++;
 
-            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = positionIndex;
+            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] = positionIndex;
         }
 
         EDITOR_render_request(ENUM_RenderKind_Cursor_n);

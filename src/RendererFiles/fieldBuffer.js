@@ -298,8 +298,11 @@ const INDEXOF_EDITOR_cursor_selectionEnd = 43;
 const INDEXOF_EDITOR_cursor_selectionIndexAnchorLine = 44;
 const INDEXOF_EDITOR_cursor_selectionIndexAnchorColumn = 45;
 
+const INDEXOF_EDITOR_cursor_selectionIndexEndLine = 46;
+const INDEXOF_EDITOR_cursor_selectionIndexEndColumn = 47;
 
-// EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexAnchorColumn]
+
+// EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionIndexEndColumn]
 
 
 

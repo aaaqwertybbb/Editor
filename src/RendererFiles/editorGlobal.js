@@ -1833,24 +1833,26 @@ function EDITOR_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
 
 function EDITOR_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
 
+    let local_EDITOR_int_fields = EDITOR_int_fields;
+
     // Both indentMore and indentLess have logic in the initial event that needs to be moved here.
     // Nevertheless there is a difference between indentLess and indentMore in that you cannot simply
     // multiply by n to get the decrement because it deals with the existence of whitespace to be removed so you need to actually sum this as you handle each event
     // so that when you get to the finalize you have it all sum'd up (although yes this logic probably doesn't even belong in the event but it is there and 1 thing at a time).
 
-    //let ORIGINAL_decrementBy = EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy];
-    //let decrementBy = EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy];
-    //EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy] = 0;
+    //let ORIGINAL_decrementBy = local_EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy];
+    //let decrementBy = local_EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy];
+    //local_EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy] = 0;
 
-    let startingIndex = EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex];
-    EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex] = 0;
-    let SMALL_lineAndColumnIndices_indexLine = EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine];
-    EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] = 0;
+    let startingIndex = local_EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex];
+    local_EDITOR_int_fields[INDEXOF_EDITOR_indent_startingIndex] = 0;
+    let SMALL_lineAndColumnIndices_indexLine = local_EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine];
+    local_EDITOR_int_fields[INDEXOF_EDITOR_indent_SMALL_lineAndColumnIndices_indexLine] = 0;
 
     // !!!!!! watch out for the big breaks when hitting a tab presuming that_four is 4
     let that_four = 4;
-    that_four *= EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
-    let largestRank = EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+    that_four *= local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
+    let largestRank = local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_editLength];
 
     // loop over the lines to sum the "amount" of whitespace being removed
     let DETERMINE_decrementBy = 0;
@@ -1906,7 +1908,7 @@ function EDITOR_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
 
     // Remember the total whitespace removed
     let ORIGINAL_decrementBy = DETERMINE_decrementBy;
-    //EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy] = ORIGINAL_decrementBy;
+    //local_EDITOR_int_fields[INDEXOF_EDITOR_indent_ORIGINAL_indentBy] = ORIGINAL_decrementBy;
     let decrementBy = ORIGINAL_decrementBy;
 
     //// TODO: use better formatting
@@ -1943,26 +1945,26 @@ function EDITOR_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
 //
     //    let smallLinePos = EDITOR_getLineBoundaryPositions(SMALL_lineAndColumnIndices_indexLine);
     //    if (SMALL_pos > smallLinePos.start) {
-    //        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
-    //            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] -= count;
+    //        if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
+    //            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] -= count;
     //        }
     //        else {
-    //            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] -= count;
+    //            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] -= count;
     //        }
     //    }
 //
-    //    if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] === SMALL_lineAndColumnIndices_indexLine) {
-    //        EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] -= count;
+    //    if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] === SMALL_lineAndColumnIndices_indexLine) {
+    //        local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] -= count;
     //    }
     //}
 
     // TODO: This at a glance seems to not account for when the cursor is small-position-ended and large-position-anchored...
     // ...this is moving the cursor actually, maybe it is fine? but maybe it is logic that could've been done during a loop but instead you made a new one to separately do this?
     // Also, this entire function is terribly written. You seemingly hacked something together; the code doesn't feel self explanatory. Furthermore there are both a lack of comments (given the confusing nature of how this is written), and dead comments.
-    //if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] !== SMALL_lineAndColumnIndices_indexLine) {
-    //    let linePos = EDITOR_getLineBoundaryPositions(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+    //if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] !== SMALL_lineAndColumnIndices_indexLine) {
+    //    let linePos = EDITOR_getLineBoundaryPositions(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
     //    let line = linePos;
-    //    let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+    //    let lastValidIndexColumn = EDITOR_getLastValidIndexColumn(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
     //    let upperLimitIndexColumn;
     //    if (lastValidIndexColumn > that_four) {
     //        upperLimitIndexColumn = that_four;
@@ -1988,19 +1990,19 @@ function EDITOR_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
     //                break outer;
     //        }
     //    }
-    //    //let c = EDITOR_getLineBoundaryPositions(EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
+    //    //let c = EDITOR_getLineBoundaryPositions(local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine]);
     //    // TODO: git blame the below todo and remind them to delete the dead code
     //    // TODO: Delete this dead code / use better formatting
     //    /*if (SMALL_pos > smallLinePos.start) {
-    //        if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
-    //            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] -= count;
+    //        if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] < local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd]) {
+    //            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionAnchor] -= count;
     //        }
     //        else {
-    //            EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] -= count;
+    //            local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_selectionEnd] -= count;
     //        }
     //    }*/
-    //    //if (EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] === LARGE_lineAndColumnIndices.indexLine) {
-    //    //    EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] -= count;
+    //    //if (local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexLine] === LARGE_lineAndColumnIndices.indexLine) {
+    //    //    local_EDITOR_int_fields[INDEXOF_EDITOR_cursor_indexColumn] -= count;
     //    //}
     //}
 
@@ -2076,8 +2078,8 @@ function EDITOR_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
             }
         }
         EDITOR_trackedSyntaxList.getElementAt(trackedSyntaxReposition_i);
-        if (linePos.start > EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] && linePos.start < EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length]) {
-            EDITOR_trackedSyntaxList.setLength(trackedSyntaxReposition_i, EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] - innerRemoveCount);
+        if (linePos.start > local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] && linePos.start < local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_start] + local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length]) {
+            EDITOR_trackedSyntaxList.setLength(trackedSyntaxReposition_i, local_EDITOR_int_fields[INDEXOF_EDITOR_pooledTrackedSyntax_length] - innerRemoveCount);
         }
 
         EDITOR_textByteList.removeAt(linePos.start, innerRemoveCount);

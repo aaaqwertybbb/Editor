@@ -280,6 +280,11 @@ const INDEXOF_EDITOR_intFalsey_isScrolling = 35;
  */
 const INDEXOF_EDITOR_cursor_editKind = 36;
 
+const INDEXOF_EDITOR_cursor_indexLine = 37;
+
+
+
+
 // TODO: Sort the field buffer entries so that everything the scroll render function needs is next to eachother...
 // ... / figure out details of caching so you read them all in one go if possible.
 

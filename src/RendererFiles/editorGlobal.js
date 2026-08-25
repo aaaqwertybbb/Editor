@@ -9247,4 +9247,8 @@ in order to verify that every smi is infact a smi prior moving to the next node.
 you "optimize away the smi's" while still having smi const definitions because you
 use babel to inline and delete the const definitions.
 
+I think I'm gonna remove all the multicursor logic,
+I messed with it a lot anyways so even what little did work probably no longer does
+and I wanna get things perfect single cursor first I think.
+
 */

@@ -500,15 +500,7 @@ function EDITOR_render_do(timestamp) {
 
 function EDITOR_render_do_cursor(timestamp) {
     EDITOR_cursorBlinkLastTimestamp = timestamp;
-    let cursor = EDITOR_primaryCursor;
-    let notShouldScrollIntoView = false;
-    let flag_scrollIntoViewExplicit = false;
-
-    if (flag_scrollIntoViewExplicit) {
-        // TODO: consider setting 'notShouldScrollIntoView' to false to avoid two scroll into views redundantly?
-        EDITOR_scrollCursorIntoView(cursor);
-    }
-    EDITOR_drawCursor(cursor, notShouldScrollIntoView);
+    EDITOR_drawCursor(EDITOR_primaryCursor);
 }
 
 function EDITOR_render_do_cursor_flag_scrollIntoViewExplicit(timestamp) {

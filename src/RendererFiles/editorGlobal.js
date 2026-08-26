@@ -200,7 +200,11 @@ const EDI_gutterBackgroundColor = document.getElementById('EDI_gutter_background
 /**
  * Null characters provide visual width for proportional fonts. They do not get copied or saved out.
  */
-let EDI_on_tab_bytes = EDI_tab_tabsbytes;
+const EDI_on_tab_bytes = new Uint8Array(4);
+EDI_on_tab_bytes[0] = CONST_EDI_ASCII_TAB;
+EDI_on_tab_bytes[1] = 0;
+EDI_on_tab_bytes[2] = 0;
+EDI_on_tab_bytes[3] = 0;
 
 /**
  * When a cursor removes a line end the position of the line end is stored in this list until the edit is finalized.
@@ -1253,6 +1257,8 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
      * In terms of changing it after the fact it isn't a big deal is what I mean.
      */
     let lineLength = 0;
+
+    // TODO: Insert multiple characters at the same time when you do this?
 
     for (var sourceI = 0; sourceI < text.length; sourceI++) {
         switch (text[sourceI]) {

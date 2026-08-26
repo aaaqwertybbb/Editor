@@ -412,16 +412,40 @@ let EDI_presentation;
 let EDI_cursorListElement;
 let EDI_textElement;
 
+/**
+ * TODO: I wanted to get rid of this array but when you open a file you for certain want to take the text as is.
+ * (a possible mixing of tabs and 4 spaces or etc...).
+ * 
+ * The question is:
+ * when you paste text do you want to take the text pasted as is?
+ * 
+ * Because if not, then you can remove this, and then allocate it locally everytime you do an EDI_state_setText
+ * since that is supposed to be a very infrequently invoked function.
+ * 
+ * The issue is, if paste ought to take the text pasted as is
+ * I don't want to allocate this over and over as a local variable within the paste function
+ * i.e.: maybe the user is holding 'ctrl'+'v'.
+ * 
+ * And as for some other form of caching and clearing it out... it isn't quite that important at the moment
+ * to warrent looking into that for this.
+ * 
+ * I don't want 'EDI_on_tab_bytes' to point to this, because then I
+ * maintain similar overhead whether the user is using tabs or spaces
+ * and I can overwrite the entries of 'EDI_on_tab_bytes' if they change from one to another.
+ * 
+ * 'maintain similar overhead' i.e.: it is such a minimal amount of overhead
+ * that I don't want to sit here splitting hairs about it at the moment, there's more important changes to be made.
+ * 
+ * All in all I removed 1 global variable. 'EDI_tab_spacesbytes'
+ * The previous code allocated two arrays, and this code allocates two arrays as well.
+ * So again, the only change I got out of this was removing the 'EDI_tab_spacesbytes' variable
+ * so instead of 3 global variables for this logic I have 2 global variables.
+ */
 const EDI_tab_tabsbytes = new Uint8Array(4);
 EDI_tab_tabsbytes[0] = CONST_EDI_ASCII_TAB;
 EDI_tab_tabsbytes[1] = 0;
 EDI_tab_tabsbytes[2] = 0;
 EDI_tab_tabsbytes[3] = 0;
-const EDI_tab_spacesbytes = new Uint8Array(4);
-EDI_tab_spacesbytes[0] = CONST_EDI_ASCII_SPACE;
-EDI_tab_spacesbytes[1] = CONST_EDI_ASCII_SPACE;
-EDI_tab_spacesbytes[2] = CONST_EDI_ASCII_SPACE;
-EDI_tab_spacesbytes[3] = CONST_EDI_ASCII_SPACE;
 
 /**
  * If you have an extension listed here, it is expected that the "function to invoke" exists.

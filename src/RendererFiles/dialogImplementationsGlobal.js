@@ -450,10 +450,16 @@ function DIALOG_checkboxTrueTabsFalseSpaces_onchange() {
 
     DIALOG_Settings_trueTabs_falseSpaces = checkboxTrueTabsFalseSpaces.checked;
     if (DIALOG_Settings_trueTabs_falseSpaces) {
-        EDI_on_tab_bytes = EDI_tab_tabsbytes;
+        EDI_on_tab_bytes[0] = CONST_EDI_ASCII_TAB;
+        EDI_on_tab_bytes[1] = 0;
+        EDI_on_tab_bytes[2] = 0;
+        EDI_on_tab_bytes[3] = 0;
     }
     else {
-        EDI_on_tab_bytes = EDI_tab_spacesbytes;
+        EDI_on_tab_bytes[0] = CONST_EDI_ASCII_SPACE;
+        EDI_on_tab_bytes[1] = CONST_EDI_ASCII_SPACE;
+        EDI_on_tab_bytes[2] = CONST_EDI_ASCII_SPACE;
+        EDI_on_tab_bytes[3] = CONST_EDI_ASCII_SPACE;
     }
 }
 

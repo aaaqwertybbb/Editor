@@ -8912,4 +8912,7 @@ becuase what you truly want to control is your diet, health, weight
 
 i.e.: getting to 199.9 lbs is the cure to OCD
 
+Although OCD also has to do with feeling like you can't trust your memory but...
+I dunno maybe you get what I'm saying
+
 */

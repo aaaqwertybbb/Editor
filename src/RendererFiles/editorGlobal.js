@@ -8913,4 +8913,17 @@ even if you just separate features into separate processes and then communicate 
 sometimes that's just the way to go otherwise your singular app has too large of a GC footprint
 and it just stops being sensible no matter how obsessed you get.
 
+And I think I need to take a break and eat a lb of 98% fat free ground chicken.
+
+But I'm almost done with this idea
+
+because is it reducing the amount of global scope identifiers for variable matching
+everything ever has more overhead cause I pollute the global scope.
+But then I also am polluting the global scope due to an adversion to objects
+and avoiding making a class
+and this is an extreme learned scenario that "technically" could work but it's silly
+because you "something something something" like perhaps you're polluting global scope
+and making every global scope access take longer or something I don't know
+you just gotta see it all through and then learn from it.
+
 */

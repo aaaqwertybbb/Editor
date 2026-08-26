@@ -9036,4 +9036,8 @@ TODO: Is that rocket emoji gonna crash the editor if I open this... I expect a '
 
 The rocket emoji looks like '=?' but the '?' is actually surrounded by a diamond? It is centered within a diamond. The diamond is the font color, the ? is actually transparent.
 
+> Is there a difference between IIFE or a native ES Module?
+
+< ...
+
 */

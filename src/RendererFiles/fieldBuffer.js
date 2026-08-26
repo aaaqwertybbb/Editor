@@ -450,7 +450,11 @@ const fAUTOCOMPLETE_rectHeight = 101;
 const fAUTOCOMPLETE_rectLeft = 102;
 const fAUTOCOMPLETE_rectTop = 103;
 
-// gINT_FIELDS[fAUTOCOMPLETE_rectTop]
+const fAUTOCOMPLETE_sliceVirtualIndex_SLICE = 104;
+const fAUTOCOMPLETE_sliceVirtualCount_SLICE = 105;
+const fAUTOCOMPLETE_sliceBeltIndexZero_SLICE = 106;
+
+// gINT_FIELDS[fAUTOCOMPLETE_sliceBeltIndexZero_SLICE]
 
 // for the beltIndezZero etc... consider using max value?
 // Although it might "just work" because you're using locals which would become negative?

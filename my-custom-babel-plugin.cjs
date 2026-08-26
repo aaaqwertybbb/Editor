@@ -435,6 +435,9 @@ module.exports = function (babel) {
     "fAUTOCOMPLETE_rectHeight",
     "fAUTOCOMPLETE_rectLeft",
     "fAUTOCOMPLETE_rectTop",
+    "fAUTOCOMPLETE_sliceVirtualIndex_SLICE",
+    "fAUTOCOMPLETE_sliceVirtualCount_SLICE",
+    "fAUTOCOMPLETE_sliceBeltIndexZero_SLICE",
 
 
 

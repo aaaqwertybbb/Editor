@@ -37,10 +37,6 @@ let AUTOCOMPLETE_scrollIsFetchingData = false;
 
 let AUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = 2;
 
-let AUTOCOMPLETE_sliceVirtualIndex_SLICE = 0;
-let AUTOCOMPLETE_sliceVirtualCount_SLICE = 0;
-let AUTOCOMPLETE_sliceBeltIndexZero_SLICE = 0;
-
 function AUTOCOMPLETE_render_request(renderKind) {
     if (AUTOCOMPLETE_renderKindArray[AUTOCOMPLETE_renderKindArray.length - 1] !== renderKind) {
         AUTOCOMPLETE_renderKindArray.push(renderKind);
@@ -269,9 +265,9 @@ function AUTOCOMPLETE_show(lspResult) {
 function AUTOCOMPLETE_slice(lspResult) {
 
     AUTOCOMPLETE_scrollIsFetchingData = false;
-    if (AUTOCOMPLETE_sliceVirtualIndex_SLICE != AUTOCOMPLETE_virtualIndex ||
-        AUTOCOMPLETE_sliceVirtualCount_SLICE != AUTOCOMPLETE_virtualCount ||
-        AUTOCOMPLETE_sliceBeltIndexZero_SLICE != AUTOCOMPLETE_beltIndexZero) {
+    if (gINT_FIELDS[fAUTOCOMPLETE_sliceVirtualIndex_SLICE] != AUTOCOMPLETE_virtualIndex ||
+        gINT_FIELDS[fAUTOCOMPLETE_sliceVirtualCount_SLICE] != AUTOCOMPLETE_virtualCount ||
+        gINT_FIELDS[fAUTOCOMPLETE_sliceBeltIndexZero_SLICE] != AUTOCOMPLETE_beltIndexZero) {
             return;
     }
 
@@ -507,9 +503,9 @@ function AUTOCOMPLETE_events_scroll_render_trailingEdgeCheck(timestamp) {
 
 function AUTOCOMPLETE_events_scroll_render_trailingEdgeDo() {
     if (!AUTOCOMPLETE_scrollIsFetchingData) {
-        AUTOCOMPLETE_sliceVirtualIndex_SLICE = AUTOCOMPLETE_virtualIndex;
-        AUTOCOMPLETE_sliceVirtualCount_SLICE = AUTOCOMPLETE_virtualCount;
-        AUTOCOMPLETE_sliceBeltIndexZero_SLICE = AUTOCOMPLETE_beltIndexZero;
+        gINT_FIELDS[fAUTOCOMPLETE_sliceVirtualIndex_SLICE] = AUTOCOMPLETE_virtualIndex;
+        gINT_FIELDS[fAUTOCOMPLETE_sliceVirtualCount_SLICE] = AUTOCOMPLETE_virtualCount;
+        gINT_FIELDS[fAUTOCOMPLETE_sliceBeltIndexZero_SLICE] = AUTOCOMPLETE_beltIndexZero;
         AUTOCOMPLETE_scrollIsFetchingData = true;
         window.myAPI.editorCompletionRequest_slice(AUTOCOMPLETE_virtualIndex, AUTOCOMPLETE_virtualIndex + AUTOCOMPLETE_virtualCount);
     }

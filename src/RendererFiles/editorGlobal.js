@@ -170,7 +170,7 @@ let EDI_documentSymbolResult;
  */
 let EDI_listComponent = null;
 
-// TODO: timer is just an int yes? (just an int as in the return is the int based id), homomorphism of this being null is bad / use field buffer.
+// TODO: timer is just an int yes? (just an int as in the return is the int based id), homomorphism of this being null is bad / use field buffer. (lack of I mean)
 let EDI_onResize_timer = null;
 
 let EDI_offsetWithinSpan_withRespectToThisSpan = null;

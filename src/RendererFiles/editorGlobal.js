@@ -449,8 +449,8 @@ function EDI_render_do_SetText(timestamp) {
     gINT_FIELDS[fEDI_ONSCROLLvirtualIndexLine] = gINT_FIELDS[fEDI_virtualIndexLine];
 
     gINT_FIELDS[fEDI_scrollEndDeadline] = timestamp + 1000;
-    if (!isCheckingTrailingEdge) {
-        isCheckingTrailingEdge = true;
+    if (!gBYTE_FIELDS[byteisCheckingTrailingEdge]) {
+        gBYTE_FIELDS[byteisCheckingTrailingEdge] = true;
         requestAnimationFrame(EDI_render_do_ScrollTrailingEdgeCheck);
     }
 }
@@ -808,11 +808,11 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
 
     ints[fEDI_intFalsey_isScrolling] = 1;
 
-    // TODO: If you can prove that the leading edge or 'ints[fEDI_intFalsey_isScrolling]' is "equivalent" to 'isCheckingTrailingEdge' then you can reduce the code here.
+    // TODO: If you can prove that the leading edge or 'ints[fEDI_intFalsey_isScrolling]' is "equivalent" to 'gBYTE_FIELDS[byteisCheckingTrailingEdge]' then you can reduce the code here.
     //
     // If we aren't tracking the trailing edge yet, start the rAF countdown loop
-    if (!isCheckingTrailingEdge) {
-        isCheckingTrailingEdge = true;
+    if (!gBYTE_FIELDS[byteisCheckingTrailingEdge]) {
+        gBYTE_FIELDS[byteisCheckingTrailingEdge] = true;
         requestAnimationFrame(EDI_render_do_ScrollTrailingEdgeCheck);
     }
 
@@ -891,7 +891,7 @@ function EDI_render_do_ScrollTrailingEdgeCheck(timestamp) {
  */
 function EDI_onScroll_TrailingEdge() {
     gINT_FIELDS[fEDI_intFalsey_isScrolling] = 0;
-    isCheckingTrailingEdge = false; // Reset the flag here
+    gBYTE_FIELDS[byteisCheckingTrailingEdge] = false; // Reset the flag here
     EDI_render_request(RenderKind_SyntaxHighlighting);
 }
 

@@ -170,7 +170,7 @@ let EDI_documentSymbolResult;
  */
 let EDI_listComponent = null;
 
-// TODO: timer is just an int yes?
+// TODO: timer is just an int yes? (just an int as in the return is the int based id)
 let EDI_onResize_timer = null;
 
 let EDI_offsetWithinSpan_withRespectToThisSpan = null;

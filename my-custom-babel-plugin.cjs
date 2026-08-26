@@ -438,6 +438,9 @@ module.exports = function (babel) {
     "fAUTOCOMPLETE_sliceVirtualIndex_SLICE",
     "fAUTOCOMPLETE_sliceVirtualCount_SLICE",
     "fAUTOCOMPLETE_sliceBeltIndexZero_SLICE",
+    "fAUTOCOMPLETE_virtualCount",
+    "fAUTOCOMPLETE_virtualIndex",
+    "fAUTOCOMPLETE_beltIndexZero",
 
 
 

@@ -3344,7 +3344,7 @@ function EDI_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
             let goalCharacterKind = leftCharacterKind;
 
             let line = EDI_getLineBoundaryPositions(ints[fEDI_cursor_indexLine]);
-            lineLength = line.end - line.start;
+            let lineLength = line.end - line.start;
             let rightWasFound = false;
 
             let tempPositionIndex = positionIndex;

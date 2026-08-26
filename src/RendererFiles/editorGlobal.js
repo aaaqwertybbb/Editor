@@ -8975,8 +8975,63 @@ Google AI:
 < Instead, you can achieve maximum performance while keeping your functional style by using a classic JavaScript pattern: the IIFE (Immediately Invoked Function Expression) / Modular Scope Closure.
 <
 < Here is why your current approach is slow, why classes aren't the best fix, and the exact pattern you should use instead.
-< ...
+< 
+< # Why Global Function Invocations Are Slow
+< When you call a global function like myFunction(), the V8 engine has to look up the identifier myFunction on the global window
+< object.Even though V8 uses "Inline Caches" (ICs) to speed this up, it still has to verify that the global variable hasn’t been
+< re-assigned or shadowed somewhere along the scope chain every single time it runs.
+<
+< # The Problem With Classes
+< If you rewrite your code into a class:
+< ```js
+< class GameManager {
+<   update() { ... }
+< }
+< ```
+< 
+< When you call manager.update(), V8 now has to do a prototype chain lookup to find update on GameManager.prototype.
+< While highly optimized, it doesn't give you the absolute raw speed you are looking for, and navigating this context can add subtle overhead.
+<
+< # The Absolute Fastest Solution: The Module/Closure Pattern
+< To get the absolute fastest execution speed, you want your functions to look up other functions via Lexical (Local) Scope,
+< not Global Scope. Local variable lookups in V8 are compiled down to direct register/stack offsets. They are nearly instantaneous.
+< 
+< You can achieve this by wrapping your entire vanilla JavaScript file in a single self-executing function block:
+< ```js
+< // Wrap your entire script in a block or IIFE
+< (() => {
+<   // 1. Your Uint32Array State
+<   const state = new Uint32Array(100);
+< 
+<   // 2. Local Function Declarations
+<   // V8 optimizes these incredibly well because they are locked in this local scope.
+<   function updatePlayer() {
+<     state[0] += 1; 
+<   }
+< 
+<   function gameLoop() {
+<     // 🚀 ULTRA FAST: This lookup is purely lexical (local scope).
+<     // No global window lookup, no prototype chain lookup.
+<     updatePlayer(); 
+<     
+<     requestAnimationFrame(gameLoop);
+<   }
+< 
+<   // 3. Kick off your app internally
+<   gameLoop();
+< 
+< })(); // Immediately invoked
+< ```
+< 
+< # Why this is the ultimate performance choice for your architecture:
+< - Zero Global Pollution: None of your functions or variables are attached to the window object anymore. The global scope stays entirely empty.
+< - Lexical Scope Speed: Because updatePlayer and gameLoop live in the same parent scope, V8 resolves the function invocation instantly. It treats them almost like local variables.
+< - Preserves Your Style: You don't have to rewrite your code into object-oriented programming or deal with this.updatePlayer(). It remains pure, simple, vanilla JavaScript.
+< - Bundler Ready: If you eventually use a tool like Vite or Esbuild, they wrap your code in module scopes exactly like this automatically.
+<
+< How are you currently structuring the entry point of your renderer process? If you wrap it in an IIFE or a native ES Module (<script type="module">),
+< you will get this local-scope speed boost instantly without changing a line of your functional logic.
 
-
+TODO: Is that rocket emoji gonna crash the editor if I open this... I expect a 'boxed off question mark'.
 
 */

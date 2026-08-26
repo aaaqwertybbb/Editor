@@ -386,6 +386,7 @@ module.exports = function (babel) {
     "byteDIALOG_Settings_trueTabs_falseSpaces",
     "byteDIALOG_Settings_editorDebugShowAdjacentCharacters",
     "byteDIALOG_hasBeenMeasured",
+    "byteDIALOG_windowExists",
     
 
 

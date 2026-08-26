@@ -16,10 +16,6 @@ let DIALOG_onResizeAction = null;
 let DIALOG_restoreFocusToElement = null;
 let DIALOG_HIDE_shouldRestoreFocus = true;
 
-let DIALOG_windowExists = false;
-
-
-
 let DIALOG_SHOW_restoreFocusToElement = null;
 let DIALOG_SHOW_currentDialogKind = DialogKind_None;
 let DIALOG_SHOW_onResizeAction = null;
@@ -634,8 +630,8 @@ function DIALOG_createWindow() {
     if (!DIALOG_element) return;
 
     // TODO: Might want to check if the HTML element exists instead.
-    if (DIALOG_windowExists) return;
-    DIALOG_windowExists = true;
+    if (gBYTE_FIELDS[byteDIALOG_windowExists]) return;
+    gBYTE_FIELDS[byteDIALOG_windowExists] = true;
 
     let toolbar = document.createElement('div');
     toolbar.id = 'DIALOG_toolbar';
@@ -677,10 +673,10 @@ function DIALOG_deleteWindow() {
     if (!DIALOG_element) return;
 
     // TODO: Might want to check if the HTML element exists instead.
-    if (!DIALOG_windowExists) return;
+    if (!gBYTE_FIELDS[byteDIALOG_windowExists]) return;
     // TODO: Perhaps move these respective sets to the end of their functions.
     // This way them being set as a certain value reflects that the entirety of their respective code had been ran but then again... idk
-    DIALOG_windowExists = false;
+    gBYTE_FIELDS[byteDIALOG_windowExists] = false;
 
     gINT_FIELDS[fDIALOG_left] = 0;
     gINT_FIELDS[fDIALOG_top] = 0;

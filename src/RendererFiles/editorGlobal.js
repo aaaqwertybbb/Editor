@@ -9052,4 +9052,6 @@ The rocket emoji looks like '=?' but the '?' is actually surrounded by a diamond
 < 1. Check the Scope Chain in the Debugger (Most Direct)
 < ...
 
+I gotta calm down cuz it is almost my bed time
+
 */

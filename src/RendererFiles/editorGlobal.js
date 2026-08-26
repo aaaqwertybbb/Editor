@@ -100,8 +100,6 @@ EDI_cursor_cursorElement.className = "EDI_cursor";
 
 EDI_cursor_caretRow.appendChild(EDI_cursor_cursorElement);
 
-let EDI_cursor_selectionDivExists;
-
 /**
  * Upon an enter keystroke this is inserted onto the newly added line.
  * 
@@ -218,7 +216,7 @@ function EDI_cursor_hasSelection() {
 }
 
 /**
- * The code that clears the editor is dependent on this method NOT clearing 'EDI_cursor_selectionDivExists'
+ * The code that clears the editor is dependent on this method NOT clearing 'gBYTE_FIELDS[byteEDI_cursor_selectionDivExists]'
  * 
  * Somewhat duplicated code: This messes with the language features if I invoke clear() in the constructor, it puts "| undefined" on all the types.
  */
@@ -2801,17 +2799,17 @@ function EDI_getLineAndColumnIndices(positionIndex) {
 }
 
 /**
- * This function only clears both the 'EDI_cursor_selectionDivExists' and the HTML associated with the selection NOT the actual selection position properties of the cursor.
+ * This function only clears both the 'gBYTE_FIELDS[byteEDI_cursor_selectionDivExists]' and the HTML associated with the selection NOT the actual selection position properties of the cursor.
  */
 function EDI_clearSelectionStyle() {
     let shouldExistSelectionDiv = false;
-    if (EDI_cursor_selectionDivExists) {
+    if (gBYTE_FIELDS[byteEDI_cursor_selectionDivExists]) {
         for (var i = 0; i < EDI_presentation.children.length; i++) {
             if (EDI_presentation.children[i].id === EDI_cursor_htmlId) {
                 let textSelectionDiv = EDI_presentation.children[i];
                 if (!shouldExistSelectionDiv) {
                     EDI_presentation.removeChild(textSelectionDiv);
-                    EDI_cursor_selectionDivExists = false;
+                    gBYTE_FIELDS[byteEDI_cursor_selectionDivExists] = false;
                 }
                 break;
             }
@@ -2842,13 +2840,13 @@ function EDI_createStyleForSelection() {
 
         let textSelectionDiv;
 
-        if (EDI_cursor_selectionDivExists) {
+        if (gBYTE_FIELDS[byteEDI_cursor_selectionDivExists]) {
             for (var i = 0; i < EDI_presentation.children.length; i++) {
                 if (EDI_presentation.children[i].id === EDI_cursor_htmlId) {
                     textSelectionDiv = EDI_presentation.children[i];
                     if (!shouldExistSelectionDiv) {
                         EDI_presentation.removeChild(textSelectionDiv);
-                        EDI_cursor_selectionDivExists = false;
+                        gBYTE_FIELDS[byteEDI_cursor_selectionDivExists] = false;
                     }
                     break;
                 }
@@ -2859,10 +2857,10 @@ function EDI_createStyleForSelection() {
             textSelectionDiv.id = EDI_cursor_htmlId;
             textSelectionDiv.style.display = 'contents';
             EDI_presentation.appendChild(textSelectionDiv);
-            EDI_cursor_selectionDivExists = true;
+            gBYTE_FIELDS[byteEDI_cursor_selectionDivExists] = true;
         }
 
-        if (!EDI_cursor_selectionDivExists) return;
+        if (!gBYTE_FIELDS[byteEDI_cursor_selectionDivExists]) return;
 
         // TODO: only somewhat simple viewport based virtualization is implemented from what I remember. i.e.: I think the divs are re-used, but every div is redrawn for the viewport, rather than only recalculating the css for the divs that came or left the viewport.
 
@@ -2960,7 +2958,7 @@ function EDI_createStyleForSelection() {
 
 function EDI_createStyleForSelection_indentMore() {
     let textSelectionDiv;
-    if (EDI_cursor_selectionDivExists) {
+    if (gBYTE_FIELDS[byteEDI_cursor_selectionDivExists]) {
         for (var i = 0; i < EDI_presentation.children.length; i++) {
             if (EDI_presentation.children[i].id === EDI_cursor_htmlId) {
                 textSelectionDiv = EDI_presentation.children[i];
@@ -5433,7 +5431,7 @@ function EDI_render_do_IndentLess() {
 
         /////////////////////// P_1
         let textSelectionDiv;
-        if (EDI_cursor_selectionDivExists) {
+        if (gBYTE_FIELDS[byteEDI_cursor_selectionDivExists]) {
             for (var i = 0; i < EDI_presentation.children.length; i++) {
                 if (EDI_presentation.children[i].id === EDI_cursor_htmlId) {
                     textSelectionDiv = EDI_presentation.children[i];

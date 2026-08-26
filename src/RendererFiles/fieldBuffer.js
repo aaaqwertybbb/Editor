@@ -147,7 +147,9 @@ const byteEDI_pooledTrackedSyntax_trackedSyntaxKind = 36;
 
 const byteEDI_isChecking_cursorBlinkTrailingEdge = 37;
 
-// gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]
+const byteEDI_cursor_selectionDivExists = 38;
+
+// gBYTE_FIELDS[byteEDI_cursor_selectionDivExists]
 
 // TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
 // - [ ] triple equals

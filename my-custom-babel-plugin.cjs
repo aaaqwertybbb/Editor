@@ -497,6 +497,7 @@ module.exports = function (babel) {
     "byteEDI_extensionKind",
     "byteEDI_pooledTrackedSyntax_trackedSyntaxKind",
     "byteEDI_isChecking_cursorBlinkTrailingEdge",
+    "byteEDI_cursor_selectionDivExists",
 
 
 

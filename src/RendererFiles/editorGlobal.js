@@ -202,8 +202,7 @@ let currVli;
 const lspQueue = [];
 let isProcessingLspQueue = false;
 
-/** just floor these on init / resize and set the style so if they want resize they have to explicit and it is non decimal? */
-let lastReadNumber_offsetHeight = 0;
+
 let lastReadNumber_offsetWidth = 0;
 
 let EDI_isRenderPending = false;
@@ -1366,7 +1365,7 @@ function update_VirtualIndexLine() {
 }
 
 function update_virtualCount() {
-    gINT_FIELDS[fEDI_virtualCount] = Math.ceil(lastReadNumber_offsetHeight / gINT_FIELDS[fEDI_lineHeight]);
+    gINT_FIELDS[fEDI_virtualCount] = Math.ceil(gINT_FIELDS[fEDI_lastReadNumber_offsetHeight] / gINT_FIELDS[fEDI_lineHeight]);
 }
 
 /**
@@ -6838,15 +6837,15 @@ function EDI_onResize_startThrottleTimeout() {
 
 function EDI_measureBaseElement() {
     lastReadNumber_offsetWidth = Math.floor(EDI_baseElement.offsetWidth);
-    lastReadNumber_offsetHeight = Math.floor(EDI_baseElement.offsetHeight);
+    gINT_FIELDS[fEDI_lastReadNumber_offsetHeight] = Math.floor(EDI_baseElement.offsetHeight);
     
     EDI_baseElement.style.width = lastReadNumber_offsetWidth + 'px';
-    EDI_baseElement.style.height = lastReadNumber_offsetHeight + 'px';
+    EDI_baseElement.style.height = gINT_FIELDS[fEDI_lastReadNumber_offsetHeight] + 'px';
 
     EDI_baseElement.style.contain = 'layout';
 
     lastReadNumber_offsetWidth = EDI_baseElement.offsetWidth;
-    lastReadNumber_offsetHeight = EDI_baseElement.offsetHeight;
+    gINT_FIELDS[fEDI_lastReadNumber_offsetHeight] = EDI_baseElement.offsetHeight;
 
 /*
 > what does css "contain = 'layout'" do
@@ -6878,10 +6877,10 @@ and I don't know...
 <     const rect = EDI_baseElement.getBoundingClientRect();
 <     
 <     lastReadNumber_offsetWidth = rect.width;
-<     lastReadNumber_offsetHeight = rect.height;
+<     gINT_FIELDS[fEDI_lastReadNumber_offsetHeight] = rect.height;
 < 
 <     // 2. Calculate lines safely without modifying the DOM
-<     const rawLineCount = lastReadNumber_offsetHeight / KNOWN_LINE_HEIGHT;
+<     const rawLineCount = gINT_FIELDS[fEDI_lastReadNumber_offsetHeight] / KNOWN_LINE_HEIGHT;
 <     
 <     // Math.floor gives you ONLY fully visible lines
 <     const fullyVisibleLines = Math.floor(rawLineCount); 
@@ -7763,12 +7762,12 @@ function EDI_scrollCursorIntoView() {
     if (gINT_FIELDS[fEDI_cursor_cursorTranslateYValue] < local_lastReadNumber_scrollTop) {
         scrollY = gINT_FIELDS[fEDI_cursor_cursorTranslateYValue] - local_lastReadNumber_scrollTop;
     }
-    else if (gINT_FIELDS[fEDI_cursor_cursorTranslateYValue] >= local_lastReadNumber_scrollTop + lastReadNumber_offsetHeight) {
+    else if (gINT_FIELDS[fEDI_cursor_cursorTranslateYValue] >= local_lastReadNumber_scrollTop + gINT_FIELDS[fEDI_lastReadNumber_offsetHeight]) {
         // I want to use clientHeight but I don't have any logic for no scrollbar thus single page fitting text might bug out and trigger
         // scrollBy over and over.
 
         // make the bottom touch then add lineHeight is probably the algorithm to get a perfect fill maybe do lineHeight * 2 skip an event when spamming arrowDown?
-        let currentBottom = local_lastReadNumber_scrollTop + lastReadNumber_offsetHeight;
+        let currentBottom = local_lastReadNumber_scrollTop + gINT_FIELDS[fEDI_lastReadNumber_offsetHeight];
         let changeToMakeBottomTouch = gINT_FIELDS[fEDI_cursor_cursorTranslateYValue] - currentBottom;
         scrollY = changeToMakeBottomTouch + (2 * gINT_FIELDS[fEDI_lineHeight]);
     }

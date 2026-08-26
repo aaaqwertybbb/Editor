@@ -407,7 +407,10 @@ const fEDI_EDI_horizontal_scrollbar_widthValue = 83;
 /** The value of 'EDI_baseElement.scrollLeft' at the most recent scroll event that occurred */
 const fEDI_lastReadNumber_scrollLeft = 84;
 
-// gINT_FIELDS[fEDI_lastReadNumber_scrollLeft]
+// just floor these on init / resize and set the style so if they want resize they have to explicit and it is non decimal?
+const fEDI_lastReadNumber_offsetHeight = 85;
+
+// gINT_FIELDS[fEDI_lastReadNumber_offsetHeight]
 
 // for the beltIndezZero etc... consider using max value?
 // Although it might "just work" because you're using locals which would become negative?

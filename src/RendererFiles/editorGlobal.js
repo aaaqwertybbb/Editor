@@ -8920,6 +8920,49 @@ Google AI:
 > Or is it that a normal javascript 'let' declared variable is a "smi" and while this avoids a large amount of garbage collection overhead,
 > each "smi" is still a "node" that the garbage collector has to "visit" for an extremely short period of time to verify that the variable is indeed a "smi" before skipping it. And this checking of "smi's" while extremely fast is non-zero.
 
+< Both of your theories touch on real V8 engine behaviors, but your second theory (garbage collector overhead and memory layout) is
+< much closer to the physical reality of why you are seeing massive performance improvements.
+<
+< While reducing global scope pollution does help slightly with identifier lookups,
+< the sheer scale of the performance boost you are seeing comes down to how V8 optimizes memory allocation, pointer chasing, and cache locality.
+<
+< Here is the exact breakdown of why your Uint32Array approach is outperforming raw global variables.
+<
+< 1. The True Winner: Memory Locality and Pointer Chasing (CPU Cache)
+< |
+< When you declare dozens or hundreds of independent global variables (let a = 5; let b = 10;),
+< V8 allocates space for them on the heap. Even if they are Small Integers (Smis), V8 represents the global scope behind the scenes as a dictionary-like object.
+< |
+< - The Problem:
+<     The values are scattered across memory. When your code accesses five different global variables in a row,
+<     the CPU has to "chase pointers" to different memory addresses, causing CPU cache misses.
+<
+< - The TypedArray Advantage:
+<     A Uint32Array allocates a single, contiguous block of raw binary memory. When you access state[0], state[1], and state[2], the
+<     CPU loads the entire chunk of memory into its ultra-fast L1/L2 cache at once. You are eliminating pointer chasing entirely.
+<
+< 2. Your Smi Theory: The GC Edge
+< You are entirely correct that Smis (Small Integers) do not create garbage because they are stored "inline" inside the pointer itself.
+< However, global variables are a special case:
+< - As you noted, the GC still has to trace the global object's properties to ensure references haven't changed.
+< - Furthermore, if any of your global let variables ever accidentally hold a value that doesn't fit into a Smi
+<   (like a float, a string, or a number > 2^30), V8 instantly "boxes" that number into a full HeapNumber object,
+<   triggering actual garbage collection allocation and disposal cycles.
+< - By forcing your state into a Uint32Array, V8 never has to guess. It knows exactly how much memory is allocated,
+<   and the garbage collector completely ignores the interior of the array. The GC only looks at the array wrapper once and moves on.
+<
+< 3. Global Scope Lookup Inflation
+< Your first theory about scope pollution is valid but usually accounts for a smaller fraction of the performance gap.
+< 
+< In V8, looking up a global variable is notoriously slow compared to a local variable.
+< Global lookups require traversing the script context or the global object dictionary.
+< While V8 uses an "Inline Cache" (IC) to make global lookups faster after the first time,
+< accessing properties via a constant array reference index (state[5]) bypasses global scope resolution entirely.
+< V8 compiles state[5] down to a single, lightning-fast hardware memory offset instruction.
+<
+< Summary: Why Uint32Array Wins
 < ...
+
+
 
 */

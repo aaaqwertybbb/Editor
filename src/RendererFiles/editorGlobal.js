@@ -8900,4 +8900,16 @@ So is it me or the smi's?
 I still got some more smi's left I can probably get rid of the rest of them tomorrow.
 That way I've "been there done that" even if it was all just incorrect in the end.
 
+
+====
+
+you wanna feel like you have control over your life
+
+and you focus on trying to hold control over all these other things that don't actually mean anything to you
+so no matter how much control you hold over them it is never enough
+
+becuase what you truly want to control is your diet, health, weight
+
+i.e.: getting to 199.9 lbs is the cure to OCD
+
 */

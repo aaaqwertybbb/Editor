@@ -177,7 +177,7 @@ class EXPLORER_TreeViewDirector {
                 this.nodeList.getElementAt(indexItem);
                 let key = TreeView_pooledNode_key;
                 depth = TreeView_pooledNode_depth;
-                nodeKind = TreeView_pooledNode_nodeKind;
+                nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
                 
                 let isDirectory = nodeKind === TreeViewNodeKind_isExpandable_isExpanded ||
                                   nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded;
@@ -410,7 +410,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
                 this.nodeList.getElementAt(indexItem);
                 let key = TreeView_pooledNode_key;
                 let depth = TreeView_pooledNode_depth;
-                let nodeKind = TreeView_pooledNode_nodeKind;
+                let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
                 if (nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded) {
                     // TODO: open the file by id in one ipc call
                     const entry = await window.myAPI.getFilesystemEntryById(key);
@@ -435,7 +435,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
         this.nodeList.getElementAt(indexItem);
         let key = TreeView_pooledNode_key;
         let depth = TreeView_pooledNode_depth;
-        let nodeKind = TreeView_pooledNode_nodeKind;
+        let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
 
         if (nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded) {
             // TODO: open the file by id in one ipc call
@@ -461,7 +461,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
         this.nodeList.getElementAt(indexItem);
         let key = TreeView_pooledNode_key;
         let depth = TreeView_pooledNode_depth;
-        let nodeKind = TreeView_pooledNode_nodeKind;
+        let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
 
         let target = {
             id: key,
@@ -491,7 +491,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
         this.nodeList.getElementAt(indexItem);
         let key = TreeView_pooledNode_key;
         let depth = TreeView_pooledNode_depth;
-        let nodeKind = TreeView_pooledNode_nodeKind;
+        let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
 
         if (nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded) {
 
@@ -546,7 +546,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
         this.nodeList.getElementAt(indexItem);
         let key = TreeView_pooledNode_key;
         let depth = TreeView_pooledNode_depth;
-        let nodeKind = TreeView_pooledNode_nodeKind;
+        let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
         
         if (nodeKind === TreeViewNodeKind_isExpandable_isExpanded) {
             if (indexItem + 1 < this.nodeList.count_abstract) {
@@ -568,7 +568,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
         this.nodeList.getElementAt(indexItem);
         let key = TreeView_pooledNode_key;
         let depth = TreeView_pooledNode_depth;
-        let nodeKind = TreeView_pooledNode_nodeKind;
+        let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
         
         if (nodeKind === TreeViewNodeKind_isExpandable_isExpanded) {
         	return this.tvd_expandCollapseIconWasClicked_async(divItem, indexItem);
@@ -611,7 +611,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
         this.nodeList.getElementAt(indexItem);
         let key = TreeView_pooledNode_key;
         let depth = TreeView_pooledNode_depth;
-        let nodeKind = TreeView_pooledNode_nodeKind;
+        let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
 
         if (nodeKind === TreeViewNodeKind_NOTisExpandable_isExpanded) {
             alert("TODO: if (nodeKind === ...TreeViewNodeKind_NOTisExpandable_isExpanded())");
@@ -871,7 +871,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
         case CommandKind_Paste:
             {
                 EXPLORER_director.nodeList.getElementAt(MENU_target.indexItem);
-                let nodeKind = TreeView_pooledNode_nodeKind;
+                let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
                 let depthOfTheParent = TreeView_pooledNode_depth;
                 let isCollapsed = nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
@@ -908,7 +908,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                             //
                             for (let i_targetDepth = 0; i_targetDepth < pasteResult.indexOf; i_targetDepth++) {
                                 EXPLORER_director.nodeList.getElementAt(someIndex);
-                                let nodeKind = TreeView_pooledNode_nodeKind;
+                                let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
                                 let isCollapsed = nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
                                 let d_of_presumed_correct_depth = TreeView_pooledNode_depth;
@@ -1102,7 +1102,7 @@ async function NewFile_Directory_WIDGET_InputText_callback(result) {
     let entry = WIDGET_SHOW_value;
 
     EXPLORER_director.nodeList.getElementAt(WIDGET_target.indexItem);
-    let nodeKind = TreeView_pooledNode_nodeKind;
+    let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
     let depthOfTheParent = TreeView_pooledNode_depth;
     let isCollapsed = nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
@@ -1129,7 +1129,7 @@ async function NewFile_Directory_WIDGET_InputText_callback(result) {
             //
             for (let i_targetDepth = 0; i_targetDepth < newFileResult.indexOf; i_targetDepth++) {
                 EXPLORER_director.nodeList.getElementAt(someIndex);
-                let nodeKind = TreeView_pooledNode_nodeKind;
+                let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
                 let isCollapsed = nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
                 let d_of_presumed_correct_depth = TreeView_pooledNode_depth;
@@ -1187,7 +1187,7 @@ async function NewFile_File_WIDGET_InputText_callback(result) {
     let entry = WIDGET_SHOW_value;
     
     EXPLORER_director.nodeList.getElementAt(WIDGET_target.indexItem);
-    let nodeKind = TreeView_pooledNode_nodeKind;
+    let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
     let depthOfTheParent = TreeView_pooledNode_depth;
     let isCollapsed = nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
@@ -1211,7 +1211,7 @@ async function NewFile_File_WIDGET_InputText_callback(result) {
             //
             for (let i_targetDepth = 0; i_targetDepth < newFileResult.indexOf; i_targetDepth++) {
                 EXPLORER_director.nodeList.getElementAt(someIndex);
-                let nodeKind = TreeView_pooledNode_nodeKind;
+                let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
                 let isCollapsed = nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
                 let d_of_presumed_correct_depth = TreeView_pooledNode_depth;

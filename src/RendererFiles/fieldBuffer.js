@@ -137,7 +137,9 @@ const byteMENU_isRenderPending = 30;
 const byteWIDGET_WidgetKind_pending = 31;
 const byteWIDGET_WidgetKind_drawn = 32;
 
-// gBYTE_FIELDS[byteWIDGET_WidgetKind_drawn]
+const byteTreeView_pooledNode_nodeKind = 33;
+
+// gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind]
 
 // TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
 // - [ ] triple equals

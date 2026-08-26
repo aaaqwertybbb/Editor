@@ -763,7 +763,7 @@ class TreeViewNodeList {
      */
     getElementAt(index_abstract) {
         let index_literal = index_abstract * this.field_count;
-        TreeView_pooledNode_nodeKind = this.data_literal[index_literal + this.nodeKind_offset];
+        gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind] = this.data_literal[index_literal + this.nodeKind_offset];
         TreeView_pooledNode_key = this.data_literal[index_literal + this.key_offset];
         TreeView_pooledNode_depth = this.data_literal[index_literal + this.depth_offset];
     }
@@ -950,6 +950,5 @@ class TreeViewNodeList {
     }
 }
 
-let TreeView_pooledNode_nodeKind = TreeViewNodeKind_None;
 let TreeView_pooledNode_key = 0;
 let TreeView_pooledNode_depth = 0;

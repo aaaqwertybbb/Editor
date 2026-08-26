@@ -125,7 +125,14 @@ const byteDIALOG_currentDialogKind = 25;
 
 const byteDIALOG_SHOW_currentDialogKind = 26;
 
-// gBYTE_FIELDS[byteDIALOG_SHOW_currentDialogKind]
+const byteMENU_HIDE_shouldRestoreFocus = 27;
+gBYTE_FIELDS[byteMENU_HIDE_shouldRestoreFocus] = 1;
+
+const byteMENU_SET_NOTshouldFocus = 28;
+
+const byteMENU_NOTshouldFocus = 29;
+
+// gBYTE_FIELDS[byteMENU_NOTshouldFocus]
 
 // TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
 // - [ ] triple equals

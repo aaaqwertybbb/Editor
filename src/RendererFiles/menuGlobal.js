@@ -63,18 +63,12 @@ let MENU_restoreFocusToElement = null;
 
 let MENU_recentBoundingClientRectTop = null;
 
-let MENU_HIDE_shouldRestoreFocus = true;
-
-let MENU_SET_NOTshouldFocus = false;
-
 let MENU_renderKindArray = [];
 let MENU_isRenderPending = false;
 
 let MENU_optionList = null;
 /** TODO: Perhaps use 'MENU_optionList' instead? */
 let MENU_ArrayFrom_menuOptionList_children = null;
-
-let MENU_NOTshouldFocus = false;
 
 // TODO: maybe the menu should always be empty, and just be some div that moves left top positions and you can put anything you want in it.
 
@@ -134,7 +128,7 @@ function MENU_render_do_Hide() {
     MENU_recentBoundingClientRectTop = null;
 
     if (MENU_restoreFocusToElement) {
-        if (MENU_HIDE_shouldRestoreFocus) {
+        if (gBYTE_FIELDS[byteMENU_HIDE_shouldRestoreFocus]) {
             MENU_restoreFocusToElement.focus();
         }
         MENU_restoreFocusToElement = null;
@@ -158,7 +152,7 @@ async function MENU_state_do_hide(shouldRestoreFocus) {
     MENU_target = null;
 
     if (shouldRestoreFocus === true || shouldRestoreFocus === false) {
-        MENU_HIDE_shouldRestoreFocus = shouldRestoreFocus;
+        gBYTE_FIELDS[byteMENU_HIDE_shouldRestoreFocus] = shouldRestoreFocus;
     }
 }
 
@@ -267,7 +261,7 @@ function MENU_render_do_Set() {
 
     MENU_restoreFocusToElement = document.activeElement;
 
-    if (!MENU_SET_NOTshouldFocus) {
+    if (!gBYTE_FIELDS[byteMENU_SET_NOTshouldFocus]) {
         menuElement.focus();
     }
 }
@@ -296,7 +290,7 @@ async function menuSet(context, target, optionList, left, top, NOTshouldFocus, i
 
     MENU_optionList = optionList;
 
-    MENU_NOTshouldFocus = NOTshouldFocus;
+    gBYTE_FIELDS[byteMENU_NOTshouldFocus] = NOTshouldFocus;
 
     MENU_recentBoundingClientRectTop = null;
 
@@ -322,7 +316,7 @@ function MENU_onMouseMove(event) {
 async function optionOnClick(indexClicked, elementClicked) {
     if (gINT_FIELDS[fMENU_ticketId_drawn] === gINT_FIELDS[fMENU_ticketId_pending] && gINT_FIELDS[fMENU_ticketId_drawn] !== MENU_last_handled_ticketId) {
         MENU_last_handled_ticketId = gINT_FIELDS[fMENU_ticketId_drawn];
-        MENU_HIDE_shouldRestoreFocus = true;
+        gBYTE_FIELDS[byteMENU_HIDE_shouldRestoreFocus] = true;
         switch (MENU_context) {
             case 'EXPLORER':
                 await EXPLORER_MenuOnClick(indexClicked, elementClicked);

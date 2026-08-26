@@ -1022,7 +1022,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 // TODO: optimize this?
                 const entry = await window.myAPI.getFilesystemEntryById(MENU_target.id);
                 if (!entry) return;
-                MENU_HIDE_shouldRestoreFocus = false;
+                gBYTE_FIELDS[byteMENU_HIDE_shouldRestoreFocus] = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
                 await WIDGET_show(WidgetKind_InputText, menuOptionX, menuOptionY, 'filename', entry, MENU_target, NewFile_Directory_WIDGET_InputText_callback);
                 break;
@@ -1033,7 +1033,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 // TODO: optimize this?
                 const entry = await window.myAPI.getFilesystemEntryById(MENU_target.id);
                 if (!entry) return;
-                MENU_HIDE_shouldRestoreFocus = false;
+                gBYTE_FIELDS[byteMENU_HIDE_shouldRestoreFocus] = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
                 await WIDGET_show(WidgetKind_InputText, menuOptionX, menuOptionY, 'filename', entry, MENU_target, NewFile_File_WIDGET_InputText_callback);
                 break;
@@ -1045,7 +1045,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 const entry = await window.myAPI.getFilesystemEntryById(MENU_target.id);
                 if (!entry) return;
                 let filename = entry.basename;
-                MENU_HIDE_shouldRestoreFocus = false;
+                gBYTE_FIELDS[byteMENU_HIDE_shouldRestoreFocus] = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
                 await WIDGET_show(WidgetKind_YesCancel, menuOptionX, menuOptionY, 'delete ' + filename, entry, MENU_target, DeleteFile_Directory_YesCancel_callback);
                 break;
@@ -1057,7 +1057,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 const entry = await window.myAPI.getFilesystemEntryById(MENU_target.id);
                 if (!entry) return;
                 let filename = entry.basename;
-                MENU_HIDE_shouldRestoreFocus = false;
+                gBYTE_FIELDS[byteMENU_HIDE_shouldRestoreFocus] = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
                 await WIDGET_show(WidgetKind_YesCancel, menuOptionX, menuOptionY, 'delete ' + filename, entry, MENU_target, DeleteFile_File_YesCancel_callback);
                 break;
@@ -1069,7 +1069,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 const entry = await window.myAPI.getFilesystemEntryById(MENU_target.id);
                 if (!entry) return;
                 let filename = entry.basename;
-                MENU_HIDE_shouldRestoreFocus = false;
+                gBYTE_FIELDS[byteMENU_HIDE_shouldRestoreFocus] = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
                 await WIDGET_show(WidgetKind_InputText, menuOptionX, menuOptionY, 'rename', filename, {MENU_target:MENU_target, entry:entry}, RenameFile_Directory_InputText_callback);
                 break;
@@ -1088,7 +1088,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 const entry = await window.myAPI.getFilesystemEntryById(MENU_target.id);
                 if (!entry) return;
                 let filename = entry.basename;
-                MENU_HIDE_shouldRestoreFocus = false;
+                gBYTE_FIELDS[byteMENU_HIDE_shouldRestoreFocus] = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
                 await WIDGET_show(WidgetKind_InputText, menuOptionX, menuOptionY, 'rename', filename, {MENU_target: MENU_target, entry: entry}, RenameFile_File_InputText_callback);
                 break;

@@ -479,6 +479,10 @@ module.exports = function (babel) {
     "fMENU_top",
     "fMENU_renderKind_Set_countOfPendingRequests",
 
+    "byteMENU_HIDE_shouldRestoreFocus",
+    "byteMENU_SET_NOTshouldFocus",
+    "byteMENU_NOTshouldFocus",
+
 
 
 

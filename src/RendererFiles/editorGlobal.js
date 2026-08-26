@@ -8968,6 +8968,15 @@ Google AI:
 - [ ] Should I make a class for the editor in order to avoid intra-editor function invocations having to lookup via global scope the functions?
 - [ ] umm
 
+> Should I make a class my code in order to avoid function invocations having to lookup via global scope the functions when I invoke my own code?
+
+< No, you do not need to convert your code into a class just to fix function lookup speeds. Wrapping everything in a class might actually introduce new performance overhead (like prototype lookups and this binding context) that cancels out what you are trying to solve.
+<
+< Instead, you can achieve maximum performance while keeping your functional style by using a classic JavaScript pattern: the IIFE (Immediately Invoked Function Expression) / Modular Scope Closure.
+<
+< Here is why your current approach is slow, why classes aren't the best fix, and the exact pattern you should use instead.
+< ...
+
 
 
 */

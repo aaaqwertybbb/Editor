@@ -8921,4 +8921,9 @@ I think it is 3 things:
 - 2. trying to find something to blame for why you feel that way
 - 3. the futile compulsions to remedy something that never truly was the problem to begin with
 
+====
+
+and for that reason if you can prevent step 1, you won't fall into
+the 2nd and 3rd steps.
+
 */

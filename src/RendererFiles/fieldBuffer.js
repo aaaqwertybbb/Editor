@@ -400,12 +400,13 @@ const fEDI_w_beltIndexLine = 80;
 // And this -1
 const fEDI_EDI_beltIndexZero = 81;
 
+const fEDI_EDI_characterWidth = 82;
+
+// gINT_FIELDS[fEDI_EDI_characterWidth]
+
 // for the beltIndezZero etc... consider using max value?
 // Although it might "just work" because you're using locals which would become negative?
 // TODO: figure it out
-
-// gINT_FIELDS[fEDI_EDI_beltIndexZero]
-
 
 
 // 127 is inclusive final index

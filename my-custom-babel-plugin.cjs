@@ -410,6 +410,7 @@ module.exports = function (babel) {
     "fEDI_w_indexSpan",
     "fEDI_w_beltIndexLine",
     "fEDI_EDI_beltIndexZero",
+    "fEDI_EDI_characterWidth",
 
 
 

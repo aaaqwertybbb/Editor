@@ -170,9 +170,6 @@ let EDI_documentSymbolResult;
  */
 let EDI_listComponent = null;
 
-// TODO: timer is just an int yes? (just an int as in the return is the int based id), homomorphism of this being null is bad / use field buffer. (lack of I mean)
-let EDI_onResize_timer = null;
-
 let EDI_offsetWithinSpan_withRespectToThisSpan = null;
 
 let w_span = null;
@@ -6773,7 +6770,7 @@ function EDI_onResize() {
 // 1. The Entry Point (Replaces WRAPIT)
 function EDI_onResize_WRAPIT() {
     // If timer is running, just note that a trailing call is needed
-    if (EDI_onResize_timer) {
+    if (gINT_FIELDS[fEDI_onResize_timer]) {
         gBYTE_FIELDS[byteEDI_onResize_hasTrailingCall] = true;
         return;
     }
@@ -6787,14 +6784,14 @@ function EDI_onResize_WRAPIT() {
 
 // 2. The Gatekeeper
 function EDI_onResize_startThrottleTimeout() {
-    EDI_onResize_timer = setTimeout(() => {
+    gINT_FIELDS[fEDI_onResize_timer] = setTimeout(() => {
         if (gBYTE_FIELDS[byteEDI_onResize_hasTrailingCall]) {
             gBYTE_FIELDS[byteEDI_onResize_hasTrailingCall] = false;
             EDI_onResize();
             
             EDI_onResize_startThrottleTimeout();
         } else {
-            EDI_onResize_timer = null;
+            gINT_FIELDS[fEDI_onResize_timer] = 0;
         }
     }, 500);
 }

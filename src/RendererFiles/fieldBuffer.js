@@ -599,6 +599,10 @@ const fTreeView_pooledNode_depth = 129;
 
 const fMENU_last_handled_ticketId = 130;
 
+const fEDI_onResize_timer = 131;
+
+// gINT_FIELDS[fEDI_onResize_timer]
+
 /*
 Google AI
 =========
@@ -607,7 +611,6 @@ If you are implementing a fast ring buffer where you want to replace the expensi
 a fast bitwise AND mask (index & (size - 1)).
 */
 
-// gINT_FIELDS[fMENU_last_handled_ticketId]
 
 
 // TODO: if (!MENU_SET_index) { MENU_SET_index = 0; }

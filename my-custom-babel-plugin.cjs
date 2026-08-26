@@ -503,6 +503,7 @@ module.exports = function (babel) {
     "byteisProcessingLspQueue",
     "byteEDI_isRenderPending",
     "byteEDI_mousemove_eventListener_isActive",
+    "fEDI_onResize_timer",
 
 
 

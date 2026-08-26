@@ -76,6 +76,7 @@ const EDI_decoder = new TextDecoder();
 
 let gutterWidthTotal_withPxUnits;
 
+/** This is probably a decimal value once it gets measured for real, do not try to put it in an int container. */
 let EDI_characterWidth = 8;
 // EDI_characterWidth
 // EDI_characterWidth

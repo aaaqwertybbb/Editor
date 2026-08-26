@@ -18,8 +18,6 @@ let WIDGET_WidgetKind_pending = WidgetKind_None;
 let WIDGET_WidgetKind_drawn = WidgetKind_None;
 let WIDGET_restoreFocusToElement_drawn = null;
 
-let WIDGET_left = 0;
-let WIDGET_top = 0;
 /**
  * @type {MENU_Callback}
  */
@@ -116,13 +114,13 @@ function WIDGET_render_do_Show() {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
-    let finalLeft = WIDGET_left;
-    let finalTop = WIDGET_top;
+    let finalLeft = gINT_FIELDS[fWIDGET_left];
+    let finalTop = gINT_FIELDS[fWIDGET_top];
     //let rect = WIDGET_element.getBoundingClientRect();
 
     // Check right edge
     //if (rect.right > viewportWidth) {
-    if (WIDGET_left + WIDGET_element.offsetWidth > viewportWidth) {
+    if (gINT_FIELDS[fWIDGET_left] + WIDGET_element.offsetWidth > viewportWidth) {
       finalLeft = viewportWidth - WIDGET_element.offsetWidth - 10; // 10px padding boundary
     }
     // Check left edge (fallback if menu is wider than screen)
@@ -130,7 +128,7 @@ function WIDGET_render_do_Show() {
 
     // Check bottom edge
     //if (rect.bottom > viewportHeight) {
-    if (WIDGET_top + WIDGET_element.offsetHeight > viewportHeight) {
+    if (gINT_FIELDS[fWIDGET_top] + WIDGET_element.offsetHeight > viewportHeight) {
       finalTop = viewportHeight - WIDGET_element.offsetHeight - 10; 
     }
     // Check top edge
@@ -166,8 +164,8 @@ async function WIDGET_show(widgetKind, left, top, placeholder, value, target, ca
     }
     WIDGET_currentCallback = callback;
 
-    WIDGET_left = left;
-    WIDGET_top = top;
+    gINT_FIELDS[fWIDGET_left] = left;
+    gINT_FIELDS[fWIDGET_top] = top;
     WIDGET_placeholder = placeholder;
     WIDGET_value = value;
     WIDGET_target = target;

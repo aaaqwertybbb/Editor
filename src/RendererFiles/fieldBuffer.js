@@ -514,7 +514,10 @@ gINT_FIELDS[fWIDGET_ticketId_counter] = 1;
 const fWIDGET_ticketId_pending = 115;
 const fWIDGET_ticketId_drawn = 116;
 
-// gINT_FIELDS[fWIDGET_ticketId_drawn]
+const fWIDGET_left = 117;
+const fWIDGET_top = 118;
+
+// gINT_FIELDS[fWIDGET_top]
 
 // for the beltIndezZero etc... consider using max value?
 // Although it might "just work" because you're using locals which would become negative?

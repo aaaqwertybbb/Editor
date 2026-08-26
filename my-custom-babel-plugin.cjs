@@ -455,6 +455,8 @@ module.exports = function (babel) {
     "fWIDGET_ticketId_counter",
     "fWIDGET_ticketId_pending",
     "fWIDGET_ticketId_drawn",
+    "fWIDGET_left",
+    "fWIDGET_top",
 
 
 

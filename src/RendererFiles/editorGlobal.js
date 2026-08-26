@@ -8915,4 +8915,10 @@ i.e.: getting to 199.9 lbs is the cure to OCD
 Although OCD also has to do with feeling like you can't trust your memory but...
 I dunno maybe you get what I'm saying
 
+I think it is 3 things:
+
+- 1. chronic feeling that "something is wrong"
+- 2. trying to find something to blame for why you feel that way
+- 3. the futile compulsions to remedy something that never truly was the problem to begin with
+
 */

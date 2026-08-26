@@ -470,6 +470,9 @@ module.exports = function (babel) {
     "byteDIALOG_currentDialogKind",
     "byteDIALOG_SHOW_currentDialogKind",
 
+    "fMENU_ticketId_counter",
+    "fMENU_ticketId_pending",
+
 
 
 

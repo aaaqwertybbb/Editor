@@ -541,7 +541,19 @@ const fWIDGET_top = 118;
 
 const fWIDGETrenderKind_Show_countOfPendingRequests = 119;
 
-// gINT_FIELDS[fWIDGETrenderKind_Show_countOfPendingRequests]
+const fMENU_ticketId_counter = 120;
+
+/** TODO: It might read better to make this 'null' or something after you've drawn the pending. */
+const fMENU_ticketId_pending = 121;
+
+// gINT_FIELDS[fMENU_ticketId_pending]
+
+
+
+
+// TODO: track down all the '&' or '|' that were supposed to be '&&' or '||'
+
+
 
 // for the beltIndezZero etc... consider using max value?
 // Although it might "just work" because you're using locals which would become negative?

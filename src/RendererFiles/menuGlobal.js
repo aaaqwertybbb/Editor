@@ -52,10 +52,7 @@ class MenuOption {
 // - [ ] To what degree of separation should the 'MENU_renderKindArray' be? None of the UI should share the same array?
 // - [ ] Is the Menu a "cancelable" concept?
 
-let MENU_ticketId_counter = 1;
 
-/** TODO: It might read better to make this 'null' or something after you've drawn the pending. */
-let MENU_ticketId_pending = 0;
 let MENU_ticketId_drawn = 0;
 
 let MENU_context = null;
@@ -191,7 +188,7 @@ function MENU_render_do_Set() {
         MENU_render_do_Hide();
     }
 
-    MENU_ticketId_drawn = MENU_ticketId_pending;
+    MENU_ticketId_drawn = gINT_FIELDS[fMENU_ticketId_pending];
 
     menuElement = document.createElement('div');
     menuElement.id = 'MENU';
@@ -287,7 +284,7 @@ function MENU_render_do_Set() {
 }
 
 async function menuSet(context, target, optionList, left, top, NOTshouldFocus, index, onHideAction) {
-    MENU_ticketId_pending = MENU_ticketId_counter++;
+    gINT_FIELDS[fMENU_ticketId_pending] = gINT_FIELDS[fMENU_ticketId_counter]++;
     
     // TODO: These 'if (MENU_optionList)' and 'if (MENU_ArrayFrom_menuOptionList_children)' won't work because for some reason you decided that a menu could be "empty", thus these could be null and no longer would indicate that whether only the state function ran or both the state function and the render function ran or etc...
     if (MENU_optionList) {
@@ -334,7 +331,7 @@ function MENU_onMouseMove(event) {
 }
 
 async function optionOnClick(indexClicked, elementClicked) {
-    if (MENU_ticketId_drawn === MENU_ticketId_pending && MENU_ticketId_drawn !== MENU_last_handled_ticketId) {
+    if (MENU_ticketId_drawn === gINT_FIELDS[fMENU_ticketId_pending] && MENU_ticketId_drawn !== MENU_last_handled_ticketId) {
         MENU_last_handled_ticketId = MENU_ticketId_drawn;
         MENU_HIDE_shouldRestoreFocus = true;
         switch (MENU_context) {

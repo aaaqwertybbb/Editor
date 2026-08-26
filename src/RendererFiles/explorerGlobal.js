@@ -176,7 +176,7 @@ class EXPLORER_TreeViewDirector {
             else {
                 this.nodeList.getElementAt(indexItem);
                 let key = gINT_FIELDS[fTreeView_pooledNode_key];
-                depth = TreeView_pooledNode_depth;
+                depth = gINT_FIELDS[fTreeView_pooledNode_depth];
                 nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
                 
                 let isDirectory = nodeKind === TreeViewNodeKind_isExpandable_isExpanded ||
@@ -409,7 +409,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
             case 'Enter':
                 this.nodeList.getElementAt(indexItem);
                 let key = gINT_FIELDS[fTreeView_pooledNode_key];
-                let depth = TreeView_pooledNode_depth;
+                let depth = gINT_FIELDS[fTreeView_pooledNode_depth];
                 let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
                 if (nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded) {
                     // TODO: open the file by id in one ipc call
@@ -434,7 +434,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
     async tvd_ondblclick_async(divItem, indexItem) {
         this.nodeList.getElementAt(indexItem);
         let key = gINT_FIELDS[fTreeView_pooledNode_key];
-        let depth = TreeView_pooledNode_depth;
+        let depth = gINT_FIELDS[fTreeView_pooledNode_depth];
         let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
 
         if (nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded) {
@@ -460,7 +460,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
         // TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
         this.nodeList.getElementAt(indexItem);
         let key = gINT_FIELDS[fTreeView_pooledNode_key];
-        let depth = TreeView_pooledNode_depth;
+        let depth = gINT_FIELDS[fTreeView_pooledNode_depth];
         let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
 
         let target = {
@@ -490,7 +490,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
         // TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
         this.nodeList.getElementAt(indexItem);
         let key = gINT_FIELDS[fTreeView_pooledNode_key];
-        let depth = TreeView_pooledNode_depth;
+        let depth = gINT_FIELDS[fTreeView_pooledNode_depth];
         let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
 
         if (nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded) {
@@ -545,7 +545,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
     	// TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
         this.nodeList.getElementAt(indexItem);
         let key = gINT_FIELDS[fTreeView_pooledNode_key];
-        let depth = TreeView_pooledNode_depth;
+        let depth = gINT_FIELDS[fTreeView_pooledNode_depth];
         let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
         
         if (nodeKind === TreeViewNodeKind_isExpandable_isExpanded) {
@@ -567,7 +567,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
     	// TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
         this.nodeList.getElementAt(indexItem);
         let key = gINT_FIELDS[fTreeView_pooledNode_key];
-        let depth = TreeView_pooledNode_depth;
+        let depth = gINT_FIELDS[fTreeView_pooledNode_depth];
         let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
         
         if (nodeKind === TreeViewNodeKind_isExpandable_isExpanded) {
@@ -610,7 +610,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
     removeFromNodeList(indexItem) {
         this.nodeList.getElementAt(indexItem);
         let key = gINT_FIELDS[fTreeView_pooledNode_key];
-        let depth = TreeView_pooledNode_depth;
+        let depth = gINT_FIELDS[fTreeView_pooledNode_depth];
         let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
 
         if (nodeKind === TreeViewNodeKind_NOTisExpandable_isExpanded) {
@@ -872,7 +872,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
             {
                 EXPLORER_director.nodeList.getElementAt(MENU_target.indexItem);
                 let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
-                let depthOfTheParent = TreeView_pooledNode_depth;
+                let depthOfTheParent = gINT_FIELDS[fTreeView_pooledNode_depth];
                 let isCollapsed = nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
                 let local_EXPLORER_menuOptionCut_object = EXPLORER_menuOptionCut_object;
@@ -911,7 +911,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                                 let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
                                 let isCollapsed = nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
-                                let d_of_presumed_correct_depth = TreeView_pooledNode_depth;
+                                let d_of_presumed_correct_depth = gINT_FIELDS[fTreeView_pooledNode_depth];
                                 if (d_of_presumed_correct_depth !== targetDepth) {
                                     // Validate the target you paste into's child count
                                     break;
@@ -1103,7 +1103,7 @@ async function NewFile_Directory_WIDGET_InputText_callback(result) {
 
     EXPLORER_director.nodeList.getElementAt(WIDGET_target.indexItem);
     let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
-    let depthOfTheParent = TreeView_pooledNode_depth;
+    let depthOfTheParent = gINT_FIELDS[fTreeView_pooledNode_depth];
     let isCollapsed = nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
     let newFileResult = await window.myAPI.newFile(entry.absolutePath, result.value, /*isDirectory*/ true);
@@ -1132,7 +1132,7 @@ async function NewFile_Directory_WIDGET_InputText_callback(result) {
                 let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
                 let isCollapsed = nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
-                let d_of_presumed_correct_depth = TreeView_pooledNode_depth;
+                let d_of_presumed_correct_depth = gINT_FIELDS[fTreeView_pooledNode_depth];
                 if (d_of_presumed_correct_depth !== targetDepth) {
                     // Validate the target you paste into's child count
                     break;
@@ -1188,7 +1188,7 @@ async function NewFile_File_WIDGET_InputText_callback(result) {
     
     EXPLORER_director.nodeList.getElementAt(WIDGET_target.indexItem);
     let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
-    let depthOfTheParent = TreeView_pooledNode_depth;
+    let depthOfTheParent = gINT_FIELDS[fTreeView_pooledNode_depth];
     let isCollapsed = nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
     let newFileResult = await window.myAPI.newFile(entry.absolutePath, result.value, /*isDirectory*/ false);
@@ -1214,7 +1214,7 @@ async function NewFile_File_WIDGET_InputText_callback(result) {
                 let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
                 let isCollapsed = nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
-                let d_of_presumed_correct_depth = TreeView_pooledNode_depth;
+                let d_of_presumed_correct_depth = gINT_FIELDS[fTreeView_pooledNode_depth];
                 if (d_of_presumed_correct_depth !== targetDepth) {
                     // Validate the target you paste into's child count
                     break;

@@ -573,9 +573,9 @@ const fMENU_top = 126;
 const fMENU_renderKind_Set_countOfPendingRequests = 127;
 
 const fTreeView_pooledNode_key = 128;
-//const fTreeView_pooledNode_depth = 0;
+const fTreeView_pooledNode_depth = 129;
 
-// gINT_FIELDS[fTreeView_pooledNode_key]
+// gINT_FIELDS[fTreeView_pooledNode_depth]
 
 
 // TODO: if (!MENU_SET_index) { MENU_SET_index = 0; }

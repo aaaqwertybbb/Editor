@@ -489,6 +489,7 @@ module.exports = function (babel) {
 
     "byteTreeView_pooledNode_nodeKind",
     "fTreeView_pooledNode_key",
+    "fTreeView_pooledNode_depth",
 
 
 

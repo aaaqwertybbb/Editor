@@ -95,7 +95,7 @@ class DIALOG_FindAll_TreeViewDirector {
             else {
                 this.nodeList.getElementAt(indexItem);
                 let key = gINT_FIELDS[fTreeView_pooledNode_key];
-                depth = TreeView_pooledNode_depth;
+                depth = gINT_FIELDS[fTreeView_pooledNode_depth];
                 nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
 
                 let textNode = divItem.lastChild;
@@ -153,7 +153,7 @@ class DIALOG_FindAll_TreeViewDirector {
     async tvd_ondblclick_async(divItem, indexItem) {
         this.nodeList.getElementAt(indexItem);
         let key = gINT_FIELDS[fTreeView_pooledNode_key];
-        let depth = TreeView_pooledNode_depth;
+        let depth = gINT_FIELDS[fTreeView_pooledNode_depth];
         let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
 
         if (nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded) {
@@ -199,7 +199,7 @@ class DIALOG_FindAll_TreeViewDirector {
     async tvd_expandCollapseIconWasClicked_async(divItem, indexItem) {
         this.nodeList.getElementAt(indexItem);
         let key = gINT_FIELDS[fTreeView_pooledNode_key];
-        let depth = TreeView_pooledNode_depth;
+        let depth = gINT_FIELDS[fTreeView_pooledNode_depth];
         let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
 
         if (nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded) {

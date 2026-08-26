@@ -418,7 +418,13 @@ const fEDI_EDI_mouseOver_event_clientY = 88;
 
 const fEDI_EDI_mouseOver_event_clientX = 89;
 
-// gINT_FIELDS[fEDI_EDI_mouseOver_event_clientX]
+// Move some 'EDI_removeSelection()' state here so I can access it in the render function.
+// TODO: Don't do this long term, I need a simple bridge for this state so I can just get started otherwise I'll spend the rest of my life procrastinating.
+//
+const fEDI_EDI_RemoveSelection_smallPosition = 90;
+const fEDI_EDI_RemoveSelection_largePosition = 91;
+
+// gINT_FIELDS[fEDI_EDI_RemoveSelection_largePosition]
 
 // for the beltIndezZero etc... consider using max value?
 // Although it might "just work" because you're using locals which would become negative?

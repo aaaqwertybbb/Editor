@@ -218,8 +218,6 @@ let DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left;
 // Move some 'EDI_removeSelection()' state here so I can access it in the render function.
 // TODO: Don't do this long term, I need a simple bridge for this state so I can just get started otherwise I'll spend the rest of my life procrastinating.
 //
-let EDI_RemoveSelection_smallPosition = 0;
-let EDI_RemoveSelection_largePosition = 0;
 let EDI_RemoveSelection_smallLineAndColumnIndices = null;
 let EDI_RemoveSelection_largeLineAndColumnIndices = null;
 
@@ -6947,8 +6945,8 @@ function EDI_removeSelection() {
         largePosition = ints[fEDI_cursor_selectionAnchor];
     }
 
-    EDI_RemoveSelection_smallPosition = smallPosition;
-    EDI_RemoveSelection_largePosition = largePosition;
+    gINT_FIELDS[fEDI_EDI_RemoveSelection_smallPosition] = smallPosition;
+    gINT_FIELDS[fEDI_EDI_RemoveSelection_largePosition] = largePosition;
 
     ints[fEDI_cursor_selectionAnchor] = 0;
     ints[fEDI_cursor_selectionEnd] = 0;
@@ -6983,8 +6981,8 @@ function EDI_render_do_RemoveSelection() {
 
     const ints = gINT_FIELDS;
 
-    let smallPosition = EDI_RemoveSelection_smallPosition;
-    let largePosition = EDI_RemoveSelection_largePosition;
+    let smallPosition = gINT_FIELDS[fEDI_EDI_RemoveSelection_smallPosition];
+    let largePosition = gINT_FIELDS[fEDI_EDI_RemoveSelection_largePosition];
 
     let editLength = largePosition - smallPosition;
 

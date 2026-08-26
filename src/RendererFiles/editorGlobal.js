@@ -8962,6 +8962,7 @@ Google AI:
 <
 < Summary: Why Uint32Array Wins
 < ...
+(it shows a table of the previously stated points here)
 
 
 

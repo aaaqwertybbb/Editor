@@ -14,28 +14,9 @@ const WIDGETrenderKind_Hide = 2;
  * @returns {Promise}
  */
 
-/**
- * start it at 1 because you thought about starting it at 0 then using a prefix incrementation to ensure the 0 state is never used as a means of detecting an empty state
- * but if someone changes the code and moves it to postfix incrementation then everything breaks so why even take that risk when you can just start at 1
- * then if they go from postfix to prefix then you simply miss out on the number 1 and the first ticketId is 2 who cares...
- * 
- * ticketId because you're standing in line at the deli in the supermarket and you've grabbed from the machine a paper that has your number on it
- * and you're waiting for your number to be called so you can get the turkey
- * 
- * > "what is it called when you are in line at a deli and they have a machine that prints a paper with a number on it"
- * 
- * < It is called a take-a-number system or a queue management system. It uses a ticket dispenser to give out paper numbers so people can wait in order without standing in a tight line.
- * 
- * okay yeah it is a ticket dispenser we're good
- */
-let WIDGET_ticketId_counter = 1;
-
 let WIDGET_WidgetKind_pending = WidgetKind_None;
 let WIDGET_WidgetKind_drawn = WidgetKind_None;
 let WIDGET_restoreFocusToElement_drawn = null;
-
-let WIDGET_ticketId_pending = 0;
-let WIDGET_ticketId_drawn = 0;
 
 let WIDGET_left = 0;
 let WIDGET_top = 0;
@@ -121,7 +102,7 @@ function WIDGET_render_do_Show() {
         WIDGET_restoreFocusToElement_drawn = document.activeElement;
     }
     
-    WIDGET_ticketId_drawn = WIDGET_ticketId_pending;
+    gINT_FIELDS[fWIDGET_ticketId_drawn] = gINT_FIELDS[fWIDGET_ticketId_pending];
 
     switch (WIDGET_WidgetKind_drawn) {
         case WidgetKind_InputText:
@@ -176,7 +157,7 @@ function WIDGET_render_do_Show() {
  */
 async function WIDGET_show(widgetKind, left, top, placeholder, value, target, callback) {
 
-    WIDGET_ticketId_pending = WIDGET_ticketId_counter++;
+    gINT_FIELDS[fWIDGET_ticketId_pending] = gINT_FIELDS[fWIDGET_ticketId_counter]++;
     WIDGET_WidgetKind_pending = widgetKind;
 
     // TODO: Does this go before the above ticketId logic? I'm not sure but I feel confident that it makes more sense at the least above the '_left and _top' logic.
@@ -218,7 +199,7 @@ function WIDGET_render_do_Hide() {
 async function WIDGET_state_do_Hide(shouldRestoreFocus) {
 
     // TODO: This is believed to prevent any funny business where a UI is being shown, asked to be hidden, submitted before the hide rAF. Once this is confirmed to be true (or other...) remove or update this comment accordingly.
-    WIDGET_ticketId_pending = WIDGET_ticketId_counter++;
+    gINT_FIELDS[fWIDGET_ticketId_pending] = gINT_FIELDS[fWIDGET_ticketId_counter]++;
 
     WIDGET_shouldRestoreFocus = shouldRestoreFocus;
     if (WIDGET_currentCallback) {
@@ -242,12 +223,12 @@ async function WIDGET_hide(shouldRestoreFocus) {
  * 
  * This function is used for the UI event handlers.
  * Any internal "completion" due to for example invoking 'hide' when a UI" is being shown skips this function.
- * If anyone desires to in the future change this such that the internal "completion" uses this function, take care because 'WIDGET_ticketId_pending === WIDGET_ticketId_drawn'
+ * If anyone desires to in the future change this such that the internal "completion" uses this function, take care because 'gINT_FIELDS[fWIDGET_ticketId_pending] === gINT_FIELDS[fWIDGET_ticketId_drawn]'
  * isn't quite as sensible when dealing with internal "completion" that needs to cancel the previous UI.
  */
 async function WIDGET_completeForm(resultObject) {
     if (WIDGET_currentCallback) {
-        if (WIDGET_ticketId_pending !== WIDGET_ticketId_drawn) {
+        if (gINT_FIELDS[fWIDGET_ticketId_pending] !== gINT_FIELDS[fWIDGET_ticketId_drawn]) {
             resultObject.isCancelled = true;
         }
         // Avoid duplicate submissions

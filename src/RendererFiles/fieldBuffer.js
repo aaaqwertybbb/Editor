@@ -109,6 +109,7 @@ const byteAUTOCOMPLETE_scrollIsFetchingData = 18;
 // - [ ] triple equals
 // - [ ] type coercion overhead
 // - [ ] Extremely high access gBYTE_FIELDS move to the int fields if there would otherwise be both a local reference to the byteFields and intFields if it is sensible.
+// - [ ] Move stored enums here if they're <= 255
 
 // inclusive final index is 31
 
@@ -493,7 +494,27 @@ gINT_FIELDS[fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] = 2;
 const fAPP_lineHeight = 113;
 gINT_FIELDS[fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] = 20;
 
-// gINT_FIELDS[fAPP_lineHeight]
+/**
+ * start it at 1 because you thought about starting it at 0 then using a prefix incrementation to ensure the 0 state is never used as a means of detecting an empty state
+ * but if someone changes the code and moves it to postfix incrementation then everything breaks so why even take that risk when you can just start at 1
+ * then if they go from postfix to prefix then you simply miss out on the number 1 and the first ticketId is 2 who cares...
+ * 
+ * ticketId because you're standing in line at the deli in the supermarket and you've grabbed from the machine a paper that has your number on it
+ * and you're waiting for your number to be called so you can get the turkey
+ * 
+ * > "what is it called when you are in line at a deli and they have a machine that prints a paper with a number on it"
+ * 
+ * < It is called a take-a-number system or a queue management system. It uses a ticket dispenser to give out paper numbers so people can wait in order without standing in a tight line.
+ * 
+ * okay yeah it is a ticket dispenser we're good
+ */
+const fWIDGET_ticketId_counter = 114;
+gINT_FIELDS[fWIDGET_ticketId_counter] = 1;
+
+const fWIDGET_ticketId_pending = 115;
+const fWIDGET_ticketId_drawn = 116;
+
+// gINT_FIELDS[fWIDGET_ticketId_drawn]
 
 // for the beltIndezZero etc... consider using max value?
 // Although it might "just work" because you're using locals which would become negative?

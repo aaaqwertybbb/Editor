@@ -452,6 +452,10 @@ module.exports = function (babel) {
     "byteAUTOCOMPLETE_isCheckingTrailingEdge",
     "byteAUTOCOMPLETE_scrollIsFetchingData",
 
+    "fWIDGET_ticketId_counter",
+    "fWIDGET_ticketId_pending",
+    "fWIDGET_ticketId_drawn",
+
 
 
 

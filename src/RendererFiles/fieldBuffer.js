@@ -404,7 +404,10 @@ const fEDI_EDI_characterWidth = 82;
 
 const fEDI_EDI_horizontal_scrollbar_widthValue = 83;
 
-// gINT_FIELDS[fEDI_EDI_horizontal_scrollbar_widthValue]
+/** The value of 'EDI_baseElement.scrollLeft' at the most recent scroll event that occurred */
+const fEDI_lastReadNumber_scrollLeft = 84;
+
+// gINT_FIELDS[fEDI_lastReadNumber_scrollLeft]
 
 // for the beltIndezZero etc... consider using max value?
 // Although it might "just work" because you're using locals which would become negative?

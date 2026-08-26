@@ -412,6 +412,7 @@ module.exports = function (babel) {
     "fEDI_EDI_beltIndexZero",
     "fEDI_EDI_characterWidth",
     "fEDI_EDI_horizontal_scrollbar_widthValue",
+    "fEDI_lastReadNumber_scrollLeft",
 
 
 

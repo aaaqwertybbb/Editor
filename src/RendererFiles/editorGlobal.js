@@ -202,9 +202,6 @@ let currVli;
 const lspQueue = [];
 let isProcessingLspQueue = false;
 
-/** The value of 'EDI_baseElement.scrollLeft' at the most recent scroll event that occurred */
-let lastReadNumber_scrollLeft = 0;
-
 /** just floor these on init / resize and set the style so if they want resize they have to explicit and it is non decimal? */
 let lastReadNumber_offsetHeight = 0;
 let lastReadNumber_offsetWidth = 0;
@@ -514,11 +511,11 @@ function EDI_render_do_CreateViewport() {
     const ints = gINT_FIELDS;
 
     let remember_scrollTop = ints[fEDI_lastReadNumber_scrollTop];
-    let remember_scrollLeft = lastReadNumber_scrollLeft;
+    let remember_scrollLeft = ints[fEDI_lastReadNumber_scrollLeft];
 
     EDI_baseElement.scrollTop = 0;
     EDI_baseElement.scrollLeft = 0;
-    lastReadNumber_scrollLeft = 0;
+    ints[fEDI_lastReadNumber_scrollLeft] = 0;
 
     ints[fEDI_ONSCROLLvirtualCount] = ints[fEDI_virtualCount];
 
@@ -621,7 +618,7 @@ function EDI_onScroll_WRAPIT() {
     // and vice versa.
     // thus it is thought you might as well touch scrollLeft too here, if you're going down this path.
     //
-    lastReadNumber_scrollLeft = EDI_baseElement.scrollLeft;
+    gINT_FIELDS[fEDI_lastReadNumber_scrollLeft] = EDI_baseElement.scrollLeft;
     gINT_FIELDS[fEDI_lastReadNumber_scrollTop] = EDI_baseElement.scrollTop;
 
     EDI_render_request(RenderKind_Scroll);
@@ -865,8 +862,8 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
         ints[fEDI_ONSCROLLvirtualCount] === ints[fEDI_virtualCount]) {
             // TODO: this is directly tied to a scroll event on EDI_baseElement so handle it from there perhaps?
             // TODO: this code is duplicated inside EDI_drawHorizontalScrollbar, reduce duplication?
-            if (EDI_horizontal_scrollbar.scrollLeft !== lastReadNumber_scrollLeft) {
-                EDI_horizontal_scrollbar.scrollLeft = lastReadNumber_scrollLeft;
+            if (EDI_horizontal_scrollbar.scrollLeft !== ints[fEDI_lastReadNumber_scrollLeft]) {
+                EDI_horizontal_scrollbar.scrollLeft = ints[fEDI_lastReadNumber_scrollLeft];
             }
             return true;
     }
@@ -1224,7 +1221,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     EDI_baseElement.scrollTop = 0;
     ints[fEDI_lastReadNumber_scrollTop] = 0;
     EDI_baseElement.scrollLeft = 0;
-    lastReadNumber_scrollLeft = 0;
+    ints[fEDI_lastReadNumber_scrollLeft] = 0;
     
     EDI_state_clear();
 
@@ -1362,7 +1359,7 @@ function update_VirtualIndexLine() {
     // and vice versa.
     // thus it is thought you might as well touch scrollLeft too here, if you're going down this path.
     //
-    lastReadNumber_scrollLeft = EDI_baseElement.scrollLeft;
+    gINT_FIELDS[fEDI_lastReadNumber_scrollLeft] = EDI_baseElement.scrollLeft;
     gINT_FIELDS[fEDI_lastReadNumber_scrollTop] = EDI_baseElement.scrollTop;
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
     gINT_FIELDS[fEDI_virtualIndexLine] = Math.floor(gINT_FIELDS[fEDI_lastReadNumber_scrollTop] / gINT_FIELDS[fEDI_lineHeight]);
@@ -1460,7 +1457,7 @@ function EDI_drawHorizontalScrollbar() {
     
     // TODO: this is directly tied to a scroll event on EDI_baseElement so handle it from there perhaps?
     // TODO: this code is duplicated inside EDI_onScroll_WRAPIT when it returns early due to nothing vertically having changed, reduce duplication?
-    // TODO: 'lastReadNumber_scrollLeft' here?
+    // TODO: 'ints[fEDI_lastReadNumber_scrollLeft]' here?
     if (EDI_horizontal_scrollbar.scrollLeft !== EDI_baseElement.scrollLeft) {
         EDI_horizontal_scrollbar.scrollLeft = EDI_baseElement.scrollLeft;
     }
@@ -3165,7 +3162,7 @@ function EDI_onMouseMove_WRAPIT(event) {
         // TODO: Consider short circuiting at via event.clientX and clientY by tracking the necessary thresholds for the cursor position to pass rather than the previous and current indices. (you can possibly thereby skip the calculation of the indices entirely for the redundant events).
         // TODO: Is it correct to use the cursor's indexLine and indexColumn directly as a means of determining redundancy? I worry about odd interactions, but I have no proof that such an odd interaction could exist.
 
-        let rX = event.clientX - ints[fEDI_recentBoundingClientRect_left] - ints[fEDI_gutterWidthTotal] + lastReadNumber_scrollLeft;
+        let rX = event.clientX - ints[fEDI_recentBoundingClientRect_left] - ints[fEDI_gutterWidthTotal] + ints[fEDI_lastReadNumber_scrollLeft];
         let rY = event.clientY - ints[fEDI_recentBoundingClientRect_top] + ints[fEDI_lastReadNumber_scrollTop];
 
         let indexColumn = Math.round(rX / ints[fEDI_EDI_characterWidth]);
@@ -4866,7 +4863,7 @@ function EDI_onMouseDown(event) {
     }
 
     let rY = event.clientY - gINT_FIELDS[fEDI_recentBoundingClientRect_top] + gINT_FIELDS[fEDI_lastReadNumber_scrollTop];
-    let rX = event.clientX - gINT_FIELDS[fEDI_recentBoundingClientRect_left] - gINT_FIELDS[fEDI_gutterWidthTotal] + lastReadNumber_scrollLeft;
+    let rX = event.clientX - gINT_FIELDS[fEDI_recentBoundingClientRect_left] - gINT_FIELDS[fEDI_gutterWidthTotal] + gINT_FIELDS[fEDI_lastReadNumber_scrollLeft];
     
     let indexLine = Math.floor(rY / gINT_FIELDS[fEDI_lineHeight]);
     let indexColumn = Math.round(rX / gINT_FIELDS[fEDI_EDI_characterWidth]);
@@ -4923,7 +4920,7 @@ function EDI_onContextMenu() {
         new MenuOption(CommandKind_Find, 'Find', null),
     ];
 
-    let menuLeft = gINT_FIELDS[fEDI_recentBoundingClientRect_left] + gINT_FIELDS[fEDI_gutterWidthTotal] + gINT_FIELDS[fEDI_cursor_cursorTranslateXValue] - lastReadNumber_scrollLeft;
+    let menuLeft = gINT_FIELDS[fEDI_recentBoundingClientRect_left] + gINT_FIELDS[fEDI_gutterWidthTotal] + gINT_FIELDS[fEDI_cursor_cursorTranslateXValue] - gINT_FIELDS[fEDI_lastReadNumber_scrollLeft];
     let menuTop = gINT_FIELDS[fEDI_recentBoundingClientRect_top] + gINT_FIELDS[fEDI_cursor_cursorTranslateYValue] + gINT_FIELDS[fEDI_lineHeight] - gINT_FIELDS[fEDI_lastReadNumber_scrollTop];
 
     return menuSet('EDITOR', null, optionList, menuLeft, menuTop);
@@ -4932,7 +4929,7 @@ function EDI_onContextMenu() {
 function EDI_onWheel(event) {
     if (event.shiftKey) {
         EDI_baseElement.scrollBy(event.deltaY, 0);
-        // TODO: 'lastReadNumber_scrollLeft' here?
+        // TODO: 'gINT_FIELDS[fEDI_lastReadNumber_scrollLeft]' here?
         EDI_horizontal_scrollbar.scrollLeft = EDI_baseElement.scrollLeft;
     }
 }
@@ -7776,15 +7773,15 @@ function EDI_scrollCursorIntoView() {
         scrollY = changeToMakeBottomTouch + (2 * gINT_FIELDS[fEDI_lineHeight]);
     }
 
-    if (gINT_FIELDS[fEDI_cursor_cursorTranslateXValue] < lastReadNumber_scrollLeft) {
-        scrollX = gINT_FIELDS[fEDI_cursor_cursorTranslateXValue] - lastReadNumber_scrollLeft;
+    if (gINT_FIELDS[fEDI_cursor_cursorTranslateXValue] < gINT_FIELDS[fEDI_lastReadNumber_scrollLeft]) {
+        scrollX = gINT_FIELDS[fEDI_cursor_cursorTranslateXValue] - gINT_FIELDS[fEDI_lastReadNumber_scrollLeft];
     }
-    else if (gINT_FIELDS[fEDI_cursor_cursorTranslateXValue] >= lastReadNumber_scrollLeft + lastReadNumber_offsetWidth) {
+    else if (gINT_FIELDS[fEDI_cursor_cursorTranslateXValue] >= gINT_FIELDS[fEDI_lastReadNumber_scrollLeft] + lastReadNumber_offsetWidth) {
         // I want to use clientWidth but I don't have any logic for no scrollbar thus single page fitting text might bug out and trigger
         // scrollBy over and over.
 
         // make the right touch then add characterWidth is probably the algorithm to get a perfect fill maybe do characterWidth * 2 skip an event when spamming arrowRight?
-        let currentRight = lastReadNumber_scrollLeft + lastReadNumber_offsetWidth;
+        let currentRight = gINT_FIELDS[fEDI_lastReadNumber_scrollLeft] + lastReadNumber_offsetWidth;
         let changeToMakeRightTouch = gINT_FIELDS[fEDI_cursor_cursorTranslateXValue] - currentRight;
         scrollX = changeToMakeRightTouch + (4 * gINT_FIELDS[fEDI_EDI_characterWidth]);
     }
@@ -8605,7 +8602,7 @@ function EDI_requestLspHover() {
     }
 
     let rY = event_clientY - gINT_FIELDS[fEDI_recentBoundingClientRect_top] + gINT_FIELDS[fEDI_lastReadNumber_scrollTop];
-    let rX = event_clientX - gINT_FIELDS[fEDI_recentBoundingClientRect_left] - gINT_FIELDS[fEDI_gutterWidthTotal] + lastReadNumber_scrollLeft;
+    let rX = event_clientX - gINT_FIELDS[fEDI_recentBoundingClientRect_left] - gINT_FIELDS[fEDI_gutterWidthTotal] + gINT_FIELDS[fEDI_lastReadNumber_scrollLeft];
     
     let indexLine = Math.floor(rY / gINT_FIELDS[fEDI_lineHeight]);
     let indexColumn = Math.round(rX / gINT_FIELDS[fEDI_EDI_characterWidth]);

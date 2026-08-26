@@ -79,8 +79,7 @@ let gutterWidthTotal_withPxUnits;
 // TODO: This assignment isn't necessary, it was already the default value;
 gINT_FIELDS[fEDI_cursor_editKind] = EditKind_None;
 
-let EDI_cursor_cursorId = 1;//EDI_cursor_STATIC_CURSOR_ID++;
-let EDI_cursor_htmlId = "EDI_cursor-" + EDI_cursor_cursorId;
+let EDI_cursor_htmlId = "EDI_cursor-1";
 
 /**
  * When this is cleared the information is not removed, only 'gapBufferCount' is set to 0.
@@ -91,7 +90,7 @@ let EDI_cursor_gapBufferWriteToSpanElement = null;
 let EDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
 
 let EDI_cursor_caretRow = document.createElement('div');
-EDI_cursor_caretRow.id = "EDI_caretRow-" + EDI_cursor_cursorId;
+EDI_cursor_caretRow.id = "EDI_caretRow-1";
 EDI_cursor_caretRow.className = "EDI_caretRow";
 EDI_cursor_caretRow.style.left = gutterWidthTotal_withPxUnits;
 if (EDI_horizontal_scrollbar_virtualization_boundary) {
@@ -99,7 +98,7 @@ if (EDI_horizontal_scrollbar_virtualization_boundary) {
 }
 
 let EDI_cursor_cursorElement = document.createElement('div');
-EDI_cursor_cursorElement.id = "EDI_cursor-" + EDI_cursor_cursorId;
+EDI_cursor_cursorElement.id = "EDI_cursor-1";
 EDI_cursor_cursorElement.className = "EDI_cursor";
 
 EDI_cursor_caretRow.appendChild(EDI_cursor_cursorElement);

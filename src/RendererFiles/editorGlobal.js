@@ -224,7 +224,6 @@ let EDI_RemoveSelection_largeLineAndColumnIndices = null;
 let EDI_hoverTimeout = null;
 
 let EDI_isChecking_cursorBlinkTrailingEdge = false;
-let EDI_cursorBlinkLastTimestamp = 0;
 
 let EDI_mousemove_eventListener_isActive = false;
 
@@ -404,12 +403,12 @@ function EDI_render_do(timestamp) {
 }
 
 function EDI_render_do_cursor(timestamp) {
-    EDI_cursorBlinkLastTimestamp = timestamp;
+    gINT_FIELDS[fEDI_EDI_cursorBlinkLastTimestamp] = timestamp;
     EDI_drawCursor();
 }
 
 function EDI_render_do_cursor_flag_scrollIntoViewExplicit(timestamp) {
-    EDI_cursorBlinkLastTimestamp = timestamp;
+    gINT_FIELDS[fEDI_EDI_cursorBlinkLastTimestamp] = timestamp;
     let notShouldScrollIntoView = false;
     let flag_scrollIntoViewExplicit = false;
 
@@ -423,7 +422,7 @@ function EDI_render_do_cursor_flag_scrollIntoViewExplicit(timestamp) {
 }
 
 function EDI_render_do_cursor_flag_doNotScrollIntoView(timestamp) {
-    EDI_cursorBlinkLastTimestamp = timestamp;
+    gINT_FIELDS[fEDI_EDI_cursorBlinkLastTimestamp] = timestamp;
     EDI_drawCursor(true);
 }
 
@@ -4279,18 +4278,18 @@ function EDI_editEvent_checkFor_NOTcanBatch_Enter(event) {
  * - enqueue rAF for drawing the cursor
  * - *optional* check if statement for 'EDI_isChecking_cursorBlinkTrailingEdge' to avoid redundant invocations of 'EDI_cursorBlink_startChecking'
  * - invoke 'EDI_cursorBlink_startChecking'
- * - downstream trigger the rAF for drawing the cursor wherein 'EDI_cursorBlinkLastTimestamp' gets set to the rAF timestamp.
+ * - downstream trigger the rAF for drawing the cursor wherein 'gINT_FIELDS[fEDI_EDI_cursorBlinkLastTimestamp]' gets set to the rAF timestamp.
  *     - or, modify some other part of the rAF pipeline (only if necessary) / etc...
  * 
  * NOTE: the draw cursor rAF needs to be enqueued prior to the 'EDI_cursorBlink_startChecking' invocation.
  */
 function EDI_cursorBlink_trailingEdge(timestamp) {
-    const time = timestamp - EDI_cursorBlinkLastTimestamp;
+    const time = timestamp - gINT_FIELDS[fEDI_EDI_cursorBlinkLastTimestamp];
     if (time >= 500) {
         EDI_isChecking_cursorBlinkTrailingEdge = false;
         // TODO: This is a timing issue of the rAF vs you losing focus on the editor.
         EDI_cursor_cursorElement.classList.add('EDI_cursor_focus');
-        EDI_cursorBlinkLastTimestamp = 0;
+        gINT_FIELDS[fEDI_EDI_cursorBlinkLastTimestamp] = 0;
     }
     else {
         requestAnimationFrame(EDI_cursorBlink_trailingEdge);

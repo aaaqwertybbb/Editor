@@ -427,7 +427,9 @@ const fEDI_EDI_RemoveSelection_largePosition = 91;
 // Temporary hack for state access TODO: this
 const fEDI_EDI_indentLess_startingLinePos_end = 92;
 
-// gINT_FIELDS[fEDI_EDI_indentLess_startingLinePos_end]
+const fEDI_EDI_cursorBlinkLastTimestamp = 93;
+
+// gINT_FIELDS[fEDI_EDI_cursorBlinkLastTimestamp]
 
 // for the beltIndezZero etc... consider using max value?
 // Although it might "just work" because you're using locals which would become negative?

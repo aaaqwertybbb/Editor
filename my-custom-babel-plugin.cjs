@@ -461,7 +461,12 @@ module.exports = function (babel) {
 
     "byteWIDGET_isRenderPending",
     "byteWIDGET_shouldRestoreFocus",
+
     "byteDIALOG_isRenderPending",
+
+    "byteTOOLTIP_isRenderPending",
+    "byteTOOLTIP_pending_renderKind",
+    "byteTOOLTIP_exists",
 
 
 

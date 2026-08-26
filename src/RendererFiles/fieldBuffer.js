@@ -110,7 +110,18 @@ gBYTE_FIELDS[byteWIDGET_shouldRestoreFocus] = 1;
 
 const byteDIALOG_isRenderPending = 21;
 
-// gBYTE_FIELDS[byteDIALOG_isRenderPending]
+const byteTOOLTIP_isRenderPending = 22;
+
+/**
+ * 0 => None
+ * 1 => Show
+ * 2 => Hide
+ */
+const byteTOOLTIP_pending_renderKind = 23;
+
+const byteTOOLTIP_exists = 24;
+
+// gBYTE_FIELDS[byteTOOLTIP_exists]
 
 // TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
 // - [ ] triple equals

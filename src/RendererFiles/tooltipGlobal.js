@@ -1,27 +1,17 @@
-let TOOLTIP_exists = false;
-
 let TOOLTIP_pending_textContent = null;
 
-/**
- * 0 => None
- * 1 => Show
- * 2 => Hide
- */
-let TOOLTIP_pending_renderKind = 0;
-let TOOLTIP_isRenderPending = false;
-
 function TOOLTIP_render_request(renderKind) {
-    TOOLTIP_pending_renderKind = renderKind;
+    gBYTE_FIELDS[byteTOOLTIP_pending_renderKind] = renderKind;
     
-    if (!TOOLTIP_isRenderPending) {
-        TOOLTIP_isRenderPending = true;
+    if (!gBYTE_FIELDS[byteTOOLTIP_isRenderPending]) {
+        gBYTE_FIELDS[byteTOOLTIP_isRenderPending] = true;
         requestAnimationFrame(TOOLTIP_renderDo);
     }
 }
 
 function TOOLTIP_renderDo() {
-    let renderKind = TOOLTIP_pending_renderKind;
-    TOOLTIP_pending_renderKind = 0;
+    let renderKind = gBYTE_FIELDS[byteTOOLTIP_pending_renderKind];
+    gBYTE_FIELDS[byteTOOLTIP_pending_renderKind] = 0;
 
     if (renderKind === 1) {
         TOOLTIP_render_do_show();
@@ -33,7 +23,7 @@ function TOOLTIP_renderDo() {
         throw new Error();
     }
     
-    TOOLTIP_isRenderPending = false; // Reset the paint lock
+    gBYTE_FIELDS[byteTOOLTIP_isRenderPending] = false; // Reset the paint lock
 };
 
 function TOOLTIP_render_do_show() {
@@ -41,7 +31,7 @@ function TOOLTIP_render_do_show() {
 
     let tooltipElement;
 
-    if (TOOLTIP_exists) {
+    if (gBYTE_FIELDS[byteTOOLTIP_exists]) {
         tooltipElement = document.getElementById('TOOLTIP');
         // This is why I worry about doing a bool check in the other UIs
         // I worry about the state getting corrupted somehow.
@@ -49,7 +39,7 @@ function TOOLTIP_render_do_show() {
         // And then if it is truly meaningful from an optimization standpoint such as the scrolling of the editor
         // I take on the state corruption risk, otherwise I just defensively handle it.
         if (!tooltipElement) {
-            TOOLTIP_exists = false;
+            gBYTE_FIELDS[byteTOOLTIP_exists] = false;
             TOOLTIP_show(textContent);
             return;
         }
@@ -68,7 +58,7 @@ function TOOLTIP_render_do_show() {
     tooltipElement.textContent = TOOLTIP_pending_textContent;
     TOOLTIP_pending_textContent = null;
 
-    TOOLTIP_exists = true;
+    gBYTE_FIELDS[byteTOOLTIP_exists] = true;
 }
 
 function TOOLTIP_show(textContent) {
@@ -82,7 +72,7 @@ function TOOLTIP_render_do_hide() {
         tooltip.remove();
     }
 
-    TOOLTIP_exists = false;
+    gBYTE_FIELDS[byteTOOLTIP_exists] = false;
 }
 
 function TOOLTIP_hide() {

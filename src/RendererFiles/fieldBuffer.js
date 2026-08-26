@@ -394,8 +394,10 @@ const fEDI_w_indexColumn_Goal = 76;
 const fEDI_w_indexColumn_Sum = 77;
 const fEDI_w_indexColumn_SpanTextContentRelative = 78;
 const fEDI_w_indexSpan = 79;
+// TODO: This -1
 const fEDI_w_beltIndexLine = 80;
 
+// And this -1
 const fEDI_EDI_beltIndexZero = 81;
 
 // gINT_FIELDS[fEDI_EDI_beltIndexZero]

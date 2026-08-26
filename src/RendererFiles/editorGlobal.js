@@ -2506,19 +2506,6 @@ function EDI_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_I) 
     return trackedSyntax_I;
 }
 
-/**
- * If the state is bad then the following is returned:
- * { goalColumnI: -1, runColumnI: -1, indexChild: -1, lineDiv: null, };
- * 
- * if (walked.goalColumnI === -1) { throw new Error('walked.goalColumnI === -1'); }
- * 
- * if (walked.lineDiv.children.length === 0) { throw new Error('walked.lineDiv.children.length === 0'); }
- * 
- * NOTE: when copying and pasting code be sure the snippet uses the respective 'break' or 'return' that you're interested in...
- * ...as those keywords are common in code that use the result of this function, but can vary on a case by case basis.
- *
- * @returns
- */
 function walkLineUntilIndexColumn() {
 
     // TODO: delete key until you delete a linefeed and join the next line onto your own then press backspace everything breaks.

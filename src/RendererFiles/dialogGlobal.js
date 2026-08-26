@@ -20,7 +20,6 @@ let DIALOG_SHOW_currentDialogKind = DialogKind_None;
 let DIALOG_SHOW_onResizeAction = null;
 
 let DIALOG_renderKindArray = [];
-let DIALOG_isRenderPending = false;
 
 //let DIALOG_ArrayFrom_menuOptionList_children = [];
 
@@ -34,8 +33,8 @@ function DIALOG_render_request(renderKind) {
         DIALOG_renderKindArray.push(renderKind);
     }
     
-    if (!DIALOG_isRenderPending) {
-        DIALOG_isRenderPending = true;
+    if (!gBYTE_FIELDS[byteDIALOG_isRenderPending]) {
+        gBYTE_FIELDS[byteDIALOG_isRenderPending] = true;
         requestAnimationFrame(DIALOG_render_do);
     }
 }
@@ -57,7 +56,7 @@ function DIALOG_render_do() {
         }
     }
     
-    DIALOG_isRenderPending = false; // Reset the paint lock
+    gBYTE_FIELDS[byteDIALOG_isRenderPending] = false; // Reset the paint lock
 }
 
 function DIALOG_render_do_DimensionsChanged() {

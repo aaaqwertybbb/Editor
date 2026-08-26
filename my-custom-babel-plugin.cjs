@@ -461,6 +461,7 @@ module.exports = function (babel) {
 
     "byteWIDGET_isRenderPending",
     "byteWIDGET_shouldRestoreFocus",
+    "byteDIALOG_isRenderPending",
 
 
 

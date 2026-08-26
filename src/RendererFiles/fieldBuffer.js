@@ -108,7 +108,9 @@ const byteWIDGET_isRenderPending = 19;
 const byteWIDGET_shouldRestoreFocus = 20;
 gBYTE_FIELDS[byteWIDGET_shouldRestoreFocus] = 1;
 
-// gBYTE_FIELDS[byteWIDGET_shouldRestoreFocus]
+const byteDIALOG_isRenderPending = 21;
+
+// gBYTE_FIELDS[byteDIALOG_isRenderPending]
 
 // TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
 // - [ ] triple equals

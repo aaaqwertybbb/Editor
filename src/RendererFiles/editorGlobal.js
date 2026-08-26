@@ -192,9 +192,6 @@ let w_div = null;
 /** Also is used from 'EDI_render_do_SetText()', and 'EDI_render_do_Resize()', not just 'EDI_render_do_Scroll()' */
 let isCheckingTrailingEdge = false;
 
-let prevVli;
-let currVli;
-
 /**
  * This queueing is currently a complete copy and paste of what Google AI generated.
  * I looked it over and it appears correct.
@@ -448,8 +445,8 @@ function EDI_render_do_Clear() {
     EDI_gutter.innerHTML = '';
 
     // Force case 3
-    prevVli = 0;
-    currVli = gINT_FIELDS[fEDI_virtualCount];
+    gINT_FIELDS[fEDI_prevVli] = 0;
+    gINT_FIELDS[fEDI_currVli] = gINT_FIELDS[fEDI_virtualCount];
     // TODO: Duplicated setting of scrolltop; this case and just baseline everytime vertical scrolls it is done in this method elsewhere
     gINT_FIELDS[fEDI_ONSCROLLscrollTop] = gINT_FIELDS[fEDI_lastReadNumber_scrollTop];
     EDI_render_do_CreateViewport();
@@ -464,8 +461,8 @@ function EDI_render_do_SetText(timestamp) {
 
     EDI_render_do_Scroll(timestamp)
 
-    prevVli = gINT_FIELDS[fEDI_ONSCROLLvirtualIndexLine];
-    currVli = gINT_FIELDS[fEDI_virtualIndexLine];
+    gINT_FIELDS[fEDI_prevVli] = gINT_FIELDS[fEDI_ONSCROLLvirtualIndexLine];
+    gINT_FIELDS[fEDI_currVli] = gINT_FIELDS[fEDI_virtualIndexLine];
     gINT_FIELDS[fEDI_ONSCROLLvirtualIndexLine] = gINT_FIELDS[fEDI_virtualIndexLine];
 
     gINT_FIELDS[fEDI_scrollEndDeadline] = timestamp + 1000;
@@ -699,8 +696,8 @@ function EDI_render_do_Scroll(timestamp) {
         
         // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 4 of 4)
         // ...and here the locals assigned the same value as the globals in case 'EDI_onScroll_LeadingEdge' modified the globals.
-        local_prevVli = prevVli;
-        local_currVli = currVli;
+        local_prevVli = gINT_FIELDS[fEDI_prevVli];
+        local_currVli = gINT_FIELDS[fEDI_currVli];
     }
 
     ints[fEDI_ONSCROLLscrollTop] = ints[fEDI_lastReadNumber_scrollTop]; // TODO: Move this to the scroll event handler (probably-maybe)
@@ -733,7 +730,7 @@ function EDI_render_do_Scroll(timestamp) {
 
         ints[fEDI_sum_diffPositive] += diff;
 
-        // Note: this case has 'vertical = (prevVli + ints[fEDI_virtualCount]) * local_lineHeight;' I believe 'ints[fEDI_virtualCount]' === 'ints[fEDI_ONSCROLLvirtualCount]' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
+        // Note: this case has 'vertical = (gINT_FIELDS[fEDI_prevVli] + ints[fEDI_virtualCount]) * local_lineHeight;' I believe 'ints[fEDI_virtualCount]' === 'ints[fEDI_ONSCROLLvirtualCount]' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
         lowerBound = local_prevVli + ints[fEDI_ONSCROLLvirtualCount];
         upperBound = lowerBound + diff;
 
@@ -823,8 +820,8 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
     
     // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 2 of 4)
     // ...and here the locals are moved to the global scope.
-    prevVli = local_prevVli;
-    currVli = local_currVli;
+    gINT_FIELDS[fEDI_prevVli] = local_prevVli;
+    gINT_FIELDS[fEDI_currVli] = local_currVli;
 
     ints[fEDI_intFalsey_isScrolling] = 1;
 
@@ -839,7 +836,7 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
     EDI_finalizeAllCursors();
 
     if (ints[fEDI_ONSCROLLscrollTop] === ints[fEDI_lastReadNumber_scrollTop] &&
-        prevVli === ints[fEDI_virtualIndexLine] &&
+        gINT_FIELDS[fEDI_prevVli] === ints[fEDI_virtualIndexLine] &&
         ints[fEDI_ONSCROLLvirtualCount] === ints[fEDI_virtualCount]) {
             // TODO: this is directly tied to a scroll event on EDI_baseElement so handle it from there perhaps?
             // TODO: this code is duplicated inside EDI_drawHorizontalScrollbar, reduce duplication?
@@ -853,9 +850,9 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
             // Force case 3
             //
             // An overflow will wrap around and still give you a diff of 'ints[fEDI_virtualCount]'.
-            // You cannot modify 'currVli' because the value is used by case '3' itself.
+            // You cannot modify 'gINT_FIELDS[fEDI_currVli]' because the value is used by case '3' itself.
             //
-            // This is very awkward because all other UI that has this sliding window logic just uses 'currVli'.
+            // This is very awkward because all other UI that has this sliding window logic just uses 'gINT_FIELDS[fEDI_currVli]'.
             //
             // The reason is because they're also re-evaluating their equivalent of 'ints[fEDI_virtualIndexLine]'.
             //
@@ -866,7 +863,7 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
             // equal to 'local_currVli'.
             //
             // But 'ints[fEDI_virtualIndexLine]' was being used within case 3
-            // due to this awkward setting of the 'currVli' when doing a hack to force case 3.
+            // due to this awkward setting of the 'gINT_FIELDS[fEDI_currVli]' when doing a hack to force case 3.
             //
             // This meant case 3 was incurring an extra global variable lookup (global variable lookup of 'gINT_FIELDS')
             // - (or with 'ints' you are incurring a read of the array only, but still this is presumed to be more than just using the local variable).
@@ -880,11 +877,13 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
             //
             // I don't know I'm tired and confused.
             //
-            // TODO: Look into all the usages of 'prevVli and currVli' or like hacks to force cases
+            // TODO: Look into all the usages of 'gINT_FIELDS[fEDI_prevVli] and gINT_FIELDS[fEDI_currVli]' or like hacks to force cases
             //
-            prevVli = currVli + ints[fEDI_virtualCount];
-            //prevVli = 0;
-            //currVli = ints[fEDI_virtualCount];
+            // TODO: What happens when you overflow 'gINT_FIELDS[fEDI_prevVli]' does it overflow such that you're the correct diff?
+            //
+            gINT_FIELDS[fEDI_prevVli] = gINT_FIELDS[fEDI_currVli] + ints[fEDI_virtualCount];
+            //gINT_FIELDS[fEDI_prevVli] = 0;
+            //gINT_FIELDS[fEDI_currVli] = ints[fEDI_virtualCount];
 
             EDI_render_do_CreateViewport();
             return false;

@@ -432,7 +432,12 @@ const fEDI_EDI_cursorBlinkLastTimestamp = 93;
 /** 'EDI_init' and 'EDI_drawHorizontalScrollbar' related */
 const fEDI_DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left = 94;
 
-// gINT_FIELDS[fEDI_DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left]
+/** TODO: What happens when you overflow 'gINT_FIELDS[fEDI_prevVli]' does it overflow such that you're the correct diff? */
+const fEDI_prevVli = 95;
+/** TODO: What happens when you overflow 'gINT_FIELDS[fEDI_prevVli]' does it overflow such that you're the correct diff? */
+const fEDI_currVli = 96;
+
+// gINT_FIELDS[fEDI_currVli]
 
 // for the beltIndezZero etc... consider using max value?
 // Although it might "just work" because you're using locals which would become negative?

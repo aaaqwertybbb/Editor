@@ -202,9 +202,6 @@ let currVli;
 const lspQueue = [];
 let isProcessingLspQueue = false;
 
-
-let lastReadNumber_offsetWidth = 0;
-
 let EDI_isRenderPending = false;
 
 let EDI_renderKindArray = [];
@@ -6836,15 +6833,15 @@ function EDI_onResize_startThrottleTimeout() {
 }
 
 function EDI_measureBaseElement() {
-    lastReadNumber_offsetWidth = Math.floor(EDI_baseElement.offsetWidth);
+    gINT_FIELDS[fEDI_lastReadNumber_offsetWidth] = Math.floor(EDI_baseElement.offsetWidth);
     gINT_FIELDS[fEDI_lastReadNumber_offsetHeight] = Math.floor(EDI_baseElement.offsetHeight);
     
-    EDI_baseElement.style.width = lastReadNumber_offsetWidth + 'px';
+    EDI_baseElement.style.width = gINT_FIELDS[fEDI_lastReadNumber_offsetWidth] + 'px';
     EDI_baseElement.style.height = gINT_FIELDS[fEDI_lastReadNumber_offsetHeight] + 'px';
 
     EDI_baseElement.style.contain = 'layout';
 
-    lastReadNumber_offsetWidth = EDI_baseElement.offsetWidth;
+    gINT_FIELDS[fEDI_lastReadNumber_offsetWidth] = EDI_baseElement.offsetWidth;
     gINT_FIELDS[fEDI_lastReadNumber_offsetHeight] = EDI_baseElement.offsetHeight;
 
 /*
@@ -6876,7 +6873,7 @@ and I don't know...
 <     // 1. Read once, accurately capturing subpixels
 <     const rect = EDI_baseElement.getBoundingClientRect();
 <     
-<     lastReadNumber_offsetWidth = rect.width;
+<     gINT_FIELDS[fEDI_lastReadNumber_offsetWidth] = rect.width;
 <     gINT_FIELDS[fEDI_lastReadNumber_offsetHeight] = rect.height;
 < 
 <     // 2. Calculate lines safely without modifying the DOM
@@ -7775,12 +7772,12 @@ function EDI_scrollCursorIntoView() {
     if (gINT_FIELDS[fEDI_cursor_cursorTranslateXValue] < gINT_FIELDS[fEDI_lastReadNumber_scrollLeft]) {
         scrollX = gINT_FIELDS[fEDI_cursor_cursorTranslateXValue] - gINT_FIELDS[fEDI_lastReadNumber_scrollLeft];
     }
-    else if (gINT_FIELDS[fEDI_cursor_cursorTranslateXValue] >= gINT_FIELDS[fEDI_lastReadNumber_scrollLeft] + lastReadNumber_offsetWidth) {
+    else if (gINT_FIELDS[fEDI_cursor_cursorTranslateXValue] >= gINT_FIELDS[fEDI_lastReadNumber_scrollLeft] + gINT_FIELDS[fEDI_lastReadNumber_offsetWidth]) {
         // I want to use clientWidth but I don't have any logic for no scrollbar thus single page fitting text might bug out and trigger
         // scrollBy over and over.
 
         // make the right touch then add characterWidth is probably the algorithm to get a perfect fill maybe do characterWidth * 2 skip an event when spamming arrowRight?
-        let currentRight = gINT_FIELDS[fEDI_lastReadNumber_scrollLeft] + lastReadNumber_offsetWidth;
+        let currentRight = gINT_FIELDS[fEDI_lastReadNumber_scrollLeft] + gINT_FIELDS[fEDI_lastReadNumber_offsetWidth];
         let changeToMakeRightTouch = gINT_FIELDS[fEDI_cursor_cursorTranslateXValue] - currentRight;
         scrollX = changeToMakeRightTouch + (4 * gINT_FIELDS[fEDI_EDI_characterWidth]);
     }

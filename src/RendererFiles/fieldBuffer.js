@@ -410,7 +410,9 @@ const fEDI_lastReadNumber_scrollLeft = 84;
 // just floor these on init / resize and set the style so if they want resize they have to explicit and it is non decimal?
 const fEDI_lastReadNumber_offsetHeight = 85;
 
-// gINT_FIELDS[fEDI_lastReadNumber_offsetHeight]
+const fEDI_lastReadNumber_offsetWidth = 86;
+
+// gINT_FIELDS[fEDI_lastReadNumber_offsetWidth]
 
 // for the beltIndezZero etc... consider using max value?
 // Although it might "just work" because you're using locals which would become negative?

@@ -2532,10 +2532,10 @@ function walkLineUntilIndexColumn() {
     else gINT_FIELDS[fEDI_w_beltIndexLine] = (gINT_FIELDS[fEDI_w_beltIndexLine] + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % gINT_FIELDS[fEDI_virtualCount];
     
     if (gINT_FIELDS[fEDI_w_beltIndexLine] < 0) {
-        gINT_FIELDS[fEDI_w_indexColumn_Goal] = -1;
-        gINT_FIELDS[fEDI_w_indexColumn_Sum] = -1;
-        gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] = -1;
-        gINT_FIELDS[fEDI_w_indexSpan] = -1;
+        gINT_FIELDS[fEDI_w_indexColumn_Goal] = 0;
+        gINT_FIELDS[fEDI_w_indexColumn_Sum] = 0;
+        gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
+        gINT_FIELDS[fEDI_w_indexSpan] = 0;
         w_span = null;
         w_div = null;
         gINT_FIELDS[fEDI_w_beltIndexLine] = gINT_FIELDS[fEDI_w_beltIndexLine]; // double assignment but not all that pressing of a matter at the moment I think it reads better to just set it / avoid the temporary 'let' local variable each invocation.
@@ -2566,10 +2566,10 @@ function walkLineUntilIndexColumn() {
     }
 
     // TODO: When the column index is too large, how should this be handled?
-    gINT_FIELDS[fEDI_w_indexColumn_Goal] = -1;
-    gINT_FIELDS[fEDI_w_indexColumn_Sum] = -1;
-    gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] = -1;
-    gINT_FIELDS[fEDI_w_indexSpan] = -1;
+    gINT_FIELDS[fEDI_w_indexColumn_Goal] = 0;
+    gINT_FIELDS[fEDI_w_indexColumn_Sum] = 0;
+    gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
+    gINT_FIELDS[fEDI_w_indexSpan] = 0;
     w_span = null;
     w_div = null;
     gINT_FIELDS[fEDI_w_beltIndexLine] = gINT_FIELDS[fEDI_w_beltIndexLine];
@@ -3722,7 +3722,7 @@ function EDI_onMouseDownDetailRankThree(event_button, event_shiftKey, indexLineC
  */
 function EDI_insertGapBufferSpan() {
     walkLineUntilIndexColumn();
-    if (gINT_FIELDS[fEDI_w_indexColumn_Goal] === -1 || !w_div || w_div.children.length === 0) {
+    if (!w_span || !w_div) {
         EDI_cursor_gapBufferWriteToSpanElement = null;
         EDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
         return;
@@ -5818,7 +5818,7 @@ function EDI_render_do_DuplicateOrPaste() {
         }
 
         walkLineUntilIndexColumn();
-        if (gINT_FIELDS[fEDI_w_indexColumn_Goal] === -1 || !w_div || w_div.children.length === 0) {
+        if (!w_span || !w_div) {
             // TODO: silent error bad
             alert('// EDI_paste TODO: silent error bad');
             return;
@@ -6295,7 +6295,7 @@ function EDI_render_do_TabKey() {
 
         walkLineUntilIndexColumn();
 
-        if (gINT_FIELDS[fEDI_w_indexColumn_Goal] === -1 || !w_div || w_div.children.length === 0) {
+        if (!w_span || !w_div) {
             // TODO: silent error bad
             return;
         }

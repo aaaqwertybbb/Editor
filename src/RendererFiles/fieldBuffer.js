@@ -272,7 +272,7 @@ const CONST_EDI_cursor_htmlId = "EDI_cursor-1";
 ////////////////////////////
 ////////////////////////////
 
-const gINT_FIELDS = new Uint32Array(136);
+const gINT_FIELDS = new Uint32Array(150);
 
 const fEDI_lineHeight = 0;
 gINT_FIELDS[fEDI_lineHeight] = 20;
@@ -621,9 +621,13 @@ const fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn = 134;
 
 const fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 135;
 
+/** 8 or the measured value */
+const fEXPLORER_firstSpanWidthValue = 136;
+gINT_FIELDS[fEXPLORER_firstSpanWidthValue] = 8;
+
 // gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]
 
-// 135
+// 149
 
 /*
 Google AI

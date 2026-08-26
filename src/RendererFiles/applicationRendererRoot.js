@@ -57,8 +57,8 @@ function APP_measureLineHeightAndCharacterWidth() {
     measureElement.textContent = "+";
     const plusWidth = Math.ceil(measureElement.getBoundingClientRect().width);
     const largerWidth = minusWidth > plusWidth ? minusWidth : plusWidth; // 11
-    EXPLORER_firstSpanWidthValue = largerWidth;
-    EXPLORER_firstSpanWidth = EXPLORER_firstSpanWidthValue + 'px';
+    gINT_FIELDS[fEXPLORER_firstSpanWidthValue] = largerWidth;
+    EXPLORER_firstSpanWidth = gINT_FIELDS[fEXPLORER_firstSpanWidthValue] + 'px';
 
     wrapper.removeChild(measureElement);
     document.body.removeChild(wrapper);

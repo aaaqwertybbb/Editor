@@ -149,7 +149,12 @@ const byteEDI_isChecking_cursorBlinkTrailingEdge = 37;
 
 const byteEDI_cursor_selectionDivExists = 38;
 
-// gBYTE_FIELDS[byteEDI_cursor_selectionDivExists]
+const byteEDI_onResize_hasTrailingCall = 39;
+
+/** Also is used from 'EDI_render_do_SetText()', and 'EDI_render_do_Resize()', not just 'EDI_render_do_Scroll()' */
+let isCheckingTrailingEdge = false;
+
+// gBYTE_FIELDS[byteEDI_onResize_hasTrailingCall]
 
 // TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
 // - [ ] triple equals

@@ -171,15 +171,11 @@ let EDI_documentSymbolResult;
 let EDI_listComponent = null;
 
 let EDI_onResize_timer = null;
-let EDI_onResize_hasTrailingCall = false;
 
 let EDI_offsetWithinSpan_withRespectToThisSpan = null;
 
 let w_span = null;
 let w_div = null;
-
-/** Also is used from 'EDI_render_do_SetText()', and 'EDI_render_do_Resize()', not just 'EDI_render_do_Scroll()' */
-let isCheckingTrailingEdge = false;
 
 /**
  * This queueing is currently a complete copy and paste of what Google AI generated.
@@ -6782,7 +6778,7 @@ function EDI_onResize() {
 function EDI_onResize_WRAPIT() {
     // If timer is running, just note that a trailing call is needed
     if (EDI_onResize_timer) {
-        EDI_onResize_hasTrailingCall = true;
+        gBYTE_FIELDS[byteEDI_onResize_hasTrailingCall] = true;
         return;
     }
 
@@ -6796,8 +6792,8 @@ function EDI_onResize_WRAPIT() {
 // 2. The Gatekeeper
 function EDI_onResize_startThrottleTimeout() {
     EDI_onResize_timer = setTimeout(() => {
-        if (EDI_onResize_hasTrailingCall) {
-            EDI_onResize_hasTrailingCall = false;
+        if (gBYTE_FIELDS[byteEDI_onResize_hasTrailingCall]) {
+            gBYTE_FIELDS[byteEDI_onResize_hasTrailingCall] = false;
             EDI_onResize();
             
             EDI_onResize_startThrottleTimeout();

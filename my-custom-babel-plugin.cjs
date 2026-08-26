@@ -498,6 +498,7 @@ module.exports = function (babel) {
     "byteEDI_pooledTrackedSyntax_trackedSyntaxKind",
     "byteEDI_isChecking_cursorBlinkTrailingEdge",
     "byteEDI_cursor_selectionDivExists",
+    "byteEDI_onResize_hasTrailingCall",
 
 
 

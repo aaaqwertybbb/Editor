@@ -446,7 +446,11 @@ const fAUTOCOMPLETE_items_totalLength = 99;
 
 const fAUTOCOMPLETE_cursorIndex = 100;
 
-// gINT_FIELDS[fAUTOCOMPLETE_cursorIndex]
+const fAUTOCOMPLETE_rectHeight = 101;
+const fAUTOCOMPLETE_rectLeft = 102;
+const fAUTOCOMPLETE_rectTop = 103;
+
+// gINT_FIELDS[fAUTOCOMPLETE_rectTop]
 
 // for the beltIndezZero etc... consider using max value?
 // Although it might "just work" because you're using locals which would become negative?

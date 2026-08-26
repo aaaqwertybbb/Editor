@@ -1,3 +1,8 @@
+//__#__
+// preprocessor.cjs
+import "./fieldBuffer"
+//__#__
+
 let AUTOCOMPLETE_exists = false;
 
 let AUTOCOMPLETE_pending_lspResult = null;
@@ -14,9 +19,6 @@ const AUTOCOMPLETErenderKind_Scroll = 5;
 let AUTOCOMPLETE_renderKindArray = [];
 let AUTOCOMPLETE_isRenderPending = false;
 
-let AUTOCOMPLETE_rectHeight = 0;
-let AUTOCOMPLETE_rectLeft = 0;
-let AUTOCOMPLETE_rectTop = 0;
 let AUTOCOMPLETE_rect_isNull = true;
 
 let AUTOCOMPLETE_virtualCount = 0;
@@ -84,7 +86,7 @@ function AUTOCOMPLETE_render_create_lines(AUTOCOMPLETE_itemList) {
     }
 
     // TODO: minus CONST_AUTOCOMPLETE_topPadding
-    AUTOCOMPLETE_virtualCount = Math.floor(AUTOCOMPLETE_rectHeight / APP_lineHeight);
+    AUTOCOMPLETE_virtualCount = Math.floor(gINT_FIELDS[fAUTOCOMPLETE_rectHeight] / APP_lineHeight);
     AUTOCOMPLETE_virtualIndex = 0;
     AUTOCOMPLETE_beltIndexZero = 0;
     AUTOCOMPLETE_scrollTop = 0;
@@ -134,7 +136,7 @@ function AUTOCOMPLETE_render_RESET_lines(AUTOCOMPLETE_itemList) {
     AUTOCOMPLETE_ensure_boundingClientRect();
 
     // TODO: minus CONST_AUTOCOMPLETE_topPadding
-    AUTOCOMPLETE_virtualCount = Math.floor(AUTOCOMPLETE_rectHeight / APP_lineHeight);
+    AUTOCOMPLETE_virtualCount = Math.floor(gINT_FIELDS[fAUTOCOMPLETE_rectHeight] / APP_lineHeight);
     AUTOCOMPLETE_virtualIndex = 0;
     AUTOCOMPLETE_beltIndexZero = 0;
     AUTOCOMPLETE_scrollTop = 0;
@@ -225,9 +227,9 @@ function AUTOCOMPLETE_render_do_show(timestamp) {
 
         document.body.appendChild(local_AUTOCOMPLETEElement);
         let rect = local_AUTOCOMPLETEElement.getBoundingClientRect();
-        AUTOCOMPLETE_rectHeight = Math.floor(rect.height);
-        AUTOCOMPLETE_rectLeft = rect.left;
-        AUTOCOMPLETE_rectTop = rect.top;
+        gINT_FIELDS[fAUTOCOMPLETE_rectHeight] = Math.floor(rect.height);
+        gINT_FIELDS[fAUTOCOMPLETE_rectLeft] = rect.left;
+        gINT_FIELDS[fAUTOCOMPLETE_rectTop] = rect.top;
         AUTOCOMPLETE_rect_isNull = false;
 
         AUTOCOMPLETE_render_create_lines(AUTOCOMPLETE_itemList);
@@ -347,8 +349,8 @@ function AUTOCOMPLETE_cursor_render_set() {
     // If no UI modifications were made prior that are still pending this might avoid a synchronous layout.
     // TODO: If you touch the transform style first... I don't know what would happen it is a GPU related style... so I'm unsure.
     //
-    if (cursorTranslateYNumber + (2 * APP_lineHeight) > AUTOCOMPLETE_scrollTop + AUTOCOMPLETE_rectHeight) {
-        let currentBottom = AUTOCOMPLETE_scrollTop + AUTOCOMPLETE_rectHeight;
+    if (cursorTranslateYNumber + (2 * APP_lineHeight) > AUTOCOMPLETE_scrollTop + gINT_FIELDS[fAUTOCOMPLETE_rectHeight]) {
+        let currentBottom = AUTOCOMPLETE_scrollTop + gINT_FIELDS[fAUTOCOMPLETE_rectHeight];
         let changeToMakeBottomTouch = cursorTranslateYNumber - currentBottom;
         let entireValueToScrollBy = changeToMakeBottomTouch + (2 * APP_lineHeight);
         AUTOCOMPLETEElement.scrollBy(0, entireValueToScrollBy);
@@ -379,9 +381,9 @@ function AUTOCOMPLETE_cursor_validate(cursorIndex) {
 function AUTOCOMPLETE_ensure_boundingClientRect() {
     if (AUTOCOMPLETE_rect_isNull && AUTOCOMPLETE_exists) {
         let rect = AUTOCOMPLETEElement.getBoundingClientRect();
-        AUTOCOMPLETE_rectHeight = rect.height;
-        AUTOCOMPLETE_rectLeft = rect.left;
-        AUTOCOMPLETE_rectTop = rect.top;
+        gINT_FIELDS[fAUTOCOMPLETE_rectHeight] = rect.height;
+        gINT_FIELDS[fAUTOCOMPLETE_rectLeft] = rect.left;
+        gINT_FIELDS[fAUTOCOMPLETE_rectTop] = rect.top;
         AUTOCOMPLETE_rect_isNull = false;
     }
 }

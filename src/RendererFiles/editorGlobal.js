@@ -9042,4 +9042,14 @@ The rocket emoji looks like '=?' but the '?' is actually surrounded by a diamond
 
 "Implicitly Strict by default (forces cleaner, faster code execution)."
 
+> Is there a way I can verify with developer tools that 'type="module"' caused a change?
+
+< Yes, you can absolutely verify this using Chrome DevTools inside your Electron app. Because ES Modules and standard scripts are treated as
+< completely different execution contexts by the V8 engine, DevTools exposes this in several clear places.
+< 
+< Open your Electron DevTools (Ctrl+Shift+I or Cmd+Option+I) and look for these three specific indicators:
+<
+< 1. Check the Scope Chain in the Debugger (Most Direct)
+< ...
+
 */

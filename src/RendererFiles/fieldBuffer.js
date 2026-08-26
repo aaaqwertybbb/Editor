@@ -85,7 +85,9 @@ const byteDIALOG_Settings_trueTabs_falseSpaces = 9;
 gBYTE_FIELDS[byteDIALOG_Settings_trueTabs_falseSpaces] = 1;
 
 const byteDIALOG_Settings_editorDebugShowAdjacentCharacters = 10;
-// gBYTE_FIELDS[byteDIALOG_Settings_editorDebugShowAdjacentCharacters]
+
+const byteDIALOG_hasBeenMeasured = 11;
+// gBYTE_FIELDS[byteDIALOG_hasBeenMeasured]
 
 const CONST_EDI_ASCII_LINE_FEED = 10;
 const CONST_EDI_ASCII_TAB = 9;

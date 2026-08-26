@@ -18,7 +18,7 @@ let DIALOG_HIDE_shouldRestoreFocus = true;
 
 let DIALOG_windowExists = false;
 
-let DIALOG_hasBeenMeaasured = false;
+
 
 let DIALOG_SHOW_restoreFocusToElement = null;
 let DIALOG_SHOW_currentDialogKind = DialogKind_None;
@@ -209,7 +209,7 @@ function DIALOG_resize_onmousedown(event) {
     gINT_FIELDS[fDIALOG_top] = dialogBoundingClientRect.top;
     gINT_FIELDS[fDIALOG_width] = dialogBoundingClientRect.width;
     gINT_FIELDS[fDIALOG_height] = dialogBoundingClientRect.height;
-    DIALOG_hasBeenMeaasured = true;
+    gBYTE_FIELDS[byteDIALOG_hasBeenMeasured] = true;
 
     document.body.classList.add('unselectable');
     window.addEventListener('mousemove', DIALOG_resize_body_onmousemove, /*useCapture*/ true);
@@ -456,7 +456,7 @@ function DIALOG_window_onresize() {
     const DIALOG_element = document.getElementById('DIALOG');
     if (!DIALOG_element) return;
 
-    if (!DIALOG_hasBeenMeaasured) return;
+    if (!gBYTE_FIELDS[byteDIALOG_hasBeenMeasured]) return;
 
     // Max width and min width depend on the left/top so they need to come first.
     if (gINT_FIELDS[fDIALOG_left] <= CONST_DIALOG_minLeft) {
@@ -619,7 +619,7 @@ function DIALOG_toolbar_onmousedown(event) {
     gINT_FIELDS[fDIALOG_top] = dialogBoundingClientRect.top;
     gINT_FIELDS[fDIALOG_width] = dialogBoundingClientRect.width;
     gINT_FIELDS[fDIALOG_height] = dialogBoundingClientRect.height;
-    DIALOG_hasBeenMeaasured = true;
+    gBYTE_FIELDS[byteDIALOG_hasBeenMeasured] = true;
 
     document.body.classList.add('unselectable');
     window.addEventListener('mousemove', DIALOG_toolbar_body_onmousemove, /*useCapture*/ true);

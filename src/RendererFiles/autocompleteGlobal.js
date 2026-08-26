@@ -22,10 +22,8 @@ let AUTOCOMPLETE_isRenderPending = false;
 let AUTOCOMPLETE_rect_isNull = true;
 
 let AUTOCOMPLETEElement = null;
-let AUTOCOMPLETE_scrollTop = 0;
 let AUTOCOMPLETE_arrayFromItemListElement = null;
 
-let AUTOCOMPLETE_scrollEndDeadline = 0;
 let AUTOCOMPLETE_isCheckingTrailingEdge = false;
 
 let AUTOCOMPLETE_scrollIsFetchingData = false;
@@ -80,7 +78,7 @@ function AUTOCOMPLETE_render_create_lines(AUTOCOMPLETE_itemList) {
     gINT_FIELDS[fAUTOCOMPLETE_virtualCount] = Math.floor(gINT_FIELDS[fAUTOCOMPLETE_rectHeight] / APP_lineHeight);
     gINT_FIELDS[fAUTOCOMPLETE_virtualIndex] = 0;
     gINT_FIELDS[fAUTOCOMPLETE_beltIndexZero] = 0;
-    AUTOCOMPLETE_scrollTop = 0;
+    gINT_FIELDS[fAUTOCOMPLETE_scrollTop] = 0;
 
     gINT_FIELDS[fAUTOCOMPLETE_cursorIndex] = 0;
 
@@ -130,7 +128,7 @@ function AUTOCOMPLETE_render_RESET_lines(AUTOCOMPLETE_itemList) {
     gINT_FIELDS[fAUTOCOMPLETE_virtualCount] = Math.floor(gINT_FIELDS[fAUTOCOMPLETE_rectHeight] / APP_lineHeight);
     gINT_FIELDS[fAUTOCOMPLETE_virtualIndex] = 0;
     gINT_FIELDS[fAUTOCOMPLETE_beltIndexZero] = 0;
-    AUTOCOMPLETE_scrollTop = 0;
+    gINT_FIELDS[fAUTOCOMPLETE_scrollTop] = 0;
 
     AUTOCOMPLETEElement.removeEventListener('scroll', AUTOCOMPLETE_events_scroll_receive, { passive: true });
     AUTOCOMPLETEElement.scrollTop = 0;
@@ -340,14 +338,14 @@ function AUTOCOMPLETE_cursor_render_set() {
     // If no UI modifications were made prior that are still pending this might avoid a synchronous layout.
     // TODO: If you touch the transform style first... I don't know what would happen it is a GPU related style... so I'm unsure.
     //
-    if (cursorTranslateYNumber + (2 * APP_lineHeight) > AUTOCOMPLETE_scrollTop + gINT_FIELDS[fAUTOCOMPLETE_rectHeight]) {
-        let currentBottom = AUTOCOMPLETE_scrollTop + gINT_FIELDS[fAUTOCOMPLETE_rectHeight];
+    if (cursorTranslateYNumber + (2 * APP_lineHeight) > gINT_FIELDS[fAUTOCOMPLETE_scrollTop] + gINT_FIELDS[fAUTOCOMPLETE_rectHeight]) {
+        let currentBottom = gINT_FIELDS[fAUTOCOMPLETE_scrollTop] + gINT_FIELDS[fAUTOCOMPLETE_rectHeight];
         let changeToMakeBottomTouch = cursorTranslateYNumber - currentBottom;
         let entireValueToScrollBy = changeToMakeBottomTouch + (2 * APP_lineHeight);
         AUTOCOMPLETEElement.scrollBy(0, entireValueToScrollBy);
     }
-    else if (cursorTranslateYNumber < AUTOCOMPLETE_scrollTop) {
-        AUTOCOMPLETEElement.scrollBy(0, cursorTranslateYNumber - AUTOCOMPLETE_scrollTop);
+    else if (cursorTranslateYNumber < gINT_FIELDS[fAUTOCOMPLETE_scrollTop]) {
+        AUTOCOMPLETEElement.scrollBy(0, cursorTranslateYNumber - gINT_FIELDS[fAUTOCOMPLETE_scrollTop]);
     }
 
     // transform last for optimal state flagging of the modified DOM element
@@ -406,13 +404,13 @@ function AUTOCOMPLETE_events_scroll_receive(event) {
     //
     // Something is still breaking
     // 
-    AUTOCOMPLETE_scrollTop = AUTOCOMPLETEElement.scrollTop;
+    gINT_FIELDS[fAUTOCOMPLETE_scrollTop] = AUTOCOMPLETEElement.scrollTop;
     AUTOCOMPLETE_render_request(AUTOCOMPLETErenderKind_Scroll);
 }
 
 function AUTOCOMPLETE_events_scroll_render(timestamp) {
 
-    AUTOCOMPLETE_scrollEndDeadline = timestamp + 300;
+    gINT_FIELDS[fAUTOCOMPLETE_scrollEndDeadline] = timestamp + 300;
 
     if (!AUTOCOMPLETE_isCheckingTrailingEdge) {
         AUTOCOMPLETE_isCheckingTrailingEdge = true;
@@ -421,7 +419,7 @@ function AUTOCOMPLETE_events_scroll_render(timestamp) {
 
     let prevVli = gINT_FIELDS[fAUTOCOMPLETE_virtualIndex];
     // TODO: minus CONST_AUTOCOMPLETE_topPadding
-    let currVli = Math.floor(AUTOCOMPLETE_scrollTop / APP_lineHeight);
+    let currVli = Math.floor(gINT_FIELDS[fAUTOCOMPLETE_scrollTop] / APP_lineHeight);
 
     gINT_FIELDS[fAUTOCOMPLETE_virtualIndex] = currVli;
 
@@ -487,7 +485,7 @@ function AUTOCOMPLETE_events_scroll_render(timestamp) {
 }
 
 function AUTOCOMPLETE_events_scroll_render_trailingEdgeCheck(timestamp) {
-    if (timestamp < AUTOCOMPLETE_scrollEndDeadline) {
+    if (timestamp < gINT_FIELDS[fAUTOCOMPLETE_scrollEndDeadline]) {
         requestAnimationFrame(AUTOCOMPLETE_events_scroll_render_trailingEdgeCheck);
         return;
     }

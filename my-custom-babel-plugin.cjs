@@ -441,6 +441,8 @@ module.exports = function (babel) {
     "fAUTOCOMPLETE_virtualCount",
     "fAUTOCOMPLETE_virtualIndex",
     "fAUTOCOMPLETE_beltIndexZero",
+    "fAUTOCOMPLETE_scrollTop",
+    "fAUTOCOMPLETE_scrollEndDeadline",
 
 
 

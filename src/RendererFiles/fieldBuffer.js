@@ -412,7 +412,9 @@ const fEDI_lastReadNumber_offsetHeight = 85;
 
 const fEDI_lastReadNumber_offsetWidth = 86;
 
-// gINT_FIELDS[fEDI_lastReadNumber_offsetWidth]
+const fEDI_ArrayFrom_textElement_children_length = 87;
+
+// gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length]
 
 // for the beltIndezZero etc... consider using max value?
 // Although it might "just work" because you're using locals which would become negative?

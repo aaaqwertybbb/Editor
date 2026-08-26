@@ -209,7 +209,6 @@ let EDI_renderKindArray = [];
 // Persistent, flat JS arrays that stay alive forever in memory
 let ArrayFrom_gutter_children = [];
 let ArrayFrom_textElement_children = [];
-let ArrayFrom_textElement_children_length = 0;
 
 const count_of_wellknown_renderKinds = 19;
 
@@ -551,7 +550,7 @@ function EDI_render_do_CreateViewport() {
 
     ArrayFrom_gutter_children = Array.from(EDI_gutter.children);
     ArrayFrom_textElement_children = Array.from(EDI_textElement.children);
-    ArrayFrom_textElement_children_length = ArrayFrom_textElement_children.length;
+    ints[fEDI_ArrayFrom_textElement_children_length] = ArrayFrom_textElement_children.length;
 
     EDI_drawHorizontalScrollbar(); // TODO: The 'setting EDI_baseElement.scrollLeft' line appearing after 'EDI_drawHorizontalScrollbar();' in this function strikes me as odd when skimming the code. (1 of 2)
 
@@ -736,7 +735,7 @@ function EDI_render_do_Scroll(timestamp) {
     let upperBound;
     let beltIndexLine; // The 0th loop will increment somewhat awkwardly. see the: "This decrement avoids that." comments for each case.
 
-    let local_ArrayFrom_textElement_children_length = ArrayFrom_textElement_children_length;
+    let local_ArrayFrom_textElement_children_length = ints[fEDI_ArrayFrom_textElement_children_length];
     let local_ArrayFrom_gutter_children = ArrayFrom_gutter_children;
     let local_ArrayFrom_textElement_children = ArrayFrom_textElement_children;
     let EDI_lineEndPositionList_data = EDI_lineEndPositionList.data;
@@ -990,11 +989,11 @@ function EDI_render_do_SyntaxHighlighting() {
             let originalI = i;
             let local_sum_diffPositive_MINUS_ONE = local_sum_diffPositive - 1; // I want to end on the inclusive lower bound dom element.
 
-            beltIndexCurrent = (beltIndexCurrent - 1 + ArrayFrom_textElement_children_length) % ArrayFrom_textElement_children_length;
+            beltIndexCurrent = (beltIndexCurrent - 1 + ints[fEDI_ArrayFrom_textElement_children_length]) % ints[fEDI_ArrayFrom_textElement_children_length];
             indexLine = indexLine + ints[fEDI_virtualCount] - 1;
             
             for (; i < local_sum_diffPositive_MINUS_ONE; i++) {
-                beltIndexCurrent = (beltIndexCurrent - 1 + ArrayFrom_textElement_children_length) % ArrayFrom_textElement_children_length;
+                beltIndexCurrent = (beltIndexCurrent - 1 + ints[fEDI_ArrayFrom_textElement_children_length]) % ints[fEDI_ArrayFrom_textElement_children_length];
                 indexLine--;
             }
 
@@ -1047,12 +1046,12 @@ function EDI_render_do_SyntaxHighlighting() {
         // EDI_beltIndexLine_mutate_NEXT(beltIndexCurrent);
         //
         //
-        // ++beltIndexCurrent >= ArrayFrom_textElement_children_length ? beltIndexCurrent -= ArrayFrom_textElement_children_length : beltIndexCurrent;
+        // ++beltIndexCurrent >= ints[fEDI_ArrayFrom_textElement_children_length] ? beltIndexCurrent -= ints[fEDI_ArrayFrom_textElement_children_length] : beltIndexCurrent;
         //
         //
         // You might have to be careful though because it doesn't come with parenthesis. If you tried nesting it.
         //
-        beltIndexCurrent = (beltIndexCurrent + 1) % ArrayFrom_textElement_children_length;
+        beltIndexCurrent = (beltIndexCurrent + 1) % ints[fEDI_ArrayFrom_textElement_children_length];
 
         indexLine++;
     }
@@ -1399,11 +1398,11 @@ function EDI_drawGutter_Width() {
     EDI_gutter.style.width = gutterWidth;
     EDI_gutterBackgroundColor.style.width = gutterWidth;
 
-    for (let i = 0; i < ArrayFrom_textElement_children_length/*a 'ArrayFrom_gutter_children_length' would always be equal to the textElement equivalent*/; i++) {
+    for (let i = 0; i < ints[fEDI_ArrayFrom_textElement_children_length]/*a 'ArrayFrom_gutter_children_length' would always be equal to the textElement equivalent*/; i++) {
         ArrayFrom_gutter_children[i].style.width = gutterWidth;
     }
     
-    for (let i = 0; i < ArrayFrom_textElement_children_length; i++) {
+    for (let i = 0; i < ints[fEDI_ArrayFrom_textElement_children_length]; i++) {
         ArrayFrom_textElement_children[i].style.left = gutterWidthTotal_withPxUnits;
     }
 
@@ -1444,7 +1443,7 @@ function EDI_drawHorizontalScrollbar() {
         EDI_horizontal_scrollbar_virtualization_boundary.style.width = local_EDI_horizontal_scrollbar_virtualization_boundary_style_width;
         EDI_virtualization_horizontal.style.width = ints[fEDI_contentWidth] + ints[fEDI_gutterWidthTotal] + 'px';
 
-        for (let i = 0; i < ArrayFrom_textElement_children_length; i++) {
+        for (let i = 0; i < ints[fEDI_ArrayFrom_textElement_children_length]; i++) {
             ArrayFrom_textElement_children[i].style.width = local_EDI_horizontal_scrollbar_virtualization_boundary_style_width;
         }
 
@@ -1557,7 +1556,7 @@ function EDI_finalizeEdit() {
                 // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
                 let beltIndexLine = (indexLine_editOccurredOn + gINT_FIELDS[fEDI_offsetLine]) - gINT_FIELDS[fEDI_virtualIndexLine];
-                if (beltIndexLine >= ArrayFrom_textElement_children_length || beltIndexLine < 0) beltIndexLine = -1;
+                if (beltIndexLine >= gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine < 0) beltIndexLine = -1;
                 else beltIndexLine = (beltIndexLine + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % gINT_FIELDS[fEDI_virtualCount];
 
                 if (beltIndexLine >= 0) {
@@ -2507,7 +2506,7 @@ function walkLineUntilIndexColumn() {
     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
     ints[fEDI_w_beltIndexLine] = (ints[fEDI_cursor_indexLine] + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-    if (ints[fEDI_w_beltIndexLine] >= ArrayFrom_textElement_children_length || ints[fEDI_w_beltIndexLine] < 0) ints[fEDI_w_beltIndexLine] = -1;
+    if (ints[fEDI_w_beltIndexLine] >= ints[fEDI_ArrayFrom_textElement_children_length] || ints[fEDI_w_beltIndexLine] < 0) ints[fEDI_w_beltIndexLine] = -1;
     else ints[fEDI_w_beltIndexLine] = (ints[fEDI_w_beltIndexLine] + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
     
     if (ints[fEDI_w_beltIndexLine] < 0) {
@@ -5315,7 +5314,7 @@ function EDI_render_do_IndentMore() {
             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
             let beltIndexLine = (lineI + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-            if (beltIndexLine >= ArrayFrom_textElement_children_length || beltIndexLine < 0) beltIndexLine = -1;
+            if (beltIndexLine >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine < 0) beltIndexLine = -1;
             else beltIndexLine = (beltIndexLine + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
             if (beltIndexLine >= 0) {
@@ -5545,7 +5544,7 @@ function EDI_render_do_IndentLess() {
             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
             let beltIndexLine = (lineI + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-            if (beltIndexLine >= ArrayFrom_textElement_children_length || beltIndexLine < 0) beltIndexLine = -1;
+            if (beltIndexLine >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine < 0) beltIndexLine = -1;
             else beltIndexLine = (beltIndexLine + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
             if (beltIndexLine >= 0) {
@@ -5820,7 +5819,7 @@ function EDI_render_do_DuplicateOrPaste() {
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
         let beltIndexLine_current = ((ints[fEDI_cursor_indexLine]) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-        if (beltIndexLine_current >= ArrayFrom_textElement_children_length || beltIndexLine_current < 0) beltIndexLine_current = -1;
+        if (beltIndexLine_current >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_current < 0) beltIndexLine_current = -1;
         else beltIndexLine_current = (beltIndexLine_current + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
         // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
@@ -5828,7 +5827,7 @@ function EDI_render_do_DuplicateOrPaste() {
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
         let beltIndexLine_first = ((ints[fEDI_virtualIndexLine]) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-        if (beltIndexLine_first >= ArrayFrom_textElement_children_length || beltIndexLine_first < 0) beltIndexLine_first = -1;
+        if (beltIndexLine_first >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_first < 0) beltIndexLine_first = -1;
         else beltIndexLine_first = (beltIndexLine_first + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
         // TODO: Use PREVIOUS here from 'beltIndexLine_first'
@@ -5838,7 +5837,7 @@ function EDI_render_do_DuplicateOrPaste() {
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
         let beltIndexLine_last = ((ints[fEDI_virtualIndexLine] + ints[fEDI_virtualCount] - 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-        if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
+        if (beltIndexLine_last >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
         else beltIndexLine_last = (beltIndexLine_last + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
 
@@ -5960,7 +5959,7 @@ function EDI_render_do_DuplicateOrPaste() {
                     EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, beltIndexLine_current);
                     EDI_textElement.children[beltIndexLine_current].appendChild(document.createElement('span'));
 
-                    beltIndexLine_current = (beltIndexLine_current + 1) % ArrayFrom_textElement_children_length;
+                    beltIndexLine_current = (beltIndexLine_current + 1) % ints[fEDI_ArrayFrom_textElement_children_length];
                     let lineDiv = EDI_textElement.children[beltIndexLine_current];
                     w_div = lineDiv;
                     ints[fEDI_w_indexSpan] = 0;
@@ -5977,7 +5976,7 @@ function EDI_render_do_DuplicateOrPaste() {
                     // ensure this conditional branch continues if handled, otherwise it will execute the fallback case erroneously
                     if (last_valid_indexColumn_currentLine === ints[fEDI_cursor_indexColumn]) { // end of line
 
-                        beltIndexLine_current = (beltIndexLine_current + 1) % ArrayFrom_textElement_children_length;
+                        beltIndexLine_current = (beltIndexLine_current + 1) % ints[fEDI_ArrayFrom_textElement_children_length];
                         
                         EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, beltIndexLine_current);
                         let span = document.createElement('span');
@@ -6016,7 +6015,7 @@ function EDI_render_do_DuplicateOrPaste() {
                             }
                         }
 
-                        beltIndexLine_current = (beltIndexLine_current + 1) % ArrayFrom_textElement_children_length;
+                        beltIndexLine_current = (beltIndexLine_current + 1) % ints[fEDI_ArrayFrom_textElement_children_length];
 
                         EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, beltIndexLine_current);
 
@@ -6106,7 +6105,7 @@ function EDI_paste(content) {
     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
     let beltIndexLine_current = ((ints[fEDI_cursor_indexLine]) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-    if (beltIndexLine_current >= ArrayFrom_textElement_children_length || beltIndexLine_current < 0) beltIndexLine_current = -1;
+    if (beltIndexLine_current >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_current < 0) beltIndexLine_current = -1;
     else beltIndexLine_current = (beltIndexLine_current + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
     // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
@@ -6114,7 +6113,7 @@ function EDI_paste(content) {
     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
     let beltIndexLine_first = ((ints[fEDI_virtualIndexLine]) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-    if (beltIndexLine_first >= ArrayFrom_textElement_children_length || beltIndexLine_first < 0) beltIndexLine_first = -1;
+    if (beltIndexLine_first >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_first < 0) beltIndexLine_first = -1;
     else beltIndexLine_first = (beltIndexLine_first + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
     // TODO: Use PREVIOUS here from 'beltIndexLine_first'
@@ -6124,7 +6123,7 @@ function EDI_paste(content) {
     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
     let beltIndexLine_last = ((ints[fEDI_virtualIndexLine] + ints[fEDI_virtualCount] - 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-    if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
+    if (beltIndexLine_last >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
     else beltIndexLine_last = (beltIndexLine_last + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
     let last_valid_indexColumn_currentLine = EDI_getLastValidIndexColumn(ints[fEDI_cursor_indexLine]);
@@ -6471,7 +6470,7 @@ function EDI_render_do_EnterKey() {
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
         let beltIndexLine_firstTilde = ((EDI_lineEndPositionList.count) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-        if (beltIndexLine_firstTilde >= ArrayFrom_textElement_children_length || beltIndexLine_firstTilde < 0) beltIndexLine_firstTilde = -1;
+        if (beltIndexLine_firstTilde >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_firstTilde < 0) beltIndexLine_firstTilde = -1;
         else beltIndexLine_firstTilde = (beltIndexLine_firstTilde + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
         if (beltIndexLine_firstTilde >= 0) {
@@ -6485,7 +6484,7 @@ function EDI_render_do_EnterKey() {
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
         let beltIndexLine_current = ((ints[fEDI_cursor_editIndexLine]) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-        if (beltIndexLine_current >= ArrayFrom_textElement_children_length || beltIndexLine_current < 0) beltIndexLine_current = -1;
+        if (beltIndexLine_current >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_current < 0) beltIndexLine_current = -1;
         else beltIndexLine_current = (beltIndexLine_current + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
         if (beltIndexLine_current < 0)
@@ -6500,7 +6499,7 @@ function EDI_render_do_EnterKey() {
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
         let beltIndexLine_first = ((ints[fEDI_virtualIndexLine]) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-        if (beltIndexLine_first >= ArrayFrom_textElement_children_length || beltIndexLine_first < 0) beltIndexLine_first = -1;
+        if (beltIndexLine_first >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_first < 0) beltIndexLine_first = -1;
         else beltIndexLine_first = (beltIndexLine_first + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
         // TODO: Use PREVIOUS here from 'beltIndexLine_first'
@@ -6510,7 +6509,7 @@ function EDI_render_do_EnterKey() {
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
         let beltIndexLine_last = ((ints[fEDI_virtualIndexLine] + ints[fEDI_virtualCount] - 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-        if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
+        if (beltIndexLine_last >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
         else beltIndexLine_last = (beltIndexLine_last + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
         // TODO: reminder for when virtualization padding is improved, this function might need to be looked at.
@@ -6540,7 +6539,7 @@ function EDI_render_do_EnterKey() {
 
                 if (lastValidIndexColumn === ints[fEDI_cursor_editIndexColumn]) { // end of line
                     
-                    let next_beltIndexLine = (beltIndexLine_current + 1) % ArrayFrom_textElement_children_length;
+                    let next_beltIndexLine = (beltIndexLine_current + 1) % ints[fEDI_ArrayFrom_textElement_children_length];
 
                     EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, next_beltIndexLine);
                     let span = document.createElement('span');
@@ -6613,7 +6612,7 @@ function EDI_render_do_EnterKey() {
                         }
                     }
 
-                    let next_beltIndexLine = (ints[fEDI_w_beltIndexLine] + 1) % ArrayFrom_textElement_children_length;
+                    let next_beltIndexLine = (ints[fEDI_w_beltIndexLine] + 1) % ints[fEDI_ArrayFrom_textElement_children_length];
 
                     EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, next_beltIndexLine);
 
@@ -6719,6 +6718,8 @@ function EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, incl
     // - for some reason only had a virtualization count of '1',
     // you might need to run this logic otherwise an enter key at column index 0 of a line wouldn't show any changes.
     // 
+    let local_ArrayFrom_textElement_children_length = gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length];
+
     let lastDiv = EDI_textElement.children[beltIndexLine_last];
     for (let i = lastDiv.children.length - 1; i >= 0; i--) {
         lastDiv.removeChild(lastDiv.children[i]);
@@ -6726,7 +6727,7 @@ function EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, incl
 
     for (let i = beltIndexLine_last; i !== inclusiveSmallestBeltIndexLineToShift;) {
         let destinationDiv = EDI_textElement.children[i];
-        i = (i - 1 + ArrayFrom_textElement_children_length) % ArrayFrom_textElement_children_length;
+        i = (i - 1 + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length;
         let sourceDiv = EDI_textElement.children[i];
         destinationDiv.replaceChildren(...sourceDiv.childNodes);
     }
@@ -6745,29 +6746,31 @@ function EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last
 
     // TODO: if smallestBeltIndexLineToReceive < 0 throw an error?
 
+    let local_ArrayFrom_textElement_children_length = gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length];
+
     let breakingPoint = beltIndexLine_last;
     for (let i = 1 /*starts at one*/; i < distance; i++) {
-        breakingPoint = (breakingPoint - 1 + ArrayFrom_textElement_children_length) % ArrayFrom_textElement_children_length;
+        breakingPoint = (breakingPoint - 1 + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length;
     }
 
     for (let destinationIndex = smallestBeltIndexLineToReceive; destinationIndex !== breakingPoint;) {
         let destinationDiv = EDI_textElement.children[destinationIndex];
         let sourceIndex = destinationIndex;
         for (let i = 0; i < distance; i++) {
-            sourceIndex = (sourceIndex + 1) % ArrayFrom_textElement_children_length;
+            sourceIndex = (sourceIndex + 1) % local_ArrayFrom_textElement_children_length;
         }
         destinationDiv.replaceChildren(...EDI_textElement.children[sourceIndex].childNodes);
         if (EDI_gutter.children[sourceIndex].textContent === '~') {
             EDI_gutter.children[destinationIndex].textContent = '~';
         }
-        destinationIndex = (destinationIndex + 1) % ArrayFrom_textElement_children_length;
+        destinationIndex = (destinationIndex + 1) % local_ArrayFrom_textElement_children_length;
     }
 
     let beltIndexLine = breakingPoint;
     for (let i = 0; ; i++) {
         EDI_drawLine(local_virtualIndexLine + local_virtualCount - (distance - i), EDI_gutter.children[beltIndexLine], EDI_textElement.children[beltIndexLine]);
         if (beltIndexLine === beltIndexLine_last) break; // awkward positioning of this break, it seems somewhat necessary but need to take time to read the code further and try to have it moved somewhere more sensible.
-        beltIndexLine = (beltIndexLine + 1) % ArrayFrom_textElement_children_length;
+        beltIndexLine = (beltIndexLine + 1) % local_ArrayFrom_textElement_children_length;
     }
 }
 
@@ -7221,7 +7224,7 @@ function EDI_render_do_RemoveSelection() {
             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
             let beltIndexLine_current = ((smallLineAndColumnIndices.indexLine + 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-            if (beltIndexLine_current >= ArrayFrom_textElement_children_length || beltIndexLine_current < 0) beltIndexLine_current = -1;
+            if (beltIndexLine_current >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_current < 0) beltIndexLine_current = -1;
             else beltIndexLine_current = (beltIndexLine_current + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
             // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
@@ -7229,7 +7232,7 @@ function EDI_render_do_RemoveSelection() {
             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
             let beltIndexLine_last = ((ints[fEDI_virtualIndexLine] + ints[fEDI_virtualCount] - 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-            if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
+            if (beltIndexLine_last >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
             else beltIndexLine_last = (beltIndexLine_last + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
             // TODO: This will be wrong because you'd need to explicitly redraw the large selection line index.
@@ -7349,7 +7352,7 @@ function EDI_render_do_Delete() {
                             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
                             let beltIndexLine_next = ((ints[fEDI_cursor_indexLine] + 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-                            if (beltIndexLine_next >= ArrayFrom_textElement_children_length || beltIndexLine_next < 0) beltIndexLine_next = -1;
+                            if (beltIndexLine_next >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_next < 0) beltIndexLine_next = -1;
                             else beltIndexLine_next = (beltIndexLine_next + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
                             if (beltIndexLine_next >= 0) {
@@ -7376,7 +7379,7 @@ function EDI_render_do_Delete() {
                                 // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
                                 let beltIndexLine_last = ((ints[fEDI_virtualIndexLine] + ints[fEDI_virtualCount] - 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-                                if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
+                                if (beltIndexLine_last >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
                                 else beltIndexLine_last = (beltIndexLine_last + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
                                 EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last, beltIndexLine_next, 1);
@@ -7543,7 +7546,7 @@ function EDI_render_do_Backspace() {
                             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
                             let beltIndexLine_next = ((ints[fEDI_cursor_indexLine] + 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-                            if (beltIndexLine_next >= ArrayFrom_textElement_children_length || beltIndexLine_next < 0) beltIndexLine_next = -1;
+                            if (beltIndexLine_next >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_next < 0) beltIndexLine_next = -1;
                             else beltIndexLine_next = (beltIndexLine_next + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
                             if (beltIndexLine_next >= 0) {
@@ -7570,7 +7573,7 @@ function EDI_render_do_Backspace() {
                                 // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
                                 let beltIndexLine_last = ((ints[fEDI_virtualIndexLine] + ints[fEDI_virtualCount] - 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-                                if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
+                                if (beltIndexLine_last >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
                                 else beltIndexLine_last = (beltIndexLine_last + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
                                 EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last, beltIndexLine_next, 1);
@@ -8313,7 +8316,7 @@ function PLAINTEXT_line_lex(div, substart, lineEnd, childIndex) {
 // * The argument is a beltIndexLine i.e.: the result of 'EDI_indexLineTo_beltIndexLine' (no validation is performed on the argument, it is presumed to be the index of a valid text editor line div dom element). This returns -1 if you go out of viewport. It will wrap around if you go too large because 'gINT_FIELDS[fEDI_EDI_beltIndexZero]' isn't 0.
 // */
 //function EDI_beltIndexLine_NEXT(beltIndexLine) {
-//    return ++beltIndexLine >= ArrayFrom_textElement_children_length ? beltIndexLine -= ArrayFrom_textElement_children_length : beltIndexLine;
+//    return ++beltIndexLine >= gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length] ? beltIndexLine -= gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length] : beltIndexLine;
 //
 //
 ///*
@@ -8322,7 +8325,7 @@ function PLAINTEXT_line_lex(div, substart, lineEnd, childIndex) {
 //> I have the code 'beltIndexCurrent = EDI_beltIndexLine_NEXT(beltIndexCurrent);'.
 //> 
 //> This runs very often within a loop. The 'EDI_beltIndexLine_NEXT' function is:
-//> return ++beltIndexLine >= ArrayFrom_textElement_children_length ? beltIndexLine -= ArrayFrom_textElement_children_length : beltIndexLine;
+//> return ++beltIndexLine >= gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length] ? beltIndexLine -= gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length] : beltIndexLine;
 //
 //< To optimize this operation, the most effective approach is to replace the function call and conditional branch with a
 //< bitwise AND mask or a direct modulo operation, while inlining the logic to eliminate function call overhead.
@@ -8332,7 +8335,7 @@ function PLAINTEXT_line_lex(div, substart, lineEnd, childIndex) {
 //< beltIndexCurrent = (beltIndexCurrent + 1) & (ARRAY_LENGTH - 1);
 //<
 //< 2. The Cleanest Micro-Optimization (Dynamic Length)
-//< beltIndexCurrent = (beltIndexCurrent + 1) % ArrayFrom_textElement_children_length;
+//< beltIndexCurrent = (beltIndexCurrent + 1) % gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length];
 //<
 //
 //*/
@@ -8344,14 +8347,14 @@ function PLAINTEXT_line_lex(div, substart, lineEnd, childIndex) {
 // * The argument is a beltIndexLine i.e.: the result of 'EDI_indexLineTo_beltIndexLine' (no validation is performed on the argument, it is presumed to be the index of a valid text editor line div dom element). This returns -1 if you go out of viewport. It will wrap around if you go too small because 'gINT_FIELDS[fEDI_EDI_beltIndexZero]' isn't 0.
 // */
 //function EDI_beltIndexLine_PREVIOUS(beltIndexLine) {
-//    return --beltIndexLine < 0 ? beltIndexLine += ArrayFrom_textElement_children_length : beltIndexLine;
+//    return --beltIndexLine < 0 ? beltIndexLine += gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length] : beltIndexLine;
 //
 ///*
 //< 1. The Fastest Approach (Power of 2)
 //< beltIndexCurrent = (beltIndexCurrent - 1) & (ARRAY_LENGTH - 1);
 //< 
 //< 2. The Cleanest Universal Approach (Dynamic Length)
-//< beltIndexCurrent = (beltIndexCurrent - 1 + ArrayFrom_textElement_children_length) % ArrayFrom_textElement_children_length;
+//< beltIndexCurrent = (beltIndexCurrent - 1 + gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length]) % gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length];
 //*/
 //}
 

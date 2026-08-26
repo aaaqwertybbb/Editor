@@ -415,7 +415,7 @@ module.exports = function (babel) {
     "fEDI_lastReadNumber_scrollLeft",
     "fEDI_lastReadNumber_offsetHeight",
     "fEDI_lastReadNumber_offsetWidth",
-
+    "fEDI_ArrayFrom_textElement_children_length",
 
 
 

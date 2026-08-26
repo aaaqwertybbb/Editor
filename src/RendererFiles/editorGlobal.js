@@ -76,6 +76,10 @@ const EDI_decoder = new TextDecoder();
 
 let gutterWidthTotal_withPxUnits;
 
+let EDI_characterWidth = 8;
+// EDI_characterWidth
+// EDI_characterWidth
+
 /**
  * When this is cleared the information is not removed, only 'gapBufferCount' is set to 0.
  */
@@ -266,7 +270,7 @@ function EDI_init() {
     EDI_gutterBackgroundColor.style.paddingLeft = gutterPaddingLeft;
     EDI_gutterBackgroundColor.style.paddingRight = gutterPaddingRight;
 
-    gINT_FIELDS[fEDI_gutterWidthStyleValue] = gINT_FIELDS[fEDI_EDI_characterWidth];
+    gINT_FIELDS[fEDI_gutterWidthStyleValue] = EDI_characterWidth;
 
     EDI_drawGutter_Width();
 
@@ -1340,7 +1344,7 @@ function EDI_drawGutter_Width() {
 
     ints[fEDI_drawn_count_of_digits_longest_line_number] = digitCountOfLargestLineNumber;
 
-    ints[fEDI_gutterWidthStyleValue] = Math.ceil(digitCountOfLargestLineNumber * ints[fEDI_EDI_characterWidth]);
+    ints[fEDI_gutterWidthStyleValue] = Math.ceil(digitCountOfLargestLineNumber * EDI_characterWidth);
     ints[fEDI_gutterWidthTotal] = ints[fEDI_gutterWidthStyleValue] + CONST_EDI_gutterPaddingLeft + CONST_EDI_gutterPaddingRight;
     gutterWidthTotal_withPxUnits = `${ints[fEDI_gutterWidthTotal]}px`;
 
@@ -1382,7 +1386,7 @@ function EDI_drawHorizontalScrollbar() {
         
         ints[fEDI_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar] = ints[fEDI_longestLine_length];
 
-        ints[fEDI_contentWidth] = Math.ceil(ints[fEDI_longestLine_length] * ints[fEDI_EDI_characterWidth]);
+        ints[fEDI_contentWidth] = Math.ceil(ints[fEDI_longestLine_length] * EDI_characterWidth);
 
         if ((ints[fEDI_contentWidth] < (EDI_baseElement.clientWidth - ints[fEDI_gutterWidthTotal])) && (EDI_baseElement.clientWidth - ints[fEDI_gutterWidthTotal] > 0)) {
             ints[fEDI_contentWidth] = Math.floor(EDI_baseElement.clientWidth - ints[fEDI_gutterWidthTotal]);
@@ -2650,7 +2654,7 @@ function EDI_drawCursor(NOTscrollCursorIntoView) {
     const ints = gINT_FIELDS;
 
     ints[fEDI_cursor_cursorTranslateYValue] = (ints[fEDI_cursor_indexLine] + ints[fEDI_offsetLine]) * ints[fEDI_lineHeight];
-    ints[fEDI_cursor_cursorTranslateXValue] = (ints[fEDI_cursor_indexColumn] + ints[fEDI_offsetColumn]) * ints[fEDI_EDI_characterWidth];
+    ints[fEDI_cursor_cursorTranslateXValue] = (ints[fEDI_cursor_indexColumn] + ints[fEDI_offsetColumn]) * EDI_characterWidth;
 
     EDI_cursor_caretRow.style.transform = `translateY(${ints[fEDI_cursor_cursorTranslateYValue]}px)`;
     EDI_cursor_cursorElement.style.transform = `translateX(${ints[fEDI_cursor_cursorTranslateXValue]}px)`;
@@ -2900,18 +2904,18 @@ function EDI_createStyleForSelection() {
             lineSelectionDiv = textSelectionDiv.children[childDivIndex++];
             lineSelectionDiv.className = 'EDI_selection';
             lineSelectionDiv.style.left = gutterWidthTotal_withPxUnits;
-            lineSelectionDiv.style.transform = `translate(${startColumn * ints[fEDI_EDI_characterWidth]}px, ${ints[fEDI_lineHeight] * startLine}px)`;
-            lineSelectionDiv.style.width = (INCLUSIVEendColumn - startColumn) * ints[fEDI_EDI_characterWidth] + 'px';
+            lineSelectionDiv.style.transform = `translate(${startColumn * EDI_characterWidth}px, ${ints[fEDI_lineHeight] * startLine}px)`;
+            lineSelectionDiv.style.width = (INCLUSIVEendColumn - startColumn) * EDI_characterWidth + 'px';
         }
         else {
             // start line
             lineSelectionDiv = textSelectionDiv.children[childDivIndex++];
             lineSelectionDiv.className = 'EDI_selection';
             lineSelectionDiv.style.left = gutterWidthTotal_withPxUnits;
-            lineSelectionDiv.style.transform = `translate(${startColumn * ints[fEDI_EDI_characterWidth]}px, ${ints[fEDI_lineHeight] * startLine}px)`;
+            lineSelectionDiv.style.transform = `translate(${startColumn * EDI_characterWidth}px, ${ints[fEDI_lineHeight] * startLine}px)`;
             let line = EDI_getLineBoundaryPositions(startLine);
             let lineLength = line.end - line.start;
-            lineSelectionDiv.style.width = (lineLength + 1 - startColumn) * ints[fEDI_EDI_characterWidth] + 'px';
+            lineSelectionDiv.style.width = (lineLength + 1 - startColumn) * EDI_characterWidth + 'px';
 
             // between lines
             for (var lineI = startLine + 1; lineI < INCLUSIVEendLine; lineI++) {
@@ -2921,7 +2925,7 @@ function EDI_createStyleForSelection() {
                 lineSelectionDiv.style.transform = `translateY(${ints[fEDI_lineHeight] * lineI}px)`;
                 let line = EDI_getLineBoundaryPositions(lineI);
                 let lineLength = line.end - line.start;
-                lineSelectionDiv.style.width = (lineLength + 1) * ints[fEDI_EDI_characterWidth] + 'px';
+                lineSelectionDiv.style.width = (lineLength + 1) * EDI_characterWidth + 'px';
             }
 
             // end line
@@ -2929,7 +2933,7 @@ function EDI_createStyleForSelection() {
             lineSelectionDiv.className = 'EDI_selection';
             lineSelectionDiv.style.left = gutterWidthTotal_withPxUnits;
             lineSelectionDiv.style.transform = `translateY(${ints[fEDI_lineHeight] * INCLUSIVEendLine}px)`;
-            lineSelectionDiv.style.width = INCLUSIVEendColumn * ints[fEDI_EDI_characterWidth] + 'px';
+            lineSelectionDiv.style.width = INCLUSIVEendColumn * EDI_characterWidth + 'px';
         }
     }
 }
@@ -2949,7 +2953,7 @@ function EDI_createStyleForSelection_indentMore() {
         return;
     }
 
-    let extraWidth = 4 * gINT_FIELDS[fEDI_EDI_characterWidth];
+    let extraWidth = 4 * EDI_characterWidth;
     for (let i = 0; i < textSelectionDiv.children.length; i++) {
         let lineSelectionDiv = textSelectionDiv.children[i];
         let widthNumberValue = parseFloat(lineSelectionDiv.style.width, 10);
@@ -3110,7 +3114,7 @@ function EDI_onMouseMove_WRAPIT(event) {
         let rX = event.clientX - ints[fEDI_recentBoundingClientRect_left] - ints[fEDI_gutterWidthTotal] + ints[fEDI_lastReadNumber_scrollLeft];
         let rY = event.clientY - ints[fEDI_recentBoundingClientRect_top] + ints[fEDI_lastReadNumber_scrollTop];
 
-        let indexColumn = Math.round(rX / ints[fEDI_EDI_characterWidth]);
+        let indexColumn = Math.round(rX / EDI_characterWidth);
         let indexLine = Math.floor(rY / ints[fEDI_lineHeight]);
 
         if (indexColumn < 0) {
@@ -4811,7 +4815,7 @@ function EDI_onMouseDown(event) {
     let rX = event.clientX - gINT_FIELDS[fEDI_recentBoundingClientRect_left] - gINT_FIELDS[fEDI_gutterWidthTotal] + gINT_FIELDS[fEDI_lastReadNumber_scrollLeft];
     
     let indexLine = Math.floor(rY / gINT_FIELDS[fEDI_lineHeight]);
-    let indexColumn = Math.round(rX / gINT_FIELDS[fEDI_EDI_characterWidth]);
+    let indexColumn = Math.round(rX / EDI_characterWidth);
 
     if (indexLine < 0) {
         indexLine = 0;
@@ -5420,10 +5424,10 @@ function EDI_render_do_IndentLess() {
         else {
             // TODO: Silent error confusing bad idea
         }
-        let lesstraWidth_1 = 1 * ints[fEDI_EDI_characterWidth];
-        let lesstraWidth_2 = 2 * ints[fEDI_EDI_characterWidth];
-        let lesstraWidth_3 = 3 * ints[fEDI_EDI_characterWidth];
-        let lesstraWidth_4 = 4 * ints[fEDI_EDI_characterWidth];
+        let lesstraWidth_1 = 1 * EDI_characterWidth;
+        let lesstraWidth_2 = 2 * EDI_characterWidth;
+        let lesstraWidth_3 = 3 * EDI_characterWidth;
+        let lesstraWidth_4 = 4 * EDI_characterWidth;
         /////////////////////// P_1
 
         let selectionLineDivIndex = 0;
@@ -7734,7 +7738,7 @@ function EDI_scrollCursorIntoView() {
         // make the right touch then add characterWidth is probably the algorithm to get a perfect fill maybe do characterWidth * 2 skip an event when spamming arrowRight?
         let currentRight = ints[fEDI_lastReadNumber_scrollLeft] + ints[fEDI_lastReadNumber_offsetWidth];
         let changeToMakeRightTouch = ints[fEDI_cursor_cursorTranslateXValue] - currentRight;
-        scrollX = changeToMakeRightTouch + (4 * ints[fEDI_EDI_characterWidth]);
+        scrollX = changeToMakeRightTouch + (4 * EDI_characterWidth);
     }
 
     // This is asynchronous, this is the bug cause
@@ -8337,7 +8341,7 @@ function EDI_measureLineHeightAndCharacterWidth() {
     let len = 396;
     measureElement.innerHTML = 'A'.repeat(len);
     let measureElementBoundingClientRect = measureElement.getBoundingClientRect();
-    gINT_FIELDS[fEDI_EDI_characterWidth] = measureElementBoundingClientRect.width / len; // 7.146002258917298
+    EDI_characterWidth = measureElementBoundingClientRect.width / len; // 7.146002258917298
     gINT_FIELDS[fEDI_lineHeight] = Math.ceil(measureElementBoundingClientRect.height); // 15
 
     wrapper.removeChild(measureElement);
@@ -8556,7 +8560,7 @@ function EDI_requestLspHover() {
     let rX = event_clientX - gINT_FIELDS[fEDI_recentBoundingClientRect_left] - gINT_FIELDS[fEDI_gutterWidthTotal] + gINT_FIELDS[fEDI_lastReadNumber_scrollLeft];
     
     let indexLine = Math.floor(rY / gINT_FIELDS[fEDI_lineHeight]);
-    let indexColumn = Math.round(rX / gINT_FIELDS[fEDI_EDI_characterWidth]);
+    let indexColumn = Math.round(rX / EDI_characterWidth);
 
     if (indexLine < 0) return;
     if (indexColumn < 0) return;

@@ -492,7 +492,7 @@ const fEDI_w_beltIndexLine = 80;
 // And this -1
 const fEDI_EDI_beltIndexZero = 81;
 
-const fEDI_EDI_characterWidth = 82;
+//const fEDI_EDI_characterWidth = 82;
 
 const fEDI_EDI_horizontal_scrollbar_widthValue = 83;
 

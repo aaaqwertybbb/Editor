@@ -427,9 +427,11 @@ module.exports = function (babel) {
     "fEDI_DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left",
     "fEDI_prevVli",
     "fEDI_currVli",
+    
     "fAUTOCOMPLETE_items_slice_start",
     "fAUTOCOMPLETE_items_slice_end",
     "fAUTOCOMPLETE_items_totalLength",
+    "fAUTOCOMPLETE_cursorIndex",
 
 
 

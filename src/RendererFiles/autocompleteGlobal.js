@@ -14,9 +14,6 @@ const AUTOCOMPLETErenderKind_Scroll = 5;
 let AUTOCOMPLETE_renderKindArray = [];
 let AUTOCOMPLETE_isRenderPending = false;
 
-let AUTOCOMPLETE_cursorIndex = 0;
-
-
 let AUTOCOMPLETE_rectHeight = 0;
 let AUTOCOMPLETE_rectLeft = 0;
 let AUTOCOMPLETE_rectTop = 0;
@@ -92,7 +89,7 @@ function AUTOCOMPLETE_render_create_lines(AUTOCOMPLETE_itemList) {
     AUTOCOMPLETE_beltIndexZero = 0;
     AUTOCOMPLETE_scrollTop = 0;
 
-    AUTOCOMPLETE_cursorIndex = 0;
+    gINT_FIELDS[fAUTOCOMPLETE_cursorIndex] = 0;
 
     let appHeightCssAttributeValue = `${APP_lineHeight}px`;
 
@@ -145,7 +142,7 @@ function AUTOCOMPLETE_render_RESET_lines(AUTOCOMPLETE_itemList) {
     AUTOCOMPLETEElement.removeEventListener('scroll', AUTOCOMPLETE_events_scroll_receive, { passive: true });
     AUTOCOMPLETEElement.scrollTop = 0;
     AUTOCOMPLETEElement.addEventListener('scroll', AUTOCOMPLETE_events_scroll_receive, { passive: true });
-    AUTOCOMPLETE_cursorIndex = 0;
+    gINT_FIELDS[fAUTOCOMPLETE_cursorIndex] = 0;
 
     let appHeightCssAttributeValue = `${APP_lineHeight}px`;
 
@@ -341,7 +338,7 @@ function AUTOCOMPLETE_cursor_render_set() {
     let cursorElement = document.getElementById('AUTOCOMPLETE_cursor');
 
     // Determine the number without modifying styles so you can use this variable to determine the need to scroll into view without synchronous layout.
-    let cursorTranslateYNumber = CONST_AUTOCOMPLETE_topPadding + (APP_lineHeight * AUTOCOMPLETE_cursorIndex);
+    let cursorTranslateYNumber = CONST_AUTOCOMPLETE_topPadding + (APP_lineHeight * gINT_FIELDS[fAUTOCOMPLETE_cursorIndex]);
 
     // Preferably this hasn't changed thus the function immediately just returns.
     if (AUTOCOMPLETE_rect_isNull)
@@ -365,7 +362,7 @@ function AUTOCOMPLETE_cursor_render_set() {
 }
 
 function AUTOCOMPLETE_cursor_do_set(cursorIndex) {
-    AUTOCOMPLETE_cursorIndex = cursorIndex;
+    gINT_FIELDS[fAUTOCOMPLETE_cursorIndex] = cursorIndex;
     AUTOCOMPLETE_render_request(AUTOCOMPLETErenderKind_CursorSet);
 }
 
@@ -526,13 +523,13 @@ function AUTOCOMPLETE_events_onkeydown(event) {
             event.preventDefault();
             event.stopPropagation();
             AUTOCOMPLETE_cursor_do_set(
-                AUTOCOMPLETE_cursor_validate(AUTOCOMPLETE_cursorIndex + 1));
+                AUTOCOMPLETE_cursor_validate(gINT_FIELDS[fAUTOCOMPLETE_cursorIndex] + 1));
             break;
         case 'ArrowUp':
             event.preventDefault();
             event.stopPropagation();
             AUTOCOMPLETE_cursor_do_set(
-                AUTOCOMPLETE_cursor_validate(AUTOCOMPLETE_cursorIndex - 1));
+                AUTOCOMPLETE_cursor_validate(gINT_FIELDS[fAUTOCOMPLETE_cursorIndex] - 1));
             break;
         default:
             AUTOCOMPLETE_hide();

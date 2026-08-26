@@ -387,6 +387,7 @@ module.exports = function (babel) {
     "byteDIALOG_Settings_editorDebugShowAdjacentCharacters",
     "byteDIALOG_hasBeenMeasured",
     "byteDIALOG_windowExists",
+    "byteDIALOG_HIDE_shouldRestoreFocus",
     
 
 

@@ -14,7 +14,6 @@ let DIALOG_currentDialogKind = DialogKind_None;
 /** A delegate of the form: () => {} */
 let DIALOG_onResizeAction = null;
 let DIALOG_restoreFocusToElement = null;
-let DIALOG_HIDE_shouldRestoreFocus = true;
 
 let DIALOG_SHOW_restoreFocusToElement = null;
 let DIALOG_SHOW_currentDialogKind = DialogKind_None;
@@ -88,7 +87,7 @@ function DIALOG_render_do_DimensionsChanged() {
 
 async function DIALOG_render_do_Show() {
     if (DIALOG_currentDialogKind !== DialogKind_None) {
-        DIALOG_HIDE_shouldRestoreFocus = true;
+        gBYTE_FIELDS[byteDIALOG_HIDE_shouldRestoreFocus] = true;
         await DIALOG_render_do_Hide();
     }
 
@@ -157,7 +156,7 @@ async function DIALOG_render_do_Hide() {
 }
 
 function DIALOG_hide_request(shouldRestoreFocus) {
-    DIALOG_HIDE_shouldRestoreFocus = shouldRestoreFocus;
+    gBYTE_FIELDS[byteDIALOG_HIDE_shouldRestoreFocus] = shouldRestoreFocus;
     DIALOG_render_request(DIALOGrenderKind_Hide);
 }
 

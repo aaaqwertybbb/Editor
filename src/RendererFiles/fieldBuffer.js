@@ -89,7 +89,9 @@ const byteDIALOG_Settings_editorDebugShowAdjacentCharacters = 10;
 const byteDIALOG_hasBeenMeasured = 11;
 
 const byteDIALOG_windowExists = 12;
-// gBYTE_FIELDS[byteDIALOG_windowExists]
+
+const byteDIALOG_HIDE_shouldRestoreFocus = 13;
+// gBYTE_FIELDS[byteDIALOG_HIDE_shouldRestoreFocus]
 
 const CONST_EDI_ASCII_LINE_FEED = 10;
 const CONST_EDI_ASCII_TAB = 9;

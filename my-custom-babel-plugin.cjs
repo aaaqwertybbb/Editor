@@ -405,6 +405,7 @@ module.exports = function (babel) {
     "fDIALOG_after_Y",
 
     "fEDI_w_indexColumn_Goal",
+    "fEDI_w_indexColumn_Sum",
 
 
 

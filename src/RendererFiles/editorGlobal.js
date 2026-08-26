@@ -191,7 +191,6 @@ let EDI_horizontal_scrollbar_widthValue = 0;
 
 let EDI_beltIndexZero = 0;
 
-let w_indexColumn_Sum = -1;
 let w_indexColumn_SpanTextContentRelative = -1;
 let w_indexSpan = -1;
 let w_span = null;
@@ -2539,7 +2538,7 @@ function walkLineUntilIndexColumn() {
     
     if (w_beltIndexLine < 0) {
         gINT_FIELDS[fEDI_w_indexColumn_Goal] = -1;
-        w_indexColumn_Sum = -1;
+        gINT_FIELDS[fEDI_w_indexColumn_Sum] = -1;
         w_indexColumn_SpanTextContentRelative = -1;
         w_indexSpan = -1;
         w_span = null;
@@ -2558,7 +2557,7 @@ function walkLineUntilIndexColumn() {
             // '<=' because end-of-line text insertion (end of line but prior to the line ending itself).
             // The line ending isn't written to the span, it is represented by the encompassing div itself.
             gINT_FIELDS[fEDI_w_indexColumn_Goal] = indexColumn_Goal;
-            w_indexColumn_Sum = indexColumn_Sum;
+            gINT_FIELDS[fEDI_w_indexColumn_Sum] = indexColumn_Sum;
             w_indexColumn_SpanTextContentRelative = indexColumn_Goal - indexColumn_Sum;
             w_indexSpan = indexSpan;
             w_span = span;
@@ -2573,7 +2572,7 @@ function walkLineUntilIndexColumn() {
 
     // TODO: When the column index is too large, how should this be handled?
     gINT_FIELDS[fEDI_w_indexColumn_Goal] = -1;
-    w_indexColumn_Sum = -1;
+    gINT_FIELDS[fEDI_w_indexColumn_Sum] = -1;
     w_indexColumn_SpanTextContentRelative = -1;
     w_indexSpan = -1;
     w_span = null;
@@ -3742,7 +3741,7 @@ function EDI_insertGapBufferSpan() {
     else {
         EDI_cursor_gapBufferWriteToSpanElement = w_div.children[w_indexSpan];
 
-        if (gINT_FIELDS[fEDI_w_indexColumn_Goal] === w_indexColumn_Sum + EDI_cursor_gapBufferWriteToSpanElement.textContent.length) {
+        if (gINT_FIELDS[fEDI_w_indexColumn_Goal] === gINT_FIELDS[fEDI_w_indexColumn_Sum] + EDI_cursor_gapBufferWriteToSpanElement.textContent.length) {
             EDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = EDI_cursor_gapBufferWriteToSpanElement.textContent.length;
         }
         else {
@@ -5879,7 +5878,7 @@ function EDI_render_do_DuplicateOrPaste() {
 
         let original_indexColumn_SpanTextContentRelative = w_indexColumn_SpanTextContentRelative;
         let original_span_textContent_length = w_span.textContent.length;
-        let original_tracked_syntax_start = positionIndex - ints[fEDI_cursor_indexColumn] + w_indexColumn_Sum;
+        let original_tracked_syntax_start = positionIndex - ints[fEDI_cursor_indexColumn] + gINT_FIELDS[fEDI_w_indexColumn_Sum];
 
         let offset = 0;
 
@@ -5993,7 +5992,7 @@ function EDI_render_do_DuplicateOrPaste() {
                     w_indexSpan = 0;
                     w_span = lineDiv.children[w_indexSpan];
                     gINT_FIELDS[fEDI_w_indexColumn_Goal] = 0;
-                    w_indexColumn_Sum = 0;
+                    gINT_FIELDS[fEDI_w_indexColumn_Sum] = 0;
                     w_indexColumn_SpanTextContentRelative = 0;
                     ints[fEDI_cursor_indexLine]++;
                     ints[fEDI_cursor_indexColumn] = 0;
@@ -6015,7 +6014,7 @@ function EDI_render_do_DuplicateOrPaste() {
                         w_indexSpan = 0;
                         w_span = lineDiv.children[w_indexSpan];
                         gINT_FIELDS[fEDI_w_indexColumn_Goal] = 0;
-                        w_indexColumn_Sum = 0;
+                        gINT_FIELDS[fEDI_w_indexColumn_Sum] = 0;
                         w_indexColumn_SpanTextContentRelative = 0;
                         ints[fEDI_cursor_indexLine]++;
                         ints[fEDI_cursor_indexColumn] = 0;
@@ -6031,7 +6030,7 @@ function EDI_render_do_DuplicateOrPaste() {
                         let spanText = '';
 
                         if (gINT_FIELDS[fEDI_w_indexColumn_Goal] > 0) {
-                            if (gINT_FIELDS[fEDI_w_indexColumn_Goal] !== w_indexColumn_Sum + w_span.textContent.length) {
+                            if (gINT_FIELDS[fEDI_w_indexColumn_Goal] !== gINT_FIELDS[fEDI_w_indexColumn_Sum] + w_span.textContent.length) {
                                 let firstText = w_span.textContent.substring(0, w_indexColumn_SpanTextContentRelative);
                                 let lastText = w_span.textContent.substring(w_indexColumn_SpanTextContentRelative);
                                 last_valid_indexColumn_currentLine = lastText.length;
@@ -6064,7 +6063,7 @@ function EDI_render_do_DuplicateOrPaste() {
                         w_indexSpan = 0;
                         w_span = lineDiv.children[w_indexSpan];
                         gINT_FIELDS[fEDI_w_indexColumn_Goal] = 0;
-                        w_indexColumn_Sum = 0;
+                        gINT_FIELDS[fEDI_w_indexColumn_Sum] = 0;
                         w_indexColumn_SpanTextContentRelative = 0;
                         ints[fEDI_cursor_indexLine]++;
                         ints[fEDI_cursor_indexColumn] = 0;
@@ -6164,7 +6163,7 @@ function EDI_paste(content) {
 
     //let original_indexColumn_SpanTextContentRelative = w_indexColumn_SpanTextContentRelative;
     //let original_span_textContent_length = w_span.textContent.length;
-    //let original_tracked_syntax_start = positionIndex - ints[fEDI_cursor_indexColumn] + w_indexColumn_Sum;
+    //let original_tracked_syntax_start = positionIndex - ints[fEDI_cursor_indexColumn] + gINT_FIELDS[fEDI_w_indexColumn_Sum];
 
     for (var sourceI = 0; sourceI < content.length; sourceI++) {
         switch (content[sourceI]) {
@@ -6270,7 +6269,7 @@ function EDI_duplicate_and_paste_handleNotHasSeenLinefeed(hasSeenLinefeed, origi
             if (original_indexColumn_SpanTextContentRelative >= 2 && (original_indexColumn_SpanTextContentRelative <= original_span_textContent_length - 2)) {
                 w_span.className = 'eCM';
                 let indexOfGreaterThanOrEqual = EDI_trackedSyntaxReposition_find(indexPosition);
-                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_Comment, indexPosition - gINT_FIELDS[fEDI_cursor_indexColumn] + w_indexColumn_Sum, original_span_textContent_length);
+                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_Comment, indexPosition - gINT_FIELDS[fEDI_cursor_indexColumn] + gINT_FIELDS[fEDI_w_indexColumn_Sum], original_span_textContent_length);
                 return true;
             }
             return false;
@@ -6280,7 +6279,7 @@ function EDI_duplicate_and_paste_handleNotHasSeenLinefeed(hasSeenLinefeed, origi
             if (original_indexColumn_SpanTextContentRelative >= 1 && (original_indexColumn_SpanTextContentRelative <= original_span_textContent_length - 1)) {
                 w_span.className = 'eSM';
                 let indexOfGreaterThanOrEqual = EDI_trackedSyntaxReposition_find(indexPosition);
-                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_String, indexPosition - gINT_FIELDS[fEDI_cursor_indexColumn] + w_indexColumn_Sum, original_span_textContent_length);
+                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_String, indexPosition - gINT_FIELDS[fEDI_cursor_indexColumn] + gINT_FIELDS[fEDI_w_indexColumn_Sum], original_span_textContent_length);
                 return true;
             }
             return false;
@@ -6607,7 +6606,7 @@ function EDI_render_do_EnterKey() {
                                 w_span.className = 'eCM';
                                 let indexPosition = EDI_getPositionIndex_raw_cursor();
                                 let indexOfGreaterThanOrEqual = EDI_trackedSyntaxReposition_find(indexPosition);
-                                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_Comment, indexPosition - ints[fEDI_cursor_indexColumn] + w_indexColumn_Sum, w_span.textContent.length);
+                                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_Comment, indexPosition - ints[fEDI_cursor_indexColumn] + gINT_FIELDS[fEDI_w_indexColumn_Sum], w_span.textContent.length);
                                 shouldPreserveCssClassWhenSplittingAmongLine = true;
                             }
                             break;
@@ -6619,7 +6618,7 @@ function EDI_render_do_EnterKey() {
                                 w_span.className = 'eSM';
                                 let indexPosition = EDI_getPositionIndex_raw_cursor();
                                 let indexOfGreaterThanOrEqual = EDI_trackedSyntaxReposition_find(indexPosition);
-                                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_String, indexPosition - ints[fEDI_cursor_indexColumn] + w_indexColumn_Sum, w_span.textContent.length);
+                                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_String, indexPosition - ints[fEDI_cursor_indexColumn] + gINT_FIELDS[fEDI_w_indexColumn_Sum], w_span.textContent.length);
                                 shouldPreserveCssClassWhenSplittingAmongLine = true;
                             }
                             break;
@@ -6629,7 +6628,7 @@ function EDI_render_do_EnterKey() {
                     }
                     
                     if (gINT_FIELDS[fEDI_w_indexColumn_Goal] > 0) {
-                        if (gINT_FIELDS[fEDI_w_indexColumn_Goal] !== w_indexColumn_Sum + w_span.textContent.length) {
+                        if (gINT_FIELDS[fEDI_w_indexColumn_Goal] !== gINT_FIELDS[fEDI_w_indexColumn_Sum] + w_span.textContent.length) {
                             let firstText = w_span.textContent.substring(0, w_indexColumn_SpanTextContentRelative);
                             let lastText = w_span.textContent.substring(w_indexColumn_SpanTextContentRelative);
                             w_span.textContent = firstText;

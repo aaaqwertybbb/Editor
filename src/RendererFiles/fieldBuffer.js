@@ -388,9 +388,11 @@ const fDIALOG_before_Y = 73;
 const fDIALOG_after_X = 74;
 const fDIALOG_after_Y = 75;
 
+// TODO: Avoid re-using these locally after getting the w result (i.e.: avoid re-using over and over in a loop or something, probably make a local variable if accessed enough).
 const fEDI_w_indexColumn_Goal = 76;
+const fEDI_w_indexColumn_Sum = 77;
 
-// gINT_FIELDS[fEDI_w_indexColumn_Goal]
+// gINT_FIELDS[fEDI_w_indexColumn_Sum]
 
 
 

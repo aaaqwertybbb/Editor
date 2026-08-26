@@ -190,8 +190,8 @@ let ArrayFrom_textElement_children = [];
 // Move some 'EDI_removeSelection()' state here so I can access it in the render function.
 // TODO: Don't do this long term, I need a simple bridge for this state so I can just get started otherwise I'll spend the rest of my life procrastinating.
 //
-let EDI_RemoveSelection_smallLineAndColumnIndices = null;
-let EDI_RemoveSelection_largeLineAndColumnIndices = null;
+let EDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine = 0;
+let EDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn = 0;
 
 let EDI_language_line_lex;
 
@@ -6920,14 +6920,14 @@ function EDI_removeSelection() {
     EDI_startEdit(EditKind_RemoveTextNoBatching, smallPosition, /*editLength*/ 0);
 
     let smallLineAndColumnIndices = EDI_getLineAndColumnIndices(smallPosition);
-    EDI_RemoveSelection_smallLineAndColumnIndices = smallLineAndColumnIndices;
+    EDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine = smallLineAndColumnIndices.indexLine;
+    EDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn = smallLineAndColumnIndices.indexColumn;
     ints[fEDI_cursor_indexLine] = smallLineAndColumnIndices.indexLine;
     ints[fEDI_cursor_indexColumn] = smallLineAndColumnIndices.indexColumn;
     ints[fEDI_cursor_editIndexLine] = smallLineAndColumnIndices.indexLine;
     ints[fEDI_cursor_editIndexColumn] = smallLineAndColumnIndices.indexColumn;
 
     let largeLineAndColumnIndices = EDI_getLineAndColumnIndices(largePosition);
-    EDI_RemoveSelection_largeLineAndColumnIndices = largeLineAndColumnIndices;
     ints[fEDI_cursor_END_editIndexLine] = largeLineAndColumnIndices.indexLine;
     ints[fEDI_cursor_END_editIndexColumn] = largeLineAndColumnIndices.indexColumn;
 
@@ -6950,9 +6950,8 @@ function EDI_render_do_RemoveSelection() {
 
     let editLength = largePosition - smallPosition;
 
-    let smallLineAndColumnIndices = EDI_RemoveSelection_smallLineAndColumnIndices;
-
-    let largeLineAndColumnIndices = EDI_RemoveSelection_largeLineAndColumnIndices;
+    let smallLineAndColumnIndices_indexLine = EDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine;
+    let smallLineAndColumnIndices_indexColumn = EDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn;
 
     ///////////
     ///////////
@@ -7055,8 +7054,8 @@ function EDI_render_do_RemoveSelection() {
         // Remove selection on small position line
         let smallLineDiv = null;
         {
-            ints[fEDI_cursor_indexLine] = smallLineAndColumnIndices.indexLine;
-            ints[fEDI_cursor_indexColumn] = smallLineAndColumnIndices.indexColumn;
+            ints[fEDI_cursor_indexLine] = smallLineAndColumnIndices_indexLine;
+            ints[fEDI_cursor_indexColumn] = smallLineAndColumnIndices_indexColumn;
 
             walkLineUntilIndexColumn();
             
@@ -7143,8 +7142,8 @@ function EDI_render_do_RemoveSelection() {
         // - [ ] Ensure all 4 cases of existence handle 'EDI_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine(cursor);'
         //
         if (linesRemovedCount > 0) {
-            ints[fEDI_cursor_indexLine] = smallLineAndColumnIndices.indexLine;
-            ints[fEDI_cursor_indexColumn] = smallLineAndColumnIndices.indexColumn;
+            ints[fEDI_cursor_indexLine] = smallLineAndColumnIndices_indexLine;
+            ints[fEDI_cursor_indexColumn] = smallLineAndColumnIndices_indexColumn;
 
             if (smallLineDiv) {
                 if (largeLineDiv) { // - [x] keeping, removing
@@ -7182,7 +7181,7 @@ function EDI_render_do_RemoveSelection() {
             // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-            let beltIndexLine_current = ((smallLineAndColumnIndices.indexLine + 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
+            let beltIndexLine_current = ((smallLineAndColumnIndices_indexLine + 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
             if (beltIndexLine_current >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_current < 0) beltIndexLine_current = -1;
             else beltIndexLine_current = (beltIndexLine_current + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 

@@ -505,6 +505,8 @@ module.exports = function (babel) {
     "byteEDI_mousemove_eventListener_isActive",
     "fEDI_onResize_timer",
     "fEDI_hoverTimeout",
+    "fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine",
+    "fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn",
 
 
 

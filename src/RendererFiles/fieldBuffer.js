@@ -603,7 +603,13 @@ const fEDI_onResize_timer = 131;
 
 const fEDI_hoverTimeout = 132;
 
-// gINT_FIELDS[fEDI_hoverTimeout]
+// Move some 'EDI_removeSelection()' state here so I can access it in the render function.
+// TODO: Don't do this long term, I need a simple bridge for this state so I can just get started otherwise I'll spend the rest of my life procrastinating.
+//
+const fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine = 133;
+const fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn = 134;
+
+// gINT_FIELDS[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn]
 
 // 149
 

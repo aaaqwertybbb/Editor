@@ -187,12 +187,6 @@ let EDI_renderKindArray = [];
 let ArrayFrom_gutter_children = [];
 let ArrayFrom_textElement_children = [];
 
-// Move some 'EDI_removeSelection()' state here so I can access it in the render function.
-// TODO: Don't do this long term, I need a simple bridge for this state so I can just get started otherwise I'll spend the rest of my life procrastinating.
-//
-let EDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine = 0;
-let EDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn = 0;
-
 let EDI_language_line_lex;
 
 function EDI_cursor_hasSelection() {
@@ -6920,8 +6914,8 @@ function EDI_removeSelection() {
     EDI_startEdit(EditKind_RemoveTextNoBatching, smallPosition, /*editLength*/ 0);
 
     let smallLineAndColumnIndices = EDI_getLineAndColumnIndices(smallPosition);
-    EDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine = smallLineAndColumnIndices.indexLine;
-    EDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn = smallLineAndColumnIndices.indexColumn;
+    gINT_FIELDS[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine] = smallLineAndColumnIndices.indexLine;
+    gINT_FIELDS[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn] = smallLineAndColumnIndices.indexColumn;
     ints[fEDI_cursor_indexLine] = smallLineAndColumnIndices.indexLine;
     ints[fEDI_cursor_indexColumn] = smallLineAndColumnIndices.indexColumn;
     ints[fEDI_cursor_editIndexLine] = smallLineAndColumnIndices.indexLine;
@@ -6950,8 +6944,8 @@ function EDI_render_do_RemoveSelection() {
 
     let editLength = largePosition - smallPosition;
 
-    let smallLineAndColumnIndices_indexLine = EDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine;
-    let smallLineAndColumnIndices_indexColumn = EDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn;
+    let smallLineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine];
+    let smallLineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn];
 
     ///////////
     ///////////

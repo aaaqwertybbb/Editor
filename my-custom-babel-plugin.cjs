@@ -339,6 +339,8 @@ module.exports = function (babel) {
 
     "CONST_EDI_cursor_GAP_BUFFER_CAPACITY",
 
+    "CONST_AUTOCOMPLETE_topPadding",
+
 
 
 

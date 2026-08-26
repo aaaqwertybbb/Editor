@@ -178,6 +178,8 @@ const CONST_DIALOG_minWidth = 100;
  */
 const CONST_EDI_cursor_GAP_BUFFER_CAPACITY = 32;
 
+const CONST_AUTOCOMPLETE_topPadding = 4;
+
 
 ////////////////////////////
 ////////////////////////////

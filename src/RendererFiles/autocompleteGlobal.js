@@ -15,7 +15,7 @@ let AUTOCOMPLETE_renderKindArray = [];
 let AUTOCOMPLETE_isRenderPending = false;
 
 let AUTOCOMPLETE_cursorIndex = 0;
-let AUTOCOMPLETE_topPadding = 4;
+
 
 let AUTOCOMPLETE_rectHeight = 0;
 let AUTOCOMPLETE_rectLeft = 0;
@@ -86,7 +86,7 @@ function AUTOCOMPLETE_render_create_lines(AUTOCOMPLETE_itemList) {
         if (!AUTOCOMPLETE_itemList) return; // TODO: silent error
     }
 
-    // TODO: minus AUTOCOMPLETE_topPadding
+    // TODO: minus CONST_AUTOCOMPLETE_topPadding
     AUTOCOMPLETE_virtualCount = Math.floor(AUTOCOMPLETE_rectHeight / APP_lineHeight);
     AUTOCOMPLETE_virtualIndex = 0;
     AUTOCOMPLETE_beltIndexZero = 0;
@@ -98,7 +98,7 @@ function AUTOCOMPLETE_render_create_lines(AUTOCOMPLETE_itemList) {
 
     AUTOCOMPLETE_itemList.innerHTML = '';
 
-    let verticalOffset = AUTOCOMPLETE_topPadding;
+    let verticalOffset = CONST_AUTOCOMPLETE_topPadding;
 
     let widthAttributeValueNumber = Math.ceil((AUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING + 2/*padding*/) * EXPLORER_firstSpanWidthValue);
     let widthAttributeValueString = widthAttributeValueNumber + 'px';
@@ -136,7 +136,7 @@ function AUTOCOMPLETE_render_RESET_lines(AUTOCOMPLETE_itemList) {
 
     AUTOCOMPLETE_ensure_boundingClientRect();
 
-    // TODO: minus AUTOCOMPLETE_topPadding
+    // TODO: minus CONST_AUTOCOMPLETE_topPadding
     AUTOCOMPLETE_virtualCount = Math.floor(AUTOCOMPLETE_rectHeight / APP_lineHeight);
     AUTOCOMPLETE_virtualIndex = 0;
     AUTOCOMPLETE_beltIndexZero = 0;
@@ -149,7 +149,7 @@ function AUTOCOMPLETE_render_RESET_lines(AUTOCOMPLETE_itemList) {
 
     let appHeightCssAttributeValue = `${APP_lineHeight}px`;
 
-    let verticalOffset = AUTOCOMPLETE_topPadding;
+    let verticalOffset = CONST_AUTOCOMPLETE_topPadding;
 
     for (let i = 0; i < AUTOCOMPLETE_virtualCount; i++) {
         
@@ -248,7 +248,7 @@ function AUTOCOMPLETE_render_do_show(timestamp) {
     gINT_FIELDS[fAUTOCOMPLETE_items_totalLength] = lspResult.totalLength;
 
     // TODO: This doesn't need mail.ceil but perhaps add it to ensure things?
-    let itemHeightTotalNumber = gINT_FIELDS[fAUTOCOMPLETE_items_totalLength] * APP_lineHeight + AUTOCOMPLETE_topPadding;
+    let itemHeightTotalNumber = gINT_FIELDS[fAUTOCOMPLETE_items_totalLength] * APP_lineHeight + CONST_AUTOCOMPLETE_topPadding;
     AUTOCOMPLETE_virtualization.style.height = itemHeightTotalNumber + 'px';
 
     AUTOCOMPLETE_exists = true;
@@ -341,7 +341,7 @@ function AUTOCOMPLETE_cursor_render_set() {
     let cursorElement = document.getElementById('AUTOCOMPLETE_cursor');
 
     // Determine the number without modifying styles so you can use this variable to determine the need to scroll into view without synchronous layout.
-    let cursorTranslateYNumber = AUTOCOMPLETE_topPadding + (APP_lineHeight * AUTOCOMPLETE_cursorIndex);
+    let cursorTranslateYNumber = CONST_AUTOCOMPLETE_topPadding + (APP_lineHeight * AUTOCOMPLETE_cursorIndex);
 
     // Preferably this hasn't changed thus the function immediately just returns.
     if (AUTOCOMPLETE_rect_isNull)
@@ -430,7 +430,7 @@ function AUTOCOMPLETE_events_scroll_render(timestamp) {
     }
 
     let prevVli = AUTOCOMPLETE_virtualIndex;
-    // TODO: minus AUTOCOMPLETE_topPadding
+    // TODO: minus CONST_AUTOCOMPLETE_topPadding
     let currVli = Math.floor(AUTOCOMPLETE_scrollTop / APP_lineHeight);
 
     AUTOCOMPLETE_virtualIndex = currVli;
@@ -473,7 +473,7 @@ function AUTOCOMPLETE_events_scroll_render(timestamp) {
         beltIndexLine = AUTOCOMPLETE_beltIndexZero;
     }
 
-    let verticalOffset = AUTOCOMPLETE_topPadding + (lowerBound * APP_lineHeight);
+    let verticalOffset = CONST_AUTOCOMPLETE_topPadding + (lowerBound * APP_lineHeight);
 
     beltIndexLine--; // The 0th loop will increment somewhat awkwardly. This decrement avoids that.
 

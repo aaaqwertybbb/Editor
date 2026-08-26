@@ -432,13 +432,13 @@ async function DIALOG_Settings_Delete_async() {
 }
 
 function DIALOG_buttonTheme_onclick() {
-    if (DIALOG_Settings_isDark) {
-        DIALOG_Settings_isDark = false;
+    if (gBYTE_FIELDS[byteDIALOG_Settings_isDark]) {
+        gBYTE_FIELDS[byteDIALOG_Settings_isDark] = false;
         document.body.classList.remove('dark-theme');
         document.body.classList.add('light-theme');
     }
     else {
-        DIALOG_Settings_isDark = true;
+        gBYTE_FIELDS[byteDIALOG_Settings_isDark] = true;
         document.body.classList.remove('light-theme');
         document.body.classList.add('dark-theme');
     }

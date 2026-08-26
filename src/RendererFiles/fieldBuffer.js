@@ -78,6 +78,9 @@ const set_EDI_findOverlay_options_matchWord = (byte) => gBYTE_FIELDS[6] = byte;
 
 const byteDIALOG_FindAll_options_matchWord = 7;
 
+const byteDIALOG_Settings_isDark = 8;
+gBYTE_FIELDS[byteDIALOG_Settings_isDark] = 1;
+
 const CONST_EDI_ASCII_LINE_FEED = 10;
 const CONST_EDI_ASCII_TAB = 9;
 const CONST_EDI_ASCII_SPACE = 32;

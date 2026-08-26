@@ -501,6 +501,7 @@ module.exports = function (babel) {
     "byteEDI_onResize_hasTrailingCall",
     "byteisCheckingTrailingEdge",
     "byteisProcessingLspQueue",
+    "byteEDI_isRenderPending",
 
 
 

@@ -183,8 +183,6 @@ let w_div = null;
  */
 const lspQueue = [];
 
-let EDI_isRenderPending = false;
-
 let EDI_renderKindArray = [];
 
 // Persistent, flat JS arrays that stay alive forever in memory
@@ -373,7 +371,7 @@ function EDI_render_do(timestamp) {
         }
     }
     
-    EDI_isRenderPending = false; // Reset the lock
+    gBYTE_FIELDS[byteEDI_isRenderPending] = false; // Reset the lock
 }
 
 function EDI_render_do_cursor(timestamp) {
@@ -460,8 +458,8 @@ function EDI_render_request(renderKind) {
         EDI_renderKindArray.push(renderKind);
     }
     
-    if (!EDI_isRenderPending) {
-        EDI_isRenderPending = true;
+    if (!gBYTE_FIELDS[byteEDI_isRenderPending]) {
+        gBYTE_FIELDS[byteEDI_isRenderPending] = true;
         requestAnimationFrame(EDI_render_do);
     }
 }

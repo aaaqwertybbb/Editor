@@ -156,7 +156,9 @@ const byteisCheckingTrailingEdge = 40;
 
 const byteisProcessingLspQueue = 41;
 
-// gBYTE_FIELDS[byteisProcessingLspQueue]
+const byteEDI_isRenderPending = 42;
+
+// gBYTE_FIELDS[byteEDI_isRenderPending]
 
 // TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
 // - [ ] triple equals

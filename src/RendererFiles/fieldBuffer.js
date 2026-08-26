@@ -154,7 +154,9 @@ const byteEDI_onResize_hasTrailingCall = 39;
 /** Also is used from 'EDI_render_do_SetText()', and 'EDI_render_do_Resize()', not just 'EDI_render_do_Scroll()' */
 const byteisCheckingTrailingEdge = 40;
 
-// gBYTE_FIELDS[byteisCheckingTrailingEdge]
+const byteisProcessingLspQueue = 41;
+
+// gBYTE_FIELDS[byteisProcessingLspQueue]
 
 // TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
 // - [ ] triple equals

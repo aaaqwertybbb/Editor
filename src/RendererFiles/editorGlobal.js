@@ -182,7 +182,6 @@ let w_div = null;
  * I looked it over and it appears correct.
  */
 const lspQueue = [];
-let isProcessingLspQueue = false;
 
 let EDI_isRenderPending = false;
 
@@ -2286,8 +2285,8 @@ function enqueueLSPNotification(payload) {
 }
 
 async function processLspQueue() {
-    if (isProcessingLspQueue) return;
-    isProcessingLspQueue = true;
+    if (gBYTE_FIELDS[byteisProcessingLspQueue]) return;
+    gBYTE_FIELDS[byteisProcessingLspQueue] = true;
 
     while (lspQueue.length > 0) {
         const item = lspQueue.shift(); // Guarantees strict FIFO order
@@ -2308,7 +2307,7 @@ async function processLspQueue() {
         }
     }
 
-    isProcessingLspQueue = false;
+    gBYTE_FIELDS[byteisProcessingLspQueue] = false;
 }
 
 /**

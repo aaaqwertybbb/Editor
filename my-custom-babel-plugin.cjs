@@ -500,6 +500,7 @@ module.exports = function (babel) {
     "byteEDI_cursor_selectionDivExists",
     "byteEDI_onResize_hasTrailingCall",
     "byteisCheckingTrailingEdge",
+    "byteisProcessingLspQueue",
 
 
 

@@ -611,7 +611,9 @@ const fEDI_hoverTimeout = 132;
 const fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine = 133;
 const fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn = 134;
 
-// gINT_FIELDS[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn]
+const fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 135;
+
+// gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]
 
 // 149
 

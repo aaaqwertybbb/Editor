@@ -82,7 +82,6 @@ let gutterWidthTotal_withPxUnits;
 let EDI_cursor_gapBuffer = new Uint8Array(CONST_EDI_cursor_GAP_BUFFER_CAPACITY);
 
 let EDI_cursor_gapBufferWriteToSpanElement = null;
-let EDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
 
 let EDI_cursor_caretRow = document.createElement('div');
 EDI_cursor_caretRow.id = "EDI_caretRow-1";
@@ -395,9 +394,9 @@ function EDI_render_do_InsertLtr() {
             let x = EDI_decoder.decode(EDI_cursor_gapBuffer.subarray(ints[fEDI_cursor_editRenderedDisplacement], ints[fEDI_cursor_editLength]));
 
             EDI_cursor_gapBufferWriteToSpanElement.textContent = 
-                EDI_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (EDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex/* + ints[fEDI_offsetWithinSpan]*/) + ints[fEDI_cursor_editRenderedDisplacement]) +
+                EDI_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]/* + ints[fEDI_offsetWithinSpan]*/) + ints[fEDI_cursor_editRenderedDisplacement]) +
                 x +
-                EDI_cursor_gapBufferWriteToSpanElement.textContent.slice((EDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex/* + ints[fEDI_offsetWithinSpan]*/) + ints[fEDI_cursor_editRenderedDisplacement]);
+                EDI_cursor_gapBufferWriteToSpanElement.textContent.slice((gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]/* + ints[fEDI_offsetWithinSpan]*/) + ints[fEDI_cursor_editRenderedDisplacement]);
 
             ints[fEDI_cursor_editRenderedDisplacement] = ints[fEDI_cursor_editLength];
         }
@@ -2258,7 +2257,7 @@ function EDI_finalizeEdit_ClearEditState() {
     ints[fEDI_cursor_END_editIndexColumn] = 0;
     ints[fEDI_cursor_gapBufferCount] = 0;
     EDI_cursor_gapBufferWriteToSpanElement = null;
-    EDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
+    gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] = 0;
     ints[fEDI_cursor_editLineFeedCount] = 0;
     EDI_lineEndPositionList_PENDING.clear();
 }
@@ -3653,23 +3652,23 @@ function EDI_insertGapBufferSpan() {
     walkLineUntilIndexColumn();
     if (!w_span || !w_div) {
         EDI_cursor_gapBufferWriteToSpanElement = null;
-        EDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
+        gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] = 0;
         return;
     }
 
     if (gINT_FIELDS[fEDI_w_indexColumn_Goal] == 0) {
         // TODO: Ensure 'w_div.children[0]' is equal to the 'w_span' and then change this line to use 'w_span'
         EDI_cursor_gapBufferWriteToSpanElement = w_span;
-        EDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
+        gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] = 0;
     }
     else {
         EDI_cursor_gapBufferWriteToSpanElement = w_div.children[gINT_FIELDS[fEDI_w_indexSpan]];
 
         if (gINT_FIELDS[fEDI_w_indexColumn_Goal] === gINT_FIELDS[fEDI_w_indexColumn_Sum] + EDI_cursor_gapBufferWriteToSpanElement.textContent.length) {
-            EDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = EDI_cursor_gapBufferWriteToSpanElement.textContent.length;
+            gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] = EDI_cursor_gapBufferWriteToSpanElement.textContent.length;
         }
         else {
-            EDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative];
+            gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] = gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative];
         }
     }
 }
@@ -7640,9 +7639,9 @@ function EDI_insertDo(character) {
 
     if (EDI_cursor_gapBufferWriteToSpanElement) {
         EDI_cursor_gapBufferWriteToSpanElement.textContent = 
-            EDI_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (EDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + gINT_FIELDS[fEDI_offsetWithinSpan]) + gINT_FIELDS[fEDI_cursor_gapBufferCount]) +
+            EDI_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] + gINT_FIELDS[fEDI_offsetWithinSpan]) + gINT_FIELDS[fEDI_cursor_gapBufferCount]) +
             character +
-            EDI_cursor_gapBufferWriteToSpanElement.textContent.slice((EDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex + gINT_FIELDS[fEDI_offsetWithinSpan]) + gINT_FIELDS[fEDI_cursor_gapBufferCount]);
+            EDI_cursor_gapBufferWriteToSpanElement.textContent.slice((gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] + gINT_FIELDS[fEDI_offsetWithinSpan]) + gINT_FIELDS[fEDI_cursor_gapBufferCount]);
     }*/
 
     EDI_cursor_gapBuffer[gINT_FIELDS[fEDI_cursor_gapBufferCount]] = character.charCodeAt(0);

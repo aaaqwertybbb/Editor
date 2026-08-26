@@ -510,6 +510,8 @@ module.exports = function (babel) {
 
     "CONST_EDI_cursor_htmlId",
 
+    "fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex",
+
   ];
 
   return {

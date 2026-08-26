@@ -8892,4 +8892,25 @@ I think it is 3 things:
 and for that reason if you can prevent step 1, you won't fall into
 the 2nd and 3rd steps.
 
+
+====
+
+
+Whether it is slower or faster you have to just see it through so you can reason about things
+and determine what the better path would be.
+
+Because you tried shoving essentially "a language server" "and client" into a single app.
+And you did this when you didn't understand garbage collection in the slightest.
+This went from "I know nothing about garbage collection" to "I understand something about garbage collection
+and from perspective it destroys your app" etc... like
+not exactly but I have such an extreme fear adversion to garbage collection overhead
+because my realization about it all happened where the overhead I was incurring was massive
+and then I obsessed over every little detail that possibly could reduce GC overhead
+to the point that I probably learned some bad habits
+due to something having worked to reduce the GC load in that singular app
+but the reality is you don't have to shove a million features into a single app
+even if you just separate features into separate processes and then communicate to one another
+sometimes that's just the way to go otherwise your singular app has too large of a GC footprint
+and it just stops being sensible no matter how obsessed you get.
+
 */

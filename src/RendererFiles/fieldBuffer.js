@@ -45,7 +45,7 @@ it is as if I typed the expression body everywhere I typed the fat arrow functio
  * 
  * TODO: index 8 is available because 'EDI_onScroll_bool' was removed.
  */
-const gBYTE_FIELDS = new Uint8Array(32);
+const gBYTE_FIELDS = new Uint8Array(64);
 
 /** returns a number, beware '===' */
 const get_EDI_detailRank = () => gBYTE_FIELDS[0];
@@ -134,7 +134,10 @@ const byteMENU_NOTshouldFocus = 29;
 
 const byteMENU_isRenderPending = 30;
 
-// gBYTE_FIELDS[byteMENU_isRenderPending]
+const byteWIDGET_WidgetKind_pending = 31;
+const byteWIDGET_WidgetKind_drawn = 32;
+
+// gBYTE_FIELDS[byteWIDGET_WidgetKind_drawn]
 
 // TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
 // - [ ] triple equals
@@ -142,7 +145,7 @@ const byteMENU_isRenderPending = 30;
 // - [ ] Extremely high access gBYTE_FIELDS move to the int fields if there would otherwise be both a local reference to the byteFields and intFields if it is sensible.
 // - [ ] Move stored enums here if they're <= 255
 
-// inclusive final index is 31
+// inclusive final index is 63
 
 const CONST_EDI_ASCII_LINE_FEED = 10;
 const CONST_EDI_ASCII_TAB = 9;

@@ -484,6 +484,9 @@ module.exports = function (babel) {
     "byteMENU_NOTshouldFocus",
     "byteMENU_isRenderPending",
 
+    "byteWIDGET_WidgetKind_pending",
+    "byteWIDGET_WidgetKind_drawn",
+
 
 
 

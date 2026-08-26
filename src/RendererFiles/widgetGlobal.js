@@ -14,8 +14,6 @@ const WIDGETrenderKind_Hide = 2;
  * @returns {Promise}
  */
 
-let WIDGET_WidgetKind_pending = WidgetKind_None;
-let WIDGET_WidgetKind_drawn = WidgetKind_None;
 let WIDGET_restoreFocusToElement_drawn = null;
 
 /**
@@ -72,7 +70,7 @@ function WIDGET_render_do() {
 function WIDGET_render_do_Show() {
 
     let WIDGET_element = document.getElementById('WIDGET');
-    if (WIDGET_WidgetKind_drawn !== WidgetKind_None) {
+    if (gBYTE_FIELDS[byteWIDGET_WidgetKind_drawn] !== WidgetKind_None) {
         WIDGET_element = null;
         // You don't have to invoke 'WIDGET_state_do_Hide' because there was a 1 to 1 overwrite of all the state due to the 'WIDGET_show' invocation which triggered this function.
         gBYTE_FIELDS[byteWIDGET_shouldRestoreFocus] = false; // going to show a different widget so don't bother with focus here
@@ -85,7 +83,7 @@ function WIDGET_render_do_Show() {
         document.body.appendChild(WIDGET_element);
     }
 
-    WIDGET_WidgetKind_drawn = WIDGET_WidgetKind_pending;
+    gBYTE_FIELDS[byteWIDGET_WidgetKind_drawn] = gBYTE_FIELDS[byteWIDGET_WidgetKind_pending];
 
     if (WIDGET_restoreFocusToElementOverride) {
         WIDGET_restoreFocusToElement_drawn = WIDGET_restoreFocusToElementOverride;
@@ -97,7 +95,7 @@ function WIDGET_render_do_Show() {
     
     gINT_FIELDS[fWIDGET_ticketId_drawn] = gINT_FIELDS[fWIDGET_ticketId_pending];
 
-    switch (WIDGET_WidgetKind_drawn) {
+    switch (gBYTE_FIELDS[byteWIDGET_WidgetKind_drawn]) {
         case WidgetKind_InputText:
             WIDGET_CreateInputText();
             break;
@@ -151,7 +149,7 @@ function WIDGET_render_do_Show() {
 async function WIDGET_show(widgetKind, left, top, placeholder, value, target, callback) {
 
     gINT_FIELDS[fWIDGET_ticketId_pending] = gINT_FIELDS[fWIDGET_ticketId_counter]++;
-    WIDGET_WidgetKind_pending = widgetKind;
+    gBYTE_FIELDS[byteWIDGET_WidgetKind_pending] = widgetKind;
 
     // TODO: Does this go before the above ticketId logic? I'm not sure but I feel confident that it makes more sense at the least above the '_left and _top' logic.
     if (WIDGET_currentCallback) {
@@ -171,7 +169,7 @@ async function WIDGET_show(widgetKind, left, top, placeholder, value, target, ca
 function WIDGET_render_do_Hide() {
     const WIDGET_element = document.getElementById('WIDGET');
 
-    switch (WIDGET_WidgetKind_drawn) {
+    switch (gBYTE_FIELDS[byteWIDGET_WidgetKind_drawn]) {
         case WidgetKind_InputText:
             let input = document.getElementById('WIDGET_inputText');
             input.removeEventListener('keydown', WIDGET_inputTextOnKeyDown);
@@ -183,7 +181,7 @@ function WIDGET_render_do_Hide() {
             cancelButtonElement.removeEventListener('click', WIDGET_YesCancelButtonOnClick_cancel);
             break;
     }
-    WIDGET_WidgetKind_drawn = WidgetKind_None;
+    gBYTE_FIELDS[byteWIDGET_WidgetKind_drawn] = WidgetKind_None;
     WIDGET_element.remove();
     if (gBYTE_FIELDS[byteWIDGET_shouldRestoreFocus] && WIDGET_restoreFocusToElement_drawn)
         WIDGET_restoreFocusToElement_drawn.focus();
@@ -199,7 +197,7 @@ async function WIDGET_state_do_Hide(shouldRestoreFocus) {
         await WIDGET_currentCallback({isCancelled:true, value:undefined});
     }
     WIDGET_currentCallback = null;
-    WIDGET_WidgetKind_pending = WidgetKind_None;
+    gBYTE_FIELDS[byteWIDGET_WidgetKind_pending] = WidgetKind_None;
     WIDGET_target = null;
 }
 

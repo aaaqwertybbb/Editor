@@ -186,8 +186,6 @@ let EDI_offsetWithinSpan_withRespectToThisSpan = null;
 
 let EDI_pooledTrackedSyntax_trackedSyntaxKind = TrackedSyntaxKind_None;
 
-let EDI_horizontal_scrollbar_widthValue = 0;
-
 let w_span = null;
 let w_div = null;
 
@@ -1433,9 +1431,9 @@ function EDI_drawHorizontalScrollbar() {
         DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left = ints[fEDI_gutterWidthTotal];
     }
 
-    if (EDI_horizontal_scrollbar_widthValue !== (EDI_baseElement.clientWidth - ints[fEDI_gutterWidthTotal])) {
-        EDI_horizontal_scrollbar_widthValue = EDI_baseElement.clientWidth - ints[fEDI_gutterWidthTotal];
-        EDI_horizontal_scrollbar.style.width = EDI_horizontal_scrollbar_widthValue + 'px';
+    if (ints[fEDI_EDI_horizontal_scrollbar_widthValue] !== (EDI_baseElement.clientWidth - ints[fEDI_gutterWidthTotal])) {
+        ints[fEDI_EDI_horizontal_scrollbar_widthValue] = EDI_baseElement.clientWidth - ints[fEDI_gutterWidthTotal];
+        EDI_horizontal_scrollbar.style.width = ints[fEDI_EDI_horizontal_scrollbar_widthValue] + 'px';
     }
 
     if (ints[fEDI_longestLine_length] !== ints[fEDI_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar]) {

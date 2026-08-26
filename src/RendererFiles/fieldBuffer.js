@@ -402,7 +402,9 @@ const fEDI_EDI_beltIndexZero = 81;
 
 const fEDI_EDI_characterWidth = 82;
 
-// gINT_FIELDS[fEDI_EDI_characterWidth]
+const fEDI_EDI_horizontal_scrollbar_widthValue = 83;
+
+// gINT_FIELDS[fEDI_EDI_horizontal_scrollbar_widthValue]
 
 // for the beltIndezZero etc... consider using max value?
 // Although it might "just work" because you're using locals which would become negative?

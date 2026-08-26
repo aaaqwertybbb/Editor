@@ -493,7 +493,7 @@ module.exports = function (babel) {
 
     "fMENU_last_handled_ticketId",
 
-
+    "byteEDI_cursor_enterKeyEventKind",
 
 
 

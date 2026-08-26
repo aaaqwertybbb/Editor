@@ -139,7 +139,9 @@ const byteWIDGET_WidgetKind_drawn = 32;
 
 const byteTreeView_pooledNode_nodeKind = 33;
 
-// gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind]
+const byteEDI_cursor_enterKeyEventKind = 34;
+
+// gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind]
 
 // TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
 // - [ ] triple equals

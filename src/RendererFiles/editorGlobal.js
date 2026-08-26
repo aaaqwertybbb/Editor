@@ -122,8 +122,6 @@ let EDI_cursor_enterKey_newLinePlusIndentation_byteList = null;
 
 let EDI_cursor_cached_indentation_string = null;
 
-let EDI_cursor_enterKeyEventKind = EnterKeyEventKind_None;
-
 /**
  * This purposefully avoids the wording "edit length" in order to avoid accident / confusing / hard to read code
  * but in simplest terms this variable is the resulting 'editLength' that existed after a delete or backspace removed a line end.
@@ -259,7 +257,7 @@ function EDI_cursor_clear() {
 
     EDI_cursor_enterKey_newLinePlusIndentation_byteList = null;
     EDI_cursor_cached_indentation_string = null;
-    EDI_cursor_enterKeyEventKind = EnterKeyEventKind_None;
+    gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind] = EnterKeyEventKind_None;
 
     ints[fEDI_cursor_editLineFeedCount] = 0;
     EDI_cursor_edit_flagLineChanged = -1;
@@ -1366,7 +1364,7 @@ function update_virtualCount() {
 function EDI_drawGutter_Width() {
     const ints = gINT_FIELDS;
     let count = EDI_lineEndPositionList.count;
-    if (EDI_cursor_enterKeyEventKind !== EnterKeyEventKind_None) {
+    if (gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind] !== EnterKeyEventKind_None) {
         count += 1;
     }
     let digitCountOfLargestLineNumber = positiveNumbersOnly_countDigitsLoop(count);
@@ -1634,7 +1632,7 @@ function EDI_finalizeEdit_Enter(indexLine_editOccurredOn) {
     EDI_trackedSyntaxList_inefficientUpdateStartAndLength(ints[fEDI_cursor_editPosition], ints[fEDI_cursor_editLength]);
 
     // throws an exception if 'EnterKeyEventKind_None' (...or falsey).
-    if (!EDI_cursor_enterKeyEventKind || EDI_cursor_enterKeyEventKind === EnterKeyEventKind_None) { EDI_finalizeEdit_ClearEditState(); throw new Error('if (!enterKeyEventKind...)'); }
+    if (!gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind] || gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind] === EnterKeyEventKind_None) { EDI_finalizeEdit_ClearEditState(); throw new Error('if (!enterKeyEventKind...)'); }
 
     EDI_textByteList.insertBytes(ints[fEDI_cursor_editPosition], EDI_cursor_enterKey_newLinePlusIndentation_byteList.bytes, /*offset*/ 0, EDI_cursor_enterKey_newLinePlusIndentation_byteList.count);
 
@@ -6505,7 +6503,7 @@ function EDI_render_do_EnterKey() {
         // - "among a line":
         // - "fallback case": this last case is a fallback case and redraws the entire viewport in the case that the UI is in an "unpredictable state" and cannot be optimally redrawn in a smaller more specific redraw.
 
-        // consider using 'EDI_cursor_enterKeyEventKind' for the 'render'?
+        // consider using 'gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind]' for the 'render'?
 
         // Is holding down ctrl+enter / shift+enter batchable?
 
@@ -6647,7 +6645,7 @@ function EDI_EnterKey(ctrlKey, shiftKey) {
 
     if (gINT_FIELDS[fEDI_cursor_editLength] === 0) {
 
-        EDI_cursor_enterKeyEventKind = EnterKeyEventKind_None;
+        gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind] = EnterKeyEventKind_None;
 
         gINT_FIELDS[fEDI_cursor_editPosition] = EDI_getPositionIndex_raw_cursor();
         gINT_FIELDS[fEDI_cursor_editIndexLine] = gINT_FIELDS[fEDI_cursor_indexLine];
@@ -6657,8 +6655,8 @@ function EDI_EnterKey(ctrlKey, shiftKey) {
     let insertionCount = EDI_cursor_enterKey_newLinePlusIndentation_byteList.count;
     
     if (gINT_FIELDS[fEDI_cursor_indexColumn] === 0) { // start of line
-        if (EDI_cursor_enterKeyEventKind === 0) {
-            EDI_cursor_enterKeyEventKind = EnterKeyEventKind_StartOfLine;
+        if (gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind] === 0) {
+            gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind] = EnterKeyEventKind_StartOfLine;
         }
 
         if (!ctrlKey)
@@ -6667,8 +6665,8 @@ function EDI_EnterKey(ctrlKey, shiftKey) {
     else {
         let lastValidIndexColumn = EDI_getLastValidIndexColumn(gINT_FIELDS[fEDI_cursor_indexLine]);
 
-        if (EDI_cursor_enterKeyEventKind === 0) {
-            EDI_cursor_enterKeyEventKind = lastValidIndexColumn === gINT_FIELDS[fEDI_cursor_indexColumn]
+        if (gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind] === 0) {
+            gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind] = lastValidIndexColumn === gINT_FIELDS[fEDI_cursor_indexColumn]
                 ? EnterKeyEventKind_EndOfLine
                 : EnterKeyEventKind_AmongALine;
         }

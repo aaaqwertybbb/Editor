@@ -615,7 +615,7 @@ const fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 135
 
 // gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]
 
-// 149
+// 135
 
 /*
 Google AI

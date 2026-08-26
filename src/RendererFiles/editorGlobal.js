@@ -9040,4 +9040,6 @@ The rocket emoji looks like '=?' but the '?' is actually surrounded by a diamond
 
 < ...
 
+"Implicitly Strict by default (forces cleaner, faster code execution)."
+
 */

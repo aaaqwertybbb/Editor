@@ -163,7 +163,6 @@ let EDI_lineEndPositionList = new UInt32List(128);
 
 let EDI_textSourceIdentifier = '';
 let EDI_FORMATTED_textSourceIdentifier = '';
-let EDI_extensionKind = ExtensionKind_None;
 
 let EDI_lineEndString = null;
 
@@ -1163,7 +1162,7 @@ function EDI_state_clear() {
     set_EDI_recentBoundingClientRect_isNull_intFalsey(1);
     EDI_textSourceIdentifier = '';
     EDI_FORMATTED_textSourceIdentifier = '';
-    EDI_extensionKind = ExtensionKind_None;
+    gBYTE_FIELDS[byteEDI_extensionKind] = ExtensionKind_None;
     set_EDI_fileStartsWithBom(false);
     EDI_lineEndString = null;
     EDI_lineEndPositionList.clear();
@@ -1203,8 +1202,8 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
 
     EDI_textSourceIdentifier = textSourceIdentifier;
     EDI_FORMATTED_textSourceIdentifier = FORMATTED_textSourceIdentifier;
-    EDI_extensionKind = extensionKind;
-    EDI_language_line_lex_SET(EDI_extensionKind);
+    gBYTE_FIELDS[byteEDI_extensionKind] = extensionKind;
+    EDI_language_line_lex_SET(gBYTE_FIELDS[byteEDI_extensionKind]);
     EDI_lineEndString = lineEndString; // use 'lineEndString' for the within-loop checks of '!lineEndString' to avoid reading global scope during loop when 'lineEndString' is equivalent.
 
     let local_EDI_lineEndPositionList = EDI_lineEndPositionList;
@@ -1278,7 +1277,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
 
     update_verticalVirtualizationBoundary();
 
-    //switch (EDI_extensionKind) {
+    //switch (gBYTE_FIELDS[byteEDI_extensionKind]) {
     //    case ExtensionKind_JavaScript:
     //        // This 'JS_full_lex' only runs when you open a file for the first time.
     //        // The logic likely has some JIT overhead that is long term persistent in the GC. I have no proof of this but I need to look into it.

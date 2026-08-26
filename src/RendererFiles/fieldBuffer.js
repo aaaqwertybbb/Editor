@@ -141,7 +141,9 @@ const byteTreeView_pooledNode_nodeKind = 33;
 
 const byteEDI_cursor_enterKeyEventKind = 34;
 
-// gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind]
+const byteEDI_extensionKind = 35;
+
+// gBYTE_FIELDS[byteEDI_extensionKind]
 
 // TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
 // - [ ] triple equals

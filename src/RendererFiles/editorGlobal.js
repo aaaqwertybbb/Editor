@@ -8965,5 +8965,9 @@ Google AI:
 (it shows a table of the previously stated points here)
 
 
+- [ ] Should I make a class for the editor in order to avoid intra-editor function invocations having to lookup via global scope the functions?
+- [ ] umm
+
+
 
 */

@@ -3,9 +3,6 @@ let AUTOCOMPLETE_exists = false;
 let AUTOCOMPLETE_pending_lspResult = null;
 // I don't think 'slice' is in LSP specification but I need to start like this cause it is only way I'll get something "initially working".
 let AUTOCOMPLETE_items_slice = null;
-let AUTOCOMPLETE_items_slice_start = 0;
-let AUTOCOMPLETE_items_slice_end = 0;
-let AUTOCOMPLETE_items_totalLength = 0;
 
 const AUTOCOMPLETErenderKind_None = 0;
 const AUTOCOMPLETErenderKind_Show = 1;
@@ -246,12 +243,12 @@ function AUTOCOMPLETE_render_do_show(timestamp) {
     let lspResult = AUTOCOMPLETE_pending_lspResult;
     AUTOCOMPLETE_pending_lspResult = null;
     AUTOCOMPLETE_items_slice = lspResult.items;
-    AUTOCOMPLETE_items_slice_start = lspResult.itemsStart;
-    AUTOCOMPLETE_items_slice_end = lspResult.itemsEnd;
-    AUTOCOMPLETE_items_totalLength = lspResult.totalLength;
+    gINT_FIELDS[fAUTOCOMPLETE_items_slice_start] = lspResult.itemsStart;
+    gINT_FIELDS[fAUTOCOMPLETE_items_slice_end] = lspResult.itemsEnd;
+    gINT_FIELDS[fAUTOCOMPLETE_items_totalLength] = lspResult.totalLength;
 
     // TODO: This doesn't need mail.ceil but perhaps add it to ensure things?
-    let itemHeightTotalNumber = AUTOCOMPLETE_items_totalLength * APP_lineHeight + AUTOCOMPLETE_topPadding;
+    let itemHeightTotalNumber = gINT_FIELDS[fAUTOCOMPLETE_items_totalLength] * APP_lineHeight + AUTOCOMPLETE_topPadding;
     AUTOCOMPLETE_virtualization.style.height = itemHeightTotalNumber + 'px';
 
     AUTOCOMPLETE_exists = true;
@@ -373,8 +370,8 @@ function AUTOCOMPLETE_cursor_do_set(cursorIndex) {
 }
 
 function AUTOCOMPLETE_cursor_validate(cursorIndex) {
-    if (cursorIndex >= AUTOCOMPLETE_items_totalLength) {
-        cursorIndex = AUTOCOMPLETE_items_totalLength - 1;
+    if (cursorIndex >= gINT_FIELDS[fAUTOCOMPLETE_items_totalLength]) {
+        cursorIndex = gINT_FIELDS[fAUTOCOMPLETE_items_totalLength] - 1;
     }
     if (cursorIndex < 0) {
         cursorIndex = 0;
@@ -447,7 +444,7 @@ function AUTOCOMPLETE_events_scroll_render(timestamp) {
 
     let local_AUTOCOMPLETE_arrayFromItemListElement = AUTOCOMPLETE_arrayFromItemListElement;
     let local_AUTOCOMPLETE_arrayFromItemListElement_length = local_AUTOCOMPLETE_arrayFromItemListElement.length;
-    let local_AUTOCOMPLETE_items_totalLength = AUTOCOMPLETE_items_totalLength;
+    let local_AUTOCOMPLETE_items_totalLength = gINT_FIELDS[fAUTOCOMPLETE_items_totalLength];
 
     if (diff > 0 && diff < AUTOCOMPLETE_virtualCount) {
         lowerBound = prevVli + AUTOCOMPLETE_virtualCount;

@@ -437,7 +437,12 @@ const fEDI_prevVli = 95;
 /** TODO: What happens when you overflow 'gINT_FIELDS[fEDI_prevVli]' does it overflow such that you're the correct diff? */
 const fEDI_currVli = 96;
 
-// gINT_FIELDS[fEDI_currVli]
+// I don't think 'slice' is in LSP specification but I need to start like this cause it is only way I'll get something "initially working".
+const fAUTOCOMPLETE_items_slice_start = 97;
+const fAUTOCOMPLETE_items_slice_end = 98;
+const fAUTOCOMPLETE_items_totalLength = 99;
+
+// gINT_FIELDS[fAUTOCOMPLETE_items_totalLength]
 
 // for the beltIndezZero etc... consider using max value?
 // Although it might "just work" because you're using locals which would become negative?

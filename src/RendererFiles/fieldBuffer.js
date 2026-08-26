@@ -171,7 +171,7 @@ gBYTE_FIELDS[byteEXPLORER_show] = 1;
 // - [ ] Extremely high access gBYTE_FIELDS move to the int fields if there would otherwise be both a local reference to the byteFields and intFields if it is sensible.
 // - [ ] Move stored enums here if they're <= 255
 
-// inclusive final index is 43
+// inclusive final index is 44
 
 const CONST_EDI_ASCII_LINE_FEED = 10;
 const CONST_EDI_ASCII_TAB = 9;
@@ -633,7 +633,7 @@ const fEXPLORER_menuOptionY = 138;
 
 // gINT_FIELDS[fEXPLORER_menuOptionY]
 
-// 138
+// inclusive final index is 138
 
 /*
 Google AI

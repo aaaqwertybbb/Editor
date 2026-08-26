@@ -76,8 +76,6 @@ const EDI_decoder = new TextDecoder();
 
 let gutterWidthTotal_withPxUnits;
 
-let EDI_cursor_htmlId = "EDI_cursor-1";
-
 /**
  * When this is cleared the information is not removed, only 'gapBufferCount' is set to 0.
  */
@@ -2786,7 +2784,7 @@ function EDI_clearSelectionStyle() {
     let shouldExistSelectionDiv = false;
     if (gBYTE_FIELDS[byteEDI_cursor_selectionDivExists]) {
         for (var i = 0; i < EDI_presentation.children.length; i++) {
-            if (EDI_presentation.children[i].id === EDI_cursor_htmlId) {
+            if (EDI_presentation.children[i].id === CONST_EDI_cursor_htmlId) {
                 let textSelectionDiv = EDI_presentation.children[i];
                 if (!shouldExistSelectionDiv) {
                     EDI_presentation.removeChild(textSelectionDiv);
@@ -2823,7 +2821,7 @@ function EDI_createStyleForSelection() {
 
         if (gBYTE_FIELDS[byteEDI_cursor_selectionDivExists]) {
             for (var i = 0; i < EDI_presentation.children.length; i++) {
-                if (EDI_presentation.children[i].id === EDI_cursor_htmlId) {
+                if (EDI_presentation.children[i].id === CONST_EDI_cursor_htmlId) {
                     textSelectionDiv = EDI_presentation.children[i];
                     if (!shouldExistSelectionDiv) {
                         EDI_presentation.removeChild(textSelectionDiv);
@@ -2835,7 +2833,7 @@ function EDI_createStyleForSelection() {
         }
         else if (shouldExistSelectionDiv) {
             textSelectionDiv = document.createElement('div')
-            textSelectionDiv.id = EDI_cursor_htmlId;
+            textSelectionDiv.id = CONST_EDI_cursor_htmlId;
             textSelectionDiv.style.display = 'contents';
             EDI_presentation.appendChild(textSelectionDiv);
             gBYTE_FIELDS[byteEDI_cursor_selectionDivExists] = true;
@@ -2941,7 +2939,7 @@ function EDI_createStyleForSelection_indentMore() {
     let textSelectionDiv;
     if (gBYTE_FIELDS[byteEDI_cursor_selectionDivExists]) {
         for (var i = 0; i < EDI_presentation.children.length; i++) {
-            if (EDI_presentation.children[i].id === EDI_cursor_htmlId) {
+            if (EDI_presentation.children[i].id === CONST_EDI_cursor_htmlId) {
                 textSelectionDiv = EDI_presentation.children[i];
                 break;
             }
@@ -5414,7 +5412,7 @@ function EDI_render_do_IndentLess() {
         let textSelectionDiv;
         if (gBYTE_FIELDS[byteEDI_cursor_selectionDivExists]) {
             for (var i = 0; i < EDI_presentation.children.length; i++) {
-                if (EDI_presentation.children[i].id === EDI_cursor_htmlId) {
+                if (EDI_presentation.children[i].id === CONST_EDI_cursor_htmlId) {
                     textSelectionDiv = EDI_presentation.children[i];
                     break;
                 }

@@ -257,6 +257,8 @@ const CONST_EDI_cursor_GAP_BUFFER_CAPACITY = 32;
 
 const CONST_AUTOCOMPLETE_topPadding = 4;
 
+const CONST_EDI_cursor_htmlId = "EDI_cursor-1";
+
 
 ////////////////////////////
 ////////////////////////////

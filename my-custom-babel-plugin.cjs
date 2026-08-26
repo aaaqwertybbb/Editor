@@ -508,7 +508,7 @@ module.exports = function (babel) {
     "fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine",
     "fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn",
 
-
+    "CONST_EDI_cursor_htmlId",
 
   ];
 

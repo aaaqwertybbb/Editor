@@ -45,7 +45,7 @@ it is as if I typed the expression body everywhere I typed the fat arrow functio
  * 
  * TODO: index 8 is available because 'EDI_onScroll_bool' was removed.
  */
-const gBYTE_FIELDS = new Uint8Array(64);
+const gBYTE_FIELDS = new Uint8Array(44);
 
 /** returns a number, beware '===' */
 const get_EDI_detailRank = () => gBYTE_FIELDS[0];
@@ -168,7 +168,7 @@ const byteEDI_mousemove_eventListener_isActive = 43;
 // - [ ] Extremely high access gBYTE_FIELDS move to the int fields if there would otherwise be both a local reference to the byteFields and intFields if it is sensible.
 // - [ ] Move stored enums here if they're <= 255
 
-// inclusive final index is 63
+// inclusive final index is 43
 
 const CONST_EDI_ASCII_LINE_FEED = 10;
 const CONST_EDI_ASCII_TAB = 9;
@@ -262,7 +262,7 @@ const CONST_AUTOCOMPLETE_topPadding = 4;
 ////////////////////////////
 ////////////////////////////
 
-const gINT_FIELDS = new Uint32Array(256);
+const gINT_FIELDS = new Uint32Array(131);
 
 const fEDI_lineHeight = 0;
 gINT_FIELDS[fEDI_lineHeight] = 20;
@@ -620,7 +620,7 @@ a fast bitwise AND mask (index & (size - 1)).
 // TODO: figure it out
 
 
-// 255 is inclusive final index
+// 130 is inclusive final index
 
 
 

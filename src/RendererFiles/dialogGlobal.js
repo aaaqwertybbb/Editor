@@ -24,8 +24,6 @@ let DIALOG_SHOW_restoreFocusToElement = null;
 let DIALOG_SHOW_currentDialogKind = DialogKind_None;
 let DIALOG_SHOW_onResizeAction = null;
 
-let DIALOG_FindAll_options_matchWord = false;
-
 let DIALOG_Settings_isDark = true;
 let DIALOG_Settings_trueTabs_falseSpaces = true;
 let DIALOG_Settings_editorDebugShowAdjacentCharacters = false;
@@ -75,21 +73,23 @@ function DIALOG_render_do_DimensionsChanged() {
     let DIALOG_element = document.getElementById('DIALOG');
     if (!DIALOG_element) return;
 
-    if (gINT_FIELDS[fDIALOG_left_DRAWN] !== gINT_FIELDS[fDIALOG_left]) {
-        gINT_FIELDS[fDIALOG_left_DRAWN] = gINT_FIELDS[fDIALOG_left];
-        DIALOG_element.style.left = `${gINT_FIELDS[fDIALOG_left_DRAWN]}px`;
+    const ints = gINT_FIELDS;
+
+    if (ints[fDIALOG_left_DRAWN] !== ints[fDIALOG_left]) {
+        ints[fDIALOG_left_DRAWN] = ints[fDIALOG_left];
+        DIALOG_element.style.left = `${ints[fDIALOG_left_DRAWN]}px`;
     }
-    if (fDIALOG_top_DRAWN !== gINT_FIELDS[fDIALOG_top]) {
-        fDIALOG_top_DRAWN = gINT_FIELDS[fDIALOG_top];
+    if (fDIALOG_top_DRAWN !== ints[fDIALOG_top]) {
+        fDIALOG_top_DRAWN = ints[fDIALOG_top];
         DIALOG_element.style.top = `${fDIALOG_top_DRAWN}px`;
     }
-    if (gINT_FIELDS[fDIALOG_width_DRAWN] !== gINT_FIELDS[fDIALOG_width]) {
-        gINT_FIELDS[fDIALOG_width_DRAWN] = gINT_FIELDS[fDIALOG_width];
-        DIALOG_element.style.width = `${gINT_FIELDS[fDIALOG_width_DRAWN]}px`;
+    if (ints[fDIALOG_width_DRAWN] !== ints[fDIALOG_width]) {
+        ints[fDIALOG_width_DRAWN] = ints[fDIALOG_width];
+        DIALOG_element.style.width = `${ints[fDIALOG_width_DRAWN]}px`;
     }
-    if (gINT_FIELDS[fDIALOG_height_DRAWN] !== gINT_FIELDS[fDIALOG_height]) {
-        gINT_FIELDS[fDIALOG_height_DRAWN] = gINT_FIELDS[fDIALOG_height];
-        DIALOG_element.style.height = `${gINT_FIELDS[fDIALOG_height_DRAWN]}px`;
+    if (ints[fDIALOG_height_DRAWN] !== ints[fDIALOG_height]) {
+        ints[fDIALOG_height_DRAWN] = ints[fDIALOG_height];
+        DIALOG_element.style.height = `${ints[fDIALOG_height_DRAWN]}px`;
     }
     
 }

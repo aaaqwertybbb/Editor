@@ -45,7 +45,7 @@ it is as if I typed the expression body everywhere I typed the fat arrow functio
  * 
  * TODO: index 8 is available because 'EDI_onScroll_bool' was removed.
  */
-const gBYTE_FIELDS = new Uint8Array(8);
+const gBYTE_FIELDS = new Uint8Array(16);
 
 /** returns a number, beware '===' */
 const get_EDI_detailRank = () => gBYTE_FIELDS[0];
@@ -75,6 +75,8 @@ const set_EDI_findOverlay_wasSearched = (byte) => gBYTE_FIELDS[5] = byte;
 /** returns a number, beware '===' */
 const get_EDI_findOverlay_options_matchWord = () => gBYTE_FIELDS[6];
 const set_EDI_findOverlay_options_matchWord = (byte) => gBYTE_FIELDS[6] = byte;
+
+const byteDIALOG_FindAll_options_matchWord = 7;
 
 const CONST_EDI_ASCII_LINE_FEED = 10;
 const CONST_EDI_ASCII_TAB = 9;

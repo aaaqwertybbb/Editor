@@ -209,7 +209,7 @@ class DIALOG_FindAll_TreeViewDirector {
 
             let searchTextInput = document.getElementById('DIALOG_FindAll_searchTextInput');
             if (!searchTextInput) return;
-            let results = await window.myAPI.findAllGetPositions(divItem.title, searchTextInput.value, DIALOG_FindAll_options_matchWord);
+            let results = await window.myAPI.findAllGetPositions(divItem.title, searchTextInput.value, gBYTE_FIELDS[byteDIALOG_FindAll_options_matchWord]);
             if (!results) {
                 return;
             }
@@ -301,7 +301,7 @@ async function DIALOG_FindAll_Create_async() {
     let checkboxMatchWord = document.createElement('input');
     checkboxMatchWord.type = 'checkbox';
     checkboxMatchWord.id = 'DIALOG_FindAll_checkboxMatchWord';
-    checkboxMatchWord.checked = DIALOG_FindAll_options_matchWord;
+    checkboxMatchWord.checked = gBYTE_FIELDS[byteDIALOG_FindAll_options_matchWord];
     checkboxMatchWord.addEventListener('change', DIALOG_FindAll_checkboxMatchWord_onchange);
     divOptions.appendChild(checkboxMatchWord);
     let label_for_checkboxMatchWord = document.createElement('label');
@@ -355,7 +355,7 @@ async function DIALOG_FindAll_searchTextInput_onkeydown(event) {
             return;
         }
 
-        let results = await window.myAPI.findAll(search, DIALOG_FindAll_options_matchWord);
+        let results = await window.myAPI.findAll(search, gBYTE_FIELDS[byteDIALOG_FindAll_options_matchWord]);
         if (!DIALOG_FindAll_TreeViewDirector_instance) {
             DIALOG_FindAll_TreeViewDirector_instance = new DIALOG_FindAll_TreeViewDirector();
         }
@@ -368,7 +368,7 @@ function DIALOG_FindAll_checkboxMatchWord_onchange() {
 	// for an onchange event, event.target might always be precise?
 	let checkboxMatchWord = document.getElementById('DIALOG_FindAll_checkboxMatchWord');
     if (checkboxMatchWord) {
-    	DIALOG_FindAll_options_matchWord = checkboxMatchWord.checked;
+    	gBYTE_FIELDS[byteDIALOG_FindAll_options_matchWord] = checkboxMatchWord.checked;
     	let spanNotes = document.getElementById('DIALOG_FindAll_spanNotes');
 	    if (spanNotes) {
 	        spanNotes.textContent = 'NOTE: changing \'matchWord\' here does not re-do the search';

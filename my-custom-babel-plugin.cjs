@@ -482,6 +482,7 @@ module.exports = function (babel) {
     "byteMENU_HIDE_shouldRestoreFocus",
     "byteMENU_SET_NOTshouldFocus",
     "byteMENU_NOTshouldFocus",
+    "byteMENU_isRenderPending",
 
 
 

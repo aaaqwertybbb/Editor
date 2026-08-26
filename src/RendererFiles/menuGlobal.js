@@ -64,7 +64,6 @@ let MENU_restoreFocusToElement = null;
 let MENU_recentBoundingClientRectTop = null;
 
 let MENU_renderKindArray = [];
-let MENU_isRenderPending = false;
 
 let MENU_optionList = null;
 /** TODO: Perhaps use 'MENU_optionList' instead? */
@@ -88,8 +87,8 @@ function MENU_render_request(renderKind) {
         if (renderKind === MENUrenderKind_Set) gINT_FIELDS[fMENU_renderKind_Set_countOfPendingRequests]++;
     }
     
-    if (!MENU_isRenderPending) {
-        MENU_isRenderPending = true;
+    if (!gBYTE_FIELDS[byteMENU_isRenderPending]) {
+        gBYTE_FIELDS[byteMENU_isRenderPending] = true;
         requestAnimationFrame(MENU_render_do);
     }
 }
@@ -112,7 +111,7 @@ function MENU_render_do() {
         }
     }
     
-    MENU_isRenderPending = false; // Reset the paint lock
+    gBYTE_FIELDS[byteMENU_isRenderPending] = false; // Reset the paint lock
 }
 
 function MENU_render_do_Hide() {

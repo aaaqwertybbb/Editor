@@ -132,7 +132,9 @@ const byteMENU_SET_NOTshouldFocus = 28;
 
 const byteMENU_NOTshouldFocus = 29;
 
-// gBYTE_FIELDS[byteMENU_NOTshouldFocus]
+const byteMENU_isRenderPending = 30;
+
+// gBYTE_FIELDS[byteMENU_isRenderPending]
 
 // TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
 // - [ ] triple equals

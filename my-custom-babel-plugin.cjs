@@ -408,6 +408,7 @@ module.exports = function (babel) {
     "fEDI_w_indexColumn_Sum",
     "fEDI_w_indexColumn_SpanTextContentRelative",
     "fEDI_w_indexSpan",
+    "fEDI_w_beltIndexLine",
 
 
 

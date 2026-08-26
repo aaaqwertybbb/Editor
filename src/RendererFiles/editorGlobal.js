@@ -193,7 +193,6 @@ let EDI_beltIndexZero = 0;
 
 let w_span = null;
 let w_div = null;
-let w_beltIndexLine = -1;
 
 /** Also is used from 'EDI_render_do_SetText()', and 'EDI_render_do_Resize()', not just 'EDI_render_do_Scroll()' */
 let isCheckingTrailingEdge = false;
@@ -2530,22 +2529,22 @@ function walkLineUntilIndexColumn() {
     // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-    w_beltIndexLine = (gINT_FIELDS[fEDI_cursor_indexLine] + gINT_FIELDS[fEDI_offsetLine]) - gINT_FIELDS[fEDI_virtualIndexLine];
-    if (w_beltIndexLine >= ArrayFrom_textElement_children_length || w_beltIndexLine < 0) w_beltIndexLine = -1;
-    else w_beltIndexLine = (w_beltIndexLine + EDI_beltIndexZero) % gINT_FIELDS[fEDI_virtualCount];
+    gINT_FIELDS[fEDI_w_beltIndexLine] = (gINT_FIELDS[fEDI_cursor_indexLine] + gINT_FIELDS[fEDI_offsetLine]) - gINT_FIELDS[fEDI_virtualIndexLine];
+    if (gINT_FIELDS[fEDI_w_beltIndexLine] >= ArrayFrom_textElement_children_length || gINT_FIELDS[fEDI_w_beltIndexLine] < 0) gINT_FIELDS[fEDI_w_beltIndexLine] = -1;
+    else gINT_FIELDS[fEDI_w_beltIndexLine] = (gINT_FIELDS[fEDI_w_beltIndexLine] + EDI_beltIndexZero) % gINT_FIELDS[fEDI_virtualCount];
     
-    if (w_beltIndexLine < 0) {
+    if (gINT_FIELDS[fEDI_w_beltIndexLine] < 0) {
         gINT_FIELDS[fEDI_w_indexColumn_Goal] = -1;
         gINT_FIELDS[fEDI_w_indexColumn_Sum] = -1;
         gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] = -1;
         gINT_FIELDS[fEDI_w_indexSpan] = -1;
         w_span = null;
         w_div = null;
-        w_beltIndexLine = w_beltIndexLine; // double assignment but not all that pressing of a matter at the moment I think it reads better to just set it / avoid the temporary 'let' local variable each invocation.
+        gINT_FIELDS[fEDI_w_beltIndexLine] = gINT_FIELDS[fEDI_w_beltIndexLine]; // double assignment but not all that pressing of a matter at the moment I think it reads better to just set it / avoid the temporary 'let' local variable each invocation.
         return;
     }
     
-    let div = ArrayFrom_textElement_children[w_beltIndexLine];
+    let div = ArrayFrom_textElement_children[gINT_FIELDS[fEDI_w_beltIndexLine]];
     let indexColumn_Goal = gINT_FIELDS[fEDI_cursor_indexColumn] + gINT_FIELDS[fEDI_offsetColumn];
     let indexColumn_Sum = 0;
 
@@ -2560,7 +2559,7 @@ function walkLineUntilIndexColumn() {
             gINT_FIELDS[fEDI_w_indexSpan] = indexSpan;
             w_span = span;
             w_div = div;
-            w_beltIndexLine = w_beltIndexLine;
+            gINT_FIELDS[fEDI_w_beltIndexLine] = gINT_FIELDS[fEDI_w_beltIndexLine];
             return;
         }
         else {
@@ -2575,7 +2574,7 @@ function walkLineUntilIndexColumn() {
     gINT_FIELDS[fEDI_w_indexSpan] = -1;
     w_span = null;
     w_div = null;
-    w_beltIndexLine = w_beltIndexLine;
+    gINT_FIELDS[fEDI_w_beltIndexLine] = gINT_FIELDS[fEDI_w_beltIndexLine];
     return;
 }
 
@@ -6637,7 +6636,7 @@ function EDI_render_do_EnterKey() {
                         }
                     }
 
-                    let next_beltIndexLine = (w_beltIndexLine + 1) % ArrayFrom_textElement_children_length;
+                    let next_beltIndexLine = (gINT_FIELDS[fEDI_w_beltIndexLine] + 1) % ArrayFrom_textElement_children_length;
 
                     EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, next_beltIndexLine);
 

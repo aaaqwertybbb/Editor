@@ -356,7 +356,12 @@ const fDIALOG_top = 65;
 const fDIALOG_width = 66;
 const fDIALOG_height = 67;
 
-// gINT_FIELDS[fDIALOG_height]
+const fDIALOG_left_DRAWN = 68;
+const fDIALOG_top_DRAWN = 69;
+const fDIALOG_width_DRAWN = 70;
+const fDIALOG_height_DRAWN = 71;
+
+// gINT_FIELDS[fDIALOG_height_DRAWN]
 
 
 

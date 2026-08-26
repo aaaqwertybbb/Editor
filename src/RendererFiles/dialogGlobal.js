@@ -24,11 +24,6 @@ let DIALOG_SHOW_restoreFocusToElement = null;
 let DIALOG_SHOW_currentDialogKind = DialogKind_None;
 let DIALOG_SHOW_onResizeAction = null;
 
-let DIALOG_left_DRAWN = 0;
-let DIALOG_top_DRAWN = 0;
-let DIALOG_width_DRAWN = 0;
-let DIALOG_height_DRAWN = 0;
-
 let DIALOG_before_X = 0;
 let DIALOG_before_Y = 0;
 
@@ -86,21 +81,21 @@ function DIALOG_render_do_DimensionsChanged() {
     let DIALOG_element = document.getElementById('DIALOG');
     if (!DIALOG_element) return;
 
-    if (DIALOG_left_DRAWN !== gINT_FIELDS[fDIALOG_left]) {
-        DIALOG_left_DRAWN = gINT_FIELDS[fDIALOG_left];
-        DIALOG_element.style.left = `${DIALOG_left_DRAWN}px`;
+    if (gINT_FIELDS[fDIALOG_left_DRAWN] !== gINT_FIELDS[fDIALOG_left]) {
+        gINT_FIELDS[fDIALOG_left_DRAWN] = gINT_FIELDS[fDIALOG_left];
+        DIALOG_element.style.left = `${gINT_FIELDS[fDIALOG_left_DRAWN]}px`;
     }
-    if (DIALOG_top_DRAWN !== gINT_FIELDS[fDIALOG_top]) {
-        DIALOG_top_DRAWN = gINT_FIELDS[fDIALOG_top];
-        DIALOG_element.style.top = `${DIALOG_top_DRAWN}px`;
+    if (fDIALOG_top_DRAWN !== gINT_FIELDS[fDIALOG_top]) {
+        fDIALOG_top_DRAWN = gINT_FIELDS[fDIALOG_top];
+        DIALOG_element.style.top = `${fDIALOG_top_DRAWN}px`;
     }
-    if (DIALOG_width_DRAWN !== gINT_FIELDS[fDIALOG_width]) {
-        DIALOG_width_DRAWN = gINT_FIELDS[fDIALOG_width];
-        DIALOG_element.style.width = `${DIALOG_width_DRAWN}px`;
+    if (gINT_FIELDS[fDIALOG_width_DRAWN] !== gINT_FIELDS[fDIALOG_width]) {
+        gINT_FIELDS[fDIALOG_width_DRAWN] = gINT_FIELDS[fDIALOG_width];
+        DIALOG_element.style.width = `${gINT_FIELDS[fDIALOG_width_DRAWN]}px`;
     }
-    if (DIALOG_height_DRAWN !== gINT_FIELDS[fDIALOG_height]) {
-        DIALOG_height_DRAWN = gINT_FIELDS[fDIALOG_height];
-        DIALOG_element.style.height = `${DIALOG_height_DRAWN}px`;
+    if (gINT_FIELDS[fDIALOG_height_DRAWN] !== gINT_FIELDS[fDIALOG_height]) {
+        gINT_FIELDS[fDIALOG_height_DRAWN] = gINT_FIELDS[fDIALOG_height];
+        DIALOG_element.style.height = `${gINT_FIELDS[fDIALOG_height_DRAWN]}px`;
     }
     
 }

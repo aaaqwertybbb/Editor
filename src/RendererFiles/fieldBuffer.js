@@ -105,7 +105,7 @@ const byteAUTOCOMPLETE_scrollIsFetchingData = 18;
 
 const byteWIDGET_isRenderPending = 19;
 
-const byteWIDGET_shouldRestoreFocus = true;
+const byteWIDGET_shouldRestoreFocus = 20;
 gBYTE_FIELDS[byteWIDGET_shouldRestoreFocus] = 1;
 
 // gBYTE_FIELDS[byteWIDGET_shouldRestoreFocus]

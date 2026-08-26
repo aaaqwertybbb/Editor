@@ -556,6 +556,7 @@ const fWIDGET_top = 118;
 const fWIDGETrenderKind_Show_countOfPendingRequests = 119;
 
 const fMENU_ticketId_counter = 120;
+gINT_FIELDS[fMENU_ticketId_counter] = 1;
 
 /** TODO: It might read better to make this 'null' or something after you've drawn the pending. */
 const fMENU_ticketId_pending = 121;

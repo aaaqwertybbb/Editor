@@ -5326,7 +5326,7 @@ function EDI_render_do_IndentMore() {
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
             let beltIndexLine = (lineI + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
             if (beltIndexLine >= ArrayFrom_textElement_children_length || beltIndexLine < 0) beltIndexLine = -1;
-            else beltIndexLine = (beltIndexLine + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+            else beltIndexLine = (beltIndexLine + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
             if (beltIndexLine >= 0) {
                     let div = EDI_textElement.children[beltIndexLine];
@@ -5556,7 +5556,7 @@ function EDI_render_do_IndentLess() {
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
             let beltIndexLine = (lineI + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
             if (beltIndexLine >= ArrayFrom_textElement_children_length || beltIndexLine < 0) beltIndexLine = -1;
-            else beltIndexLine = (beltIndexLine + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+            else beltIndexLine = (beltIndexLine + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
             if (beltIndexLine >= 0) {
                     let div = EDI_textElement.children[beltIndexLine];
@@ -5831,7 +5831,7 @@ function EDI_render_do_DuplicateOrPaste() {
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
         let beltIndexLine_current = ((ints[fEDI_cursor_indexLine]) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
         if (beltIndexLine_current >= ArrayFrom_textElement_children_length || beltIndexLine_current < 0) beltIndexLine_current = -1;
-        else beltIndexLine_current = (beltIndexLine_current + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+        else beltIndexLine_current = (beltIndexLine_current + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
         // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
@@ -5839,7 +5839,7 @@ function EDI_render_do_DuplicateOrPaste() {
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
         let beltIndexLine_first = ((ints[fEDI_virtualIndexLine]) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
         if (beltIndexLine_first >= ArrayFrom_textElement_children_length || beltIndexLine_first < 0) beltIndexLine_first = -1;
-        else beltIndexLine_first = (beltIndexLine_first + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+        else beltIndexLine_first = (beltIndexLine_first + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
         // TODO: Use PREVIOUS here from 'beltIndexLine_first'
 
@@ -5849,7 +5849,7 @@ function EDI_render_do_DuplicateOrPaste() {
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
         let beltIndexLine_last = ((ints[fEDI_virtualIndexLine] + ints[fEDI_virtualCount] - 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
         if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
-        else beltIndexLine_last = (beltIndexLine_last + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+        else beltIndexLine_last = (beltIndexLine_last + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
 
         let last_valid_indexColumn_currentLine = EDI_getLastValidIndexColumn(ints[fEDI_cursor_indexLine]);
@@ -5860,9 +5860,9 @@ function EDI_render_do_DuplicateOrPaste() {
         let shouldPreserveCssClassWhenSplittingAmongLine = false;
         let hasSeenLinefeed = false;
 
-        let original_indexColumn_SpanTextContentRelative = gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative];
+        let original_indexColumn_SpanTextContentRelative = ints[fEDI_w_indexColumn_SpanTextContentRelative];
         let original_span_textContent_length = w_span.textContent.length;
-        let original_tracked_syntax_start = positionIndex - ints[fEDI_cursor_indexColumn] + gINT_FIELDS[fEDI_w_indexColumn_Sum];
+        let original_tracked_syntax_start = positionIndex - ints[fEDI_cursor_indexColumn] + ints[fEDI_w_indexColumn_Sum];
 
         let offset = 0;
 
@@ -5973,11 +5973,11 @@ function EDI_render_do_DuplicateOrPaste() {
                     beltIndexLine_current = (beltIndexLine_current + 1) % ArrayFrom_textElement_children_length;
                     let lineDiv = EDI_textElement.children[beltIndexLine_current];
                     w_div = lineDiv;
-                    gINT_FIELDS[fEDI_w_indexSpan] = 0;
-                    w_span = lineDiv.children[gINT_FIELDS[fEDI_w_indexSpan]];
-                    gINT_FIELDS[fEDI_w_indexColumn_Goal] = 0;
-                    gINT_FIELDS[fEDI_w_indexColumn_Sum] = 0;
-                    gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
+                    ints[fEDI_w_indexSpan] = 0;
+                    w_span = lineDiv.children[ints[fEDI_w_indexSpan]];
+                    ints[fEDI_w_indexColumn_Goal] = 0;
+                    ints[fEDI_w_indexColumn_Sum] = 0;
+                    ints[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
                     ints[fEDI_cursor_indexLine]++;
                     ints[fEDI_cursor_indexColumn] = 0;
 
@@ -5995,11 +5995,11 @@ function EDI_render_do_DuplicateOrPaste() {
 
                         let lineDiv = EDI_textElement.children[beltIndexLine_current];
                         w_div = lineDiv;
-                        gINT_FIELDS[fEDI_w_indexSpan] = 0;
-                        w_span = lineDiv.children[gINT_FIELDS[fEDI_w_indexSpan]];
-                        gINT_FIELDS[fEDI_w_indexColumn_Goal] = 0;
-                        gINT_FIELDS[fEDI_w_indexColumn_Sum] = 0;
-                        gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
+                        ints[fEDI_w_indexSpan] = 0;
+                        w_span = lineDiv.children[ints[fEDI_w_indexSpan]];
+                        ints[fEDI_w_indexColumn_Goal] = 0;
+                        ints[fEDI_w_indexColumn_Sum] = 0;
+                        ints[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
                         ints[fEDI_cursor_indexLine]++;
                         ints[fEDI_cursor_indexColumn] = 0;
                         last_valid_indexColumn_currentLine = 0;
@@ -6013,10 +6013,10 @@ function EDI_render_do_DuplicateOrPaste() {
                         let spanClassName = '';
                         let spanText = '';
 
-                        if (gINT_FIELDS[fEDI_w_indexColumn_Goal] > 0) {
-                            if (gINT_FIELDS[fEDI_w_indexColumn_Goal] !== gINT_FIELDS[fEDI_w_indexColumn_Sum] + w_span.textContent.length) {
-                                let firstText = w_span.textContent.substring(0, gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative]);
-                                let lastText = w_span.textContent.substring(gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative]);
+                        if (ints[fEDI_w_indexColumn_Goal] > 0) {
+                            if (ints[fEDI_w_indexColumn_Goal] !== ints[fEDI_w_indexColumn_Sum] + w_span.textContent.length) {
+                                let firstText = w_span.textContent.substring(0, ints[fEDI_w_indexColumn_SpanTextContentRelative]);
+                                let lastText = w_span.textContent.substring(ints[fEDI_w_indexColumn_SpanTextContentRelative]);
                                 last_valid_indexColumn_currentLine = lastText.length;
                                 w_span.textContent = firstText;
                                 spanText += lastText; // This might NOT have to be +=, but it is due to the enter key method having needed += and this continues the pattern.
@@ -6036,7 +6036,7 @@ function EDI_render_do_DuplicateOrPaste() {
                         span.textContent = spanText;
                         aaa.appendChild(span);
 
-                        let rememberIndex = gINT_FIELDS[fEDI_w_indexSpan] + 1;
+                        let rememberIndex = ints[fEDI_w_indexSpan] + 1;
                         let rememberLength = w_div.children.length;
                         for (let i = rememberIndex; i < rememberLength; i++) {
                             aaa.appendChild(w_div.children[rememberIndex]);
@@ -6044,11 +6044,11 @@ function EDI_render_do_DuplicateOrPaste() {
 
                         let lineDiv = EDI_textElement.children[beltIndexLine_current];
                         w_div = lineDiv;
-                        gINT_FIELDS[fEDI_w_indexSpan] = 0;
-                        w_span = lineDiv.children[gINT_FIELDS[fEDI_w_indexSpan]];
-                        gINT_FIELDS[fEDI_w_indexColumn_Goal] = 0;
-                        gINT_FIELDS[fEDI_w_indexColumn_Sum] = 0;
-                        gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
+                        ints[fEDI_w_indexSpan] = 0;
+                        w_span = lineDiv.children[ints[fEDI_w_indexSpan]];
+                        ints[fEDI_w_indexColumn_Goal] = 0;
+                        ints[fEDI_w_indexColumn_Sum] = 0;
+                        ints[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
                         ints[fEDI_cursor_indexLine]++;
                         ints[fEDI_cursor_indexColumn] = 0;
                         // last_valid_indexColumn_currentLine is being set when splitting the text.
@@ -6063,12 +6063,12 @@ function EDI_render_do_DuplicateOrPaste() {
 
         function EDI_duplicate_and_paste_writeWord(wordLength, word) {
             w_span.textContent = 
-                w_span.textContent.slice(0, gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative]) +
+                w_span.textContent.slice(0, ints[fEDI_w_indexColumn_SpanTextContentRelative]) +
                 word +
-                w_span.textContent.slice(gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative]);
+                w_span.textContent.slice(ints[fEDI_w_indexColumn_SpanTextContentRelative]);
 
             ints[fEDI_cursor_indexColumn] += wordLength;
-            gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] += wordLength;
+            ints[fEDI_w_indexColumn_SpanTextContentRelative] += wordLength;
         }
     }
 }
@@ -6117,7 +6117,7 @@ function EDI_paste(content) {
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
     let beltIndexLine_current = ((ints[fEDI_cursor_indexLine]) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
     if (beltIndexLine_current >= ArrayFrom_textElement_children_length || beltIndexLine_current < 0) beltIndexLine_current = -1;
-    else beltIndexLine_current = (beltIndexLine_current + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+    else beltIndexLine_current = (beltIndexLine_current + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
     // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
     // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
@@ -6125,7 +6125,7 @@ function EDI_paste(content) {
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
     let beltIndexLine_first = ((ints[fEDI_virtualIndexLine]) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
     if (beltIndexLine_first >= ArrayFrom_textElement_children_length || beltIndexLine_first < 0) beltIndexLine_first = -1;
-    else beltIndexLine_first = (beltIndexLine_first + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+    else beltIndexLine_first = (beltIndexLine_first + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
     // TODO: Use PREVIOUS here from 'beltIndexLine_first'
     
@@ -6135,7 +6135,7 @@ function EDI_paste(content) {
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
     let beltIndexLine_last = ((ints[fEDI_virtualIndexLine] + ints[fEDI_virtualCount] - 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
     if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
-    else beltIndexLine_last = (beltIndexLine_last + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+    else beltIndexLine_last = (beltIndexLine_last + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
     let last_valid_indexColumn_currentLine = EDI_getLastValidIndexColumn(ints[fEDI_cursor_indexLine]);
 
@@ -6145,9 +6145,9 @@ function EDI_paste(content) {
     let shouldPreserveCssClassWhenSplittingAmongLine = false;
     let hasSeenLinefeed = false;
 
-    //let original_indexColumn_SpanTextContentRelative = gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative];
+    //let original_indexColumn_SpanTextContentRelative = ints[fEDI_w_indexColumn_SpanTextContentRelative];
     //let original_span_textContent_length = w_span.textContent.length;
-    //let original_tracked_syntax_start = positionIndex - ints[fEDI_cursor_indexColumn] + gINT_FIELDS[fEDI_w_indexColumn_Sum];
+    //let original_tracked_syntax_start = positionIndex - ints[fEDI_cursor_indexColumn] + ints[fEDI_w_indexColumn_Sum];
 
     for (var sourceI = 0; sourceI < content.length; sourceI++) {
         switch (content[sourceI]) {
@@ -6482,7 +6482,7 @@ function EDI_render_do_EnterKey() {
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
         let beltIndexLine_firstTilde = ((EDI_lineEndPositionList.count) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
         if (beltIndexLine_firstTilde >= ArrayFrom_textElement_children_length || beltIndexLine_firstTilde < 0) beltIndexLine_firstTilde = -1;
-        else beltIndexLine_firstTilde = (beltIndexLine_firstTilde + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+        else beltIndexLine_firstTilde = (beltIndexLine_firstTilde + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
         if (beltIndexLine_firstTilde >= 0) {
             EDI_gutter.children[beltIndexLine_firstTilde].textContent = EDI_lineEndPositionList.count + 1;
@@ -6496,7 +6496,7 @@ function EDI_render_do_EnterKey() {
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
         let beltIndexLine_current = ((ints[fEDI_cursor_editIndexLine]) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
         if (beltIndexLine_current >= ArrayFrom_textElement_children_length || beltIndexLine_current < 0) beltIndexLine_current = -1;
-        else beltIndexLine_current = (beltIndexLine_current + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+        else beltIndexLine_current = (beltIndexLine_current + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
         if (beltIndexLine_current < 0)
             shouldRenderEntireViewport = true;
@@ -6511,7 +6511,7 @@ function EDI_render_do_EnterKey() {
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
         let beltIndexLine_first = ((ints[fEDI_virtualIndexLine]) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
         if (beltIndexLine_first >= ArrayFrom_textElement_children_length || beltIndexLine_first < 0) beltIndexLine_first = -1;
-        else beltIndexLine_first = (beltIndexLine_first + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+        else beltIndexLine_first = (beltIndexLine_first + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
         // TODO: Use PREVIOUS here from 'beltIndexLine_first'
 
@@ -6521,7 +6521,7 @@ function EDI_render_do_EnterKey() {
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
         let beltIndexLine_last = ((ints[fEDI_virtualIndexLine] + ints[fEDI_virtualCount] - 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
         if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
-        else beltIndexLine_last = (beltIndexLine_last + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+        else beltIndexLine_last = (beltIndexLine_last + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
         // TODO: reminder for when virtualization padding is improved, this function might need to be looked at.
         // TODO: Track the enter keystroke the same as any other insertion edit and have it pending until it needs to be finalized.
@@ -6586,11 +6586,11 @@ function EDI_render_do_EnterKey() {
                     
                     switch (w_span.className) {
                         case 'eCm':
-                            if (gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] >= 2 && (gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] <= w_span.textContent.length - 2)) {
+                            if (ints[fEDI_w_indexColumn_SpanTextContentRelative] >= 2 && (ints[fEDI_w_indexColumn_SpanTextContentRelative] <= w_span.textContent.length - 2)) {
                                 w_span.className = 'eCM';
                                 let indexPosition = EDI_getPositionIndex_raw_cursor();
                                 let indexOfGreaterThanOrEqual = EDI_trackedSyntaxReposition_find(indexPosition);
-                                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_Comment, indexPosition - ints[fEDI_cursor_indexColumn] + gINT_FIELDS[fEDI_w_indexColumn_Sum], w_span.textContent.length);
+                                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_Comment, indexPosition - ints[fEDI_cursor_indexColumn] + ints[fEDI_w_indexColumn_Sum], w_span.textContent.length);
                                 shouldPreserveCssClassWhenSplittingAmongLine = true;
                             }
                             break;
@@ -6598,11 +6598,11 @@ function EDI_render_do_EnterKey() {
                             shouldPreserveCssClassWhenSplittingAmongLine = true;
                             break;
                         case 'eSm':
-                            if (gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] >= 1 && (gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] <= w_span.textContent.length - 1)) {
+                            if (ints[fEDI_w_indexColumn_SpanTextContentRelative] >= 1 && (ints[fEDI_w_indexColumn_SpanTextContentRelative] <= w_span.textContent.length - 1)) {
                                 w_span.className = 'eSM';
                                 let indexPosition = EDI_getPositionIndex_raw_cursor();
                                 let indexOfGreaterThanOrEqual = EDI_trackedSyntaxReposition_find(indexPosition);
-                                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_String, indexPosition - ints[fEDI_cursor_indexColumn] + gINT_FIELDS[fEDI_w_indexColumn_Sum], w_span.textContent.length);
+                                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_String, indexPosition - ints[fEDI_cursor_indexColumn] + ints[fEDI_w_indexColumn_Sum], w_span.textContent.length);
                                 shouldPreserveCssClassWhenSplittingAmongLine = true;
                             }
                             break;
@@ -6611,10 +6611,10 @@ function EDI_render_do_EnterKey() {
                             break;
                     }
                     
-                    if (gINT_FIELDS[fEDI_w_indexColumn_Goal] > 0) {
-                        if (gINT_FIELDS[fEDI_w_indexColumn_Goal] !== gINT_FIELDS[fEDI_w_indexColumn_Sum] + w_span.textContent.length) {
-                            let firstText = w_span.textContent.substring(0, gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative]);
-                            let lastText = w_span.textContent.substring(gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative]);
+                    if (ints[fEDI_w_indexColumn_Goal] > 0) {
+                        if (ints[fEDI_w_indexColumn_Goal] !== ints[fEDI_w_indexColumn_Sum] + w_span.textContent.length) {
+                            let firstText = w_span.textContent.substring(0, ints[fEDI_w_indexColumn_SpanTextContentRelative]);
+                            let lastText = w_span.textContent.substring(ints[fEDI_w_indexColumn_SpanTextContentRelative]);
                             w_span.textContent = firstText;
                             spanText += lastText; // += due to the possibility of indentation
                             if (shouldPreserveCssClassWhenSplittingAmongLine) {
@@ -6623,7 +6623,7 @@ function EDI_render_do_EnterKey() {
                         }
                     }
 
-                    let next_beltIndexLine = (gINT_FIELDS[fEDI_w_beltIndexLine] + 1) % ArrayFrom_textElement_children_length;
+                    let next_beltIndexLine = (ints[fEDI_w_beltIndexLine] + 1) % ArrayFrom_textElement_children_length;
 
                     EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, next_beltIndexLine);
 
@@ -6633,7 +6633,7 @@ function EDI_render_do_EnterKey() {
                     span.textContent = spanText;
                     aaa.appendChild(span);
 
-                    let rememberIndex = gINT_FIELDS[fEDI_w_indexSpan] + 1;
+                    let rememberIndex = ints[fEDI_w_indexSpan] + 1;
                     let rememberLength = w_div.children.length;
                     for (let i = rememberIndex; i < rememberLength; i++) {
                         aaa.appendChild(w_div.children[rememberIndex]);
@@ -7117,28 +7117,28 @@ function EDI_render_do_RemoveSelection() {
                 remaining = largePosition - smallPosition;
             }
 
-            if (w_span && gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] >= 0) {
+            if (w_span && ints[fEDI_w_indexColumn_SpanTextContentRelative] >= 0) {
                 smallLineDiv = w_div;
                 while (remaining > 0) {
-                    let available = w_span.textContent.length - gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative];
+                    let available = w_span.textContent.length - ints[fEDI_w_indexColumn_SpanTextContentRelative];
                     let count = remaining > available ? available : remaining;
                     remaining -= count;    
                     
                     if (count > 0) {
-                        w_span.textContent = w_span.textContent.slice(0, gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative]) + w_span.textContent.slice(gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] + count);
+                        w_span.textContent = w_span.textContent.slice(0, ints[fEDI_w_indexColumn_SpanTextContentRelative]) + w_span.textContent.slice(ints[fEDI_w_indexColumn_SpanTextContentRelative] + count);
                     }
 
                     if (w_div.children.length > 1 && w_span.textContent.length === 0) {
                         w_div.removeChild(w_span);
                     }
                     else {
-                        gINT_FIELDS[fEDI_w_indexSpan]++;
+                        ints[fEDI_w_indexSpan]++;
                     }
         
                     if (remaining > 0) {
-                        if (gINT_FIELDS[fEDI_w_indexSpan] >= w_div.children.length) break;
-                        w_span = w_div.children[gINT_FIELDS[fEDI_w_indexSpan]];
-                        gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
+                        if (ints[fEDI_w_indexSpan] >= w_div.children.length) break;
+                        w_span = w_div.children[ints[fEDI_w_indexSpan]];
+                        ints[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
                     }
                 }
             }
@@ -7155,25 +7155,25 @@ function EDI_render_do_RemoveSelection() {
 
             walkLineUntilIndexColumn();
 
-            if (w_span && gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] >= 0) {
+            if (w_span && ints[fEDI_w_indexColumn_SpanTextContentRelative] >= 0) {
                 largeLineDiv = w_div;
                 while (remaining > 0) {
-                    let available = w_span.textContent.length - gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative];
+                    let available = w_span.textContent.length - ints[fEDI_w_indexColumn_SpanTextContentRelative];
                     let count = remaining > available ? available : remaining;
                     remaining -= count;
 
                     if (count > 0)
-                        w_span.textContent = w_span.textContent.slice(0, gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative]) + w_span.textContent.slice(gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] + count);
+                        w_span.textContent = w_span.textContent.slice(0, ints[fEDI_w_indexColumn_SpanTextContentRelative]) + w_span.textContent.slice(ints[fEDI_w_indexColumn_SpanTextContentRelative] + count);
 
                     if (w_div.children.length > 1 && w_span.textContent.length === 0)
                         w_div.removeChild(w_span);
                     else
-                        gINT_FIELDS[fEDI_w_indexSpan]++;
+                        ints[fEDI_w_indexSpan]++;
         
                     if (remaining > 0) {
-                        if (gINT_FIELDS[fEDI_w_indexSpan] >= w_div.children.length) break;
-                        w_span = w_div.children[gINT_FIELDS[fEDI_w_indexSpan]];
-                        gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
+                        if (ints[fEDI_w_indexSpan] >= w_div.children.length) break;
+                        w_span = w_div.children[ints[fEDI_w_indexSpan]];
+                        ints[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
                     }
                 }
             }
@@ -7232,7 +7232,7 @@ function EDI_render_do_RemoveSelection() {
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
             let beltIndexLine_current = ((smallLineAndColumnIndices.indexLine + 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
             if (beltIndexLine_current >= ArrayFrom_textElement_children_length || beltIndexLine_current < 0) beltIndexLine_current = -1;
-            else beltIndexLine_current = (beltIndexLine_current + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+            else beltIndexLine_current = (beltIndexLine_current + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
             // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
             // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
@@ -7240,7 +7240,7 @@ function EDI_render_do_RemoveSelection() {
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
             let beltIndexLine_last = ((ints[fEDI_virtualIndexLine] + ints[fEDI_virtualCount] - 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
             if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
-            else beltIndexLine_last = (beltIndexLine_last + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+            else beltIndexLine_last = (beltIndexLine_last + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
             // TODO: This will be wrong because you'd need to explicitly redraw the large selection line index.
             EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last, beltIndexLine_current, linesRemovedCount);

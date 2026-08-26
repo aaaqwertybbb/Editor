@@ -393,8 +393,9 @@ const fDIALOG_after_Y = 75;
 const fEDI_w_indexColumn_Goal = 76;
 const fEDI_w_indexColumn_Sum = 77;
 const fEDI_w_indexColumn_SpanTextContentRelative = 78;
+const fEDI_w_indexSpan = 79;
 
-// gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative]
+// gINT_FIELDS[fEDI_w_indexSpan]
 
 
 

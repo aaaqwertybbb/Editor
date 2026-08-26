@@ -667,8 +667,6 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
     }
 }
 
-let EXPLORER_show = true;
-
 /** 8px by default or the measured value with px */
 let EXPLORER_firstSpanWidth = '8px';
 
@@ -683,7 +681,7 @@ function EXPLORER_init() {
     EXPLORER_pickFolderOrWorkspaceButton.addEventListener('click', EXPLORER_pickFolderOrWorkspaceButton_onClick);
     
     let toggleShowExplorerButton = document.getElementById('HEADER_toggleShowExplorer');
-    toggleShowExplorerButton.checked = EXPLORER_show;
+    toggleShowExplorerButton.checked = gBYTE_FIELDS[byteEXPLORER_show];
     toggleShowExplorerButton.addEventListener('click', toggleShowExplorerButton_onClick);
 }
 
@@ -719,25 +717,25 @@ function EXPLORER_setShow(shouldShow) {
     const EXPLORER_Element = document.getElementById('EXPLORER');
     if (!EXPLORER_Element) return;
 
-	if (shouldShow && !EXPLORER_show) {
+	if (shouldShow && !gBYTE_FIELDS[byteEXPLORER_show]) {
 		let editorHackElement = document.getElementById('EDI_hack');
 		EXPLORER_Element.style.width = '200px';
 		EXPLORER_Element.style.visibility = '';
 		editorHackElement.style.width = 'calc(100% - 200px)';
-		EXPLORER_show = shouldShow;
+		gBYTE_FIELDS[byteEXPLORER_show] = shouldShow;
 		let toggleShowExplorerButton = document.getElementById('HEADER_toggleShowExplorer');
-		toggleShowExplorerButton.checked = EXPLORER_show;
+		toggleShowExplorerButton.checked = gBYTE_FIELDS[byteEXPLORER_show];
 		EDI_onResize();
 	}
-	else if (!shouldShow && EXPLORER_show) {
+	else if (!shouldShow && gBYTE_FIELDS[byteEXPLORER_show]) {
 		// !show is redundant, but exists for readability.
 		let editorHackElement = document.getElementById('EDI_hack');
 		EXPLORER_Element.style.width = '0px';
 		EXPLORER_Element.style.visibility = 'hidden';
 		editorHackElement.style.width = '100%';
-		EXPLORER_show = shouldShow;
+		gBYTE_FIELDS[byteEXPLORER_show] = shouldShow;
 		let toggleShowExplorerButton = document.getElementById('HEADER_toggleShowExplorer');
-		toggleShowExplorerButton.checked = EXPLORER_show;
+		toggleShowExplorerButton.checked = gBYTE_FIELDS[byteEXPLORER_show];
 		EDI_onResize();
 	}
 }

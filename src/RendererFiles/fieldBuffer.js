@@ -45,7 +45,7 @@ it is as if I typed the expression body everywhere I typed the fat arrow functio
  * 
  * TODO: index 8 is available because 'EDI_onScroll_bool' was removed.
  */
-const gBYTE_FIELDS = new Uint8Array(44);
+const gBYTE_FIELDS = new Uint8Array(45);
 
 /** returns a number, beware '===' */
 const get_EDI_detailRank = () => gBYTE_FIELDS[0];
@@ -160,7 +160,10 @@ const byteEDI_isRenderPending = 42;
 
 const byteEDI_mousemove_eventListener_isActive = 43;
 
-// gBYTE_FIELDS[byteEDI_mousemove_eventListener_isActive]
+const byteEXPLORER_show = 44;
+gBYTE_FIELDS[byteEXPLORER_show] = 1;
+
+// gBYTE_FIELDS[byteEXPLORER_show]
 
 // TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
 // - [ ] triple equals
@@ -272,7 +275,7 @@ const CONST_EDI_cursor_htmlId = "EDI_cursor-1";
 ////////////////////////////
 ////////////////////////////
 
-const gINT_FIELDS = new Uint32Array(150);
+const gINT_FIELDS = new Uint32Array(139);
 
 const fEDI_lineHeight = 0;
 gINT_FIELDS[fEDI_lineHeight] = 20;
@@ -630,7 +633,7 @@ const fEXPLORER_menuOptionY = 138;
 
 // gINT_FIELDS[fEXPLORER_menuOptionY]
 
-// 149
+// 139
 
 /*
 Google AI

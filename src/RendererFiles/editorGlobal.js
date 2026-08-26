@@ -221,9 +221,6 @@ let DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left;
 let EDI_RemoveSelection_smallLineAndColumnIndices = null;
 let EDI_RemoveSelection_largeLineAndColumnIndices = null;
 
-// Temporary hack for state access TODO: this
-let EDI_indentLess_startingLinePos_end = 0;
-
 let EDI_hoverTimeout = null;
 
 let EDI_isChecking_cursorBlinkTrailingEdge = false;
@@ -1729,8 +1726,8 @@ function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
         }
     }
 
-    startingLinePos_end = EDI_indentLess_startingLinePos_end;
-    EDI_indentLess_startingLinePos_end = 0;
+    startingLinePos_end = gINT_FIELDS[fEDI_EDI_indentLess_startingLinePos_end];
+    gINT_FIELDS[fEDI_EDI_indentLess_startingLinePos_end] = 0;
 
     
 
@@ -1979,7 +1976,7 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
     //    //}
     //}
 
-    let trackedSyntaxReposition_i = EDI_trackedSyntaxReposition_find(EDI_indentLess_startingLinePos_end + 1);
+    let trackedSyntaxReposition_i = EDI_trackedSyntaxReposition_find(gINT_FIELDS[fEDI_EDI_indentLess_startingLinePos_end] + 1);
     if (trackedSyntaxReposition_i === NaN || trackedSyntaxReposition_i === -1) {
         trackedSyntaxReposition_i = EDI_trackedSyntaxList.count_abstract;
     }
@@ -5409,7 +5406,7 @@ function EDI_indentMore() {
     gINT_FIELDS[fEDI_indent_startingIndex] = startingIndex;
 
     if (gINT_FIELDS[fEDI_cursor_editLength] === 0) {
-        EDI_indentLess_startingLinePos_end = startingLinePos.end;
+        gINT_FIELDS[fEDI_EDI_indentLess_startingLinePos_end] = startingLinePos.end;
     } 
 
     //// # Update the cursor's selection to reflect the inserted text
@@ -5593,7 +5590,7 @@ function EDI_indentLess() {
     gINT_FIELDS[fEDI_indent_startingIndex] = startingIndex;
 
     if (gINT_FIELDS[fEDI_cursor_editLength] === 0) {
-        EDI_indentLess_startingLinePos_end = startingLinePos.end;
+        gINT_FIELDS[fEDI_EDI_indentLess_startingLinePos_end] = startingLinePos.end;
     }
 
     // TODO: Some kind of "fake" selection somehow because you really only need to modify the top-left most selection and the bottom-right most selection.

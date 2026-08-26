@@ -424,7 +424,10 @@ const fEDI_EDI_mouseOver_event_clientX = 89;
 const fEDI_EDI_RemoveSelection_smallPosition = 90;
 const fEDI_EDI_RemoveSelection_largePosition = 91;
 
-// gINT_FIELDS[fEDI_EDI_RemoveSelection_largePosition]
+// Temporary hack for state access TODO: this
+const fEDI_EDI_indentLess_startingLinePos_end = 92;
+
+// gINT_FIELDS[fEDI_EDI_indentLess_startingLinePos_end]
 
 // for the beltIndezZero etc... consider using max value?
 // Although it might "just work" because you're using locals which would become negative?

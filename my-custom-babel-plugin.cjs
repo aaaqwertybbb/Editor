@@ -420,6 +420,7 @@ module.exports = function (babel) {
     "fEDI_EDI_mouseOver_event_clientX",
     "fEDI_EDI_RemoveSelection_smallPosition",
     "fEDI_EDI_RemoveSelection_largePosition",
+    "fEDI_EDI_indentLess_startingLinePos_end",
 
 
 

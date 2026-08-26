@@ -158,7 +158,9 @@ const byteisProcessingLspQueue = 41;
 
 const byteEDI_isRenderPending = 42;
 
-// gBYTE_FIELDS[byteEDI_isRenderPending]
+const byteEDI_mousemove_eventListener_isActive = 43;
+
+// gBYTE_FIELDS[byteEDI_mousemove_eventListener_isActive]
 
 // TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
 // - [ ] triple equals

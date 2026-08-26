@@ -197,8 +197,6 @@ let EDI_RemoveSelection_largeLineAndColumnIndices = null;
 
 let EDI_hoverTimeout = null;
 
-let EDI_mousemove_eventListener_isActive = false;
-
 let EDI_language_line_lex;
 
 function EDI_cursor_hasSelection() {
@@ -3167,7 +3165,7 @@ function EDI_onMouseMove_WRAPIT(event) {
         }
     }
     else {
-        EDI_mousemove_eventListener_isActive = false;
+        gBYTE_FIELDS[byteEDI_mousemove_eventListener_isActive] = false;
         EDI_baseElement.removeEventListener('mousemove', EDI_onMouseMove_WRAPIT);
     }
 }
@@ -4818,7 +4816,7 @@ function EDI_onMouseDown(event) {
     }
 
     if (event.button === 0) {
-        EDI_mousemove_eventListener_isActive = true;
+        gBYTE_FIELDS[byteEDI_mousemove_eventListener_isActive] = true;
         EDI_baseElement.addEventListener('mousemove', EDI_onMouseMove_WRAPIT);
     }
 
@@ -8585,7 +8583,7 @@ function EDI_requestLspHover() {
     ///////////
 
     // Indices are wrong... they're likely outdated
-    if (!EDI_mousemove_eventListener_isActive) {
+    if (!gBYTE_FIELDS[byteEDI_mousemove_eventListener_isActive]) {
         window.myAPI.editorHoverRequest(indexLine, indexColumn);
     }
 }

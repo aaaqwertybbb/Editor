@@ -502,6 +502,7 @@ module.exports = function (babel) {
     "byteisCheckingTrailingEdge",
     "byteisProcessingLspQueue",
     "byteEDI_isRenderPending",
+    "byteEDI_mousemove_eventListener_isActive",
 
 
 

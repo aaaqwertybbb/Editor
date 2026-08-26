@@ -8897,4 +8897,7 @@ and yet even just this block of singular color, it has moments where I can see t
 
 So is it me or the smi's?
 
+I still got some more smi's left I can probably get rid of the rest of them tomorrow.
+That way I've "been there done that" even if it was all just incorrect in the end.
+
 */

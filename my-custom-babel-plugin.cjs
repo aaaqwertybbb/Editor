@@ -406,6 +406,7 @@ module.exports = function (babel) {
 
     "fEDI_w_indexColumn_Goal",
     "fEDI_w_indexColumn_Sum",
+    "fEDI_w_indexColumn_SpanTextContentRelative",
 
 
 

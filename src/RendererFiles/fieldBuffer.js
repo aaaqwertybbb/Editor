@@ -389,10 +389,12 @@ const fDIALOG_after_X = 74;
 const fDIALOG_after_Y = 75;
 
 // TODO: Avoid re-using these locally after getting the w result (i.e.: avoid re-using over and over in a loop or something, probably make a local variable if accessed enough).
+// TODO: Verify and update all the previously -1 cases
 const fEDI_w_indexColumn_Goal = 76;
 const fEDI_w_indexColumn_Sum = 77;
+const fEDI_w_indexColumn_SpanTextContentRelative = 78;
 
-// gINT_FIELDS[fEDI_w_indexColumn_Sum]
+// gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative]
 
 
 

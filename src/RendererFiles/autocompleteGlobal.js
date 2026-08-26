@@ -15,9 +15,6 @@ const AUTOCOMPLETErenderKind_CreateLines = 4;
 const AUTOCOMPLETErenderKind_Scroll = 5;
 
 let AUTOCOMPLETE_renderKindArray = [];
-let AUTOCOMPLETE_isRenderPending = false;
-
-let AUTOCOMPLETE_rect_isNull = true;
 
 let AUTOCOMPLETEElement = null;
 let AUTOCOMPLETE_arrayFromItemListElement = null;
@@ -31,8 +28,8 @@ function AUTOCOMPLETE_render_request(renderKind) {
         AUTOCOMPLETE_renderKindArray.push(renderKind);
     }
     
-    if (!AUTOCOMPLETE_isRenderPending) {
-        AUTOCOMPLETE_isRenderPending = true;
+    if (!gBYTE_FIELDS[byteAUTOCOMPLETE_isRenderPending]) {
+        gBYTE_FIELDS[byteAUTOCOMPLETE_isRenderPending] = true;
         requestAnimationFrame(AUTOCOMPLETE_renderDo);
     }
 }
@@ -60,7 +57,7 @@ function AUTOCOMPLETE_renderDo(timestamp) {
         }
     }
     
-    AUTOCOMPLETE_isRenderPending = false; // Reset the lock
+    gBYTE_FIELDS[byteAUTOCOMPLETE_isRenderPending] = false; // Reset the lock
 }
 
 function AUTOCOMPLETE_render_create_lines(AUTOCOMPLETE_itemList) {
@@ -215,7 +212,7 @@ function AUTOCOMPLETE_render_do_show(timestamp) {
         gINT_FIELDS[fAUTOCOMPLETE_rectHeight] = Math.floor(rect.height);
         gINT_FIELDS[fAUTOCOMPLETE_rectLeft] = rect.left;
         gINT_FIELDS[fAUTOCOMPLETE_rectTop] = rect.top;
-        AUTOCOMPLETE_rect_isNull = false;
+        gBYTE_FIELDS[byteAUTOCOMPLETE_rect_isNull] = false;
 
         AUTOCOMPLETE_render_create_lines(AUTOCOMPLETE_itemList);
 
@@ -328,7 +325,7 @@ function AUTOCOMPLETE_cursor_render_set() {
     let cursorTranslateYNumber = CONST_AUTOCOMPLETE_topPadding + (gINT_FIELDS[fAPP_lineHeight] * gINT_FIELDS[fAUTOCOMPLETE_cursorIndex]);
 
     // Preferably this hasn't changed thus the function immediately just returns.
-    if (AUTOCOMPLETE_rect_isNull)
+    if (gBYTE_FIELDS[byteAUTOCOMPLETE_rect_isNull])
         AUTOCOMPLETE_ensure_boundingClientRect();
     
     // If no UI modifications were made prior that are still pending this might avoid a synchronous layout.
@@ -364,12 +361,12 @@ function AUTOCOMPLETE_cursor_validate(cursorIndex) {
 }
 
 function AUTOCOMPLETE_ensure_boundingClientRect() {
-    if (AUTOCOMPLETE_rect_isNull && gBYTE_FIELDS[byteAUTOCOMPLETE_exists]) {
+    if (gBYTE_FIELDS[byteAUTOCOMPLETE_rect_isNull] && gBYTE_FIELDS[byteAUTOCOMPLETE_exists]) {
         let rect = AUTOCOMPLETEElement.getBoundingClientRect();
         gINT_FIELDS[fAUTOCOMPLETE_rectHeight] = rect.height;
         gINT_FIELDS[fAUTOCOMPLETE_rectLeft] = rect.left;
         gINT_FIELDS[fAUTOCOMPLETE_rectTop] = rect.top;
-        AUTOCOMPLETE_rect_isNull = false;
+        gBYTE_FIELDS[byteAUTOCOMPLETE_rect_isNull] = false;
     }
 }
 
@@ -388,7 +385,7 @@ function AUTOCOMPLETE_events_remove(AUTOCOMPLETEElement) {
 }
 
 function AUTOCOMPLETE_events_resize() {
-    AUTOCOMPLETE_rect_isNull = true;
+    gBYTE_FIELDS[byteAUTOCOMPLETE_rect_isNull] = true;
 }
 
 function AUTOCOMPLETE_events_blur_receive() {

@@ -447,7 +447,9 @@ module.exports = function (babel) {
     "fAPP_lineHeight",
 
     "byteAUTOCOMPLETE_exists",
-    
+    "byteAUTOCOMPLETE_isRenderPending",
+    "byteAUTOCOMPLETE_rect_isNull",
+
 
 
 

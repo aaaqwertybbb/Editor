@@ -94,7 +94,12 @@ const byteDIALOG_HIDE_shouldRestoreFocus = 13;
 
 const byteAUTOCOMPLETE_exists = 14;
 
-// gBYTE_FIELDS[byteAUTOCOMPLETE_exists]
+const byteAUTOCOMPLETE_isRenderPending = 15;
+
+const byteAUTOCOMPLETE_rect_isNull = 16;
+gBYTE_FIELDS[byteAUTOCOMPLETE_rect_isNull] = 1;
+
+// gBYTE_FIELDS[byteAUTOCOMPLETE_rect_isNull]
 
 // TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
 // - [ ] triple equals

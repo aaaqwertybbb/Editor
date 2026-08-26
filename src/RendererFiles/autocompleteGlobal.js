@@ -3,8 +3,6 @@
 import "./fieldBuffer"
 //__#__
 
-let AUTOCOMPLETE_exists = false;
-
 let AUTOCOMPLETE_pending_lspResult = null;
 // I don't think 'slice' is in LSP specification but I need to start like this cause it is only way I'll get something "initially working".
 let AUTOCOMPLETE_items_slice = null;
@@ -165,7 +163,7 @@ function AUTOCOMPLETE_render_do_show(timestamp) {
     let AUTOCOMPLETE_itemList;
     let AUTOCOMPLETE_virtualization;
 
-    if (AUTOCOMPLETE_exists) {
+    if (gBYTE_FIELDS[byteAUTOCOMPLETE_exists]) {
         local_AUTOCOMPLETEElement = document.getElementById('AUTOCOMPLETE');
 
         AUTOCOMPLETE_itemList = document.getElementById('AUTOCOMPLETE_itemList');
@@ -184,7 +182,7 @@ function AUTOCOMPLETE_render_do_show(timestamp) {
         // And then if it is truly meaningful from an optimization standpoint such as the scrolling of the editor
         // I take on the state corruption risk, otherwise I just defensively handle it.
         if (!local_AUTOCOMPLETEElement) {
-            AUTOCOMPLETE_exists = false;
+            gBYTE_FIELDS[byteAUTOCOMPLETE_exists] = false;
             AUTOCOMPLETE_render_do_show();
             return;
         }
@@ -237,7 +235,7 @@ function AUTOCOMPLETE_render_do_show(timestamp) {
     let itemHeightTotalNumber = gINT_FIELDS[fAUTOCOMPLETE_items_totalLength] * gINT_FIELDS[fAPP_lineHeight] + CONST_AUTOCOMPLETE_topPadding;
     AUTOCOMPLETE_virtualization.style.height = itemHeightTotalNumber + 'px';
 
-    AUTOCOMPLETE_exists = true;
+    gBYTE_FIELDS[byteAUTOCOMPLETE_exists] = true;
 
     local_AUTOCOMPLETEElement.focus();
 
@@ -313,7 +311,7 @@ function AUTOCOMPLETE_render_do_hide() {
         AUTOCOMPLETEElement = null;
     }
 
-    AUTOCOMPLETE_exists = false;
+    gBYTE_FIELDS[byteAUTOCOMPLETE_exists] = false;
 }
 
 function AUTOCOMPLETE_hide() {
@@ -322,7 +320,7 @@ function AUTOCOMPLETE_hide() {
 }
 
 function AUTOCOMPLETE_cursor_render_set() {
-    if (!AUTOCOMPLETE_exists) return;
+    if (!gBYTE_FIELDS[byteAUTOCOMPLETE_exists]) return;
     
     let cursorElement = document.getElementById('AUTOCOMPLETE_cursor');
 
@@ -366,7 +364,7 @@ function AUTOCOMPLETE_cursor_validate(cursorIndex) {
 }
 
 function AUTOCOMPLETE_ensure_boundingClientRect() {
-    if (AUTOCOMPLETE_rect_isNull && AUTOCOMPLETE_exists) {
+    if (AUTOCOMPLETE_rect_isNull && gBYTE_FIELDS[byteAUTOCOMPLETE_exists]) {
         let rect = AUTOCOMPLETEElement.getBoundingClientRect();
         gINT_FIELDS[fAUTOCOMPLETE_rectHeight] = rect.height;
         gINT_FIELDS[fAUTOCOMPLETE_rectLeft] = rect.left;

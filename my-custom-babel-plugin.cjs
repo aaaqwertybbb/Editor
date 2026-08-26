@@ -446,6 +446,9 @@ module.exports = function (babel) {
     "fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING",
     "fAPP_lineHeight",
 
+    "byteAUTOCOMPLETE_exists",
+    
+
 
 
 

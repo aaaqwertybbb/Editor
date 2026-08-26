@@ -76,9 +76,6 @@ const EDI_decoder = new TextDecoder();
 
 let gutterWidthTotal_withPxUnits;
 
-// TODO: This assignment isn't necessary, it was already the default value;
-gINT_FIELDS[fEDI_cursor_editKind] = EditKind_None;
-
 let EDI_cursor_htmlId = "EDI_cursor-1";
 
 /**

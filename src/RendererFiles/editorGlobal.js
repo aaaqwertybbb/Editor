@@ -228,9 +228,6 @@ let EDI_indentLess_startingLinePos_end = 0;
 
 let EDI_hoverTimeout = null;
 
-let EDI_mouseOver_event_clientY = 0;
-let EDI_mouseOver_event_clientX = 0;
-
 let EDI_isChecking_cursorBlinkTrailingEdge = false;
 let EDI_cursorBlinkLastTimestamp = 0;
 
@@ -8541,8 +8538,8 @@ I tried explaining what I'm a goof to the AI after the fact. It seems to have br
  * Oh wow I can clearly see why this is better than mouseMove with heavy throttling/debouncing
  */
 function EDI_mouseOver(e) {
-    EDI_mouseOver_event_clientY = e.clientY;
-    EDI_mouseOver_event_clientX = e.clientX;
+    gINT_FIELDS[fEDI_EDI_mouseOver_event_clientY] = e.clientY;
+    gINT_FIELDS[fEDI_EDI_mouseOver_event_clientX] = e.clientX;
     
     //const tokenElement = event.target.closest('.editor-token');
     //if (!tokenElement) return;
@@ -8585,8 +8582,8 @@ function EDI_doEditorGoToDefinitionRequest() {
 }
 
 function EDI_requestLspHover() {
-    let event_clientY = EDI_mouseOver_event_clientY;
-    let event_clientX = EDI_mouseOver_event_clientX;
+    let event_clientY = gINT_FIELDS[fEDI_EDI_mouseOver_event_clientY];
+    let event_clientX = gINT_FIELDS[fEDI_EDI_mouseOver_event_clientX];
 
     ///////////
     ///////////

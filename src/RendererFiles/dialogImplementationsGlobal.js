@@ -389,7 +389,7 @@ async function DIALOG_Settings_Create_async() {
     let checkboxTrueTabsFalseSpaces = document.createElement('input');
     checkboxTrueTabsFalseSpaces.type = 'checkbox';
     checkboxTrueTabsFalseSpaces.id = 'SETTINGS_trueTabs_falseSpaces';
-    checkboxTrueTabsFalseSpaces.checked = DIALOG_Settings_trueTabs_falseSpaces; // Optional: sets the initial state to checked
+    checkboxTrueTabsFalseSpaces.checked = gBYTE_FIELDS[byteDIALOG_Settings_trueTabs_falseSpaces]; // Optional: sets the initial state to checked
     checkboxTrueTabsFalseSpaces.addEventListener('change', DIALOG_checkboxTrueTabsFalseSpaces_onchange);
     dialogBody.appendChild(checkboxTrueTabsFalseSpaces);
 	// -----------------------------------------------------------
@@ -448,8 +448,8 @@ function DIALOG_checkboxTrueTabsFalseSpaces_onchange() {
     let checkboxTrueTabsFalseSpaces = document.getElementById('SETTINGS_trueTabs_falseSpaces');
     if (!checkboxTrueTabsFalseSpaces) return;
 
-    DIALOG_Settings_trueTabs_falseSpaces = checkboxTrueTabsFalseSpaces.checked;
-    if (DIALOG_Settings_trueTabs_falseSpaces) {
+    gBYTE_FIELDS[byteDIALOG_Settings_trueTabs_falseSpaces] = checkboxTrueTabsFalseSpaces.checked;
+    if (gBYTE_FIELDS[byteDIALOG_Settings_trueTabs_falseSpaces]) {
         EDI_on_tab_bytes[0] = CONST_EDI_ASCII_TAB;
         EDI_on_tab_bytes[1] = 0;
         EDI_on_tab_bytes[2] = 0;

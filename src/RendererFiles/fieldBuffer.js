@@ -99,7 +99,11 @@ const byteAUTOCOMPLETE_isRenderPending = 15;
 const byteAUTOCOMPLETE_rect_isNull = 16;
 gBYTE_FIELDS[byteAUTOCOMPLETE_rect_isNull] = 1;
 
-// gBYTE_FIELDS[byteAUTOCOMPLETE_rect_isNull]
+const byteAUTOCOMPLETE_isCheckingTrailingEdge = 17;
+
+const byteAUTOCOMPLETE_scrollIsFetchingData = 18;
+
+// gBYTE_FIELDS[byteAUTOCOMPLETE_scrollIsFetchingData]
 
 // TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
 // - [ ] triple equals

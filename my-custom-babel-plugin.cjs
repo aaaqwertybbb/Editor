@@ -449,6 +449,8 @@ module.exports = function (babel) {
     "byteAUTOCOMPLETE_exists",
     "byteAUTOCOMPLETE_isRenderPending",
     "byteAUTOCOMPLETE_rect_isNull",
+    "byteAUTOCOMPLETE_isCheckingTrailingEdge",
+    "byteAUTOCOMPLETE_scrollIsFetchingData",
 
 
 

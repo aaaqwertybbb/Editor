@@ -19,10 +19,6 @@ let AUTOCOMPLETE_renderKindArray = [];
 let AUTOCOMPLETEElement = null;
 let AUTOCOMPLETE_arrayFromItemListElement = null;
 
-let AUTOCOMPLETE_isCheckingTrailingEdge = false;
-
-let AUTOCOMPLETE_scrollIsFetchingData = false;
-
 function AUTOCOMPLETE_render_request(renderKind) {
     if (AUTOCOMPLETE_renderKindArray[AUTOCOMPLETE_renderKindArray.length - 1] !== renderKind) {
         AUTOCOMPLETE_renderKindArray.push(renderKind);
@@ -154,7 +150,7 @@ function AUTOCOMPLETE_render_do_show(timestamp) {
     // (the reason specfically I think relates to when you change a file i.e.: changing a file can race condition regardless of this being forced to false)
     // (UGH not changing a file I'm gonna pass out I'm almost done but I mean the changing the autocomplete menu or some such)
     // (also something in the code seems buggy about having the items in the correct order or something? am I missing a belt?)
-    AUTOCOMPLETE_scrollIsFetchingData = false;
+    gBYTE_FIELDS[byteAUTOCOMPLETE_scrollIsFetchingData] = false;
 
     let local_AUTOCOMPLETEElement;
     let AUTOCOMPLETE_itemList;
@@ -250,7 +246,7 @@ function AUTOCOMPLETE_show(lspResult) {
 
 function AUTOCOMPLETE_slice(lspResult) {
 
-    AUTOCOMPLETE_scrollIsFetchingData = false;
+    gBYTE_FIELDS[byteAUTOCOMPLETE_scrollIsFetchingData] = false;
     if (gINT_FIELDS[fAUTOCOMPLETE_sliceVirtualIndex_SLICE] != gINT_FIELDS[fAUTOCOMPLETE_virtualIndex] ||
         gINT_FIELDS[fAUTOCOMPLETE_sliceVirtualCount_SLICE] != gINT_FIELDS[fAUTOCOMPLETE_virtualCount] ||
         gINT_FIELDS[fAUTOCOMPLETE_sliceBeltIndexZero_SLICE] != gINT_FIELDS[fAUTOCOMPLETE_beltIndexZero]) {
@@ -405,8 +401,8 @@ function AUTOCOMPLETE_events_scroll_render(timestamp) {
 
     gINT_FIELDS[fAUTOCOMPLETE_scrollEndDeadline] = timestamp + 300;
 
-    if (!AUTOCOMPLETE_isCheckingTrailingEdge) {
-        AUTOCOMPLETE_isCheckingTrailingEdge = true;
+    if (!gBYTE_FIELDS[byteAUTOCOMPLETE_isCheckingTrailingEdge]) {
+        gBYTE_FIELDS[byteAUTOCOMPLETE_isCheckingTrailingEdge] = true;
         requestAnimationFrame(AUTOCOMPLETE_events_scroll_render_trailingEdgeCheck);
     }
 
@@ -483,16 +479,16 @@ function AUTOCOMPLETE_events_scroll_render_trailingEdgeCheck(timestamp) {
         return;
     }
 
-    AUTOCOMPLETE_isCheckingTrailingEdge = false;
+    gBYTE_FIELDS[byteAUTOCOMPLETE_isCheckingTrailingEdge] = false;
     AUTOCOMPLETE_events_scroll_render_trailingEdgeDo();
 }
 
 function AUTOCOMPLETE_events_scroll_render_trailingEdgeDo() {
-    if (!AUTOCOMPLETE_scrollIsFetchingData) {
+    if (!gBYTE_FIELDS[byteAUTOCOMPLETE_scrollIsFetchingData]) {
         gINT_FIELDS[fAUTOCOMPLETE_sliceVirtualIndex_SLICE] = gINT_FIELDS[fAUTOCOMPLETE_virtualIndex];
         gINT_FIELDS[fAUTOCOMPLETE_sliceVirtualCount_SLICE] = gINT_FIELDS[fAUTOCOMPLETE_virtualCount];
         gINT_FIELDS[fAUTOCOMPLETE_sliceBeltIndexZero_SLICE] = gINT_FIELDS[fAUTOCOMPLETE_beltIndexZero];
-        AUTOCOMPLETE_scrollIsFetchingData = true;
+        gBYTE_FIELDS[byteAUTOCOMPLETE_scrollIsFetchingData] = true;
         window.myAPI.editorCompletionRequest_slice(gINT_FIELDS[fAUTOCOMPLETE_virtualIndex], gINT_FIELDS[fAUTOCOMPLETE_virtualIndex] + gINT_FIELDS[fAUTOCOMPLETE_virtualCount]);
     }
 }

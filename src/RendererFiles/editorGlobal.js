@@ -210,8 +210,6 @@ let EDI_renderKindArray = [];
 let ArrayFrom_gutter_children = [];
 let ArrayFrom_textElement_children = [];
 
-const count_of_wellknown_renderKinds = 19;
-
 /** 'EDI_init' and 'EDI_drawHorizontalScrollbar' related */
 let DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left;
 

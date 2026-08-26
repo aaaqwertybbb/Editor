@@ -28,8 +28,6 @@ let AUTOCOMPLETE_isCheckingTrailingEdge = false;
 
 let AUTOCOMPLETE_scrollIsFetchingData = false;
 
-let AUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = 2;
-
 function AUTOCOMPLETE_render_request(renderKind) {
     if (AUTOCOMPLETE_renderKindArray[AUTOCOMPLETE_renderKindArray.length - 1] !== renderKind) {
         AUTOCOMPLETE_renderKindArray.push(renderKind);
@@ -88,7 +86,7 @@ function AUTOCOMPLETE_render_create_lines(AUTOCOMPLETE_itemList) {
 
     let verticalOffset = CONST_AUTOCOMPLETE_topPadding;
 
-    let widthAttributeValueNumber = Math.ceil((AUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING + 2/*padding*/) * EXPLORER_firstSpanWidthValue);
+    let widthAttributeValueNumber = Math.ceil((gINT_FIELDS[fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] + 2/*padding*/) * EXPLORER_firstSpanWidthValue);
     let widthAttributeValueString = widthAttributeValueNumber + 'px';
 
     for (let i = 0; i < gINT_FIELDS[fAUTOCOMPLETE_virtualCount]; i++) {
@@ -267,7 +265,7 @@ function AUTOCOMPLETE_slice(lspResult) {
     let local_AUTOCOMPLETE_arrayFromItemListElement = AUTOCOMPLETE_arrayFromItemListElement;
     let local_AUTOCOMPLETE_arrayFromItemListElement_length = local_AUTOCOMPLETE_arrayFromItemListElement.length;
 
-    let currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = AUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
+    let currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = gINT_FIELDS[fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING];
     let NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
 
     let beltIndex = gINT_FIELDS[fAUTOCOMPLETE_beltIndexZero];
@@ -286,8 +284,8 @@ function AUTOCOMPLETE_slice(lspResult) {
     }
 
     if (NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING > currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING) {
-        AUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
-        let widthAttributeValueNumber = Math.ceil((AUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING + 2/*padding*/) * EXPLORER_firstSpanWidthValue);
+        gINT_FIELDS[fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] = NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
+        let widthAttributeValueNumber = Math.ceil((gINT_FIELDS[fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] + 2/*padding*/) * EXPLORER_firstSpanWidthValue);
 
         // This is actually more complicated you have to track whether you go above the minimum requirement lest you add 1 character over and over in width just to keep redrawing widths.
         //if (widthAttributeValueNumber < this.lastReadNumber_offsetWidth) {

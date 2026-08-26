@@ -462,7 +462,10 @@ const fAUTOCOMPLETE_scrollTop = 110;
 
 const fAUTOCOMPLETE_scrollEndDeadline = 111;
 
-// gINT_FIELDS[fAUTOCOMPLETE_scrollEndDeadline]
+const fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = 112;
+gINT_FIELDS[fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] = 2;
+
+// gINT_FIELDS[fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING]
 
 // for the beltIndezZero etc... consider using max value?
 // Although it might "just work" because you're using locals which would become negative?

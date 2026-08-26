@@ -103,7 +103,12 @@ const byteAUTOCOMPLETE_isCheckingTrailingEdge = 17;
 
 const byteAUTOCOMPLETE_scrollIsFetchingData = 18;
 
-// gBYTE_FIELDS[byteAUTOCOMPLETE_scrollIsFetchingData]
+const byteWIDGET_isRenderPending = 19;
+
+const byteWIDGET_shouldRestoreFocus = true;
+gBYTE_FIELDS[byteWIDGET_shouldRestoreFocus] = 1;
+
+// gBYTE_FIELDS[byteWIDGET_shouldRestoreFocus]
 
 // TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
 // - [ ] triple equals
@@ -517,7 +522,9 @@ const fWIDGET_ticketId_drawn = 116;
 const fWIDGET_left = 117;
 const fWIDGET_top = 118;
 
-// gINT_FIELDS[fWIDGET_top]
+const fWIDGETrenderKind_Show_countOfPendingRequests = 119;
+
+// gINT_FIELDS[fWIDGETrenderKind_Show_countOfPendingRequests]
 
 // for the beltIndezZero etc... consider using max value?
 // Although it might "just work" because you're using locals which would become negative?

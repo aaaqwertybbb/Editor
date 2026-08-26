@@ -33,11 +33,6 @@ let WIDGET_target = null;
 // Although you'd want to ensure that every callback has the 'cancel' passed to it when it gets overwritten
 
 let WIDGET_renderKindArray = [];
-let WIDGET_isRenderPending = false;
-
-let WIDGETrenderKind_Show_countOfPendingRequests = 0;
-
-let WIDGET_shouldRestoreFocus = true;
 
 let WIDGET_restoreFocusToElementOverride = null;
 
@@ -47,11 +42,11 @@ let WIDGET_restoreFocusToElementOverride = null;
 function WIDGET_render_request(renderKind) {
     if (WIDGET_renderKindArray[WIDGET_renderKindArray.length - 1] !== renderKind) {
         WIDGET_renderKindArray.push(renderKind);
-        if (renderKind === WIDGETrenderKind_Show) WIDGETrenderKind_Show_countOfPendingRequests++;
+        if (renderKind === WIDGETrenderKind_Show) gINT_FIELDS[fWIDGETrenderKind_Show_countOfPendingRequests]++;
     }
     
-    if (!WIDGET_isRenderPending) {
-        WIDGET_isRenderPending = true;
+    if (!gBYTE_FIELDS[byteWIDGET_isRenderPending]) {
+        gBYTE_FIELDS[byteWIDGET_isRenderPending] = true;
         requestAnimationFrame(WIDGET_render_do);
     }
 }
@@ -62,7 +57,7 @@ function WIDGET_render_do() {
     while (renderKind = WIDGET_renderKindArray.shift()) {
         switch (renderKind) {
             case WIDGETrenderKind_Show:
-                if (WIDGETrenderKind_Show_countOfPendingRequests-- > 1) break;
+                if (gINT_FIELDS[fWIDGETrenderKind_Show_countOfPendingRequests]-- > 1) break;
                 WIDGET_render_do_Show();
                 break;
             case WIDGETrenderKind_Hide:
@@ -71,7 +66,7 @@ function WIDGET_render_do() {
         }
     }
     
-    WIDGET_isRenderPending = false; // Reset the paint lock
+    gBYTE_FIELDS[byteWIDGET_isRenderPending] = false; // Reset the paint lock
 }
 
 function WIDGET_render_do_Show() {
@@ -80,7 +75,7 @@ function WIDGET_render_do_Show() {
     if (WIDGET_WidgetKind_drawn !== WidgetKind_None) {
         WIDGET_element = null;
         // You don't have to invoke 'WIDGET_state_do_Hide' because there was a 1 to 1 overwrite of all the state due to the 'WIDGET_show' invocation which triggered this function.
-        WIDGET_shouldRestoreFocus = false; // going to show a different widget so don't bother with focus here
+        gBYTE_FIELDS[byteWIDGET_shouldRestoreFocus] = false; // going to show a different widget so don't bother with focus here
         WIDGET_render_do_Hide();
     }
 
@@ -190,7 +185,7 @@ function WIDGET_render_do_Hide() {
     }
     WIDGET_WidgetKind_drawn = WidgetKind_None;
     WIDGET_element.remove();
-    if (WIDGET_shouldRestoreFocus && WIDGET_restoreFocusToElement_drawn)
+    if (gBYTE_FIELDS[byteWIDGET_shouldRestoreFocus] && WIDGET_restoreFocusToElement_drawn)
         WIDGET_restoreFocusToElement_drawn.focus();
 }
 
@@ -199,7 +194,7 @@ async function WIDGET_state_do_Hide(shouldRestoreFocus) {
     // TODO: This is believed to prevent any funny business where a UI is being shown, asked to be hidden, submitted before the hide rAF. Once this is confirmed to be true (or other...) remove or update this comment accordingly.
     gINT_FIELDS[fWIDGET_ticketId_pending] = gINT_FIELDS[fWIDGET_ticketId_counter]++;
 
-    WIDGET_shouldRestoreFocus = shouldRestoreFocus;
+    gBYTE_FIELDS[byteWIDGET_shouldRestoreFocus] = shouldRestoreFocus;
     if (WIDGET_currentCallback) {
         await WIDGET_currentCallback({isCancelled:true, value:undefined});
     }

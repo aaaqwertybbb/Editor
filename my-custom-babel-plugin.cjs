@@ -457,6 +457,10 @@ module.exports = function (babel) {
     "fWIDGET_ticketId_drawn",
     "fWIDGET_left",
     "fWIDGET_top",
+    "fWIDGETrenderKind_Show_countOfPendingRequests",
+
+    "byteWIDGET_isRenderPending",
+    "byteWIDGET_shouldRestoreFocus",
 
 
 

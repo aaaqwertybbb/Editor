@@ -370,10 +370,10 @@ const fDIALOG_before_X = 72;
 const fDIALOG_before_Y = 73;
 
 // TODO: What does 'fDIALOG_after_X' and 'fDIALOG_after_Y' even get used for? It seems they always only get set to 0 over and over and do nothing?
-const fDIALOG_after_X = 0;
-const fDIALOG_after_Y = 0;
+const fDIALOG_after_X = 74;
+const fDIALOG_after_Y = 75;
 
-// gINT_FIELDS[fDIALOG_after_Y]
+// gINT_FIELDS[fDIALOG_top_DRAWN]
 
 
 

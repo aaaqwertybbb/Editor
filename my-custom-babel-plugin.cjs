@@ -381,9 +381,21 @@ module.exports = function (babel) {
 
 
 
+    "byteDIALOG_FindAll_options_matchWord",
 
 
-
+    "fDIALOG_left",
+    "fDIALOG_top",
+    "fDIALOG_width",
+    "fDIALOG_height",
+    "fDIALOG_left_DRAWN",
+    "fDIALOG_top_DRAWN",
+    "fDIALOG_width_DRAWN",
+    "fDIALOG_height_DRAWN",
+    "fDIALOG_before_X",
+    "fDIALOG_before_Y",
+    "fDIALOG_after_X",
+    "fDIALOG_after_Y",
 
 
 

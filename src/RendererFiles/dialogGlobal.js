@@ -79,9 +79,9 @@ function DIALOG_render_do_DimensionsChanged() {
         ints[fDIALOG_left_DRAWN] = ints[fDIALOG_left];
         DIALOG_element.style.left = `${ints[fDIALOG_left_DRAWN]}px`;
     }
-    if (fDIALOG_top_DRAWN !== ints[fDIALOG_top]) {
-        fDIALOG_top_DRAWN = ints[fDIALOG_top];
-        DIALOG_element.style.top = `${fDIALOG_top_DRAWN}px`;
+    if (ints[fDIALOG_top_DRAWN] !== ints[fDIALOG_top]) {
+        ints[fDIALOG_top_DRAWN] = ints[fDIALOG_top];
+        DIALOG_element.style.top = `${ints[fDIALOG_top_DRAWN]}px`;
     }
     if (ints[fDIALOG_width_DRAWN] !== ints[fDIALOG_width]) {
         ints[fDIALOG_width_DRAWN] = ints[fDIALOG_width];

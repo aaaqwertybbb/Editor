@@ -404,6 +404,7 @@ module.exports = function (babel) {
     "fDIALOG_after_X",
     "fDIALOG_after_Y",
 
+    "fEDI_w_indexColumn_Goal",
 
 
 

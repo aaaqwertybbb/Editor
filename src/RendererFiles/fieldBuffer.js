@@ -388,7 +388,9 @@ const fDIALOG_before_Y = 73;
 const fDIALOG_after_X = 74;
 const fDIALOG_after_Y = 75;
 
-// gINT_FIELDS[fDIALOG_top_DRAWN]
+const fEDI_w_indexColumn_Goal = 76;
+
+// gINT_FIELDS[fEDI_w_indexColumn_Goal]
 
 
 

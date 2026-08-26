@@ -191,7 +191,6 @@ let EDI_horizontal_scrollbar_widthValue = 0;
 
 let EDI_beltIndexZero = 0;
 
-let w_indexColumn_Goal = -1;
 let w_indexColumn_Sum = -1;
 let w_indexColumn_SpanTextContentRelative = -1;
 let w_indexSpan = -1;
@@ -2539,7 +2538,7 @@ function walkLineUntilIndexColumn() {
     else w_beltIndexLine = (w_beltIndexLine + EDI_beltIndexZero) % gINT_FIELDS[fEDI_virtualCount];
     
     if (w_beltIndexLine < 0) {
-        w_indexColumn_Goal = -1;
+        gINT_FIELDS[fEDI_w_indexColumn_Goal] = -1;
         w_indexColumn_Sum = -1;
         w_indexColumn_SpanTextContentRelative = -1;
         w_indexSpan = -1;
@@ -2558,7 +2557,7 @@ function walkLineUntilIndexColumn() {
         if (indexColumn_Goal <= indexColumn_Sum + span.textContent.length) {
             // '<=' because end-of-line text insertion (end of line but prior to the line ending itself).
             // The line ending isn't written to the span, it is represented by the encompassing div itself.
-            w_indexColumn_Goal = indexColumn_Goal;
+            gINT_FIELDS[fEDI_w_indexColumn_Goal] = indexColumn_Goal;
             w_indexColumn_Sum = indexColumn_Sum;
             w_indexColumn_SpanTextContentRelative = indexColumn_Goal - indexColumn_Sum;
             w_indexSpan = indexSpan;
@@ -2573,7 +2572,7 @@ function walkLineUntilIndexColumn() {
     }
 
     // TODO: When the column index is too large, how should this be handled?
-    w_indexColumn_Goal = -1;
+    gINT_FIELDS[fEDI_w_indexColumn_Goal] = -1;
     w_indexColumn_Sum = -1;
     w_indexColumn_SpanTextContentRelative = -1;
     w_indexSpan = -1;
@@ -3729,13 +3728,13 @@ function EDI_onMouseDownDetailRankThree(event_button, event_shiftKey, indexLineC
  */
 function EDI_insertGapBufferSpan() {
     walkLineUntilIndexColumn();
-    if (w_indexColumn_Goal === -1 || !w_div || w_div.children.length === 0) {
+    if (gINT_FIELDS[fEDI_w_indexColumn_Goal] === -1 || !w_div || w_div.children.length === 0) {
         EDI_cursor_gapBufferWriteToSpanElement = null;
         EDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
         return;
     }
 
-    if (w_indexColumn_Goal == 0) {
+    if (gINT_FIELDS[fEDI_w_indexColumn_Goal] == 0) {
         // TODO: Ensure 'w_div.children[0]' is equal to the 'w_span' and then change this line to use 'w_span'
         EDI_cursor_gapBufferWriteToSpanElement = w_span;
         EDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 0;
@@ -3743,7 +3742,7 @@ function EDI_insertGapBufferSpan() {
     else {
         EDI_cursor_gapBufferWriteToSpanElement = w_div.children[w_indexSpan];
 
-        if (w_indexColumn_Goal === w_indexColumn_Sum + EDI_cursor_gapBufferWriteToSpanElement.textContent.length) {
+        if (gINT_FIELDS[fEDI_w_indexColumn_Goal] === w_indexColumn_Sum + EDI_cursor_gapBufferWriteToSpanElement.textContent.length) {
             EDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = EDI_cursor_gapBufferWriteToSpanElement.textContent.length;
         }
         else {
@@ -5825,7 +5824,7 @@ function EDI_render_do_DuplicateOrPaste() {
         }
 
         walkLineUntilIndexColumn();
-        if (w_indexColumn_Goal === -1 || !w_div || w_div.children.length === 0) {
+        if (gINT_FIELDS[fEDI_w_indexColumn_Goal] === -1 || !w_div || w_div.children.length === 0) {
             // TODO: silent error bad
             alert('// EDI_paste TODO: silent error bad');
             return;
@@ -5993,7 +5992,7 @@ function EDI_render_do_DuplicateOrPaste() {
                     w_div = lineDiv;
                     w_indexSpan = 0;
                     w_span = lineDiv.children[w_indexSpan];
-                    w_indexColumn_Goal = 0;
+                    gINT_FIELDS[fEDI_w_indexColumn_Goal] = 0;
                     w_indexColumn_Sum = 0;
                     w_indexColumn_SpanTextContentRelative = 0;
                     ints[fEDI_cursor_indexLine]++;
@@ -6015,7 +6014,7 @@ function EDI_render_do_DuplicateOrPaste() {
                         w_div = lineDiv;
                         w_indexSpan = 0;
                         w_span = lineDiv.children[w_indexSpan];
-                        w_indexColumn_Goal = 0;
+                        gINT_FIELDS[fEDI_w_indexColumn_Goal] = 0;
                         w_indexColumn_Sum = 0;
                         w_indexColumn_SpanTextContentRelative = 0;
                         ints[fEDI_cursor_indexLine]++;
@@ -6031,8 +6030,8 @@ function EDI_render_do_DuplicateOrPaste() {
                         let spanClassName = '';
                         let spanText = '';
 
-                        if (w_indexColumn_Goal > 0) {
-                            if (w_indexColumn_Goal !== w_indexColumn_Sum + w_span.textContent.length) {
+                        if (gINT_FIELDS[fEDI_w_indexColumn_Goal] > 0) {
+                            if (gINT_FIELDS[fEDI_w_indexColumn_Goal] !== w_indexColumn_Sum + w_span.textContent.length) {
                                 let firstText = w_span.textContent.substring(0, w_indexColumn_SpanTextContentRelative);
                                 let lastText = w_span.textContent.substring(w_indexColumn_SpanTextContentRelative);
                                 last_valid_indexColumn_currentLine = lastText.length;
@@ -6064,7 +6063,7 @@ function EDI_render_do_DuplicateOrPaste() {
                         w_div = lineDiv;
                         w_indexSpan = 0;
                         w_span = lineDiv.children[w_indexSpan];
-                        w_indexColumn_Goal = 0;
+                        gINT_FIELDS[fEDI_w_indexColumn_Goal] = 0;
                         w_indexColumn_Sum = 0;
                         w_indexColumn_SpanTextContentRelative = 0;
                         ints[fEDI_cursor_indexLine]++;
@@ -6302,7 +6301,7 @@ function EDI_render_do_TabKey() {
 
         walkLineUntilIndexColumn();
 
-        if (w_indexColumn_Goal === -1 || !w_div || w_div.children.length === 0) {
+        if (gINT_FIELDS[fEDI_w_indexColumn_Goal] === -1 || !w_div || w_div.children.length === 0) {
             // TODO: silent error bad
             return;
         }
@@ -6629,8 +6628,8 @@ function EDI_render_do_EnterKey() {
                             break;
                     }
                     
-                    if (w_indexColumn_Goal > 0) {
-                        if (w_indexColumn_Goal !== w_indexColumn_Sum + w_span.textContent.length) {
+                    if (gINT_FIELDS[fEDI_w_indexColumn_Goal] > 0) {
+                        if (gINT_FIELDS[fEDI_w_indexColumn_Goal] !== w_indexColumn_Sum + w_span.textContent.length) {
                             let firstText = w_span.textContent.substring(0, w_indexColumn_SpanTextContentRelative);
                             let lastText = w_span.textContent.substring(w_indexColumn_SpanTextContentRelative);
                             w_span.textContent = firstText;

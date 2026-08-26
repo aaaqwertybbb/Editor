@@ -504,6 +504,7 @@ module.exports = function (babel) {
     "byteEDI_isRenderPending",
     "byteEDI_mousemove_eventListener_isActive",
     "fEDI_onResize_timer",
+    "fEDI_hoverTimeout",
 
 
 

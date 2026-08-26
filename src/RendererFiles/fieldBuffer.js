@@ -262,7 +262,7 @@ const CONST_AUTOCOMPLETE_topPadding = 4;
 ////////////////////////////
 ////////////////////////////
 
-const gINT_FIELDS = new Uint32Array(131);
+const gINT_FIELDS = new Uint32Array(150);
 
 const fEDI_lineHeight = 0;
 gINT_FIELDS[fEDI_lineHeight] = 20;
@@ -601,7 +601,11 @@ const fMENU_last_handled_ticketId = 130;
 
 const fEDI_onResize_timer = 131;
 
-// gINT_FIELDS[fEDI_onResize_timer]
+const fEDI_hoverTimeout = 132;
+
+// gINT_FIELDS[fEDI_hoverTimeout]
+
+// 149
 
 /*
 Google AI

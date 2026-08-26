@@ -193,8 +193,6 @@ let ArrayFrom_textElement_children = [];
 let EDI_RemoveSelection_smallLineAndColumnIndices = null;
 let EDI_RemoveSelection_largeLineAndColumnIndices = null;
 
-let EDI_hoverTimeout = null;
-
 let EDI_language_line_lex;
 
 function EDI_cursor_hasSelection() {
@@ -8433,7 +8431,7 @@ function EDI_registerHandlers() {
 < ```js
 < // Mouse hits Token 1:
 < EDI_mouseOver_event = e1; // Reference to e1 is created
-< EDI_hoverTimeout = setTimeout(..., 1000); // Timer 1 created, traps e1 in background
+< gINT_FIELDS[fEDI_hoverTimeout] = setTimeout(..., 1000); // Timer 1 created, traps e1 in background
 < 
 < // Mouse hits Token 2 (0.1 seconds later):
 < EDI_mouseOver_event = e2; // Overwrites the global! 
@@ -8448,7 +8446,7 @@ function EDI_registerHandlers() {
 < When mouseOut eventually fired much later, it executed:
 <
 < ```js
-< clearTimeout(EDI_hoverTimeout); // This ONLY clears Timer 2 (the current ID)!
+< clearTimeout(gINT_FIELDS[fEDI_hoverTimeout]); // This ONLY clears Timer 2 (the current ID)!
 < EDI_mouseOver_event = null;     // This ONLY nulls e2!
 < ```
 <
@@ -8476,20 +8474,20 @@ function EDI_mouseOver(e) {
     //if (!tokenElement) return;
     //
     // Clear previous timer because the mouse is still moving
-    clearTimeout(EDI_hoverTimeout);
+    clearTimeout(gINT_FIELDS[fEDI_hoverTimeout]);
     //
     // Extract line and column stored in the DOM node's data attributes
     //const line = parseInt(tokenElement.dataset.line);
     //const column = parseInt(tokenElement.dataset.column);
     //
     // Wait 300ms. If the mouse leaves or moves, this timer gets cleared.
-    EDI_hoverTimeout = setTimeout(EDI_requestLspHover, 1000);
+    gINT_FIELDS[fEDI_hoverTimeout] = setTimeout(EDI_requestLspHover, 1000);
 }
 
 I said "it doesn't need all these comments"
 
 and I removed what I thought was one continuously block of single line comments
-but there's actually a 'clearTimeout(EDI_hoverTimeout);' hidden among the single line comments.
+but there's actually a 'clearTimeout(gINT_FIELDS[fEDI_hoverTimeout]);' hidden among the single line comments.
 
 So I ended up removing that.
 
@@ -8512,7 +8510,7 @@ function EDI_mouseOver(e) {
 
 
     
-    clearTimeout(EDI_hoverTimeout);
+    clearTimeout(gINT_FIELDS[fEDI_hoverTimeout]);
 
 
 
@@ -8522,7 +8520,7 @@ function EDI_mouseOver(e) {
     //const column = parseInt(tokenElement.dataset.column);
     //
     // Wait 300ms. If the mouse leaves or moves, this timer gets cleared.
-    EDI_hoverTimeout = setTimeout(EDI_requestLspHover, 1000);
+    gINT_FIELDS[fEDI_hoverTimeout] = setTimeout(EDI_requestLspHover, 1000);
 }
 
 // Partially it was:
@@ -8532,8 +8530,8 @@ function EDI_mouseOver(e) {
 
 function EDI_mouseLeave() {
     // Clear timer if mouse leaves the token before 1000ms
-    clearTimeout(EDI_hoverTimeout);
-    EDI_hoverTimeout = null;
+    clearTimeout(gINT_FIELDS[fEDI_hoverTimeout]);
+    gINT_FIELDS[fEDI_hoverTimeout] = 0;
     EDI_hideTooltip();
 }
 

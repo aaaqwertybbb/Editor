@@ -8890,4 +8890,8 @@ because you "something something something" like perhaps you're polluting global
 and making every global scope access take longer or something I don't know
 you just gotta see it all through and then learn from it.
 
+I'm a huge fan of Marina and the Diamonds lately.
+And by lately I mean the last 2 days,
+and by huge fan I mean I keep listening to the same 2 songs over and over.
+
 */

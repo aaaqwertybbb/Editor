@@ -514,6 +514,8 @@ module.exports = function (babel) {
 
     "CONST_EXPLORER_offsetPerDepth",
     "fEXPLORER_firstSpanWidthValue",
+    "fEXPLORER_menuOptionX",
+    "fEXPLORER_menuOptionY",
 
   ];
 

@@ -625,7 +625,10 @@ const fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 135
 const fEXPLORER_firstSpanWidthValue = 136;
 gINT_FIELDS[fEXPLORER_firstSpanWidthValue] = 8;
 
-// gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]
+const fEXPLORER_menuOptionX = 137;
+const fEXPLORER_menuOptionY = 138;
+
+// gINT_FIELDS[fEXPLORER_menuOptionY]
 
 // 149
 

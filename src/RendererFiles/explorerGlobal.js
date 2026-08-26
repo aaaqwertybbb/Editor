@@ -473,10 +473,10 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
 
         if (event_button === 2) {
             this.addSpecificMenuOptionsForTarget(optionList, divItem, target);
-            return menuSet('EXPLORER', target, optionList, menuOptionX=event_clientX, menuOptionY=event_clientY);
+            return menuSet('EXPLORER', target, optionList, gINT_FIELDS[fEXPLORER_menuOptionX]=event_clientX, gINT_FIELDS[fEXPLORER_menuOptionY]=event_clientY);
         } else {
             this.addSpecificMenuOptionsForTarget(optionList, divItem, target);
-            return menuSet('EXPLORER', target, optionList, menuOptionX=nodeListBoundingClientRect.left, menuOptionY=(nodeListBoundingClientRect.top + ((this.component.cursorIndex + 1) * this.component.itemHeightNumber) - this.component.rootElement.scrollTop));
+            return menuSet('EXPLORER', target, optionList, gINT_FIELDS[fEXPLORER_menuOptionX]=nodeListBoundingClientRect.left, gINT_FIELDS[fEXPLORER_menuOptionY]=(nodeListBoundingClientRect.top + ((this.component.cursorIndex + 1) * this.component.itemHeightNumber) - this.component.rootElement.scrollTop));
         }
     }
 
@@ -671,9 +671,6 @@ let EXPLORER_show = true;
 
 /** 8px by default or the measured value with px */
 let EXPLORER_firstSpanWidth = '8px';
-
-let menuOptionX = 0;
-let menuOptionY = 0;
 
 let EXPLORER_menuOptionCut_object = null;
 
@@ -1015,7 +1012,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 if (!entry) return;
                 gBYTE_FIELDS[byteMENU_HIDE_shouldRestoreFocus] = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
-                await WIDGET_show(WidgetKind_InputText, menuOptionX, menuOptionY, 'filename', entry, MENU_target, NewFile_Directory_WIDGET_InputText_callback);
+                await WIDGET_show(WidgetKind_InputText, gINT_FIELDS[fEXPLORER_menuOptionX], gINT_FIELDS[fEXPLORER_menuOptionY], 'filename', entry, MENU_target, NewFile_Directory_WIDGET_InputText_callback);
                 break;
             }
         case CommandKind_NewFile_File:
@@ -1026,7 +1023,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 if (!entry) return;
                 gBYTE_FIELDS[byteMENU_HIDE_shouldRestoreFocus] = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
-                await WIDGET_show(WidgetKind_InputText, menuOptionX, menuOptionY, 'filename', entry, MENU_target, NewFile_File_WIDGET_InputText_callback);
+                await WIDGET_show(WidgetKind_InputText, gINT_FIELDS[fEXPLORER_menuOptionX], gINT_FIELDS[fEXPLORER_menuOptionY], 'filename', entry, MENU_target, NewFile_File_WIDGET_InputText_callback);
                 break;
             }
         case CommandKind_DeleteFile_Directory:
@@ -1038,7 +1035,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 let filename = entry.basename;
                 gBYTE_FIELDS[byteMENU_HIDE_shouldRestoreFocus] = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
-                await WIDGET_show(WidgetKind_YesCancel, menuOptionX, menuOptionY, 'delete ' + filename, entry, MENU_target, DeleteFile_Directory_YesCancel_callback);
+                await WIDGET_show(WidgetKind_YesCancel, gINT_FIELDS[fEXPLORER_menuOptionX], gINT_FIELDS[fEXPLORER_menuOptionY], 'delete ' + filename, entry, MENU_target, DeleteFile_Directory_YesCancel_callback);
                 break;
             }
         case CommandKind_DeleteFile_File:
@@ -1050,7 +1047,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 let filename = entry.basename;
                 gBYTE_FIELDS[byteMENU_HIDE_shouldRestoreFocus] = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
-                await WIDGET_show(WidgetKind_YesCancel, menuOptionX, menuOptionY, 'delete ' + filename, entry, MENU_target, DeleteFile_File_YesCancel_callback);
+                await WIDGET_show(WidgetKind_YesCancel, gINT_FIELDS[fEXPLORER_menuOptionX], gINT_FIELDS[fEXPLORER_menuOptionY], 'delete ' + filename, entry, MENU_target, DeleteFile_File_YesCancel_callback);
                 break;
             }
         case CommandKind_RenameFile_Directory:
@@ -1062,7 +1059,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 let filename = entry.basename;
                 gBYTE_FIELDS[byteMENU_HIDE_shouldRestoreFocus] = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
-                await WIDGET_show(WidgetKind_InputText, menuOptionX, menuOptionY, 'rename', filename, {MENU_target:MENU_target, entry:entry}, RenameFile_Directory_InputText_callback);
+                await WIDGET_show(WidgetKind_InputText, gINT_FIELDS[fEXPLORER_menuOptionX], gINT_FIELDS[fEXPLORER_menuOptionY], 'rename', filename, {MENU_target:MENU_target, entry:entry}, RenameFile_Directory_InputText_callback);
                 break;
             }
         case CommandKind_RenameFile_File:
@@ -1081,7 +1078,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 let filename = entry.basename;
                 gBYTE_FIELDS[byteMENU_HIDE_shouldRestoreFocus] = false;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
-                await WIDGET_show(WidgetKind_InputText, menuOptionX, menuOptionY, 'rename', filename, {MENU_target: MENU_target, entry: entry}, RenameFile_File_InputText_callback);
+                await WIDGET_show(WidgetKind_InputText, gINT_FIELDS[fEXPLORER_menuOptionX], gINT_FIELDS[fEXPLORER_menuOptionY], 'rename', filename, {MENU_target: MENU_target, entry: entry}, RenameFile_File_InputText_callback);
                 break;
             }
     }

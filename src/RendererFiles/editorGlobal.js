@@ -8889,4 +8889,12 @@ I should start using const
 
 I'm also gonna try changing the color theme in VSCode maybe that's what is holding me back
 
+=====
+
+I'm confused because I don't have the syntax highlighting of any degree available as you scroll new lines of text into view.
+Not even just the "second layer" that pops in in VSCode when you scroll a line of text into view then it gets a second round of syntax highlighting
+and yet even just this block of singular color, it has moments where I can see the GC collections happening.
+
+So is it me or the smi's?
+
 */

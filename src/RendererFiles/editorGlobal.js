@@ -394,9 +394,9 @@ function EDI_render_do_InsertLtr() {
             let x = EDI_decoder.decode(EDI_cursor_gapBuffer.subarray(ints[fEDI_cursor_editRenderedDisplacement], ints[fEDI_cursor_editLength]));
 
             EDI_cursor_gapBufferWriteToSpanElement.textContent = 
-                EDI_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]/* + ints[fEDI_offsetWithinSpan]*/) + ints[fEDI_cursor_editRenderedDisplacement]) +
+                EDI_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (ints[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]/* + ints[fEDI_offsetWithinSpan]*/) + ints[fEDI_cursor_editRenderedDisplacement]) +
                 x +
-                EDI_cursor_gapBufferWriteToSpanElement.textContent.slice((gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]/* + ints[fEDI_offsetWithinSpan]*/) + ints[fEDI_cursor_editRenderedDisplacement]);
+                EDI_cursor_gapBufferWriteToSpanElement.textContent.slice((ints[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]/* + ints[fEDI_offsetWithinSpan]*/) + ints[fEDI_cursor_editRenderedDisplacement]);
 
             ints[fEDI_cursor_editRenderedDisplacement] = ints[fEDI_cursor_editLength];
         }
@@ -661,8 +661,8 @@ function EDI_render_do_Scroll(timestamp) {
         
         // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 4 of 4)
         // ...and here the locals assigned the same value as the globals in case 'EDI_onScroll_LeadingEdge' modified the globals.
-        local_prevVli = gINT_FIELDS[fEDI_prevVli];
-        local_currVli = gINT_FIELDS[fEDI_currVli];
+        local_prevVli = ints[fEDI_prevVli];
+        local_currVli = ints[fEDI_currVli];
     }
 
     ints[fEDI_ONSCROLLscrollTop] = ints[fEDI_lastReadNumber_scrollTop]; // TODO: Move this to the scroll event handler (probably-maybe)
@@ -695,7 +695,7 @@ function EDI_render_do_Scroll(timestamp) {
 
         ints[fEDI_sum_diffPositive] += diff;
 
-        // Note: this case has 'vertical = (gINT_FIELDS[fEDI_prevVli] + ints[fEDI_virtualCount]) * local_lineHeight;' I believe 'ints[fEDI_virtualCount]' === 'ints[fEDI_ONSCROLLvirtualCount]' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
+        // Note: this case has 'vertical = (ints[fEDI_prevVli] + ints[fEDI_virtualCount]) * local_lineHeight;' I believe 'ints[fEDI_virtualCount]' === 'ints[fEDI_ONSCROLLvirtualCount]' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
         lowerBound = local_prevVli + ints[fEDI_ONSCROLLvirtualCount];
         upperBound = lowerBound + diff;
 
@@ -785,8 +785,8 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
     
     // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 2 of 4)
     // ...and here the locals are moved to the global scope.
-    gINT_FIELDS[fEDI_prevVli] = local_prevVli;
-    gINT_FIELDS[fEDI_currVli] = local_currVli;
+    ints[fEDI_prevVli] = local_prevVli;
+    ints[fEDI_currVli] = local_currVli;
 
     ints[fEDI_intFalsey_isScrolling] = 1;
 
@@ -801,7 +801,7 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
     EDI_finalizeAllCursors();
 
     if (ints[fEDI_ONSCROLLscrollTop] === ints[fEDI_lastReadNumber_scrollTop] &&
-        gINT_FIELDS[fEDI_prevVli] === ints[fEDI_virtualIndexLine] &&
+        ints[fEDI_prevVli] === ints[fEDI_virtualIndexLine] &&
         ints[fEDI_ONSCROLLvirtualCount] === ints[fEDI_virtualCount]) {
             // TODO: this is directly tied to a scroll event on EDI_baseElement so handle it from there perhaps?
             // TODO: this code is duplicated inside EDI_drawHorizontalScrollbar, reduce duplication?
@@ -846,9 +846,9 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
             //
             // TODO: What happens when you overflow 'gINT_FIELDS[fEDI_prevVli]' does it overflow such that you're the correct diff?
             //
-            gINT_FIELDS[fEDI_prevVli] = gINT_FIELDS[fEDI_currVli] + ints[fEDI_virtualCount];
-            //gINT_FIELDS[fEDI_prevVli] = 0;
-            //gINT_FIELDS[fEDI_currVli] = ints[fEDI_virtualCount];
+            ints[fEDI_prevVli] = ints[fEDI_currVli] + ints[fEDI_virtualCount];
+            //ints[fEDI_prevVli] = 0;
+            //ints[fEDI_currVli] = ints[fEDI_virtualCount];
 
             EDI_render_do_CreateViewport();
             return false;
@@ -1368,9 +1368,9 @@ function EDI_drawGutter_Width() {
  */
 function EDI_drawHorizontalScrollbar() {
     const ints = gINT_FIELDS;
-    if (gINT_FIELDS[fEDI_DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left] !== ints[fEDI_gutterWidthTotal]) {
+    if (ints[fEDI_DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left] !== ints[fEDI_gutterWidthTotal]) {
         EDI_horizontal_scrollbar.style.left = gutterWidthTotal_withPxUnits;
-        gINT_FIELDS[fEDI_DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left] = ints[fEDI_gutterWidthTotal];
+        ints[fEDI_DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left] = ints[fEDI_gutterWidthTotal];
     }
 
     if (ints[fEDI_EDI_horizontal_scrollbar_widthValue] !== (EDI_baseElement.clientWidth - ints[fEDI_gutterWidthTotal])) {
@@ -1684,8 +1684,8 @@ function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
         }
     }
 
-    startingLinePos_end = gINT_FIELDS[fEDI_EDI_indentLess_startingLinePos_end];
-    gINT_FIELDS[fEDI_EDI_indentLess_startingLinePos_end] = 0;
+    startingLinePos_end = ints[fEDI_EDI_indentLess_startingLinePos_end];
+    ints[fEDI_EDI_indentLess_startingLinePos_end] = 0;
 
     
 
@@ -1934,7 +1934,7 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
     //    //}
     //}
 
-    let trackedSyntaxReposition_i = EDI_trackedSyntaxReposition_find(gINT_FIELDS[fEDI_EDI_indentLess_startingLinePos_end] + 1);
+    let trackedSyntaxReposition_i = EDI_trackedSyntaxReposition_find(ints[fEDI_EDI_indentLess_startingLinePos_end] + 1);
     if (trackedSyntaxReposition_i === NaN || trackedSyntaxReposition_i === -1) {
         trackedSyntaxReposition_i = EDI_trackedSyntaxList.count_abstract;
     }
@@ -2257,7 +2257,7 @@ function EDI_finalizeEdit_ClearEditState() {
     ints[fEDI_cursor_END_editIndexColumn] = 0;
     ints[fEDI_cursor_gapBufferCount] = 0;
     EDI_cursor_gapBufferWriteToSpanElement = null;
-    gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] = 0;
+    ints[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] = 0;
     ints[fEDI_cursor_editLineFeedCount] = 0;
     EDI_lineEndPositionList_PENDING.clear();
 }
@@ -6900,8 +6900,8 @@ function EDI_removeSelection() {
         largePosition = ints[fEDI_cursor_selectionAnchor];
     }
 
-    gINT_FIELDS[fEDI_EDI_RemoveSelection_smallPosition] = smallPosition;
-    gINT_FIELDS[fEDI_EDI_RemoveSelection_largePosition] = largePosition;
+    ints[fEDI_EDI_RemoveSelection_smallPosition] = smallPosition;
+    ints[fEDI_EDI_RemoveSelection_largePosition] = largePosition;
 
     ints[fEDI_cursor_selectionAnchor] = 0;
     ints[fEDI_cursor_selectionEnd] = 0;
@@ -6911,8 +6911,8 @@ function EDI_removeSelection() {
     EDI_startEdit(EditKind_RemoveTextNoBatching, smallPosition, /*editLength*/ 0);
 
     let smallLineAndColumnIndices = EDI_getLineAndColumnIndices(smallPosition);
-    gINT_FIELDS[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine] = smallLineAndColumnIndices.indexLine;
-    gINT_FIELDS[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn] = smallLineAndColumnIndices.indexColumn;
+    ints[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine] = smallLineAndColumnIndices.indexLine;
+    ints[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn] = smallLineAndColumnIndices.indexColumn;
     ints[fEDI_cursor_indexLine] = smallLineAndColumnIndices.indexLine;
     ints[fEDI_cursor_indexColumn] = smallLineAndColumnIndices.indexColumn;
     ints[fEDI_cursor_editIndexLine] = smallLineAndColumnIndices.indexLine;
@@ -6936,13 +6936,13 @@ function EDI_render_do_RemoveSelection() {
 
     const ints = gINT_FIELDS;
 
-    let smallPosition = gINT_FIELDS[fEDI_EDI_RemoveSelection_smallPosition];
-    let largePosition = gINT_FIELDS[fEDI_EDI_RemoveSelection_largePosition];
+    let smallPosition = ints[fEDI_EDI_RemoveSelection_smallPosition];
+    let largePosition = ints[fEDI_EDI_RemoveSelection_largePosition];
 
     let editLength = largePosition - smallPosition;
 
-    let smallLineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine];
-    let smallLineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn];
+    let smallLineAndColumnIndices_indexLine = ints[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine];
+    let smallLineAndColumnIndices_indexColumn = ints[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn];
 
     ///////////
     ///////////
@@ -7703,35 +7703,38 @@ function EDI_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine() {
 }
 
 function EDI_scrollCursorIntoView() {
+
+    const ints = gINT_FIELDS;
+
     let scrollX = 0;
     let scrollY = 0;
 
-    let local_lastReadNumber_scrollTop = gINT_FIELDS[fEDI_lastReadNumber_scrollTop];
+    let local_lastReadNumber_scrollTop = ints[fEDI_lastReadNumber_scrollTop];
 
-    if (gINT_FIELDS[fEDI_cursor_cursorTranslateYValue] < local_lastReadNumber_scrollTop) {
-        scrollY = gINT_FIELDS[fEDI_cursor_cursorTranslateYValue] - local_lastReadNumber_scrollTop;
+    if (ints[fEDI_cursor_cursorTranslateYValue] < local_lastReadNumber_scrollTop) {
+        scrollY = ints[fEDI_cursor_cursorTranslateYValue] - local_lastReadNumber_scrollTop;
     }
-    else if (gINT_FIELDS[fEDI_cursor_cursorTranslateYValue] >= local_lastReadNumber_scrollTop + gINT_FIELDS[fEDI_lastReadNumber_offsetHeight]) {
+    else if (ints[fEDI_cursor_cursorTranslateYValue] >= local_lastReadNumber_scrollTop + ints[fEDI_lastReadNumber_offsetHeight]) {
         // I want to use clientHeight but I don't have any logic for no scrollbar thus single page fitting text might bug out and trigger
         // scrollBy over and over.
 
         // make the bottom touch then add lineHeight is probably the algorithm to get a perfect fill maybe do lineHeight * 2 skip an event when spamming arrowDown?
-        let currentBottom = local_lastReadNumber_scrollTop + gINT_FIELDS[fEDI_lastReadNumber_offsetHeight];
-        let changeToMakeBottomTouch = gINT_FIELDS[fEDI_cursor_cursorTranslateYValue] - currentBottom;
-        scrollY = changeToMakeBottomTouch + (2 * gINT_FIELDS[fEDI_lineHeight]);
+        let currentBottom = local_lastReadNumber_scrollTop + ints[fEDI_lastReadNumber_offsetHeight];
+        let changeToMakeBottomTouch = ints[fEDI_cursor_cursorTranslateYValue] - currentBottom;
+        scrollY = changeToMakeBottomTouch + (2 * ints[fEDI_lineHeight]);
     }
 
-    if (gINT_FIELDS[fEDI_cursor_cursorTranslateXValue] < gINT_FIELDS[fEDI_lastReadNumber_scrollLeft]) {
-        scrollX = gINT_FIELDS[fEDI_cursor_cursorTranslateXValue] - gINT_FIELDS[fEDI_lastReadNumber_scrollLeft];
+    if (ints[fEDI_cursor_cursorTranslateXValue] < ints[fEDI_lastReadNumber_scrollLeft]) {
+        scrollX = ints[fEDI_cursor_cursorTranslateXValue] - ints[fEDI_lastReadNumber_scrollLeft];
     }
-    else if (gINT_FIELDS[fEDI_cursor_cursorTranslateXValue] >= gINT_FIELDS[fEDI_lastReadNumber_scrollLeft] + gINT_FIELDS[fEDI_lastReadNumber_offsetWidth]) {
+    else if (ints[fEDI_cursor_cursorTranslateXValue] >= ints[fEDI_lastReadNumber_scrollLeft] + ints[fEDI_lastReadNumber_offsetWidth]) {
         // I want to use clientWidth but I don't have any logic for no scrollbar thus single page fitting text might bug out and trigger
         // scrollBy over and over.
 
         // make the right touch then add characterWidth is probably the algorithm to get a perfect fill maybe do characterWidth * 2 skip an event when spamming arrowRight?
-        let currentRight = gINT_FIELDS[fEDI_lastReadNumber_scrollLeft] + gINT_FIELDS[fEDI_lastReadNumber_offsetWidth];
-        let changeToMakeRightTouch = gINT_FIELDS[fEDI_cursor_cursorTranslateXValue] - currentRight;
-        scrollX = changeToMakeRightTouch + (4 * gINT_FIELDS[fEDI_EDI_characterWidth]);
+        let currentRight = ints[fEDI_lastReadNumber_scrollLeft] + ints[fEDI_lastReadNumber_offsetWidth];
+        let changeToMakeRightTouch = ints[fEDI_cursor_cursorTranslateXValue] - currentRight;
+        scrollX = changeToMakeRightTouch + (4 * ints[fEDI_EDI_characterWidth]);
     }
 
     // This is asynchronous, this is the bug cause

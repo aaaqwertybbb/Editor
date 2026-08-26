@@ -528,7 +528,7 @@ function EDI_render_do_CreateViewport() {
     EDI_gutter.innerHTML = '';
     EDI_textElement.innerHTML = '';
 
-    gINT_FIELDS[fEDI_EDI_beltIndexZero] = 0;
+    ints[fEDI_EDI_beltIndexZero] = 0;
     let translateY = `translateY(0px)`;
     let left = gutterWidthTotal_withPxUnits;
     let gutterWidth = `${ints[fEDI_gutterWidthStyleValue]}px`;
@@ -762,9 +762,9 @@ function EDI_render_do_Scroll(timestamp) {
         lowerBound = local_prevVli + ints[fEDI_ONSCROLLvirtualCount];
         upperBound = lowerBound + diff;
 
-        beltIndexLine = gINT_FIELDS[fEDI_EDI_beltIndexZero] - 1 /*This decrement avoids that.*/;
+        beltIndexLine = ints[fEDI_EDI_beltIndexZero] - 1 /*This decrement avoids that.*/;
 
-        gINT_FIELDS[fEDI_EDI_beltIndexZero] = (beltIndexLine + 1/*This decrement avoids that... but here you need to undo it for a moment*/ + diff) % local_ArrayFrom_textElement_children_length;
+        ints[fEDI_EDI_beltIndexZero] = (beltIndexLine + 1/*This decrement avoids that... but here you need to undo it for a moment*/ + diff) % local_ArrayFrom_textElement_children_length;
     }
     else if (diff < 0 && (diff *= -1) < ints[fEDI_virtualCount]) {
 
@@ -773,11 +773,11 @@ function EDI_render_do_Scroll(timestamp) {
         lowerBound = local_currVli;
         upperBound = lowerBound + diff;
 
-        gINT_FIELDS[fEDI_EDI_beltIndexZero] = (
-            (/*let lastIndex = */(gINT_FIELDS[fEDI_EDI_beltIndexZero] - 1 + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length) -
+        ints[fEDI_EDI_beltIndexZero] = (
+            (/*let lastIndex = */(ints[fEDI_EDI_beltIndexZero] - 1 + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length) -
             (diff - 1) + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length;
 
-        beltIndexLine = gINT_FIELDS[fEDI_EDI_beltIndexZero] - 1/*This decrement avoids that.*/;
+        beltIndexLine = ints[fEDI_EDI_beltIndexZero] - 1/*This decrement avoids that.*/;
     }
     else {
         lowerBound = local_currVli;
@@ -785,7 +785,7 @@ function EDI_render_do_Scroll(timestamp) {
 
         ints[fEDI_sum_diffPositive] += ints[fEDI_virtualCount];
 
-        beltIndexLine = gINT_FIELDS[fEDI_EDI_beltIndexZero] - 1/*This decrement avoids that.*/;
+        beltIndexLine = ints[fEDI_EDI_beltIndexZero] - 1/*This decrement avoids that.*/;
     }
 
     let vertical = lowerBound * local_lineHeight;
@@ -979,7 +979,7 @@ function EDI_render_do_SyntaxHighlighting() {
 
     let i = 0;
     
-    let beltIndexCurrent = gINT_FIELDS[fEDI_EDI_beltIndexZero];
+    let beltIndexCurrent = ints[fEDI_EDI_beltIndexZero];
     let indexLine = ints[fEDI_virtualIndexLine];
 
     let i_bounded = 0;
@@ -2508,29 +2508,31 @@ function EDI_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_I) 
 
 function walkLineUntilIndexColumn() {
 
+    const ints = gINT_FIELDS;
+
     // TODO: delete key until you delete a linefeed and join the next line onto your own then press backspace everything breaks.
 
     // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
     // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-    gINT_FIELDS[fEDI_w_beltIndexLine] = (gINT_FIELDS[fEDI_cursor_indexLine] + gINT_FIELDS[fEDI_offsetLine]) - gINT_FIELDS[fEDI_virtualIndexLine];
-    if (gINT_FIELDS[fEDI_w_beltIndexLine] >= ArrayFrom_textElement_children_length || gINT_FIELDS[fEDI_w_beltIndexLine] < 0) gINT_FIELDS[fEDI_w_beltIndexLine] = -1;
-    else gINT_FIELDS[fEDI_w_beltIndexLine] = (gINT_FIELDS[fEDI_w_beltIndexLine] + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % gINT_FIELDS[fEDI_virtualCount];
+    ints[fEDI_w_beltIndexLine] = (ints[fEDI_cursor_indexLine] + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
+    if (ints[fEDI_w_beltIndexLine] >= ArrayFrom_textElement_children_length || ints[fEDI_w_beltIndexLine] < 0) ints[fEDI_w_beltIndexLine] = -1;
+    else ints[fEDI_w_beltIndexLine] = (ints[fEDI_w_beltIndexLine] + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
     
-    if (gINT_FIELDS[fEDI_w_beltIndexLine] < 0) {
-        gINT_FIELDS[fEDI_w_indexColumn_Goal] = 0;
-        gINT_FIELDS[fEDI_w_indexColumn_Sum] = 0;
-        gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
-        gINT_FIELDS[fEDI_w_indexSpan] = 0;
+    if (ints[fEDI_w_beltIndexLine] < 0) {
+        ints[fEDI_w_indexColumn_Goal] = 0;
+        ints[fEDI_w_indexColumn_Sum] = 0;
+        ints[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
+        ints[fEDI_w_indexSpan] = 0;
         w_span = null;
         w_div = null;
-        gINT_FIELDS[fEDI_w_beltIndexLine] = gINT_FIELDS[fEDI_w_beltIndexLine]; // double assignment but not all that pressing of a matter at the moment I think it reads better to just set it / avoid the temporary 'let' local variable each invocation.
+        ints[fEDI_w_beltIndexLine] = ints[fEDI_w_beltIndexLine]; // double assignment but not all that pressing of a matter at the moment I think it reads better to just set it / avoid the temporary 'let' local variable each invocation.
         return;
     }
     
-    let div = ArrayFrom_textElement_children[gINT_FIELDS[fEDI_w_beltIndexLine]];
-    let indexColumn_Goal = gINT_FIELDS[fEDI_cursor_indexColumn] + gINT_FIELDS[fEDI_offsetColumn];
+    let div = ArrayFrom_textElement_children[ints[fEDI_w_beltIndexLine]];
+    let indexColumn_Goal = ints[fEDI_cursor_indexColumn] + ints[fEDI_offsetColumn];
     let indexColumn_Sum = 0;
 
     for (var indexSpan = 0; indexSpan < div.children.length; indexSpan++) {
@@ -2538,13 +2540,13 @@ function walkLineUntilIndexColumn() {
         if (indexColumn_Goal <= indexColumn_Sum + span.textContent.length) {
             // '<=' because end-of-line text insertion (end of line but prior to the line ending itself).
             // The line ending isn't written to the span, it is represented by the encompassing div itself.
-            gINT_FIELDS[fEDI_w_indexColumn_Goal] = indexColumn_Goal;
-            gINT_FIELDS[fEDI_w_indexColumn_Sum] = indexColumn_Sum;
-            gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] = indexColumn_Goal - indexColumn_Sum;
-            gINT_FIELDS[fEDI_w_indexSpan] = indexSpan;
+            ints[fEDI_w_indexColumn_Goal] = indexColumn_Goal;
+            ints[fEDI_w_indexColumn_Sum] = indexColumn_Sum;
+            ints[fEDI_w_indexColumn_SpanTextContentRelative] = indexColumn_Goal - indexColumn_Sum;
+            ints[fEDI_w_indexSpan] = indexSpan;
             w_span = span;
             w_div = div;
-            gINT_FIELDS[fEDI_w_beltIndexLine] = gINT_FIELDS[fEDI_w_beltIndexLine];
+            ints[fEDI_w_beltIndexLine] = ints[fEDI_w_beltIndexLine];
             return;
         }
         else {
@@ -2553,13 +2555,13 @@ function walkLineUntilIndexColumn() {
     }
 
     // TODO: When the column index is too large, how should this be handled?
-    gINT_FIELDS[fEDI_w_indexColumn_Goal] = 0;
-    gINT_FIELDS[fEDI_w_indexColumn_Sum] = 0;
-    gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
-    gINT_FIELDS[fEDI_w_indexSpan] = 0;
+    ints[fEDI_w_indexColumn_Goal] = 0;
+    ints[fEDI_w_indexColumn_Sum] = 0;
+    ints[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
+    ints[fEDI_w_indexSpan] = 0;
     w_span = null;
     w_div = null;
-    gINT_FIELDS[fEDI_w_beltIndexLine] = gINT_FIELDS[fEDI_w_beltIndexLine];
+    ints[fEDI_w_beltIndexLine] = ints[fEDI_w_beltIndexLine];
     return;
 }
 

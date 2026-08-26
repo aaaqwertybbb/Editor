@@ -141,56 +141,6 @@ let EDI_cursor_edit_flagLineChanged = -1;
  */
 let EDI_cursor_EDI_paste_clipboardContent = null;
 
-function EDI_cursor_hasSelection() {
-    const ints = gINT_FIELDS;
-    return ints[fEDI_cursor_selectionAnchor] >= 0 &&
-            ints[fEDI_cursor_selectionEnd] >= 0 &&
-            ints[fEDI_cursor_selectionAnchor] != ints[fEDI_cursor_selectionEnd];
-}
-
-/**
- * The code that clears the editor is dependent on this method NOT clearing 'EDI_cursor_selectionDivExists'
- * 
- * Somewhat duplicated code: This messes with the language features if I invoke clear() in the constructor, it puts "| undefined" on all the types.
- */
-function EDI_cursor_clear() {
-    const ints = gINT_FIELDS;
-    ints[fEDI_cursor_indexLine] = 0;
-    ints[fEDI_cursor_indexColumn] = 0;
-    ints[fEDI_cursor_STORED_indexColumn] = 0;
-    ints[fEDI_cursor_cursorTranslateYValue] = 0;
-    ints[fEDI_cursor_cursorTranslateXValue] = 0;
-    ints[fEDI_cursor_selectionAnchor] = 0;
-    ints[fEDI_cursor_selectionEnd] = 0;
-    ints[fEDI_cursor_DRAWN_selectionAnchor] = 0;
-    ints[fEDI_cursor_DRAWN_selectionEnd] = 0;
-    ints[fEDI_cursor_DRAWN_selection_virtualIndexLine] = 0;
-    ints[fEDI_cursor_DRAWN_selection_virtualCount] = 0;
-    ints[fEDI_cursor_editKind] = EditKind_None;
-    ints[fEDI_cursor_editLength] = 0;
-    ints[fEDI_cursor_editPosition] = 0;
-    ints[fEDI_cursor_editIndexLine] = 0;
-    ints[fEDI_cursor_editIndexColumn] = 0;
-    ints[fEDI_cursor_editRenderedDisplacement] = 0;
-    ints[fEDI_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET] = 0;
-    ints[fEDI_cursor_END_editIndexLine] = 0;
-    ints[fEDI_cursor_END_editIndexColumn] = 0;
-
-    ints[fEDI_cursor_gapBufferCount] = 0;
-
-    EDI_cursor_enterKey_newLinePlusIndentation_byteList = null;
-    EDI_cursor_cached_indentation_string = null;
-    EDI_cursor_enterKeyEventKind = EnterKeyEventKind_None;
-
-    ints[fEDI_cursor_editLineFeedCount] = 0;
-    EDI_cursor_edit_flagLineChanged = -1;
-
-    EDI_cursor_EDI_paste_clipboardContent = null;
-
-    ints[fEDI_cursor_EDI_duplicate_small] = 0;
-    ints[fEDI_cursor_EDI_duplicate_length] = 0;
-}
-
 const EDI_debug = document.getElementById('EDI_debug');
 const EDI_findOverlay = document.getElementById('EDI_findOverlay');
 EDI_findOverlay.style.visibility = 'hidden';
@@ -305,6 +255,56 @@ let EDI_cursorBlinkLastTimestamp = 0;
 let EDI_mousemove_eventListener_isActive = false;
 
 let EDI_language_line_lex;
+
+function EDI_cursor_hasSelection() {
+    const ints = gINT_FIELDS;
+    return ints[fEDI_cursor_selectionAnchor] >= 0 &&
+            ints[fEDI_cursor_selectionEnd] >= 0 &&
+            ints[fEDI_cursor_selectionAnchor] != ints[fEDI_cursor_selectionEnd];
+}
+
+/**
+ * The code that clears the editor is dependent on this method NOT clearing 'EDI_cursor_selectionDivExists'
+ * 
+ * Somewhat duplicated code: This messes with the language features if I invoke clear() in the constructor, it puts "| undefined" on all the types.
+ */
+function EDI_cursor_clear() {
+    const ints = gINT_FIELDS;
+    ints[fEDI_cursor_indexLine] = 0;
+    ints[fEDI_cursor_indexColumn] = 0;
+    ints[fEDI_cursor_STORED_indexColumn] = 0;
+    ints[fEDI_cursor_cursorTranslateYValue] = 0;
+    ints[fEDI_cursor_cursorTranslateXValue] = 0;
+    ints[fEDI_cursor_selectionAnchor] = 0;
+    ints[fEDI_cursor_selectionEnd] = 0;
+    ints[fEDI_cursor_DRAWN_selectionAnchor] = 0;
+    ints[fEDI_cursor_DRAWN_selectionEnd] = 0;
+    ints[fEDI_cursor_DRAWN_selection_virtualIndexLine] = 0;
+    ints[fEDI_cursor_DRAWN_selection_virtualCount] = 0;
+    ints[fEDI_cursor_editKind] = EditKind_None;
+    ints[fEDI_cursor_editLength] = 0;
+    ints[fEDI_cursor_editPosition] = 0;
+    ints[fEDI_cursor_editIndexLine] = 0;
+    ints[fEDI_cursor_editIndexColumn] = 0;
+    ints[fEDI_cursor_editRenderedDisplacement] = 0;
+    ints[fEDI_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET] = 0;
+    ints[fEDI_cursor_END_editIndexLine] = 0;
+    ints[fEDI_cursor_END_editIndexColumn] = 0;
+
+    ints[fEDI_cursor_gapBufferCount] = 0;
+
+    EDI_cursor_enterKey_newLinePlusIndentation_byteList = null;
+    EDI_cursor_cached_indentation_string = null;
+    EDI_cursor_enterKeyEventKind = EnterKeyEventKind_None;
+
+    ints[fEDI_cursor_editLineFeedCount] = 0;
+    EDI_cursor_edit_flagLineChanged = -1;
+
+    EDI_cursor_EDI_paste_clipboardContent = null;
+
+    ints[fEDI_cursor_EDI_duplicate_small] = 0;
+    ints[fEDI_cursor_EDI_duplicate_length] = 0;
+}
 
 function EDI_init() {
 

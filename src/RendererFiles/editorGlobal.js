@@ -2740,7 +2740,7 @@ function EDI_drawCursor(NOTscrollCursorIntoView) {
 
     text += '(' + ints[fEDI_cursor_indexLine] + ', ' + ints[fEDI_cursor_indexColumn] + ')';
     
-    if (DIALOG_Settings_editorDebugShowAdjacentCharacters) {
+    if (gBYTE_FIELDS[byteDIALOG_Settings_editorDebugShowAdjacentCharacters]) {
         let previous = EDI_getCharacterPrevious(ints[fEDI_cursor_indexColumn], EDI_getPositionIndex_cursor());
         if (previous === '\n') previous = '\\n';
         else if (previous === '\t') previous = '\\t';

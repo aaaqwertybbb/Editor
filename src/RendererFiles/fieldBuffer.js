@@ -84,6 +84,9 @@ gBYTE_FIELDS[byteDIALOG_Settings_isDark] = 1;
 const byteDIALOG_Settings_trueTabs_falseSpaces = 9;
 gBYTE_FIELDS[byteDIALOG_Settings_trueTabs_falseSpaces] = 1;
 
+const byteDIALOG_Settings_editorDebugShowAdjacentCharacters = 10;
+// gBYTE_FIELDS[byteDIALOG_Settings_editorDebugShowAdjacentCharacters]
+
 const CONST_EDI_ASCII_LINE_FEED = 10;
 const CONST_EDI_ASCII_TAB = 9;
 const CONST_EDI_ASCII_SPACE = 32;

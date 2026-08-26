@@ -401,7 +401,7 @@ async function DIALOG_Settings_Create_async() {
     let checkboxEditorDebugShowAdjacentCharacters = document.createElement('input');
     checkboxEditorDebugShowAdjacentCharacters.type = 'checkbox';
     checkboxEditorDebugShowAdjacentCharacters.id = 'SETTINGS_editorDebugShowAdjacentCharacters';
-    checkboxEditorDebugShowAdjacentCharacters.checked = DIALOG_Settings_editorDebugShowAdjacentCharacters; // Optional: sets the initial state to checked
+    checkboxEditorDebugShowAdjacentCharacters.checked = gBYTE_FIELDS[byteDIALOG_Settings_editorDebugShowAdjacentCharacters]; // Optional: sets the initial state to checked
     checkboxEditorDebugShowAdjacentCharacters.addEventListener('change', DIALOG_checkboxEditorDebugShowAdjacentCharacters_onchange);
     dialogBody.appendChild(checkboxEditorDebugShowAdjacentCharacters);
 	// -----------------------------------------------------------
@@ -467,7 +467,7 @@ function DIALOG_checkboxEditorDebugShowAdjacentCharacters_onchange() {
     let checkboxEditorDebugShowAdjacentCharacters = document.getElementById('SETTINGS_editorDebugShowAdjacentCharacters');
     if (!checkboxEditorDebugShowAdjacentCharacters) return;
 
-    DIALOG_Settings_editorDebugShowAdjacentCharacters = checkboxEditorDebugShowAdjacentCharacters.checked;
+    gBYTE_FIELDS[byteDIALOG_Settings_editorDebugShowAdjacentCharacters] = checkboxEditorDebugShowAdjacentCharacters.checked;
     EDI_drawCursor();
 }
 

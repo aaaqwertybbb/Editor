@@ -384,6 +384,7 @@ module.exports = function (babel) {
     "byteDIALOG_FindAll_options_matchWord",
     "byteDIALOG_Settings_isDark",
     "byteDIALOG_Settings_trueTabs_falseSpaces",
+    "byteDIALOG_Settings_editorDebugShowAdjacentCharacters",
     
 
 

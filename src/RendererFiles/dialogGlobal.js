@@ -24,8 +24,6 @@ let DIALOG_SHOW_restoreFocusToElement = null;
 let DIALOG_SHOW_currentDialogKind = DialogKind_None;
 let DIALOG_SHOW_onResizeAction = null;
 
-let DIALOG_Settings_editorDebugShowAdjacentCharacters = false;
-
 let DIALOG_renderKindArray = [];
 let DIALOG_isRenderPending = false;
 

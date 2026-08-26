@@ -215,7 +215,7 @@ class EXPLORER_TreeViewDirector {
                 this.component.LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH = depth;
             }
 
-            divItem.style.transform = `translate(${EXPLORER_offsetPerDepth * depth}px, ${verticalStyleNumber}px)`;
+            divItem.style.transform = `translate(${CONST_EXPLORER_offsetPerDepth * depth}px, ${verticalStyleNumber}px)`;
             verticalStyleNumber += this.component.itemHeightNumber;
 
             loopCounter++;
@@ -381,7 +381,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
 
             if (NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING > currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING) {
                 this.component.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
-                let widthAttributeValueNumber = Math.ceil(((this.component.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING + 2/*padding*/) * EXPLORER_firstSpanWidthValue) + EXPLORER_offsetPerDepth * this.component.LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH);
+                let widthAttributeValueNumber = Math.ceil(((this.component.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING + 2/*padding*/) * EXPLORER_firstSpanWidthValue) + CONST_EXPLORER_offsetPerDepth * this.component.LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH);
 
                 // This is actually more complicated you have to track whether you go above the minimum requirement lest you add 1 character over and over in width just to keep redrawing widths.
                 //if (widthAttributeValueNumber < this.lastReadNumber_offsetWidth) {
@@ -670,9 +670,6 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
 const EXPLORER_isExpandedText = '-';
 const EXPLORER_NOTisExpandedText = '+';
 const EXPLORER_cannotBeExpandedText = '';
-
-/** Pixels */
-const EXPLORER_offsetPerDepth = 8;
 
 let EXPLORER_show = true;
 

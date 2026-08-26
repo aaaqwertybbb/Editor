@@ -127,7 +127,7 @@ class DIALOG_FindAll_TreeViewDirector {
                     break;
             }
 
-            divItem.style.transform = `translate(${EXPLORER_offsetPerDepth * depth}px, ${verticalStyleNumber}px)`;
+            divItem.style.transform = `translate(${CONST_EXPLORER_offsetPerDepth * depth}px, ${verticalStyleNumber}px)`;
             verticalStyleNumber += this.component.itemHeightNumber;
 
             loopCounter++;

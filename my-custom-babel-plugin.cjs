@@ -512,6 +512,8 @@ module.exports = function (babel) {
 
     "fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex",
 
+    "CONST_EXPLORER_offsetPerDepth",
+
   ];
 
   return {

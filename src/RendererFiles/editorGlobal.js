@@ -210,9 +210,6 @@ let EDI_renderKindArray = [];
 let ArrayFrom_gutter_children = [];
 let ArrayFrom_textElement_children = [];
 
-/** 'EDI_init' and 'EDI_drawHorizontalScrollbar' related */
-let DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left;
-
 // Move some 'EDI_removeSelection()' state here so I can access it in the render function.
 // TODO: Don't do this long term, I need a simple bridge for this state so I can just get started otherwise I'll spend the rest of my life procrastinating.
 //
@@ -285,7 +282,7 @@ function EDI_init() {
 
     EDI_horizontal_scrollbar = EDI_baseElement.children[2].children[0];
     EDI_horizontal_scrollbar.style.left = '0px';
-    DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left = 0;
+    gINT_FIELDS[fEDI_DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left] = 0;
 
     EDI_horizontal_scrollbar_virtualization_boundary = EDI_baseElement.children[2].children[0].children[0];
     EDI_body = EDI_baseElement.children[5];
@@ -1407,9 +1404,9 @@ function EDI_drawGutter_Width() {
  */
 function EDI_drawHorizontalScrollbar() {
     const ints = gINT_FIELDS;
-    if (DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left !== ints[fEDI_gutterWidthTotal]) {
+    if (gINT_FIELDS[fEDI_DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left] !== ints[fEDI_gutterWidthTotal]) {
         EDI_horizontal_scrollbar.style.left = gutterWidthTotal_withPxUnits;
-        DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left = ints[fEDI_gutterWidthTotal];
+        gINT_FIELDS[fEDI_DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left] = ints[fEDI_gutterWidthTotal];
     }
 
     if (ints[fEDI_EDI_horizontal_scrollbar_widthValue] !== (EDI_baseElement.clientWidth - ints[fEDI_gutterWidthTotal])) {

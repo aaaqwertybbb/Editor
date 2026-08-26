@@ -2204,7 +2204,7 @@ I did some exercises then about an hour long walk then showered...
             span.textContent = divSpanTextContent.substring(substart, subend);
             substart += length;
             pos += length;
-            switch (EDI_pooledTrackedSyntax_trackedSyntaxKind) {
+            switch (gBYTE_FIELDS[byteEDI_pooledTrackedSyntax_trackedSyntaxKind]) {
                 case TrackedSyntaxKind_Comment:
                     span.className = 'eCM';
                     break;

@@ -143,7 +143,9 @@ const byteEDI_cursor_enterKeyEventKind = 34;
 
 const byteEDI_extensionKind = 35;
 
-// gBYTE_FIELDS[byteEDI_extensionKind]
+const byteEDI_pooledTrackedSyntax_trackedSyntaxKind = 36;
+
+// gBYTE_FIELDS[byteEDI_pooledTrackedSyntax_trackedSyntaxKind]
 
 // TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
 // - [ ] triple equals

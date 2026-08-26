@@ -177,8 +177,6 @@ let EDI_onResize_hasTrailingCall = false;
 
 let EDI_offsetWithinSpan_withRespectToThisSpan = null;
 
-let EDI_pooledTrackedSyntax_trackedSyntaxKind = TrackedSyntaxKind_None;
-
 let w_span = null;
 let w_div = null;
 
@@ -1576,7 +1574,7 @@ function EDI_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
         if (ints[fEDI_cursor_editPosition] <= ints[fEDI_pooledTrackedSyntax_start]) {
             EDI_trackedSyntaxList.setStart(i, ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_cursor_editLength]);
         }
-        else if (EDI_pooledTrackedSyntax_trackedSyntaxKind === TrackedSyntaxKind_Comment &&
+        else if (gBYTE_FIELDS[byteEDI_pooledTrackedSyntax_trackedSyntaxKind] === TrackedSyntaxKind_Comment &&
                 ints[fEDI_cursor_editPosition] === ints[fEDI_pooledTrackedSyntax_start] + 1) {
 
             // TODO: Insertion of '*' probably shouldn't remove.
@@ -2216,7 +2214,7 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
             // TODO: This needs to remove more than 1 at a time
             EDI_trackedSyntaxList.removeAt(i, 1);
         }
-        else if (EDI_pooledTrackedSyntax_trackedSyntaxKind === TrackedSyntaxKind_Comment &&
+        else if (gBYTE_FIELDS[byteEDI_pooledTrackedSyntax_trackedSyntaxKind] === TrackedSyntaxKind_Comment &&
                 (ints[fEDI_pooledTrackedSyntax_start] + 1) >= ints[fEDI_cursor_editPosition] && (ints[fEDI_pooledTrackedSyntax_start] + 1) < ints[fEDI_cursor_editPosition] + ints[fEDI_cursor_editLength]) {
             // TODO: You can invalidate a >1 char long by removing beyond just the first unless a character afterwards falls into place that is valid by chance
             //
@@ -2439,7 +2437,7 @@ function EDI_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_I) 
                 let subend = trackedSyntaxEnd > lineEnd ? lineEnd : trackedSyntaxEnd;
                 span.textContent = EDI_decoder.decode(EDI_textByteList.bytes.subarray(substart, subend));
                 substart += (subend - substart);
-                switch (EDI_pooledTrackedSyntax_trackedSyntaxKind) {
+                switch (gBYTE_FIELDS[byteEDI_pooledTrackedSyntax_trackedSyntaxKind]) {
                     case TrackedSyntaxKind_Comment:
                         span.className = 'eCM';
                         break;

@@ -71,7 +71,7 @@ class TrackedSyntaxList {
      */
     getElementAt(index_abstract) {
         let index_literal = index_abstract * this.field_count;
-        EDI_pooledTrackedSyntax_trackedSyntaxKind = this.data_literal[index_literal + this.trackedSyntaxKind_offset];
+        gBYTE_FIELDS[byteEDI_pooledTrackedSyntax_trackedSyntaxKind] = this.data_literal[index_literal + this.trackedSyntaxKind_offset];
         gINT_FIELDS[fEDI_pooledTrackedSyntax_start] = this.data_literal[index_literal + this.start_offset];
         gINT_FIELDS[fEDI_pooledTrackedSyntax_length] = this.data_literal[index_literal + this.length_offset];
     }

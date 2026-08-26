@@ -472,6 +472,9 @@ module.exports = function (babel) {
 
     "fMENU_ticketId_counter",
     "fMENU_ticketId_pending",
+    "fMENU_ticketId_drawn",
+    "fMENU_cursorIndex",
+    "fMENU_SET_index",
 
 
 

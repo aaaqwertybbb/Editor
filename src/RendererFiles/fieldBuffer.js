@@ -546,11 +546,17 @@ const fMENU_ticketId_counter = 120;
 /** TODO: It might read better to make this 'null' or something after you've drawn the pending. */
 const fMENU_ticketId_pending = 121;
 
-// gINT_FIELDS[fMENU_ticketId_pending]
+const fMENU_ticketId_drawn = 122;
+
+const fMENU_cursorIndex = 123;
+
+/** By duplicating this you guarantee the initial cursor index is what was expected. */
+const fMENU_SET_index = 124;
+
+// gINT_FIELDS[fMENU_SET_index]
 
 
-
-
+// TODO: if (!MENU_SET_index) { MENU_SET_index = 0; }
 // TODO: track down all the '&' or '|' that were supposed to be '&&' or '||'
 
 

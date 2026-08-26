@@ -52,9 +52,6 @@ class MenuOption {
 // - [ ] To what degree of separation should the 'MENU_renderKindArray' be? None of the UI should share the same array?
 // - [ ] Is the Menu a "cancelable" concept?
 
-
-let MENU_ticketId_drawn = 0;
-
 let MENU_context = null;
 let MENU_target = null;
 
@@ -65,10 +62,6 @@ let MENU_restoreFocusToElement = null;
 ////////
 
 let MENU_recentBoundingClientRectTop = null;
-
-let MENU_cursorIndex = 0;
-/** By duplicating this you guarantee the initial cursor index is what was expected. */
-let MENU_SET_index = 0;
 
 let MENU_HIDE_shouldRestoreFocus = true;
 
@@ -159,7 +152,7 @@ async function MENU_state_do_hide(shouldRestoreFocus) {
     }
     MENU_onHideAction = null;
 
-    MENU_last_handled_ticketId = MENU_ticketId_drawn;
+    MENU_last_handled_ticketId = gINT_FIELDS[fMENU_ticketId_drawn];
 
     MENU_optionList = null;
 
@@ -176,7 +169,7 @@ async function MENU_state_do_hide(shouldRestoreFocus) {
 async function menuHide(shouldRestoreFocus) {
     // TODO: Don't put this line here when you could instead just think about async code and figure out the truth of what will happen...
     // ...I'm anxious and can't think straight I swear...
-    MENU_last_handled_ticketId = MENU_ticketId_drawn;
+    MENU_last_handled_ticketId = gINT_FIELDS[fMENU_ticketId_drawn];
     await MENU_state_do_hide(shouldRestoreFocus);
     MENU_render_request(MENUrenderKind_Hide);
 }
@@ -188,7 +181,7 @@ function MENU_render_do_Set() {
         MENU_render_do_Hide();
     }
 
-    MENU_ticketId_drawn = gINT_FIELDS[fMENU_ticketId_pending];
+    gINT_FIELDS[fMENU_ticketId_drawn] = gINT_FIELDS[fMENU_ticketId_pending];
 
     menuElement = document.createElement('div');
     menuElement.id = 'MENU';
@@ -268,11 +261,11 @@ function MENU_render_do_Set() {
     /////////////
     /////////////
 
-    if (!MENU_SET_index) {
-        MENU_SET_index = 0;
+    if (!gINT_FIELDS[fMENU_SET_index]) {
+        gINT_FIELDS[fMENU_SET_index] = 0;
     }
-    if (MENU_cursorIndex !== MENU_SET_index) {
-        MENU_state_do_Cursor(MENU_SET_index);
+    if (gINT_FIELDS[fMENU_cursorIndex] !== gINT_FIELDS[fMENU_SET_index]) {
+        MENU_state_do_Cursor(gINT_FIELDS[fMENU_SET_index]);
     }
     MENU_render_do_Cursor();
 
@@ -295,11 +288,11 @@ async function menuSet(context, target, optionList, left, top, NOTshouldFocus, i
     MENU_top = top;
 
     if (index) {
-        MENU_SET_index = index;
+        gINT_FIELDS[fMENU_SET_index] = index;
     }
     else {
-        MENU_SET_index = 0; // an '|| 0' check in the preceeding 'if' would fall here anyways.
-        // TODO: Is this just 'MENU_SET_index = index ?? 0;'
+        gINT_FIELDS[fMENU_SET_index] = 0; // an '|| 0' check in the preceeding 'if' would fall here anyways.
+        // TODO: Is this just 'gINT_FIELDS[fMENU_SET_index] = index ?? 0;'
     }
 
     MENU_context = context;
@@ -323,7 +316,7 @@ function MENU_onMouseMove(event) {
 
     let relativeY = event.clientY - (MENU_recentBoundingClientRectTop + 4 /*paddingTop*/);
     let index = Math.floor(relativeY / gINT_FIELDS[fAPP_lineHeight]);
-    if (MENU_cursorIndex === index) {
+    if (gINT_FIELDS[fMENU_cursorIndex] === index) {
         return;
     }
     
@@ -331,8 +324,8 @@ function MENU_onMouseMove(event) {
 }
 
 async function optionOnClick(indexClicked, elementClicked) {
-    if (MENU_ticketId_drawn === gINT_FIELDS[fMENU_ticketId_pending] && MENU_ticketId_drawn !== MENU_last_handled_ticketId) {
-        MENU_last_handled_ticketId = MENU_ticketId_drawn;
+    if (gINT_FIELDS[fMENU_ticketId_drawn] === gINT_FIELDS[fMENU_ticketId_pending] && gINT_FIELDS[fMENU_ticketId_drawn] !== MENU_last_handled_ticketId) {
+        MENU_last_handled_ticketId = gINT_FIELDS[fMENU_ticketId_drawn];
         MENU_HIDE_shouldRestoreFocus = true;
         switch (MENU_context) {
             case 'EXPLORER':
@@ -384,7 +377,7 @@ function MENU_render_do_Cursor() {
     const cursorElement = document.getElementById('MENU_cursor');
     if (!cursorElement) return;
     // The menu 'padding-top: 4px'
-    cursorElement.style.top = 4 + (gINT_FIELDS[fAPP_lineHeight] * MENU_cursorIndex) + 'px';
+    cursorElement.style.top = 4 + (gINT_FIELDS[fAPP_lineHeight] * gINT_FIELDS[fMENU_cursorIndex]) + 'px';
 }
 
 function MENU_state_do_Cursor(index) {
@@ -394,7 +387,7 @@ function MENU_state_do_Cursor(index) {
     if (index < 0)
         index = 0;
 
-    MENU_cursorIndex = index;
+    gINT_FIELDS[fMENU_cursorIndex] = index;
 }
 
 function MENU_setCursorIndex(index) {
@@ -411,7 +404,7 @@ function MENU_setCursorIndex(index) {
 // mainly I feel anxious, I feel like a clown. I feel like I'm completely incompetent at coding.
 
 function MENU_validateCursor() {
-    if (MENU_cursorIndex >= MENU_ArrayFrom_menuOptionList_children.length) {
+    if (gINT_FIELDS[fMENU_cursorIndex] >= MENU_ArrayFrom_menuOptionList_children.length) {
         if (MENU_ArrayFrom_menuOptionList_children.length > 0) {
             MENU_setCursorIndex(MENU_ArrayFrom_menuOptionList_children.length - 1);
         }
@@ -420,8 +413,8 @@ function MENU_validateCursor() {
         }
         return;
     }
-    else if (MENU_cursorIndex < 0) {
-        MENU_cursorIndex = 0;
+    else if (gINT_FIELDS[fMENU_cursorIndex] < 0) {
+        gINT_FIELDS[fMENU_cursorIndex] = 0;
     }
 }
 
@@ -445,20 +438,20 @@ function MENU_onKeyDown(event) {
 
     switch (event.key) {
         case 'ArrowDown':
-            if (MENU_cursorIndex < MENU_ArrayFrom_menuOptionList_children.length - 1) {
-                MENU_setCursorIndex(MENU_cursorIndex + 1);
+            if (gINT_FIELDS[fMENU_cursorIndex] < MENU_ArrayFrom_menuOptionList_children.length - 1) {
+                MENU_setCursorIndex(gINT_FIELDS[fMENU_cursorIndex] + 1);
             }
             break;
         case 'ArrowUp':
-            if (MENU_cursorIndex > 0) {
-                MENU_setCursorIndex(MENU_cursorIndex - 1);
+            if (gINT_FIELDS[fMENU_cursorIndex] > 0) {
+                MENU_setCursorIndex(gINT_FIELDS[fMENU_cursorIndex] - 1);
             }
             break;
         case 'Escape':
             return menuHide(/*shouldRestoreFocus*/ true);
         case 'Enter':
         case ' ':
-            return optionOnClick(MENU_cursorIndex, MENU_ArrayFrom_menuOptionList_children[MENU_cursorIndex]);
+            return optionOnClick(gINT_FIELDS[fMENU_cursorIndex], MENU_ArrayFrom_menuOptionList_children[gINT_FIELDS[fMENU_cursorIndex]]);
     }
 }
 

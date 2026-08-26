@@ -24,9 +24,6 @@ let DIALOG_SHOW_restoreFocusToElement = null;
 let DIALOG_SHOW_currentDialogKind = DialogKind_None;
 let DIALOG_SHOW_onResizeAction = null;
 
-let DIALOG_after_X = 0;
-let DIALOG_after_Y = 0;
-
 let DIALOG_FindAll_options_matchWord = false;
 
 let DIALOG_Settings_isDark = true;
@@ -209,8 +206,8 @@ function DIALOG_resize_onmousedown(event) {
 
     gINT_FIELDS[fDIALOG_before_X] = event.clientX;
     gINT_FIELDS[fDIALOG_before_Y] = event.clientY;
-    DIALOG_after_X = 0;
-    DIALOG_after_Y = 0;
+    gINT_FIELDS[fDIALOG_after_X] = 0;
+    gINT_FIELDS[fDIALOG_after_Y] = 0;
 
     gINT_FIELDS[fDIALOG_left] = dialogBoundingClientRect.left;
     gINT_FIELDS[fDIALOG_top] = dialogBoundingClientRect.top;
@@ -619,8 +616,8 @@ function DIALOG_toolbar_onmousedown(event) {
 
     gINT_FIELDS[fDIALOG_before_X] = event.clientX;
     gINT_FIELDS[fDIALOG_before_Y] = event.clientY;
-    DIALOG_after_X = 0;
-    DIALOG_after_Y = 0;
+    gINT_FIELDS[fDIALOG_after_X] = 0;
+    gINT_FIELDS[fDIALOG_after_Y] = 0;
 
     gINT_FIELDS[fDIALOG_left] = dialogBoundingClientRect.left;
     gINT_FIELDS[fDIALOG_top] = dialogBoundingClientRect.top;
@@ -696,8 +693,8 @@ function DIALOG_deleteWindow() {
 
     gINT_FIELDS[fDIALOG_before_X] = 0;
     gINT_FIELDS[fDIALOG_before_Y] = 0;
-    DIALOG_after_X = 0;
-    DIALOG_after_Y = 0;
+    gINT_FIELDS[fDIALOG_after_X] = 0;
+    gINT_FIELDS[fDIALOG_after_Y] = 0;
 
     let toolbar = document.getElementById('DIALOG_toolbar');
     toolbar.removeEventListener('mousedown', DIALOG_toolbar_onmousedown);

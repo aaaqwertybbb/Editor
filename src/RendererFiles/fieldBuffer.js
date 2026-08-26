@@ -361,10 +361,17 @@ const fDIALOG_top_DRAWN = 69;
 const fDIALOG_width_DRAWN = 70;
 const fDIALOG_height_DRAWN = 71;
 
+// TODO: Are 'fDIALOG_before_X' and 'fDIALOG_before_Y' actually doing anything?...
+// ...When it comes to their after counterparts 'fDIALOG_after_X' and 'fDIALOG_after_Y'...
+// ...it is believed that the counterparts are doing nothing, so also check the before.
 const fDIALOG_before_X = 72;
 const fDIALOG_before_Y = 73;
 
-// gINT_FIELDS[fDIALOG_before_Y]
+// TODO: What does 'fDIALOG_after_X' and 'fDIALOG_after_Y' even get used for? It seems they always only get set to 0 over and over and do nothing?
+const fDIALOG_after_X = 0;
+const fDIALOG_after_Y = 0;
+
+// gINT_FIELDS[fDIALOG_after_Y]
 
 
 

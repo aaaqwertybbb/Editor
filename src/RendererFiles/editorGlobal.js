@@ -8902,4 +8902,24 @@ I'm a huge fan of Marina and the Diamonds lately.
 And by lately I mean the last 2 days,
 and by huge fan I mean I keep listening to the same 2 songs over and over.
 
+
+Google AI:
+==========
+
+> In my electron app's renderer process I have a lot of vanilla javascript.
+> 
+> I tend to put all my code at the global scope level. i.e.: no classes, the state and functions are directly
+> part of the global scope and I use 'let or const'.
+> 
+> I have a UInt32Array that can store state (provided that the javascript 'let' declared variable can be fit into an int32 slot).
+> 
+> I have a question about this because I've noticed massive performance improvements versus having the "int32" variables as global variables.
+> 
+> I'm wondering, is this due to the reduction in global scope identifier pollution, thus every global lookup is performed faster?
+> 
+> Or is it that a normal javascript 'let' declared variable is a "smi" and while this avoids a large amount of garbage collection overhead,
+> each "smi" is still a "node" that the garbage collector has to "visit" for an extremely short period of time to verify that the variable is indeed a "smi" before skipping it. And this checking of "smi's" while extremely fast is non-zero.
+
+< ...
+
 */

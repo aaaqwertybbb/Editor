@@ -206,8 +206,6 @@ let EDI_RemoveSelection_largeLineAndColumnIndices = null;
 
 let EDI_hoverTimeout = null;
 
-let EDI_isChecking_cursorBlinkTrailingEdge = false;
-
 let EDI_mousemove_eventListener_isActive = false;
 
 let EDI_language_line_lex;
@@ -3173,7 +3171,7 @@ function EDI_onMouseMove_WRAPIT(event) {
             EDI_onMouseMoveDetailRankOne(indexLine, indexColumn);
         }
 
-        if (!EDI_isChecking_cursorBlinkTrailingEdge) {
+        if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
             EDI_cursorBlink_startChecking();
         }
     }
@@ -3962,7 +3960,7 @@ function EDI_editEvent(editKind, event, clipboardContent) {
             throw new Error(`The EditKind:${editKind} was not recognized.`);
     }
 
-    if (!EDI_isChecking_cursorBlinkTrailingEdge) {
+    if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
     }
 }
@@ -4261,7 +4259,7 @@ function EDI_editEvent_checkFor_NOTcanBatch_Enter(event) {
 /**
  * Any code that wants to stop then start the cursor blinking again needs to:
  * - enqueue rAF for drawing the cursor
- * - *optional* check if statement for 'EDI_isChecking_cursorBlinkTrailingEdge' to avoid redundant invocations of 'EDI_cursorBlink_startChecking'
+ * - *optional* check if statement for 'gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]' to avoid redundant invocations of 'EDI_cursorBlink_startChecking'
  * - invoke 'EDI_cursorBlink_startChecking'
  * - downstream trigger the rAF for drawing the cursor wherein 'gINT_FIELDS[fEDI_EDI_cursorBlinkLastTimestamp]' gets set to the rAF timestamp.
  *     - or, modify some other part of the rAF pipeline (only if necessary) / etc...
@@ -4271,7 +4269,7 @@ function EDI_editEvent_checkFor_NOTcanBatch_Enter(event) {
 function EDI_cursorBlink_trailingEdge(timestamp) {
     const time = timestamp - gINT_FIELDS[fEDI_EDI_cursorBlinkLastTimestamp];
     if (time >= 500) {
-        EDI_isChecking_cursorBlinkTrailingEdge = false;
+        gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge] = false;
         // TODO: This is a timing issue of the rAF vs you losing focus on the editor.
         EDI_cursor_cursorElement.classList.add('EDI_cursor_focus');
         gINT_FIELDS[fEDI_EDI_cursorBlinkLastTimestamp] = 0;
@@ -4282,7 +4280,7 @@ function EDI_cursorBlink_trailingEdge(timestamp) {
 }
 
 function EDI_cursorBlink_startChecking() {
-    EDI_isChecking_cursorBlinkTrailingEdge = true;
+    gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge] = true;
     EDI_cursor_cursorElement.classList.remove('EDI_cursor_focus');
     requestAnimationFrame(EDI_cursorBlink_trailingEdge);
 }
@@ -4492,7 +4490,7 @@ function EDI_onKeyDown_ArrowLeft(event) {
     }
     ints[fEDI_cursor_STORED_indexColumn] = ints[fEDI_cursor_indexColumn];
     EDI_render_request(RenderKind_Cursor_n);
-    if (!EDI_isChecking_cursorBlinkTrailingEdge) {
+    if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
     }
     //ints[fEDI_offsetColumn] = ints[fEDI_offsetColumn] + ints[fEDI_cursor_editLength];
@@ -4510,7 +4508,7 @@ function EDI_onKeyDown_ArrowDown(event) {
     else {
         EDI_arrowDown(/*shiftKey*/ event.shiftKey);
         EDI_render_request(RenderKind_Cursor_n);
-        if (!EDI_isChecking_cursorBlinkTrailingEdge) {
+        if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
             EDI_cursorBlink_startChecking();
         }
     }
@@ -4540,7 +4538,7 @@ function EDI_onKeyDown_ArrowUp(event) {
         }
         EDI_postKeyboardMovementSelectionLogic(event.shiftKey);
         EDI_render_request(RenderKind_Cursor_n);
-        if (!EDI_isChecking_cursorBlinkTrailingEdge) {
+        if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
             EDI_cursorBlink_startChecking();
         }
     }
@@ -4608,7 +4606,7 @@ function EDI_onKeyDown_ArrowRight(event) {
     }
     ints[fEDI_cursor_STORED_indexColumn] = ints[fEDI_cursor_indexColumn];
     EDI_render_request(RenderKind_Cursor_n);
-    if (!EDI_isChecking_cursorBlinkTrailingEdge) {
+    if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
     }
     //ints[fEDI_offsetColumn] = ints[fEDI_offsetColumn] + ints[fEDI_cursor_editLength];
@@ -4638,7 +4636,7 @@ function EDI_onKeyDown_Home(event) {
     EDI_postKeyboardMovementSelectionLogic(event.shiftKey);
     gINT_FIELDS[fEDI_cursor_STORED_indexColumn] = gINT_FIELDS[fEDI_cursor_indexColumn];
     EDI_render_request(RenderKind_Cursor_n);
-    if (!EDI_isChecking_cursorBlinkTrailingEdge) {
+    if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
     }
     return false;
@@ -4658,7 +4656,7 @@ function EDI_onKeyDown_End(event) {
     EDI_postKeyboardMovementSelectionLogic(event.shiftKey);
     gINT_FIELDS[fEDI_cursor_STORED_indexColumn] = gINT_FIELDS[fEDI_cursor_indexColumn];
     EDI_render_request(RenderKind_Cursor_n);
-    if (!EDI_isChecking_cursorBlinkTrailingEdge) {
+    if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
     }
     return false;
@@ -4681,7 +4679,7 @@ function EDI_onKeyDown_PageDown(event) {
         // TODO: allow someone to select via this keybind, but for now it causes a bad selection if you { 'Ctrl' + 'a' } then use it so I'm clearing any active selection here for now.
         gINT_FIELDS[fEDI_cursor_selectionAnchor] = gINT_FIELDS[fEDI_cursor_selectionEnd];
         EDI_render_request(RenderKind_Cursor_n);
-        if (!EDI_isChecking_cursorBlinkTrailingEdge) {
+        if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
             EDI_cursorBlink_startChecking();
         }
     }
@@ -4704,7 +4702,7 @@ function EDI_onKeyDown_PageUp(event) {
         // TODO: allow someone to select via this keybind, but for now it causes a bad selection if you { 'Ctrl' + 'a' } then use it so I'm clearing any active selection here for now.
         gINT_FIELDS[fEDI_cursor_selectionAnchor] = gINT_FIELDS[fEDI_cursor_selectionEnd];
         EDI_render_request(RenderKind_Cursor_n);
-        if (!EDI_isChecking_cursorBlinkTrailingEdge) {
+        if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
             EDI_cursorBlink_startChecking();
         }
     }
@@ -4757,7 +4755,7 @@ async function EDI_onKeyDown_keyLengthEqualsOne_ctrlKey(event) {
             await EDI_copySelection();
             EDI_removeSelection(); // TODO: Multicursor bad
             EDI_render_request(RenderKind_Cursor_n);
-            if (!EDI_isChecking_cursorBlinkTrailingEdge) {
+            if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
                 EDI_cursorBlink_startChecking(); // TODO: this one is especially questionable since it invoked 'EDI_removeSelection' prior to the draw cursor?
             }
             break;
@@ -4859,7 +4857,7 @@ function EDI_onMouseDown(event) {
     if (rX < -1 * CONST_EDI_gutterPaddingRight) {
         set_EDI_detailRank(3);
         EDI_onMouseDownDetailRankThree(event.button, event.shiftKey, indexLine, indexColumn);
-        if (!EDI_isChecking_cursorBlinkTrailingEdge) {
+        if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
             EDI_cursorBlink_startChecking();
         }
         return;
@@ -4878,7 +4876,7 @@ function EDI_onMouseDown(event) {
         EDI_onMouseDownDetailRankOne(event.button, event.shiftKey, indexLine, indexColumn);
     }
 
-    if (!EDI_isChecking_cursorBlinkTrailingEdge) {
+    if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
     }
 }

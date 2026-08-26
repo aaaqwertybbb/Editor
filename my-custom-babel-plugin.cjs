@@ -496,6 +496,7 @@ module.exports = function (babel) {
     "byteEDI_cursor_enterKeyEventKind",
     "byteEDI_extensionKind",
     "byteEDI_pooledTrackedSyntax_trackedSyntaxKind",
+    "byteEDI_isChecking_cursorBlinkTrailingEdge",
 
 
 

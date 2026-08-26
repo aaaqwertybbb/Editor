@@ -65,14 +65,10 @@ let MENU_recentBoundingClientRectTop = null;
 
 let MENU_HIDE_shouldRestoreFocus = true;
 
-let MENU_left = 0;
-let MENU_top = 0;
 let MENU_SET_NOTshouldFocus = false;
 
 let MENU_renderKindArray = [];
 let MENU_isRenderPending = false;
-
-let MENU_renderKind_Set_countOfPendingRequests = 0;
 
 let MENU_optionList = null;
 /** TODO: Perhaps use 'MENU_optionList' instead? */
@@ -95,7 +91,7 @@ const MENUrenderKind_Hide = 3;
 function MENU_render_request(renderKind) {
     if (MENU_renderKindArray[MENU_renderKindArray.length - 1] !== renderKind) {
         MENU_renderKindArray.push(renderKind);
-        if (renderKind === MENUrenderKind_Set) MENU_renderKind_Set_countOfPendingRequests++;
+        if (renderKind === MENUrenderKind_Set) gINT_FIELDS[fMENU_renderKind_Set_countOfPendingRequests]++;
     }
     
     if (!MENU_isRenderPending) {
@@ -113,7 +109,7 @@ function MENU_render_do() {
                 MENU_render_do_Cursor();
                 break;
             case MENUrenderKind_Set:
-                if (MENU_renderKind_Set_countOfPendingRequests-- > 1) break;
+                if (gINT_FIELDS[fMENU_renderKind_Set_countOfPendingRequests]-- > 1) break;
                 MENU_render_do_Set();
                 break;
             case MENUrenderKind_Hide:
@@ -232,13 +228,13 @@ function MENU_render_do_Set() {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
-    let finalLeft = MENU_left;
-    let finalTop = MENU_top;
+    let finalLeft = gINT_FIELDS[fMENU_left];
+    let finalTop = gINT_FIELDS[fMENU_top];
     //let rect = menuElement.getBoundingClientRect();
 
     // Check right edge
     //if (rect.right > viewportWidth) {
-    if (MENU_left + menuElement.offsetWidth > viewportWidth) {
+    if (gINT_FIELDS[fMENU_left] + menuElement.offsetWidth > viewportWidth) {
       finalLeft = viewportWidth - menuElement.offsetWidth - 10; // 10px padding boundary
     }
     // Check left edge (fallback if menu is wider than screen)
@@ -246,7 +242,7 @@ function MENU_render_do_Set() {
 
     // Check bottom edge
     //if (rect.bottom > viewportHeight) {
-    if (MENU_top + menuElement.offsetHeight > viewportHeight) {
+    if (gINT_FIELDS[fMENU_top] + menuElement.offsetHeight > viewportHeight) {
       finalTop = viewportHeight - menuElement.offsetHeight - 10; 
     }
     // Check top edge
@@ -284,8 +280,8 @@ async function menuSet(context, target, optionList, left, top, NOTshouldFocus, i
         await MENU_state_do_hide();
     }
 
-    MENU_left = left;
-    MENU_top = top;
+    gINT_FIELDS[fMENU_left] = left;
+    gINT_FIELDS[fMENU_top] = top;
 
     if (index) {
         gINT_FIELDS[fMENU_SET_index] = index;

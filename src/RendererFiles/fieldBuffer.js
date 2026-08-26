@@ -553,7 +553,12 @@ const fMENU_cursorIndex = 123;
 /** By duplicating this you guarantee the initial cursor index is what was expected. */
 const fMENU_SET_index = 124;
 
-// gINT_FIELDS[fMENU_SET_index]
+const fMENU_left = 125;
+const fMENU_top = 126;
+
+const fMENU_renderKind_Set_countOfPendingRequests = 127;
+
+// gINT_FIELDS[fMENU_renderKind_Set_countOfPendingRequests]
 
 
 // TODO: if (!MENU_SET_index) { MENU_SET_index = 0; }

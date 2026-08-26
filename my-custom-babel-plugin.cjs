@@ -475,6 +475,9 @@ module.exports = function (babel) {
     "fMENU_ticketId_drawn",
     "fMENU_cursorIndex",
     "fMENU_SET_index",
+    "fMENU_left",
+    "fMENU_top",
+    "fMENU_renderKind_Set_countOfPendingRequests",
 
 
 

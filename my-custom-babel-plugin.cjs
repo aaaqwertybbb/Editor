@@ -467,6 +467,8 @@ module.exports = function (babel) {
     "byteTOOLTIP_isRenderPending",
     "byteTOOLTIP_pending_renderKind",
     "byteTOOLTIP_exists",
+    "byteDIALOG_currentDialogKind",
+    "byteDIALOG_SHOW_currentDialogKind",
 
 
 

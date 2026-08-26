@@ -3,20 +3,17 @@
 import "./fieldBuffer"
 //__#__
 
-const DialogKind_None = "None";
-const DialogKind_FindAll = "FindAll";
-const DialogKind_Settings = "Settings";
-const DialogKind_DocumentSymbol = "DocumentSymbol";
-const DialogKind_Debug = "Debug";
-
-let DIALOG_currentDialogKind = DialogKind_None;
+const DialogKind_None = 0;//"None";
+const DialogKind_FindAll = 1;//"FindAll";
+const DialogKind_Settings = 2;//"Settings";
+const DialogKind_DocumentSymbol = 3;//"DocumentSymbol";
+const DialogKind_Debug = 4;//"Debug";
 
 /** A delegate of the form: () => {} */
 let DIALOG_onResizeAction = null;
 let DIALOG_restoreFocusToElement = null;
 
 let DIALOG_SHOW_restoreFocusToElement = null;
-let DIALOG_SHOW_currentDialogKind = DialogKind_None;
 let DIALOG_SHOW_onResizeAction = null;
 
 let DIALOG_renderKindArray = [];
@@ -85,7 +82,7 @@ function DIALOG_render_do_DimensionsChanged() {
 }
 
 async function DIALOG_render_do_Show() {
-    if (DIALOG_currentDialogKind !== DialogKind_None) {
+    if (gBYTE_FIELDS[byteDIALOG_currentDialogKind] !== DialogKind_None) {
         gBYTE_FIELDS[byteDIALOG_HIDE_shouldRestoreFocus] = true;
         await DIALOG_render_do_Hide();
     }
@@ -98,12 +95,12 @@ async function DIALOG_render_do_Show() {
     }
 
     DIALOG_restoreFocusToElement = DIALOG_SHOW_restoreFocusToElement;
-    DIALOG_currentDialogKind = DIALOG_SHOW_currentDialogKind;
+    gBYTE_FIELDS[byteDIALOG_currentDialogKind] = gBYTE_FIELDS[byteDIALOG_SHOW_currentDialogKind];
     DIALOG_onResizeAction = DIALOG_SHOW_onResizeAction;
 
     DIALOG_createWindow();
 
-    switch (DIALOG_currentDialogKind) {
+    switch (gBYTE_FIELDS[byteDIALOG_currentDialogKind]) {
         case DialogKind_FindAll:
             return DIALOG_FindAll_Create_async();
         case DialogKind_Settings:
@@ -117,7 +114,7 @@ async function DIALOG_render_do_Show() {
 
 async function DIALOG_show_async(dialogKind, onResizeAction) {    
     DIALOG_SHOW_restoreFocusToElement = document.activeElement;
-    DIALOG_SHOW_currentDialogKind = dialogKind;
+    gBYTE_FIELDS[byteDIALOG_SHOW_currentDialogKind] = dialogKind;
     DIALOG_SHOW_onResizeAction = onResizeAction;
     DIALOG_render_request(DIALOGrenderKind_Show);
 }
@@ -126,7 +123,7 @@ async function DIALOG_render_do_Hide() {
     const DIALOG_element = document.getElementById('DIALOG');
     if (!DIALOG_element) return;
 
-    switch (DIALOG_currentDialogKind) {
+    switch (gBYTE_FIELDS[byteDIALOG_currentDialogKind]) {
         case DialogKind_FindAll:
             await DIALOG_FindAll_Delete_async();
             break;
@@ -145,7 +142,7 @@ async function DIALOG_render_do_Hide() {
 
     DIALOG_onResizeAction = null;
     DIALOG_element.remove();
-    DIALOG_currentDialogKind = DialogKind_None;
+    gBYTE_FIELDS[byteDIALOG_currentDialogKind] = DialogKind_None;
     if (shouldRestoreFocus) {
         if (DIALOG_restoreFocusToElement) {
             DIALOG_restoreFocusToElement.focus();
@@ -649,7 +646,7 @@ function DIALOG_createWindow() {
     DIALOG_element.appendChild(body);
 
     // TODO: You have to actually make sure the text fits
-    toolbar.textContent = DIALOG_currentDialogKind;
+    toolbar.textContent = gBYTE_FIELDS[byteDIALOG_currentDialogKind];
 
     let closeButton = document.createElement('button');
     closeButton.textContent = 'x';

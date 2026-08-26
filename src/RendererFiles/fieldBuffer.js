@@ -121,7 +121,11 @@ const byteTOOLTIP_pending_renderKind = 23;
 
 const byteTOOLTIP_exists = 24;
 
-// gBYTE_FIELDS[byteTOOLTIP_exists]
+const byteDIALOG_currentDialogKind = 25;
+
+const byteDIALOG_SHOW_currentDialogKind = 26;
+
+// gBYTE_FIELDS[byteDIALOG_SHOW_currentDialogKind]
 
 // TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
 // - [ ] triple equals

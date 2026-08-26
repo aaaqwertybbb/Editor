@@ -24,9 +24,6 @@ let DIALOG_SHOW_restoreFocusToElement = null;
 let DIALOG_SHOW_currentDialogKind = DialogKind_None;
 let DIALOG_SHOW_onResizeAction = null;
 
-let DIALOG_before_X = 0;
-let DIALOG_before_Y = 0;
-
 let DIALOG_after_X = 0;
 let DIALOG_after_Y = 0;
 
@@ -210,8 +207,8 @@ function DIALOG_resize_onmousedown(event) {
 
     DIALOG_resize_setCursor(event.clientX, event.clientY, dialogBoundingClientRect, resize);
 
-    DIALOG_before_X = event.clientX;
-    DIALOG_before_Y = event.clientY;
+    gINT_FIELDS[fDIALOG_before_X] = event.clientX;
+    gINT_FIELDS[fDIALOG_before_Y] = event.clientY;
     DIALOG_after_X = 0;
     DIALOG_after_Y = 0;
 
@@ -240,7 +237,7 @@ function DIALOG_n_resize_calcOnly(diff_Y, clientY) {
         }
         gINT_FIELDS[fDIALOG_top] -= absdiff_Y;
         gINT_FIELDS[fDIALOG_height] += absdiff_Y;
-        DIALOG_before_Y = clientY;
+        gINT_FIELDS[fDIALOG_before_Y] = clientY;
     }
     else {
         let absdiff_Y = Math.abs(diff_Y);
@@ -253,7 +250,7 @@ function DIALOG_n_resize_calcOnly(diff_Y, clientY) {
         }
         gINT_FIELDS[fDIALOG_height] -= absdiff_Y;
         gINT_FIELDS[fDIALOG_top] += absdiff_Y;
-        DIALOG_before_Y = clientY;
+        gINT_FIELDS[fDIALOG_before_Y] = clientY;
     }
 }
 
@@ -269,7 +266,7 @@ function DIALOG_e_resize_calcOnly(diff_X, clientX) {
             absdiff_X = gINT_FIELDS[fDIALOG_width] - CONST_DIALOG_minWidth;
         }
         gINT_FIELDS[fDIALOG_width] -= absdiff_X;
-        DIALOG_before_X = clientX;
+        gINT_FIELDS[fDIALOG_before_X] = clientX;
     }
     else {
         let absdiff_X = Math.abs(diff_X);
@@ -282,7 +279,7 @@ function DIALOG_e_resize_calcOnly(diff_X, clientX) {
             absdiff_X = DIALOG_maxWidth - gINT_FIELDS[fDIALOG_width];
         }
         gINT_FIELDS[fDIALOG_width] += absdiff_X;
-        DIALOG_before_X = clientX;
+        gINT_FIELDS[fDIALOG_before_X] = clientX;
     }
 }
 
@@ -299,7 +296,7 @@ function DIALOG_s_resize_calcOnly(diff_Y, clientY) {
             absdiff_Y = gINT_FIELDS[fDIALOG_height] - CONST_DIALOG_minHeight;
         }
         gINT_FIELDS[fDIALOG_height] -= absdiff_Y;
-        DIALOG_before_Y = clientY;
+        gINT_FIELDS[fDIALOG_before_Y] = clientY;
     }
     else {
         let absdiff_Y = Math.abs(diff_Y);
@@ -314,7 +311,7 @@ function DIALOG_s_resize_calcOnly(diff_Y, clientY) {
             absdiff_Y = DIALOG_maxHeight - gINT_FIELDS[fDIALOG_height];
         }
         gINT_FIELDS[fDIALOG_height] += absdiff_Y;
-        DIALOG_before_Y = clientY;
+        gINT_FIELDS[fDIALOG_before_Y] = clientY;
     }
 }
 
@@ -331,7 +328,7 @@ function DIALOG_w_resize_calcOnly(diff_X, clientX) {
         }
         gINT_FIELDS[fDIALOG_width] += absdiff_X;
         gINT_FIELDS[fDIALOG_left] -= absdiff_X;
-        DIALOG_before_X = clientX;
+        gINT_FIELDS[fDIALOG_before_X] = clientX;
     }
     else {
         let absdiff_X = Math.abs(diff_X);
@@ -344,7 +341,7 @@ function DIALOG_w_resize_calcOnly(diff_X, clientX) {
         }
         gINT_FIELDS[fDIALOG_width] -= absdiff_X;
         gINT_FIELDS[fDIALOG_left] += absdiff_X;
-        DIALOG_before_X = clientX;
+        gINT_FIELDS[fDIALOG_before_X] = clientX;
     }
 }
 
@@ -366,8 +363,8 @@ function DIALOG_resize_body_onmousemove(event) {
         return;
     }
 
-    let diff_X = event.clientX - DIALOG_before_X;
-    let diff_Y = event.clientY - DIALOG_before_Y;
+    let diff_X = event.clientX - gINT_FIELDS[fDIALOG_before_X];
+    let diff_Y = event.clientY - gINT_FIELDS[fDIALOG_before_Y];
 
     if (diff_Y > -1 && diff_Y < 1) diff_Y = 0;
     if (diff_X > -1 && diff_X < 1) diff_X = 0;
@@ -515,8 +512,8 @@ function DIALOG_toolbar_body_onmousemove(event) {
         return;
     }
 
-    let diff_X = event.clientX - DIALOG_before_X;
-    let diff_Y = event.clientY - DIALOG_before_Y;
+    let diff_X = event.clientX - gINT_FIELDS[fDIALOG_before_X];
+    let diff_Y = event.clientY - gINT_FIELDS[fDIALOG_before_Y];
 
     if (diff_Y > -1 && diff_Y < 1) diff_Y = 0;
     if (diff_X > -1 && diff_X < 1) diff_X = 0;
@@ -538,12 +535,12 @@ function DIALOG_toolbar_body_onmousemove(event) {
             absdiff_X = gINT_FIELDS[fDIALOG_left] - CONST_DIALOG_minLeft;
 
             gINT_FIELDS[fDIALOG_left] -= absdiff_X;
-            DIALOG_before_X = clientX;
+            gINT_FIELDS[fDIALOG_before_X] = clientX;
             DIALOG_render_request(DIALOGrenderKind_DimensionsChanged);
         }
         else {
             gINT_FIELDS[fDIALOG_left] -= absdiff_X;
-            DIALOG_before_X = clientX;
+            gINT_FIELDS[fDIALOG_before_X] = clientX;
             DIALOG_render_request(DIALOGrenderKind_DimensionsChanged);
         }
     }
@@ -558,12 +555,12 @@ function DIALOG_toolbar_body_onmousemove(event) {
             absdiff_X = DIALOG_maxLeft - gINT_FIELDS[fDIALOG_left];
 
             gINT_FIELDS[fDIALOG_left] += absdiff_X;
-            DIALOG_before_X = clientX;
+            gINT_FIELDS[fDIALOG_before_X] = clientX;
             DIALOG_render_request(DIALOGrenderKind_DimensionsChanged);
         }
         else {
             gINT_FIELDS[fDIALOG_left] += absdiff_X;
-            DIALOG_before_X = clientX;
+            gINT_FIELDS[fDIALOG_before_X] = clientX;
             DIALOG_render_request(DIALOGrenderKind_DimensionsChanged);
         }
     }
@@ -578,12 +575,12 @@ function DIALOG_toolbar_body_onmousemove(event) {
             absdiff_Y = gINT_FIELDS[fDIALOG_top] - CONST_DIALOG_minTop;
             
             gINT_FIELDS[fDIALOG_top] -= absdiff_Y;
-            DIALOG_before_Y = clientY;
+            gINT_FIELDS[fDIALOG_before_Y] = clientY;
             DIALOG_render_request(DIALOGrenderKind_DimensionsChanged);
         }
         else {
             gINT_FIELDS[fDIALOG_top] -= absdiff_Y;
-            DIALOG_before_Y = clientY;
+            gINT_FIELDS[fDIALOG_before_Y] = clientY;
             DIALOG_render_request(DIALOGrenderKind_DimensionsChanged);
         }
     }
@@ -598,12 +595,12 @@ function DIALOG_toolbar_body_onmousemove(event) {
             absdiff_Y = DIALOG_maxTop - gINT_FIELDS[fDIALOG_top];
             
             gINT_FIELDS[fDIALOG_top] += absdiff_Y;
-            DIALOG_before_Y = clientY;
+            gINT_FIELDS[fDIALOG_before_Y] = clientY;
             DIALOG_render_request(DIALOGrenderKind_DimensionsChanged);
         }
         else {
             gINT_FIELDS[fDIALOG_top] += absdiff_Y;
-            DIALOG_before_Y = clientY;
+            gINT_FIELDS[fDIALOG_before_Y] = clientY;
             DIALOG_render_request(DIALOGrenderKind_DimensionsChanged);
         }
     }
@@ -620,8 +617,8 @@ function DIALOG_toolbar_onmousedown(event) {
     // TODO: cache the bounding client rect
     let dialogBoundingClientRect = DIALOG_element.getBoundingClientRect();
 
-    DIALOG_before_X = event.clientX;
-    DIALOG_before_Y = event.clientY;
+    gINT_FIELDS[fDIALOG_before_X] = event.clientX;
+    gINT_FIELDS[fDIALOG_before_Y] = event.clientY;
     DIALOG_after_X = 0;
     DIALOG_after_Y = 0;
 
@@ -697,8 +694,8 @@ function DIALOG_deleteWindow() {
     gINT_FIELDS[fDIALOG_width] = 0;
     gINT_FIELDS[fDIALOG_height] = 0;
 
-    DIALOG_before_X = 0;
-    DIALOG_before_Y = 0;
+    gINT_FIELDS[fDIALOG_before_X] = 0;
+    gINT_FIELDS[fDIALOG_before_Y] = 0;
     DIALOG_after_X = 0;
     DIALOG_after_Y = 0;
 

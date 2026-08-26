@@ -491,6 +491,8 @@ module.exports = function (babel) {
     "fTreeView_pooledNode_key",
     "fTreeView_pooledNode_depth",
 
+    "fMENU_last_handled_ticketId",
+
 
 
 

@@ -74,8 +74,6 @@ let MENU_ArrayFrom_menuOptionList_children = null;
 /** a delegate of kind: () => Promise */
 let MENU_onHideAction = null;
 
-let MENU_last_handled_ticketId = 0;
-
 const MENUrenderKind_None = 0;
 const MENUrenderKind_Cursor = 1;
 const MENUrenderKind_Set = 2;
@@ -141,7 +139,7 @@ async function MENU_state_do_hide(shouldRestoreFocus) {
     }
     MENU_onHideAction = null;
 
-    MENU_last_handled_ticketId = gINT_FIELDS[fMENU_ticketId_drawn];
+    gINT_FIELDS[fMENU_last_handled_ticketId] = gINT_FIELDS[fMENU_ticketId_drawn];
 
     MENU_optionList = null;
 
@@ -158,7 +156,7 @@ async function MENU_state_do_hide(shouldRestoreFocus) {
 async function menuHide(shouldRestoreFocus) {
     // TODO: Don't put this line here when you could instead just think about async code and figure out the truth of what will happen...
     // ...I'm anxious and can't think straight I swear...
-    MENU_last_handled_ticketId = gINT_FIELDS[fMENU_ticketId_drawn];
+    gINT_FIELDS[fMENU_last_handled_ticketId] = gINT_FIELDS[fMENU_ticketId_drawn];
     await MENU_state_do_hide(shouldRestoreFocus);
     MENU_render_request(MENUrenderKind_Hide);
 }
@@ -313,8 +311,8 @@ function MENU_onMouseMove(event) {
 }
 
 async function optionOnClick(indexClicked, elementClicked) {
-    if (gINT_FIELDS[fMENU_ticketId_drawn] === gINT_FIELDS[fMENU_ticketId_pending] && gINT_FIELDS[fMENU_ticketId_drawn] !== MENU_last_handled_ticketId) {
-        MENU_last_handled_ticketId = gINT_FIELDS[fMENU_ticketId_drawn];
+    if (gINT_FIELDS[fMENU_ticketId_drawn] === gINT_FIELDS[fMENU_ticketId_pending] && gINT_FIELDS[fMENU_ticketId_drawn] !== gINT_FIELDS[fMENU_last_handled_ticketId]) {
+        gINT_FIELDS[fMENU_last_handled_ticketId] = gINT_FIELDS[fMENU_ticketId_drawn];
         gBYTE_FIELDS[byteMENU_HIDE_shouldRestoreFocus] = true;
         switch (MENU_context) {
             case 'EXPLORER':

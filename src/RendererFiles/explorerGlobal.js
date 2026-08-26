@@ -175,7 +175,7 @@ class EXPLORER_TreeViewDirector {
             }
             else {
                 this.nodeList.getElementAt(indexItem);
-                let key = TreeView_pooledNode_key;
+                let key = gINT_FIELDS[fTreeView_pooledNode_key];
                 depth = TreeView_pooledNode_depth;
                 nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
                 
@@ -408,7 +408,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
             case ' ':
             case 'Enter':
                 this.nodeList.getElementAt(indexItem);
-                let key = TreeView_pooledNode_key;
+                let key = gINT_FIELDS[fTreeView_pooledNode_key];
                 let depth = TreeView_pooledNode_depth;
                 let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
                 if (nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded) {
@@ -433,7 +433,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
     
     async tvd_ondblclick_async(divItem, indexItem) {
         this.nodeList.getElementAt(indexItem);
-        let key = TreeView_pooledNode_key;
+        let key = gINT_FIELDS[fTreeView_pooledNode_key];
         let depth = TreeView_pooledNode_depth;
         let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
 
@@ -459,7 +459,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
 
         // TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
         this.nodeList.getElementAt(indexItem);
-        let key = TreeView_pooledNode_key;
+        let key = gINT_FIELDS[fTreeView_pooledNode_key];
         let depth = TreeView_pooledNode_depth;
         let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
 
@@ -489,7 +489,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
     async tvd_expandCollapseIconWasClicked_async(divItem, indexItem) {
         // TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
         this.nodeList.getElementAt(indexItem);
-        let key = TreeView_pooledNode_key;
+        let key = gINT_FIELDS[fTreeView_pooledNode_key];
         let depth = TreeView_pooledNode_depth;
         let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
 
@@ -544,7 +544,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
     tvd_arrowRight_async(divItem, indexItem) {
     	// TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
         this.nodeList.getElementAt(indexItem);
-        let key = TreeView_pooledNode_key;
+        let key = gINT_FIELDS[fTreeView_pooledNode_key];
         let depth = TreeView_pooledNode_depth;
         let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
         
@@ -566,7 +566,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
     tvd_arrowLeft_async(divItem, indexItem) {
     	// TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
         this.nodeList.getElementAt(indexItem);
-        let key = TreeView_pooledNode_key;
+        let key = gINT_FIELDS[fTreeView_pooledNode_key];
         let depth = TreeView_pooledNode_depth;
         let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
         
@@ -609,7 +609,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
      */
     removeFromNodeList(indexItem) {
         this.nodeList.getElementAt(indexItem);
-        let key = TreeView_pooledNode_key;
+        let key = gINT_FIELDS[fTreeView_pooledNode_key];
         let depth = TreeView_pooledNode_depth;
         let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
 

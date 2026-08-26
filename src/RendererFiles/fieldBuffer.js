@@ -241,7 +241,7 @@ const CONST_AUTOCOMPLETE_topPadding = 4;
 ////////////////////////////
 ////////////////////////////
 
-const gINT_FIELDS = new Uint32Array(128);
+const gINT_FIELDS = new Uint32Array(256);
 
 const fEDI_lineHeight = 0;
 gINT_FIELDS[fEDI_lineHeight] = 20;
@@ -572,7 +572,10 @@ const fMENU_top = 126;
 
 const fMENU_renderKind_Set_countOfPendingRequests = 127;
 
-// gINT_FIELDS[fMENU_renderKind_Set_countOfPendingRequests]
+const fTreeView_pooledNode_key = 128;
+//const fTreeView_pooledNode_depth = 0;
+
+// gINT_FIELDS[fTreeView_pooledNode_key]
 
 
 // TODO: if (!MENU_SET_index) { MENU_SET_index = 0; }
@@ -585,7 +588,7 @@ const fMENU_renderKind_Set_countOfPendingRequests = 127;
 // TODO: figure it out
 
 
-// 127 is inclusive final index
+// 255 is inclusive final index
 
 
 

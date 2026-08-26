@@ -7311,7 +7311,7 @@ function EDI_render_do_Delete() {
     if (ints[fEDI_cursor_editRenderedDisplacement] < ints[fEDI_cursor_editLength]) {
         walkLineUntilIndexColumn();
 
-        if (!w_span || gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] < 0) {
+        if (!w_span) {
             // TODO: this
         }
         else {
@@ -7319,23 +7319,23 @@ function EDI_render_do_Delete() {
             ints[fEDI_cursor_editRenderedDisplacement] = ints[fEDI_cursor_editLength];
             while (remaining > 0) {
                 // When the cursor is at the end of a span, there is no text to delete, because the text starts in the next span.
-                let available = w_span.textContent.length - gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative];
+                let available = w_span.textContent.length - ints[fEDI_w_indexColumn_SpanTextContentRelative];
                 let count = remaining > available ? available : remaining;
                 remaining -= count;
 
                 if (count > 0) {
-                    w_span.textContent = w_span.textContent.slice(0, gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative]) + w_span.textContent.slice(gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] + count);
+                    w_span.textContent = w_span.textContent.slice(0, ints[fEDI_w_indexColumn_SpanTextContentRelative]) + w_span.textContent.slice(ints[fEDI_w_indexColumn_SpanTextContentRelative] + count);
                 }
 
                 if (w_div.children.length > 1 && w_span.textContent.length === 0) {
                     w_div.removeChild(w_span);
                 }
                 else {
-                    gINT_FIELDS[fEDI_w_indexSpan]++;
+                    ints[fEDI_w_indexSpan]++;
                 }
 
                 if (remaining > 0) {
-                    if (gINT_FIELDS[fEDI_w_indexSpan] >= w_div.children.length) {
+                    if (ints[fEDI_w_indexSpan] >= w_div.children.length) {
 
                         // This is a pain I'm not sure if the finalizeEdit will bug it all out timing wise
                         // but I'll presume for now that it won't and then everything should become clear in time (not always but in this scenario I feel it is the case).
@@ -7360,7 +7360,7 @@ function EDI_render_do_Delete() {
                             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
                             let beltIndexLine_next = ((ints[fEDI_cursor_indexLine] + 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
                             if (beltIndexLine_next >= ArrayFrom_textElement_children_length || beltIndexLine_next < 0) beltIndexLine_next = -1;
-                            else beltIndexLine_next = (beltIndexLine_next + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+                            else beltIndexLine_next = (beltIndexLine_next + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
                             if (beltIndexLine_next >= 0) {
                                 let keepingDiv = w_div;
@@ -7387,7 +7387,7 @@ function EDI_render_do_Delete() {
                                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
                                 let beltIndexLine_last = ((ints[fEDI_virtualIndexLine] + ints[fEDI_virtualCount] - 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
                                 if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
-                                else beltIndexLine_last = (beltIndexLine_last + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+                                else beltIndexLine_last = (beltIndexLine_last + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
                                 EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last, beltIndexLine_next, 1);
                             }
@@ -7397,8 +7397,8 @@ function EDI_render_do_Delete() {
                         }
                     }
                     else {
-                        w_span = w_div.children[gINT_FIELDS[fEDI_w_indexSpan]];
-                        gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
+                        w_span = w_div.children[ints[fEDI_w_indexSpan]];
+                        ints[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
                     }
                 }
             }
@@ -7512,31 +7512,31 @@ function EDI_render_do_Backspace() {
     if (ints[fEDI_cursor_editRenderedDisplacement] < ints[fEDI_cursor_editLength]) {
         walkLineUntilIndexColumn();
 
-        if (!w_span || gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] < 0) {
+        if (!w_span) {
             // TODO: this
         }
         else {
             let remaining = ints[fEDI_cursor_editLength] - ints[fEDI_cursor_editRenderedDisplacement];
             ints[fEDI_cursor_editRenderedDisplacement] = ints[fEDI_cursor_editLength];
             while (remaining > 0) {
-                let available = w_span.textContent.length - gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative];
+                let available = w_span.textContent.length - ints[fEDI_w_indexColumn_SpanTextContentRelative];
                 let count = remaining > available ? available : remaining;
                 remaining -= count;
     
                 // When the cursor is at the end of a span, there is no text to delete, because the text starts in the next span.
                 if (count > 0) {
-                    w_span.textContent = w_span.textContent.slice(0, gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative]) + w_span.textContent.slice(gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] + count);
+                    w_span.textContent = w_span.textContent.slice(0, ints[fEDI_w_indexColumn_SpanTextContentRelative]) + w_span.textContent.slice(ints[fEDI_w_indexColumn_SpanTextContentRelative] + count);
                 }
 
                 if (w_div.children.length > 1 && w_span.textContent.length === 0) {
                     w_div.removeChild(w_span);
                 }
                 else {
-                    gINT_FIELDS[fEDI_w_indexSpan]++;
+                    ints[fEDI_w_indexSpan]++;
                 }
     
                 if (remaining > 0) {
-                    if (gINT_FIELDS[fEDI_w_indexSpan] >= w_div.children.length) {
+                    if (ints[fEDI_w_indexSpan] >= w_div.children.length) {
                         if (ints[fEDI_cursor_indexLine] < EDI_lineEndPositionList.count - 1) {
 
                             remaining--;
@@ -7554,7 +7554,7 @@ function EDI_render_do_Backspace() {
                             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
                             let beltIndexLine_next = ((ints[fEDI_cursor_indexLine] + 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
                             if (beltIndexLine_next >= ArrayFrom_textElement_children_length || beltIndexLine_next < 0) beltIndexLine_next = -1;
-                            else beltIndexLine_next = (beltIndexLine_next + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+                            else beltIndexLine_next = (beltIndexLine_next + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
                             if (beltIndexLine_next >= 0) {
                                 let keepingDiv = w_div;
@@ -7581,7 +7581,7 @@ function EDI_render_do_Backspace() {
                                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
                                 let beltIndexLine_last = ((ints[fEDI_virtualIndexLine] + ints[fEDI_virtualCount] - 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
                                 if (beltIndexLine_last >= ArrayFrom_textElement_children_length || beltIndexLine_last < 0) beltIndexLine_last = -1;
-                                else beltIndexLine_last = (beltIndexLine_last + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+                                else beltIndexLine_last = (beltIndexLine_last + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
 
                                 EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last, beltIndexLine_next, 1);
                             }
@@ -7591,8 +7591,8 @@ function EDI_render_do_Backspace() {
                         }
                     }
                     else {
-                        w_span = w_div.children[gINT_FIELDS[fEDI_w_indexSpan]];
-                        gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
+                        w_span = w_div.children[ints[fEDI_w_indexSpan]];
+                        ints[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
                     }
                 }
             }

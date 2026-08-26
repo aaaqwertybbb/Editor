@@ -1,11 +1,3 @@
-/**
- * This value ought to be an int (no decimal places) due to its high frequency usage in drawing UI,
- * and visually this having decimal places being of little to no value to the user when you could just ceil whatever height measurement you get.
- * 
- * TODO: (speculation) I've never liked saying "line height" I believe that deals with the vertical alignment of text within some container is "line height" a good wording.
- * */
-let APP_lineHeight = 20;
-
 init();
 
 function init() {
@@ -56,10 +48,10 @@ function APP_measureLineHeightAndCharacterWidth() {
     wrapper.appendChild(measureElement);
     document.body.appendChild(wrapper);
 
-    APP_lineHeight = Math.ceil(measureElement.getBoundingClientRect().height);
+    gINT_FIELDS[fAPP_lineHeight] = Math.ceil(measureElement.getBoundingClientRect().height);
 
     // This permits me to in 'explorer.js' set the first span of every "tree-view-node" to be the same width, regardless of whether its content is '-', '+', or '' (an empty string).
-    // In theory this width calculation and 'APP_lineHeight' can be done at the same time. But combining the steps could result in confusion or unexpected side effects when trying to modify lineheight or width but then again they do rely on the same css styling so you're already doing this
+    // In theory this width calculation and 'gINT_FIELDS[fAPP_lineHeight]' can be done at the same time. But combining the steps could result in confusion or unexpected side effects when trying to modify lineheight or width but then again they do rely on the same css styling so you're already doing this
     measureElement.textContent = "-";
     const minusWidth = Math.ceil(measureElement.getBoundingClientRect().width);
     measureElement.textContent = "+";
@@ -73,7 +65,7 @@ function APP_measureLineHeightAndCharacterWidth() {
 
     const root = document.documentElement;
     const computedStyles = window.getComputedStyle(root);
-    const appLineHeight = APP_lineHeight + 'px';
+    const appLineHeight = gINT_FIELDS[fAPP_lineHeight] + 'px';
     const propertyName = '--APP-line-height';
     if (computedStyles.getPropertyValue(propertyName) !== appLineHeight) {
         root.style.setProperty(propertyName, appLineHeight);
@@ -86,7 +78,7 @@ async function window_myAPI_onMessage(data) {
         if (!EDI_listComponent) {
             EDI_listComponent = new ListComponent();
         }
-        EDI_listComponent.setItems(APP_lineHeight, APP_lineHeight + 'px',
+        EDI_listComponent.setItems(gINT_FIELDS[fAPP_lineHeight], gINT_FIELDS[fAPP_lineHeight] + 'px',
             EDI_listComponent_drawItemAction,
             EDI_listComponent_onkeydownAction,
             EDI_listComponent_getItemsCountFunc);

@@ -73,14 +73,14 @@ function AUTOCOMPLETE_render_create_lines(AUTOCOMPLETE_itemList) {
     }
 
     // TODO: minus CONST_AUTOCOMPLETE_topPadding
-    gINT_FIELDS[fAUTOCOMPLETE_virtualCount] = Math.floor(gINT_FIELDS[fAUTOCOMPLETE_rectHeight] / APP_lineHeight);
+    gINT_FIELDS[fAUTOCOMPLETE_virtualCount] = Math.floor(gINT_FIELDS[fAUTOCOMPLETE_rectHeight] / gINT_FIELDS[fAPP_lineHeight]);
     gINT_FIELDS[fAUTOCOMPLETE_virtualIndex] = 0;
     gINT_FIELDS[fAUTOCOMPLETE_beltIndexZero] = 0;
     gINT_FIELDS[fAUTOCOMPLETE_scrollTop] = 0;
 
     gINT_FIELDS[fAUTOCOMPLETE_cursorIndex] = 0;
 
-    let appHeightCssAttributeValue = `${APP_lineHeight}px`;
+    let appHeightCssAttributeValue = `${gINT_FIELDS[fAPP_lineHeight]}px`;
 
     AUTOCOMPLETE_itemList.innerHTML = '';
 
@@ -107,7 +107,7 @@ function AUTOCOMPLETE_render_create_lines(AUTOCOMPLETE_itemList) {
         AUTOCOMPLETE_itemList.append(div);
 
         div.style.transform = `translateY(${verticalOffset}px)`;
-        verticalOffset += APP_lineHeight;
+        verticalOffset += gINT_FIELDS[fAPP_lineHeight];
     }
 
     AUTOCOMPLETE_arrayFromItemListElement = Array.from(AUTOCOMPLETE_itemList.children);
@@ -123,7 +123,7 @@ function AUTOCOMPLETE_render_RESET_lines(AUTOCOMPLETE_itemList) {
     AUTOCOMPLETE_ensure_boundingClientRect();
 
     // TODO: minus CONST_AUTOCOMPLETE_topPadding
-    gINT_FIELDS[fAUTOCOMPLETE_virtualCount] = Math.floor(gINT_FIELDS[fAUTOCOMPLETE_rectHeight] / APP_lineHeight);
+    gINT_FIELDS[fAUTOCOMPLETE_virtualCount] = Math.floor(gINT_FIELDS[fAUTOCOMPLETE_rectHeight] / gINT_FIELDS[fAPP_lineHeight]);
     gINT_FIELDS[fAUTOCOMPLETE_virtualIndex] = 0;
     gINT_FIELDS[fAUTOCOMPLETE_beltIndexZero] = 0;
     gINT_FIELDS[fAUTOCOMPLETE_scrollTop] = 0;
@@ -133,7 +133,7 @@ function AUTOCOMPLETE_render_RESET_lines(AUTOCOMPLETE_itemList) {
     AUTOCOMPLETEElement.addEventListener('scroll', AUTOCOMPLETE_events_scroll_receive, { passive: true });
     gINT_FIELDS[fAUTOCOMPLETE_cursorIndex] = 0;
 
-    let appHeightCssAttributeValue = `${APP_lineHeight}px`;
+    let appHeightCssAttributeValue = `${gINT_FIELDS[fAPP_lineHeight]}px`;
 
     let verticalOffset = CONST_AUTOCOMPLETE_topPadding;
 
@@ -148,7 +148,7 @@ function AUTOCOMPLETE_render_RESET_lines(AUTOCOMPLETE_itemList) {
         // for the nodes, it needs to even if 0 so the browser receives explicit instructions rather than trying to static place and it "happens" to end up at 0,0.
 
         div.style.transform = `translateY(${verticalOffset}px)`;
-        verticalOffset += APP_lineHeight;
+        verticalOffset += gINT_FIELDS[fAPP_lineHeight];
     }
 }
 
@@ -234,7 +234,7 @@ function AUTOCOMPLETE_render_do_show(timestamp) {
     gINT_FIELDS[fAUTOCOMPLETE_items_totalLength] = lspResult.totalLength;
 
     // TODO: This doesn't need mail.ceil but perhaps add it to ensure things?
-    let itemHeightTotalNumber = gINT_FIELDS[fAUTOCOMPLETE_items_totalLength] * APP_lineHeight + CONST_AUTOCOMPLETE_topPadding;
+    let itemHeightTotalNumber = gINT_FIELDS[fAUTOCOMPLETE_items_totalLength] * gINT_FIELDS[fAPP_lineHeight] + CONST_AUTOCOMPLETE_topPadding;
     AUTOCOMPLETE_virtualization.style.height = itemHeightTotalNumber + 'px';
 
     AUTOCOMPLETE_exists = true;
@@ -327,7 +327,7 @@ function AUTOCOMPLETE_cursor_render_set() {
     let cursorElement = document.getElementById('AUTOCOMPLETE_cursor');
 
     // Determine the number without modifying styles so you can use this variable to determine the need to scroll into view without synchronous layout.
-    let cursorTranslateYNumber = CONST_AUTOCOMPLETE_topPadding + (APP_lineHeight * gINT_FIELDS[fAUTOCOMPLETE_cursorIndex]);
+    let cursorTranslateYNumber = CONST_AUTOCOMPLETE_topPadding + (gINT_FIELDS[fAPP_lineHeight] * gINT_FIELDS[fAUTOCOMPLETE_cursorIndex]);
 
     // Preferably this hasn't changed thus the function immediately just returns.
     if (AUTOCOMPLETE_rect_isNull)
@@ -336,10 +336,10 @@ function AUTOCOMPLETE_cursor_render_set() {
     // If no UI modifications were made prior that are still pending this might avoid a synchronous layout.
     // TODO: If you touch the transform style first... I don't know what would happen it is a GPU related style... so I'm unsure.
     //
-    if (cursorTranslateYNumber + (2 * APP_lineHeight) > gINT_FIELDS[fAUTOCOMPLETE_scrollTop] + gINT_FIELDS[fAUTOCOMPLETE_rectHeight]) {
+    if (cursorTranslateYNumber + (2 * gINT_FIELDS[fAPP_lineHeight]) > gINT_FIELDS[fAUTOCOMPLETE_scrollTop] + gINT_FIELDS[fAUTOCOMPLETE_rectHeight]) {
         let currentBottom = gINT_FIELDS[fAUTOCOMPLETE_scrollTop] + gINT_FIELDS[fAUTOCOMPLETE_rectHeight];
         let changeToMakeBottomTouch = cursorTranslateYNumber - currentBottom;
-        let entireValueToScrollBy = changeToMakeBottomTouch + (2 * APP_lineHeight);
+        let entireValueToScrollBy = changeToMakeBottomTouch + (2 * gINT_FIELDS[fAPP_lineHeight]);
         AUTOCOMPLETEElement.scrollBy(0, entireValueToScrollBy);
     }
     else if (cursorTranslateYNumber < gINT_FIELDS[fAUTOCOMPLETE_scrollTop]) {
@@ -417,7 +417,7 @@ function AUTOCOMPLETE_events_scroll_render(timestamp) {
 
     let prevVli = gINT_FIELDS[fAUTOCOMPLETE_virtualIndex];
     // TODO: minus CONST_AUTOCOMPLETE_topPadding
-    let currVli = Math.floor(gINT_FIELDS[fAUTOCOMPLETE_scrollTop] / APP_lineHeight);
+    let currVli = Math.floor(gINT_FIELDS[fAUTOCOMPLETE_scrollTop] / gINT_FIELDS[fAPP_lineHeight]);
 
     gINT_FIELDS[fAUTOCOMPLETE_virtualIndex] = currVli;
 
@@ -459,7 +459,7 @@ function AUTOCOMPLETE_events_scroll_render(timestamp) {
         beltIndexLine = gINT_FIELDS[fAUTOCOMPLETE_beltIndexZero];
     }
 
-    let verticalOffset = CONST_AUTOCOMPLETE_topPadding + (lowerBound * APP_lineHeight);
+    let verticalOffset = CONST_AUTOCOMPLETE_topPadding + (lowerBound * gINT_FIELDS[fAPP_lineHeight]);
 
     beltIndexLine--; // The 0th loop will increment somewhat awkwardly. This decrement avoids that.
 
@@ -478,7 +478,7 @@ function AUTOCOMPLETE_events_scroll_render(timestamp) {
         }
         
         div.style.transform = `translateY(${verticalOffset}px)`;
-        verticalOffset += APP_lineHeight;
+        verticalOffset += gINT_FIELDS[fAPP_lineHeight];
     }
 }
 

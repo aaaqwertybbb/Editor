@@ -799,7 +799,7 @@ async function EXPLORER_pickFolderOrWorkspaceButton_MenuOnClick(indexClicked, el
                 EXPLORER_PickFolder.title = chosenDirectory;
     
                 EXPLORER_director.setChosenDirectory(chosenDirectory, chooseDirectoryResult.id);
-                EXPLORER_director.component.setItems(EXPLORER_director, APP_lineHeight, APP_lineHeight + 'px');
+                EXPLORER_director.component.setItems(EXPLORER_director, gINT_FIELDS[fAPP_lineHeight], gINT_FIELDS[fAPP_lineHeight] + 'px');
                 EXPLORER_director.component.draw_create_request(EXPLORER_Element, null);
             }
             break;
@@ -818,7 +818,7 @@ async function EXPLORER_pickFolderOrWorkspaceButton_MenuOnClick(indexClicked, el
                 pickWorkspaceButton.title = chooseWorkspaceResult.workspaceFileAbsolutePath;
     
                 EXPLORER_director.setChosenWorkspace(chooseWorkspaceResult);
-                EXPLORER_director.component.setItems(EXPLORER_director, APP_lineHeight, APP_lineHeight + 'px');
+                EXPLORER_director.component.setItems(EXPLORER_director, gINT_FIELDS[fAPP_lineHeight], gINT_FIELDS[fAPP_lineHeight] + 'px');
                 EXPLORER_director.component.draw_create_request(EXPLORER_Element, null);
             }
             break;

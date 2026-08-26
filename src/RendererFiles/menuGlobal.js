@@ -325,7 +325,7 @@ function MENU_onMouseMove(event) {
     }
 
     let relativeY = event.clientY - (MENU_recentBoundingClientRectTop + 4 /*paddingTop*/);
-    let index = Math.floor(relativeY / APP_lineHeight);
+    let index = Math.floor(relativeY / gINT_FIELDS[fAPP_lineHeight]);
     if (MENU_cursorIndex === index) {
         return;
     }
@@ -356,7 +356,7 @@ async function optionOnClick(indexClicked, elementClicked) {
 function menuGetRelativeMouseEventData(event_clientY) {
     let paddingTop = 4;
     let relativeY = event_clientY - (MENU_recentBoundingClientRectTop + paddingTop);
-    return Math.floor(relativeY / APP_lineHeight);
+    return Math.floor(relativeY / gINT_FIELDS[fAPP_lineHeight]);
 }
 
 function MENU_addEvents() {
@@ -387,7 +387,7 @@ function MENU_render_do_Cursor() {
     const cursorElement = document.getElementById('MENU_cursor');
     if (!cursorElement) return;
     // The menu 'padding-top: 4px'
-    cursorElement.style.top = 4 + (APP_lineHeight * MENU_cursorIndex) + 'px';
+    cursorElement.style.top = 4 + (gINT_FIELDS[fAPP_lineHeight] * MENU_cursorIndex) + 'px';
 }
 
 function MENU_state_do_Cursor(index) {

@@ -465,7 +465,16 @@ const fAUTOCOMPLETE_scrollEndDeadline = 111;
 const fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = 112;
 gINT_FIELDS[fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] = 2;
 
-// gINT_FIELDS[fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING]
+/**
+ * This value ought to be an int (no decimal places) due to its high frequency usage in drawing UI,
+ * and visually this having decimal places being of little to no value to the user when you could just ceil whatever height measurement you get.
+ * 
+ * TODO: (speculation) I've never liked saying "line height" I believe that deals with the vertical alignment of text within some container is "line height" a good wording.
+ * */
+const fAPP_lineHeight = 113;
+gINT_FIELDS[fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] = 20;
+
+// gINT_FIELDS[fAPP_lineHeight]
 
 // for the beltIndezZero etc... consider using max value?
 // Although it might "just work" because you're using locals which would become negative?

@@ -599,6 +599,14 @@ const fTreeView_pooledNode_depth = 129;
 
 const fMENU_last_handled_ticketId = 130;
 
+/*
+Google AI
+=========
+Circular Buffers:
+If you are implementing a fast ring buffer where you want to replace the expensive modulo operator (index % size) with
+a fast bitwise AND mask (index & (size - 1)).
+*/
+
 // gINT_FIELDS[fMENU_last_handled_ticketId]
 
 

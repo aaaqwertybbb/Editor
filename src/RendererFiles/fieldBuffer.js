@@ -166,7 +166,7 @@ const CONST_EDI_cursor_GAP_BUFFER_CAPACITY = 32;
 ////////////////////////////
 ////////////////////////////
 
-const gINT_FIELDS = new Uint32Array(64);
+const gINT_FIELDS = new Uint32Array(128);
 
 const fEDI_lineHeight = 0;
 gINT_FIELDS[fEDI_lineHeight] = 20;
@@ -347,11 +347,20 @@ const fEDI_cursor_EDI_duplicate_small = 62;
 /** same comment that pertains to EDI_cursor_EDI_paste_clipboardContent is somewhat relevant here */
 const fEDI_cursor_EDI_duplicate_length = 63;
 
-// gINT_FIELDS[fEDI_cursor_EDI_duplicate_length]
+/**
+ * defaults to viewport size then getBoundingClientRect says the exact pixels upon trying to resize
+ * need to track resizes and store the useragent width/height by the onmousedown and then on resize get proportion and update left top width height.
+ */
+const fDIALOG_left = 64;
+const fDIALOG_top = 65;
+const fDIALOG_width = 66;
+const fDIALOG_height = 67;
+
+// gINT_FIELDS[fDIALOG_height]
 
 
 
-// 63 is inclusive final index
+// 127 is inclusive final index
 
 
 

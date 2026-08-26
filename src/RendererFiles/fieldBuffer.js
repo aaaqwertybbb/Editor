@@ -253,6 +253,11 @@ const CONST_DIALOG_minWidth = 100;
 /** Pixels */
 const CONST_EXPLORER_offsetPerDepth = 8;
 
+// TODO: Consider using these (need to add them to babel plugin if you do)
+//const CONST_EXPLORER_isExpandedText = '-';
+//const CONST_EXPLORER_NOTisExpandedText = '+';
+//const CONST_EXPLORER_cannotBeExpandedText = '';
+
 /**
  * I'm not sure how large I want this, what matters is that I just have a size of anything for the time being, then can change this constant later.
  */

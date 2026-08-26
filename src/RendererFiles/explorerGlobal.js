@@ -667,10 +667,6 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
     }
 }
 
-const EXPLORER_isExpandedText = '-';
-const EXPLORER_NOTisExpandedText = '+';
-const EXPLORER_cannotBeExpandedText = '';
-
 let EXPLORER_show = true;
 
 /** 8 */

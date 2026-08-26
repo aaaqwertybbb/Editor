@@ -409,6 +409,7 @@ module.exports = function (babel) {
     "fEDI_w_indexColumn_SpanTextContentRelative",
     "fEDI_w_indexSpan",
     "fEDI_w_beltIndexLine",
+    "fEDI_EDI_beltIndexZero",
 
 
 

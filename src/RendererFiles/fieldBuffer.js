@@ -677,7 +677,9 @@ const fEXPLORER_TreeViewDirector_LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH =
 
 const fEXPLORER_TreeViewDirector_scrollEndDeadline = 160;
 
-// gINT_FIELDS[fEXPLORER_TreeViewDirector_scrollEndDeadline]
+const fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex = 161;
+
+// gINT_FIELDS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex]
 
 // inclusive final index is 138
 

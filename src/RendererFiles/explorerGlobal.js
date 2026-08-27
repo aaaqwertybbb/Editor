@@ -79,7 +79,6 @@ let EXPLORER_TreeViewDirector_nodeList = new TreeViewNodeList(32);
 let EXPLORER_TreeViewDirector_isCheckingTrailingEdge = false;
 
 let EXPLORER_TreeViewDirector_scrollIsFetchingData = false;
-let EXPLORER_TreeViewDirector_scrollFetchData_virtualIndex = 0;
 let EXPLORER_TreeViewDirector_scrollFetchData_virtualCount = 0;
 let EXPLORER_TreeViewDirector_scrollFetchData_beltIndexZero = 0;
 
@@ -339,7 +338,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     < You are 100% correct to worry about this. Never make your requestAnimationFrame loop async or use await inside it.
     < ...
     */
-    EXPLORER_TreeViewDirector_scrollFetchData_virtualIndex = gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex];
+    gINT_FIELDS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex] = gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex];
     EXPLORER_TreeViewDirector_scrollFetchData_virtualCount = gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount];
     EXPLORER_TreeViewDirector_scrollFetchData_beltIndexZero = gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero];
 
@@ -354,14 +353,14 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-    let beltIndex_current = ((EXPLORER_TreeViewDirector_scrollFetchData_virtualIndex)) - gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
+    let beltIndex_current = ((gINT_FIELDS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex])) - gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
     if (beltIndex_current >= gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] || beltIndex_current < 0) beltIndex_current = -1;
     else beltIndex_current = (beltIndex_current + gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero]) % gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
 
     for (let i = 0; i < itemListElement_childrenLength; i++) {
 
         if (itemListElement_children[beltIndex_current].className === 'eN') {
-            let indexItem = EXPLORER_TreeViewDirector_scrollFetchData_virtualIndex + i;
+            let indexItem = gINT_FIELDS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex] + i;
             
             // The index of the actual dom element within EXPLORER_TreeViewDirector_itemListElement.children
             // that is displaying the UI representation of what 'indexItem' points to.
@@ -384,7 +383,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
 };
 
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
-    if (EXPLORER_TreeViewDirector_scrollFetchData_virtualIndex === gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex] &&
+    if (gINT_FIELDS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex] === gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex] &&
         EXPLORER_TreeViewDirector_scrollFetchData_virtualCount === gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount] &&
         EXPLORER_TreeViewDirector_scrollFetchData_beltIndexZero === gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero]) {
 

@@ -1119,77 +1119,77 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
         case 'ArrowDown':
             event.preventDefault();
             if (event.ctrlKey) {
-                this.rootElement.scrollBy(0, this.itemHeightNumber);
+                EXPLORER_TreeViewDirector_rootElement.scrollBy(0, EXPLORER_TreeViewDirector_itemHeightNumber);
             }
             else {
-                this.state_cursor_setIndex(this.state_cursor_validateIndex(
-                    this.cursorIndex + 1));
+                EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+                    EXPLORER_TreeViewDirector_cursorIndex + 1));
             }
             return;
         case 'ArrowUp':
             event.preventDefault();
             if (event.ctrlKey) {
-                this.rootElement.scrollBy(0, -1 * this.itemHeightNumber);
+                EXPLORER_TreeViewDirector_rootElement.scrollBy(0, -1 * EXPLORER_TreeViewDirector_itemHeightNumber);
             }
             else {
-                this.state_cursor_setIndex(this.state_cursor_validateIndex(
-                    this.cursorIndex - 1));
+                EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+                    EXPLORER_TreeViewDirector_cursorIndex - 1));
             }
             return;
         case 'ArrowRight':
             if (!event.ctrlKey) { // If holding ctrl, don't preventDefault so the user can scroll horizontally?
                 event.preventDefault();
-                this.state_cursor_setIndex(this.state_cursor_validateIndex(
-                    this.cursorIndex));
+                EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+                    EXPLORER_TreeViewDirector_cursorIndex));
 
                 // TODO: 'ArrowRight' when the cursor is on a valid item but isn't part of the virtualization result.
 
-                // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
+                // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_beltIndexItem'...
                 // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
                 // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-                let beltIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
-                if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-                else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+                let beltIndexItem = ((EXPLORER_TreeViewDirector_cursorIndex)) - EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop;
+                if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+                else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
 
                 if (beltIndexItem < 0) return;
-                return this.tvd_arrowRight_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex);
+                return EXPLORER_TreeViewDirector_tvd_arrowRight_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], EXPLORER_TreeViewDirector_cursorIndex);
             }
             return;
         case 'ArrowLeft':
             if (!event.ctrlKey) { // If holding ctrl, don't preventDefault so the user can scroll horizontally?
                 event.preventDefault();
-                this.state_cursor_setIndex(this.state_cursor_validateIndex(
-                    this.cursorIndex));
+                EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+                    EXPLORER_TreeViewDirector_cursorIndex));
                 
-                // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
+                // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_beltIndexItem'...
                 // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
                 // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-                let beltIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
-                if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-                else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+                let beltIndexItem = ((EXPLORER_TreeViewDirector_cursorIndex)) - EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop;
+                if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+                else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
 
                 if (beltIndexItem < 0) return;
-                return this.tvd_arrowLeft_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex);
+                return EXPLORER_TreeViewDirector_tvd_arrowLeft_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], EXPLORER_TreeViewDirector_cursorIndex);
             }
             return;
         case ' ':
         case 'Enter':
             event.preventDefault();
-            this.state_cursor_setIndex(this.state_cursor_validateIndex(
-                this.cursorIndex));
+            EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+                EXPLORER_TreeViewDirector_cursorIndex));
             
-            // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
+            // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_beltIndexItem'...
             // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-            let beltIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
-            if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-            else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+            let beltIndexItem = ((EXPLORER_TreeViewDirector_cursorIndex)) - EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop;
+            if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+            else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
 
             if (beltIndexItem < 0) return;
-            return this.tvd_onkeydown_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex, event.key);
+            return EXPLORER_TreeViewDirector_tvd_onkeydown_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], EXPLORER_TreeViewDirector_cursorIndex, event.key);
     }
 }
 

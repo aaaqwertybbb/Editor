@@ -67,6 +67,8 @@ let EXPLORER_TreeViewDirector_length = 0;
 let EXPLORER_TreeViewDirector_onePositiveDiff_twoNegativeDiff_orThreeFullScreen = 0;
 let EXPLORER_TreeViewDirector_caseThreeOrigin = 0;
 
+let EXPLORER_TreeViewDirector_itemHeightNumber = 0;
+
 let EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightNumber = 0;
 let EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightStyleAttributeValueString = '';
 
@@ -79,11 +81,15 @@ let EXPLORER_TreeViewDirector_LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH = 0;
 
 /** @type {string} */
 let EXPLORER_TreeViewDirector_chosenDirectory = null;
+let EXPLORER_TreeViewDirector_chosenDirectoryAbsolutePathId = -1;
+let EXPLORER_TreeViewDirector_chosenWorkspace = -1;
 
 /**
  * @type {TreeViewNodeList}
  * */
 let EXPLORER_TreeViewDirector_nodeList = new TreeViewNodeList(32);
+
+let EXPLORER_TreeViewDirector_isCheckingTrailingEdge = false;
 
 let EXPLORER_TreeViewDirector_scrollEndDeadline = 0;
 let EXPLORER_TreeViewDirector_scrollIsFetchingData = false;
@@ -151,10 +157,10 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck = 
 }
 
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_trailingEdge() {
-    this.isCheckingTrailingEdge = false; // Reset the flag here
-    if (!this.scrollIsFetchingData) {
-        this.scrollIsFetchingData = true;
-        this.tvd_drawItem_BATCH_pullData(); // no await
+    EXPLORER_TreeViewDirector_isCheckingTrailingEdge = false; // Reset the flag here
+    if (!EXPLORER_TreeViewDirector_scrollIsFetchingData) {
+        EXPLORER_TreeViewDirector_scrollIsFetchingData = true;
+        EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData(); // no await
     }
 };
 

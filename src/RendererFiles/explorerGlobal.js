@@ -108,17 +108,17 @@ EXPLORER_TreeViewDirector_KEY_MASK = (1 << EXPLORER_TreeViewDirector_KEY_BITS) -
 
 /** // Invoke this?: 'this.draw_render_fullReset_request();' */
 function EXPLORER_TreeViewDirector_setChosenDirectory(chosenDirectory, chosenDirectoryAbsolutePathId) {
-    this.chosenDirectory = chosenDirectory;
-    this.chosenDirectoryAbsolutePathId = chosenDirectoryAbsolutePathId;
+    EXPLORER_TreeViewDirector_chosenDirectory = chosenDirectory;
+    EXPLORER_TreeViewDirector_chosenDirectoryAbsolutePathId = chosenDirectoryAbsolutePathId;
 
-    this.nodeList.clear();
+    EXPLORER_TreeViewDirector_nodeList.clear();
 
-    if (!this.chosenDirectory) return;
+    if (!EXPLORER_TreeViewDirector_chosenDirectory) return;
 
     let nodeKind = TreeViewNodeKind_isExpandable_NOTisExpanded;
-    this.nodeList.insert(this.nodeList.count_abstract, nodeKind, this.chosenDirectoryAbsolutePathId, 0);
-    this.itemHeightTotal = this.tvd_getTotalCount() * this.itemHeightNumber;
-    this.virtualizationElement.style.height = this.itemHeightTotal + 'px';
+    EXPLORER_TreeViewDirector_nodeList.insert(EXPLORER_TreeViewDirector_nodeList.count_abstract, nodeKind, EXPLORER_TreeViewDirector_chosenDirectoryAbsolutePathId, 0);
+    EXPLORER_TreeViewDirector_itemHeightTotal = EXPLORER_TreeViewDirector_tvd_getTotalCount() * EXPLORER_TreeViewDirector_itemHeightNumber;
+    EXPLORER_TreeViewDirector_virtualizationElement.style.height = EXPLORER_TreeViewDirector_itemHeightTotal + 'px';
 }
 
 /** // Invoke this?: 'this.draw_render_fullReset_request();' */

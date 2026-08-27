@@ -170,29 +170,29 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_trailingEdge() {
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositiveDiff_twoNegativeDiff_orThreeFullScreen, caseThreeOrigin, timestamp) {
 
     // TODO: I'm putting this in treeViewComponent.js as well for now when diff === 0:
-    this.scrollEndDeadline = timestamp + 300;
+    EXPLORER_TreeViewDirector_scrollEndDeadline = timestamp + 300;
 
-    if (!this.isCheckingTrailingEdge) {
-        this.isCheckingTrailingEdge = true;
-        requestAnimationFrame(this.TREEVIEW_render_do_ScrollTrailingEdgeCheck);
+    if (!EXPLORER_TreeViewDirector_isCheckingTrailingEdge) {
+        EXPLORER_TreeViewDirector_isCheckingTrailingEdge = true;
+        requestAnimationFrame(EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck);
     }
 
     let upperBound = start + length;
-    let totalCount = this.nodeList.count_abstract;
+    let totalCount = EXPLORER_TreeViewDirector_nodeList.count_abstract;
     let loopCounter = 0;
 
-    let lastIndex = (this.beltIndexZero - 1 + this.virtualCount) % this.virtualCount; // TODO: 'this.virtualCount' or 'this.TREEVIEW_ArrayFrom_itemListElement_children.length'
+    let lastIndex = (EXPLORER_TreeViewDirector_beltIndexZero - 1 + EXPLORER_TreeViewDirector_virtualCount) % EXPLORER_TreeViewDirector_virtualCount; // TODO: 'EXPLORER_TreeViewDirector_virtualCount' or 'EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children.length'
 
     let loopTotalIterations = upperBound - start;
 
-    let caseTwoDivIndex = (lastIndex - (loopTotalIterations - 1) + this.TREEVIEW_ArrayFrom_itemListElement_children_length) % this.TREEVIEW_ArrayFrom_itemListElement_children_length;
+    let caseTwoDivIndex = (lastIndex - (loopTotalIterations - 1) + EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length) % EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length;
 
-    let verticalStyleNumber = start * this.itemHeightNumber;
+    let verticalStyleNumber = start * EXPLORER_TreeViewDirector_itemHeightNumber;
 
     if (!caseThreeOrigin && caseThreeOrigin !== 0) {
-        caseThreeOrigin = this.beltIndexZero;
+        caseThreeOrigin = EXPLORER_TreeViewDirector_beltIndexZero;
     }
-    if (caseThreeOrigin < 0 || caseThreeOrigin >= this.TREEVIEW_ArrayFrom_itemListElement_children_length) {
+    if (caseThreeOrigin < 0 || caseThreeOrigin >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length) {
         throw new RangeError();
     }
 
@@ -206,16 +206,16 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositive
 
         switch (onePositiveDiff_twoNegativeDiff_orThreeFullScreen) {
             case 1:
-                divIndex = (this.beltIndexZero + loopCounter) % this.TREEVIEW_ArrayFrom_itemListElement_children_length;
+                divIndex = (EXPLORER_TreeViewDirector_beltIndexZero + loopCounter) % EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length;
                 break;
             case 2:
-                divIndex = (caseTwoDivIndex++) % this.TREEVIEW_ArrayFrom_itemListElement_children_length;
+                divIndex = (caseTwoDivIndex++) % EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length;
                 break;
             case 3:
-                divIndex = (caseThreeOrigin + loopCounter) % this.TREEVIEW_ArrayFrom_itemListElement_children_length;
+                divIndex = (caseThreeOrigin + loopCounter) % EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length;
                 break;
         }
-        divItem = this.TREEVIEW_ArrayFrom_itemListElement_children[divIndex];
+        divItem = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[divIndex];
 
         if (indexItem >= totalCount) {
             // TODO: Will the user agent remove a text node that has an "empty" nodeValue?
@@ -223,7 +223,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositive
             divItem.lastChild.title = '';
         }
         else {
-            this.nodeList.getElementAt(indexItem);
+            EXPLORER_TreeViewDirector_nodeList.getElementAt(indexItem);
             let key = gINT_FIELDS[fTreeView_pooledNode_key];
             depth = gINT_FIELDS[fTreeView_pooledNode_depth];
             nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
@@ -239,7 +239,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositive
 
             if (false /*isDirectory*/ /*&& !entry.isDirectory*/) {
                 // A file was deleted then a directory was created with same absolute file path or vice versa.
-                this.nodeList.setNodeKind(indexItem, TreeViewNodeKind_NOTisExpandable_NOTisExpanded);
+                EXPLORER_TreeViewDirector_nodeList.setNodeKind(indexItem, TreeViewNodeKind_NOTisExpandable_NOTisExpanded);
                 nodeKind = TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
             }
         }
@@ -260,21 +260,21 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositive
         }
 
         // TODO: predict this when expanding/collapsing?????
-        if (depth > this.LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH) {
-            this.LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH = depth;
+        if (depth > EXPLORER_TreeViewDirector_LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH) {
+            EXPLORER_TreeViewDirector_LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH = depth;
         }
 
         divItem.style.transform = `translate(${CONST_EXPLORER_offsetPerDepth * depth}px, ${verticalStyleNumber}px)`;
-        verticalStyleNumber += this.itemHeightNumber;
+        verticalStyleNumber += EXPLORER_TreeViewDirector_itemHeightNumber;
 
         loopCounter++;
     }
 
     if (onePositiveDiff_twoNegativeDiff_orThreeFullScreen === 1) {
-        this.beltIndexZero = (this.beltIndexZero + loopCounter) % this.TREEVIEW_ArrayFrom_itemListElement_children_length;
+        EXPLORER_TreeViewDirector_beltIndexZero = (EXPLORER_TreeViewDirector_beltIndexZero + loopCounter) % EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length;
     }
     else if (onePositiveDiff_twoNegativeDiff_orThreeFullScreen === 2) {
-        this.beltIndexZero = (lastIndex - (loopTotalIterations - 1) + this.TREEVIEW_ArrayFrom_itemListElement_children_length) % this.TREEVIEW_ArrayFrom_itemListElement_children_length;
+        EXPLORER_TreeViewDirector_beltIndexZero = (lastIndex - (loopTotalIterations - 1) + EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length) % EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length;
     }
 }
 

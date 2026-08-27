@@ -154,7 +154,7 @@ function EXPLORER_TreeViewDirector_setChosenWorkspace(chooseWorkspaceResult) {
     EXPLORER_TreeViewDirector_virtualizationElement.style.height = EXPLORER_TreeViewDirector_itemHeightTotal + 'px';
 }
 
-function EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck = (timestamp) => {
+function EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck(timestamp) {
     // If the scroll deadline hasn't been met yet, keep checking on the next frame
     if (timestamp < EXPLORER_TreeViewDirector_scrollEndDeadline) {
         requestAnimationFrame(EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck);

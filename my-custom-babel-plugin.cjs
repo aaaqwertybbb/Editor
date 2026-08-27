@@ -542,6 +542,7 @@ module.exports = function (babel) {
     "fEXPLORER_TreeViewDirector_scrollEndDeadline",
     "fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex",
     "fEXPLORER_TreeViewDirector_scrollFetchData_virtualCount",
+    "fEXPLORER_TreeViewDirector_scrollFetchData_beltIndexZero",
 
   ];
 

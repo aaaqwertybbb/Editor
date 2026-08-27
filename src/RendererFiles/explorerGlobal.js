@@ -72,8 +72,6 @@ let EXPLORER_TreeViewDirector_chosenWorkspace = -1;
  * */
 let EXPLORER_TreeViewDirector_nodeList = new TreeViewNodeList(32);
 
-let EXPLORER_TreeViewDirector_isCheckingTrailingEdge = false;
-
 let EXPLORER_TreeViewDirector_scrollIsFetchingData = false;
 
 /** Starting with an empty array so I can have undefined/null signify that the "TreeViewDirector" is "opting out" of this feature, thus the component should not allocate this on the "TreeViewDirector"'s behalf. */
@@ -133,7 +131,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck(ti
 }
 
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_trailingEdge() {
-    EXPLORER_TreeViewDirector_isCheckingTrailingEdge = false; // Reset the flag here
+    gBYTE_FIELDS[byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge] = false; // Reset the flag here
     if (!EXPLORER_TreeViewDirector_scrollIsFetchingData) {
         EXPLORER_TreeViewDirector_scrollIsFetchingData = true;
         EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData(); // no await
@@ -148,8 +146,8 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositive
     // TODO: I'm putting this in treeViewComponent.js as well for now when diff === 0:
     gINT_FIELDS[fEXPLORER_TreeViewDirector_scrollEndDeadline] = timestamp + 300;
 
-    if (!EXPLORER_TreeViewDirector_isCheckingTrailingEdge) {
-        EXPLORER_TreeViewDirector_isCheckingTrailingEdge = true;
+    if (!gBYTE_FIELDS[byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge]) {
+        gBYTE_FIELDS[byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge] = true;
         requestAnimationFrame(EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck);
     }
 

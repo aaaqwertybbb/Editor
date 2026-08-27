@@ -398,27 +398,27 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
 };
 
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
-    if (this.scrollFetchData_virtualIndex === this._ONSCROLLvirtualIndex &&
-        this.scrollFetchData_virtualCount === this._ONSCROLLvirtualCount &&
-        this.scrollFetchData_beltIndexZero === this.beltIndexZero) {
+    if (EXPLORER_TreeViewDirector_scrollFetchData_virtualIndex === EXPLORER_TreeViewDirector__ONSCROLLvirtualIndex &&
+        EXPLORER_TreeViewDirector_scrollFetchData_virtualCount === EXPLORER_TreeViewDirector__ONSCROLLvirtualCount &&
+        EXPLORER_TreeViewDirector_scrollFetchData_beltIndexZero === EXPLORER_TreeViewDirector_beltIndexZero) {
 
         // This isn't the most optimal way of doing things.
         //
-        let itemListElement_children = this.TREEVIEW_ArrayFrom_itemListElement_children;
-        let itemListElement_childrenLength = this.TREEVIEW_ArrayFrom_itemListElement_children_length;
+        let itemListElement_children = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children;
+        let itemListElement_childrenLength = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length;
 
-        let currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = this.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
+        let currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = EXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
         let NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
 
-        for (let i = 0; i < this.pullData_result_count; i++) {
-            let packedInteger = this.pullData_result[i];
-            const key = packedInteger & this.KEY_MASK;
-            const beltIndexItem = packedInteger >> this.KEY_BITS;
+        for (let i = 0; i < EXPLORER_TreeViewDirector_pullData_result_count; i++) {
+            let packedInteger = EXPLORER_TreeViewDirector_pullData_result[i];
+            const key = packedInteger & EXPLORER_TreeViewDirector_KEY_MASK;
+            const beltIndexItem = packedInteger >> EXPLORER_TreeViewDirector_KEY_BITS;
 
             let nodeElement = itemListElement_children[beltIndexItem];
             nodeElement.className = '';
             let textNode = nodeElement.lastChild;
-            let entry = this.arrayEntries[i];
+            let entry = EXPLORER_TreeViewDirector_arrayEntries[i];
             textNode.nodeValue = entry.basename;
             textNode.title = entry.absolutePath;
 
@@ -429,23 +429,23 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
         }
 
         if (NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING > currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING) {
-            this.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
-            let widthAttributeValueNumber = Math.ceil(((this.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING + 2/*padding*/) * gINT_FIELDS[fEXPLORER_firstSpanWidthValue]) + CONST_EXPLORER_offsetPerDepth * this.LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH);
+            EXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
+            let widthAttributeValueNumber = Math.ceil(((EXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING + 2/*padding*/) * gINT_FIELDS[fEXPLORER_firstSpanWidthValue]) + CONST_EXPLORER_offsetPerDepth * EXPLORER_TreeViewDirector_LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH);
 
             // This is actually more complicated you have to track whether you go above the minimum requirement lest you add 1 character over and over in width just to keep redrawing widths.
-            //if (widthAttributeValueNumber < this.lastReadNumber_offsetWidth) {
-            //    widthAttributeValueNumber = this.lastReadNumber_offsetWidth;
+            //if (widthAttributeValueNumber < EXPLORER_TreeViewDirector_lastReadNumber_offsetWidth) {
+            //    widthAttributeValueNumber = EXPLORER_TreeViewDirector_lastReadNumber_offsetWidth;
             //}
-            //this.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING
+            //EXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING
             let widthAttributeValueString = widthAttributeValueNumber + 'px';
-            this.cursorElement.style.width = widthAttributeValueString;
+            EXPLORER_TreeViewDirector_cursorElement.style.width = widthAttributeValueString;
             for (let i = 0; i < itemListElement_childrenLength; i++) {
                 itemListElement_children[i].style.width = widthAttributeValueString;
             }
         }
 
-        this.pullData_result = null;
-        this.arrayEntries = null;
+        EXPLORER_TreeViewDirector_pullData_result = null;
+        EXPLORER_TreeViewDirector_arrayEntries = null;
     }
 }
 

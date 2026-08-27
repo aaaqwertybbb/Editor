@@ -852,19 +852,19 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Batch(timestamp) {
  * @returns 
  */
 function EXPLORER_TreeViewDirector_draw_delete() {
-    if (!this.rootElement.parentElement) return;
-    this.draw_removeEvents();
-    this.boundingClientRect = null;
-    this.rootElement.parentElement.removeChild(this.rootElement);
+    if (!EXPLORER_TreeViewDirector_rootElement.parentElement) return;
+    EXPLORER_TreeViewDirector_draw_removeEvents();
+    EXPLORER_TreeViewDirector_boundingClientRect = null;
+    EXPLORER_TreeViewDirector_rootElement.parentElement.removeChild(EXPLORER_TreeViewDirector_rootElement);
 }
 
 function EXPLORER_TreeViewDirector_draw_addEvents() {
-    this.rootElement.addEventListener('click', this);
-    this.rootElement.addEventListener('keydown', this);
-    this.rootElement.addEventListener('scroll', this, { passive: true });
-    this.rootElement.addEventListener('dblclick', this);
-    this.rootElement.addEventListener('contextmenu', this);
-    window.addEventListener('resize', this);
+    EXPLORER_TreeViewDirector_rootElement.addEventListener('click', EXPLORER_TreeViewDirector_event_click); // this.event_click(event.clientY, event.target);
+    EXPLORER_TreeViewDirector_rootElement.addEventListener('keydown', EXPLORER_TreeViewDirector_event_keydown); // this.event_keydown(event);
+    EXPLORER_TreeViewDirector_rootElement.addEventListener('scroll', EXPLORER_TreeViewDirector_event_scroll, { passive: true }); // this.event_scroll();
+    EXPLORER_TreeViewDirector_rootElement.addEventListener('dblclick', EXPLORER_TreeViewDirector_event_dblclick); // this.event_dblclick(event.clientY, event.target);
+    EXPLORER_TreeViewDirector_rootElement.addEventListener('contextmenu', EXPLORER_TreeViewDirector_event_contextmenu); // this.event_contextmenu(event.button, event.clientX, event.clientY);
+    window.addEventListener('resize', EXPLORER_TreeViewDirector_event_windowResize); // this.event_windowResize();
 }
 
 function EXPLORER_TreeViewDirector_draw_removeEvents() {
@@ -880,22 +880,22 @@ function EXPLORER_TreeViewDirector_draw_removeEvents() {
 function EXPLORER_TreeViewDirector_handleEvent(event) {
     switch (event.type) {
         case 'click':
-            this.event_click(event.clientY, event.target);
+            
             break;
         case 'keydown':
-            this.event_keydown(event);
+            
             break;
         case 'scroll':
-            this.event_scroll();
+            
             break;
         case 'dblclick':
-            this.event_dblclick(event.clientY, event.target);
+            
             break;
         case 'contextmenu':
-            this.event_contextmenu(event.button, event.clientX, event.clientY);
+            
             break;
         case 'resize':
-            this.event_windowResize();
+            
             break;
     }
 }

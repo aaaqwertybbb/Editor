@@ -1213,15 +1213,15 @@ function EXPLORER_TreeViewDirector_event_windowResize() {
 }
 
 function EXPLORER_TreeViewDirector_event_scroll() {
-    this.lastReadNumber_scrollLeft = this.rootElement.scrollLeft;
-    this.lastReadNumber_scrollTop = this.rootElement.scrollTop;
-    this.TREEVIEW_render_request(TREEVIEWrenderKind_Scroll);
+    EXPLORER_TreeViewDirector_lastReadNumber_scrollLeft = EXPLORER_TreeViewDirector_rootElement.scrollLeft;
+    EXPLORER_TreeViewDirector_lastReadNumber_scrollTop = EXPLORER_TreeViewDirector_rootElement.scrollTop;
+    EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Scroll);
 }
 
 function EXPLORER_TreeViewDirector_ensure_boundingClientRect() {
-    if (!this.boundingClientRect) {
-        this.boundingClientRect = this.rootElement.getBoundingClientRect();
-        this.virtualCount = Math.ceil(this.rootElement.offsetHeight / this.itemHeightNumber);
+    if (!EXPLORER_TreeViewDirector_boundingClientRect) {
+        EXPLORER_TreeViewDirector_boundingClientRect = EXPLORER_TreeViewDirector_rootElement.getBoundingClientRect();
+        EXPLORER_TreeViewDirector_virtualCount = Math.ceil(EXPLORER_TreeViewDirector_rootElement.offsetHeight / EXPLORER_TreeViewDirector_itemHeightNumber);
     }
 }
 

@@ -669,7 +669,11 @@ const fEXPLORER_TreeViewDirector_caseThreeOrigin = 155;
 const fEXPLORER_TreeViewDirector_itemHeightNumber = 156;
 gINT_FIELDS[fEXPLORER_TreeViewDirector_itemHeightNumber] = 20;
 
-// gINT_FIELDS[fEXPLORER_TreeViewDirector_itemHeightNumber]
+const fEXPLORER_TreeViewDirector_SET_ITEMS_itemHeightNumber = 157;
+
+const fEXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = 158;
+
+// gINT_FIELDS[fEXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING]
 
 // inclusive final index is 138
 

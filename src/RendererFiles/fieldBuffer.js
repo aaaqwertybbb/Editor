@@ -655,7 +655,9 @@ const fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop = 149;
 
 const fEXPLORER_TreeViewDirector_beltIndexZero = 150;
 
-// gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero]
+const fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length = 151;
+
+// gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length]
 
 // inclusive final index is 138
 

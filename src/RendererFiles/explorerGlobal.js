@@ -45,14 +45,13 @@ let EXPLORER_TreeViewDirector_itemListElement = document.createElement('div');
 EXPLORER_TreeViewDirector_itemListElement.className = 'TREEVIEW_itemList';
 EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_itemListElement);
 
-let EXPLORER_TreeViewDirector_scrollTimer = null;
+let EXPLORER_TreeViewDirector_scrollTimer = null; // TODO: the timers are int ids in non-Node contexts
 let EXPLORER_TreeViewDirector_hasTrailingCall = false;
 
 let EXPLORER_TreeViewDirector_TREEVIEW_renderKindArray = [];
 let EXPLORER_TreeViewDirector_TREEVIEW_isRenderPending = false;
 
 let EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children = [];
-let EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length = 0;
 
 let EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_parentElement = null;
 let EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_insertBeforeThisChild = null;
@@ -185,14 +184,14 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositive
 
     let loopTotalIterations = upperBound - start;
 
-    let caseTwoDivIndex = (lastIndex - (loopTotalIterations - 1) + EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length) % EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length;
+    let caseTwoDivIndex = (lastIndex - (loopTotalIterations - 1) + gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length]) % gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length];
 
     let verticalStyleNumber = start * EXPLORER_TreeViewDirector_itemHeightNumber;
 
     if (!caseThreeOrigin && caseThreeOrigin !== 0) {
         caseThreeOrigin = gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero];
     }
-    if (caseThreeOrigin < 0 || caseThreeOrigin >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length) {
+    if (caseThreeOrigin < 0 || caseThreeOrigin >= gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length]) {
         throw new RangeError();
     }
 
@@ -206,13 +205,13 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositive
 
         switch (onePositiveDiff_twoNegativeDiff_orThreeFullScreen) {
             case 1:
-                divIndex = (gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero] + loopCounter) % EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length;
+                divIndex = (gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero] + loopCounter) % gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length];
                 break;
             case 2:
-                divIndex = (caseTwoDivIndex++) % EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length;
+                divIndex = (caseTwoDivIndex++) % gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length];
                 break;
             case 3:
-                divIndex = (caseThreeOrigin + loopCounter) % EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length;
+                divIndex = (caseThreeOrigin + loopCounter) % gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length];
                 break;
         }
         divItem = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[divIndex];
@@ -271,10 +270,10 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositive
     }
 
     if (onePositiveDiff_twoNegativeDiff_orThreeFullScreen === 1) {
-        gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero] = (gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero] + loopCounter) % EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length;
+        gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero] = (gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero] + loopCounter) % gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length];
     }
     else if (onePositiveDiff_twoNegativeDiff_orThreeFullScreen === 2) {
-        gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero] = (lastIndex - (loopTotalIterations - 1) + EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length) % EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length;
+        gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero] = (lastIndex - (loopTotalIterations - 1) + gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length]) % gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length];
     }
 }
 
@@ -360,7 +359,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     // This isn't the most optimal way of doing things.
     //
     let itemListElement_children = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children;
-    let itemListElement_childrenLength = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length;
+    let itemListElement_childrenLength = gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length];
 
     EXPLORER_TreeViewDirector_pullData_array_count = 0;
 
@@ -369,7 +368,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
     let beltIndex_current = ((EXPLORER_TreeViewDirector_scrollFetchData_virtualIndex)) - gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
-    if (beltIndex_current >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndex_current < 0) beltIndex_current = -1;
+    if (beltIndex_current >= gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] || beltIndex_current < 0) beltIndex_current = -1;
     else beltIndex_current = (beltIndex_current + gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero]) % gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
 
     for (let i = 0; i < itemListElement_childrenLength; i++) {
@@ -405,7 +404,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
         // This isn't the most optimal way of doing things.
         //
         let itemListElement_children = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children;
-        let itemListElement_childrenLength = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length;
+        let itemListElement_childrenLength = gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length];
 
         let currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = EXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
         let NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
@@ -873,7 +872,7 @@ function EXPLORER_TreeViewDirector_draw_removeEvents() {
 }
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp) {
-    if (EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length !== gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]) {
+    if (gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] !== gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]) {
         EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp);
     }
     else {
@@ -892,7 +891,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp) {
         gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex] = gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
 
         if (gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount] === gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] &&
-            EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length === gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]) {
+            gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] === gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]) {
 
             let diff = currVli - prevVli;
 
@@ -980,7 +979,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
         }
 
         EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children = Array.from(EXPLORER_TreeViewDirector_itemListElement.children);
-        EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children.length;
+        gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children.length;
     }
 
     // TODO: This if statement check is awkward because the previous if statement ought to have guaranteed this one to be true.
@@ -1021,7 +1020,7 @@ function EXPLORER_TreeViewDirector_event_click(event) {
     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
     let beltIndexItem = ((indexItem)) - gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
-    if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+    if (beltIndexItem >= gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] || beltIndexItem < 0) beltIndexItem = -1;
     else beltIndexItem = (beltIndexItem + gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero]) % gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
 
     if (beltIndexItem < 0) return;
@@ -1052,7 +1051,7 @@ function EXPLORER_TreeViewDirector_event_dblclick(event) {
     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
     let beltIndexItem = ((indexItem)) - gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
-    if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+    if (beltIndexItem >= gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] || beltIndexItem < 0) beltIndexItem = -1;
     else beltIndexItem = (beltIndexItem + gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero]) % gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
 
     if (beltIndexItem < 0) return;
@@ -1065,7 +1064,7 @@ function EXPLORER_TreeViewDirector_event_dblclick(event) {
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
         let beltIndexItem = ((gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex])) - gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
-        if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+        if (beltIndexItem >= gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] || beltIndexItem < 0) beltIndexItem = -1;
         else beltIndexItem = (beltIndexItem + gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero]) % gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
 
         if (beltIndexItem < 0) return;
@@ -1095,7 +1094,7 @@ function EXPLORER_TreeViewDirector_event_contextmenu(event) {
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
         let beltIndexItem = ((gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex])) - gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
-        if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+        if (beltIndexItem >= gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] || beltIndexItem < 0) beltIndexItem = -1;
         else beltIndexItem = (beltIndexItem + gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero]) % gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
 
         if (beltIndexItem < 0) return;
@@ -1113,7 +1112,7 @@ function EXPLORER_TreeViewDirector_event_contextmenu(event) {
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
         let beltIndexItem = ((gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex])) - gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
-        if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+        if (beltIndexItem >= gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] || beltIndexItem < 0) beltIndexItem = -1;
         else beltIndexItem = (beltIndexItem + gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero]) % gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
 
         if (beltIndexItem < 0) return;
@@ -1161,7 +1160,7 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
                 // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
                 let beltIndexItem = ((gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex])) - gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
-                if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+                if (beltIndexItem >= gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] || beltIndexItem < 0) beltIndexItem = -1;
                 else beltIndexItem = (beltIndexItem + gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero]) % gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
 
                 if (beltIndexItem < 0) return;
@@ -1179,7 +1178,7 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
                 // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
                 let beltIndexItem = ((gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex])) - gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
-                if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+                if (beltIndexItem >= gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] || beltIndexItem < 0) beltIndexItem = -1;
                 else beltIndexItem = (beltIndexItem + gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero]) % gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
 
                 if (beltIndexItem < 0) return;
@@ -1197,7 +1196,7 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
             let beltIndexItem = ((gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex])) - gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
-            if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+            if (beltIndexItem >= gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] || beltIndexItem < 0) beltIndexItem = -1;
             else beltIndexItem = (beltIndexItem + gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero]) % gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
 
             if (beltIndexItem < 0) return;

@@ -37,6 +37,9 @@ let EXPLORER_TreeViewDirector_itemListElement = document.createElement('div');
 EXPLORER_TreeViewDirector_itemListElement.className = 'TREEVIEW_itemList';
 EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_itemListElement);
 
+let EXPLORER_TreeViewDirector_lastReadNumber_offsetWidth = 0;
+let EXPLORER_TreeViewDirector_lastReadNumber_offsetHeight = 0;
+
 let EXPLORER_TreeViewDirector_cursorTranslateYNumber = 0;
 
 let EXPLORER_TreeViewDirector_itemHeightTotal = 0;
@@ -45,7 +48,9 @@ let EXPLORER_TreeViewDirector_itemHeightTotal = 0;
 let EXPLORER_TreeViewDirector_cursorIndex = 0;
 
 let EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop = 0;
-let EXPLORER_TreeViewDirector_virtualCount = 0; // TODO: This is gonna have to be non-zero to trigger the first render more than likely.
+
+/** Hacky: Must initialize to a number other than 0 or else nothing renders. */
+let EXPLORER_TreeViewDirector_virtualCount = 1;
 
 let EXPLORER_TreeViewDirector__ONSCROLLvirtualIndex = 0;
 let EXPLORER_TreeViewDirector__ONSCROLLvirtualCount = 0;
@@ -72,8 +77,9 @@ let EXPLORER_TreeViewDirector_length = 0;
 let EXPLORER_TreeViewDirector_onePositiveDiff_twoNegativeDiff_orThreeFullScreen = 0;
 let EXPLORER_TreeViewDirector_caseThreeOrigin = 0;
 
-let EXPLORER_TreeViewDirector_itemHeightNumber = 0;
-let EXPLORER_TreeViewDirector_itemHeightStyleAttributeValueString = null;
+/** TODO: what height should this start at? applicationRendererRoot.ts will eventually run initialization logic that actually does the measuring. */
+let EXPLORER_TreeViewDirector_itemHeightNumber = 20;
+let EXPLORER_TreeViewDirector_itemHeightStyleAttributeValueString = '20px';
 
 let EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightNumber = 0;
 let EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightStyleAttributeValueString = '';

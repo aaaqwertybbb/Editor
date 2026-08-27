@@ -42,6 +42,9 @@ let EXPLORER_TreeViewDirector_itemHeightTotal = 0;
 /** Consider the existence of such methods as 'state_cursor_setIndex' before mutating state directly */
 let EXPLORER_TreeViewDirector_cursorIndex = 0;
 
+let EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop = 0;
+let EXPLORER_TreeViewDirector_virtualCount = 0; // TODO: This is gonna have to be non-zero to trigger the first render more than likely.
+
 let EXPLORER_TreeViewDirector__ONSCROLLvirtualIndex = 0;
 let EXPLORER_TreeViewDirector__ONSCROLLvirtualCount = 0;
 
@@ -877,43 +880,43 @@ function EXPLORER_TreeViewDirector_draw_removeEvents() {
 }
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp) {
-    if (this.TREEVIEW_ArrayFrom_itemListElement_children_length !== this.virtualCount) {
-        this.TREEVIEW_render_do_FullReset(timestamp);
+    if (EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length !== EXPLORER_TreeViewDirector_virtualCount) {
+        EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp);
     }
     else {
-        this.virtualIndex_ofScrollTop = Math.floor(this.lastReadNumber_scrollTop / this.itemHeightNumber);
+        EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop = Math.floor(EXPLORER_TreeViewDirector_lastReadNumber_scrollTop / EXPLORER_TreeViewDirector_itemHeightNumber);
 
-        if (this._ONSCROLLvirtualIndex === this.virtualIndex_ofScrollTop &&
-            this._ONSCROLLvirtualCount === this.virtualCount) {
+        if (EXPLORER_TreeViewDirector__ONSCROLLvirtualIndex === EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop &&
+            EXPLORER_TreeViewDirector__ONSCROLLvirtualCount === EXPLORER_TreeViewDirector_virtualCount) {
                 return;
         }
 
-        // If I delay setting 'this._ONSCROLLvirtualIndex' then I can just use that.
+        // If I delay setting 'EXPLORER_TreeViewDirector__ONSCROLLvirtualIndex' then I can just use that.
         // I can't bear to do that right now though. I'm just gonna make this variable.
-        let prevVli = this._ONSCROLLvirtualIndex;
-        let currVli = this.virtualIndex_ofScrollTop;
+        let prevVli = EXPLORER_TreeViewDirector__ONSCROLLvirtualIndex;
+        let currVli = EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop;
 
-        this._ONSCROLLvirtualIndex = this.virtualIndex_ofScrollTop;
+        EXPLORER_TreeViewDirector__ONSCROLLvirtualIndex = EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop;
 
-        if (this._ONSCROLLvirtualCount === this.virtualCount &&
-            this.TREEVIEW_ArrayFrom_itemListElement_children_length === this.virtualCount) {
+        if (EXPLORER_TreeViewDirector__ONSCROLLvirtualCount === EXPLORER_TreeViewDirector_virtualCount &&
+            EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length === EXPLORER_TreeViewDirector_virtualCount) {
 
             let diff = currVli - prevVli;
 
-            let totalCount = this.tvd_getTotalCount();
+            let totalCount = EXPLORER_TreeViewDirector_tvd_getTotalCount();
 
-            if (diff > 0 && diff < this.virtualCount) {
-                this.tvd_drawItem_BATCH(prevVli + this._ONSCROLLvirtualCount, diff, 1, undefined, timestamp);
+            if (diff > 0 && diff < EXPLORER_TreeViewDirector_virtualCount) {
+                EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(prevVli + EXPLORER_TreeViewDirector__ONSCROLLvirtualCount, diff, 1, undefined, timestamp);
             }
-            else if (diff < 0 && (diff *= -1) < this.virtualCount) {
-                this.tvd_drawItem_BATCH(currVli, diff, 2, undefined, timestamp);
+            else if (diff < 0 && (diff *= -1) < EXPLORER_TreeViewDirector_virtualCount) {
+                EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(currVli, diff, 2, undefined, timestamp);
             }
             else {
                 if (diff === 0) {
-                    this.scrollEndDeadline = timestamp + 300;
+                    EXPLORER_TreeViewDirector_scrollEndDeadline = timestamp + 300;
                 }
                 else {
-                    this.tvd_drawItem_BATCH(this.virtualIndex_ofScrollTop, this.virtualCount, 3, undefined, timestamp);
+                    EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop, EXPLORER_TreeViewDirector_virtualCount, 3, undefined, timestamp);
                 }
             }
         }

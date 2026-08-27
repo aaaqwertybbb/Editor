@@ -533,6 +533,8 @@ module.exports = function (babel) {
     "fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length",
     "fEXPLORER_TreeViewDirector_start",
     "fEXPLORER_TreeViewDirector_length",
+    "fEXPLORER_TreeViewDirector_onePositiveDiff_twoNegativeDiff_orThreeFullScreen",
+    "fEXPLORER_TreeViewDirector_caseThreeOrigin",
 
   ];
 

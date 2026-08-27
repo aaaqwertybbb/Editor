@@ -661,7 +661,11 @@ const fEXPLORER_TreeViewDirector_start = 152;
 
 const fEXPLORER_TreeViewDirector_length = 153;
 
-// gINT_FIELDS[fEXPLORER_TreeViewDirector_length]
+const fEXPLORER_TreeViewDirector_onePositiveDiff_twoNegativeDiff_orThreeFullScreen = 154;
+
+const fEXPLORER_TreeViewDirector_caseThreeOrigin = 155;
+
+// gINT_FIELDS[fEXPLORER_TreeViewDirector_caseThreeOrigin]
 
 // inclusive final index is 138
 

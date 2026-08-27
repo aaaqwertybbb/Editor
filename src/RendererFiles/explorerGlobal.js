@@ -56,9 +56,6 @@ let EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children = [];
 let EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_parentElement = null;
 let EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_insertBeforeThisChild = null;
 
-let EXPLORER_TreeViewDirector_onePositiveDiff_twoNegativeDiff_orThreeFullScreen = 0;
-let EXPLORER_TreeViewDirector_caseThreeOrigin = 0;
-
 /** TODO: what height should this start at? applicationRendererRoot.ts will eventually run initialization logic that actually does the measuring. */
 let EXPLORER_TreeViewDirector_itemHeightNumber = 20;
 let EXPLORER_TreeViewDirector_itemHeightStyleAttributeValueString = '20px';
@@ -834,7 +831,7 @@ function EXPLORER_TreeViewDirector_draw_create_request(parentElement, insertBefo
 }
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Batch(timestamp) {
-    EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(gINT_FIELDS[fEXPLORER_TreeViewDirector_start], gINT_FIELDS[fEXPLORER_TreeViewDirector_length], EXPLORER_TreeViewDirector_onePositiveDiff_twoNegativeDiff_orThreeFullScreen, EXPLORER_TreeViewDirector_caseThreeOrigin, timestamp);
+    EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(gINT_FIELDS[fEXPLORER_TreeViewDirector_start], gINT_FIELDS[fEXPLORER_TreeViewDirector_length], gINT_FIELDS[fEXPLORER_TreeViewDirector_onePositiveDiff_twoNegativeDiff_orThreeFullScreen], gINT_FIELDS[fEXPLORER_TreeViewDirector_caseThreeOrigin], timestamp);
 }
 
 /**
@@ -922,8 +919,8 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll_PullDataDrawResult(
 function EXPLORER_TreeViewDirector_draw_BATCH_request(start, length, onePositiveDiff_twoNegativeDiff_orThreeFullScreen, caseThreeOrigin) {
     gINT_FIELDS[fEXPLORER_TreeViewDirector_start] = start;
     gINT_FIELDS[fEXPLORER_TreeViewDirector_length] = length;
-    EXPLORER_TreeViewDirector_onePositiveDiff_twoNegativeDiff_orThreeFullScreen = onePositiveDiff_twoNegativeDiff_orThreeFullScreen;
-    EXPLORER_TreeViewDirector_caseThreeOrigin = caseThreeOrigin;
+    gINT_FIELDS[fEXPLORER_TreeViewDirector_onePositiveDiff_twoNegativeDiff_orThreeFullScreen] = onePositiveDiff_twoNegativeDiff_orThreeFullScreen;
+    gINT_FIELDS[fEXPLORER_TreeViewDirector_caseThreeOrigin] = caseThreeOrigin;
     EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Batch);
 }
 

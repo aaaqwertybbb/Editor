@@ -84,7 +84,6 @@ let EXPLORER_TreeViewDirector_scrollIsFetchingData = false;
 let EXPLORER_TreeViewDirector_pullData_array = new Uint32Array(0);
 
 let EXPLORER_TreeViewDirector_pullData_result = new Uint32Array(0);
-let EXPLORER_TreeViewDirector_pullData_result_count = 0;
 
 let EXPLORER_TreeViewDirector_arrayEntries = null;
 
@@ -372,7 +371,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     EXPLORER_TreeViewDirector_arrayEntries = await window.myAPI.getFilesystemEntryById_ARRAY(EXPLORER_TreeViewDirector_pullData_array.subarray(0, gINT_FIELDS[fEXPLORER_TreeViewDirector_pullData_array_count]));
 
     EXPLORER_TreeViewDirector_pullData_result = EXPLORER_TreeViewDirector_pullData_array;
-    EXPLORER_TreeViewDirector_pullData_result_count = gINT_FIELDS[fEXPLORER_TreeViewDirector_pullData_array_count];
+    gINT_FIELDS[fEXPLORER_TreeViewDirector_pullData_result_count] = gINT_FIELDS[fEXPLORER_TreeViewDirector_pullData_array_count];
 
     EXPLORER_TreeViewDirector_scrollIsFetchingData = false; // TODO: try/catch/finally; put this in the finally.
 
@@ -392,7 +391,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
         let currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = gINT_FIELDS[fEXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING];
         let NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
 
-        for (let i = 0; i < EXPLORER_TreeViewDirector_pullData_result_count; i++) {
+        for (let i = 0; i < gINT_FIELDS[fEXPLORER_TreeViewDirector_pullData_result_count]; i++) {
             let packedInteger = EXPLORER_TreeViewDirector_pullData_result[i];
             const key = packedInteger & EXPLORER_TreeViewDirector_KEY_MASK;
             const beltIndexItem = packedInteger >> EXPLORER_TreeViewDirector_KEY_BITS;

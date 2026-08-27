@@ -544,6 +544,7 @@ module.exports = function (babel) {
     "fEXPLORER_TreeViewDirector_scrollFetchData_virtualCount",
     "fEXPLORER_TreeViewDirector_scrollFetchData_beltIndexZero",
     "fEXPLORER_TreeViewDirector_pullData_array_count",
+    "fEXPLORER_TreeViewDirector_pullData_result_count",
 
   ];
 

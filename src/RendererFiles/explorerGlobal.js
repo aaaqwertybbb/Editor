@@ -868,12 +868,12 @@ function EXPLORER_TreeViewDirector_draw_addEvents() {
 }
 
 function EXPLORER_TreeViewDirector_draw_removeEvents() {
-    this.rootElement.removeEventListener('click', this);
-    this.rootElement.removeEventListener('keydown', this);
-    this.rootElement.removeEventListener('scroll', this, { passive: true });
-    this.rootElement.addEventListener('dblclick', this);
-    this.rootElement.addEventListener('contextmenu', this);
-    window.removeEventListener('resize', this);
+    EXPLORER_TreeViewDirector_rootElement.removeEventListener('click', EXPLORER_TreeViewDirector_event_click);
+    EXPLORER_TreeViewDirector_rootElement.removeEventListener('keydown', EXPLORER_TreeViewDirector_event_keydown);
+    EXPLORER_TreeViewDirector_rootElement.removeEventListener('scroll', EXPLORER_TreeViewDirector_event_scroll, { passive: true });
+    EXPLORER_TreeViewDirector_rootElement.addEventListener('dblclick', EXPLORER_TreeViewDirector_event_dblclick);
+    EXPLORER_TreeViewDirector_rootElement.addEventListener('contextmenu', EXPLORER_TreeViewDirector_event_contextmenu);
+    window.removeEventListener('resize', EXPLORER_TreeViewDirector_event_windowResize);
 }
 
 // The browser automatically looks for this exact method name

@@ -665,7 +665,11 @@ const fEXPLORER_TreeViewDirector_onePositiveDiff_twoNegativeDiff_orThreeFullScre
 
 const fEXPLORER_TreeViewDirector_caseThreeOrigin = 155;
 
-// gINT_FIELDS[fEXPLORER_TreeViewDirector_caseThreeOrigin]
+/** TODO: what height should this start at? applicationRendererRoot.ts will eventually run initialization logic that actually does the measuring. */
+const fEXPLORER_TreeViewDirector_itemHeightNumber = 156;
+gINT_FIELDS[fEXPLORER_TreeViewDirector_itemHeightNumber] = 20;
+
+// gINT_FIELDS[fEXPLORER_TreeViewDirector_itemHeightNumber]
 
 // inclusive final index is 138
 

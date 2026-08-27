@@ -45,9 +45,6 @@ let EXPLORER_TreeViewDirector_itemListElement = document.createElement('div');
 EXPLORER_TreeViewDirector_itemListElement.className = 'TREEVIEW_itemList';
 EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_itemListElement);
 
-let EXPLORER_TreeViewDirector_scrollTimer = null; // TODO: the timers are int ids in non-Node contexts
-let EXPLORER_TreeViewDirector_hasTrailingCall = false;
-
 let EXPLORER_TreeViewDirector_TREEVIEW_renderKindArray = [];
 let EXPLORER_TreeViewDirector_TREEVIEW_isRenderPending = false;
 

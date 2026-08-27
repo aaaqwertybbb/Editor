@@ -1,38 +1,89 @@
 
-/**
- * Need to track the largest width line that comes into view,
- * then update the width of the element that is 'display: contents' and wraps the various divs that map to a tree view node.
- * 
- * The tree view nodes will be width 100% so they inherit the width of the 'display: contents' div.
- * 
- * This avoids layout shifts as I scroll because the divs are now all the same width, and you're just swapping the content of the text as you scroll.
- * 
- * ====
- * 
- * Need to support synchronous and rAF scrolling that converts scrolled into view nodes to '...' text.
- * Then debounce to ask the filesystem the names of the files.
- * 
- * ===
- * 
- * When collapse maybe you reset the length of the longest line or something
- * 
- * ===
- * 
- * also need to update the width of the cursor to the largest width seen div thing so it visually looks correct
- * need to make sure the code does a min-width esque logic. Probably don't want the css but just for the code that sets the style to consider it for you avoids min-width overhead if exists?
- * 
-  * ===
-  * 
-  * I wanna reiterate this to myself cause it is vitally important.
-  * 
-  * The reason you're so confused about garbage collection and how much overhead it provides is that you
-  * don't understand how to render things in a browser, and a side effect of your crummy rendering is that you're blowing up the GC and then
-  * you go around looking at const numbers and start trippin bout it like a fool.
-  * I mean maybe it does have a non zero overhead a const number. But like cmon dude.
- */
+/*
+When collapse maybe you reset the length of the longest line or something
+
+===
+
+The reason you're so confused about garbage collection and how much overhead it provides is that you
+don't understand how to render things in a browser, and a side effect of your crummy rendering is that you're blowing up the GC and then
+you go around looking at const numbers and start trippin bout it like a fool.
+I mean maybe it does have a non zero overhead a const number. But like cmon dude.
+
+===
+
+also need to update the width of the cursor to the largest width seen div thing so it visually looks correct
+need to make sure the code does a min-width esque logic. Probably don't want the css but just for the code that sets the style to consider it for you avoids min-width overhead if exists?
+*/
+
 class EXPLORER_TreeViewDirector {
 
     constructor() {
+        /////
+        ///// start treeViewComponent.js
+        /////
+        this.rootElement = document.createElement('div');
+        this.rootElement.classList.add('TREEVIEW', 'unselectable');
+        this.rootElement.tabIndex = 0;
+        this.rootElement.style.height = '100%';
+
+        this.virtualizationElement = document.createElement('div');
+        this.virtualizationElement.className = 'TREEVIEW_virtualization';
+        this.rootElement.appendChild(this.virtualizationElement);
+
+        /** Consider the existence of such methods as 'state_cursor_setIndex' before mutating state directly */
+        this.cursorElement = document.createElement('div');
+        this.cursorElement.className = 'TREEVIEW_cursor';
+        this.rootElement.appendChild(this.cursorElement);
+
+        this.itemListElement = document.createElement('div');
+        this.itemListElement.className = 'TREEVIEW_itemList';
+        this.rootElement.appendChild(this.itemListElement);
+
+        this.itemHeightTotal = 0;
+
+        /** Consider the existence of such methods as 'state_cursor_setIndex' before mutating state directly */
+        this.cursorIndex = 0;
+
+        this._ONSCROLLvirtualIndex = 0;
+        this._ONSCROLLvirtualCount = 0;
+
+        this.lastReadNumber_scrollLeft = 0;
+        this.lastReadNumber_scrollTop = 0;
+        
+        this.scrollTimer = null;
+        this.hasTrailingCall = false;
+
+        this.beltIndexZero = 0;
+
+        this.TREEVIEW_renderKindArray = [];
+        this.TREEVIEW_isRenderPending = false;
+
+        this.TREEVIEW_ArrayFrom_itemListElement_children = [];
+        this.TREEVIEW_ArrayFrom_itemListElement_children_length = 0;
+
+        this.TREEVIEW_draw_create_request_parentElement = null;
+        this.TREEVIEW_draw_create_request_insertBeforeThisChild = null;
+
+        this.start = 0;
+        this.length = 0;
+        this.onePositiveDiff_twoNegativeDiff_orThreeFullScreen = 0;
+        this.caseThreeOrigin = 0;
+
+        this.SET_ITEMS_itemHeightNumber = 0;
+        this.SET_ITEMS_itemHeightStyleAttributeValueString = '';
+
+        this.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = 2;
+
+        this.LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH = 0;
+        /////
+        ///// end treeViewComponent.js
+        /////
+
+
+
+
+
+
         /** @type {string} */
         this.chosenDirectory = null;
 
@@ -40,7 +91,6 @@ class EXPLORER_TreeViewDirector {
          * @type {TreeViewNodeList}
          * */
         this.nodeList = new TreeViewNodeList(32);
-        this.component = new TreeViewComponent();
 
         this.scrollEndDeadline = 0;
         this.scrollIsFetchingData = false;
@@ -63,7 +113,7 @@ class EXPLORER_TreeViewDirector {
         this.KEY_MASK = (1 << this.KEY_BITS) - 1; // Binary: 00000000000000000000111111111111 (0xFFF)
     }
 
-    /** // Invoke this?: 'this.component.draw_render_fullReset_request();' */
+    /** // Invoke this?: 'this.draw_render_fullReset_request();' */
     setChosenDirectory(chosenDirectory, chosenDirectoryAbsolutePathId) {
         this.chosenDirectory = chosenDirectory;
         this.chosenDirectoryAbsolutePathId = chosenDirectoryAbsolutePathId;
@@ -74,11 +124,11 @@ class EXPLORER_TreeViewDirector {
 
         let nodeKind = TreeViewNodeKind_isExpandable_NOTisExpanded;
         this.nodeList.insert(this.nodeList.count_abstract, nodeKind, this.chosenDirectoryAbsolutePathId, 0);
-        this.component.itemHeightTotal = this.tvd_getTotalCount() * this.component.itemHeightNumber;
-        this.component.virtualizationElement.style.height = this.component.itemHeightTotal + 'px';
+        this.itemHeightTotal = this.tvd_getTotalCount() * this.itemHeightNumber;
+        this.virtualizationElement.style.height = this.itemHeightTotal + 'px';
     }
     
-    /** // Invoke this?: 'this.component.draw_render_fullReset_request();' */
+    /** // Invoke this?: 'this.draw_render_fullReset_request();' */
     setChosenWorkspace(chooseWorkspaceResult) {
         this.chosenWorkspace = chooseWorkspaceResult.workspaceFileAbsolutePath;
 
@@ -92,8 +142,8 @@ class EXPLORER_TreeViewDirector {
             this.nodeList.insert(this.nodeList.count_abstract, nodeKind, directory.id, 0);
         }
 
-        this.component.itemHeightTotal = this.tvd_getTotalCount() * this.component.itemHeightNumber;
-        this.component.virtualizationElement.style.height = this.component.itemHeightTotal + 'px';
+        this.itemHeightTotal = this.tvd_getTotalCount() * this.itemHeightNumber;
+        this.virtualizationElement.style.height = this.itemHeightTotal + 'px';
     }
 
     TREEVIEW_render_do_ScrollTrailingEdgeCheck = (timestamp) => {
@@ -116,7 +166,7 @@ class EXPLORER_TreeViewDirector {
     };
 
     /** 
-     * @param {number} caseThreeOrigin if left undefined or (falsey but not 0), this will default to 'this.component.beltIndexZero'
+     * @param {number} caseThreeOrigin if left undefined or (falsey but not 0), this will default to 'this.beltIndexZero'
      */
     tvd_drawItem_BATCH(start, length, onePositiveDiff_twoNegativeDiff_orThreeFullScreen, caseThreeOrigin, timestamp) {
 
@@ -132,18 +182,18 @@ class EXPLORER_TreeViewDirector {
         let totalCount = this.nodeList.count_abstract;
         let loopCounter = 0;
 
-        let lastIndex = (this.component.beltIndexZero - 1 + this.component.virtualCount) % this.component.virtualCount; // TODO: 'this.component.virtualCount' or 'this.component.TREEVIEW_ArrayFrom_itemListElement_children.length'
+        let lastIndex = (this.beltIndexZero - 1 + this.virtualCount) % this.virtualCount; // TODO: 'this.virtualCount' or 'this.TREEVIEW_ArrayFrom_itemListElement_children.length'
 
         let loopTotalIterations = upperBound - start;
 
-        let caseTwoDivIndex = (lastIndex - (loopTotalIterations - 1) + this.component.TREEVIEW_ArrayFrom_itemListElement_children_length) % this.component.TREEVIEW_ArrayFrom_itemListElement_children_length;
+        let caseTwoDivIndex = (lastIndex - (loopTotalIterations - 1) + this.TREEVIEW_ArrayFrom_itemListElement_children_length) % this.TREEVIEW_ArrayFrom_itemListElement_children_length;
 
-        let verticalStyleNumber = start * this.component.itemHeightNumber;
+        let verticalStyleNumber = start * this.itemHeightNumber;
 
         if (!caseThreeOrigin && caseThreeOrigin !== 0) {
-            caseThreeOrigin = this.component.beltIndexZero;
+            caseThreeOrigin = this.beltIndexZero;
         }
-        if (caseThreeOrigin < 0 || caseThreeOrigin >= this.component.TREEVIEW_ArrayFrom_itemListElement_children_length) {
+        if (caseThreeOrigin < 0 || caseThreeOrigin >= this.TREEVIEW_ArrayFrom_itemListElement_children_length) {
             throw new RangeError();
         }
 
@@ -157,16 +207,16 @@ class EXPLORER_TreeViewDirector {
 
             switch (onePositiveDiff_twoNegativeDiff_orThreeFullScreen) {
                 case 1:
-                    divIndex = (this.component.beltIndexZero + loopCounter) % this.component.TREEVIEW_ArrayFrom_itemListElement_children_length;
+                    divIndex = (this.beltIndexZero + loopCounter) % this.TREEVIEW_ArrayFrom_itemListElement_children_length;
                     break;
                 case 2:
-                    divIndex = (caseTwoDivIndex++) % this.component.TREEVIEW_ArrayFrom_itemListElement_children_length;
+                    divIndex = (caseTwoDivIndex++) % this.TREEVIEW_ArrayFrom_itemListElement_children_length;
                     break;
                 case 3:
-                    divIndex = (caseThreeOrigin + loopCounter) % this.component.TREEVIEW_ArrayFrom_itemListElement_children_length;
+                    divIndex = (caseThreeOrigin + loopCounter) % this.TREEVIEW_ArrayFrom_itemListElement_children_length;
                     break;
             }
-            divItem = this.component.TREEVIEW_ArrayFrom_itemListElement_children[divIndex];
+            divItem = this.TREEVIEW_ArrayFrom_itemListElement_children[divIndex];
 
             if (indexItem >= totalCount) {
                 // TODO: Will the user agent remove a text node that has an "empty" nodeValue?
@@ -211,21 +261,21 @@ class EXPLORER_TreeViewDirector {
             }
 
             // TODO: predict this when expanding/collapsing?????
-            if (depth > this.component.LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH) {
-                this.component.LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH = depth;
+            if (depth > this.LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH) {
+                this.LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH = depth;
             }
 
             divItem.style.transform = `translate(${CONST_EXPLORER_offsetPerDepth * depth}px, ${verticalStyleNumber}px)`;
-            verticalStyleNumber += this.component.itemHeightNumber;
+            verticalStyleNumber += this.itemHeightNumber;
 
             loopCounter++;
         }
 
         if (onePositiveDiff_twoNegativeDiff_orThreeFullScreen === 1) {
-            this.component.beltIndexZero = (this.component.beltIndexZero + loopCounter) % this.component.TREEVIEW_ArrayFrom_itemListElement_children_length;
+            this.beltIndexZero = (this.beltIndexZero + loopCounter) % this.TREEVIEW_ArrayFrom_itemListElement_children_length;
         }
         else if (onePositiveDiff_twoNegativeDiff_orThreeFullScreen === 2) {
-            this.component.beltIndexZero = (lastIndex - (loopTotalIterations - 1) + this.component.TREEVIEW_ArrayFrom_itemListElement_children_length) % this.component.TREEVIEW_ArrayFrom_itemListElement_children_length;
+            this.beltIndexZero = (lastIndex - (loopTotalIterations - 1) + this.TREEVIEW_ArrayFrom_itemListElement_children_length) % this.TREEVIEW_ArrayFrom_itemListElement_children_length;
         }
     }
 
@@ -304,31 +354,31 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
         < You are 100% correct to worry about this. Never make your requestAnimationFrame loop async or use await inside it.
         < ...
         */
-        this.scrollFetchData_virtualIndex = this.component._ONSCROLLvirtualIndex;
-        this.scrollFetchData_virtualCount = this.component._ONSCROLLvirtualCount;
-        this.scrollFetchData_beltIndexZero = this.component.beltIndexZero;
+        this.scrollFetchData_virtualIndex = this._ONSCROLLvirtualIndex;
+        this.scrollFetchData_virtualCount = this._ONSCROLLvirtualCount;
+        this.scrollFetchData_beltIndexZero = this.beltIndexZero;
 
         // This isn't the most optimal way of doing things.
         //
-        let itemListElement_children = this.component.TREEVIEW_ArrayFrom_itemListElement_children;
-        let itemListElement_childrenLength = this.component.TREEVIEW_ArrayFrom_itemListElement_children_length;
+        let itemListElement_children = this.TREEVIEW_ArrayFrom_itemListElement_children;
+        let itemListElement_childrenLength = this.TREEVIEW_ArrayFrom_itemListElement_children_length;
 
         this.pullData_array_count = 0;
 
-        // TODO: This is an awkward explicit inlining of 'this.component.indexItemTo_beltIndexItem'...
+        // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndex_current = ((this.scrollFetchData_virtualIndex)) - this.component.virtualIndex_ofScrollTop;
-        if (beltIndex_current >= this.component.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndex_current < 0) beltIndex_current = -1;
-        else beltIndex_current = (beltIndex_current + this.component.beltIndexZero) % this.component.virtualCount;
+        let beltIndex_current = ((this.scrollFetchData_virtualIndex)) - this.virtualIndex_ofScrollTop;
+        if (beltIndex_current >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndex_current < 0) beltIndex_current = -1;
+        else beltIndex_current = (beltIndex_current + this.beltIndexZero) % this.virtualCount;
 
         for (let i = 0; i < itemListElement_childrenLength; i++) {
 
             if (itemListElement_children[beltIndex_current].className === 'eN') {
                 let indexItem = this.scrollFetchData_virtualIndex + i;
                 
-                // The index of the actual dom element within this.component.itemListElement.children
+                // The index of the actual dom element within this.itemListElement.children
                 // that is displaying the UI representation of what 'indexItem' points to.
                 let indexBelt = beltIndex_current;
 
@@ -345,20 +395,20 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
 
         this.scrollIsFetchingData = false; // TODO: try/catch/finally; put this in the finally.
 
-        this.component.TREEVIEW_render_request(TREEVIEWrenderKind_Scroll_PullDataDrawResult);
+        this.TREEVIEW_render_request(TREEVIEWrenderKind_Scroll_PullDataDrawResult);
     };
 
     tvd_drawItem_BATCH_PullDataDrawResult () {
-        if (this.scrollFetchData_virtualIndex === this.component._ONSCROLLvirtualIndex &&
-           this.scrollFetchData_virtualCount === this.component._ONSCROLLvirtualCount &&
-           this.scrollFetchData_beltIndexZero === this.component.beltIndexZero) {
+        if (this.scrollFetchData_virtualIndex === this._ONSCROLLvirtualIndex &&
+           this.scrollFetchData_virtualCount === this._ONSCROLLvirtualCount &&
+           this.scrollFetchData_beltIndexZero === this.beltIndexZero) {
 
             // This isn't the most optimal way of doing things.
             //
-            let itemListElement_children = this.component.TREEVIEW_ArrayFrom_itemListElement_children;
-            let itemListElement_childrenLength = this.component.TREEVIEW_ArrayFrom_itemListElement_children_length;
+            let itemListElement_children = this.TREEVIEW_ArrayFrom_itemListElement_children;
+            let itemListElement_childrenLength = this.TREEVIEW_ArrayFrom_itemListElement_children_length;
 
-            let currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = this.component.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
+            let currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = this.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
             let NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
 
             for (let i = 0; i < this.pullData_result_count; i++) {
@@ -380,8 +430,8 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
             }
 
             if (NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING > currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING) {
-                this.component.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
-                let widthAttributeValueNumber = Math.ceil(((this.component.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING + 2/*padding*/) * gINT_FIELDS[fEXPLORER_firstSpanWidthValue]) + CONST_EXPLORER_offsetPerDepth * this.component.LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH);
+                this.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
+                let widthAttributeValueNumber = Math.ceil(((this.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING + 2/*padding*/) * gINT_FIELDS[fEXPLORER_firstSpanWidthValue]) + CONST_EXPLORER_offsetPerDepth * this.LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH);
 
                 // This is actually more complicated you have to track whether you go above the minimum requirement lest you add 1 character over and over in width just to keep redrawing widths.
                 //if (widthAttributeValueNumber < this.lastReadNumber_offsetWidth) {
@@ -389,7 +439,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
                 //}
                 //this.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING
                 let widthAttributeValueString = widthAttributeValueNumber + 'px';
-                this.component.cursorElement.style.width = widthAttributeValueString;
+                this.cursorElement.style.width = widthAttributeValueString;
                 for (let i = 0; i < itemListElement_childrenLength; i++) {
                     itemListElement_children[i].style.width = widthAttributeValueString;
                 }
@@ -454,8 +504,8 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
             new MenuOption(CommandKind_CopyAbsolutePath, 'Copy Absolute Path', null),
         ];
 
-        this.component.ensure_boundingClientRect();
-        let nodeListBoundingClientRect = this.component.boundingClientRect;
+        this.ensure_boundingClientRect();
+        let nodeListBoundingClientRect = this.boundingClientRect;
 
         // TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
         this.nodeList.getElementAt(indexItem);
@@ -476,7 +526,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
             return menuSet('EXPLORER', target, optionList, gINT_FIELDS[fEXPLORER_menuOptionX]=event_clientX, gINT_FIELDS[fEXPLORER_menuOptionY]=event_clientY);
         } else {
             this.addSpecificMenuOptionsForTarget(optionList, divItem, target);
-            return menuSet('EXPLORER', target, optionList, gINT_FIELDS[fEXPLORER_menuOptionX]=nodeListBoundingClientRect.left, gINT_FIELDS[fEXPLORER_menuOptionY]=(nodeListBoundingClientRect.top + ((this.component.cursorIndex + 1) * this.component.itemHeightNumber) - this.component.rootElement.scrollTop));
+            return menuSet('EXPLORER', target, optionList, gINT_FIELDS[fEXPLORER_menuOptionX]=nodeListBoundingClientRect.left, gINT_FIELDS[fEXPLORER_menuOptionY]=(nodeListBoundingClientRect.top + ((this.cursorIndex + 1) * this.itemHeightNumber) - this.rootElement.scrollTop));
         }
     }
 
@@ -511,11 +561,11 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
                 }
                 // TODO: Insert range, or at the least 'pre-emptively' resize the list so that it fits each insertion without resizing per insertion.
                 this.nodeList.insert(indexItem + 1 + i, nodeKind, entry.id, depth + 1);
-                this.component.itemHeightTotal = this.tvd_getTotalCount() * this.component.itemHeightNumber;
-                this.component.virtualizationElement.style.height = this.component.itemHeightTotal + 'px';
+                this.itemHeightTotal = this.tvd_getTotalCount() * this.itemHeightNumber;
+                this.virtualizationElement.style.height = this.itemHeightTotal + 'px';
             }
 
-            this.component.draw_render_fullReset_request();
+            this.draw_render_fullReset_request();
         }
         else if (nodeKind === TreeViewNodeKind_isExpandable_isExpanded) {
 
@@ -534,9 +584,9 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
             }
             if (countChildren > 0) { // TODO: is this check necessary?
                 this.nodeList.removeAt(indexItem + 1, countChildren);
-                this.component.itemHeightTotal = this.tvd_getTotalCount() * this.component.itemHeightNumber;
-                this.component.virtualizationElement.style.height = this.component.itemHeightTotal + 'px';
-                this.component.draw_render_fullReset_request();
+                this.itemHeightTotal = this.tvd_getTotalCount() * this.itemHeightNumber;
+                this.virtualizationElement.style.height = this.itemHeightTotal + 'px';
+                this.draw_render_fullReset_request();
             }
         }
     }
@@ -551,8 +601,8 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
         if (nodeKind === TreeViewNodeKind_isExpandable_isExpanded) {
             if (indexItem + 1 < this.nodeList.count_abstract) {
                 if (this.nodeList.getDepth(indexItem + 1) > depth) {
-                    this.component.state_cursor_setIndex(this.component.state_cursor_validateIndex(
-        		        this.component.cursorIndex + 1));
+                    this.state_cursor_setIndex(this.state_cursor_validateIndex(
+        		        this.cursorIndex + 1));
                 }
             }
     	}
@@ -586,7 +636,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
                 }
             }
             if (distanceToParent > 0) {
-            	this.component.state_cursor_setIndex(this.component.state_cursor_validateIndex(
+            	this.state_cursor_setIndex(this.state_cursor_validateIndex(
         			indexItem - distanceToParent));
             }
         }
@@ -633,8 +683,8 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
         }
 
         this.nodeList.removeAt(indexItem, 1 + countChildren);
-        this.component.itemHeightTotal = this.tvd_getTotalCount() * this.component.itemHeightNumber;
-        this.component.virtualizationElement.style.height = this.component.itemHeightTotal + 'px';
+        this.itemHeightTotal = this.tvd_getTotalCount() * this.itemHeightNumber;
+        this.virtualizationElement.style.height = this.itemHeightTotal + 'px';
         return 1 + countChildren;
     }
 
@@ -665,6 +715,636 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
             optionList.push(new MenuOption(CommandKind_Cut, 'Cut', null));
         }
     }
+
+    TREEVIEW_render_request(renderKind) {
+        if (this.TREEVIEW_renderKindArray[this.TREEVIEW_renderKindArray.length - 1] !== renderKind) {
+            this.TREEVIEW_renderKindArray.push(renderKind);
+        }
+        
+        if (!this.TREEVIEW_isRenderPending) {
+            this.TREEVIEW_isRenderPending = true;
+            requestAnimationFrame(this.renderDo);
+        }
+    }
+
+    renderDo = (timestamp) => {
+        let renderKind;
+        
+        // Synchronously exhaust the item queue for this animation frame
+        while (renderKind = this.TREEVIEW_renderKindArray.shift()) {
+            switch (renderKind) {
+                case TREEVIEWrenderKind_Cursor:
+                    this.TREEVIEW_render_do_Cursor();
+                    break;
+                case TREEVIEWrenderKind_Create:
+                    this.TREEVIEW_render_do_Create(timestamp);
+                    break;
+                case TREEVIEWrenderKind_Batch:
+                    this.TREEVIEW_render_do_Batch(timestamp);
+                    break;
+                case TREEVIEWrenderKind_Scroll:
+                    this.TREEVIEW_render_do_Scroll(timestamp);
+                    break;
+                case TREEVIEWrenderKind_Scroll_PullDataDrawResult:
+                    this.TREEVIEW_render_do_Scroll_PullDataDrawResult();
+                    break;
+                case TREEVIEWrenderKind_SetItems:
+                    this.TREEVIEW_render_do_SetItems();
+                    break;
+                case TREEVIEWrenderKind_FullReset:
+                    this.TREEVIEW_render_do_FullReset(timestamp);
+                    break;
+                case TREEVIEWrenderKind_Resize:
+                    this.TREEVIEW_render_do_Resize(timestamp);
+                    break;
+            }
+        }
+        
+        this.TREEVIEW_isRenderPending = false; // Reset the paint lock
+    };
+
+    /**
+     * TODO: Many of these suffer from two invocations sitting in the render queue with something between them so they didn't coallesce then the parameters
+     * of the second are used for the first.
+     */
+    TREEVIEW_render_do_SetItems() {
+        this.itemListElement.innerHTML = '';
+        this.virtualizationElement.style.height = 1 + 'px';
+        this.state_cursor_setIndex(0);
+        
+        this.itemHeightNumber = this.SET_ITEMS_itemHeightNumber;
+        this.itemHeightStyleAttributeValueString = this.SET_ITEMS_itemHeightStyleAttributeValueString;
+
+        this.cursorElement.style.height = this.itemHeightStyleAttributeValueString;
+        this.itemHeightTotal = this.tvd_getTotalCount() * this.itemHeightNumber;
+        this.virtualizationElement.style.height = this.itemHeightTotal + 'px';
+        this.boundingClientRect = null;
+    }
+
+    /**
+     * @param {*} itemHeightNumber '50'; cursorTop = currentIndex * itemHeightNumber;
+     * @param {*} itemHeightStyleAttributeValueString '50px'; div.style.height = itemHeightStyleAttributeValueString;
+     */
+    setItems(itemHeightNumber, itemHeightStyleAttributeValueString) {
+        this.SET_ITEMS_itemHeightNumber = itemHeightNumber;
+        this.SET_ITEMS_itemHeightStyleAttributeValueString = itemHeightStyleAttributeValueString;
+        this.TREEVIEW_render_request(TREEVIEWrenderKind_SetItems);
+    }
+
+    TREEVIEW_render_do_Create(timestamp) {
+        if (this.rootElement.parentElement) {
+            // It is the case that I invoke 'draw_create_request' when creating the tree view for the first time.
+            // But I also do this when I re-open the os input file dialog and pick either a separate or the same folder.
+            // In this scenario having this invoke a "fullReset" is necessary otherwise nothing appears in the treeview.
+            //
+            // TODO: but, perhaps this is best left to the consumer of the TreeViewComponent to invoke themselves...
+            // ...in such a scenario. Until further decision is made I'll have the invocation here.
+            this.TREEVIEW_render_do_FullReset(timestamp);
+            // TODO: Should there be a return here?...
+            // ...more accurately the concern is 'TREEVIEW_draw_create_request_parentElement.insertBefore'
+            // and 'this.draw_addEvents()'
+            // |
+            // Should those be in an else?
+            // It reads as though you'd be inserting the element twice, which internally you cannot
+            // have an HTML node with two parents so this probably doesn't duplicate the UI, but instead just wastes CPU.
+            // |
+            // The 'this.draw_addEvents();'... can you subscribe twice?
+        }
+        this.TREEVIEW_draw_create_request_parentElement.insertBefore(this.rootElement, this.TREEVIEW_draw_create_request_insertBeforeThisChild);
+        this.draw_addEvents();
+
+
+        this.rootElement.style.width = '';
+        this.rootElement.style.height = '';
+        this.rootElement.style.contain = '';
+
+        this.measureBaseElement();
+
+        this.TREEVIEW_render_do_Scroll(timestamp);
+    }
+
+    /**
+     * if (this.rootElement.parentElement) { this.draw_render_fullReset_request(); return; }
+     * Because the "list" is already drawn somewhere and 'draw_delete()' needs to be invoked prior to drawing at a different location.
+     * 
+     * @param {HTMLElement} parentElement 
+     * @param {*} insertBeforeThisChild (if falsey, the list UI is appended to the parent element)
+     */
+    draw_create_request(parentElement, insertBeforeThisChild) {
+        this.TREEVIEW_draw_create_request_parentElement = parentElement;
+        this.TREEVIEW_draw_create_request_insertBeforeThisChild = insertBeforeThisChild;
+        this.TREEVIEW_render_request(TREEVIEWrenderKind_Create);
+    }
+
+    TREEVIEW_render_do_Batch(timestamp) {
+        this.tvd_drawItem_BATCH(this.start, this.length, this.onePositiveDiff_twoNegativeDiff_orThreeFullScreen, this.caseThreeOrigin, timestamp);
+    }
+
+    /**
+     * if (!this.rootElement.parentElement) return;
+     * Because the "list" is not drawn, no UI needs to be removed.
+     * (the purpose of this method is more-so related to unsubscribing of events and other such non-automatic actions that need to be performed)
+     * 
+     * @returns 
+     */
+    draw_delete() {
+        if (!this.rootElement.parentElement) return;
+        this.draw_removeEvents();
+        this.boundingClientRect = null;
+        this.rootElement.parentElement.removeChild(this.rootElement);
+    }
+
+    draw_addEvents() {
+        this.rootElement.addEventListener('click', this);
+        this.rootElement.addEventListener('keydown', this);
+        this.rootElement.addEventListener('scroll', this, { passive: true });
+        this.rootElement.addEventListener('dblclick', this);
+        this.rootElement.addEventListener('contextmenu', this);
+        window.addEventListener('resize', this);
+    }
+    
+    draw_removeEvents() {
+        this.rootElement.removeEventListener('click', this);
+        this.rootElement.removeEventListener('keydown', this);
+        this.rootElement.removeEventListener('scroll', this, { passive: true });
+        this.rootElement.addEventListener('dblclick', this);
+        this.rootElement.addEventListener('contextmenu', this);
+        window.removeEventListener('resize', this);
+    }
+
+    // The browser automatically looks for this exact method name
+    handleEvent(event) {
+        switch (event.type) {
+            case 'click':
+                this.event_click(event.clientY, event.target);
+                break;
+            case 'keydown':
+                this.event_keydown(event);
+                break;
+            case 'scroll':
+                this.event_scroll();
+                break;
+            case 'dblclick':
+                this.event_dblclick(event.clientY, event.target);
+                break;
+            case 'contextmenu':
+                this.event_contextmenu(event.button, event.clientX, event.clientY);
+                break;
+            case 'resize':
+                this.event_windowResize();
+                break;
+        }
+    }
+
+    TREEVIEW_render_do_Scroll(timestamp) {
+        if (this.TREEVIEW_ArrayFrom_itemListElement_children_length !== this.virtualCount) {
+            this.TREEVIEW_render_do_FullReset(timestamp);
+        }
+        else {
+            this.virtualIndex_ofScrollTop = Math.floor(this.lastReadNumber_scrollTop / this.itemHeightNumber);
+
+            if (this._ONSCROLLvirtualIndex === this.virtualIndex_ofScrollTop &&
+                this._ONSCROLLvirtualCount === this.virtualCount) {
+                    return;
+            }
+
+            // If I delay setting 'this._ONSCROLLvirtualIndex' then I can just use that.
+            // I can't bear to do that right now though. I'm just gonna make this variable.
+            let prevVli = this._ONSCROLLvirtualIndex;
+            let currVli = this.virtualIndex_ofScrollTop;
+
+            this._ONSCROLLvirtualIndex = this.virtualIndex_ofScrollTop;
+
+            if (this._ONSCROLLvirtualCount === this.virtualCount &&
+                this.TREEVIEW_ArrayFrom_itemListElement_children_length === this.virtualCount) {
+
+                let diff = currVli - prevVli;
+
+                let totalCount = this.tvd_getTotalCount();
+
+                if (diff > 0 && diff < this.virtualCount) {
+                    this.tvd_drawItem_BATCH(prevVli + this._ONSCROLLvirtualCount, diff, 1, undefined, timestamp);
+                }
+                else if (diff < 0 && (diff *= -1) < this.virtualCount) {
+                    this.tvd_drawItem_BATCH(currVli, diff, 2, undefined, timestamp);
+                }
+                else {
+                    if (diff === 0) {
+                        this.scrollEndDeadline = timestamp + 300;
+                    }
+                    else {
+                        this.tvd_drawItem_BATCH(this.virtualIndex_ofScrollTop, this.virtualCount, 3, undefined, timestamp);
+                    }
+                }
+            }
+        }
+    }
+
+    TREEVIEW_render_do_Scroll_PullDataDrawResult() {
+        if (this.tvd_drawItem_BATCH_PullDataDrawResult) {
+            this.tvd_drawItem_BATCH_PullDataDrawResult();
+        }
+    }
+
+    draw_BATCH_request(start, length, onePositiveDiff_twoNegativeDiff_orThreeFullScreen, caseThreeOrigin) {
+        this.start = start;
+        this.length = length;
+        this.onePositiveDiff_twoNegativeDiff_orThreeFullScreen = onePositiveDiff_twoNegativeDiff_orThreeFullScreen;
+        this.caseThreeOrigin = caseThreeOrigin;
+        this.TREEVIEW_render_request(TREEVIEWrenderKind_Batch);
+    }
+
+    TREEVIEW_render_do_FullReset(timestamp) {
+        this.ensure_boundingClientRect();
+
+        this._ONSCROLLvirtualCount = this.virtualCount;
+
+        this.virtualIndex_ofScrollTop = Math.floor(this.lastReadNumber_scrollTop / this.itemHeightNumber);
+        this.beltIndexZero = 0;
+
+        let totalCount = this.tvd_getTotalCount();
+
+        if (this.itemListElement.children.length !== this.virtualCount) {
+            this.itemListElement.innerHTML = '';
+
+            // padding of 2ch (the style attribute receives the width as a pixel by using 'gINT_FIELDS[fEXPLORER_firstSpanWidthValue]' as a baseline (not quite ch))
+            // TODO: this is all very inaccurate and prone to eventual rounding issues due to not monospace font.
+            //
+            this.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = 2;
+            let widthAttributeValueNumber = Math.ceil((this.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING + 2/*padding*/) * gINT_FIELDS[fEXPLORER_firstSpanWidthValue]);
+            // This is actually more complicated you have to track whether you go above the minimum requirement lest you add 1 character over and over in width just to keep redrawing widths.
+            //if (widthAttributeValueNumber < this.lastReadNumber_offsetWidth) {
+            //    widthAttributeValueNumber = this.lastReadNumber_offsetWidth;
+            //}
+            //this.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING
+            let widthAttributeValueString = widthAttributeValueNumber + 'px';
+            this.cursorElement.style.width = widthAttributeValueString;
+
+            // this is zero'd, could use change for clarity of algorithm and match patterns but focus elsewhere first
+            for (let i = 0; i < this.virtualCount; i++) {
+                
+                let divItem = document.createElement('div');
+                divItem.style.width = widthAttributeValueString;
+                divItem.style.height = this.itemHeightStyleAttributeValueString;
+                divItem.style.whiteSpace = 'nowrap';
+                divItem.style.position = 'absolute';
+                this.itemListElement.appendChild(divItem);
+                let iconSpan = document.createElement('span');
+                iconSpan.style.width = EXPLORER_firstSpanWidth;
+                iconSpan.style.display = 'inline-block';
+                // TODO: Consider what differences if any exist between the '' iconSpan having an empty height of 0 when left unset, versus if you were to set it to 1px, does this matter? It doesn't seem to impact the "horizontal" space being taken.
+                divItem.appendChild(iconSpan);
+                divItem.appendChild(document.createTextNode(i));
+            }
+            
+            // TODO: check the resize logic, that it works
+            if (this.pullData_array) {
+                this.pullData_array = new Uint32Array(this.virtualCount);
+                this.pullData_array_count = 0;
+            }
+
+            this.TREEVIEW_ArrayFrom_itemListElement_children = Array.from(this.itemListElement.children);
+            this.TREEVIEW_ArrayFrom_itemListElement_children_length = this.TREEVIEW_ArrayFrom_itemListElement_children.length;
+        }
+
+        // TODO: This if statement check is awkward because the previous if statement ought to have guaranteed this one to be true.
+        if (this.itemListElement.children.length === this.virtualCount) {
+            this.tvd_drawItem_BATCH(this.virtualIndex_ofScrollTop, this.virtualCount, 3, undefined, timestamp);
+        }
+    }
+
+    /**
+     * This actually only gets invoked if 'this.itemListElement.children.length !== this.virtualCount'...
+     * ...But it is a bit more complicated if you want to involve a change to totalCount, you'd need to force the final 'else' case
+     * so it is easier to just invoke this directly when you change totalCount?
+     */
+    draw_render_fullReset_request() {
+        this.TREEVIEW_render_request(TREEVIEWrenderKind_FullReset);
+    }
+
+    /**
+     * TODO: To detect whether the "expand/collapse icon" was clicked, the logic 'if(event.target === nodeElement.children[0])' is used...
+     * ...this logic is flawed if one ever were to put an element within the span that became the target...
+     * ...thus, you should consider checking the x position of the event against the x position of the nodeElement.children[0].
+     * @param {*} event 
+     */
+    event_click(event_clientY, event_target) {
+        this.ensure_boundingClientRect();
+
+        let rY = event_clientY - this.boundingClientRect.top + this.lastReadNumber_scrollTop;
+        let indexItem = Math.floor(rY / this.itemHeightNumber);
+        indexItem = this.state_cursor_validateIndex(indexItem);
+
+        // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
+        // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
+        // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+        // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+        let beltIndexItem = ((indexItem)) - this.virtualIndex_ofScrollTop;
+        if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+        else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+
+        if (beltIndexItem < 0) return;
+        let divItem = this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem];
+
+        if (event_target === divItem.children[0]) {
+            return this.tvd_expandCollapseIconWasClicked_async(divItem, indexItem);
+        }
+        else {
+            this.state_cursor_setIndex(indexItem);
+        }
+    }
+
+    event_dblclick(event_clientY, event_target) {
+        this.ensure_boundingClientRect();
+
+        let rY = event_clientY - this.boundingClientRect.top + this.lastReadNumber_scrollTop;
+        let indexItem = Math.floor(rY / this.itemHeightNumber);
+        indexItem = this.state_cursor_validateIndex(indexItem);
+
+        // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
+        // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
+        // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+        // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+        let beltIndexItem = ((indexItem)) - this.virtualIndex_ofScrollTop;
+        if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+        else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+
+        if (beltIndexItem < 0) return;
+        let divItem = this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem];
+
+        // if not clicked "chevron"
+        if (event_target !== divItem.children[0]) {
+            // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
+            // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
+            // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+            // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+            let beltIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
+            if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+            else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+
+            if (beltIndexItem < 0) return;
+            return this.tvd_ondblclick_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex);
+        }
+    }
+
+    event_contextmenu(event_button, event_clientX, event_clientY) {
+        this.ensure_boundingClientRect();
+
+        if (event_button === 2) {
+            let rY = event_clientY - this.boundingClientRect.top + this.lastReadNumber_scrollTop;
+
+            this.state_cursor_setIndex(this.state_cursor_validateIndex(
+                Math.floor(rY / this.itemHeightNumber)));
+
+            // TODO: you need to move this above the divItem assignment and do checks earlier... double check all other uses
+
+            // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
+            // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
+            // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+            // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+            let beltIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
+            if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+            else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+
+            if (beltIndexItem < 0) return;
+            return this.tvd_oncontextmenu_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex, event_button, event_clientX, event_clientY, beltIndexItem);
+        } else {
+            if (this.cursorIndex >= this.tvd_getTotalCount()) {
+                return;
+            }
+
+            this.state_cursor_setIndex(this.state_cursor_validateIndex(
+                this.cursorIndex));
+
+            // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
+            // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
+            // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+            // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+            let beltIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
+            if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+            else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+
+            if (beltIndexItem < 0) return;
+
+            // TODO: Handle context menu with keyboard when active node is out of view
+            return this.tvd_oncontextmenu_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex, event_button, event_clientX, event_clientY, beltIndexItem);
+        }
+    }
+
+    event_keydown(event) {
+        switch (event.key) {
+            case 'ArrowDown':
+                event.preventDefault();
+                if (event.ctrlKey) {
+                    this.rootElement.scrollBy(0, this.itemHeightNumber);
+                }
+                else {
+                    this.state_cursor_setIndex(this.state_cursor_validateIndex(
+                        this.cursorIndex + 1));
+                }
+                return;
+            case 'ArrowUp':
+                event.preventDefault();
+                if (event.ctrlKey) {
+                    this.rootElement.scrollBy(0, -1 * this.itemHeightNumber);
+                }
+                else {
+                    this.state_cursor_setIndex(this.state_cursor_validateIndex(
+                        this.cursorIndex - 1));
+                }
+                return;
+            case 'ArrowRight':
+                if (!event.ctrlKey) { // If holding ctrl, don't preventDefault so the user can scroll horizontally?
+                    event.preventDefault();
+                    this.state_cursor_setIndex(this.state_cursor_validateIndex(
+                        this.cursorIndex));
+
+                    // TODO: 'ArrowRight' when the cursor is on a valid item but isn't part of the virtualization result.
+
+                    // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
+                    // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
+                    // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+                    // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+                    let beltIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
+                    if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+                    else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+
+                    if (beltIndexItem < 0) return;
+                    return this.tvd_arrowRight_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex);
+                }
+                return;
+            case 'ArrowLeft':
+            	if (!event.ctrlKey) { // If holding ctrl, don't preventDefault so the user can scroll horizontally?
+                    event.preventDefault();
+                    this.state_cursor_setIndex(this.state_cursor_validateIndex(
+                        this.cursorIndex));
+                    
+                    // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
+                    // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
+                    // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+                    // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+                    let beltIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
+                    if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+                    else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+
+                    if (beltIndexItem < 0) return;
+                    return this.tvd_arrowLeft_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex);
+                }
+            	return;
+            case ' ':
+            case 'Enter':
+                event.preventDefault();
+                this.state_cursor_setIndex(this.state_cursor_validateIndex(
+                    this.cursorIndex));
+                
+                // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
+                // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
+                // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+                // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+                let beltIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
+                if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+                else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+
+                if (beltIndexItem < 0) return;
+                return this.tvd_onkeydown_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex, event.key);
+        }
+    }
+
+    TREEVIEW_render_do_Resize(timestamp) {
+        this.rootElement.style.width = '';
+        this.rootElement.style.height = '';
+        this.rootElement.style.contain = '';
+
+        this.measureBaseElement();
+
+        this.boundingClientRect = null;
+        this.ensure_boundingClientRect();
+        this.TREEVIEW_render_do_FullReset(timestamp);
+    }
+
+    /**
+     * TODO: intra-app resizes or movements will also invoke this; i.e.: if a list is shown in a dialog and the dialog is resized or moved.
+     */
+    event_windowResize() {
+        this.TREEVIEW_render_request(TREEVIEWrenderKind_Resize);
+    }
+
+    event_scroll() {
+        this.lastReadNumber_scrollLeft = this.rootElement.scrollLeft;
+        this.lastReadNumber_scrollTop = this.rootElement.scrollTop;
+        this.TREEVIEW_render_request(TREEVIEWrenderKind_Scroll);
+    }
+
+    ensure_boundingClientRect() {
+        if (!this.boundingClientRect) {
+            this.boundingClientRect = this.rootElement.getBoundingClientRect();
+            this.virtualCount = Math.ceil(this.rootElement.offsetHeight / this.itemHeightNumber);
+        }
+    }
+
+    TREEVIEW_render_do_Cursor(index) {
+        // Determine the number without modifying styles so you can use this variable to determine the need to scroll into view without synchronous layout.
+        this.cursorTranslateYNumber = this.cursorIndex * this.itemHeightNumber;
+
+        // Preferably this hasn't changed thus the function immediately just returns.
+        this.ensure_boundingClientRect();
+        
+        // If no UI modifications were made prior that are still pending this might avoid a synchronous layout.
+        // TODO: If you touch the transform style first... I don't know what would happen it is a GPU related style... so I'm unsure.
+        //
+        if (this.cursorTranslateYNumber + (2 * this.itemHeightNumber) > this.lastReadNumber_scrollTop + this.boundingClientRect.height) {
+            let currentBottom = this.lastReadNumber_scrollTop + this.boundingClientRect.height;
+            let changeToMakeBottomTouch = this.cursorTranslateYNumber - currentBottom;
+            let entireValueToScrollBy = changeToMakeBottomTouch + (2 * this.itemHeightNumber);
+            this.rootElement.scrollBy(0, entireValueToScrollBy);
+        }
+        else if (this.cursorTranslateYNumber < this.lastReadNumber_scrollTop) {
+            this.rootElement.scrollBy(0, this.cursorTranslateYNumber - this.lastReadNumber_scrollTop);
+        }
+
+        // transform last for optimal state flagging of the modified DOM element
+        this.cursorElement.style.transform = `translateY(${this.cursorTranslateYNumber}px)`;
+    }
+
+    /**
+     * if (this.cursorIndex === index) return;
+     * 
+     * @param {*} index 
+     */
+    state_cursor_setIndex(index) {
+        if (this.cursorIndex === index) return;
+        this.cursorIndex = index;
+        this.TREEVIEW_render_request(TREEVIEWrenderKind_Cursor);
+    }
+
+    /**
+     * if (this.cursorIndex === index) return;
+     * 
+     * @param {*} indexItem 
+     */
+    state_cursor_validateIndex(indexItem) {
+        if (indexItem >= this.tvd_getTotalCount()) {
+            indexItem = this.tvd_getTotalCount() - 1;
+        }
+        if (indexItem < 0) {
+            indexItem = 0;
+        }
+        return indexItem;
+    }
+
+    /**
+     * This logic according to what I understand Google AI to be saying, is very bad (I gave it the version that the Editor has).
+     * 
+     * I don't fully agree with the AI on this for a few reasons.
+     * And I'm not entirely adverse to removing this logic.
+     * But a main reason for why I don't agree with the AI is that I don't fully understand things.
+     * And the only way for me to fully understand things is to mess around with this a bit more and see what happens.
+     * So I can hopefully glean some insight and better understand what the AI is saying.
+     * 
+     * I want to list out my points for doing this, I have a limited amount of energy each day
+     * and I have a lot to do involving measuring the longest line of text and setting all divs to that width
+     * so I might find it in me to list my point of view today.
+     * Maybe if I don't find it in me today I will tomorrow etc...
+     * 
+     * My point of view:
+     * - I think I agree that making the width and height a whole number is pointless.
+     * - And that getBoundingClientRect is more accurate so I should be using that, since I'd incur layout cost regardless if it was needed when accessing any offset... properties.
+     * - But, I have absolute positioned elements and A LOT of them.
+     * - By marking the base element as "contain = 'layout'" I believe I am explicitly telling the browser to ignore all of my "z axis layers" or layers made by using position absolute.
+     *   i.e.: that they will NEVER impact the UI that exists outside of the base element.
+     *   and that this is beneficial.
+     * - As well by making the size explicitly defined I am permitting the use of "contain = 'layout'" without that you wouldn't have a width or height of the base element I believe.
+     *   because otherwise the children could cause a change in width and impact the surrounding UI which you just said explicitly won't happen.
+     * - The final statements that read the offsetWidth and height after having set them is a guaranteed synchronous layout,
+     *   but this only happens oninit or when resizing, vs the constant changes happening while I scroll explicitly stating that nothing else will be impacted each event.
+     * 
+     * And I am very open to the idea that I'm wrong.
+     * But I don't understand the AI's point of view and I'm not going to blindly copy what it says.
+     * I am instead just aware that this might be wrong and I'm looking for some indications to learn from and observe.
+     * 
+     * I read the property back just incase some weird interaction (perhaps DPI?) causes the number I set to not actually be the end result number that is used
+     * for the attribute value.
+     */
+    measureBaseElement() {
+        this.lastReadNumber_offsetWidth = Math.floor(this.rootElement.offsetWidth);
+        this.lastReadNumber_offsetHeight = Math.floor(this.rootElement.offsetHeight);
+        
+        this.rootElement.style.width = this.lastReadNumber_offsetWidth + 'px';
+        this.rootElement.style.height = this.lastReadNumber_offsetHeight + 'px';
+
+        this.rootElement.style.contain = 'layout';
+
+        this.lastReadNumber_offsetWidth = this.rootElement.offsetWidth;
+        this.lastReadNumber_offsetHeight = this.rootElement.offsetHeight;
+    }
+
+    /*
+    TODO: The TreeView after you resize it, you can continually scroll down and it keeps replacing more and more '~' lines
+          even if you've scrolled through everything already.
+          This is probably some kind of rounding error?
+          It porbably happens regardless of whether you resized
+          and more-so that you just happen to have hit the perfect height for it to happen?
+    */
 }
 
 /** 8px by default or the measured value with px */
@@ -785,8 +1465,8 @@ async function EXPLORER_pickFolderOrWorkspaceButton_MenuOnClick(indexClicked, el
                 EXPLORER_PickFolder.title = chosenDirectory;
     
                 EXPLORER_director.setChosenDirectory(chosenDirectory, chooseDirectoryResult.id);
-                EXPLORER_director.component.setItems(EXPLORER_director, gINT_FIELDS[fAPP_lineHeight], gINT_FIELDS[fAPP_lineHeight] + 'px');
-                EXPLORER_director.component.draw_create_request(EXPLORER_Element, null);
+                EXPLORER_director.setItems(gINT_FIELDS[fAPP_lineHeight], gINT_FIELDS[fAPP_lineHeight] + 'px');
+                EXPLORER_director.draw_create_request(EXPLORER_Element, null);
             }
             break;
         case CommandKind_SelectWorkspace:
@@ -804,8 +1484,8 @@ async function EXPLORER_pickFolderOrWorkspaceButton_MenuOnClick(indexClicked, el
                 pickWorkspaceButton.title = chooseWorkspaceResult.workspaceFileAbsolutePath;
     
                 EXPLORER_director.setChosenWorkspace(chooseWorkspaceResult);
-                EXPLORER_director.component.setItems(EXPLORER_director, gINT_FIELDS[fAPP_lineHeight], gINT_FIELDS[fAPP_lineHeight] + 'px');
-                EXPLORER_director.component.draw_create_request(EXPLORER_Element, null);
+                EXPLORER_director.setItems(gINT_FIELDS[fAPP_lineHeight], gINT_FIELDS[fAPP_lineHeight] + 'px');
+                EXPLORER_director.draw_create_request(EXPLORER_Element, null);
             }
             break;
     }
@@ -923,19 +1603,19 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
 
                             EXPLORER_director.nodeList.insert(someIndex, nodeKind, pasteResult.pathId, MENU_target.depth + 1);
 
-                            if (EXPLORER_director.component.virtualCount > 0) {
-                                let largestIndexItemBeingShown = EXPLORER_director.component.virtualIndex_ofScrollTop + (EXPLORER_director.component.virtualCount - 1);
-                                if (someIndex >= EXPLORER_director.component.virtualIndex_ofScrollTop && someIndex <= largestIndexItemBeingShown) {
-                                    let finalDiv = EXPLORER_director.component.itemListElement.children[EXPLORER_director.component.itemListElement.children.length - 1];
+                            if (EXPLORER_director.virtualCount > 0) {
+                                let largestIndexItemBeingShown = EXPLORER_director.virtualIndex_ofScrollTop + (EXPLORER_director.virtualCount - 1);
+                                if (someIndex >= EXPLORER_director.virtualIndex_ofScrollTop && someIndex <= largestIndexItemBeingShown) {
+                                    let finalDiv = EXPLORER_director.itemListElement.children[EXPLORER_director.itemListElement.children.length - 1];
 
-                                    EXPLORER_director.component.itemHeightTotal = EXPLORER_director.tvd_getTotalCount() * EXPLORER_director.component.itemHeightNumber;
-                                    EXPLORER_director.component.virtualizationElement.style.height = EXPLORER_director.component.itemHeightTotal + 'px';
+                                    EXPLORER_director.itemHeightTotal = EXPLORER_director.tvd_getTotalCount() * EXPLORER_director.itemHeightNumber;
+                                    EXPLORER_director.virtualizationElement.style.height = EXPLORER_director.itemHeightTotal + 'px';
 
                                     // TODO: Check that the node you're pasting into is expanded.
 
                                     //await EXPLORER_director.tvd_drawItem_async(finalDiv, someIndex, /*isNull*/ false);
                                     if (someIndex !== largestIndexItemBeingShown) {
-                                        //EXPLORER_director.component.itemListElement.insertBefore(finalDiv, EXPLORER_director.component.itemListElement.children[MENU_target.divRelativeIndex + 1 + pasteResult.indexOf]);
+                                        //EXPLORER_director.itemListElement.insertBefore(finalDiv, EXPLORER_director.itemListElement.children[MENU_target.divRelativeIndex + 1 + pasteResult.indexOf]);
                                     }
                                 }
 
@@ -955,7 +1635,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
         
                                     if (divRelativeIndex <= largestIndexItemBeingShown) {
 
-                                        let countOfMoreEntriesToShow = EXPLORER_director.tvd_getTotalCount() - (EXPLORER_director.component.virtualIndex_ofScrollTop + EXPLORER_director.component.virtualCount);
+                                        let countOfMoreEntriesToShow = EXPLORER_director.tvd_getTotalCount() - (EXPLORER_director.virtualIndex_ofScrollTop + EXPLORER_director.virtualCount);
 
                                         let countChanges;
                                         
@@ -967,26 +1647,26 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                                             countChanges = 1;
                                         }
 
-                                        EXPLORER_director.component.itemHeightTotal = EXPLORER_director.tvd_getTotalCount() * EXPLORER_director.component.itemHeightNumber;
-                                        EXPLORER_director.component.virtualizationElement.style.height = EXPLORER_director.component.itemHeightTotal + 'px';
+                                        EXPLORER_director.itemHeightTotal = EXPLORER_director.tvd_getTotalCount() * EXPLORER_director.itemHeightNumber;
+                                        EXPLORER_director.virtualizationElement.style.height = EXPLORER_director.itemHeightTotal + 'px';
 
-                                        let remainingChangesToRender = countChanges < EXPLORER_director.component.virtualCount ? countChanges : EXPLORER_director.component.virtualCount - divRelativeIndex;
+                                        let remainingChangesToRender = countChanges < EXPLORER_director.virtualCount ? countChanges : EXPLORER_director.virtualCount - divRelativeIndex;
 
                                         if (countOfMoreEntriesToShow > remainingChangesToRender) {
                                             countOfMoreEntriesToShow = remainingChangesToRender;
                                         }
 
                                         for (let i = 0; i < remainingChangesToRender; i++) {
-                                            //let divItem = EXPLORER_director.component.itemListElement.children[divRelativeIndex];
+                                            //let divItem = EXPLORER_director.itemListElement.children[divRelativeIndex];
                     
                                             // TODO: if you remove including the eventual final div in the itemListElement then this moving of the div isn't accomplishing anything and could be skipped.
-                                            //EXPLORER_director.component.itemListElement.insertBefore(divItem, undefined);
+                                            //EXPLORER_director.itemListElement.insertBefore(divItem, undefined);
 
                                             if (countOfMoreEntriesToShow <= 0) {
-                                                //await EXPLORER_director.tvd_drawItem_async(divItem, EXPLORER_director.component.virtualIndex_ofScrollTop + EXPLORER_director.component.virtualCount - 1, /*isNull*/ true);
+                                                //await EXPLORER_director.tvd_drawItem_async(divItem, EXPLORER_director.virtualIndex_ofScrollTop + EXPLORER_director.virtualCount - 1, /*isNull*/ true);
                                             }
                                             else {
-                                                //await EXPLORER_director.tvd_drawItem_async(divItem, EXPLORER_director.component.virtualIndex_ofScrollTop + EXPLORER_director.component.virtualCount - (remainingChangesToRender - i), /*isNull*/ false);
+                                                //await EXPLORER_director.tvd_drawItem_async(divItem, EXPLORER_director.virtualIndex_ofScrollTop + EXPLORER_director.virtualCount - (remainingChangesToRender - i), /*isNull*/ false);
                                                 countOfMoreEntriesToShow--;
                                             }
                                         }
@@ -996,7 +1676,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                                 // TODO: fine grained redrawing of only the nodes that are:
                                 // - part of the virtualization result
                                 // - and have changed in some way that necessitates their UI be redrawn
-                                EXPLORER_director.component.draw_BATCH_request(EXPLORER_director.component.virtualIndex_ofScrollTop, EXPLORER_director.component.virtualCount, 3);
+                                EXPLORER_director.draw_BATCH_request(EXPLORER_director.virtualIndex_ofScrollTop, EXPLORER_director.virtualCount, 3);
                             }
                         }
                     }
@@ -1144,24 +1824,24 @@ async function NewFile_Directory_WIDGET_InputText_callback(result) {
 
             EXPLORER_director.nodeList.insert(someIndex, nodeKind, newFileResult.pathId, WIDGET_target.depth + 1);
 
-            if (EXPLORER_director.component.virtualCount > 0) {
-                let largestIndexItemBeingShown = EXPLORER_director.component.virtualIndex_ofScrollTop + (EXPLORER_director.component.virtualCount - 1);
-                if (someIndex >= EXPLORER_director.component.virtualIndex_ofScrollTop && someIndex <= largestIndexItemBeingShown) {
-                    //let finalDiv = EXPLORER_director.component.itemListElement.children[EXPLORER_director.component.itemListElement.children.length - 1];
+            if (EXPLORER_director.virtualCount > 0) {
+                let largestIndexItemBeingShown = EXPLORER_director.virtualIndex_ofScrollTop + (EXPLORER_director.virtualCount - 1);
+                if (someIndex >= EXPLORER_director.virtualIndex_ofScrollTop && someIndex <= largestIndexItemBeingShown) {
+                    //let finalDiv = EXPLORER_director.itemListElement.children[EXPLORER_director.itemListElement.children.length - 1];
 
-                    EXPLORER_director.component.itemHeightTotal = EXPLORER_director.tvd_getTotalCount() * EXPLORER_director.component.itemHeightNumber;
-                    EXPLORER_director.component.virtualizationElement.style.height = EXPLORER_director.component.itemHeightTotal + 'px';
+                    EXPLORER_director.itemHeightTotal = EXPLORER_director.tvd_getTotalCount() * EXPLORER_director.itemHeightNumber;
+                    EXPLORER_director.virtualizationElement.style.height = EXPLORER_director.itemHeightTotal + 'px';
 
                     //await EXPLORER_director.tvd_drawItem_async(finalDiv, someIndex, /*isNull*/ false);
                     if (someIndex !== largestIndexItemBeingShown) {
-                        //EXPLORER_director.component.itemListElement.insertBefore(finalDiv, EXPLORER_director.component.itemListElement.children[WIDGET_target.divRelativeIndex + 1 + newFileResult.indexOf]);
+                        //EXPLORER_director.itemListElement.insertBefore(finalDiv, EXPLORER_director.itemListElement.children[WIDGET_target.divRelativeIndex + 1 + newFileResult.indexOf]);
                     }
                 }
 
                 // TODO: fine grained redrawing of only the nodes that are:
                 // - part of the virtualization result
                 // - and have changed in some way that necessitates their UI be redrawn
-                EXPLORER_director.component.draw_BATCH_request(EXPLORER_director.component.virtualIndex_ofScrollTop, EXPLORER_director.component.virtualCount, 3);
+                EXPLORER_director.draw_BATCH_request(EXPLORER_director.virtualIndex_ofScrollTop, EXPLORER_director.virtualCount, 3);
             }
         }
     }
@@ -1226,24 +1906,24 @@ async function NewFile_File_WIDGET_InputText_callback(result) {
 
             EXPLORER_director.nodeList.insert(someIndex, nodeKind, newFileResult.pathId, WIDGET_target.depth + 1);
     
-            if (EXPLORER_director.component.virtualCount > 0) {
-                let largestIndexItemBeingShown = EXPLORER_director.component.virtualIndex_ofScrollTop + (EXPLORER_director.component.virtualCount - 1);
-                if (someIndex >= EXPLORER_director.component.virtualIndex_ofScrollTop && someIndex <= largestIndexItemBeingShown) {
-                    //let finalDiv = EXPLORER_director.component.itemListElement.children[EXPLORER_director.component.itemListElement.children.length - 1];
+            if (EXPLORER_director.virtualCount > 0) {
+                let largestIndexItemBeingShown = EXPLORER_director.virtualIndex_ofScrollTop + (EXPLORER_director.virtualCount - 1);
+                if (someIndex >= EXPLORER_director.virtualIndex_ofScrollTop && someIndex <= largestIndexItemBeingShown) {
+                    //let finalDiv = EXPLORER_director.itemListElement.children[EXPLORER_director.itemListElement.children.length - 1];
     
-                    EXPLORER_director.component.itemHeightTotal = EXPLORER_director.tvd_getTotalCount() * EXPLORER_director.component.itemHeightNumber;
-                    EXPLORER_director.component.virtualizationElement.style.height = EXPLORER_director.component.itemHeightTotal + 'px';
+                    EXPLORER_director.itemHeightTotal = EXPLORER_director.tvd_getTotalCount() * EXPLORER_director.itemHeightNumber;
+                    EXPLORER_director.virtualizationElement.style.height = EXPLORER_director.itemHeightTotal + 'px';
     
                     //await EXPLORER_director.tvd_drawItem_async(finalDiv, someIndex, /*isNull*/ false);
                     if (someIndex !== largestIndexItemBeingShown) {
-                        //EXPLORER_director.component.itemListElement.insertBefore(finalDiv, EXPLORER_director.component.itemListElement.children[WIDGET_target.divRelativeIndex + 1 + newFileResult.indexOf]);
+                        //EXPLORER_director.itemListElement.insertBefore(finalDiv, EXPLORER_director.itemListElement.children[WIDGET_target.divRelativeIndex + 1 + newFileResult.indexOf]);
                     }
                 }
     
                 // TODO: fine grained redrawing of only the nodes that are:
                 // - part of the virtualization result
                 // - and have changed in some way that necessitates their UI be redrawn
-                EXPLORER_director.component.draw_BATCH_request(EXPLORER_director.component.virtualIndex_ofScrollTop, EXPLORER_director.component.virtualCount, 3);
+                EXPLORER_director.draw_BATCH_request(EXPLORER_director.virtualIndex_ofScrollTop, EXPLORER_director.virtualCount, 3);
             }
         }
     }
@@ -1254,30 +1934,30 @@ async function DeleteFile_Directory_YesCancel_callback(result) {
     let entry = WIDGET_SHOW_value;
     let deleteFileResult = await window.myAPI.deleteFile(entry.absolutePath, /*isDirectory*/ true);
     if (deleteFileResult) {
-        let countOfMoreEntriesToShow = EXPLORER_director.tvd_getTotalCount() - (EXPLORER_director.component.virtualIndex_ofScrollTop + EXPLORER_director.component.virtualCount);
+        let countOfMoreEntriesToShow = EXPLORER_director.tvd_getTotalCount() - (EXPLORER_director.virtualIndex_ofScrollTop + EXPLORER_director.virtualCount);
 
         let countChanges = EXPLORER_director.removeFromNodeList(WIDGET_target.indexItem);
 
-        EXPLORER_director.component.itemHeightTotal = EXPLORER_director.tvd_getTotalCount() * EXPLORER_director.component.itemHeightNumber;
-        EXPLORER_director.component.virtualizationElement.style.height = EXPLORER_director.component.itemHeightTotal + 'px';
+        EXPLORER_director.itemHeightTotal = EXPLORER_director.tvd_getTotalCount() * EXPLORER_director.itemHeightNumber;
+        EXPLORER_director.virtualizationElement.style.height = EXPLORER_director.itemHeightTotal + 'px';
 
-        let remainingChangesToRender = countChanges < EXPLORER_director.component.virtualCount ? countChanges : EXPLORER_director.component.virtualCount - WIDGET_target.divRelativeIndex;
+        let remainingChangesToRender = countChanges < EXPLORER_director.virtualCount ? countChanges : EXPLORER_director.virtualCount - WIDGET_target.divRelativeIndex;
 
         if (countOfMoreEntriesToShow > remainingChangesToRender) {
             countOfMoreEntriesToShow = remainingChangesToRender;
         }
 
         for (let i = 0; i < remainingChangesToRender; i++) {
-            //let divItem = EXPLORER_director.component.itemListElement.children[WIDGET_target.divRelativeIndex];
+            //let divItem = EXPLORER_director.itemListElement.children[WIDGET_target.divRelativeIndex];
 
             // TODO: if you remove including the eventual final div in the itemListElement then this moving of the div isn't accomplishing anything and could be skipped.
-            //EXPLORER_director.component.itemListElement.insertBefore(divItem, undefined);
+            //EXPLORER_director.itemListElement.insertBefore(divItem, undefined);
 
             if (countOfMoreEntriesToShow <= 0) {
-                //await EXPLORER_director.tvd_drawItem_async(divItem, EXPLORER_director.component.virtualIndex_ofScrollTop + EXPLORER_director.component.virtualCount - 1, /*isNull*/ true);
+                //await EXPLORER_director.tvd_drawItem_async(divItem, EXPLORER_director.virtualIndex_ofScrollTop + EXPLORER_director.virtualCount - 1, /*isNull*/ true);
             }
             else {
-                //await EXPLORER_director.tvd_drawItem_async(divItem, EXPLORER_director.component.virtualIndex_ofScrollTop + EXPLORER_director.component.virtualCount - (remainingChangesToRender - i), /*isNull*/ false);
+                //await EXPLORER_director.tvd_drawItem_async(divItem, EXPLORER_director.virtualIndex_ofScrollTop + EXPLORER_director.virtualCount - (remainingChangesToRender - i), /*isNull*/ false);
                 countOfMoreEntriesToShow--;
             }
         }
@@ -1285,7 +1965,7 @@ async function DeleteFile_Directory_YesCancel_callback(result) {
         // TODO: fine grained redrawing of only the nodes that are:
         // - part of the virtualization result
         // - and have changed in some way that necessitates their UI be redrawn
-        EXPLORER_director.component.draw_BATCH_request(EXPLORER_director.component.virtualIndex_ofScrollTop, EXPLORER_director.component.virtualCount, 3);
+        EXPLORER_director.draw_BATCH_request(EXPLORER_director.virtualIndex_ofScrollTop, EXPLORER_director.virtualCount, 3);
     }
 }
 
@@ -1296,29 +1976,29 @@ async function DeleteFile_File_YesCancel_callback(result) {
     let entry = WIDGET_SHOW_value;
     let deleteFileResult = await window.myAPI.deleteFile(entry.absolutePath, /*isDirectory*/ false);
     if (deleteFileResult) {
-        let noMoreEntriesToShow = EXPLORER_director.component.virtualIndex_ofScrollTop + EXPLORER_director.component.virtualCount >= EXPLORER_director.tvd_getTotalCount();
+        let noMoreEntriesToShow = EXPLORER_director.virtualIndex_ofScrollTop + EXPLORER_director.virtualCount >= EXPLORER_director.tvd_getTotalCount();
 
         EXPLORER_director.nodeList.removeAt(WIDGET_target.indexItem, 1);
 
-        if (EXPLORER_director.component.virtualCount > 0) {
-            //let divItem = EXPLORER_director.component.itemListElement.children[WIDGET_target.divRelativeIndex];
+        if (EXPLORER_director.virtualCount > 0) {
+            //let divItem = EXPLORER_director.itemListElement.children[WIDGET_target.divRelativeIndex];
 
-            EXPLORER_director.component.itemHeightTotal = EXPLORER_director.tvd_getTotalCount() * EXPLORER_director.component.itemHeightNumber;
-            EXPLORER_director.component.virtualizationElement.style.height = EXPLORER_director.component.itemHeightTotal + 'px';
+            EXPLORER_director.itemHeightTotal = EXPLORER_director.tvd_getTotalCount() * EXPLORER_director.itemHeightNumber;
+            EXPLORER_director.virtualizationElement.style.height = EXPLORER_director.itemHeightTotal + 'px';
 
-            //EXPLORER_director.component.itemListElement.insertBefore(divItem, undefined);
+            //EXPLORER_director.itemListElement.insertBefore(divItem, undefined);
             if (noMoreEntriesToShow) {
-                //await EXPLORER_director.tvd_drawItem_async(divItem, EXPLORER_director.component.virtualIndex_ofScrollTop + EXPLORER_director.component.virtualCount - 1, /*isNull*/ true);
+                //await EXPLORER_director.tvd_drawItem_async(divItem, EXPLORER_director.virtualIndex_ofScrollTop + EXPLORER_director.virtualCount - 1, /*isNull*/ true);
             }
             else {
-                //await EXPLORER_director.tvd_drawItem_async(divItem, EXPLORER_director.component.virtualIndex_ofScrollTop + EXPLORER_director.component.virtualCount - 1, /*isNull*/ false);
+                //await EXPLORER_director.tvd_drawItem_async(divItem, EXPLORER_director.virtualIndex_ofScrollTop + EXPLORER_director.virtualCount - 1, /*isNull*/ false);
             }
         }
 
         // TODO: fine grained redrawing of only the nodes that are:
         // - part of the virtualization result
         // - and have changed in some way that necessitates their UI be redrawn
-        EXPLORER_director.component.draw_BATCH_request(EXPLORER_director.component.virtualIndex_ofScrollTop, EXPLORER_director.component.virtualCount, 3);
+        EXPLORER_director.draw_BATCH_request(EXPLORER_director.virtualIndex_ofScrollTop, EXPLORER_director.virtualCount, 3);
     }
 }
 
@@ -1330,7 +2010,7 @@ async function RenameFile_Directory_InputText_callback(result) {
     let renameFileResult = await window.myAPI.renameFile(entry.absolutePath, result.value, /*isDirectory*/ true);
     if (renameFileResult.success) {
         EXPLORER_director.setNodeListEntryId(WIDGET_target.indexItem, renameFileResult.pathId);
-        let divItem = EXPLORER_director.component.itemListElement.children[WIDGET_target.divRelativeIndex];
+        let divItem = EXPLORER_director.itemListElement.children[WIDGET_target.divRelativeIndex];
         divItem.lastChild.nodeValue = result.value;
     }
 }
@@ -1343,7 +2023,7 @@ async function RenameFile_File_InputText_callback(result) {
     let renameFileResult = await window.myAPI.renameFile(entry.absolutePath, result.value, /*isDirectory*/ false);
     if (renameFileResult.success) {
         EXPLORER_director.setNodeListEntryId(WIDGET_target.indexItem, renameFileResult.pathId);
-        let divItem = EXPLORER_director.component.itemListElement.children[WIDGET_target.divRelativeIndex];
+        let divItem = EXPLORER_director.itemListElement.children[WIDGET_target.divRelativeIndex];
         divItem.lastChild.nodeValue = result.value;
     }
 }

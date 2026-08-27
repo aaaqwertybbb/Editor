@@ -45,9 +45,6 @@ let EXPLORER_TreeViewDirector_itemListElement = document.createElement('div');
 EXPLORER_TreeViewDirector_itemListElement.className = 'TREEVIEW_itemList';
 EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_itemListElement);
 
-/** Hacky: Must initialize to a number other than 0 or else nothing renders. */
-let EXPLORER_TreeViewDirector_virtualCount = 1;
-
 let EXPLORER_TreeViewDirector__ONSCROLLvirtualIndex = 0;
 let EXPLORER_TreeViewDirector__ONSCROLLvirtualCount = 0;
 
@@ -192,7 +189,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositive
     let totalCount = EXPLORER_TreeViewDirector_nodeList.count_abstract;
     let loopCounter = 0;
 
-    let lastIndex = (EXPLORER_TreeViewDirector_beltIndexZero - 1 + EXPLORER_TreeViewDirector_virtualCount) % EXPLORER_TreeViewDirector_virtualCount; // TODO: 'EXPLORER_TreeViewDirector_virtualCount' or 'EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children.length'
+    let lastIndex = (EXPLORER_TreeViewDirector_beltIndexZero - 1 + gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]) % gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]; // TODO: 'gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]' or 'EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children.length'
 
     let loopTotalIterations = upperBound - start;
 
@@ -381,7 +378,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
     let beltIndex_current = ((EXPLORER_TreeViewDirector_scrollFetchData_virtualIndex)) - gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
     if (beltIndex_current >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndex_current < 0) beltIndex_current = -1;
-    else beltIndex_current = (beltIndex_current + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
+    else beltIndex_current = (beltIndex_current + EXPLORER_TreeViewDirector_beltIndexZero) % gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
 
     for (let i = 0; i < itemListElement_childrenLength; i++) {
 
@@ -884,14 +881,14 @@ function EXPLORER_TreeViewDirector_draw_removeEvents() {
 }
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp) {
-    if (EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length !== EXPLORER_TreeViewDirector_virtualCount) {
+    if (EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length !== gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]) {
         EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp);
     }
     else {
         gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] = Math.floor(EXPLORER_TreeViewDirector_lastReadNumber_scrollTop / EXPLORER_TreeViewDirector_itemHeightNumber);
 
         if (EXPLORER_TreeViewDirector__ONSCROLLvirtualIndex === gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] &&
-            EXPLORER_TreeViewDirector__ONSCROLLvirtualCount === EXPLORER_TreeViewDirector_virtualCount) {
+            EXPLORER_TreeViewDirector__ONSCROLLvirtualCount === gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]) {
                 return;
         }
 
@@ -902,17 +899,17 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp) {
 
         EXPLORER_TreeViewDirector__ONSCROLLvirtualIndex = gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
 
-        if (EXPLORER_TreeViewDirector__ONSCROLLvirtualCount === EXPLORER_TreeViewDirector_virtualCount &&
-            EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length === EXPLORER_TreeViewDirector_virtualCount) {
+        if (EXPLORER_TreeViewDirector__ONSCROLLvirtualCount === gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] &&
+            EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length === gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]) {
 
             let diff = currVli - prevVli;
 
             let totalCount = EXPLORER_TreeViewDirector_tvd_getTotalCount();
 
-            if (diff > 0 && diff < EXPLORER_TreeViewDirector_virtualCount) {
+            if (diff > 0 && diff < gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]) {
                 EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(prevVli + EXPLORER_TreeViewDirector__ONSCROLLvirtualCount, diff, 1, undefined, timestamp);
             }
-            else if (diff < 0 && (diff *= -1) < EXPLORER_TreeViewDirector_virtualCount) {
+            else if (diff < 0 && (diff *= -1) < gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]) {
                 EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(currVli, diff, 2, undefined, timestamp);
             }
             else {
@@ -920,7 +917,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp) {
                     EXPLORER_TreeViewDirector_scrollEndDeadline = timestamp + 300;
                 }
                 else {
-                    EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop], EXPLORER_TreeViewDirector_virtualCount, 3, undefined, timestamp);
+                    EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop], gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount], 3, undefined, timestamp);
                 }
             }
         }
@@ -944,14 +941,14 @@ function EXPLORER_TreeViewDirector_draw_BATCH_request(start, length, onePositive
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
     EXPLORER_TreeViewDirector_ensure_boundingClientRect();
 
-    EXPLORER_TreeViewDirector__ONSCROLLvirtualCount = EXPLORER_TreeViewDirector_virtualCount;
+    EXPLORER_TreeViewDirector__ONSCROLLvirtualCount = gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
 
     gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] = Math.floor(EXPLORER_TreeViewDirector_lastReadNumber_scrollTop / EXPLORER_TreeViewDirector_itemHeightNumber);
     EXPLORER_TreeViewDirector_beltIndexZero = 0;
 
     let totalCount = EXPLORER_TreeViewDirector_tvd_getTotalCount();
 
-    if (EXPLORER_TreeViewDirector_itemListElement.children.length !== EXPLORER_TreeViewDirector_virtualCount) {
+    if (EXPLORER_TreeViewDirector_itemListElement.children.length !== gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]) {
         EXPLORER_TreeViewDirector_itemListElement.innerHTML = '';
 
         // padding of 2ch (the style attribute receives the width as a pixel by using 'gINT_FIELDS[fEXPLORER_firstSpanWidthValue]' as a baseline (not quite ch))
@@ -968,7 +965,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
         EXPLORER_TreeViewDirector_cursorElement.style.width = widthAttributeValueString;
 
         // this is zero'd, could use change for clarity of algorithm and match patterns but focus elsewhere first
-        for (let i = 0; i < EXPLORER_TreeViewDirector_virtualCount; i++) {
+        for (let i = 0; i < gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]; i++) {
             
             let divItem = document.createElement('div');
             divItem.style.width = widthAttributeValueString;
@@ -986,7 +983,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
         
         // TODO: check the resize logic, that it works
         if (EXPLORER_TreeViewDirector_pullData_array) {
-            EXPLORER_TreeViewDirector_pullData_array = new Uint32Array(EXPLORER_TreeViewDirector_virtualCount);
+            EXPLORER_TreeViewDirector_pullData_array = new Uint32Array(gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]);
             EXPLORER_TreeViewDirector_pullData_array_count = 0;
         }
 
@@ -995,8 +992,8 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
     }
 
     // TODO: This if statement check is awkward because the previous if statement ought to have guaranteed this one to be true.
-    if (EXPLORER_TreeViewDirector_itemListElement.children.length === EXPLORER_TreeViewDirector_virtualCount) {
-        EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop], EXPLORER_TreeViewDirector_virtualCount, 3, undefined, timestamp);
+    if (EXPLORER_TreeViewDirector_itemListElement.children.length === gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]) {
+        EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop], gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount], 3, undefined, timestamp);
     }
 }
 
@@ -1033,7 +1030,7 @@ function EXPLORER_TreeViewDirector_event_click(event) {
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
     let beltIndexItem = ((indexItem)) - gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
     if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-    else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
+    else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
 
     if (beltIndexItem < 0) return;
     let divItem = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem];
@@ -1064,7 +1061,7 @@ function EXPLORER_TreeViewDirector_event_dblclick(event) {
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
     let beltIndexItem = ((indexItem)) - gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
     if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-    else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
+    else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
 
     if (beltIndexItem < 0) return;
     let divItem = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem];
@@ -1077,7 +1074,7 @@ function EXPLORER_TreeViewDirector_event_dblclick(event) {
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
         let beltIndexItem = ((gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex])) - gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
         if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-        else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
+        else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
 
         if (beltIndexItem < 0) return;
         return EXPLORER_TreeViewDirector_tvd_ondblclick_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex]);
@@ -1107,7 +1104,7 @@ function EXPLORER_TreeViewDirector_event_contextmenu(event) {
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
         let beltIndexItem = ((gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex])) - gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
         if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-        else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
+        else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
 
         if (beltIndexItem < 0) return;
         return EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex], event_button, event_clientX, event_clientY, beltIndexItem);
@@ -1125,7 +1122,7 @@ function EXPLORER_TreeViewDirector_event_contextmenu(event) {
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
         let beltIndexItem = ((gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex])) - gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
         if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-        else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
+        else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
 
         if (beltIndexItem < 0) return;
 
@@ -1173,7 +1170,7 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
                 let beltIndexItem = ((gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex])) - gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
                 if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-                else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
+                else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
 
                 if (beltIndexItem < 0) return;
                 return EXPLORER_TreeViewDirector_tvd_arrowRight_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex]);
@@ -1191,7 +1188,7 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
                 let beltIndexItem = ((gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex])) - gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
                 if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-                else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
+                else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
 
                 if (beltIndexItem < 0) return;
                 return EXPLORER_TreeViewDirector_tvd_arrowLeft_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex]);
@@ -1209,7 +1206,7 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
             let beltIndexItem = ((gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex])) - gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
             if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-            else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
+            else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
 
             if (beltIndexItem < 0) return;
             return EXPLORER_TreeViewDirector_tvd_onkeydown_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex], event.key);
@@ -1250,7 +1247,7 @@ function EXPLORER_TreeViewDirector_event_scroll() {
 function EXPLORER_TreeViewDirector_ensure_boundingClientRect() {
     if (!EXPLORER_TreeViewDirector_boundingClientRect) {
         EXPLORER_TreeViewDirector_boundingClientRect = EXPLORER_TreeViewDirector_rootElement.getBoundingClientRect();
-        EXPLORER_TreeViewDirector_virtualCount = Math.ceil(EXPLORER_TreeViewDirector_rootElement.offsetHeight / EXPLORER_TreeViewDirector_itemHeightNumber);
+        gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] = Math.ceil(EXPLORER_TreeViewDirector_rootElement.offsetHeight / EXPLORER_TreeViewDirector_itemHeightNumber);
     }
 }
 
@@ -1623,8 +1620,8 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
 
                             EXPLORER_TreeViewDirector_nodeList.insert(someIndex, nodeKind, pasteResult.pathId, MENU_target.depth + 1);
 
-                            if (EXPLORER_TreeViewDirector_virtualCount > 0) {
-                                let largestIndexItemBeingShown = gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + (EXPLORER_TreeViewDirector_virtualCount - 1);
+                            if (gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] > 0) {
+                                let largestIndexItemBeingShown = gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + (gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] - 1);
                                 if (someIndex >= gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] && someIndex <= largestIndexItemBeingShown) {
                                     let finalDiv = EXPLORER_TreeViewDirector_itemListElement.children[EXPLORER_TreeViewDirector_itemListElement.children.length - 1];
 
@@ -1655,7 +1652,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
         
                                     if (divRelativeIndex <= largestIndexItemBeingShown) {
 
-                                        let countOfMoreEntriesToShow = EXPLORER_TreeViewDirector_tvd_getTotalCount() - (gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + EXPLORER_TreeViewDirector_virtualCount);
+                                        let countOfMoreEntriesToShow = EXPLORER_TreeViewDirector_tvd_getTotalCount() - (gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]);
 
                                         let countChanges;
                                         
@@ -1670,7 +1667,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                                         gINT_FIELDS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * EXPLORER_TreeViewDirector_itemHeightNumber;
                                         EXPLORER_TreeViewDirector_virtualizationElement.style.height = gINT_FIELDS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
 
-                                        let remainingChangesToRender = countChanges < EXPLORER_TreeViewDirector_virtualCount ? countChanges : EXPLORER_TreeViewDirector_virtualCount - divRelativeIndex;
+                                        let remainingChangesToRender = countChanges < gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] ? countChanges : gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] - divRelativeIndex;
 
                                         if (countOfMoreEntriesToShow > remainingChangesToRender) {
                                             countOfMoreEntriesToShow = remainingChangesToRender;
@@ -1683,10 +1680,10 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                                             //EXPLORER_TreeViewDirector_itemListElement.insertBefore(divItem, undefined);
 
                                             if (countOfMoreEntriesToShow <= 0) {
-                                                //await EXPLORER_TreeViewDirector_tvd_drawItem_async(divItem, gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + EXPLORER_TreeViewDirector_virtualCount - 1, /*isNull*/ true);
+                                                //await EXPLORER_TreeViewDirector_tvd_drawItem_async(divItem, gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] - 1, /*isNull*/ true);
                                             }
                                             else {
-                                                //await EXPLORER_TreeViewDirector_tvd_drawItem_async(divItem, gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + EXPLORER_TreeViewDirector_virtualCount - (remainingChangesToRender - i), /*isNull*/ false);
+                                                //await EXPLORER_TreeViewDirector_tvd_drawItem_async(divItem, gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] - (remainingChangesToRender - i), /*isNull*/ false);
                                                 countOfMoreEntriesToShow--;
                                             }
                                         }
@@ -1696,7 +1693,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                                 // TODO: fine grained redrawing of only the nodes that are:
                                 // - part of the virtualization result
                                 // - and have changed in some way that necessitates their UI be redrawn
-                                EXPLORER_TreeViewDirector_draw_BATCH_request(gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop], EXPLORER_TreeViewDirector_virtualCount, 3);
+                                EXPLORER_TreeViewDirector_draw_BATCH_request(gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop], gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount], 3);
                             }
                         }
                     }
@@ -1844,8 +1841,8 @@ async function NewFile_Directory_WIDGET_InputText_callback(result) {
 
             EXPLORER_TreeViewDirector_nodeList.insert(someIndex, nodeKind, newFileResult.pathId, WIDGET_target.depth + 1);
 
-            if (EXPLORER_TreeViewDirector_virtualCount > 0) {
-                let largestIndexItemBeingShown = gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + (EXPLORER_TreeViewDirector_virtualCount - 1);
+            if (gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] > 0) {
+                let largestIndexItemBeingShown = gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + (gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] - 1);
                 if (someIndex >= gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] && someIndex <= largestIndexItemBeingShown) {
                     //let finalDiv = EXPLORER_TreeViewDirector_itemListElement.children[EXPLORER_TreeViewDirector_itemListElement.children.length - 1];
 
@@ -1861,7 +1858,7 @@ async function NewFile_Directory_WIDGET_InputText_callback(result) {
                 // TODO: fine grained redrawing of only the nodes that are:
                 // - part of the virtualization result
                 // - and have changed in some way that necessitates their UI be redrawn
-                EXPLORER_TreeViewDirector_draw_BATCH_request(gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop], EXPLORER_TreeViewDirector_virtualCount, 3);
+                EXPLORER_TreeViewDirector_draw_BATCH_request(gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop], gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount], 3);
             }
         }
     }
@@ -1926,8 +1923,8 @@ async function NewFile_File_WIDGET_InputText_callback(result) {
 
             EXPLORER_TreeViewDirector_nodeList.insert(someIndex, nodeKind, newFileResult.pathId, WIDGET_target.depth + 1);
     
-            if (EXPLORER_TreeViewDirector_virtualCount > 0) {
-                let largestIndexItemBeingShown = gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + (EXPLORER_TreeViewDirector_virtualCount - 1);
+            if (gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] > 0) {
+                let largestIndexItemBeingShown = gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + (gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] - 1);
                 if (someIndex >= gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] && someIndex <= largestIndexItemBeingShown) {
                     //let finalDiv = EXPLORER_TreeViewDirector_itemListElement.children[EXPLORER_TreeViewDirector_itemListElement.children.length - 1];
     
@@ -1943,7 +1940,7 @@ async function NewFile_File_WIDGET_InputText_callback(result) {
                 // TODO: fine grained redrawing of only the nodes that are:
                 // - part of the virtualization result
                 // - and have changed in some way that necessitates their UI be redrawn
-                EXPLORER_TreeViewDirector_draw_BATCH_request(gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop], EXPLORER_TreeViewDirector_virtualCount, 3);
+                EXPLORER_TreeViewDirector_draw_BATCH_request(gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop], gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount], 3);
             }
         }
     }
@@ -1954,14 +1951,14 @@ async function DeleteFile_Directory_YesCancel_callback(result) {
     let entry = WIDGET_SHOW_value;
     let deleteFileResult = await window.myAPI.deleteFile(entry.absolutePath, /*isDirectory*/ true);
     if (deleteFileResult) {
-        let countOfMoreEntriesToShow = EXPLORER_TreeViewDirector_tvd_getTotalCount() - (gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + EXPLORER_TreeViewDirector_virtualCount);
+        let countOfMoreEntriesToShow = EXPLORER_TreeViewDirector_tvd_getTotalCount() - (gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]);
 
         let countChanges = EXPLORER_TreeViewDirector_removeFromNodeList(WIDGET_target.indexItem);
 
         gINT_FIELDS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * EXPLORER_TreeViewDirector_itemHeightNumber;
         EXPLORER_TreeViewDirector_virtualizationElement.style.height = gINT_FIELDS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
 
-        let remainingChangesToRender = countChanges < EXPLORER_TreeViewDirector_virtualCount ? countChanges : EXPLORER_TreeViewDirector_virtualCount - WIDGET_target.divRelativeIndex;
+        let remainingChangesToRender = countChanges < gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] ? countChanges : gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] - WIDGET_target.divRelativeIndex;
 
         if (countOfMoreEntriesToShow > remainingChangesToRender) {
             countOfMoreEntriesToShow = remainingChangesToRender;
@@ -1974,10 +1971,10 @@ async function DeleteFile_Directory_YesCancel_callback(result) {
             //EXPLORER_TreeViewDirector_itemListElement.insertBefore(divItem, undefined);
 
             if (countOfMoreEntriesToShow <= 0) {
-                //await EXPLORER_TreeViewDirector_tvd_drawItem_async(divItem, gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + EXPLORER_TreeViewDirector_virtualCount - 1, /*isNull*/ true);
+                //await EXPLORER_TreeViewDirector_tvd_drawItem_async(divItem, gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] - 1, /*isNull*/ true);
             }
             else {
-                //await EXPLORER_TreeViewDirector_tvd_drawItem_async(divItem, gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + EXPLORER_TreeViewDirector_virtualCount - (remainingChangesToRender - i), /*isNull*/ false);
+                //await EXPLORER_TreeViewDirector_tvd_drawItem_async(divItem, gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] - (remainingChangesToRender - i), /*isNull*/ false);
                 countOfMoreEntriesToShow--;
             }
         }
@@ -1985,7 +1982,7 @@ async function DeleteFile_Directory_YesCancel_callback(result) {
         // TODO: fine grained redrawing of only the nodes that are:
         // - part of the virtualization result
         // - and have changed in some way that necessitates their UI be redrawn
-        EXPLORER_TreeViewDirector_draw_BATCH_request(gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop], EXPLORER_TreeViewDirector_virtualCount, 3);
+        EXPLORER_TreeViewDirector_draw_BATCH_request(gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop], gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount], 3);
     }
 }
 
@@ -1996,11 +1993,11 @@ async function DeleteFile_File_YesCancel_callback(result) {
     let entry = WIDGET_SHOW_value;
     let deleteFileResult = await window.myAPI.deleteFile(entry.absolutePath, /*isDirectory*/ false);
     if (deleteFileResult) {
-        let noMoreEntriesToShow = gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + EXPLORER_TreeViewDirector_virtualCount >= EXPLORER_TreeViewDirector_tvd_getTotalCount();
+        let noMoreEntriesToShow = gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] >= EXPLORER_TreeViewDirector_tvd_getTotalCount();
 
         EXPLORER_TreeViewDirector_nodeList.removeAt(WIDGET_target.indexItem, 1);
 
-        if (EXPLORER_TreeViewDirector_virtualCount > 0) {
+        if (gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] > 0) {
             //let divItem = EXPLORER_TreeViewDirector_itemListElement.children[WIDGET_target.divRelativeIndex];
 
             gINT_FIELDS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * EXPLORER_TreeViewDirector_itemHeightNumber;
@@ -2008,17 +2005,17 @@ async function DeleteFile_File_YesCancel_callback(result) {
 
             //EXPLORER_TreeViewDirector_itemListElement.insertBefore(divItem, undefined);
             if (noMoreEntriesToShow) {
-                //await EXPLORER_TreeViewDirector_tvd_drawItem_async(divItem, gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + EXPLORER_TreeViewDirector_virtualCount - 1, /*isNull*/ true);
+                //await EXPLORER_TreeViewDirector_tvd_drawItem_async(divItem, gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] - 1, /*isNull*/ true);
             }
             else {
-                //await EXPLORER_TreeViewDirector_tvd_drawItem_async(divItem, gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + EXPLORER_TreeViewDirector_virtualCount - 1, /*isNull*/ false);
+                //await EXPLORER_TreeViewDirector_tvd_drawItem_async(divItem, gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] - 1, /*isNull*/ false);
             }
         }
 
         // TODO: fine grained redrawing of only the nodes that are:
         // - part of the virtualization result
         // - and have changed in some way that necessitates their UI be redrawn
-        EXPLORER_TreeViewDirector_draw_BATCH_request(gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop], EXPLORER_TreeViewDirector_virtualCount, 3);
+        EXPLORER_TreeViewDirector_draw_BATCH_request(gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop], gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount], 3);
     }
 }
 

@@ -643,7 +643,11 @@ const fEXPLORER_TreeViewDirector_cursorIndex = 143;
 
 const fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop = 144;
 
-// gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop]
+/** Hacky: Must initialize to a number other than 0 or else nothing renders. */
+const fEXPLORER_TreeViewDirector_virtualCount = 145
+gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] = 1;
+
+// gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]
 
 // inclusive final index is 138
 

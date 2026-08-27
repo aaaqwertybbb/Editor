@@ -529,6 +529,7 @@ module.exports = function (babel) {
     "fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount",
     "fEXPLORER_TreeViewDirector_lastReadNumber_scrollLeft",
     "fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop",
+    "fEXPLORER_TreeViewDirector_beltIndexZero",
 
   ];
 

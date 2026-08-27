@@ -15,103 +15,96 @@ also need to update the width of the cursor to the largest width seen div thing 
 need to make sure the code does a min-width esque logic. Probably don't want the css but just for the code that sets the style to consider it for you avoids min-width overhead if exists?
 */
 
+// start CONSTRUCTOR
+/////
+///// start treeViewComponent.js
+/////
+EXPLORER_TreeViewDirector_rootElement = document.createElement('div');
+EXPLORER_TreeViewDirector_rootElement.classList.add('TREEVIEW', 'unselectable');
+EXPLORER_TreeViewDirector_rootElement.tabIndex = 0;
+EXPLORER_TreeViewDirector_rootElement.style.height = '100%';
 
+EXPLORER_TreeViewDirector_virtualizationElement = document.createElement('div');
+EXPLORER_TreeViewDirector_virtualizationElement.className = 'TREEVIEW_virtualization';
+EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_virtualizationElement);
 
-function EXPLORER_TreeViewDirector_constructor() {
-    /////
-    ///// start treeViewComponent.js
-    /////
-    this.rootElement = document.createElement('div');
-    this.rootElement.classList.add('TREEVIEW', 'unselectable');
-    this.rootElement.tabIndex = 0;
-    this.rootElement.style.height = '100%';
+/** Consider the existence of such methods as 'state_cursor_setIndex' before mutating state directly */
+EXPLORER_TreeViewDirector_cursorElement = document.createElement('div');
+EXPLORER_TreeViewDirector_cursorElement.className = 'TREEVIEW_cursor';
+EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_cursorElement);
 
-    this.virtualizationElement = document.createElement('div');
-    this.virtualizationElement.className = 'TREEVIEW_virtualization';
-    this.rootElement.appendChild(this.virtualizationElement);
+EXPLORER_TreeViewDirector_itemListElement = document.createElement('div');
+EXPLORER_TreeViewDirector_itemListElement.className = 'TREEVIEW_itemList';
+EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_itemListElement);
 
-    /** Consider the existence of such methods as 'state_cursor_setIndex' before mutating state directly */
-    this.cursorElement = document.createElement('div');
-    this.cursorElement.className = 'TREEVIEW_cursor';
-    this.rootElement.appendChild(this.cursorElement);
+EXPLORER_TreeViewDirector_itemHeightTotal = 0;
 
-    this.itemListElement = document.createElement('div');
-    this.itemListElement.className = 'TREEVIEW_itemList';
-    this.rootElement.appendChild(this.itemListElement);
+/** Consider the existence of such methods as 'state_cursor_setIndex' before mutating state directly */
+EXPLORER_TreeViewDirector_cursorIndex = 0;
 
-    this.itemHeightTotal = 0;
+EXPLORER_TreeViewDirector__ONSCROLLvirtualIndex = 0;
+EXPLORER_TreeViewDirector__ONSCROLLvirtualCount = 0;
 
-    /** Consider the existence of such methods as 'state_cursor_setIndex' before mutating state directly */
-    this.cursorIndex = 0;
+EXPLORER_TreeViewDirector_lastReadNumber_scrollLeft = 0;
+EXPLORER_TreeViewDirector_lastReadNumber_scrollTop = 0;
 
-    this._ONSCROLLvirtualIndex = 0;
-    this._ONSCROLLvirtualCount = 0;
+EXPLORER_TreeViewDirector_scrollTimer = null;
+EXPLORER_TreeViewDirector_hasTrailingCall = false;
 
-    this.lastReadNumber_scrollLeft = 0;
-    this.lastReadNumber_scrollTop = 0;
-    
-    this.scrollTimer = null;
-    this.hasTrailingCall = false;
+EXPLORER_TreeViewDirector_beltIndexZero = 0;
 
-    this.beltIndexZero = 0;
+EXPLORER_TreeViewDirector_TREEVIEW_renderKindArray = [];
+EXPLORER_TreeViewDirector_TREEVIEW_isRenderPending = false;
 
-    this.TREEVIEW_renderKindArray = [];
-    this.TREEVIEW_isRenderPending = false;
+EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children = [];
+EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length = 0;
 
-    this.TREEVIEW_ArrayFrom_itemListElement_children = [];
-    this.TREEVIEW_ArrayFrom_itemListElement_children_length = 0;
+EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_parentElement = null;
+EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_insertBeforeThisChild = null;
 
-    this.TREEVIEW_draw_create_request_parentElement = null;
-    this.TREEVIEW_draw_create_request_insertBeforeThisChild = null;
+EXPLORER_TreeViewDirector_start = 0;
+EXPLORER_TreeViewDirector_length = 0;
+EXPLORER_TreeViewDirector_onePositiveDiff_twoNegativeDiff_orThreeFullScreen = 0;
+EXPLORER_TreeViewDirector_caseThreeOrigin = 0;
 
-    this.start = 0;
-    this.length = 0;
-    this.onePositiveDiff_twoNegativeDiff_orThreeFullScreen = 0;
-    this.caseThreeOrigin = 0;
+EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightNumber = 0;
+EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightStyleAttributeValueString = '';
 
-    this.SET_ITEMS_itemHeightNumber = 0;
-    this.SET_ITEMS_itemHeightStyleAttributeValueString = '';
+EXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = 2;
 
-    this.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = 2;
+EXPLORER_TreeViewDirector_LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH = 0;
+/////
+///// end treeViewComponent.js
+/////
 
-    this.LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH = 0;
-    /////
-    ///// end treeViewComponent.js
-    /////
+/** @type {string} */
+EXPLORER_TreeViewDirector_chosenDirectory = null;
 
+/**
+ * @type {TreeViewNodeList}
+ * */
+EXPLORER_TreeViewDirector_nodeList = new TreeViewNodeList(32);
 
+EXPLORER_TreeViewDirector_scrollEndDeadline = 0;
+EXPLORER_TreeViewDirector_scrollIsFetchingData = false;
+EXPLORER_TreeViewDirector_scrollFetchData_virtualIndex = 0;
+EXPLORER_TreeViewDirector_scrollFetchData_virtualCount = 0;
+EXPLORER_TreeViewDirector_scrollFetchData_beltIndexZero = 0;
 
+/** Starting with an empty array so I can have undefined/null signify that the "TreeViewDirector" is "opting out" of this feature, thus the component should not allocate this on the "TreeViewDirector"'s behalf. */
+EXPLORER_TreeViewDirector_pullData_array = new Uint32Array(0);
+EXPLORER_TreeViewDirector_pullData_array_count = 0;
 
+EXPLORER_TreeViewDirector_pullData_result = new Uint32Array(0);
+EXPLORER_TreeViewDirector_pullData_result_count = 0;
 
+EXPLORER_TreeViewDirector_arrayEntries = null;
 
-    /** @type {string} */
-    this.chosenDirectory = null;
-
-    /**
-     * @type {TreeViewNodeList}
-     * */
-    this.nodeList = new TreeViewNodeList(32);
-
-    this.scrollEndDeadline = 0;
-    this.scrollIsFetchingData = false;
-    this.scrollFetchData_virtualIndex = 0;
-    this.scrollFetchData_virtualCount = 0;
-    this.scrollFetchData_beltIndexZero = 0;
-    
-    /** Starting with an empty array so I can have undefined/null signify that the "TreeViewDirector" is "opting out" of this feature, thus the component should not allocate this on the "TreeViewDirector"'s behalf. */
-    this.pullData_array = new Uint32Array(0);
-    this.pullData_array_count = 0;
-
-    this.pullData_result = new Uint32Array(0);
-    this.pullData_result_count = 0;
-
-    this.arrayEntries = null;
-
-    // Google AI'd the bit logic
-    // Configuration matching our table above
-    this.KEY_BITS = 12;
-    this.KEY_MASK = (1 << this.KEY_BITS) - 1; // Binary: 00000000000000000000111111111111 (0xFFF)
-}
+// Google AI'd the bit logic
+// Configuration matching our table above
+EXPLORER_TreeViewDirector_KEY_BITS = 12;
+EXPLORER_TreeViewDirector_KEY_MASK = (1 << EXPLORER_TreeViewDirector_KEY_BITS) - 1; // Binary: 00000000000000000000111111111111 (0xFFF)
+// end CONSTRUCTOR
 
 /** // Invoke this?: 'this.draw_render_fullReset_request();' */
 function EXPLORER_TreeViewDirector_setChosenDirectory(chosenDirectory, chosenDirectoryAbsolutePathId) {

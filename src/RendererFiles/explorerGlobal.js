@@ -78,7 +78,6 @@ let EXPLORER_TreeViewDirector_nodeList = new TreeViewNodeList(32);
 
 let EXPLORER_TreeViewDirector_isCheckingTrailingEdge = false;
 
-let EXPLORER_TreeViewDirector_scrollEndDeadline = 0;
 let EXPLORER_TreeViewDirector_scrollIsFetchingData = false;
 let EXPLORER_TreeViewDirector_scrollFetchData_virtualIndex = 0;
 let EXPLORER_TreeViewDirector_scrollFetchData_virtualCount = 0;
@@ -134,7 +133,7 @@ function EXPLORER_TreeViewDirector_setChosenWorkspace(chooseWorkspaceResult) {
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck(timestamp) {
     // If the scroll deadline hasn't been met yet, keep checking on the next frame
-    if (timestamp < EXPLORER_TreeViewDirector_scrollEndDeadline) {
+    if (timestamp < gINT_FIELDS[fEXPLORER_TreeViewDirector_scrollEndDeadline]) {
         requestAnimationFrame(EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck);
         return;
     }
@@ -157,7 +156,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_trailingEdge() {
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositiveDiff_twoNegativeDiff_orThreeFullScreen, caseThreeOrigin, timestamp) {
 
     // TODO: I'm putting this in treeViewComponent.js as well for now when diff === 0:
-    EXPLORER_TreeViewDirector_scrollEndDeadline = timestamp + 300;
+    gINT_FIELDS[fEXPLORER_TreeViewDirector_scrollEndDeadline] = timestamp + 300;
 
     if (!EXPLORER_TreeViewDirector_isCheckingTrailingEdge) {
         EXPLORER_TreeViewDirector_isCheckingTrailingEdge = true;
@@ -893,7 +892,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp) {
             }
             else {
                 if (diff === 0) {
-                    EXPLORER_TreeViewDirector_scrollEndDeadline = timestamp + 300;
+                    gINT_FIELDS[fEXPLORER_TreeViewDirector_scrollEndDeadline] = timestamp + 300;
                 }
                 else {
                     EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop], gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount], 3, undefined, timestamp);

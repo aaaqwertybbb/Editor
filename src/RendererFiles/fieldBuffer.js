@@ -675,7 +675,9 @@ const fEXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING 
 
 const fEXPLORER_TreeViewDirector_LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH = 159;
 
-// gINT_FIELDS[fEXPLORER_TreeViewDirector_LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH]
+const fEXPLORER_TreeViewDirector_scrollEndDeadline = 160;
+
+// gINT_FIELDS[fEXPLORER_TreeViewDirector_scrollEndDeadline]
 
 // inclusive final index is 138
 

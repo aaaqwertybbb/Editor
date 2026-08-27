@@ -596,21 +596,21 @@ async function EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(
 
 function EXPLORER_TreeViewDirector_tvd_arrowRight_async(divItem, indexItem) {
     // TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
-    this.nodeList.getElementAt(indexItem);
+    EXPLORER_TreeViewDirector_nodeList.getElementAt(indexItem);
     let key = gINT_FIELDS[fTreeView_pooledNode_key];
     let depth = gINT_FIELDS[fTreeView_pooledNode_depth];
     let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
     
     if (nodeKind === TreeViewNodeKind_isExpandable_isExpanded) {
-        if (indexItem + 1 < this.nodeList.count_abstract) {
-            if (this.nodeList.getDepth(indexItem + 1) > depth) {
-                this.state_cursor_setIndex(this.state_cursor_validateIndex(
-                    this.cursorIndex + 1));
+        if (indexItem + 1 < EXPLORER_TreeViewDirector_nodeList.count_abstract) {
+            if (EXPLORER_TreeViewDirector_nodeList.getDepth(indexItem + 1) > depth) {
+                EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+                    EXPLORER_TreeViewDirector_cursorIndex + 1));
             }
         }
     }
     else if (nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded) {
-        return this.tvd_expandCollapseIconWasClicked_async(divItem, indexItem);
+        return EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(divItem, indexItem);
     }
 
     return Promise.resolve();

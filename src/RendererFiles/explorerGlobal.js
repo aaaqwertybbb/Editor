@@ -72,8 +72,6 @@ let EXPLORER_TreeViewDirector_chosenWorkspace = -1;
  * */
 let EXPLORER_TreeViewDirector_nodeList = new TreeViewNodeList(32);
 
-let EXPLORER_TreeViewDirector_scrollIsFetchingData = false;
-
 /** Starting with an empty array so I can have undefined/null signify that the "TreeViewDirector" is "opting out" of this feature, thus the component should not allocate this on the "TreeViewDirector"'s behalf. */
 let EXPLORER_TreeViewDirector_pullData_array = new Uint32Array(0);
 
@@ -132,8 +130,8 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck(ti
 
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_trailingEdge() {
     gBYTE_FIELDS[byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge] = false; // Reset the flag here
-    if (!EXPLORER_TreeViewDirector_scrollIsFetchingData) {
-        EXPLORER_TreeViewDirector_scrollIsFetchingData = true;
+    if (!gBYTE_FIELDS[byteEXPLORER_TreeViewDirector_scrollIsFetchingData]) {
+        gBYTE_FIELDS[byteEXPLORER_TreeViewDirector_scrollIsFetchingData] = true;
         EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData(); // no await
     }
 };
@@ -366,7 +364,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     EXPLORER_TreeViewDirector_pullData_result = EXPLORER_TreeViewDirector_pullData_array;
     gINT_FIELDS[fEXPLORER_TreeViewDirector_pullData_result_count] = gINT_FIELDS[fEXPLORER_TreeViewDirector_pullData_array_count];
 
-    EXPLORER_TreeViewDirector_scrollIsFetchingData = false; // TODO: try/catch/finally; put this in the finally.
+    gBYTE_FIELDS[byteEXPLORER_TreeViewDirector_scrollIsFetchingData] = false; // TODO: try/catch/finally; put this in the finally.
 
     EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Scroll_PullDataDrawResult);
 };

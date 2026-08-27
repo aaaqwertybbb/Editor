@@ -167,7 +167,9 @@ const byteEXPLORER_TreeViewDirector_TREEVIEW_isRenderPending = 45;
 
 const byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge = 46;
 
-// gBYTE_FIELDS[byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge]
+const byteEXPLORER_TreeViewDirector_scrollIsFetchingData = 47;
+
+// gBYTE_FIELDS[byteEXPLORER_TreeViewDirector_scrollIsFetchingData]
 
 // TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
 // - [ ] triple equals

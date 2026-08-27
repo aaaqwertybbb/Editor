@@ -650,7 +650,10 @@ gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] = 1;
 const fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex = 146;
 const fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount = 147;
 
-// gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount]
+const fEXPLORER_TreeViewDirector_lastReadNumber_scrollLeft = 148;
+const fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop = 149;
+
+// gINT_FIELDS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop]
 
 // inclusive final index is 138
 

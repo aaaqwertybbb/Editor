@@ -75,6 +75,9 @@ let EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightStyleAttributeValueString = ''
 let EXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = 2;
 
 let EXPLORER_TreeViewDirector_LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH = 0;
+
+// TODO: Don't store the entire rect
+let EXPLORER_TreeViewDirector_boundingClientRect = null;
 /////
 ///// end treeViewComponent.js
 /////
@@ -503,11 +506,12 @@ function EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(divItem, indexItem, e
         new MenuOption(CommandKind_CopyAbsolutePath, 'Copy Absolute Path', null),
     ];
 
-    this.ensure_boundingClientRect();
-    let nodeListBoundingClientRect = this.boundingClientRect;
+    EXPLORER_TreeViewDirector_ensure_boundingClientRect();
+    // TODO: Don't store the entire rect
+    let nodeListBoundingClientRect = EXPLORER_TreeViewDirector_boundingClientRect;
 
     // TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
-    this.nodeList.getElementAt(indexItem);
+    EXPLORER_TreeViewDirector_nodeList.getElementAt(indexItem);
     let key = gINT_FIELDS[fTreeView_pooledNode_key];
     let depth = gINT_FIELDS[fTreeView_pooledNode_depth];
     let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
@@ -521,11 +525,11 @@ function EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(divItem, indexItem, e
     };
 
     if (event_button === 2) {
-        this.addSpecificMenuOptionsForTarget(optionList, divItem, target);
+        EXPLORER_TreeViewDirector_addSpecificMenuOptionsForTarget(optionList, divItem, target);
         return menuSet('EXPLORER', target, optionList, gINT_FIELDS[fEXPLORER_menuOptionX]=event_clientX, gINT_FIELDS[fEXPLORER_menuOptionY]=event_clientY);
     } else {
-        this.addSpecificMenuOptionsForTarget(optionList, divItem, target);
-        return menuSet('EXPLORER', target, optionList, gINT_FIELDS[fEXPLORER_menuOptionX]=nodeListBoundingClientRect.left, gINT_FIELDS[fEXPLORER_menuOptionY]=(nodeListBoundingClientRect.top + ((this.cursorIndex + 1) * this.itemHeightNumber) - this.rootElement.scrollTop));
+        EXPLORER_TreeViewDirector_addSpecificMenuOptionsForTarget(optionList, divItem, target);
+        return menuSet('EXPLORER', target, optionList, gINT_FIELDS[fEXPLORER_menuOptionX]=nodeListBoundingClientRect.left, gINT_FIELDS[fEXPLORER_menuOptionY]=(nodeListBoundingClientRect.top + ((EXPLORER_TreeViewDirector_cursorIndex + 1) * EXPLORER_TreeViewDirector_itemHeightNumber) - EXPLORER_TreeViewDirector_rootElement.scrollTop));
     }
 }
 
@@ -537,7 +541,7 @@ function EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(divItem, indexItem, e
  */
 async function EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(divItem, indexItem) {
     // TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
-    this.nodeList.getElementAt(indexItem);
+    EXPLORER_TreeViewDirector_nodeList.getElementAt(indexItem);
     let key = gINT_FIELDS[fTreeView_pooledNode_key];
     let depth = gINT_FIELDS[fTreeView_pooledNode_depth];
     let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
@@ -545,7 +549,7 @@ async function EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(
     if (nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded) {
 
         divItem.children[0].textContent = '-';
-        this.nodeList.setNodeKind(indexItem, TreeViewNodeKind_isExpandable_isExpanded);
+        EXPLORER_TreeViewDirector_nodeList.setNodeKind(indexItem, TreeViewNodeKind_isExpandable_isExpanded);
 
         const filesystemEntries = await window.myAPI.getFilesystemEntries_argumentIsId(key);
 
@@ -559,22 +563,22 @@ async function EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(
                 nodeKind = TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
             }
             // TODO: Insert range, or at the least 'pre-emptively' resize the list so that it fits each insertion without resizing per insertion.
-            this.nodeList.insert(indexItem + 1 + i, nodeKind, entry.id, depth + 1);
-            this.itemHeightTotal = this.tvd_getTotalCount() * this.itemHeightNumber;
-            this.virtualizationElement.style.height = this.itemHeightTotal + 'px';
+            EXPLORER_TreeViewDirector_nodeList.insert(indexItem + 1 + i, nodeKind, entry.id, depth + 1);
+            EXPLORER_TreeViewDirector_itemHeightTotal = EXPLORER_TreeViewDirector_tvd_getTotalCount() * EXPLORER_TreeViewDirector_itemHeightNumber;
+            EXPLORER_TreeViewDirector_virtualizationElement.style.height = EXPLORER_TreeViewDirector_itemHeightTotal + 'px';
         }
 
-        this.draw_render_fullReset_request();
+        EXPLORER_TreeViewDirector_draw_render_fullReset_request();
     }
     else if (nodeKind === TreeViewNodeKind_isExpandable_isExpanded) {
 
         divItem.children[0].textContent = '+';
-        this.nodeList.setNodeKind(indexItem, TreeViewNodeKind_isExpandable_NOTisExpanded);
+        EXPLORER_TreeViewDirector_nodeList.setNodeKind(indexItem, TreeViewNodeKind_isExpandable_NOTisExpanded);
 
         let countChildren = 0;
-        for (let i = indexItem + 1; i < this.nodeList.count_abstract; i++) {
+        for (let i = indexItem + 1; i < EXPLORER_TreeViewDirector_nodeList.count_abstract; i++) {
             // If currentDepth < ithElementDepth; // then current is a parent of ithElement.
-            if (depth < this.nodeList.getDepth(i)) {
+            if (depth < EXPLORER_TreeViewDirector_nodeList.getDepth(i)) {
                 countChildren++;
             }
             else {
@@ -582,10 +586,10 @@ async function EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(
             }
         }
         if (countChildren > 0) { // TODO: is this check necessary?
-            this.nodeList.removeAt(indexItem + 1, countChildren);
-            this.itemHeightTotal = this.tvd_getTotalCount() * this.itemHeightNumber;
-            this.virtualizationElement.style.height = this.itemHeightTotal + 'px';
-            this.draw_render_fullReset_request();
+            EXPLORER_TreeViewDirector_nodeList.removeAt(indexItem + 1, countChildren);
+            EXPLORER_TreeViewDirector_itemHeightTotal = EXPLORER_TreeViewDirector_tvd_getTotalCount() * EXPLORER_TreeViewDirector_itemHeightNumber;
+            EXPLORER_TreeViewDirector_virtualizationElement.style.height = EXPLORER_TreeViewDirector_itemHeightTotal + 'px';
+            EXPLORER_TreeViewDirector_draw_render_fullReset_request();
         }
     }
 }

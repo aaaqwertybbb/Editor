@@ -938,40 +938,40 @@ function EXPLORER_TreeViewDirector_draw_BATCH_request(start, length, onePositive
 }
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
-    this.ensure_boundingClientRect();
+    EXPLORER_TreeViewDirector_ensure_boundingClientRect();
 
-    this._ONSCROLLvirtualCount = this.virtualCount;
+    EXPLORER_TreeViewDirector__ONSCROLLvirtualCount = EXPLORER_TreeViewDirector_virtualCount;
 
-    this.virtualIndex_ofScrollTop = Math.floor(this.lastReadNumber_scrollTop / this.itemHeightNumber);
-    this.beltIndexZero = 0;
+    EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop = Math.floor(EXPLORER_TreeViewDirector_lastReadNumber_scrollTop / EXPLORER_TreeViewDirector_itemHeightNumber);
+    EXPLORER_TreeViewDirector_beltIndexZero = 0;
 
-    let totalCount = this.tvd_getTotalCount();
+    let totalCount = EXPLORER_TreeViewDirector_tvd_getTotalCount();
 
-    if (this.itemListElement.children.length !== this.virtualCount) {
-        this.itemListElement.innerHTML = '';
+    if (EXPLORER_TreeViewDirector_itemListElement.children.length !== EXPLORER_TreeViewDirector_virtualCount) {
+        EXPLORER_TreeViewDirector_itemListElement.innerHTML = '';
 
         // padding of 2ch (the style attribute receives the width as a pixel by using 'gINT_FIELDS[fEXPLORER_firstSpanWidthValue]' as a baseline (not quite ch))
         // TODO: this is all very inaccurate and prone to eventual rounding issues due to not monospace font.
         //
-        this.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = 2;
-        let widthAttributeValueNumber = Math.ceil((this.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING + 2/*padding*/) * gINT_FIELDS[fEXPLORER_firstSpanWidthValue]);
+        EXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = 2;
+        let widthAttributeValueNumber = Math.ceil((EXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING + 2/*padding*/) * gINT_FIELDS[fEXPLORER_firstSpanWidthValue]);
         // This is actually more complicated you have to track whether you go above the minimum requirement lest you add 1 character over and over in width just to keep redrawing widths.
-        //if (widthAttributeValueNumber < this.lastReadNumber_offsetWidth) {
-        //    widthAttributeValueNumber = this.lastReadNumber_offsetWidth;
+        //if (widthAttributeValueNumber < EXPLORER_TreeViewDirector_lastReadNumber_offsetWidth) {
+        //    widthAttributeValueNumber = EXPLORER_TreeViewDirector_lastReadNumber_offsetWidth;
         //}
-        //this.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING
+        //EXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING
         let widthAttributeValueString = widthAttributeValueNumber + 'px';
-        this.cursorElement.style.width = widthAttributeValueString;
+        EXPLORER_TreeViewDirector_cursorElement.style.width = widthAttributeValueString;
 
         // this is zero'd, could use change for clarity of algorithm and match patterns but focus elsewhere first
-        for (let i = 0; i < this.virtualCount; i++) {
+        for (let i = 0; i < EXPLORER_TreeViewDirector_virtualCount; i++) {
             
             let divItem = document.createElement('div');
             divItem.style.width = widthAttributeValueString;
-            divItem.style.height = this.itemHeightStyleAttributeValueString;
+            divItem.style.height = EXPLORER_TreeViewDirector_itemHeightStyleAttributeValueString;
             divItem.style.whiteSpace = 'nowrap';
             divItem.style.position = 'absolute';
-            this.itemListElement.appendChild(divItem);
+            EXPLORER_TreeViewDirector_itemListElement.appendChild(divItem);
             let iconSpan = document.createElement('span');
             iconSpan.style.width = EXPLORER_firstSpanWidth;
             iconSpan.style.display = 'inline-block';
@@ -981,18 +981,18 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
         }
         
         // TODO: check the resize logic, that it works
-        if (this.pullData_array) {
-            this.pullData_array = new Uint32Array(this.virtualCount);
-            this.pullData_array_count = 0;
+        if (EXPLORER_TreeViewDirector_pullData_array) {
+            EXPLORER_TreeViewDirector_pullData_array = new Uint32Array(EXPLORER_TreeViewDirector_virtualCount);
+            EXPLORER_TreeViewDirector_pullData_array_count = 0;
         }
 
-        this.TREEVIEW_ArrayFrom_itemListElement_children = Array.from(this.itemListElement.children);
-        this.TREEVIEW_ArrayFrom_itemListElement_children_length = this.TREEVIEW_ArrayFrom_itemListElement_children.length;
+        EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children = Array.from(EXPLORER_TreeViewDirector_itemListElement.children);
+        EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children.length;
     }
 
     // TODO: This if statement check is awkward because the previous if statement ought to have guaranteed this one to be true.
-    if (this.itemListElement.children.length === this.virtualCount) {
-        this.tvd_drawItem_BATCH(this.virtualIndex_ofScrollTop, this.virtualCount, 3, undefined, timestamp);
+    if (EXPLORER_TreeViewDirector_itemListElement.children.length === EXPLORER_TreeViewDirector_virtualCount) {
+        EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop, EXPLORER_TreeViewDirector_virtualCount, 3, undefined, timestamp);
     }
 }
 

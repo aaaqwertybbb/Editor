@@ -68,6 +68,7 @@ let EXPLORER_TreeViewDirector_onePositiveDiff_twoNegativeDiff_orThreeFullScreen 
 let EXPLORER_TreeViewDirector_caseThreeOrigin = 0;
 
 let EXPLORER_TreeViewDirector_itemHeightNumber = 0;
+let EXPLORER_TreeViewDirector_itemHeightStyleAttributeValueString = null;
 
 let EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightNumber = 0;
 let EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightStyleAttributeValueString = '';
@@ -771,17 +772,17 @@ function EXPLORER_TreeViewDirector_renderDo(timestamp) {
  * of the second are used for the first.
  */
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_SetItems() {
-    this.itemListElement.innerHTML = '';
-    this.virtualizationElement.style.height = 1 + 'px';
-    this.state_cursor_setIndex(0);
+    EXPLORER_TreeViewDirector_itemListElement.innerHTML = '';
+    EXPLORER_TreeViewDirector_virtualizationElement.style.height = 1 + 'px';
+    EXPLORER_TreeViewDirector_state_cursor_setIndex(0);
     
-    this.itemHeightNumber = this.SET_ITEMS_itemHeightNumber;
-    this.itemHeightStyleAttributeValueString = this.SET_ITEMS_itemHeightStyleAttributeValueString;
+    EXPLORER_TreeViewDirector_itemHeightNumber = EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightNumber;
+    EXPLORER_TreeViewDirector_itemHeightStyleAttributeValueString = EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightStyleAttributeValueString;
 
-    this.cursorElement.style.height = this.itemHeightStyleAttributeValueString;
-    this.itemHeightTotal = this.tvd_getTotalCount() * this.itemHeightNumber;
-    this.virtualizationElement.style.height = this.itemHeightTotal + 'px';
-    this.boundingClientRect = null;
+    EXPLORER_TreeViewDirector_cursorElement.style.height = EXPLORER_TreeViewDirector_itemHeightStyleAttributeValueString;
+    EXPLORER_TreeViewDirector_itemHeightTotal = EXPLORER_TreeViewDirector_tvd_getTotalCount() * EXPLORER_TreeViewDirector_itemHeightNumber;
+    EXPLORER_TreeViewDirector_virtualizationElement.style.height = EXPLORER_TreeViewDirector_itemHeightTotal + 'px';
+    EXPLORER_TreeViewDirector_boundingClientRect = null;
 }
 
 /**

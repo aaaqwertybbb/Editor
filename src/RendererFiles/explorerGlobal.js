@@ -481,7 +481,7 @@ async function EXPLORER_TreeViewDirector_tvd_onkeydown_async(divItem, indexItem,
 }
 
 async function EXPLORER_TreeViewDirector_tvd_ondblclick_async(divItem, indexItem) {
-    this.nodeList.getElementAt(indexItem);
+    EXPLORER_TreeViewDirector_nodeList.getElementAt(indexItem);
     let key = gINT_FIELDS[fTreeView_pooledNode_key];
     let depth = gINT_FIELDS[fTreeView_pooledNode_depth];
     let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];

@@ -1194,22 +1194,22 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
 }
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Resize(timestamp) {
-    this.rootElement.style.width = '';
-    this.rootElement.style.height = '';
-    this.rootElement.style.contain = '';
+    EXPLORER_TreeViewDirector_rootElement.style.width = '';
+    EXPLORER_TreeViewDirector_rootElement.style.height = '';
+    EXPLORER_TreeViewDirector_rootElement.style.contain = '';
 
-    this.measureBaseElement();
+    EXPLORER_TreeViewDirector_measureBaseElement();
 
-    this.boundingClientRect = null;
-    this.ensure_boundingClientRect();
-    this.TREEVIEW_render_do_FullReset(timestamp);
+    EXPLORER_TreeViewDirector_boundingClientRect = null;
+    EXPLORER_TreeViewDirector_ensure_boundingClientRect();
+    EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp);
 }
 
 /**
  * TODO: intra-app resizes or movements will also invoke this; i.e.: if a list is shown in a dialog and the dialog is resized or moved.
  */
 function EXPLORER_TreeViewDirector_event_windowResize() {
-    this.TREEVIEW_render_request(TREEVIEWrenderKind_Resize);
+    EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Resize);
 }
 
 function EXPLORER_TreeViewDirector_event_scroll() {

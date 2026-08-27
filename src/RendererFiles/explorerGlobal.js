@@ -924,17 +924,17 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp) {
 }
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll_PullDataDrawResult() {
-    if (this.tvd_drawItem_BATCH_PullDataDrawResult) {
-        this.tvd_drawItem_BATCH_PullDataDrawResult();
+    if (EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult) {
+        EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult();
     }
 }
 
 function EXPLORER_TreeViewDirector_draw_BATCH_request(start, length, onePositiveDiff_twoNegativeDiff_orThreeFullScreen, caseThreeOrigin) {
-    this.start = start;
-    this.length = length;
-    this.onePositiveDiff_twoNegativeDiff_orThreeFullScreen = onePositiveDiff_twoNegativeDiff_orThreeFullScreen;
-    this.caseThreeOrigin = caseThreeOrigin;
-    this.TREEVIEW_render_request(TREEVIEWrenderKind_Batch);
+    EXPLORER_TreeViewDirector_start = start;
+    EXPLORER_TreeViewDirector_length = length;
+    EXPLORER_TreeViewDirector_onePositiveDiff_twoNegativeDiff_orThreeFullScreen = onePositiveDiff_twoNegativeDiff_orThreeFullScreen;
+    EXPLORER_TreeViewDirector_caseThreeOrigin = caseThreeOrigin;
+    EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Batch);
 }
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {

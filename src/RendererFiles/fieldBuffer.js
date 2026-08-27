@@ -634,7 +634,9 @@ const fEXPLORER_menuOptionY = 138;
 const fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth = 139;
 const fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight = 140;
 
-// gINT_FIELDS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight]
+const fEXPLORER_TreeViewDirector_cursorTranslateYNumber = 141;
+
+// gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorTranslateYNumber]
 
 // inclusive final index is 138
 

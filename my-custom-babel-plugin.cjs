@@ -520,6 +520,7 @@ module.exports = function (babel) {
 
     "fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth",
     "fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight",
+    "fEXPLORER_TreeViewDirector_cursorTranslateYNumber",
 
   ];
 

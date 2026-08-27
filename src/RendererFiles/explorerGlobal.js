@@ -1071,46 +1071,46 @@ function EXPLORER_TreeViewDirector_event_dblclick(event_clientY, event_target) {
 }
 
 function EXPLORER_TreeViewDirector_event_contextmenu(event_button, event_clientX, event_clientY) {
-    this.ensure_boundingClientRect();
+    EXPLORER_TreeViewDirector_ensure_boundingClientRect();
 
     if (event_button === 2) {
-        let rY = event_clientY - this.boundingClientRect.top + this.lastReadNumber_scrollTop;
+        let rY = event_clientY - EXPLORER_TreeViewDirector_boundingClientRect.top + EXPLORER_TreeViewDirector_lastReadNumber_scrollTop;
 
-        this.state_cursor_setIndex(this.state_cursor_validateIndex(
-            Math.floor(rY / this.itemHeightNumber)));
+        EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+            Math.floor(rY / EXPLORER_TreeViewDirector_itemHeightNumber)));
 
         // TODO: you need to move this above the divItem assignment and do checks earlier... double check all other uses
 
-        // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
+        // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_beltIndexItem'...
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
-        if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-        else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+        let beltIndexItem = ((EXPLORER_TreeViewDirector_cursorIndex)) - EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop;
+        if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+        else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
 
         if (beltIndexItem < 0) return;
-        return this.tvd_oncontextmenu_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex, event_button, event_clientX, event_clientY, beltIndexItem);
+        return EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], EXPLORER_TreeViewDirector_cursorIndex, event_button, event_clientX, event_clientY, beltIndexItem);
     } else {
-        if (this.cursorIndex >= this.tvd_getTotalCount()) {
+        if (EXPLORER_TreeViewDirector_cursorIndex >= EXPLORER_TreeViewDirector_tvd_getTotalCount()) {
             return;
         }
 
-        this.state_cursor_setIndex(this.state_cursor_validateIndex(
-            this.cursorIndex));
+        EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+            EXPLORER_TreeViewDirector_cursorIndex));
 
-        // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
+        // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_beltIndexItem'...
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
-        if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-        else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+        let beltIndexItem = ((EXPLORER_TreeViewDirector_cursorIndex)) - EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop;
+        if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+        else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
 
         if (beltIndexItem < 0) return;
 
         // TODO: Handle context menu with keyboard when active node is out of view
-        return this.tvd_oncontextmenu_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex, event_button, event_clientX, event_clientY, beltIndexItem);
+        return EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], EXPLORER_TreeViewDirector_cursorIndex, event_button, event_clientX, event_clientY, beltIndexItem);
     }
 }
 

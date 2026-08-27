@@ -876,30 +876,6 @@ function EXPLORER_TreeViewDirector_draw_removeEvents() {
     window.removeEventListener('resize', EXPLORER_TreeViewDirector_event_windowResize);
 }
 
-// The browser automatically looks for this exact method name
-function EXPLORER_TreeViewDirector_handleEvent(event) {
-    switch (event.type) {
-        case 'click':
-            
-            break;
-        case 'keydown':
-            
-            break;
-        case 'scroll':
-            
-            break;
-        case 'dblclick':
-            
-            break;
-        case 'contextmenu':
-            
-            break;
-        case 'resize':
-            
-            break;
-    }
-}
-
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp) {
     if (this.TREEVIEW_ArrayFrom_itemListElement_children_length !== this.virtualCount) {
         this.TREEVIEW_render_do_FullReset(timestamp);

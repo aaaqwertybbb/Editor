@@ -638,7 +638,10 @@ const fEXPLORER_TreeViewDirector_cursorTranslateYNumber = 141;
 
 const fEXPLORER_TreeViewDirector_itemHeightTotal = 142;
 
-// gINT_FIELDS[fEXPLORER_TreeViewDirector_itemHeightTotal]
+/** Consider the existence of such methods as 'state_cursor_setIndex' before mutating state directly */
+const fEXPLORER_TreeViewDirector_cursorIndex = 143;
+
+// gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex]
 
 // inclusive final index is 138
 

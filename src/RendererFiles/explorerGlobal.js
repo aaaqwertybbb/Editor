@@ -45,9 +45,6 @@ let EXPLORER_TreeViewDirector_itemListElement = document.createElement('div');
 EXPLORER_TreeViewDirector_itemListElement.className = 'TREEVIEW_itemList';
 EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_itemListElement);
 
-/** Consider the existence of such methods as 'state_cursor_setIndex' before mutating state directly */
-let EXPLORER_TreeViewDirector_cursorIndex = 0;
-
 let EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop = 0;
 
 /** Hacky: Must initialize to a number other than 0 or else nothing renders. */
@@ -542,7 +539,7 @@ function EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(divItem, indexItem, e
         return menuSet('EXPLORER', target, optionList, gINT_FIELDS[fEXPLORER_menuOptionX]=event_clientX, gINT_FIELDS[fEXPLORER_menuOptionY]=event_clientY);
     } else {
         EXPLORER_TreeViewDirector_addSpecificMenuOptionsForTarget(optionList, divItem, target);
-        return menuSet('EXPLORER', target, optionList, gINT_FIELDS[fEXPLORER_menuOptionX]=nodeListBoundingClientRect.left, gINT_FIELDS[fEXPLORER_menuOptionY]=(nodeListBoundingClientRect.top + ((EXPLORER_TreeViewDirector_cursorIndex + 1) * EXPLORER_TreeViewDirector_itemHeightNumber) - EXPLORER_TreeViewDirector_rootElement.scrollTop));
+        return menuSet('EXPLORER', target, optionList, gINT_FIELDS[fEXPLORER_menuOptionX]=nodeListBoundingClientRect.left, gINT_FIELDS[fEXPLORER_menuOptionY]=(nodeListBoundingClientRect.top + ((gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex] + 1) * EXPLORER_TreeViewDirector_itemHeightNumber) - EXPLORER_TreeViewDirector_rootElement.scrollTop));
     }
 }
 
@@ -618,7 +615,7 @@ function EXPLORER_TreeViewDirector_tvd_arrowRight_async(divItem, indexItem) {
         if (indexItem + 1 < EXPLORER_TreeViewDirector_nodeList.count_abstract) {
             if (EXPLORER_TreeViewDirector_nodeList.getDepth(indexItem + 1) > depth) {
                 EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
-                    EXPLORER_TreeViewDirector_cursorIndex + 1));
+                    gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex] + 1));
             }
         }
     }
@@ -1080,12 +1077,12 @@ function EXPLORER_TreeViewDirector_event_dblclick(event) {
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexItem = ((EXPLORER_TreeViewDirector_cursorIndex)) - EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop;
+        let beltIndexItem = ((gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex])) - EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop;
         if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
         else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
 
         if (beltIndexItem < 0) return;
-        return EXPLORER_TreeViewDirector_tvd_ondblclick_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], EXPLORER_TreeViewDirector_cursorIndex);
+        return EXPLORER_TreeViewDirector_tvd_ondblclick_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex]);
     }
 }
 
@@ -1110,32 +1107,32 @@ function EXPLORER_TreeViewDirector_event_contextmenu(event) {
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexItem = ((EXPLORER_TreeViewDirector_cursorIndex)) - EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop;
+        let beltIndexItem = ((gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex])) - EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop;
         if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
         else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
 
         if (beltIndexItem < 0) return;
-        return EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], EXPLORER_TreeViewDirector_cursorIndex, event_button, event_clientX, event_clientY, beltIndexItem);
+        return EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex], event_button, event_clientX, event_clientY, beltIndexItem);
     } else {
-        if (EXPLORER_TreeViewDirector_cursorIndex >= EXPLORER_TreeViewDirector_tvd_getTotalCount()) {
+        if (gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex] >= EXPLORER_TreeViewDirector_tvd_getTotalCount()) {
             return;
         }
 
         EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
-            EXPLORER_TreeViewDirector_cursorIndex));
+            gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex]));
 
         // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_beltIndexItem'...
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexItem = ((EXPLORER_TreeViewDirector_cursorIndex)) - EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop;
+        let beltIndexItem = ((gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex])) - EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop;
         if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
         else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
 
         if (beltIndexItem < 0) return;
 
         // TODO: Handle context menu with keyboard when active node is out of view
-        return EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], EXPLORER_TreeViewDirector_cursorIndex, event_button, event_clientX, event_clientY, beltIndexItem);
+        return EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex], event_button, event_clientX, event_clientY, beltIndexItem);
     }
 }
 
@@ -1151,7 +1148,7 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
             }
             else {
                 EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
-                    EXPLORER_TreeViewDirector_cursorIndex + 1));
+                    gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex] + 1));
             }
             return;
         case 'ArrowUp':
@@ -1161,14 +1158,14 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
             }
             else {
                 EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
-                    EXPLORER_TreeViewDirector_cursorIndex - 1));
+                    gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex] - 1));
             }
             return;
         case 'ArrowRight':
             if (!event.ctrlKey) { // If holding ctrl, don't preventDefault so the user can scroll horizontally?
                 event.preventDefault();
                 EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
-                    EXPLORER_TreeViewDirector_cursorIndex));
+                    gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex]));
 
                 // TODO: 'ArrowRight' when the cursor is on a valid item but isn't part of the virtualization result.
 
@@ -1176,48 +1173,48 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
                 // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
                 // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-                let beltIndexItem = ((EXPLORER_TreeViewDirector_cursorIndex)) - EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop;
+                let beltIndexItem = ((gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex])) - EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop;
                 if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
                 else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
 
                 if (beltIndexItem < 0) return;
-                return EXPLORER_TreeViewDirector_tvd_arrowRight_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], EXPLORER_TreeViewDirector_cursorIndex);
+                return EXPLORER_TreeViewDirector_tvd_arrowRight_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex]);
             }
             return;
         case 'ArrowLeft':
             if (!event.ctrlKey) { // If holding ctrl, don't preventDefault so the user can scroll horizontally?
                 event.preventDefault();
                 EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
-                    EXPLORER_TreeViewDirector_cursorIndex));
+                    gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex]));
                 
                 // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_beltIndexItem'...
                 // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
                 // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-                let beltIndexItem = ((EXPLORER_TreeViewDirector_cursorIndex)) - EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop;
+                let beltIndexItem = ((gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex])) - EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop;
                 if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
                 else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
 
                 if (beltIndexItem < 0) return;
-                return EXPLORER_TreeViewDirector_tvd_arrowLeft_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], EXPLORER_TreeViewDirector_cursorIndex);
+                return EXPLORER_TreeViewDirector_tvd_arrowLeft_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex]);
             }
             return;
         case ' ':
         case 'Enter':
             event.preventDefault();
             EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
-                EXPLORER_TreeViewDirector_cursorIndex));
+                gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex]));
             
             // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_beltIndexItem'...
             // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-            let beltIndexItem = ((EXPLORER_TreeViewDirector_cursorIndex)) - EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop;
+            let beltIndexItem = ((gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex])) - EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop;
             if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
             else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
 
             if (beltIndexItem < 0) return;
-            return EXPLORER_TreeViewDirector_tvd_onkeydown_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], EXPLORER_TreeViewDirector_cursorIndex, event.key);
+            return EXPLORER_TreeViewDirector_tvd_onkeydown_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex], event.key);
     }
 }
 
@@ -1261,7 +1258,7 @@ function EXPLORER_TreeViewDirector_ensure_boundingClientRect() {
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Cursor(index) {
     // Determine the number without modifying styles so you can use this variable to determine the need to scroll into view without synchronous layout.
-    gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorTranslateYNumber] = EXPLORER_TreeViewDirector_cursorIndex * EXPLORER_TreeViewDirector_itemHeightNumber;
+    gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorTranslateYNumber] = gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex] * EXPLORER_TreeViewDirector_itemHeightNumber;
 
     // Preferably this hasn't changed thus the function immediately just returns.
     EXPLORER_TreeViewDirector_ensure_boundingClientRect();
@@ -1289,8 +1286,8 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Cursor(index) {
  * @param {*} index 
  */
 function EXPLORER_TreeViewDirector_state_cursor_setIndex(index) {
-    if (EXPLORER_TreeViewDirector_cursorIndex === index) return;
-    EXPLORER_TreeViewDirector_cursorIndex = index;
+    if (gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex] === index) return;
+    gINT_FIELDS[fEXPLORER_TreeViewDirector_cursorIndex] = index;
     EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Cursor);
 }
 

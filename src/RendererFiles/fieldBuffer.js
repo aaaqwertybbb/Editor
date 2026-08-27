@@ -683,7 +683,9 @@ const fEXPLORER_TreeViewDirector_scrollFetchData_virtualCount = 162;
 
 const fEXPLORER_TreeViewDirector_scrollFetchData_beltIndexZero = 163;
 
-// gINT_FIELDS[fEXPLORER_TreeViewDirector_scrollFetchData_beltIndexZero]
+const fEXPLORER_TreeViewDirector_pullData_array_count = 164;
+
+// gINT_FIELDS[fEXPLORER_TreeViewDirector_pullData_array_count]
 
 // inclusive final index is 138
 

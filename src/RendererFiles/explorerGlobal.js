@@ -82,7 +82,6 @@ let EXPLORER_TreeViewDirector_scrollIsFetchingData = false;
 
 /** Starting with an empty array so I can have undefined/null signify that the "TreeViewDirector" is "opting out" of this feature, thus the component should not allocate this on the "TreeViewDirector"'s behalf. */
 let EXPLORER_TreeViewDirector_pullData_array = new Uint32Array(0);
-let EXPLORER_TreeViewDirector_pullData_array_count = 0;
 
 let EXPLORER_TreeViewDirector_pullData_result = new Uint32Array(0);
 let EXPLORER_TreeViewDirector_pullData_result_count = 0;
@@ -345,7 +344,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     let itemListElement_children = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children;
     let itemListElement_childrenLength = gINT_FIELDS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length];
 
-    EXPLORER_TreeViewDirector_pullData_array_count = 0;
+    gINT_FIELDS[fEXPLORER_TreeViewDirector_pullData_array_count] = 0;
 
     // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_beltIndexItem'...
     // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
@@ -364,16 +363,16 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
             // that is displaying the UI representation of what 'indexItem' points to.
             let indexBelt = beltIndex_current;
 
-            EXPLORER_TreeViewDirector_pullData_array[EXPLORER_TreeViewDirector_pullData_array_count++] = ((indexBelt << EXPLORER_TreeViewDirector_KEY_BITS) | EXPLORER_TreeViewDirector_nodeList.getKey(indexItem));
+            EXPLORER_TreeViewDirector_pullData_array[gINT_FIELDS[fEXPLORER_TreeViewDirector_pullData_array_count]++] = ((indexBelt << EXPLORER_TreeViewDirector_KEY_BITS) | EXPLORER_TreeViewDirector_nodeList.getKey(indexItem));
         }
 
         beltIndex_current = (beltIndex_current + 1) % itemListElement_childrenLength;
     }
 
-    EXPLORER_TreeViewDirector_arrayEntries = await window.myAPI.getFilesystemEntryById_ARRAY(EXPLORER_TreeViewDirector_pullData_array.subarray(0, EXPLORER_TreeViewDirector_pullData_array_count));
+    EXPLORER_TreeViewDirector_arrayEntries = await window.myAPI.getFilesystemEntryById_ARRAY(EXPLORER_TreeViewDirector_pullData_array.subarray(0, gINT_FIELDS[fEXPLORER_TreeViewDirector_pullData_array_count]));
 
     EXPLORER_TreeViewDirector_pullData_result = EXPLORER_TreeViewDirector_pullData_array;
-    EXPLORER_TreeViewDirector_pullData_result_count = EXPLORER_TreeViewDirector_pullData_array_count;
+    EXPLORER_TreeViewDirector_pullData_result_count = gINT_FIELDS[fEXPLORER_TreeViewDirector_pullData_array_count];
 
     EXPLORER_TreeViewDirector_scrollIsFetchingData = false; // TODO: try/catch/finally; put this in the finally.
 
@@ -959,7 +958,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
         // TODO: check the resize logic, that it works
         if (EXPLORER_TreeViewDirector_pullData_array) {
             EXPLORER_TreeViewDirector_pullData_array = new Uint32Array(gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]);
-            EXPLORER_TreeViewDirector_pullData_array_count = 0;
+            gINT_FIELDS[fEXPLORER_TreeViewDirector_pullData_array_count] = 0;
         }
 
         EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children = Array.from(EXPLORER_TreeViewDirector_itemListElement.children);

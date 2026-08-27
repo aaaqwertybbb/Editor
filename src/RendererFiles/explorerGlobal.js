@@ -1019,7 +1019,12 @@ function EXPLORER_TreeViewDirector_draw_render_fullReset_request() {
  * ...thus, you should consider checking the x position of the event against the x position of the nodeElement.children[0].
  * @param {*} event 
  */
-function EXPLORER_TreeViewDirector_event_click(event_clientY, event_target) {
+function EXPLORER_TreeViewDirector_event_click(event) {
+
+     // this.event_click(event.clientY, event.target);
+     let event_clientY = event.clientY;
+     let event_target = event.target;
+
     EXPLORER_TreeViewDirector_ensure_boundingClientRect();
 
     let rY = event_clientY - EXPLORER_TreeViewDirector_boundingClientRect.top + EXPLORER_TreeViewDirector_lastReadNumber_scrollTop;
@@ -1045,7 +1050,12 @@ function EXPLORER_TreeViewDirector_event_click(event_clientY, event_target) {
     }
 }
 
-function EXPLORER_TreeViewDirector_event_dblclick(event_clientY, event_target) {
+function EXPLORER_TreeViewDirector_event_dblclick(event) {
+
+    // this.event_dblclick(event.clientY, event.target);
+    let event_clientY = event.clientY;
+    let event_target = event.target;
+
     EXPLORER_TreeViewDirector_ensure_boundingClientRect();
 
     let rY = event_clientY - EXPLORER_TreeViewDirector_boundingClientRect.top + EXPLORER_TreeViewDirector_lastReadNumber_scrollTop;
@@ -1078,7 +1088,13 @@ function EXPLORER_TreeViewDirector_event_dblclick(event_clientY, event_target) {
     }
 }
 
-function EXPLORER_TreeViewDirector_event_contextmenu(event_button, event_clientX, event_clientY) {
+function EXPLORER_TreeViewDirector_event_contextmenu(event) {
+
+    // this.event_contextmenu(event.button, event.clientX, event.clientY);
+    let event_button = event.button;
+    let event_clientX = event.clientX;
+    let event_clientY = event.clientY;
+
     EXPLORER_TreeViewDirector_ensure_boundingClientRect();
 
     if (event_button === 2) {
@@ -1123,6 +1139,9 @@ function EXPLORER_TreeViewDirector_event_contextmenu(event_button, event_clientX
 }
 
 function EXPLORER_TreeViewDirector_event_keydown(event) {
+
+    // this.event_keydown(event);
+
     switch (event.key) {
         case 'ArrowDown':
             event.preventDefault();
@@ -1217,10 +1236,16 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Resize(timestamp) {
  * TODO: intra-app resizes or movements will also invoke this; i.e.: if a list is shown in a dialog and the dialog is resized or moved.
  */
 function EXPLORER_TreeViewDirector_event_windowResize() {
+
+    // this.event_windowResize();
+
     EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Resize);
 }
 
 function EXPLORER_TreeViewDirector_event_scroll() {
+
+    // this.event_scroll();
+
     EXPLORER_TreeViewDirector_lastReadNumber_scrollLeft = EXPLORER_TreeViewDirector_rootElement.scrollLeft;
     EXPLORER_TreeViewDirector_lastReadNumber_scrollTop = EXPLORER_TreeViewDirector_rootElement.scrollTop;
     EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Scroll);

@@ -19,91 +19,91 @@ need to make sure the code does a min-width esque logic. Probably don't want the
 /////
 ///// start treeViewComponent.js
 /////
-EXPLORER_TreeViewDirector_rootElement = document.createElement('div');
+let EXPLORER_TreeViewDirector_rootElement = document.createElement('div');
 EXPLORER_TreeViewDirector_rootElement.classList.add('TREEVIEW', 'unselectable');
 EXPLORER_TreeViewDirector_rootElement.tabIndex = 0;
 EXPLORER_TreeViewDirector_rootElement.style.height = '100%';
 
-EXPLORER_TreeViewDirector_virtualizationElement = document.createElement('div');
+let EXPLORER_TreeViewDirector_virtualizationElement = document.createElement('div');
 EXPLORER_TreeViewDirector_virtualizationElement.className = 'TREEVIEW_virtualization';
 EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_virtualizationElement);
 
 /** Consider the existence of such methods as 'state_cursor_setIndex' before mutating state directly */
-EXPLORER_TreeViewDirector_cursorElement = document.createElement('div');
+let EXPLORER_TreeViewDirector_cursorElement = document.createElement('div');
 EXPLORER_TreeViewDirector_cursorElement.className = 'TREEVIEW_cursor';
 EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_cursorElement);
 
-EXPLORER_TreeViewDirector_itemListElement = document.createElement('div');
+let EXPLORER_TreeViewDirector_itemListElement = document.createElement('div');
 EXPLORER_TreeViewDirector_itemListElement.className = 'TREEVIEW_itemList';
 EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_itemListElement);
 
-EXPLORER_TreeViewDirector_itemHeightTotal = 0;
+let EXPLORER_TreeViewDirector_itemHeightTotal = 0;
 
 /** Consider the existence of such methods as 'state_cursor_setIndex' before mutating state directly */
-EXPLORER_TreeViewDirector_cursorIndex = 0;
+let EXPLORER_TreeViewDirector_cursorIndex = 0;
 
-EXPLORER_TreeViewDirector__ONSCROLLvirtualIndex = 0;
-EXPLORER_TreeViewDirector__ONSCROLLvirtualCount = 0;
+let EXPLORER_TreeViewDirector__ONSCROLLvirtualIndex = 0;
+let EXPLORER_TreeViewDirector__ONSCROLLvirtualCount = 0;
 
-EXPLORER_TreeViewDirector_lastReadNumber_scrollLeft = 0;
-EXPLORER_TreeViewDirector_lastReadNumber_scrollTop = 0;
+let EXPLORER_TreeViewDirector_lastReadNumber_scrollLeft = 0;
+let EXPLORER_TreeViewDirector_lastReadNumber_scrollTop = 0;
 
-EXPLORER_TreeViewDirector_scrollTimer = null;
-EXPLORER_TreeViewDirector_hasTrailingCall = false;
+let EXPLORER_TreeViewDirector_scrollTimer = null;
+let EXPLORER_TreeViewDirector_hasTrailingCall = false;
 
-EXPLORER_TreeViewDirector_beltIndexZero = 0;
+let EXPLORER_TreeViewDirector_beltIndexZero = 0;
 
-EXPLORER_TreeViewDirector_TREEVIEW_renderKindArray = [];
-EXPLORER_TreeViewDirector_TREEVIEW_isRenderPending = false;
+let EXPLORER_TreeViewDirector_TREEVIEW_renderKindArray = [];
+let EXPLORER_TreeViewDirector_TREEVIEW_isRenderPending = false;
 
-EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children = [];
-EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length = 0;
+let EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children = [];
+let EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length = 0;
 
-EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_parentElement = null;
-EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_insertBeforeThisChild = null;
+let EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_parentElement = null;
+let EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_insertBeforeThisChild = null;
 
-EXPLORER_TreeViewDirector_start = 0;
-EXPLORER_TreeViewDirector_length = 0;
-EXPLORER_TreeViewDirector_onePositiveDiff_twoNegativeDiff_orThreeFullScreen = 0;
-EXPLORER_TreeViewDirector_caseThreeOrigin = 0;
+let EXPLORER_TreeViewDirector_start = 0;
+let EXPLORER_TreeViewDirector_length = 0;
+let EXPLORER_TreeViewDirector_onePositiveDiff_twoNegativeDiff_orThreeFullScreen = 0;
+let EXPLORER_TreeViewDirector_caseThreeOrigin = 0;
 
-EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightNumber = 0;
-EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightStyleAttributeValueString = '';
+let EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightNumber = 0;
+let EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightStyleAttributeValueString = '';
 
-EXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = 2;
+let EXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = 2;
 
-EXPLORER_TreeViewDirector_LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH = 0;
+let EXPLORER_TreeViewDirector_LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH = 0;
 /////
 ///// end treeViewComponent.js
 /////
 
 /** @type {string} */
-EXPLORER_TreeViewDirector_chosenDirectory = null;
+let EXPLORER_TreeViewDirector_chosenDirectory = null;
 
 /**
  * @type {TreeViewNodeList}
  * */
-EXPLORER_TreeViewDirector_nodeList = new TreeViewNodeList(32);
+let EXPLORER_TreeViewDirector_nodeList = new TreeViewNodeList(32);
 
-EXPLORER_TreeViewDirector_scrollEndDeadline = 0;
-EXPLORER_TreeViewDirector_scrollIsFetchingData = false;
-EXPLORER_TreeViewDirector_scrollFetchData_virtualIndex = 0;
-EXPLORER_TreeViewDirector_scrollFetchData_virtualCount = 0;
-EXPLORER_TreeViewDirector_scrollFetchData_beltIndexZero = 0;
+let EXPLORER_TreeViewDirector_scrollEndDeadline = 0;
+let EXPLORER_TreeViewDirector_scrollIsFetchingData = false;
+let EXPLORER_TreeViewDirector_scrollFetchData_virtualIndex = 0;
+let EXPLORER_TreeViewDirector_scrollFetchData_virtualCount = 0;
+let EXPLORER_TreeViewDirector_scrollFetchData_beltIndexZero = 0;
 
 /** Starting with an empty array so I can have undefined/null signify that the "TreeViewDirector" is "opting out" of this feature, thus the component should not allocate this on the "TreeViewDirector"'s behalf. */
-EXPLORER_TreeViewDirector_pullData_array = new Uint32Array(0);
-EXPLORER_TreeViewDirector_pullData_array_count = 0;
+let EXPLORER_TreeViewDirector_pullData_array = new Uint32Array(0);
+let EXPLORER_TreeViewDirector_pullData_array_count = 0;
 
-EXPLORER_TreeViewDirector_pullData_result = new Uint32Array(0);
-EXPLORER_TreeViewDirector_pullData_result_count = 0;
+let EXPLORER_TreeViewDirector_pullData_result = new Uint32Array(0);
+let EXPLORER_TreeViewDirector_pullData_result_count = 0;
 
-EXPLORER_TreeViewDirector_arrayEntries = null;
+let EXPLORER_TreeViewDirector_arrayEntries = null;
 
 // Google AI'd the bit logic
 // Configuration matching our table above
-EXPLORER_TreeViewDirector_KEY_BITS = 12;
-EXPLORER_TreeViewDirector_KEY_MASK = (1 << EXPLORER_TreeViewDirector_KEY_BITS) - 1; // Binary: 00000000000000000000111111111111 (0xFFF)
+let EXPLORER_TreeViewDirector_KEY_BITS = 12;
+let EXPLORER_TreeViewDirector_KEY_MASK = (1 << EXPLORER_TreeViewDirector_KEY_BITS) - 1; // Binary: 00000000000000000000111111111111 (0xFFF)
 // end CONSTRUCTOR
 
 /** // Invoke this?: 'this.draw_render_fullReset_request();' */
@@ -123,31 +123,31 @@ function EXPLORER_TreeViewDirector_setChosenDirectory(chosenDirectory, chosenDir
 
 /** // Invoke this?: 'this.draw_render_fullReset_request();' */
 function EXPLORER_TreeViewDirector_setChosenWorkspace(chooseWorkspaceResult) {
-    this.chosenWorkspace = chooseWorkspaceResult.workspaceFileAbsolutePath;
+    EXPLORER_TreeViewDirector_chosenWorkspace = chooseWorkspaceResult.workspaceFileAbsolutePath;
 
-    this.nodeList.clear();
+    EXPLORER_TreeViewDirector_nodeList.clear();
 
-    if (!this.chosenWorkspace) return;
+    if (!EXPLORER_TreeViewDirector_chosenWorkspace) return;
 
     for (let i = 0; i < chooseWorkspaceResult.directories.length; i++) {
         let directory = chooseWorkspaceResult.directories[i];
         let nodeKind = TreeViewNodeKind_isExpandable_NOTisExpanded;
-        this.nodeList.insert(this.nodeList.count_abstract, nodeKind, directory.id, 0);
+        EXPLORER_TreeViewDirector_nodeList.insert(EXPLORER_TreeViewDirector_nodeList.count_abstract, nodeKind, directory.id, 0);
     }
 
-    this.itemHeightTotal = this.tvd_getTotalCount() * this.itemHeightNumber;
-    this.virtualizationElement.style.height = this.itemHeightTotal + 'px';
+    EXPLORER_TreeViewDirector_itemHeightTotal = EXPLORER_TreeViewDirector_tvd_getTotalCount() * EXPLORER_TreeViewDirector_itemHeightNumber;
+    EXPLORER_TreeViewDirector_virtualizationElement.style.height = EXPLORER_TreeViewDirector_itemHeightTotal + 'px';
 }
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck = (timestamp) => {
     // If the scroll deadline hasn't been met yet, keep checking on the next frame
-    if (timestamp < this.scrollEndDeadline) {
-        requestAnimationFrame(this.TREEVIEW_render_do_ScrollTrailingEdgeCheck);
+    if (timestamp < EXPLORER_TreeViewDirector_scrollEndDeadline) {
+        requestAnimationFrame(EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck);
         return;
     }
 
     // The 1,000ms has passed! Fire your trailing edge logic safely
-    this.tvd_drawItem_BATCH_trailingEdge();
+    EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_trailingEdge();
 }
 
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_trailingEdge() {

@@ -730,40 +730,40 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_request(renderKind) {
     }
 }
 
-function EXPLORER_TreeViewDirector_renderDo = (timestamp) => {
+function EXPLORER_TreeViewDirector_renderDo(timestamp) {
     let renderKind;
     
     // Synchronously exhaust the item queue for this animation frame
-    while (renderKind = this.TREEVIEW_renderKindArray.shift()) {
+    while (renderKind = EXPLORER_TreeViewDirector_TREEVIEW_renderKindArray.shift()) {
         switch (renderKind) {
             case TREEVIEWrenderKind_Cursor:
-                this.TREEVIEW_render_do_Cursor();
+                EXPLORER_TreeViewDirector_TREEVIEW_render_do_Cursor();
                 break;
             case TREEVIEWrenderKind_Create:
-                this.TREEVIEW_render_do_Create(timestamp);
+                EXPLORER_TreeViewDirector_TREEVIEW_render_do_Create(timestamp);
                 break;
             case TREEVIEWrenderKind_Batch:
-                this.TREEVIEW_render_do_Batch(timestamp);
+                EXPLORER_TreeViewDirector_TREEVIEW_render_do_Batch(timestamp);
                 break;
             case TREEVIEWrenderKind_Scroll:
-                this.TREEVIEW_render_do_Scroll(timestamp);
+                EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp);
                 break;
             case TREEVIEWrenderKind_Scroll_PullDataDrawResult:
-                this.TREEVIEW_render_do_Scroll_PullDataDrawResult();
+                EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll_PullDataDrawResult();
                 break;
             case TREEVIEWrenderKind_SetItems:
-                this.TREEVIEW_render_do_SetItems();
+                EXPLORER_TreeViewDirector_TREEVIEW_render_do_SetItems();
                 break;
             case TREEVIEWrenderKind_FullReset:
-                this.TREEVIEW_render_do_FullReset(timestamp);
+                EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp);
                 break;
             case TREEVIEWrenderKind_Resize:
-                this.TREEVIEW_render_do_Resize(timestamp);
+                EXPLORER_TreeViewDirector_TREEVIEW_render_do_Resize(timestamp);
                 break;
         }
     }
     
-    this.TREEVIEW_isRenderPending = false; // Reset the paint lock
+    EXPLORER_TreeViewDirector_TREEVIEW_isRenderPending = false; // Reset the paint lock
 };
 
 /**

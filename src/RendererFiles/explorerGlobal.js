@@ -1002,7 +1002,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
  * so it is easier to just invoke this directly when you change totalCount?
  */
 function EXPLORER_TreeViewDirector_draw_render_fullReset_request() {
-    this.TREEVIEW_render_request(TREEVIEWrenderKind_FullReset);
+    EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_FullReset);
 }
 
 /**
@@ -1012,28 +1012,28 @@ function EXPLORER_TreeViewDirector_draw_render_fullReset_request() {
  * @param {*} event 
  */
 function EXPLORER_TreeViewDirector_event_click(event_clientY, event_target) {
-    this.ensure_boundingClientRect();
+    EXPLORER_TreeViewDirector_ensure_boundingClientRect();
 
-    let rY = event_clientY - this.boundingClientRect.top + this.lastReadNumber_scrollTop;
-    let indexItem = Math.floor(rY / this.itemHeightNumber);
-    indexItem = this.state_cursor_validateIndex(indexItem);
+    let rY = event_clientY - EXPLORER_TreeViewDirector_boundingClientRect.top + EXPLORER_TreeViewDirector_lastReadNumber_scrollTop;
+    let indexItem = Math.floor(rY / EXPLORER_TreeViewDirector_itemHeightNumber);
+    indexItem = EXPLORER_TreeViewDirector_state_cursor_validateIndex(indexItem);
 
-    // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
+    // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_beltIndexItem'...
     // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-    let beltIndexItem = ((indexItem)) - this.virtualIndex_ofScrollTop;
-    if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-    else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+    let beltIndexItem = ((indexItem)) - EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop;
+    if (beltIndexItem >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
+    else beltIndexItem = (beltIndexItem + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
 
     if (beltIndexItem < 0) return;
-    let divItem = this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem];
+    let divItem = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem];
 
     if (event_target === divItem.children[0]) {
-        return this.tvd_expandCollapseIconWasClicked_async(divItem, indexItem);
+        return EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(divItem, indexItem);
     }
     else {
-        this.state_cursor_setIndex(indexItem);
+        EXPLORER_TreeViewDirector_state_cursor_setIndex(indexItem);
     }
 }
 

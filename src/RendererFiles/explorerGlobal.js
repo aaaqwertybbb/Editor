@@ -661,7 +661,7 @@ function EXPLORER_TreeViewDirector_tvd_getTotalCount() {
  * @returns 
  */
 function EXPLORER_TreeViewDirector_removeFromNodeList(indexItem) {
-    this.nodeList.getElementAt(indexItem);
+    EXPLORER_TreeViewDirector_nodeList.getElementAt(indexItem);
     let key = gINT_FIELDS[fTreeView_pooledNode_key];
     let depth = gINT_FIELDS[fTreeView_pooledNode_depth];
     let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
@@ -674,9 +674,9 @@ function EXPLORER_TreeViewDirector_removeFromNodeList(indexItem) {
     let countChildren = 0;
 
     if (nodeKind === TreeViewNodeKind_isExpandable_isExpanded) {
-        for (let i = indexItem + 1; i < this.nodeList.count_abstract; i++) {
+        for (let i = indexItem + 1; i < EXPLORER_TreeViewDirector_nodeList.count_abstract; i++) {
             // If currentDepth < ithElementDepth; then current is a parent of ithElement.
-            if (depth < this.nodeList.getDepth(i)) {
+            if (depth < EXPLORER_TreeViewDirector_nodeList.getDepth(i)) {
                 countChildren++;
             }
             else {
@@ -685,9 +685,9 @@ function EXPLORER_TreeViewDirector_removeFromNodeList(indexItem) {
         }
     }
 
-    this.nodeList.removeAt(indexItem, 1 + countChildren);
-    this.itemHeightTotal = this.tvd_getTotalCount() * this.itemHeightNumber;
-    this.virtualizationElement.style.height = this.itemHeightTotal + 'px';
+    EXPLORER_TreeViewDirector_nodeList.removeAt(indexItem, 1 + countChildren);
+    EXPLORER_TreeViewDirector_itemHeightTotal = EXPLORER_TreeViewDirector_tvd_getTotalCount() * EXPLORER_TreeViewDirector_itemHeightNumber;
+    EXPLORER_TreeViewDirector_virtualizationElement.style.height = EXPLORER_TreeViewDirector_itemHeightTotal + 'px';
     return 1 + countChildren;
 }
 

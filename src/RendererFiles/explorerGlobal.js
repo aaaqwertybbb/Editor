@@ -45,9 +45,6 @@ let EXPLORER_TreeViewDirector_itemListElement = document.createElement('div');
 EXPLORER_TreeViewDirector_itemListElement.className = 'TREEVIEW_itemList';
 EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_itemListElement);
 
-let EXPLORER_TreeViewDirector__ONSCROLLvirtualIndex = 0;
-let EXPLORER_TreeViewDirector__ONSCROLLvirtualCount = 0;
-
 let EXPLORER_TreeViewDirector_lastReadNumber_scrollLeft = 0;
 let EXPLORER_TreeViewDirector_lastReadNumber_scrollTop = 0;
 
@@ -361,8 +358,8 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     < You are 100% correct to worry about this. Never make your requestAnimationFrame loop async or use await inside it.
     < ...
     */
-    EXPLORER_TreeViewDirector_scrollFetchData_virtualIndex = EXPLORER_TreeViewDirector__ONSCROLLvirtualIndex;
-    EXPLORER_TreeViewDirector_scrollFetchData_virtualCount = EXPLORER_TreeViewDirector__ONSCROLLvirtualCount;
+    EXPLORER_TreeViewDirector_scrollFetchData_virtualIndex = gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex];
+    EXPLORER_TreeViewDirector_scrollFetchData_virtualCount = gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount];
     EXPLORER_TreeViewDirector_scrollFetchData_beltIndexZero = EXPLORER_TreeViewDirector_beltIndexZero;
 
     // This isn't the most optimal way of doing things.
@@ -406,8 +403,8 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
 };
 
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
-    if (EXPLORER_TreeViewDirector_scrollFetchData_virtualIndex === EXPLORER_TreeViewDirector__ONSCROLLvirtualIndex &&
-        EXPLORER_TreeViewDirector_scrollFetchData_virtualCount === EXPLORER_TreeViewDirector__ONSCROLLvirtualCount &&
+    if (EXPLORER_TreeViewDirector_scrollFetchData_virtualIndex === gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex] &&
+        EXPLORER_TreeViewDirector_scrollFetchData_virtualCount === gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount] &&
         EXPLORER_TreeViewDirector_scrollFetchData_beltIndexZero === EXPLORER_TreeViewDirector_beltIndexZero) {
 
         // This isn't the most optimal way of doing things.
@@ -887,19 +884,19 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp) {
     else {
         gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] = Math.floor(EXPLORER_TreeViewDirector_lastReadNumber_scrollTop / EXPLORER_TreeViewDirector_itemHeightNumber);
 
-        if (EXPLORER_TreeViewDirector__ONSCROLLvirtualIndex === gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] &&
-            EXPLORER_TreeViewDirector__ONSCROLLvirtualCount === gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]) {
+        if (gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex] === gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] &&
+            gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount] === gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]) {
                 return;
         }
 
-        // If I delay setting 'EXPLORER_TreeViewDirector__ONSCROLLvirtualIndex' then I can just use that.
+        // If I delay setting 'gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex]' then I can just use that.
         // I can't bear to do that right now though. I'm just gonna make this variable.
-        let prevVli = EXPLORER_TreeViewDirector__ONSCROLLvirtualIndex;
+        let prevVli = gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex];
         let currVli = gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
 
-        EXPLORER_TreeViewDirector__ONSCROLLvirtualIndex = gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
+        gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex] = gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
 
-        if (EXPLORER_TreeViewDirector__ONSCROLLvirtualCount === gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] &&
+        if (gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount] === gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] &&
             EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length === gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]) {
 
             let diff = currVli - prevVli;
@@ -907,7 +904,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp) {
             let totalCount = EXPLORER_TreeViewDirector_tvd_getTotalCount();
 
             if (diff > 0 && diff < gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]) {
-                EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(prevVli + EXPLORER_TreeViewDirector__ONSCROLLvirtualCount, diff, 1, undefined, timestamp);
+                EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(prevVli + gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount], diff, 1, undefined, timestamp);
             }
             else if (diff < 0 && (diff *= -1) < gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount]) {
                 EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(currVli, diff, 2, undefined, timestamp);
@@ -941,7 +938,7 @@ function EXPLORER_TreeViewDirector_draw_BATCH_request(start, length, onePositive
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
     EXPLORER_TreeViewDirector_ensure_boundingClientRect();
 
-    EXPLORER_TreeViewDirector__ONSCROLLvirtualCount = gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
+    gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount] = gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount];
 
     gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] = Math.floor(EXPLORER_TreeViewDirector_lastReadNumber_scrollTop / EXPLORER_TreeViewDirector_itemHeightNumber);
     EXPLORER_TreeViewDirector_beltIndexZero = 0;

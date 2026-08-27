@@ -353,48 +353,48 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     < You are 100% correct to worry about this. Never make your requestAnimationFrame loop async or use await inside it.
     < ...
     */
-    this.scrollFetchData_virtualIndex = this._ONSCROLLvirtualIndex;
-    this.scrollFetchData_virtualCount = this._ONSCROLLvirtualCount;
-    this.scrollFetchData_beltIndexZero = this.beltIndexZero;
+    EXPLORER_TreeViewDirector_scrollFetchData_virtualIndex = EXPLORER_TreeViewDirector__ONSCROLLvirtualIndex;
+    EXPLORER_TreeViewDirector_scrollFetchData_virtualCount = EXPLORER_TreeViewDirector__ONSCROLLvirtualCount;
+    EXPLORER_TreeViewDirector_scrollFetchData_beltIndexZero = EXPLORER_TreeViewDirector_beltIndexZero;
 
     // This isn't the most optimal way of doing things.
     //
-    let itemListElement_children = this.TREEVIEW_ArrayFrom_itemListElement_children;
-    let itemListElement_childrenLength = this.TREEVIEW_ArrayFrom_itemListElement_children_length;
+    let itemListElement_children = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children;
+    let itemListElement_childrenLength = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length;
 
-    this.pullData_array_count = 0;
+    EXPLORER_TreeViewDirector_pullData_array_count = 0;
 
-    // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
+    // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_beltIndexItem'...
     // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-    let beltIndex_current = ((this.scrollFetchData_virtualIndex)) - this.virtualIndex_ofScrollTop;
-    if (beltIndex_current >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndex_current < 0) beltIndex_current = -1;
-    else beltIndex_current = (beltIndex_current + this.beltIndexZero) % this.virtualCount;
+    let beltIndex_current = ((EXPLORER_TreeViewDirector_scrollFetchData_virtualIndex)) - EXPLORER_TreeViewDirector_virtualIndex_ofScrollTop;
+    if (beltIndex_current >= EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndex_current < 0) beltIndex_current = -1;
+    else beltIndex_current = (beltIndex_current + EXPLORER_TreeViewDirector_beltIndexZero) % EXPLORER_TreeViewDirector_virtualCount;
 
     for (let i = 0; i < itemListElement_childrenLength; i++) {
 
         if (itemListElement_children[beltIndex_current].className === 'eN') {
-            let indexItem = this.scrollFetchData_virtualIndex + i;
+            let indexItem = EXPLORER_TreeViewDirector_scrollFetchData_virtualIndex + i;
             
-            // The index of the actual dom element within this.itemListElement.children
+            // The index of the actual dom element within EXPLORER_TreeViewDirector_itemListElement.children
             // that is displaying the UI representation of what 'indexItem' points to.
             let indexBelt = beltIndex_current;
 
-            this.pullData_array[this.pullData_array_count++] = ((indexBelt << this.KEY_BITS) | this.nodeList.getKey(indexItem));
+            EXPLORER_TreeViewDirector_pullData_array[EXPLORER_TreeViewDirector_pullData_array_count++] = ((indexBelt << EXPLORER_TreeViewDirector_KEY_BITS) | EXPLORER_TreeViewDirector_nodeList.getKey(indexItem));
         }
 
         beltIndex_current = (beltIndex_current + 1) % itemListElement_childrenLength;
     }
 
-    this.arrayEntries = await window.myAPI.getFilesystemEntryById_ARRAY(this.pullData_array.subarray(0, this.pullData_array_count));
+    EXPLORER_TreeViewDirector_arrayEntries = await window.myAPI.getFilesystemEntryById_ARRAY(EXPLORER_TreeViewDirector_pullData_array.subarray(0, EXPLORER_TreeViewDirector_pullData_array_count));
 
-    this.pullData_result = this.pullData_array;
-    this.pullData_result_count = this.pullData_array_count;
+    EXPLORER_TreeViewDirector_pullData_result = EXPLORER_TreeViewDirector_pullData_array;
+    EXPLORER_TreeViewDirector_pullData_result_count = EXPLORER_TreeViewDirector_pullData_array_count;
 
-    this.scrollIsFetchingData = false; // TODO: try/catch/finally; put this in the finally.
+    EXPLORER_TreeViewDirector_scrollIsFetchingData = false; // TODO: try/catch/finally; put this in the finally.
 
-    this.TREEVIEW_render_request(TREEVIEWrenderKind_Scroll_PullDataDrawResult);
+    EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Scroll_PullDataDrawResult);
 };
 
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {

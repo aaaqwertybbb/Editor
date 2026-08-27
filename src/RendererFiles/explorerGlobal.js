@@ -693,7 +693,7 @@ function EXPLORER_TreeViewDirector_removeFromNodeList(indexItem) {
 
 /** TODO: any usage of this needs to respect the actual zeroth UI div not the literal. */
 function EXPLORER_TreeViewDirector_setNodeListEntryId(indexItem, pathId) {
-    this.nodeList.setKey(indexItem, pathId);
+    EXPLORER_TreeViewDirector_nodeList.setKey(indexItem, pathId);
 }
 
 function EXPLORER_TreeViewDirector_addSpecificMenuOptionsForTarget(optionList, divItem, target) {
@@ -720,13 +720,13 @@ function EXPLORER_TreeViewDirector_addSpecificMenuOptionsForTarget(optionList, d
 }
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_request(renderKind) {
-    if (this.TREEVIEW_renderKindArray[this.TREEVIEW_renderKindArray.length - 1] !== renderKind) {
-        this.TREEVIEW_renderKindArray.push(renderKind);
+    if (EXPLORER_TreeViewDirector_TREEVIEW_renderKindArray[EXPLORER_TreeViewDirector_TREEVIEW_renderKindArray.length - 1] !== renderKind) {
+        EXPLORER_TreeViewDirector_TREEVIEW_renderKindArray.push(renderKind);
     }
     
-    if (!this.TREEVIEW_isRenderPending) {
-        this.TREEVIEW_isRenderPending = true;
-        requestAnimationFrame(this.renderDo);
+    if (!EXPLORER_TreeViewDirector_TREEVIEW_isRenderPending) {
+        EXPLORER_TreeViewDirector_TREEVIEW_isRenderPending = true;
+        requestAnimationFrame(EXPLORER_TreeViewDirector_renderDo);
     }
 }
 

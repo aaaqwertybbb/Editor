@@ -163,7 +163,9 @@ const byteEDI_mousemove_eventListener_isActive = 43;
 const byteEXPLORER_show = 44;
 gBYTE_FIELDS[byteEXPLORER_show] = 1;
 
-// gBYTE_FIELDS[byteEXPLORER_show]
+const byteEXPLORER_TreeViewDirector_TREEVIEW_isRenderPending = 45;
+
+// gBYTE_FIELDS[byteEXPLORER_TreeViewDirector_TREEVIEW_isRenderPending]
 
 // TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
 // - [ ] triple equals

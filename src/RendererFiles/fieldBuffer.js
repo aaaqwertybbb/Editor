@@ -679,7 +679,9 @@ const fEXPLORER_TreeViewDirector_scrollEndDeadline = 160;
 
 const fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex = 161;
 
-// gINT_FIELDS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex]
+const fEXPLORER_TreeViewDirector_scrollFetchData_virtualCount = 162;
+
+// gINT_FIELDS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualCount]
 
 // inclusive final index is 138
 

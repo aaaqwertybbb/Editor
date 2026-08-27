@@ -79,7 +79,6 @@ let EXPLORER_TreeViewDirector_nodeList = new TreeViewNodeList(32);
 let EXPLORER_TreeViewDirector_isCheckingTrailingEdge = false;
 
 let EXPLORER_TreeViewDirector_scrollIsFetchingData = false;
-let EXPLORER_TreeViewDirector_scrollFetchData_virtualCount = 0;
 let EXPLORER_TreeViewDirector_scrollFetchData_beltIndexZero = 0;
 
 /** Starting with an empty array so I can have undefined/null signify that the "TreeViewDirector" is "opting out" of this feature, thus the component should not allocate this on the "TreeViewDirector"'s behalf. */
@@ -339,7 +338,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     < ...
     */
     gINT_FIELDS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex] = gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex];
-    EXPLORER_TreeViewDirector_scrollFetchData_virtualCount = gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount];
+    gINT_FIELDS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualCount] = gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount];
     EXPLORER_TreeViewDirector_scrollFetchData_beltIndexZero = gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero];
 
     // This isn't the most optimal way of doing things.
@@ -384,7 +383,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
 
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
     if (gINT_FIELDS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex] === gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex] &&
-        EXPLORER_TreeViewDirector_scrollFetchData_virtualCount === gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount] &&
+        gINT_FIELDS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualCount] === gINT_FIELDS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount] &&
         EXPLORER_TreeViewDirector_scrollFetchData_beltIndexZero === gINT_FIELDS[fEXPLORER_TreeViewDirector_beltIndexZero]) {
 
         // This isn't the most optimal way of doing things.

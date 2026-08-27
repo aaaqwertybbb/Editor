@@ -618,19 +618,19 @@ function EXPLORER_TreeViewDirector_tvd_arrowRight_async(divItem, indexItem) {
 
 function EXPLORER_TreeViewDirector_tvd_arrowLeft_async(divItem, indexItem) {
     // TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
-    this.nodeList.getElementAt(indexItem);
+    EXPLORER_TreeViewDirector_nodeList.getElementAt(indexItem);
     let key = gINT_FIELDS[fTreeView_pooledNode_key];
     let depth = gINT_FIELDS[fTreeView_pooledNode_depth];
     let nodeKind = gBYTE_FIELDS[byteTreeView_pooledNode_nodeKind];
     
     if (nodeKind === TreeViewNodeKind_isExpandable_isExpanded) {
-        return this.tvd_expandCollapseIconWasClicked_async(divItem, indexItem);
+        return EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(divItem, indexItem);
     }
     else {
         let distanceToParent = 0;
         for (let i = indexItem - 1; i >= 0; i--) {
             // If ithElementDepth < currentDepth; // then ithElement is the parent of current.
-            if (this.nodeList.getDepth(i) < depth) {
+            if (EXPLORER_TreeViewDirector_nodeList.getDepth(i) < depth) {
                 distanceToParent++;
                 break;
             }
@@ -639,7 +639,7 @@ function EXPLORER_TreeViewDirector_tvd_arrowLeft_async(divItem, indexItem) {
             }
         }
         if (distanceToParent > 0) {
-            this.state_cursor_setIndex(this.state_cursor_validateIndex(
+            EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
                 indexItem - distanceToParent));
         }
     }
@@ -648,7 +648,7 @@ function EXPLORER_TreeViewDirector_tvd_arrowLeft_async(divItem, indexItem) {
 }
 
 function EXPLORER_TreeViewDirector_tvd_getTotalCount() {
-    return this.nodeList.count_abstract;
+    return EXPLORER_TreeViewDirector_nodeList.count_abstract;
 }
 
 /**

@@ -835,13 +835,13 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Create(timestamp) {
  * @param {*} insertBeforeThisChild (if falsey, the list UI is appended to the parent element)
  */
 function EXPLORER_TreeViewDirector_draw_create_request(parentElement, insertBeforeThisChild) {
-    this.TREEVIEW_draw_create_request_parentElement = parentElement;
-    this.TREEVIEW_draw_create_request_insertBeforeThisChild = insertBeforeThisChild;
-    this.TREEVIEW_render_request(TREEVIEWrenderKind_Create);
+    EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_parentElement = parentElement;
+    EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_insertBeforeThisChild = insertBeforeThisChild;
+    EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Create);
 }
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Batch(timestamp) {
-    this.tvd_drawItem_BATCH(this.start, this.length, this.onePositiveDiff_twoNegativeDiff_orThreeFullScreen, this.caseThreeOrigin, timestamp);
+    EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(EXPLORER_TreeViewDirector_start, EXPLORER_TreeViewDirector_length, EXPLORER_TreeViewDirector_onePositiveDiff_twoNegativeDiff_orThreeFullScreen, EXPLORER_TreeViewDirector_caseThreeOrigin, timestamp);
 }
 
 /**

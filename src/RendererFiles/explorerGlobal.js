@@ -1257,9 +1257,9 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Cursor(index) {
  * @param {*} index 
  */
 function EXPLORER_TreeViewDirector_state_cursor_setIndex(index) {
-    if (this.cursorIndex === index) return;
-    this.cursorIndex = index;
-    this.TREEVIEW_render_request(TREEVIEWrenderKind_Cursor);
+    if (EXPLORER_TreeViewDirector_cursorIndex === index) return;
+    EXPLORER_TreeViewDirector_cursorIndex = index;
+    EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Cursor);
 }
 
 /**
@@ -1268,8 +1268,8 @@ function EXPLORER_TreeViewDirector_state_cursor_setIndex(index) {
  * @param {*} indexItem 
  */
 function EXPLORER_TreeViewDirector_state_cursor_validateIndex(indexItem) {
-    if (indexItem >= this.tvd_getTotalCount()) {
-        indexItem = this.tvd_getTotalCount() - 1;
+    if (indexItem >= EXPLORER_TreeViewDirector_tvd_getTotalCount()) {
+        indexItem = EXPLORER_TreeViewDirector_tvd_getTotalCount() - 1;
     }
     if (indexItem < 0) {
         indexItem = 0;
@@ -1311,16 +1311,16 @@ function EXPLORER_TreeViewDirector_state_cursor_validateIndex(indexItem) {
  * for the attribute value.
  */
 function EXPLORER_TreeViewDirector_measureBaseElement() {
-    this.lastReadNumber_offsetWidth = Math.floor(this.rootElement.offsetWidth);
-    this.lastReadNumber_offsetHeight = Math.floor(this.rootElement.offsetHeight);
+    EXPLORER_TreeViewDirector_lastReadNumber_offsetWidth = Math.floor(EXPLORER_TreeViewDirector_rootElement.offsetWidth);
+    EXPLORER_TreeViewDirector_lastReadNumber_offsetHeight = Math.floor(EXPLORER_TreeViewDirector_rootElement.offsetHeight);
     
-    this.rootElement.style.width = this.lastReadNumber_offsetWidth + 'px';
-    this.rootElement.style.height = this.lastReadNumber_offsetHeight + 'px';
+    EXPLORER_TreeViewDirector_rootElement.style.width = EXPLORER_TreeViewDirector_lastReadNumber_offsetWidth + 'px';
+    EXPLORER_TreeViewDirector_rootElement.style.height = EXPLORER_TreeViewDirector_lastReadNumber_offsetHeight + 'px';
 
-    this.rootElement.style.contain = 'layout';
+    EXPLORER_TreeViewDirector_rootElement.style.contain = 'layout';
 
-    this.lastReadNumber_offsetWidth = this.rootElement.offsetWidth;
-    this.lastReadNumber_offsetHeight = this.rootElement.offsetHeight;
+    EXPLORER_TreeViewDirector_lastReadNumber_offsetWidth = EXPLORER_TreeViewDirector_rootElement.offsetWidth;
+    EXPLORER_TreeViewDirector_lastReadNumber_offsetHeight = EXPLORER_TreeViewDirector_rootElement.offsetHeight;
 }
 
 /*

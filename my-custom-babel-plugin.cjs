@@ -516,7 +516,10 @@ module.exports = function (babel) {
     "fEXPLORER_firstSpanWidthValue",
     "fEXPLORER_menuOptionX",
     "fEXPLORER_menuOptionY",
-    "byteEXPLORER_show"
+    "byteEXPLORER_show",
+
+    "fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth",
+    "fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight",
 
   ];
 

@@ -45,7 +45,7 @@ it is as if I typed the expression body everywhere I typed the fat arrow functio
  * 
  * TODO: index 8 is available because 'EDI_onScroll_bool' was removed.
  */
-const gBYTE_FIELDS = new Uint8Array(45);
+const gBYTE_FIELDS = new Uint8Array(90);
 
 /** returns a number, beware '===' */
 const get_EDI_detailRank = () => gBYTE_FIELDS[0];
@@ -275,7 +275,7 @@ const CONST_EDI_cursor_htmlId = "EDI_cursor-1";
 ////////////////////////////
 ////////////////////////////
 
-const gINT_FIELDS = new Uint32Array(139);
+const gINT_FIELDS = new Uint32Array(280);
 
 const fEDI_lineHeight = 0;
 gINT_FIELDS[fEDI_lineHeight] = 20;
@@ -631,7 +631,10 @@ gINT_FIELDS[fEXPLORER_firstSpanWidthValue] = 8;
 const fEXPLORER_menuOptionX = 137;
 const fEXPLORER_menuOptionY = 138;
 
-// gINT_FIELDS[fEXPLORER_menuOptionY]
+const fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth = 139;
+const fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight = 140;
+
+// gINT_FIELDS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight]
 
 // inclusive final index is 138
 

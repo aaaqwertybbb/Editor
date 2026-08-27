@@ -1,3 +1,7 @@
+//__#__
+// preprocessor.cjs
+import "./fieldBuffer"
+//__#__
 
 /*
 When collapse maybe you reset the length of the longest line or something
@@ -13,6 +17,10 @@ I mean maybe it does have a non zero overhead a const number. But like cmon dude
 
 also need to update the width of the cursor to the largest width seen div thing so it visually looks correct
 need to make sure the code does a min-width esque logic. Probably don't want the css but just for the code that sets the style to consider it for you avoids min-width overhead if exists?
+
+
+NO ASYNC EVENTS
+- higher likelihood of memory leaking PerformanceEventTiming due to inability for browser to clear buffer on time requiring manual clearing of the long term buffer.
 */
 
 // start CONSTRUCTOR
@@ -36,9 +44,6 @@ EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_curs
 let EXPLORER_TreeViewDirector_itemListElement = document.createElement('div');
 EXPLORER_TreeViewDirector_itemListElement.className = 'TREEVIEW_itemList';
 EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_itemListElement);
-
-let EXPLORER_TreeViewDirector_lastReadNumber_offsetWidth = 0;
-let EXPLORER_TreeViewDirector_lastReadNumber_offsetHeight = 0;
 
 let EXPLORER_TreeViewDirector_cursorTranslateYNumber = 0;
 
@@ -448,8 +453,8 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
             let widthAttributeValueNumber = Math.ceil(((EXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING + 2/*padding*/) * gINT_FIELDS[fEXPLORER_firstSpanWidthValue]) + CONST_EXPLORER_offsetPerDepth * EXPLORER_TreeViewDirector_LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH);
 
             // This is actually more complicated you have to track whether you go above the minimum requirement lest you add 1 character over and over in width just to keep redrawing widths.
-            //if (widthAttributeValueNumber < EXPLORER_TreeViewDirector_lastReadNumber_offsetWidth) {
-            //    widthAttributeValueNumber = EXPLORER_TreeViewDirector_lastReadNumber_offsetWidth;
+            //if (widthAttributeValueNumber < gINT_FIELDS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth]) {
+            //    widthAttributeValueNumber = gINT_FIELDS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth];
             //}
             //EXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING
             let widthAttributeValueString = widthAttributeValueNumber + 'px';
@@ -964,8 +969,8 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
         EXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = 2;
         let widthAttributeValueNumber = Math.ceil((EXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING + 2/*padding*/) * gINT_FIELDS[fEXPLORER_firstSpanWidthValue]);
         // This is actually more complicated you have to track whether you go above the minimum requirement lest you add 1 character over and over in width just to keep redrawing widths.
-        //if (widthAttributeValueNumber < EXPLORER_TreeViewDirector_lastReadNumber_offsetWidth) {
-        //    widthAttributeValueNumber = EXPLORER_TreeViewDirector_lastReadNumber_offsetWidth;
+        //if (widthAttributeValueNumber < gINT_FIELDS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth]) {
+        //    widthAttributeValueNumber = gINT_FIELDS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth];
         //}
         //EXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING
         let widthAttributeValueString = widthAttributeValueNumber + 'px';
@@ -1342,16 +1347,16 @@ function EXPLORER_TreeViewDirector_state_cursor_validateIndex(indexItem) {
  * for the attribute value.
  */
 function EXPLORER_TreeViewDirector_measureBaseElement() {
-    EXPLORER_TreeViewDirector_lastReadNumber_offsetWidth = Math.floor(EXPLORER_TreeViewDirector_rootElement.offsetWidth);
-    EXPLORER_TreeViewDirector_lastReadNumber_offsetHeight = Math.floor(EXPLORER_TreeViewDirector_rootElement.offsetHeight);
+    gINT_FIELDS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth] = Math.floor(EXPLORER_TreeViewDirector_rootElement.offsetWidth);
+    gINT_FIELDS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight] = Math.floor(EXPLORER_TreeViewDirector_rootElement.offsetHeight);
     
-    EXPLORER_TreeViewDirector_rootElement.style.width = EXPLORER_TreeViewDirector_lastReadNumber_offsetWidth + 'px';
-    EXPLORER_TreeViewDirector_rootElement.style.height = EXPLORER_TreeViewDirector_lastReadNumber_offsetHeight + 'px';
+    EXPLORER_TreeViewDirector_rootElement.style.width = gINT_FIELDS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth] + 'px';
+    EXPLORER_TreeViewDirector_rootElement.style.height = gINT_FIELDS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight] + 'px';
 
     EXPLORER_TreeViewDirector_rootElement.style.contain = 'layout';
 
-    EXPLORER_TreeViewDirector_lastReadNumber_offsetWidth = EXPLORER_TreeViewDirector_rootElement.offsetWidth;
-    EXPLORER_TreeViewDirector_lastReadNumber_offsetHeight = EXPLORER_TreeViewDirector_rootElement.offsetHeight;
+    gINT_FIELDS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth] = EXPLORER_TreeViewDirector_rootElement.offsetWidth;
+    gINT_FIELDS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight] = EXPLORER_TreeViewDirector_rootElement.offsetHeight;
 }
 
 /*

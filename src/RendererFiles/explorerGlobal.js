@@ -790,41 +790,41 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_SetItems() {
  * @param {*} itemHeightStyleAttributeValueString '50px'; div.style.height = itemHeightStyleAttributeValueString;
  */
 function EXPLORER_TreeViewDirector_setItems(itemHeightNumber, itemHeightStyleAttributeValueString) {
-    this.SET_ITEMS_itemHeightNumber = itemHeightNumber;
-    this.SET_ITEMS_itemHeightStyleAttributeValueString = itemHeightStyleAttributeValueString;
-    this.TREEVIEW_render_request(TREEVIEWrenderKind_SetItems);
+    EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightNumber = itemHeightNumber;
+    EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightStyleAttributeValueString = itemHeightStyleAttributeValueString;
+    EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_SetItems);
 }
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Create(timestamp) {
-    if (this.rootElement.parentElement) {
+    if (EXPLORER_TreeViewDirector_rootElement.parentElement) {
         // It is the case that I invoke 'draw_create_request' when creating the tree view for the first time.
         // But I also do this when I re-open the os input file dialog and pick either a separate or the same folder.
         // In this scenario having this invoke a "fullReset" is necessary otherwise nothing appears in the treeview.
         //
         // TODO: but, perhaps this is best left to the consumer of the TreeViewComponent to invoke themselves...
         // ...in such a scenario. Until further decision is made I'll have the invocation here.
-        this.TREEVIEW_render_do_FullReset(timestamp);
+        EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp);
         // TODO: Should there be a return here?...
         // ...more accurately the concern is 'TREEVIEW_draw_create_request_parentElement.insertBefore'
-        // and 'this.draw_addEvents()'
+        // and 'EXPLORER_TreeViewDirector_draw_addEvents()'
         // |
         // Should those be in an else?
         // It reads as though you'd be inserting the element twice, which internally you cannot
         // have an HTML node with two parents so this probably doesn't duplicate the UI, but instead just wastes CPU.
         // |
-        // The 'this.draw_addEvents();'... can you subscribe twice?
+        // The 'EXPLORER_TreeViewDirector_draw_addEvents();'... can you subscribe twice?
     }
-    this.TREEVIEW_draw_create_request_parentElement.insertBefore(this.rootElement, this.TREEVIEW_draw_create_request_insertBeforeThisChild);
-    this.draw_addEvents();
+    EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_parentElement.insertBefore(EXPLORER_TreeViewDirector_rootElement, EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_insertBeforeThisChild);
+    EXPLORER_TreeViewDirector_draw_addEvents();
 
 
-    this.rootElement.style.width = '';
-    this.rootElement.style.height = '';
-    this.rootElement.style.contain = '';
+    EXPLORER_TreeViewDirector_rootElement.style.width = '';
+    EXPLORER_TreeViewDirector_rootElement.style.height = '';
+    EXPLORER_TreeViewDirector_rootElement.style.contain = '';
 
-    this.measureBaseElement();
+    EXPLORER_TreeViewDirector_measureBaseElement();
 
-    this.TREEVIEW_render_do_Scroll(timestamp);
+    EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp);
 }
 
 /**

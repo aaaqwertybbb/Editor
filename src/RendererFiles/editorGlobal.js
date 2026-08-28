@@ -1566,7 +1566,9 @@ function EDI_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
     EDI_textByteList.insertBytes(ints[fEDI_cursor_editPosition], EDI_cursor_gapBuffer, /*offset*/ 0, /*length*/ ints[fEDI_cursor_gapBufferCount]);
 
     let textSourceIdentifier = EDI_FORMATTED_textSourceIdentifier;
-    let lineAndColumnIndices = EDI_getLineAndColumnIndices(ints[fEDI_cursor_editPosition]);
+    EDI_getLineAndColumnIndices(ints[fEDI_cursor_editPosition]);
+    let lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
+    let lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
     // TODO: Account for any '\t\0\0\0' that exist on the line
     let text = EDI_decoder.decode(EDI_cursor_gapBuffer.subarray(0, ints[fEDI_cursor_gapBufferCount]));
     ints[F_didChangeTextDocument_version] = ints[F_didChangeTextDocument_version] + 1;
@@ -1576,10 +1578,10 @@ function EDI_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
     enqueueLSPNotification({
         absolutePath: textSourceIdentifier,
         version: version,
-        startLine: lineAndColumnIndices.indexLine,
-        startCharacter: lineAndColumnIndices.indexColumn,
-        endLine: lineAndColumnIndices.indexLine,
-        endCharacter: lineAndColumnIndices.indexColumn,
+        startLine: lineAndColumnIndices_indexLine,
+        startCharacter: lineAndColumnIndices_indexColumn,
+        endLine: lineAndColumnIndices_indexLine,
+        endCharacter: lineAndColumnIndices_indexColumn,
         text: text
     });
     // -------------------------

@@ -5679,13 +5679,15 @@ async function EDI_duplicateSelection() {
     let length = large - small;
 
     ints[fEDI_cursor_editPosition] = large;
-    let large_lineAndColumnIndices = EDI_getLineAndColumnIndices(large);
-    ints[fEDI_cursor_editIndexLine] = large_lineAndColumnIndices.indexLine;
-    ints[fEDI_cursor_editIndexColumn] = large_lineAndColumnIndices.indexColumn;
+    EDI_getLineAndColumnIndices(large);
+    let large_lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
+    let large_lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+    ints[fEDI_cursor_editIndexLine] = large_lineAndColumnIndices_indexLine;
+    ints[fEDI_cursor_editIndexColumn] = large_lineAndColumnIndices_indexColumn;
     ints[fEDI_cursor_editLength] = length;
 
-    ints[fEDI_cursor_indexLine] = large_lineAndColumnIndices.indexLine;
-    ints[fEDI_cursor_indexColumn] = large_lineAndColumnIndices.indexColumn;
+    ints[fEDI_cursor_indexLine] = large_lineAndColumnIndices_indexLine;
+    ints[fEDI_cursor_indexColumn] = large_lineAndColumnIndices_indexColumn;
 
     ints[fEDI_cursor_EDI_duplicate_small] = small;
     ints[fEDI_cursor_EDI_duplicate_length] = length;

@@ -5585,12 +5585,16 @@ function EDI_indentLess() {
         LARGE_pos = gINT_FIELDS[fEDI_cursor_selectionAnchor];
     }
 
-    let SMALL_lineAndColumnIndices = EDI_getLineAndColumnIndices(SMALL_pos);
+    EDI_getLineAndColumnIndices(SMALL_pos);
+    let SMALL_lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
+    let SMALL_lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
     
-    let LARGE_lineAndColumnIndices = EDI_getLineAndColumnIndices(LARGE_pos);
+    EDI_getLineAndColumnIndices(LARGE_pos);
+    let LARGE_lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
+    let LARGE_lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
 
     // starting index
-    let startingIndex = LARGE_lineAndColumnIndices.indexLine;
+    let startingIndex = LARGE_lineAndColumnIndices_indexLine;
     let startingLinePos = EDI_getLineBoundaryPositions(startingIndex);
     if (startingLinePos.start === LARGE_pos) {
         startingIndex -= 1;
@@ -5598,11 +5602,11 @@ function EDI_indentLess() {
             startingLinePos = EDI_getLineBoundaryPositions(startingIndex);
         }
     }
-    if (startingIndex < SMALL_lineAndColumnIndices.indexLine) {
+    if (startingIndex < SMALL_lineAndColumnIndices_indexLine) {
         return;
     }
 
-    gINT_FIELDS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] = SMALL_lineAndColumnIndices.indexLine;
+    gINT_FIELDS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] = SMALL_lineAndColumnIndices_indexLine;
     gINT_FIELDS[fEDI_indent_startingIndex] = startingIndex;
 
     if (gINT_FIELDS[fEDI_cursor_editLength] === 0) {

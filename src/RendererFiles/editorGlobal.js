@@ -3386,9 +3386,11 @@ function EDI_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
             }
         }
         else {
-            let largeLineAndColumnIndices = EDI_getLineAndColumnIndices(ints[fEDI_detail_largePosition]);
-            ints[fEDI_cursor_indexLine] = largeLineAndColumnIndices.indexLine;
-            ints[fEDI_cursor_indexColumn] = largeLineAndColumnIndices.indexColumn;
+            EDI_getLineAndColumnIndices(ints[fEDI_detail_largePosition]);
+            let largeLineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
+            let largeLineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+            ints[fEDI_cursor_indexLine] = largeLineAndColumnIndices_indexLine;
+            ints[fEDI_cursor_indexColumn] = largeLineAndColumnIndices_indexColumn;
             ints[fEDI_cursor_selectionEnd] = ints[fEDI_detail_largePosition];
         }
 

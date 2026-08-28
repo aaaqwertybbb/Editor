@@ -6972,20 +6972,24 @@ function EDI_removeSelection() {
     // editLength is 0 in this ...startEdit invocation intentionally, you cannot set the editLength until the end (TODO: remember what the exact reason was and put it here... I think it was because 'EDI_readLineEndPositionList' function is used rather than reading directly)
     EDI_startEdit(EditKind_RemoveTextNoBatching, smallPosition, /*editLength*/ 0);
 
-    let smallLineAndColumnIndices = EDI_getLineAndColumnIndices(smallPosition);
-    ints[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine] = smallLineAndColumnIndices.indexLine;
-    ints[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn] = smallLineAndColumnIndices.indexColumn;
-    ints[fEDI_cursor_indexLine] = smallLineAndColumnIndices.indexLine;
-    ints[fEDI_cursor_indexColumn] = smallLineAndColumnIndices.indexColumn;
-    ints[fEDI_cursor_editIndexLine] = smallLineAndColumnIndices.indexLine;
-    ints[fEDI_cursor_editIndexColumn] = smallLineAndColumnIndices.indexColumn;
+    EDI_getLineAndColumnIndices(smallPosition);
+    let smallLineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
+    let smallLineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+    ints[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine] = smallLineAndColumnIndices_indexLine;
+    ints[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn] = smallLineAndColumnIndices_indexColumn;
+    ints[fEDI_cursor_indexLine] = smallLineAndColumnIndices_indexLine;
+    ints[fEDI_cursor_indexColumn] = smallLineAndColumnIndices_indexColumn;
+    ints[fEDI_cursor_editIndexLine] = smallLineAndColumnIndices_indexLine;
+    ints[fEDI_cursor_editIndexColumn] = smallLineAndColumnIndices_indexColumn;
 
-    let largeLineAndColumnIndices = EDI_getLineAndColumnIndices(largePosition);
-    ints[fEDI_cursor_END_editIndexLine] = largeLineAndColumnIndices.indexLine;
-    ints[fEDI_cursor_END_editIndexColumn] = largeLineAndColumnIndices.indexColumn;
+    EDI_getLineAndColumnIndices(largePosition);
+    let largeLineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
+    let largeLineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+    ints[fEDI_cursor_END_editIndexLine] = largeLineAndColumnIndices_indexLine;
+    ints[fEDI_cursor_END_editIndexColumn] = largeLineAndColumnIndices_indexColumn;
 
-    ints[fEDI_cursor_indexLine] = smallLineAndColumnIndices.indexLine;
-    ints[fEDI_cursor_indexColumn] = smallLineAndColumnIndices.indexColumn;
+    ints[fEDI_cursor_indexLine] = smallLineAndColumnIndices_indexLine;
+    ints[fEDI_cursor_indexColumn] = smallLineAndColumnIndices_indexColumn;
 
     ints[fEDI_cursor_editLength] = editLength;
     

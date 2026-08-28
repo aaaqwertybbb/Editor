@@ -2865,14 +2865,18 @@ function EDI_createStyleForSelection() {
         // TODO: only somewhat simple viewport based virtualization is implemented from what I remember. i.e.: I think the divs are re-used, but every div is redrawn for the viewport, rather than only recalculating the css for the divs that came or left the viewport.
 
         let start = ints[fEDI_cursor_selectionAnchor];
-        let startLineAndColumnIndices = EDI_getLineAndColumnIndices(start);
-        let startLine = startLineAndColumnIndices.indexLine;
-        let startColumn = startLineAndColumnIndices.indexColumn;
+        EDI_getLineAndColumnIndices(start);
+        let startLineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
+        let startLineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+        let startLine = startLineAndColumnIndices_indexLine;
+        let startColumn = startLineAndColumnIndices_indexColumn;
 
         let end = ints[fEDI_cursor_selectionEnd];
-        let endLineAndColumnIndices = EDI_getLineAndColumnIndices(end);
-        let INCLUSIVEendLine = endLineAndColumnIndices.indexLine;
-        let INCLUSIVEendColumn = endLineAndColumnIndices.indexColumn;
+        EDI_getLineAndColumnIndices(end);
+        let endLineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
+        let endLineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+        let INCLUSIVEendLine = endLineAndColumnIndices_indexLine;
+        let INCLUSIVEendColumn = endLineAndColumnIndices_indexColumn;
 
         // # Virtualization
         if (startLine < ints[fEDI_virtualIndexLine]) {

@@ -4588,9 +4588,11 @@ function EDI_onKeyDown_ArrowRight(event) {
         else {
             large = ints[fEDI_cursor_selectionAnchor];
         }
-        let lineAndColumnIndices = EDI_getLineAndColumnIndices(large);
-        ints[fEDI_cursor_indexLine] = lineAndColumnIndices.indexLine;
-        ints[fEDI_cursor_indexColumn] = lineAndColumnIndices.indexColumn;
+        EDI_getLineAndColumnIndices(large);
+        let lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
+        let lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+        ints[fEDI_cursor_indexLine] = lineAndColumnIndices_indexLine;
+        ints[fEDI_cursor_indexColumn] = lineAndColumnIndices_indexColumn;
         ints[fEDI_cursor_selectionAnchor] = ints[fEDI_cursor_selectionEnd];
         ints[fEDI_cursor_selectionIndexAnchorLine] = ints[fEDI_cursor_selectionIndexEndLine];
         ints[fEDI_cursor_selectionIndexAnchorColumn] = ints[fEDI_cursor_selectionIndexEndColumn];

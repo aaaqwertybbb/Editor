@@ -9073,4 +9073,6 @@ Extremely small work load everyday, focus on weight loss.
 If a high work load happens naturally that's fine but don't stress about trying to force a large workload
 just make sure you do something everyday and things will just lead into one another and etc...
 
+When is renderer -> ipc serialized is this part synchronous? you can pool the DTOs
+
 */

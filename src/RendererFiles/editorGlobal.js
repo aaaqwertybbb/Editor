@@ -7918,8 +7918,10 @@ async function EDI_MenuOnClick(indexClicked, elementClicked) {
  * This clears the cursor's selection.
  */
 function EDI_moveCursor_position(intValue) {
-    let lineAndColumnIndices = EDI_getLineAndColumnIndices(intValue);
-    EDI_moveCursor_indexLine_indexColumn(lineAndColumnIndices.indexLine, lineAndColumnIndices.indexColumn);
+    EDI_getLineAndColumnIndices(intValue);
+    let lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
+    let lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+    EDI_moveCursor_indexLine_indexColumn(lineAndColumnIndices_indexLine, lineAndColumnIndices_indexColumn);
 }
 
 /**

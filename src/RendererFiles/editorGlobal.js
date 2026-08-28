@@ -5362,15 +5362,15 @@ function EDI_indentMore() {
     }
 
     EDI_getLineAndColumnIndices_raw(SMALL_pos);
-    let SMALL_lineAndColumnIndices;
-    let SMALL_lineAndColumnIndices_indexLine;
-    let SMALL_lineAndColumnIndices_indexColumn;
+    let SMALL_lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
+    let SMALL_lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
 
-
-    let LARGE_lineAndColumnIndices = EDI_getLineAndColumnIndices_raw(LARGE_pos);
+    EDI_getLineAndColumnIndices_raw(LARGE_pos);
+    let LARGE_lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
+    let LARGE_lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
 
     // # Determine the starting indexLine (the start is the large position, this confused me for a moment)
-    let startingIndex = LARGE_lineAndColumnIndices.indexLine;
+    let startingIndex = LARGE_lineAndColumnIndices_indexLine;
     let startingLinePos = EDI_getLineBoundaryPositions_raw(startingIndex);
     if (startingLinePos.start === LARGE_pos) {
         startingIndex -= 1;
@@ -5378,11 +5378,11 @@ function EDI_indentMore() {
             startingLinePos = EDI_getLineBoundaryPositions_raw(startingIndex);
         }
     }
-    if (startingIndex < SMALL_lineAndColumnIndices.indexLine) {
+    if (startingIndex < SMALL_lineAndColumnIndices_indexLine) {
         return;
     }
 
-    gINT_FIELDS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] = SMALL_lineAndColumnIndices.indexLine;
+    gINT_FIELDS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] = SMALL_lineAndColumnIndices_indexLine;
     gINT_FIELDS[fEDI_indent_startingIndex] = startingIndex;
 
     if (gINT_FIELDS[fEDI_cursor_editLength] === 0) {

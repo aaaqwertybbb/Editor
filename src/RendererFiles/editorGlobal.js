@@ -1567,8 +1567,8 @@ function EDI_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
 
     let textSourceIdentifier = EDI_FORMATTED_textSourceIdentifier;
     EDI_getLineAndColumnIndices(ints[fEDI_cursor_editPosition]);
-    let lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-    let lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+    let lineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
+    let lineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
     // TODO: Account for any '\t\0\0\0' that exist on the line
     let text = EDI_decoder.decode(EDI_cursor_gapBuffer.subarray(0, ints[fEDI_cursor_gapBufferCount]));
     ints[F_didChangeTextDocument_version] = ints[F_didChangeTextDocument_version] + 1;
@@ -2141,8 +2141,8 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
     }
     else {
         EDI_getLineAndColumnIndices_raw(ints[fEDI_cursor_editPosition]);
-        startLineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-        startLineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+        startLineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
+        startLineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
     }
     let endLineAndColumnIndices_indexLine;
     let endLineAndColumnIndices_indexColumn;
@@ -2152,8 +2152,8 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
     }
     else {
         EDI_getLineAndColumnIndices_raw(ints[fEDI_cursor_editPosition] + ints[fEDI_cursor_editLength]);
-        endLineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-        endLineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+        endLineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
+        endLineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
     }
 
     if (ints[fEDI_cursor_editLineFeedCount] > 0) {
@@ -2163,7 +2163,7 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
             let lineEndPos = EDI_lineEndPositionList_PENDING.data[i];
             if (ints[fEDI_cursor_editPosition] <= lineEndPos && ints[fEDI_cursor_editPosition] + ints[fEDI_cursor_editLength] > lineEndPos) {
                 EDI_getLineAndColumnIndices_raw(lineEndPos);
-                lastMatchedIndexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
+                lastMatchedIndexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
                 count++;
                 EDI_lineEndPositionList_PENDING.removeAt(i, 1);
             }
@@ -2866,15 +2866,15 @@ function EDI_createStyleForSelection() {
 
         let start = ints[fEDI_cursor_selectionAnchor];
         EDI_getLineAndColumnIndices(start);
-        let startLineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-        let startLineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+        let startLineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
+        let startLineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
         let startLine = startLineAndColumnIndices_indexLine;
         let startColumn = startLineAndColumnIndices_indexColumn;
 
         let end = ints[fEDI_cursor_selectionEnd];
         EDI_getLineAndColumnIndices(end);
-        let endLineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-        let endLineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+        let endLineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
+        let endLineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
         let INCLUSIVEendLine = endLineAndColumnIndices_indexLine;
         let INCLUSIVEendColumn = endLineAndColumnIndices_indexColumn;
 
@@ -3387,8 +3387,8 @@ function EDI_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
         }
         else {
             EDI_getLineAndColumnIndices(ints[fEDI_detail_largePosition]);
-            let largeLineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-            let largeLineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+            let largeLineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
+            let largeLineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
             ints[fEDI_cursor_indexLine] = largeLineAndColumnIndices_indexLine;
             ints[fEDI_cursor_indexColumn] = largeLineAndColumnIndices_indexColumn;
             ints[fEDI_cursor_selectionEnd] = ints[fEDI_detail_largePosition];
@@ -3412,8 +3412,8 @@ function EDI_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked) {
         //
         if (EDI_getPositionIndex_raw_cursor() !== ints[fEDI_detail_smallPosition]) {
             EDI_getLineAndColumnIndices(ints[fEDI_detail_smallPosition]);
-            let smallLineAndColumnPositionIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-            let smallLineAndColumnPositionIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+            let smallLineAndColumnPositionIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
+            let smallLineAndColumnPositionIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
             ints[fEDI_cursor_indexLine] = smallLineAndColumnPositionIndices_indexLine;
             ints[fEDI_cursor_indexColumn] = smallLineAndColumnPositionIndices_indexColumn;
         }
@@ -3431,8 +3431,8 @@ function EDI_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked) {
     else if (indexLineClicked < ints[fEDI_detailRank3OriginLine]) {
         if (ints[fEDI_cursor_selectionAnchor] < ints[fEDI_cursor_selectionEnd]) {
             EDI_getLineAndColumnIndices(ints[fEDI_detail_smallPosition]);
-            let smallLineAndColumnPositionIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-            let smallLineAndColumnPositionIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+            let smallLineAndColumnPositionIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
+            let smallLineAndColumnPositionIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
 
             ints[fEDI_cursor_indexLine] = smallLineAndColumnPositionIndices_indexLine;
             ints[fEDI_cursor_indexColumn] = smallLineAndColumnPositionIndices_indexColumn;
@@ -4472,8 +4472,8 @@ function EDI_onKeyDown_ArrowLeft(event) {
             small = ints[fEDI_cursor_selectionEnd];
         }
         EDI_getLineAndColumnIndices(small); // TODO: Check all of these whether they can be inlined (remove the single stage middle-man variable)
-        let lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-        let lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+        let lineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
+        let lineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
         ints[fEDI_cursor_indexLine] = lineAndColumnIndices_indexLine;
         ints[fEDI_cursor_indexColumn] = lineAndColumnIndices_indexColumn;
         ints[fEDI_cursor_selectionAnchor] = ints[fEDI_cursor_selectionEnd];
@@ -4589,8 +4589,8 @@ function EDI_onKeyDown_ArrowRight(event) {
             large = ints[fEDI_cursor_selectionAnchor];
         }
         EDI_getLineAndColumnIndices(large);
-        let lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-        let lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+        let lineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
+        let lineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
         ints[fEDI_cursor_indexLine] = lineAndColumnIndices_indexLine;
         ints[fEDI_cursor_indexColumn] = lineAndColumnIndices_indexColumn;
         ints[fEDI_cursor_selectionAnchor] = ints[fEDI_cursor_selectionEnd];
@@ -5680,8 +5680,8 @@ async function EDI_duplicateSelection() {
 
     ints[fEDI_cursor_editPosition] = large;
     EDI_getLineAndColumnIndices(large);
-    let large_lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-    let large_lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+    let large_lineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
+    let large_lineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
     ints[fEDI_cursor_editIndexLine] = large_lineAndColumnIndices_indexLine;
     ints[fEDI_cursor_editIndexColumn] = large_lineAndColumnIndices_indexColumn;
     ints[fEDI_cursor_editLength] = length;
@@ -6975,8 +6975,8 @@ function EDI_removeSelection() {
     EDI_startEdit(EditKind_RemoveTextNoBatching, smallPosition, /*editLength*/ 0);
 
     EDI_getLineAndColumnIndices(smallPosition);
-    let smallLineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-    let smallLineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+    let smallLineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
+    let smallLineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
     ints[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine] = smallLineAndColumnIndices_indexLine;
     ints[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn] = smallLineAndColumnIndices_indexColumn;
     ints[fEDI_cursor_indexLine] = smallLineAndColumnIndices_indexLine;
@@ -6985,8 +6985,8 @@ function EDI_removeSelection() {
     ints[fEDI_cursor_editIndexColumn] = smallLineAndColumnIndices_indexColumn;
 
     EDI_getLineAndColumnIndices(largePosition);
-    let largeLineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-    let largeLineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+    let largeLineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
+    let largeLineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
     ints[fEDI_cursor_END_editIndexLine] = largeLineAndColumnIndices_indexLine;
     ints[fEDI_cursor_END_editIndexColumn] = largeLineAndColumnIndices_indexColumn;
 

@@ -4202,11 +4202,17 @@ function EDI_editEvent_checkFor_NOTcanBatch_IndentLess() {
         SMALL_pos = gINT_FIELDS[fEDI_cursor_selectionEnd];
         LARGE_pos = gINT_FIELDS[fEDI_cursor_selectionAnchor];
     }
-    let SMALL_lineAndColumnIndices = EDI_getLineAndColumnIndices_raw(SMALL_pos);
-    let LARGE_lineAndColumnIndices = EDI_getLineAndColumnIndices_raw(LARGE_pos);
+
+    EDI_getLineAndColumnIndices_raw(SMALL_pos);
+    let SMALL_lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
+    let SMALL_lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
+
+    EDI_getLineAndColumnIndices_raw(LARGE_pos);
+    let LARGE_lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
+    let LARGE_lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
 
     // starting index
-    let startingIndex = LARGE_lineAndColumnIndices.indexLine;
+    let startingIndex = LARGE_lineAndColumnIndices_indexLine;
     let startingLinePos = EDI_getLineBoundaryPositions_raw(startingIndex);
     if (startingLinePos.start === LARGE_pos) {
         startingIndex -= 1;
@@ -4214,12 +4220,12 @@ function EDI_editEvent_checkFor_NOTcanBatch_IndentLess() {
             startingLinePos = EDI_getLineBoundaryPositions_raw(startingIndex);
         }
     }
-    if (startingIndex < SMALL_lineAndColumnIndices.indexLine) {
+    if (startingIndex < SMALL_lineAndColumnIndices_indexLine) {
         return;
     }
 
     // # Determine the total count of text that will be inserted, prior to actually beginning the edit.
-    if (gINT_FIELDS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] === SMALL_lineAndColumnIndices.indexLine &&
+    if (gINT_FIELDS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] === SMALL_lineAndColumnIndices_indexLine &&
         gINT_FIELDS[fEDI_indent_startingIndex] === startingIndex) {
 
             return false;
@@ -5354,7 +5360,13 @@ function EDI_indentMore() {
         SMALL_pos = gINT_FIELDS[fEDI_cursor_selectionEnd];
         LARGE_pos = gINT_FIELDS[fEDI_cursor_selectionAnchor];
     }
-    let SMALL_lineAndColumnIndices = EDI_getLineAndColumnIndices_raw(SMALL_pos);
+
+    EDI_getLineAndColumnIndices_raw(SMALL_pos);
+    let SMALL_lineAndColumnIndices;
+    let SMALL_lineAndColumnIndices_indexLine;
+    let SMALL_lineAndColumnIndices_indexColumn;
+
+
     let LARGE_lineAndColumnIndices = EDI_getLineAndColumnIndices_raw(LARGE_pos);
 
     // # Determine the starting indexLine (the start is the large position, this confused me for a moment)

@@ -2725,6 +2725,10 @@ function EDI_getLineAndColumnIndices_raw(positionIndex) {
 
     if (indexLine === -1) {
         return false;
+        //return {
+        //  indexLine: 0,
+        //  indexColumn: 0,  
+        //};
     }
 
     if (indexLine === 0) {
@@ -2739,6 +2743,12 @@ function EDI_getLineAndColumnIndices_raw(positionIndex) {
     return true;
 }
 
+/**
+ * Returns 'true' if success otherwise 'false' the "return" values are indexLine, and indexColumn; which are stored in 'fieldBuffer.js'
+ * as 'gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine] = indexLine;' and 'gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn] = indexColumn;'.
+ * 
+ * TODO: Local variables for this looping logic?
+ */
 function EDI_getLineAndColumnIndices(positionIndex) {
     let left = 0;
     let right = EDI_lineEndPositionList.count - 1;
@@ -2762,15 +2772,16 @@ function EDI_getLineAndColumnIndices(positionIndex) {
             left = mid + 1;
         }
         else {
-            return; // NaN
+            return false; // NaN
         }
     }
 
     if (indexLine === -1) {
-        return {
-          indexLine: 0,
-          indexColumn: 0,  
-        };
+        return false;
+        //return {
+        //  indexLine: 0,
+        //  indexColumn: 0,  
+        //};
     }
 
     if (indexLine === 0) {
@@ -2780,10 +2791,9 @@ function EDI_getLineAndColumnIndices(positionIndex) {
         indexColumn = positionIndex - (EDI_readLineEndPositionList(indexLine - 1) + 1);
     }
 
-    return {
-        indexLine: indexLine,
-        indexColumn: indexColumn,
-    };
+    gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine] = indexLine;
+    gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn] = indexColumn;
+    return true;
 }
 
 /**

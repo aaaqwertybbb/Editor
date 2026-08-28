@@ -3411,9 +3411,11 @@ function EDI_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked) {
         // so you'd probably want to do both attach to window and protect against large movements that skip the exact threshold when transitioning.
         //
         if (EDI_getPositionIndex_raw_cursor() !== ints[fEDI_detail_smallPosition]) {
-            let smallLineAndColumnPositionIndices = EDI_getLineAndColumnIndices(ints[fEDI_detail_smallPosition]);
-            ints[fEDI_cursor_indexLine] = smallLineAndColumnPositionIndices.indexLine;
-            ints[fEDI_cursor_indexColumn] = smallLineAndColumnPositionIndices.indexColumn;
+            EDI_getLineAndColumnIndices(ints[fEDI_detail_smallPosition]);
+            let smallLineAndColumnPositionIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
+            let smallLineAndColumnPositionIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+            ints[fEDI_cursor_indexLine] = smallLineAndColumnPositionIndices_indexLine;
+            ints[fEDI_cursor_indexColumn] = smallLineAndColumnPositionIndices_indexColumn;
         }
 
         if (ints[fEDI_cursor_selectionEnd] !== ints[fEDI_detail_smallPosition]) {
@@ -3428,10 +3430,12 @@ function EDI_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked) {
     }
     else if (indexLineClicked < ints[fEDI_detailRank3OriginLine]) {
         if (ints[fEDI_cursor_selectionAnchor] < ints[fEDI_cursor_selectionEnd]) {
-            let smallLineAndColumnPositionIndices = EDI_getLineAndColumnIndices(ints[fEDI_detail_smallPosition]);
+            EDI_getLineAndColumnIndices(ints[fEDI_detail_smallPosition]);
+            let smallLineAndColumnPositionIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
+            let smallLineAndColumnPositionIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
 
-            ints[fEDI_cursor_indexLine] = smallLineAndColumnPositionIndices.indexLine;
-            ints[fEDI_cursor_indexColumn] = smallLineAndColumnPositionIndices.indexColumn;
+            ints[fEDI_cursor_indexLine] = smallLineAndColumnPositionIndices_indexLine;
+            ints[fEDI_cursor_indexColumn] = smallLineAndColumnPositionIndices_indexColumn;
 
             ints[fEDI_cursor_selectionEnd] = ints[fEDI_detail_smallPosition];
 

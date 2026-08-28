@@ -9056,4 +9056,16 @@ I gotta calm down cuz it is almost my bed time
 I feel so good right now
 but yeah I gotta calm down so I can go to bed on time
 
+=========
+
+- [ ] Line and column indices needs to be moved to "return" to field buffer rather than an object.
+
+Each edit needs to keep the lsp up to date.
+i.e.:
+- Get when the edits finalize that the lsp is always in sync at that point
+    (minus the whole "tab as '\t\0\0\0' scenario, that's for another time).
+Extremely small work load everyday, focus on weight loss.
+If a high work load happens naturally that's fine but don't stress about trying to force a large workload
+just make sure you do something everyday and things will just lead into one another and etc...
+
 */

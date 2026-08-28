@@ -4806,9 +4806,11 @@ async function EDI_onKeyDown_keyLengthEqualsOne_ctrlKey(event) {
             EDI_finalizeAllCursors(); // TODO: Multicursor bad
             gINT_FIELDS[fEDI_cursor_selectionAnchor] = 0;
             gINT_FIELDS[fEDI_cursor_selectionEnd] = EDI_textByteList.count;
-            let selectionEndLineAndColumnIndices = EDI_getLineAndColumnIndices(gINT_FIELDS[fEDI_cursor_selectionEnd]);
-            gINT_FIELDS[fEDI_cursor_indexLine] = selectionEndLineAndColumnIndices.indexLine;
-            gINT_FIELDS[fEDI_cursor_indexColumn] = selectionEndLineAndColumnIndices.indexColumn;
+            EDI_getLineAndColumnIndices(gINT_FIELDS[fEDI_cursor_selectionEnd]);
+            let selectionEndLineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
+            let selectionEndLineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+            gINT_FIELDS[fEDI_cursor_indexLine] = selectionEndLineAndColumnIndices_indexLine;
+            gINT_FIELDS[fEDI_cursor_indexColumn] = selectionEndLineAndColumnIndices_indexColumn;
             EDI_render_request(RenderKind_Cursor_flag_doNotScrollIntoView);
             break;
         case 'f':
@@ -5582,7 +5584,9 @@ function EDI_indentLess() {
         SMALL_pos = gINT_FIELDS[fEDI_cursor_selectionEnd];
         LARGE_pos = gINT_FIELDS[fEDI_cursor_selectionAnchor];
     }
+
     let SMALL_lineAndColumnIndices = EDI_getLineAndColumnIndices(SMALL_pos);
+    
     let LARGE_lineAndColumnIndices = EDI_getLineAndColumnIndices(LARGE_pos);
 
     // starting index

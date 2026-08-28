@@ -552,6 +552,9 @@ module.exports = function (babel) {
     "byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge",
     "byteEXPLORER_TreeViewDirector_scrollIsFetchingData",
 
+    "fEDI_getLineAndColumnIndices_indexLine",
+    "fEDI_getLineAndColumnIndices_indexColumn",
+
   ];
 
   return {

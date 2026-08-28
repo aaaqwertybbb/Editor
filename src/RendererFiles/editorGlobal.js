@@ -2131,25 +2131,27 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
     const ints = gINT_FIELDS;
 
     // TODO: surely u'd get this before doing the edit?
-    let startLineAndColumnIndices;
+    let startLineAndColumnIndices_indexLine;
+    let startLineAndColumnIndices_indexColumn;
     if (ints[fEDI_cursor_editKind] === EditKind_RemoveTextNoBatching) {
-        startLineAndColumnIndices = {
-            indexLine: ints[fEDI_cursor_editIndexLine],
-            indexColumn: ints[fEDI_cursor_editIndexColumn],
-        };
+        startLineAndColumnIndices_indexLine = ints[fEDI_cursor_editIndexLine];
+        startLineAndColumnIndices_indexColumn = ints[fEDI_cursor_editIndexColumn];
     }
     else {
-        startLineAndColumnIndices = EDI_getLineAndColumnIndices_raw(ints[fEDI_cursor_editPosition]);
+        EDI_getLineAndColumnIndices_raw(ints[fEDI_cursor_editPosition]);
+        startLineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
+        startLineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
     }
-    let endLineAndColumnIndices;
+    let endLineAndColumnIndices_indexLine;
+    let endLineAndColumnIndices_indexColumn;
     if (ints[fEDI_cursor_editKind] === EditKind_RemoveTextNoBatching) {
-        endLineAndColumnIndices = {
-            indexLine: ints[fEDI_cursor_END_editIndexLine],
-            indexColumn: ints[fEDI_cursor_END_editIndexColumn],
-        };
+        endLineAndColumnIndices_indexLine = ints[fEDI_cursor_END_editIndexLine];
+        endLineAndColumnIndices_indexColumn = ints[fEDI_cursor_END_editIndexColumn];
     }
     else {
-        endLineAndColumnIndices = EDI_getLineAndColumnIndices_raw(ints[fEDI_cursor_editPosition] + ints[fEDI_cursor_editLength]);
+        EDI_getLineAndColumnIndices_raw(ints[fEDI_cursor_editPosition] + ints[fEDI_cursor_editLength]);
+        endLineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
+        endLineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
     }
 
     if (ints[fEDI_cursor_editLineFeedCount] > 0) {
@@ -2158,7 +2160,8 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
         for (let i = EDI_lineEndPositionList_PENDING.count - 1; i >= 0; i--) {
             let lineEndPos = EDI_lineEndPositionList_PENDING.data[i];
             if (ints[fEDI_cursor_editPosition] <= lineEndPos && ints[fEDI_cursor_editPosition] + ints[fEDI_cursor_editLength] > lineEndPos) {
-                lastMatchedIndexLine = EDI_getLineAndColumnIndices_raw(lineEndPos).indexLine;
+                EDI_getLineAndColumnIndices_raw(lineEndPos);
+                lastMatchedIndexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
                 count++;
                 EDI_lineEndPositionList_PENDING.removeAt(i, 1);
             }
@@ -2218,10 +2221,10 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
     enqueueLSPNotification({
         absolutePath: textSourceIdentifier,
         version: version,
-        startLine: startLineAndColumnIndices.indexLine,
-        startCharacter: startLineAndColumnIndices.indexColumn,
-        endLine: endLineAndColumnIndices.indexLine,
-        endCharacter: endLineAndColumnIndices.indexColumn,
+        startLine: startLineAndColumnIndices_indexLine,
+        startCharacter: startLineAndColumnIndices_indexColumn,
+        endLine: endLineAndColumnIndices_indexLine,
+        endCharacter: endLineAndColumnIndices_indexColumn,
         text: text
     });
     // -------------------------
@@ -2687,6 +2690,12 @@ function EDI_drawCursor(NOTscrollCursorIntoView) {
     }
 }
 
+/**
+ * Returns 'true' if success otherwise 'false' the "return" values are indexLine, and indexColumn; which are stored in 'fieldBuffer.js'
+ * as 'gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine] = indexLine;' and 'gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn] = indexColumn;'.
+ * 
+ * TODO: Local variables for this looping logic?
+ */
 function EDI_getLineAndColumnIndices_raw(positionIndex) {
     let left = 0;
     let right = EDI_lineEndPositionList.count - 1;
@@ -2710,15 +2719,12 @@ function EDI_getLineAndColumnIndices_raw(positionIndex) {
             left = mid + 1;
         }
         else {
-            return; // NaN
+            return false; // NaN
         }
     }
 
     if (indexLine === -1) {
-        return {
-          indexLine: 0,
-          indexColumn: 0,  
-        };
+        return false;
     }
 
     if (indexLine === 0) {
@@ -2728,10 +2734,9 @@ function EDI_getLineAndColumnIndices_raw(positionIndex) {
         indexColumn = positionIndex - (EDI_lineEndPositionList.data[indexLine - 1] + 1);
     }
 
-    return {
-        indexLine: indexLine,
-        indexColumn: indexColumn,
-    };
+    gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine] = indexLine;
+    gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn] = indexColumn;
+    return true;
 }
 
 function EDI_getLineAndColumnIndices(positionIndex) {

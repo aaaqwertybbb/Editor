@@ -285,7 +285,7 @@ const CONST_EDI_cursor_htmlId = "EDI_cursor-1";
 ////////////////////////////
 ////////////////////////////
 
-const gINT_FIELDS = new Uint32Array(166);
+const gINT_FIELDS = new Uint32Array(168);
 
 const fEDI_lineHeight = 0;
 gINT_FIELDS[fEDI_lineHeight] = 20;
@@ -697,7 +697,10 @@ const fEXPLORER_TreeViewDirector_pullData_array_count = 164;
 
 const fEXPLORER_TreeViewDirector_pullData_result_count = 165;
 
-// gINT_FIELDS[fEXPLORER_TreeViewDirector_pullData_result_count]
+const fEDI_getLineAndColumnIndices_indexLine = 166;
+const fEDI_getLineAndColumnIndices_indexColumn = 167;
+
+// gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn]
 
 // inclusive final index is 138
 

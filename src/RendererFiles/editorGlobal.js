@@ -636,7 +636,7 @@ function EDI_onScroll_WRAPIT() {
  * 
  */
 function EDI_render_do_Scroll(timestamp) {
-    let local_lineHeight = INTS[fEDI_lineHeight];
+    const local_lineHeight = INTS[fEDI_lineHeight];
 
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
     INTS[fEDI_virtualIndexLine] = (Math.floor(INTS[fEDI_lastReadNumber_scrollTop] / local_lineHeight));
@@ -682,12 +682,9 @@ function EDI_render_do_Scroll(timestamp) {
     let beltIndexLine; // The 0th loop will increment somewhat awkwardly. see the: "This decrement avoids that." comments for each case.
 
     let local_ArrayFrom_textElement_children_length = INTS[fEDI_ArrayFrom_textElement_children_length];
-    let local_ArrayFrom_gutter_children = ArrayFrom_gutter_children;
-    let local_ArrayFrom_textElement_children = ArrayFrom_textElement_children;
     let EDI_lineEndPositionList_data = EDI_lineEndPositionList.data;
     let EDI_lineEndPositionList_count = EDI_lineEndPositionList.count;
     let EDI_textByteList_bytes = EDI_textByteList.bytes;
-    let local_EDI_decoder = EDI_decoder;
 
     if (diff > 0 && diff < INTS[fEDI_virtualCount]) {
 
@@ -745,8 +742,8 @@ function EDI_render_do_Scroll(timestamp) {
         
         beltIndexLine = (beltIndexLine + 1) % local_ArrayFrom_textElement_children_length;
 
-        let gutter = local_ArrayFrom_gutter_children[beltIndexLine];
-        let div = local_ArrayFrom_textElement_children[beltIndexLine];
+        const gutter = ArrayFrom_gutter_children[beltIndexLine];
+        const div = ArrayFrom_textElement_children[beltIndexLine];
 
         lineStart = lineEnd + 1;
         if (indexLine < EDI_lineEndPositionList_count) {
@@ -759,15 +756,21 @@ function EDI_render_do_Scroll(timestamp) {
         }
 
         // Corrupt state if assumption is not met: - All lines of text are to contain at least 1 span at all times even if that span is just an empty one.
-        let span = div.children[0];
+        const span = div.children[0];
         span.className = 'eN';
-        span.textContent = lineStart === lineEnd ? '' : local_EDI_decoder.decode(EDI_textByteList_bytes.subarray(lineStart, lineEnd));
+        span.textContent = lineStart === lineEnd ? '' : EDI_decoder.decode(EDI_textByteList_bytes.subarray(lineStart, lineEnd));
 
         for (let i = div.children.length - 1; i >= 1; i--) {
             div.removeChild(div.children[i]);
         }
+        // TODO: This change appears to actually cause re-evaluation of 'div.children.length' every loop.
+        // div.lastChild is good though.
+        //
+        //while (div.children.length > 1) {
+        //    div.removeChild(div.lastChild);
+        //}
 
-        let translateY = `translateY(${vertical}px)`;
+        const translateY = `translateY(${vertical}px)`;
         vertical += local_lineHeight; // TODO: Hoist this straight up the value that was in the array it is inside a loop
 
         gutter.style.transform = translateY;

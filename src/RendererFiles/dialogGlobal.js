@@ -60,23 +60,21 @@ function DIALOG_render_do_DimensionsChanged() {
     let DIALOG_element = document.getElementById('DIALOG');
     if (!DIALOG_element) return;
 
-    const ints = INTS;
-
-    if (ints[fDIALOG_left_DRAWN] !== ints[fDIALOG_left]) {
-        ints[fDIALOG_left_DRAWN] = ints[fDIALOG_left];
-        DIALOG_element.style.left = `${ints[fDIALOG_left_DRAWN]}px`;
+    if (INTS[fDIALOG_left_DRAWN] !== INTS[fDIALOG_left]) {
+        INTS[fDIALOG_left_DRAWN] = INTS[fDIALOG_left];
+        DIALOG_element.style.left = `${INTS[fDIALOG_left_DRAWN]}px`;
     }
-    if (ints[fDIALOG_top_DRAWN] !== ints[fDIALOG_top]) {
-        ints[fDIALOG_top_DRAWN] = ints[fDIALOG_top];
-        DIALOG_element.style.top = `${ints[fDIALOG_top_DRAWN]}px`;
+    if (INTS[fDIALOG_top_DRAWN] !== INTS[fDIALOG_top]) {
+        INTS[fDIALOG_top_DRAWN] = INTS[fDIALOG_top];
+        DIALOG_element.style.top = `${INTS[fDIALOG_top_DRAWN]}px`;
     }
-    if (ints[fDIALOG_width_DRAWN] !== ints[fDIALOG_width]) {
-        ints[fDIALOG_width_DRAWN] = ints[fDIALOG_width];
-        DIALOG_element.style.width = `${ints[fDIALOG_width_DRAWN]}px`;
+    if (INTS[fDIALOG_width_DRAWN] !== INTS[fDIALOG_width]) {
+        INTS[fDIALOG_width_DRAWN] = INTS[fDIALOG_width];
+        DIALOG_element.style.width = `${INTS[fDIALOG_width_DRAWN]}px`;
     }
-    if (ints[fDIALOG_height_DRAWN] !== ints[fDIALOG_height]) {
-        ints[fDIALOG_height_DRAWN] = ints[fDIALOG_height];
-        DIALOG_element.style.height = `${ints[fDIALOG_height_DRAWN]}px`;
+    if (INTS[fDIALOG_height_DRAWN] !== INTS[fDIALOG_height]) {
+        INTS[fDIALOG_height_DRAWN] = INTS[fDIALOG_height];
+        DIALOG_element.style.height = `${INTS[fDIALOG_height_DRAWN]}px`;
     }
     
 }

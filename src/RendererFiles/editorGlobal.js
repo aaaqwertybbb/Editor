@@ -192,10 +192,9 @@ let ArrayFrom_textElement_children = [];
 let EDI_language_line_lex;
 
 function EDI_cursor_hasSelection() {
-    const ints = INTS;
-    return ints[fEDI_cursor_selectionAnchor] >= 0 &&
-            ints[fEDI_cursor_selectionEnd] >= 0 &&
-            ints[fEDI_cursor_selectionAnchor] != ints[fEDI_cursor_selectionEnd];
+    return INTS[fEDI_cursor_selectionAnchor] >= 0 &&
+            INTS[fEDI_cursor_selectionEnd] >= 0 &&
+            INTS[fEDI_cursor_selectionAnchor] != INTS[fEDI_cursor_selectionEnd];
 }
 
 /**
@@ -204,41 +203,40 @@ function EDI_cursor_hasSelection() {
  * Somewhat duplicated code: This messes with the language features if I invoke clear() in the constructor, it puts "| undefined" on all the types.
  */
 function EDI_cursor_clear() {
-    const ints = INTS;
-    ints[fEDI_cursor_indexLine] = 0;
-    ints[fEDI_cursor_indexColumn] = 0;
-    ints[fEDI_cursor_STORED_indexColumn] = 0;
-    ints[fEDI_cursor_cursorTranslateYValue] = 0;
-    ints[fEDI_cursor_cursorTranslateXValue] = 0;
-    ints[fEDI_cursor_selectionAnchor] = 0;
-    ints[fEDI_cursor_selectionEnd] = 0;
-    ints[fEDI_cursor_DRAWN_selectionAnchor] = 0;
-    ints[fEDI_cursor_DRAWN_selectionEnd] = 0;
-    ints[fEDI_cursor_DRAWN_selection_virtualIndexLine] = 0;
-    ints[fEDI_cursor_DRAWN_selection_virtualCount] = 0;
-    ints[fEDI_cursor_editKind] = EditKind_None;
-    ints[fEDI_cursor_editLength] = 0;
-    ints[fEDI_cursor_editPosition] = 0;
-    ints[fEDI_cursor_editIndexLine] = 0;
-    ints[fEDI_cursor_editIndexColumn] = 0;
-    ints[fEDI_cursor_editRenderedDisplacement] = 0;
-    ints[fEDI_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET] = 0;
-    ints[fEDI_cursor_END_editIndexLine] = 0;
-    ints[fEDI_cursor_END_editIndexColumn] = 0;
+    INTS[fEDI_cursor_indexLine] = 0;
+    INTS[fEDI_cursor_indexColumn] = 0;
+    INTS[fEDI_cursor_STORED_indexColumn] = 0;
+    INTS[fEDI_cursor_cursorTranslateYValue] = 0;
+    INTS[fEDI_cursor_cursorTranslateXValue] = 0;
+    INTS[fEDI_cursor_selectionAnchor] = 0;
+    INTS[fEDI_cursor_selectionEnd] = 0;
+    INTS[fEDI_cursor_DRAWN_selectionAnchor] = 0;
+    INTS[fEDI_cursor_DRAWN_selectionEnd] = 0;
+    INTS[fEDI_cursor_DRAWN_selection_virtualIndexLine] = 0;
+    INTS[fEDI_cursor_DRAWN_selection_virtualCount] = 0;
+    INTS[fEDI_cursor_editKind] = EditKind_None;
+    INTS[fEDI_cursor_editLength] = 0;
+    INTS[fEDI_cursor_editPosition] = 0;
+    INTS[fEDI_cursor_editIndexLine] = 0;
+    INTS[fEDI_cursor_editIndexColumn] = 0;
+    INTS[fEDI_cursor_editRenderedDisplacement] = 0;
+    INTS[fEDI_cursor_editRenderedDisplacement_INDEX_LINE_OFFSET] = 0;
+    INTS[fEDI_cursor_END_editIndexLine] = 0;
+    INTS[fEDI_cursor_END_editIndexColumn] = 0;
 
-    ints[fEDI_cursor_gapBufferCount] = 0;
+    INTS[fEDI_cursor_gapBufferCount] = 0;
 
     EDI_cursor_enterKey_newLinePlusIndentation_byteList = null;
     EDI_cursor_cached_indentation_string = null;
     BYTES[byteEDI_cursor_enterKeyEventKind] = EnterKeyEventKind_None;
 
-    ints[fEDI_cursor_editLineFeedCount] = 0;
+    INTS[fEDI_cursor_editLineFeedCount] = 0;
     EDI_cursor_edit_flagLineChanged = -1;
 
     EDI_cursor_EDI_paste_clipboardContent = null;
 
-    ints[fEDI_cursor_EDI_duplicate_small] = 0;
-    ints[fEDI_cursor_EDI_duplicate_length] = 0;
+    INTS[fEDI_cursor_EDI_duplicate_small] = 0;
+    INTS[fEDI_cursor_EDI_duplicate_length] = 0;
 }
 
 function EDI_init() {
@@ -389,21 +387,20 @@ function EDI_render_do_cursor_flag_doNotScrollIntoView(timestamp) {
 }
 
 function EDI_render_do_InsertLtr() {
-    const ints = INTS;
-    if (ints[fEDI_cursor_editKind] !== EditKind_InsertLtr) {
+    if (INTS[fEDI_cursor_editKind] !== EditKind_InsertLtr) {
         return;
     }
-    if (ints[fEDI_cursor_editRenderedDisplacement] < ints[fEDI_cursor_editLength]) {
+    if (INTS[fEDI_cursor_editRenderedDisplacement] < INTS[fEDI_cursor_editLength]) {
         if (EDI_cursor_gapBufferWriteToSpanElement) {
 
-            let x = EDI_decoder.decode(EDI_cursor_gapBuffer.subarray(ints[fEDI_cursor_editRenderedDisplacement], ints[fEDI_cursor_editLength]));
+            let x = EDI_decoder.decode(EDI_cursor_gapBuffer.subarray(INTS[fEDI_cursor_editRenderedDisplacement], INTS[fEDI_cursor_editLength]));
 
             EDI_cursor_gapBufferWriteToSpanElement.textContent = 
-                EDI_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (ints[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]/* + ints[fEDI_offsetWithinSpan]*/) + ints[fEDI_cursor_editRenderedDisplacement]) +
+                EDI_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]/* + ints[fEDI_offsetWithinSpan]*/) + INTS[fEDI_cursor_editRenderedDisplacement]) +
                 x +
-                EDI_cursor_gapBufferWriteToSpanElement.textContent.slice((ints[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]/* + ints[fEDI_offsetWithinSpan]*/) + ints[fEDI_cursor_editRenderedDisplacement]);
+                EDI_cursor_gapBufferWriteToSpanElement.textContent.slice((INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]/* + ints[fEDI_offsetWithinSpan]*/) + INTS[fEDI_cursor_editRenderedDisplacement]);
 
-            ints[fEDI_cursor_editRenderedDisplacement] = ints[fEDI_cursor_editLength];
+            INTS[fEDI_cursor_editRenderedDisplacement] = INTS[fEDI_cursor_editLength];
         }
     }
 }
@@ -455,29 +452,26 @@ function EDI_render_request(renderKind) {
 }
 
 function EDI_render_do_CreateViewport() {
-
-    const ints = INTS;
-
-    let remember_scrollTop = ints[fEDI_lastReadNumber_scrollTop];
-    let remember_scrollLeft = ints[fEDI_lastReadNumber_scrollLeft];
+    let remember_scrollTop = INTS[fEDI_lastReadNumber_scrollTop];
+    let remember_scrollLeft = INTS[fEDI_lastReadNumber_scrollLeft];
 
     EDI_baseElement.scrollTop = 0;
     EDI_baseElement.scrollLeft = 0;
-    ints[fEDI_lastReadNumber_scrollLeft] = 0;
+    INTS[fEDI_lastReadNumber_scrollLeft] = 0;
 
-    ints[fEDI_ONSCROLLvirtualCount] = ints[fEDI_virtualCount];
+    INTS[fEDI_ONSCROLLvirtualCount] = INTS[fEDI_virtualCount];
 
     EDI_gutter.innerHTML = '';
     EDI_textElement.innerHTML = '';
 
-    ints[fEDI_EDI_beltIndexZero] = 0;
+    INTS[fEDI_EDI_beltIndexZero] = 0;
     let translateY = `translateY(0px)`;
     let left = gutterWidthTotal_withPxUnits;
-    let gutterWidth = `${ints[fEDI_gutterWidthStyleValue]}px`;
+    let gutterWidth = `${INTS[fEDI_gutterWidthStyleValue]}px`;
 
-    for (var i = 0; i < ints[fEDI_virtualCount]; i++) {
+    for (var i = 0; i < INTS[fEDI_virtualCount]; i++) {
 
-        let indexLine = i + ints[fEDI_virtualIndexLine];
+        let indexLine = i + INTS[fEDI_virtualIndexLine];
 
         let gutterLineElement = document.createElement('div');
         if (indexLine >= EDI_lineEndPositionList.count) {
@@ -503,7 +497,7 @@ function EDI_render_do_CreateViewport() {
 
     ArrayFrom_gutter_children = Array.from(EDI_gutter.children);
     ArrayFrom_textElement_children = Array.from(EDI_textElement.children);
-    ints[fEDI_ArrayFrom_textElement_children_length] = ArrayFrom_textElement_children.length;
+    INTS[fEDI_ArrayFrom_textElement_children_length] = ArrayFrom_textElement_children.length;
 
     EDI_drawHorizontalScrollbar(); // TODO: The 'setting EDI_baseElement.scrollLeft' line appearing after 'EDI_drawHorizontalScrollbar();' in this function strikes me as odd when skimming the code. (1 of 2)
 
@@ -642,23 +636,22 @@ function EDI_onScroll_WRAPIT() {
  * 
  */
 function EDI_render_do_Scroll(timestamp) {
-    const ints = INTS;
-    let local_lineHeight = ints[fEDI_lineHeight];
+    let local_lineHeight = INTS[fEDI_lineHeight];
 
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
-    ints[fEDI_virtualIndexLine] = (Math.floor(ints[fEDI_lastReadNumber_scrollTop] / local_lineHeight));
+    INTS[fEDI_virtualIndexLine] = (Math.floor(INTS[fEDI_lastReadNumber_scrollTop] / local_lineHeight));
     
     // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 1 of 4)
-    let local_prevVli = ints[fEDI_ONSCROLLvirtualIndexLine];
-    let local_currVli = ints[fEDI_virtualIndexLine];
-    ints[fEDI_ONSCROLLvirtualIndexLine] = local_currVli;
+    let local_prevVli = INTS[fEDI_ONSCROLLvirtualIndexLine];
+    let local_currVli = INTS[fEDI_virtualIndexLine];
+    INTS[fEDI_ONSCROLLvirtualIndexLine] = local_currVli;
 
     // TODO: Instead of adding 1000 here you should do it when you check the debounce
-    ints[fEDI_scrollEndDeadline] = timestamp + 1000; // TODO: Move this to the scroll event handler (probably-maybe)
+    INTS[fEDI_scrollEndDeadline] = timestamp + 1000; // TODO: Move this to the scroll event handler (probably-maybe)
 
     // TODO: !... vs checking for 0 or 1... '===', then '!', then '=='
     // because '===' skips any check for type coercion
-    if (ints[fEDI_intFalsey_isScrolling] === 0) {
+    if (INTS[fEDI_intFalsey_isScrolling] === 0) {
         // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 2 of 4)
         // ...and here the locals are passed to the LeadingEdge because only when performing the LeadingEdge do you need to use the global versions.
 
@@ -666,14 +659,14 @@ function EDI_render_do_Scroll(timestamp) {
         
         // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 4 of 4)
         // ...and here the locals assigned the same value as the globals in case 'EDI_onScroll_LeadingEdge' modified the globals.
-        local_prevVli = ints[fEDI_prevVli];
-        local_currVli = ints[fEDI_currVli];
+        local_prevVli = INTS[fEDI_prevVli];
+        local_currVli = INTS[fEDI_currVli];
     }
 
-    ints[fEDI_ONSCROLLscrollTop] = ints[fEDI_lastReadNumber_scrollTop]; // TODO: Move this to the scroll event handler (probably-maybe)
+    INTS[fEDI_ONSCROLLscrollTop] = INTS[fEDI_lastReadNumber_scrollTop]; // TODO: Move this to the scroll event handler (probably-maybe)
 
     // TODO: Move this to the leading edge? (maybe)
-    if (ints[fEDI_cursor_editKind] !== EditKind_None) {
+    if (INTS[fEDI_cursor_editKind] !== EditKind_None) {
         // TODO: Timing issue, someone typing while they scroll
         // TODO: You need to finalize all the cursors not just the primary
         // TODO: You probably need to "check all the cursors" too not just the primary
@@ -688,7 +681,7 @@ function EDI_render_do_Scroll(timestamp) {
     let upperBound;
     let beltIndexLine; // The 0th loop will increment somewhat awkwardly. see the: "This decrement avoids that." comments for each case.
 
-    let local_ArrayFrom_textElement_children_length = ints[fEDI_ArrayFrom_textElement_children_length];
+    let local_ArrayFrom_textElement_children_length = INTS[fEDI_ArrayFrom_textElement_children_length];
     let local_ArrayFrom_gutter_children = ArrayFrom_gutter_children;
     let local_ArrayFrom_textElement_children = ArrayFrom_textElement_children;
     let EDI_lineEndPositionList_data = EDI_lineEndPositionList.data;
@@ -696,38 +689,38 @@ function EDI_render_do_Scroll(timestamp) {
     let EDI_textByteList_bytes = EDI_textByteList.bytes;
     let local_EDI_decoder = EDI_decoder;
 
-    if (diff > 0 && diff < ints[fEDI_virtualCount]) {
+    if (diff > 0 && diff < INTS[fEDI_virtualCount]) {
 
-        ints[fEDI_sum_diffPositive] += diff;
+        INTS[fEDI_sum_diffPositive] += diff;
 
         // Note: this case has 'vertical = (ints[fEDI_prevVli] + ints[fEDI_virtualCount]) * local_lineHeight;' I believe 'ints[fEDI_virtualCount]' === 'ints[fEDI_ONSCROLLvirtualCount]' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
-        lowerBound = local_prevVli + ints[fEDI_ONSCROLLvirtualCount];
+        lowerBound = local_prevVli + INTS[fEDI_ONSCROLLvirtualCount];
         upperBound = lowerBound + diff;
 
-        beltIndexLine = ints[fEDI_EDI_beltIndexZero] - 1 /*This decrement avoids that.*/;
+        beltIndexLine = INTS[fEDI_EDI_beltIndexZero] - 1 /*This decrement avoids that.*/;
 
-        ints[fEDI_EDI_beltIndexZero] = (beltIndexLine + 1/*This decrement avoids that... but here you need to undo it for a moment*/ + diff) % local_ArrayFrom_textElement_children_length;
+        INTS[fEDI_EDI_beltIndexZero] = (beltIndexLine + 1/*This decrement avoids that... but here you need to undo it for a moment*/ + diff) % local_ArrayFrom_textElement_children_length;
     }
-    else if (diff < 0 && (diff *= -1) < ints[fEDI_virtualCount]) {
+    else if (diff < 0 && (diff *= -1) < INTS[fEDI_virtualCount]) {
 
-        ints[fEDI_sum_diffNegative] += diff;
+        INTS[fEDI_sum_diffNegative] += diff;
 
         lowerBound = local_currVli;
         upperBound = lowerBound + diff;
 
-        ints[fEDI_EDI_beltIndexZero] = (
-            (/*let lastIndex = */(ints[fEDI_EDI_beltIndexZero] - 1 + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length) -
+        INTS[fEDI_EDI_beltIndexZero] = (
+            (/*let lastIndex = */(INTS[fEDI_EDI_beltIndexZero] - 1 + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length) -
             (diff - 1) + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length;
 
-        beltIndexLine = ints[fEDI_EDI_beltIndexZero] - 1/*This decrement avoids that.*/;
+        beltIndexLine = INTS[fEDI_EDI_beltIndexZero] - 1/*This decrement avoids that.*/;
     }
     else {
         lowerBound = local_currVli;
-        upperBound = lowerBound + ints[fEDI_virtualCount];
+        upperBound = lowerBound + INTS[fEDI_virtualCount];
 
-        ints[fEDI_sum_diffPositive] += ints[fEDI_virtualCount];
+        INTS[fEDI_sum_diffPositive] += INTS[fEDI_virtualCount];
 
-        beltIndexLine = ints[fEDI_EDI_beltIndexZero] - 1/*This decrement avoids that.*/;
+        beltIndexLine = INTS[fEDI_EDI_beltIndexZero] - 1/*This decrement avoids that.*/;
     }
 
     let vertical = lowerBound * local_lineHeight;
@@ -786,14 +779,12 @@ function EDI_render_do_Scroll(timestamp) {
  * @returns true if scrollTop (and a few other details) have not changed, thus indicating the invoker should immediately return from their own rather than continuing with scroll logic.
  */
 function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
-    const ints = INTS;
-    
     // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 2 of 4)
     // ...and here the locals are moved to the global scope.
-    ints[fEDI_prevVli] = local_prevVli;
-    ints[fEDI_currVli] = local_currVli;
+    INTS[fEDI_prevVli] = local_prevVli;
+    INTS[fEDI_currVli] = local_currVli;
 
-    ints[fEDI_intFalsey_isScrolling] = 1;
+    INTS[fEDI_intFalsey_isScrolling] = 1;
 
     // TODO: If you can prove that the leading edge or 'ints[fEDI_intFalsey_isScrolling]' is "equivalent" to 'BYTES[byteisCheckingTrailingEdge]' then you can reduce the code here.
     //
@@ -805,18 +796,18 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
 
     EDI_finalizeAllCursors();
 
-    if (ints[fEDI_ONSCROLLscrollTop] === ints[fEDI_lastReadNumber_scrollTop] &&
-        ints[fEDI_prevVli] === ints[fEDI_virtualIndexLine] &&
-        ints[fEDI_ONSCROLLvirtualCount] === ints[fEDI_virtualCount]) {
+    if (INTS[fEDI_ONSCROLLscrollTop] === INTS[fEDI_lastReadNumber_scrollTop] &&
+        INTS[fEDI_prevVli] === INTS[fEDI_virtualIndexLine] &&
+        INTS[fEDI_ONSCROLLvirtualCount] === INTS[fEDI_virtualCount]) {
             // TODO: this is directly tied to a scroll event on EDI_baseElement so handle it from there perhaps?
             // TODO: this code is duplicated inside EDI_drawHorizontalScrollbar, reduce duplication?
-            if (EDI_horizontal_scrollbar.scrollLeft !== ints[fEDI_lastReadNumber_scrollLeft]) {
-                EDI_horizontal_scrollbar.scrollLeft = ints[fEDI_lastReadNumber_scrollLeft];
+            if (EDI_horizontal_scrollbar.scrollLeft !== INTS[fEDI_lastReadNumber_scrollLeft]) {
+                EDI_horizontal_scrollbar.scrollLeft = INTS[fEDI_lastReadNumber_scrollLeft];
             }
             return true;
     }
 
-    if (ints[fEDI_ONSCROLLvirtualCount] !== ints[fEDI_virtualCount]) {
+    if (INTS[fEDI_ONSCROLLvirtualCount] !== INTS[fEDI_virtualCount]) {
             // Force case 3
             //
             // An overflow will wrap around and still give you a diff of 'ints[fEDI_virtualCount]'.
@@ -851,7 +842,7 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
             //
             // TODO: What happens when you overflow 'INTS[fEDI_prevVli]' does it overflow such that you're the correct diff?
             //
-            ints[fEDI_prevVli] = ints[fEDI_currVli] + ints[fEDI_virtualCount];
+            INTS[fEDI_prevVli] = INTS[fEDI_currVli] + INTS[fEDI_virtualCount];
             //ints[fEDI_prevVli] = 0;
             //ints[fEDI_currVli] = ints[fEDI_virtualCount];
 
@@ -897,11 +888,8 @@ but there is 0 reasoning, understanding, or measurements behind my decision.
 */
 
 function EDI_render_do_SyntaxHighlighting() {
-
-    const ints = INTS;
-
-    let local_sum_diffNegative = ints[fEDI_sum_diffNegative];
-    let local_sum_diffPositive = ints[fEDI_sum_diffPositive];
+    let local_sum_diffNegative = INTS[fEDI_sum_diffNegative];
+    let local_sum_diffPositive = INTS[fEDI_sum_diffPositive];
     let total_diff = local_sum_diffNegative + local_sum_diffPositive;
 
     /*
@@ -916,22 +904,22 @@ function EDI_render_do_SyntaxHighlighting() {
     I'm gonna rain check that one... I'm thinking about more than 1 instance of an overlap breaking that math
     */
     
-    ints[fEDI_sum_diffNegative] = 0;
-    ints[fEDI_sum_diffPositive] = 0;
+    INTS[fEDI_sum_diffNegative] = 0;
+    INTS[fEDI_sum_diffPositive] = 0;
 
     if (total_diff === 0) return;
 
     let i = 0;
     
-    let beltIndexCurrent = ints[fEDI_EDI_beltIndexZero];
-    let indexLine = ints[fEDI_virtualIndexLine];
+    let beltIndexCurrent = INTS[fEDI_EDI_beltIndexZero];
+    let indexLine = INTS[fEDI_virtualIndexLine];
 
     let i_bounded = 0;
 
     let bothButNotFull = false;
 
-    if (total_diff >= ints[fEDI_virtualCount]) {
-        total_diff = ints[fEDI_virtualCount];
+    if (total_diff >= INTS[fEDI_virtualCount]) {
+        total_diff = INTS[fEDI_virtualCount];
         i_bounded = total_diff;
     }
     else {
@@ -944,11 +932,11 @@ function EDI_render_do_SyntaxHighlighting() {
             let originalI = i;
             let local_sum_diffPositive_MINUS_ONE = local_sum_diffPositive - 1; // I want to end on the inclusive lower bound dom element.
 
-            beltIndexCurrent = (beltIndexCurrent - 1 + ints[fEDI_ArrayFrom_textElement_children_length]) % ints[fEDI_ArrayFrom_textElement_children_length];
-            indexLine = indexLine + ints[fEDI_virtualCount] - 1;
+            beltIndexCurrent = (beltIndexCurrent - 1 + INTS[fEDI_ArrayFrom_textElement_children_length]) % INTS[fEDI_ArrayFrom_textElement_children_length];
+            indexLine = indexLine + INTS[fEDI_virtualCount] - 1;
             
             for (; i < local_sum_diffPositive_MINUS_ONE; i++) {
-                beltIndexCurrent = (beltIndexCurrent - 1 + ints[fEDI_ArrayFrom_textElement_children_length]) % ints[fEDI_ArrayFrom_textElement_children_length];
+                beltIndexCurrent = (beltIndexCurrent - 1 + INTS[fEDI_ArrayFrom_textElement_children_length]) % INTS[fEDI_ArrayFrom_textElement_children_length];
                 indexLine--;
             }
 
@@ -1006,13 +994,13 @@ function EDI_render_do_SyntaxHighlighting() {
         //
         // You might have to be careful though because it doesn't come with parenthesis. If you tried nesting it.
         //
-        beltIndexCurrent = (beltIndexCurrent + 1) % ints[fEDI_ArrayFrom_textElement_children_length];
+        beltIndexCurrent = (beltIndexCurrent + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
 
         indexLine++;
     }
 
     if (bothButNotFull) {
-        ints[fEDI_sum_diffPositive] = local_sum_diffPositive;
+        INTS[fEDI_sum_diffPositive] = local_sum_diffPositive;
         EDI_render_do_SyntaxHighlighting();
     }
 }
@@ -1126,9 +1114,6 @@ More accurately the ones that seem to not have an importance of position, they d
 */
 
 function EDI_state_clear() {
-
-    const ints = INTS;
-
     // the smi would exist on the object instance all near one another if you just used a class
     // it is essentially the field buffer but you don't eat a global scope variable lookup at any point
     // and you have to incur 1 extra object at all times but that ought to be negligible.
@@ -1144,17 +1129,17 @@ function EDI_state_clear() {
     EDI_lineEndString = null;
     EDI_lineEndPositionList.clear();
     EDI_textByteList.clear();
-    ints[fEDI_longestLine_indexLine] = 0;
-    ints[fEDI_longestLine_length] = 0;
+    INTS[fEDI_longestLine_indexLine] = 0;
+    INTS[fEDI_longestLine_length] = 0;
     
     // Explicitly inlining 'clearMulticursorState()' because it currently is and I just don't want to make a decision about this right now.
     // So what I can do is mark the code paragraph for later decision making.
-    ints[fEDI_offsetLine] = 0;
-    ints[fEDI_offsetColumn_withRespectToThisIndexLine] = 0;
-    ints[fEDI_offsetColumn] = 0;
-    ints[fEDI_totalShift] = 0;
+    INTS[fEDI_offsetLine] = 0;
+    INTS[fEDI_offsetColumn_withRespectToThisIndexLine] = 0;
+    INTS[fEDI_offsetColumn] = 0;
+    INTS[fEDI_totalShift] = 0;
     EDI_offsetWithinSpan_withRespectToThisSpan = null;
-    ints[fEDI_offsetWithinSpan] = 0;
+    INTS[fEDI_offsetWithinSpan] = 0;
     
     EDI_trackedSyntaxList.clear();
 }
@@ -1165,13 +1150,10 @@ function EDI_clear() {
 }
 
 function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMATTED_textSourceIdentifier, extensionKind, lineEndString) {
-
-    const ints = INTS;
-
     EDI_baseElement.scrollTop = 0;
-    ints[fEDI_lastReadNumber_scrollTop] = 0;
+    INTS[fEDI_lastReadNumber_scrollTop] = 0;
     EDI_baseElement.scrollLeft = 0;
-    ints[fEDI_lastReadNumber_scrollLeft] = 0;
+    INTS[fEDI_lastReadNumber_scrollLeft] = 0;
     
     EDI_state_clear();
 
@@ -1211,9 +1193,9 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
                         lineEndString = EDI_lineEndString = '\r';
                     }
                 }
-                if (lineLength > ints[fEDI_longestLine_length]) {
-                    ints[fEDI_longestLine_length] = lineLength;
-                    ints[fEDI_longestLine_indexLine] = local_EDI_lineEndPositionList.count;
+                if (lineLength > INTS[fEDI_longestLine_length]) {
+                    INTS[fEDI_longestLine_length] = lineLength;
+                    INTS[fEDI_longestLine_indexLine] = local_EDI_lineEndPositionList.count;
                 }
                 lineLength = 0;
                 local_EDI_lineEndPositionList.insert(local_EDI_lineEndPositionList.count, local_EDI_textByteList.count);
@@ -1223,9 +1205,9 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
                 if (!lineEndString) {
                     lineEndString = EDI_lineEndString = '\n';
                 }
-                if (lineLength > ints[fEDI_longestLine_length]) {
-                    ints[fEDI_longestLine_length] = lineLength;
-                    ints[fEDI_longestLine_indexLine] = local_EDI_lineEndPositionList.count;
+                if (lineLength > INTS[fEDI_longestLine_length]) {
+                    INTS[fEDI_longestLine_length] = lineLength;
+                    INTS[fEDI_longestLine_indexLine] = local_EDI_lineEndPositionList.count;
                 }
                 lineLength = 0;
                 local_EDI_lineEndPositionList.insert(local_EDI_lineEndPositionList.count, local_EDI_textByteList.count);
@@ -1277,7 +1259,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     // ...the difference between the previous and new value is 'INTS[fEDI_virtualCount]'...
     // ...thus 'INTS[fEDI_virtualCount]' amount of lines get redrawn...
     // ...i.e.: the entire viewport is redrawn with the new file's text.
-    ints[fEDI_ONSCROLLvirtualIndexLine] = ints[fEDI_virtualCount];
+    INTS[fEDI_ONSCROLLvirtualIndexLine] = INTS[fEDI_virtualCount];
 }
 
 /**
@@ -1335,29 +1317,28 @@ function update_virtualCount() {
  * The confusion, if there is any, comes from the dependent UI in some scenarios being required independently of whether drawGutter changes. And at other times they're solely dependent on whether drawGutter changes.
  */
 function EDI_drawGutter_Width() {
-    const ints = INTS;
     let count = EDI_lineEndPositionList.count;
     if (BYTES[byteEDI_cursor_enterKeyEventKind] !== EnterKeyEventKind_None) {
         count += 1;
     }
     let digitCountOfLargestLineNumber = positiveNumbersOnly_countDigitsLoop(count);
-    if (ints[fEDI_drawn_count_of_digits_longest_line_number] === digitCountOfLargestLineNumber) return false;
+    if (INTS[fEDI_drawn_count_of_digits_longest_line_number] === digitCountOfLargestLineNumber) return false;
 
-    ints[fEDI_drawn_count_of_digits_longest_line_number] = digitCountOfLargestLineNumber;
+    INTS[fEDI_drawn_count_of_digits_longest_line_number] = digitCountOfLargestLineNumber;
 
-    ints[fEDI_gutterWidthStyleValue] = Math.ceil(digitCountOfLargestLineNumber * EDI_characterWidth);
-    ints[fEDI_gutterWidthTotal] = ints[fEDI_gutterWidthStyleValue] + CONST_EDI_gutterPaddingLeft + CONST_EDI_gutterPaddingRight;
-    gutterWidthTotal_withPxUnits = `${ints[fEDI_gutterWidthTotal]}px`;
+    INTS[fEDI_gutterWidthStyleValue] = Math.ceil(digitCountOfLargestLineNumber * EDI_characterWidth);
+    INTS[fEDI_gutterWidthTotal] = INTS[fEDI_gutterWidthStyleValue] + CONST_EDI_gutterPaddingLeft + CONST_EDI_gutterPaddingRight;
+    gutterWidthTotal_withPxUnits = `${INTS[fEDI_gutterWidthTotal]}px`;
 
-    let gutterWidth = ints[fEDI_gutterWidthStyleValue] + 'px';
+    let gutterWidth = INTS[fEDI_gutterWidthStyleValue] + 'px';
     EDI_gutter.style.width = gutterWidth;
     EDI_gutterBackgroundColor.style.width = gutterWidth;
 
-    for (let i = 0; i < ints[fEDI_ArrayFrom_textElement_children_length]/*a 'ArrayFrom_gutter_children_length' would always be equal to the textElement equivalent*/; i++) {
+    for (let i = 0; i < INTS[fEDI_ArrayFrom_textElement_children_length]/*a 'ArrayFrom_gutter_children_length' would always be equal to the textElement equivalent*/; i++) {
         ArrayFrom_gutter_children[i].style.width = gutterWidth;
     }
     
-    for (let i = 0; i < ints[fEDI_ArrayFrom_textElement_children_length]; i++) {
+    for (let i = 0; i < INTS[fEDI_ArrayFrom_textElement_children_length]; i++) {
         ArrayFrom_textElement_children[i].style.left = gutterWidthTotal_withPxUnits;
     }
 
@@ -1372,33 +1353,32 @@ function EDI_drawGutter_Width() {
  * then at that point you redraw this.
  */
 function EDI_drawHorizontalScrollbar() {
-    const ints = INTS;
-    if (ints[fEDI_DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left] !== ints[fEDI_gutterWidthTotal]) {
+    if (INTS[fEDI_DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left] !== INTS[fEDI_gutterWidthTotal]) {
         EDI_horizontal_scrollbar.style.left = gutterWidthTotal_withPxUnits;
-        ints[fEDI_DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left] = ints[fEDI_gutterWidthTotal];
+        INTS[fEDI_DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left] = INTS[fEDI_gutterWidthTotal];
     }
 
-    if (ints[fEDI_EDI_horizontal_scrollbar_widthValue] !== (EDI_baseElement.clientWidth - ints[fEDI_gutterWidthTotal])) {
-        ints[fEDI_EDI_horizontal_scrollbar_widthValue] = EDI_baseElement.clientWidth - ints[fEDI_gutterWidthTotal];
-        EDI_horizontal_scrollbar.style.width = ints[fEDI_EDI_horizontal_scrollbar_widthValue] + 'px';
+    if (INTS[fEDI_EDI_horizontal_scrollbar_widthValue] !== (EDI_baseElement.clientWidth - INTS[fEDI_gutterWidthTotal])) {
+        INTS[fEDI_EDI_horizontal_scrollbar_widthValue] = EDI_baseElement.clientWidth - INTS[fEDI_gutterWidthTotal];
+        EDI_horizontal_scrollbar.style.width = INTS[fEDI_EDI_horizontal_scrollbar_widthValue] + 'px';
     }
 
-    if (ints[fEDI_longestLine_length] !== ints[fEDI_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar]) {
+    if (INTS[fEDI_longestLine_length] !== INTS[fEDI_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar]) {
         
-        ints[fEDI_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar] = ints[fEDI_longestLine_length];
+        INTS[fEDI_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar] = INTS[fEDI_longestLine_length];
 
-        ints[fEDI_contentWidth] = Math.ceil(ints[fEDI_longestLine_length] * EDI_characterWidth);
+        INTS[fEDI_contentWidth] = Math.ceil(INTS[fEDI_longestLine_length] * EDI_characterWidth);
 
-        if ((ints[fEDI_contentWidth] < (EDI_baseElement.clientWidth - ints[fEDI_gutterWidthTotal])) && (EDI_baseElement.clientWidth - ints[fEDI_gutterWidthTotal] > 0)) {
-            ints[fEDI_contentWidth] = Math.floor(EDI_baseElement.clientWidth - ints[fEDI_gutterWidthTotal]);
+        if ((INTS[fEDI_contentWidth] < (EDI_baseElement.clientWidth - INTS[fEDI_gutterWidthTotal])) && (EDI_baseElement.clientWidth - INTS[fEDI_gutterWidthTotal] > 0)) {
+            INTS[fEDI_contentWidth] = Math.floor(EDI_baseElement.clientWidth - INTS[fEDI_gutterWidthTotal]);
         }
 
-        let local_EDI_horizontal_scrollbar_virtualization_boundary_style_width = ints[fEDI_contentWidth] + 'px';
+        let local_EDI_horizontal_scrollbar_virtualization_boundary_style_width = INTS[fEDI_contentWidth] + 'px';
 
         EDI_horizontal_scrollbar_virtualization_boundary.style.width = local_EDI_horizontal_scrollbar_virtualization_boundary_style_width;
-        EDI_virtualization_horizontal.style.width = ints[fEDI_contentWidth] + ints[fEDI_gutterWidthTotal] + 'px';
+        EDI_virtualization_horizontal.style.width = INTS[fEDI_contentWidth] + INTS[fEDI_gutterWidthTotal] + 'px';
 
-        for (let i = 0; i < ints[fEDI_ArrayFrom_textElement_children_length]; i++) {
+        for (let i = 0; i < INTS[fEDI_ArrayFrom_textElement_children_length]; i++) {
             ArrayFrom_textElement_children[i].style.width = local_EDI_horizontal_scrollbar_virtualization_boundary_style_width;
         }
 
@@ -1532,11 +1512,9 @@ function EDI_finalizeEdit() {
 }
 
 function EDI_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
-    const ints = INTS;
-
     for (let i = EDI_lineEndPositionList.count - 1; i >= 0; i--) {
-        if (ints[fEDI_cursor_editPosition] <= EDI_lineEndPositionList.data[i]) {
-            EDI_lineEndPositionList.data[i] += ints[fEDI_cursor_editLength];
+        if (INTS[fEDI_cursor_editPosition] <= EDI_lineEndPositionList.data[i]) {
+            EDI_lineEndPositionList.data[i] += INTS[fEDI_cursor_editLength];
         }
         else {
             if (i === EDI_lineEndPositionList.count - 1) {
@@ -1550,29 +1528,29 @@ function EDI_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
     }
     for (var i = 0; i < EDI_trackedSyntaxList.count_abstract; i++) {
         EDI_trackedSyntaxList.getElementAt(i);
-        if (ints[fEDI_cursor_editPosition] <= ints[fEDI_pooledTrackedSyntax_start]) {
-            EDI_trackedSyntaxList.setStart(i, ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_cursor_editLength]);
+        if (INTS[fEDI_cursor_editPosition] <= INTS[fEDI_pooledTrackedSyntax_start]) {
+            EDI_trackedSyntaxList.setStart(i, INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_cursor_editLength]);
         }
         else if (BYTES[byteEDI_pooledTrackedSyntax_trackedSyntaxKind] === TrackedSyntaxKind_Comment &&
-                ints[fEDI_cursor_editPosition] === ints[fEDI_pooledTrackedSyntax_start] + 1) {
+                INTS[fEDI_cursor_editPosition] === INTS[fEDI_pooledTrackedSyntax_start] + 1) {
 
             // TODO: Insertion of '*' probably shouldn't remove.
             EDI_trackedSyntaxList.removeAt(i, 1);
         }
-        else if (ints[fEDI_cursor_editPosition] > ints[fEDI_pooledTrackedSyntax_start] && ints[fEDI_cursor_editPosition] < ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_pooledTrackedSyntax_length]) {
-            EDI_trackedSyntaxList.setLength(i, ints[fEDI_pooledTrackedSyntax_length] + ints[fEDI_cursor_editLength]);
+        else if (INTS[fEDI_cursor_editPosition] > INTS[fEDI_pooledTrackedSyntax_start] && INTS[fEDI_cursor_editPosition] < INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length]) {
+            EDI_trackedSyntaxList.setLength(i, INTS[fEDI_pooledTrackedSyntax_length] + INTS[fEDI_cursor_editLength]);
         }
     }
-    EDI_textByteList.insertBytes(ints[fEDI_cursor_editPosition], EDI_cursor_gapBuffer, /*offset*/ 0, /*length*/ ints[fEDI_cursor_gapBufferCount]);
+    EDI_textByteList.insertBytes(INTS[fEDI_cursor_editPosition], EDI_cursor_gapBuffer, /*offset*/ 0, /*length*/ INTS[fEDI_cursor_gapBufferCount]);
 
     let textSourceIdentifier = EDI_FORMATTED_textSourceIdentifier;
-    EDI_getLineAndColumnIndices(ints[fEDI_cursor_editPosition]);
-    let lineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
-    let lineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
+    EDI_getLineAndColumnIndices(INTS[fEDI_cursor_editPosition]);
+    let lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+    let lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
     // TODO: Account for any '\t\0\0\0' that exist on the line
-    let text = EDI_decoder.decode(EDI_cursor_gapBuffer.subarray(0, ints[fEDI_cursor_gapBufferCount]));
-    ints[F_didChangeTextDocument_version] = ints[F_didChangeTextDocument_version] + 1;
-    let version = ints[F_didChangeTextDocument_version];
+    let text = EDI_decoder.decode(EDI_cursor_gapBuffer.subarray(0, INTS[fEDI_cursor_gapBufferCount]));
+    INTS[F_didChangeTextDocument_version] = INTS[F_didChangeTextDocument_version] + 1;
+    let version = INTS[F_didChangeTextDocument_version];
 
     // --- CLEAN INTEGRATION ---
     enqueueLSPNotification({
@@ -1586,8 +1564,8 @@ function EDI_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
     });
     // -------------------------
 
-    if (indexLine_editOccurredOn === ints[fEDI_longestLine_indexLine]) {
-        ints[fEDI_longestLine_length] = ints[fEDI_longestLine_length] + ints[fEDI_cursor_editLength];
+    if (indexLine_editOccurredOn === INTS[fEDI_longestLine_indexLine]) {
+        INTS[fEDI_longestLine_length] = INTS[fEDI_longestLine_length] + INTS[fEDI_cursor_editLength];
     }
 
     EDI_finalizeEdit_ClearEditState();
@@ -1596,30 +1574,28 @@ function EDI_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
 }
 
 function EDI_finalizeEdit_Enter(indexLine_editOccurredOn) {
-    const ints = INTS;
-
-    if (ints[fEDI_cursor_editRenderedDisplacement] !== ints[fEDI_cursor_editLength]) {
+    if (INTS[fEDI_cursor_editRenderedDisplacement] !== INTS[fEDI_cursor_editLength]) {
         EDI_render_do_EnterKey();
     }
 
     // TODO: A notification needs to sent to the LSP here
 
-    EDI_trackedSyntaxList_inefficientUpdateStartAndLength(ints[fEDI_cursor_editPosition], ints[fEDI_cursor_editLength]);
+    EDI_trackedSyntaxList_inefficientUpdateStartAndLength(INTS[fEDI_cursor_editPosition], INTS[fEDI_cursor_editLength]);
 
     // throws an exception if 'EnterKeyEventKind_None' (...or falsey).
     if (!BYTES[byteEDI_cursor_enterKeyEventKind] || BYTES[byteEDI_cursor_enterKeyEventKind] === EnterKeyEventKind_None) { EDI_finalizeEdit_ClearEditState(); throw new Error('if (!enterKeyEventKind...)'); }
 
-    EDI_textByteList.insertBytes(ints[fEDI_cursor_editPosition], EDI_cursor_enterKey_newLinePlusIndentation_byteList.bytes, /*offset*/ 0, EDI_cursor_enterKey_newLinePlusIndentation_byteList.count);
+    EDI_textByteList.insertBytes(INTS[fEDI_cursor_editPosition], EDI_cursor_enterKey_newLinePlusIndentation_byteList.bytes, /*offset*/ 0, EDI_cursor_enterKey_newLinePlusIndentation_byteList.count);
 
-    for (var i = ints[fEDI_cursor_editIndexLine]; i < EDI_lineEndPositionList.count; i++) {
-        EDI_lineEndPositionList.data[i] += ints[fEDI_cursor_editLength];
+    for (var i = INTS[fEDI_cursor_editIndexLine]; i < EDI_lineEndPositionList.count; i++) {
+        EDI_lineEndPositionList.data[i] += INTS[fEDI_cursor_editLength];
     }
 
     // You need to consider if the longest line gets split
-    if (ints[fEDI_cursor_editIndexLine] <= ints[fEDI_longestLine_indexLine])
-        ints[fEDI_longestLine_indexLine] = ints[fEDI_longestLine_indexLine] + 1;
+    if (INTS[fEDI_cursor_editIndexLine] <= INTS[fEDI_longestLine_indexLine])
+        INTS[fEDI_longestLine_indexLine] = INTS[fEDI_longestLine_indexLine] + 1;
 
-    EDI_lineEndPositionList.insert(ints[fEDI_cursor_editIndexLine], ints[fEDI_cursor_editPosition]);
+    EDI_lineEndPositionList.insert(INTS[fEDI_cursor_editIndexLine], INTS[fEDI_cursor_editPosition]);
 
     EDI_finalizeEdit_ClearEditState();
 
@@ -1658,13 +1634,10 @@ function EDI_finalizeEdit_Tab(indexLine_editOccurredOn) {
 }
 
 function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
-
-    const ints = INTS;
-
-    let startingIndex = ints[fEDI_indent_startingIndex];
-    ints[fEDI_indent_startingIndex] = 0;
-    let SMALL_lineAndColumnIndices_indexLine = ints[fEDI_indent_SMALL_lineAndColumnIndices_indexLine];
-    ints[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] = 0;
+    let startingIndex = INTS[fEDI_indent_startingIndex];
+    INTS[fEDI_indent_startingIndex] = 0;
+    let SMALL_lineAndColumnIndices_indexLine = INTS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine];
+    INTS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] = 0;
 
     let ORIGINAL_incrementBy = (startingIndex + 1 - SMALL_lineAndColumnIndices_indexLine) * 4;
     let incrementBy = ORIGINAL_incrementBy;
@@ -1676,11 +1649,11 @@ function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
     let bytes = EDI_on_tab_bytes;
     let bytesLength = 4;
 
-    if (ints[fEDI_cursor_editLength] > 1) {
-        ORIGINAL_incrementBy *= ints[fEDI_cursor_editLength];
-        incrementBy *= ints[fEDI_cursor_editLength];
+    if (INTS[fEDI_cursor_editLength] > 1) {
+        ORIGINAL_incrementBy *= INTS[fEDI_cursor_editLength];
+        incrementBy *= INTS[fEDI_cursor_editLength];
 
-        bytesLength *= ints[fEDI_cursor_editLength];
+        bytesLength *= INTS[fEDI_cursor_editLength];
         bytes = new Uint8Array(bytesLength);
         let src_bytes = EDI_on_tab_bytes;
         // TODO: typed array function usage
@@ -1691,8 +1664,8 @@ function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
         }
     }
 
-    startingLinePos_end = ints[fEDI_EDI_indentLess_startingLinePos_end];
-    ints[fEDI_EDI_indentLess_startingLinePos_end] = 0;
+    startingLinePos_end = INTS[fEDI_EDI_indentLess_startingLinePos_end];
+    INTS[fEDI_EDI_indentLess_startingLinePos_end] = 0;
 
     
 
@@ -1736,9 +1709,9 @@ function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
             }
         }
         EDI_trackedSyntaxList.getElementAt(trackedSyntaxReposition_i);
-        if (linePos.start > ints[fEDI_pooledTrackedSyntax_start] && linePos.start < ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_pooledTrackedSyntax_length]) {
+        if (linePos.start > INTS[fEDI_pooledTrackedSyntax_start] && linePos.start < INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length]) {
             // # Then, you immediately know the trackedSyntax that encompasses the insertion (if it exists), so you increment its length by the text inserted on that respective line.
-            EDI_trackedSyntaxList.setLength(trackedSyntaxReposition_i, ints[fEDI_pooledTrackedSyntax_length] + 4);
+            EDI_trackedSyntaxList.setLength(trackedSyntaxReposition_i, INTS[fEDI_pooledTrackedSyntax_length] + 4);
         }
 
         // # Insert the text on the respective line.
@@ -1767,9 +1740,6 @@ function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
 }
 
 function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
-
-    const ints = INTS;
-
     // Both indentMore and indentLess have logic in the initial event that needs to be moved here.
     // Nevertheless there is a difference between indentLess and indentMore in that you cannot simply
     // multiply by n to get the decrement because it deals with the existence of whitespace to be removed so you need to actually sum this as you handle each event
@@ -1779,15 +1749,15 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
     //let decrementBy = ints[fEDI_indent_ORIGINAL_indentBy];
     //ints[fEDI_indent_ORIGINAL_indentBy] = 0;
 
-    let startingIndex = ints[fEDI_indent_startingIndex];
-    ints[fEDI_indent_startingIndex] = 0;
-    let SMALL_lineAndColumnIndices_indexLine = ints[fEDI_indent_SMALL_lineAndColumnIndices_indexLine];
-    ints[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] = 0;
+    let startingIndex = INTS[fEDI_indent_startingIndex];
+    INTS[fEDI_indent_startingIndex] = 0;
+    let SMALL_lineAndColumnIndices_indexLine = INTS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine];
+    INTS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] = 0;
 
     // !!!!!! watch out for the big breaks when hitting a tab presuming that_four is 4
     let that_four = 4;
-    that_four *= ints[fEDI_cursor_editLength];
-    let largestRank = ints[fEDI_cursor_editLength];
+    that_four *= INTS[fEDI_cursor_editLength];
+    let largestRank = INTS[fEDI_cursor_editLength];
 
     // loop over the lines to sum the "amount" of whitespace being removed
     let DETERMINE_decrementBy = 0;
@@ -1941,7 +1911,7 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
     //    //}
     //}
 
-    let trackedSyntaxReposition_i = EDI_trackedSyntaxReposition_find(ints[fEDI_EDI_indentLess_startingLinePos_end] + 1);
+    let trackedSyntaxReposition_i = EDI_trackedSyntaxReposition_find(INTS[fEDI_EDI_indentLess_startingLinePos_end] + 1);
     if (trackedSyntaxReposition_i === NaN || trackedSyntaxReposition_i === -1) {
         trackedSyntaxReposition_i = EDI_trackedSyntaxList.count_abstract;
     }
@@ -2013,8 +1983,8 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
             }
         }
         EDI_trackedSyntaxList.getElementAt(trackedSyntaxReposition_i);
-        if (linePos.start > ints[fEDI_pooledTrackedSyntax_start] && linePos.start < ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_pooledTrackedSyntax_length]) {
-            EDI_trackedSyntaxList.setLength(trackedSyntaxReposition_i, ints[fEDI_pooledTrackedSyntax_length] - innerRemoveCount);
+        if (linePos.start > INTS[fEDI_pooledTrackedSyntax_start] && linePos.start < INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length]) {
+            EDI_trackedSyntaxList.setLength(trackedSyntaxReposition_i, INTS[fEDI_pooledTrackedSyntax_length] - innerRemoveCount);
         }
 
         EDI_textByteList.removeAt(linePos.start, innerRemoveCount);
@@ -2033,10 +2003,7 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
 }
 
 function EDI_finalizeEdit_Paste(indexLine_editOccurredOn) {
-
-    const ints = INTS;
-    
-    EDI_trackedSyntaxList_inefficientUpdateStartAndLength(ints[fEDI_cursor_editPosition], ints[fEDI_cursor_editLength]);
+    EDI_trackedSyntaxList_inefficientUpdateStartAndLength(INTS[fEDI_cursor_editPosition], INTS[fEDI_cursor_editLength]);
     
     let content = EDI_cursor_EDI_paste_clipboardContent;
     EDI_cursor_EDI_paste_clipboardContent = null;
@@ -2047,12 +2014,12 @@ function EDI_finalizeEdit_Paste(indexLine_editOccurredOn) {
     for (var sourceI = 0; sourceI < content.length; sourceI++) {
         switch (content[sourceI]) {
             case '\t':
-                EDI_textByteList.insertBytes(ints[fEDI_cursor_editPosition] + insertionLength, EDI_tab_tabsbytes, /*offset*/ 0, /*length*/ 4);
+                EDI_textByteList.insertBytes(INTS[fEDI_cursor_editPosition] + insertionLength, EDI_tab_tabsbytes, /*offset*/ 0, /*length*/ 4);
                 insertionLength += 4;
                 break;
             case '\n':
-                EDI_textByteList.insert(ints[fEDI_cursor_editPosition] + insertionLength, CONST_EDI_ASCII_LINE_FEED);
-                EDI_lineEndPositionList.insert(ints[fEDI_cursor_editIndexLine] + linesInsertedCount, ints[fEDI_cursor_editPosition] + insertionLength);
+                EDI_textByteList.insert(INTS[fEDI_cursor_editPosition] + insertionLength, CONST_EDI_ASCII_LINE_FEED);
+                EDI_lineEndPositionList.insert(INTS[fEDI_cursor_editIndexLine] + linesInsertedCount, INTS[fEDI_cursor_editPosition] + insertionLength);
                 insertionLength++;
                 linesInsertedCount++;
                 break;
@@ -2060,19 +2027,19 @@ function EDI_finalizeEdit_Paste(indexLine_editOccurredOn) {
                 if (sourceI < content.length - 1 && content[sourceI + 1] === '\n') {
                     sourceI++;
                 }
-                EDI_textByteList.insert(ints[fEDI_cursor_editPosition] + insertionLength, CONST_EDI_ASCII_LINE_FEED);
-                EDI_lineEndPositionList.insert(ints[fEDI_cursor_editIndexLine] + linesInsertedCount, ints[fEDI_cursor_editPosition] + insertionLength);
+                EDI_textByteList.insert(INTS[fEDI_cursor_editPosition] + insertionLength, CONST_EDI_ASCII_LINE_FEED);
+                EDI_lineEndPositionList.insert(INTS[fEDI_cursor_editIndexLine] + linesInsertedCount, INTS[fEDI_cursor_editPosition] + insertionLength);
                 insertionLength++;
                 linesInsertedCount++;
                 break;
             default:
-                EDI_textByteList.insert(ints[fEDI_cursor_editPosition] + insertionLength, content.charCodeAt(sourceI));
+                EDI_textByteList.insert(INTS[fEDI_cursor_editPosition] + insertionLength, content.charCodeAt(sourceI));
                 insertionLength++;
                 break;
         }
     }
 
-    for (var i = ints[fEDI_cursor_editIndexLine] + linesInsertedCount; i < EDI_lineEndPositionList.count; i++) {
+    for (var i = INTS[fEDI_cursor_editIndexLine] + linesInsertedCount; i < EDI_lineEndPositionList.count; i++) {
         EDI_lineEndPositionList.data[i] += insertionLength;
     }
 
@@ -2082,21 +2049,18 @@ function EDI_finalizeEdit_Paste(indexLine_editOccurredOn) {
 }
 
 function EDI_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
+    EDI_trackedSyntaxList_inefficientUpdateStartAndLength(INTS[fEDI_cursor_editPosition], INTS[fEDI_cursor_editLength]);
 
-    const ints = INTS;
+    let small = INTS[fEDI_cursor_EDI_duplicate_small];
+    let length = INTS[fEDI_cursor_EDI_duplicate_length];
 
-    EDI_trackedSyntaxList_inefficientUpdateStartAndLength(ints[fEDI_cursor_editPosition], ints[fEDI_cursor_editLength]);
-
-    let small = ints[fEDI_cursor_EDI_duplicate_small];
-    let length = ints[fEDI_cursor_EDI_duplicate_length];
-
-    ints[fEDI_cursor_EDI_duplicate_small] = 0;
-    ints[fEDI_cursor_EDI_duplicate_length] = 0;
+    INTS[fEDI_cursor_EDI_duplicate_small] = 0;
+    INTS[fEDI_cursor_EDI_duplicate_length] = 0;
 
     let linesInsertedCount = 0;
     let insertionLength = 0;
 
-    EDI_textByteList.duplicateWithin(small, ints[fEDI_cursor_editPosition], length);
+    EDI_textByteList.duplicateWithin(small, INTS[fEDI_cursor_editPosition], length);
     
     // TODO: cursor between '\t\0\0\0' is presumed to be the concern of the editor, duplication logic presumes correctness i.e.: that if the '\t' is selected that the '\0\0\0' that come after is selected too...
     // ...and that no partial selection over those characters could ever occur.
@@ -2109,7 +2073,7 @@ function EDI_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
                 insertionLength += 4; // ??? I think this is copy pasted from 'paste' logic where the tab would change to 4 characters total, in the case of duplication you get what you select.
                 break;
             case CONST_EDI_ASCII_LINE_FEED:
-                EDI_lineEndPositionList.insert(ints[fEDI_cursor_editIndexLine] + linesInsertedCount, ints[fEDI_cursor_editPosition] + insertionLength);
+                EDI_lineEndPositionList.insert(INTS[fEDI_cursor_editIndexLine] + linesInsertedCount, INTS[fEDI_cursor_editPosition] + insertionLength);
                 insertionLength++;
                 linesInsertedCount++;
                 break;
@@ -2119,7 +2083,7 @@ function EDI_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
         }
     }
 
-    for (var i = ints[fEDI_cursor_editIndexLine] + linesInsertedCount; i < EDI_lineEndPositionList.count; i++) {
+    for (var i = INTS[fEDI_cursor_editIndexLine] + linesInsertedCount; i < EDI_lineEndPositionList.count; i++) {
         EDI_lineEndPositionList.data[i] += insertionLength;
     }
 
@@ -2129,45 +2093,42 @@ function EDI_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
 }
 
 function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_editOccurredOn) {
-
-    const ints = INTS;
-
     // TODO: surely u'd get this before doing the edit?
     let startLineAndColumnIndices_indexLine;
     let startLineAndColumnIndices_indexColumn;
-    if (ints[fEDI_cursor_editKind] === EditKind_RemoveTextNoBatching) {
-        startLineAndColumnIndices_indexLine = ints[fEDI_cursor_editIndexLine];
-        startLineAndColumnIndices_indexColumn = ints[fEDI_cursor_editIndexColumn];
+    if (INTS[fEDI_cursor_editKind] === EditKind_RemoveTextNoBatching) {
+        startLineAndColumnIndices_indexLine = INTS[fEDI_cursor_editIndexLine];
+        startLineAndColumnIndices_indexColumn = INTS[fEDI_cursor_editIndexColumn];
     }
     else {
-        EDI_getLineAndColumnIndices_raw(ints[fEDI_cursor_editPosition]);
-        startLineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
-        startLineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
+        EDI_getLineAndColumnIndices_raw(INTS[fEDI_cursor_editPosition]);
+        startLineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+        startLineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
     }
     let endLineAndColumnIndices_indexLine;
     let endLineAndColumnIndices_indexColumn;
-    if (ints[fEDI_cursor_editKind] === EditKind_RemoveTextNoBatching) {
-        endLineAndColumnIndices_indexLine = ints[fEDI_cursor_END_editIndexLine];
-        endLineAndColumnIndices_indexColumn = ints[fEDI_cursor_END_editIndexColumn];
+    if (INTS[fEDI_cursor_editKind] === EditKind_RemoveTextNoBatching) {
+        endLineAndColumnIndices_indexLine = INTS[fEDI_cursor_END_editIndexLine];
+        endLineAndColumnIndices_indexColumn = INTS[fEDI_cursor_END_editIndexColumn];
     }
     else {
-        EDI_getLineAndColumnIndices_raw(ints[fEDI_cursor_editPosition] + ints[fEDI_cursor_editLength]);
-        endLineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
-        endLineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
+        EDI_getLineAndColumnIndices_raw(INTS[fEDI_cursor_editPosition] + INTS[fEDI_cursor_editLength]);
+        endLineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+        endLineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
     }
 
-    if (ints[fEDI_cursor_editLineFeedCount] > 0) {
+    if (INTS[fEDI_cursor_editLineFeedCount] > 0) {
         let count = 0;
         let lastMatchedIndexLine = 0;
         for (let i = EDI_lineEndPositionList_PENDING.count - 1; i >= 0; i--) {
             let lineEndPos = EDI_lineEndPositionList_PENDING.data[i];
-            if (ints[fEDI_cursor_editPosition] <= lineEndPos && ints[fEDI_cursor_editPosition] + ints[fEDI_cursor_editLength] > lineEndPos) {
+            if (INTS[fEDI_cursor_editPosition] <= lineEndPos && INTS[fEDI_cursor_editPosition] + INTS[fEDI_cursor_editLength] > lineEndPos) {
                 EDI_getLineAndColumnIndices_raw(lineEndPos);
-                lastMatchedIndexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
+                lastMatchedIndexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
                 count++;
                 EDI_lineEndPositionList_PENDING.removeAt(i, 1);
             }
-            else if (ints[fEDI_cursor_editPosition] > lineEndPos) {
+            else if (INTS[fEDI_cursor_editPosition] > lineEndPos) {
                 break;
             }
         }
@@ -2176,8 +2137,8 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
         }
     }
     for (let i = EDI_lineEndPositionList.count - 1; i >= 0; i--) {
-        if (ints[fEDI_cursor_editPosition] < EDI_lineEndPositionList.data[i]) {
-            EDI_lineEndPositionList.data[i] -= ints[fEDI_cursor_editLength];
+        if (INTS[fEDI_cursor_editPosition] < EDI_lineEndPositionList.data[i]) {
+            EDI_lineEndPositionList.data[i] -= INTS[fEDI_cursor_editLength];
         }
         else {
             if (i === EDI_lineEndPositionList.count - 1) {
@@ -2191,33 +2152,33 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
     }
     for (var i = EDI_trackedSyntaxList.count_abstract - 1; i >= 0; i--) {
         EDI_trackedSyntaxList.getElementAt(i);
-        if (ints[fEDI_cursor_editPosition] < ints[fEDI_pooledTrackedSyntax_start]) {
-            EDI_trackedSyntaxList.setStart(i, ints[fEDI_pooledTrackedSyntax_start] - ints[fEDI_cursor_editLength]);
+        if (INTS[fEDI_cursor_editPosition] < INTS[fEDI_pooledTrackedSyntax_start]) {
+            EDI_trackedSyntaxList.setStart(i, INTS[fEDI_pooledTrackedSyntax_start] - INTS[fEDI_cursor_editLength]);
         }
-        else if (ints[fEDI_pooledTrackedSyntax_start] >= ints[fEDI_cursor_editPosition] && ints[fEDI_pooledTrackedSyntax_start] < ints[fEDI_cursor_editPosition] + ints[fEDI_cursor_editLength]) {
+        else if (INTS[fEDI_pooledTrackedSyntax_start] >= INTS[fEDI_cursor_editPosition] && INTS[fEDI_pooledTrackedSyntax_start] < INTS[fEDI_cursor_editPosition] + INTS[fEDI_cursor_editLength]) {
             // TODO: This needs to remove more than 1 at a time
             EDI_trackedSyntaxList.removeAt(i, 1);
         }
         else if (BYTES[byteEDI_pooledTrackedSyntax_trackedSyntaxKind] === TrackedSyntaxKind_Comment &&
-                (ints[fEDI_pooledTrackedSyntax_start] + 1) >= ints[fEDI_cursor_editPosition] && (ints[fEDI_pooledTrackedSyntax_start] + 1) < ints[fEDI_cursor_editPosition] + ints[fEDI_cursor_editLength]) {
+                (INTS[fEDI_pooledTrackedSyntax_start] + 1) >= INTS[fEDI_cursor_editPosition] && (INTS[fEDI_pooledTrackedSyntax_start] + 1) < INTS[fEDI_cursor_editPosition] + INTS[fEDI_cursor_editLength]) {
             // TODO: You can invalidate a >1 char long by removing beyond just the first unless a character afterwards falls into place that is valid by chance
             //
             // only multi-line-comments that span multiple lines are stored in EDI_trackedSyntaxList with the 'TrackedSyntaxKind_Comment'
             //
             EDI_trackedSyntaxList.removeAt(i, 1);
         }
-        else if (ints[fEDI_cursor_editPosition] > ints[fEDI_pooledTrackedSyntax_start] && ints[fEDI_cursor_editPosition] < ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_pooledTrackedSyntax_length]) {
-            EDI_trackedSyntaxList.setLength(i, ints[fEDI_pooledTrackedSyntax_length] - ints[fEDI_cursor_editLength]);
+        else if (INTS[fEDI_cursor_editPosition] > INTS[fEDI_pooledTrackedSyntax_start] && INTS[fEDI_cursor_editPosition] < INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length]) {
+            EDI_trackedSyntaxList.setLength(i, INTS[fEDI_pooledTrackedSyntax_length] - INTS[fEDI_cursor_editLength]);
         }
     }
 
-    EDI_textByteList.removeAt(ints[fEDI_cursor_editPosition], ints[fEDI_cursor_editLength]);
+    EDI_textByteList.removeAt(INTS[fEDI_cursor_editPosition], INTS[fEDI_cursor_editLength]);
 
     let textSourceIdentifier = EDI_FORMATTED_textSourceIdentifier;
     // TODO: Account for any '\t\0\0\0' that exist on the line            
     let text = '';
-    ints[F_didChangeTextDocument_version] = ints[F_didChangeTextDocument_version] + 1;
-    let version = ints[F_didChangeTextDocument_version];
+    INTS[F_didChangeTextDocument_version] = INTS[F_didChangeTextDocument_version] + 1;
+    let version = INTS[F_didChangeTextDocument_version];
 
     // --- CLEAN INTEGRATION ---
     enqueueLSPNotification({
@@ -2231,8 +2192,8 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
     });
     // -------------------------
 
-    if (indexLine_editOccurredOn === ints[fEDI_longestLine_indexLine]) {
-        ints[fEDI_longestLine_length] = ints[fEDI_longestLine_length] - ints[fEDI_cursor_editLength];
+    if (indexLine_editOccurredOn === INTS[fEDI_longestLine_indexLine]) {
+        INTS[fEDI_longestLine_length] = INTS[fEDI_longestLine_length] - INTS[fEDI_cursor_editLength];
     }
 
     EDI_finalizeEdit_ClearEditState();
@@ -2255,20 +2216,18 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
 }
 
 function EDI_finalizeEdit_ClearEditState() {
-    const ints = INTS;
-
-    ints[fEDI_cursor_editKind] = EditKind_None;
-    ints[fEDI_cursor_editLength] = 0;
-    ints[fEDI_cursor_editPosition] = 0;
-    ints[fEDI_cursor_editIndexLine] = 0;
-    ints[fEDI_cursor_editIndexColumn] = 0;
-    ints[fEDI_cursor_editRenderedDisplacement] = 0;
-    ints[fEDI_cursor_END_editIndexLine] = 0;
-    ints[fEDI_cursor_END_editIndexColumn] = 0;
-    ints[fEDI_cursor_gapBufferCount] = 0;
+    INTS[fEDI_cursor_editKind] = EditKind_None;
+    INTS[fEDI_cursor_editLength] = 0;
+    INTS[fEDI_cursor_editPosition] = 0;
+    INTS[fEDI_cursor_editIndexLine] = 0;
+    INTS[fEDI_cursor_editIndexColumn] = 0;
+    INTS[fEDI_cursor_editRenderedDisplacement] = 0;
+    INTS[fEDI_cursor_END_editIndexLine] = 0;
+    INTS[fEDI_cursor_END_editIndexColumn] = 0;
+    INTS[fEDI_cursor_gapBufferCount] = 0;
     EDI_cursor_gapBufferWriteToSpanElement = null;
-    ints[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] = 0;
-    ints[fEDI_cursor_editLineFeedCount] = 0;
+    INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] = 0;
+    INTS[fEDI_cursor_editLineFeedCount] = 0;
     EDI_lineEndPositionList_PENDING.clear();
 }
 
@@ -2366,9 +2325,6 @@ function EDI_readLineEndPositionList(indexLine) {
  * @returns trackedSyntax_I the index that was left off on
  */
 function EDI_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_I) {
-
-    const ints = INTS;
-
 	let childIndex = 0;
 
     if (lineStart === lineEnd) {
@@ -2391,17 +2347,17 @@ function EDI_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_I) 
                 break;
             }
     
-            if (ints[fEDI_pooledTrackedSyntax_start] >= lineEnd) {
+            if (INTS[fEDI_pooledTrackedSyntax_start] >= lineEnd) {
                 break;
             }
     
-            if (ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_pooledTrackedSyntax_length] < lineStart) {
+            if (INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length] < lineStart) {
                 trackedSyntax_I++;
                 continue;
             }
     
-            if (ints[fEDI_pooledTrackedSyntax_start] > substart) {
-                let subend = ints[fEDI_pooledTrackedSyntax_start] > lineEnd ? lineEnd : ints[fEDI_pooledTrackedSyntax_start]; // probably a nonsense line of code given the previous if statements
+            if (INTS[fEDI_pooledTrackedSyntax_start] > substart) {
+                let subend = INTS[fEDI_pooledTrackedSyntax_start] > lineEnd ? lineEnd : INTS[fEDI_pooledTrackedSyntax_start]; // probably a nonsense line of code given the previous if statements
                 childIndex = EDI_language_line_lex(div, substart, subend, childIndex);
                 substart += (subend - substart);
             }
@@ -2417,7 +2373,7 @@ function EDI_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_I) 
                     div.appendChild(span);
                     childIndex++;
 				}
-                let trackedSyntaxEnd = ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_pooledTrackedSyntax_length];
+                let trackedSyntaxEnd = INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length];
                 let subend = trackedSyntaxEnd > lineEnd ? lineEnd : trackedSyntaxEnd;
                 span.textContent = EDI_decoder.decode(EDI_textByteList.bytes.subarray(substart, subend));
                 substart += (subend - substart);
@@ -2434,7 +2390,7 @@ function EDI_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_I) 
                 }
             }
     
-            if (ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_pooledTrackedSyntax_length] <= lineEnd) {
+            if (INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length] <= lineEnd) {
                 trackedSyntax_I++;
                 continue;
             }
@@ -2456,32 +2412,29 @@ function EDI_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_I) 
 }
 
 function walkLineUntilIndexColumn() {
-
-    const ints = INTS;
-
     // TODO: delete key until you delete a linefeed and join the next line onto your own then press backspace everything breaks.
 
     // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
     // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-    ints[fEDI_w_beltIndexLine] = (ints[fEDI_cursor_indexLine] + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-    if (ints[fEDI_w_beltIndexLine] >= ints[fEDI_ArrayFrom_textElement_children_length] || ints[fEDI_w_beltIndexLine] < 0) ints[fEDI_w_beltIndexLine] = -1;
-    else ints[fEDI_w_beltIndexLine] = (ints[fEDI_w_beltIndexLine] + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+    INTS[fEDI_w_beltIndexLine] = (INTS[fEDI_cursor_indexLine] + INTS[fEDI_offsetLine]) - INTS[fEDI_virtualIndexLine];
+    if (INTS[fEDI_w_beltIndexLine] >= INTS[fEDI_ArrayFrom_textElement_children_length] || INTS[fEDI_w_beltIndexLine] < 0) INTS[fEDI_w_beltIndexLine] = -1;
+    else INTS[fEDI_w_beltIndexLine] = (INTS[fEDI_w_beltIndexLine] + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
     
-    if (ints[fEDI_w_beltIndexLine] < 0) {
-        ints[fEDI_w_indexColumn_Goal] = 0;
-        ints[fEDI_w_indexColumn_Sum] = 0;
-        ints[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
-        ints[fEDI_w_indexSpan] = 0;
+    if (INTS[fEDI_w_beltIndexLine] < 0) {
+        INTS[fEDI_w_indexColumn_Goal] = 0;
+        INTS[fEDI_w_indexColumn_Sum] = 0;
+        INTS[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
+        INTS[fEDI_w_indexSpan] = 0;
         w_span = null;
         w_div = null;
-        ints[fEDI_w_beltIndexLine] = ints[fEDI_w_beltIndexLine]; // double assignment but not all that pressing of a matter at the moment I think it reads better to just set it / avoid the temporary 'let' local variable each invocation.
+        INTS[fEDI_w_beltIndexLine] = INTS[fEDI_w_beltIndexLine]; // double assignment but not all that pressing of a matter at the moment I think it reads better to just set it / avoid the temporary 'let' local variable each invocation.
         return;
     }
     
-    let div = ArrayFrom_textElement_children[ints[fEDI_w_beltIndexLine]];
-    let indexColumn_Goal = ints[fEDI_cursor_indexColumn] + ints[fEDI_offsetColumn];
+    let div = ArrayFrom_textElement_children[INTS[fEDI_w_beltIndexLine]];
+    let indexColumn_Goal = INTS[fEDI_cursor_indexColumn] + INTS[fEDI_offsetColumn];
     let indexColumn_Sum = 0;
 
     for (var indexSpan = 0; indexSpan < div.children.length; indexSpan++) {
@@ -2489,13 +2442,13 @@ function walkLineUntilIndexColumn() {
         if (indexColumn_Goal <= indexColumn_Sum + span.textContent.length) {
             // '<=' because end-of-line text insertion (end of line but prior to the line ending itself).
             // The line ending isn't written to the span, it is represented by the encompassing div itself.
-            ints[fEDI_w_indexColumn_Goal] = indexColumn_Goal;
-            ints[fEDI_w_indexColumn_Sum] = indexColumn_Sum;
-            ints[fEDI_w_indexColumn_SpanTextContentRelative] = indexColumn_Goal - indexColumn_Sum;
-            ints[fEDI_w_indexSpan] = indexSpan;
+            INTS[fEDI_w_indexColumn_Goal] = indexColumn_Goal;
+            INTS[fEDI_w_indexColumn_Sum] = indexColumn_Sum;
+            INTS[fEDI_w_indexColumn_SpanTextContentRelative] = indexColumn_Goal - indexColumn_Sum;
+            INTS[fEDI_w_indexSpan] = indexSpan;
             w_span = span;
             w_div = div;
-            ints[fEDI_w_beltIndexLine] = ints[fEDI_w_beltIndexLine];
+            INTS[fEDI_w_beltIndexLine] = INTS[fEDI_w_beltIndexLine];
             return;
         }
         else {
@@ -2504,13 +2457,13 @@ function walkLineUntilIndexColumn() {
     }
 
     // TODO: When the column index is too large, how should this be handled?
-    ints[fEDI_w_indexColumn_Goal] = 0;
-    ints[fEDI_w_indexColumn_Sum] = 0;
-    ints[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
-    ints[fEDI_w_indexSpan] = 0;
+    INTS[fEDI_w_indexColumn_Goal] = 0;
+    INTS[fEDI_w_indexColumn_Sum] = 0;
+    INTS[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
+    INTS[fEDI_w_indexSpan] = 0;
     w_span = null;
     w_div = null;
-    ints[fEDI_w_beltIndexLine] = ints[fEDI_w_beltIndexLine];
+    INTS[fEDI_w_beltIndexLine] = INTS[fEDI_w_beltIndexLine];
     return;
 }
 
@@ -2555,7 +2508,6 @@ function EDI_drawViewPort_FindTrackedSyntax_StartingIndex(indexLineAaa) {
 
     // TODO: 'indexLineAaa' and 'indexLineBbb'; babel compiler error when both were named indexLine.
 
-    const ints = INTS;
     let local_EDI_trackedSyntaxList = EDI_trackedSyntaxList;
 
     let line = EDI_getLineBoundaryPositions(indexLineAaa);
@@ -2571,16 +2523,16 @@ function EDI_drawViewPort_FindTrackedSyntax_StartingIndex(indexLineAaa) {
 
         local_EDI_trackedSyntaxList.getElementAt(mid);
         
-        if (ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_pooledTrackedSyntax_length] > positionIndex) {
+        if (INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length] > positionIndex) {
             indexLineBbb = mid;
 
-            if (ints[fEDI_pooledTrackedSyntax_start] === positionIndex) {
+            if (INTS[fEDI_pooledTrackedSyntax_start] === positionIndex) {
                 break;
             }
             
             right = mid - 1;
         }
-        else if (ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_pooledTrackedSyntax_length] <= positionIndex) {
+        else if (INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length] <= positionIndex) {
             left = mid + 1;
         }
         else {
@@ -2657,33 +2609,31 @@ function EDI_draw_all_cursors() {
  * @param {boolean} NOTscrollCursorIntoView 
  */
 function EDI_drawCursor(NOTscrollCursorIntoView) {
-    const ints = INTS;
+    INTS[fEDI_cursor_cursorTranslateYValue] = (INTS[fEDI_cursor_indexLine] + INTS[fEDI_offsetLine]) * INTS[fEDI_lineHeight];
+    INTS[fEDI_cursor_cursorTranslateXValue] = (INTS[fEDI_cursor_indexColumn] + INTS[fEDI_offsetColumn]) * EDI_characterWidth;
 
-    ints[fEDI_cursor_cursorTranslateYValue] = (ints[fEDI_cursor_indexLine] + ints[fEDI_offsetLine]) * ints[fEDI_lineHeight];
-    ints[fEDI_cursor_cursorTranslateXValue] = (ints[fEDI_cursor_indexColumn] + ints[fEDI_offsetColumn]) * EDI_characterWidth;
-
-    EDI_cursor_caretRow.style.transform = `translateY(${ints[fEDI_cursor_cursorTranslateYValue]}px)`;
-    EDI_cursor_cursorElement.style.transform = `translateX(${ints[fEDI_cursor_cursorTranslateXValue]}px)`;
+    EDI_cursor_caretRow.style.transform = `translateY(${INTS[fEDI_cursor_cursorTranslateYValue]}px)`;
+    EDI_cursor_cursorElement.style.transform = `translateX(${INTS[fEDI_cursor_cursorTranslateXValue]}px)`;
 
     EDI_createStyleForSelection();
 
     let text = '';
 
-    text += '(' + ints[fEDI_cursor_indexLine] + ', ' + ints[fEDI_cursor_indexColumn] + ')';
+    text += '(' + INTS[fEDI_cursor_indexLine] + ', ' + INTS[fEDI_cursor_indexColumn] + ')';
     
     if (BYTES[byteDIALOG_Settings_editorDebugShowAdjacentCharacters]) {
-        let previous = EDI_getCharacterPrevious(ints[fEDI_cursor_indexColumn], EDI_getPositionIndex_cursor());
+        let previous = EDI_getCharacterPrevious(INTS[fEDI_cursor_indexColumn], EDI_getPositionIndex_cursor());
         if (previous === '\n') previous = '\\n';
         else if (previous === '\t') previous = '\\t';
-        let current = EDI_getCharacterCurrent(ints[fEDI_cursor_indexColumn], EDI_getPositionIndex_cursor(), EDI_getLineEnd_pos(ints[fEDI_cursor_indexLine]));
+        let current = EDI_getCharacterCurrent(INTS[fEDI_cursor_indexColumn], EDI_getPositionIndex_cursor(), EDI_getLineEnd_pos(INTS[fEDI_cursor_indexLine]));
         if (current === '\n') current = '\\n';
         else if (current === '\t') current = '\\t';
         text += ' | (' + previous + ', ' + current + ')';
     }
     
-    text += ' | (' + ints[fEDI_cursor_editLength] + ')';
+    text += ' | (' + INTS[fEDI_cursor_editLength] + ')';
 
-    text += ' | (' + ints[fEDI_longestLine_indexLine] + ', ' + ints[fEDI_longestLine_length] + ')';
+    text += ' | (' + INTS[fEDI_longestLine_indexLine] + ', ' + INTS[fEDI_longestLine_length] + ')';
 
     EDI_debug.replaceChildren(text);
 
@@ -2818,20 +2768,18 @@ function EDI_clearSelectionStyle() {
 }
 
 function EDI_createStyleForSelection() {
-    const ints = INTS;
+    if (INTS[fEDI_cursor_DRAWN_selectionAnchor] !== INTS[fEDI_cursor_selectionAnchor] ||
+        INTS[fEDI_cursor_DRAWN_selectionEnd] !== INTS[fEDI_cursor_selectionEnd] ||
+        INTS[fEDI_cursor_DRAWN_selection_virtualCount] !== INTS[fEDI_virtualCount] ||
+        INTS[fEDI_cursor_DRAWN_selection_virtualIndexLine] !== INTS[fEDI_virtualIndexLine]) {
 
-    if (ints[fEDI_cursor_DRAWN_selectionAnchor] !== ints[fEDI_cursor_selectionAnchor] ||
-        ints[fEDI_cursor_DRAWN_selectionEnd] !== ints[fEDI_cursor_selectionEnd] ||
-        ints[fEDI_cursor_DRAWN_selection_virtualCount] !== ints[fEDI_virtualCount] ||
-        ints[fEDI_cursor_DRAWN_selection_virtualIndexLine] !== ints[fEDI_virtualIndexLine]) {
-
-        ints[fEDI_cursor_DRAWN_selectionAnchor] = ints[fEDI_cursor_selectionAnchor];
-        ints[fEDI_cursor_DRAWN_selectionEnd] = ints[fEDI_cursor_selectionEnd];
-        ints[fEDI_cursor_DRAWN_selection_virtualCount] = ints[fEDI_virtualCount];
-        ints[fEDI_cursor_DRAWN_selection_virtualIndexLine] = ints[fEDI_virtualIndexLine];
+        INTS[fEDI_cursor_DRAWN_selectionAnchor] = INTS[fEDI_cursor_selectionAnchor];
+        INTS[fEDI_cursor_DRAWN_selectionEnd] = INTS[fEDI_cursor_selectionEnd];
+        INTS[fEDI_cursor_DRAWN_selection_virtualCount] = INTS[fEDI_virtualCount];
+        INTS[fEDI_cursor_DRAWN_selection_virtualIndexLine] = INTS[fEDI_virtualIndexLine];
 
         let shouldExistSelectionDiv;
-        if (ints[fEDI_cursor_DRAWN_selectionAnchor] === ints[fEDI_cursor_DRAWN_selectionEnd]) {
+        if (INTS[fEDI_cursor_DRAWN_selectionAnchor] === INTS[fEDI_cursor_DRAWN_selectionEnd]) {
             shouldExistSelectionDiv = false;
         }
         else {
@@ -2864,26 +2812,26 @@ function EDI_createStyleForSelection() {
 
         // TODO: only somewhat simple viewport based virtualization is implemented from what I remember. i.e.: I think the divs are re-used, but every div is redrawn for the viewport, rather than only recalculating the css for the divs that came or left the viewport.
 
-        let start = ints[fEDI_cursor_selectionAnchor];
+        let start = INTS[fEDI_cursor_selectionAnchor];
         EDI_getLineAndColumnIndices(start);
-        let startLineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
-        let startLineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
+        let startLineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+        let startLineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
         let startLine = startLineAndColumnIndices_indexLine;
         let startColumn = startLineAndColumnIndices_indexColumn;
 
-        let end = ints[fEDI_cursor_selectionEnd];
+        let end = INTS[fEDI_cursor_selectionEnd];
         EDI_getLineAndColumnIndices(end);
-        let endLineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
-        let endLineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
+        let endLineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+        let endLineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
         let INCLUSIVEendLine = endLineAndColumnIndices_indexLine;
         let INCLUSIVEendColumn = endLineAndColumnIndices_indexColumn;
 
         // # Virtualization
-        if (startLine < ints[fEDI_virtualIndexLine]) {
-            startLine = ints[fEDI_virtualIndexLine];
+        if (startLine < INTS[fEDI_virtualIndexLine]) {
+            startLine = INTS[fEDI_virtualIndexLine];
             startColumn = 0;
         }
-        let lastIndexLineBeingShown = ints[fEDI_virtualIndexLine] + ints[fEDI_virtualCount] - 1;
+        let lastIndexLineBeingShown = INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1;
         if (INCLUSIVEendLine > lastIndexLineBeingShown) {
             INCLUSIVEendLine = lastIndexLineBeingShown;
             INCLUSIVEendColumn = EDI_getLastValidIndexColumn(INCLUSIVEendLine);
@@ -2926,7 +2874,7 @@ function EDI_createStyleForSelection() {
             lineSelectionDiv = textSelectionDiv.children[childDivIndex++];
             lineSelectionDiv.className = 'EDI_selection';
             lineSelectionDiv.style.left = gutterWidthTotal_withPxUnits;
-            lineSelectionDiv.style.transform = `translate(${startColumn * EDI_characterWidth}px, ${ints[fEDI_lineHeight] * startLine}px)`;
+            lineSelectionDiv.style.transform = `translate(${startColumn * EDI_characterWidth}px, ${INTS[fEDI_lineHeight] * startLine}px)`;
             lineSelectionDiv.style.width = (INCLUSIVEendColumn - startColumn) * EDI_characterWidth + 'px';
         }
         else {
@@ -2934,7 +2882,7 @@ function EDI_createStyleForSelection() {
             lineSelectionDiv = textSelectionDiv.children[childDivIndex++];
             lineSelectionDiv.className = 'EDI_selection';
             lineSelectionDiv.style.left = gutterWidthTotal_withPxUnits;
-            lineSelectionDiv.style.transform = `translate(${startColumn * EDI_characterWidth}px, ${ints[fEDI_lineHeight] * startLine}px)`;
+            lineSelectionDiv.style.transform = `translate(${startColumn * EDI_characterWidth}px, ${INTS[fEDI_lineHeight] * startLine}px)`;
             let line = EDI_getLineBoundaryPositions(startLine);
             let lineLength = line.end - line.start;
             lineSelectionDiv.style.width = (lineLength + 1 - startColumn) * EDI_characterWidth + 'px';
@@ -2944,7 +2892,7 @@ function EDI_createStyleForSelection() {
                 lineSelectionDiv = textSelectionDiv.children[childDivIndex++];
                 lineSelectionDiv.className = 'EDI_selection';
                 lineSelectionDiv.style.left = gutterWidthTotal_withPxUnits;
-                lineSelectionDiv.style.transform = `translateY(${ints[fEDI_lineHeight] * lineI}px)`;
+                lineSelectionDiv.style.transform = `translateY(${INTS[fEDI_lineHeight] * lineI}px)`;
                 let line = EDI_getLineBoundaryPositions(lineI);
                 let lineLength = line.end - line.start;
                 lineSelectionDiv.style.width = (lineLength + 1) * EDI_characterWidth + 'px';
@@ -2954,7 +2902,7 @@ function EDI_createStyleForSelection() {
             lineSelectionDiv = textSelectionDiv.children[childDivIndex++];
             lineSelectionDiv.className = 'EDI_selection';
             lineSelectionDiv.style.left = gutterWidthTotal_withPxUnits;
-            lineSelectionDiv.style.transform = `translateY(${ints[fEDI_lineHeight] * INCLUSIVEendLine}px)`;
+            lineSelectionDiv.style.transform = `translateY(${INTS[fEDI_lineHeight] * INCLUSIVEendLine}px)`;
             lineSelectionDiv.style.width = INCLUSIVEendColumn * EDI_characterWidth + 'px';
         }
     }
@@ -3127,17 +3075,14 @@ function EDI_getLineEnd_pos_raw(indexLine) {
 
 function EDI_onMouseMove_WRAPIT(event) {
     if ((event.buttons & 1) && !get_EDI_recentBoundingClientRect_isNull_intFalsey()) {
-
-        const ints = INTS;
-
         // TODO: Consider short circuiting at via event.clientX and clientY by tracking the necessary thresholds for the cursor position to pass rather than the previous and current indices. (you can possibly thereby skip the calculation of the indices entirely for the redundant events).
         // TODO: Is it correct to use the cursor's indexLine and indexColumn directly as a means of determining redundancy? I worry about odd interactions, but I have no proof that such an odd interaction could exist.
 
-        let rX = event.clientX - ints[fEDI_recentBoundingClientRect_left] - ints[fEDI_gutterWidthTotal] + ints[fEDI_lastReadNumber_scrollLeft];
-        let rY = event.clientY - ints[fEDI_recentBoundingClientRect_top] + ints[fEDI_lastReadNumber_scrollTop];
+        let rX = event.clientX - INTS[fEDI_recentBoundingClientRect_left] - INTS[fEDI_gutterWidthTotal] + INTS[fEDI_lastReadNumber_scrollLeft];
+        let rY = event.clientY - INTS[fEDI_recentBoundingClientRect_top] + INTS[fEDI_lastReadNumber_scrollTop];
 
         let indexColumn = Math.round(rX / EDI_characterWidth);
-        let indexLine = Math.floor(rY / ints[fEDI_lineHeight]);
+        let indexLine = Math.floor(rY / INTS[fEDI_lineHeight]);
 
         if (indexColumn < 0) {
             indexColumn = 0;
@@ -3156,12 +3101,12 @@ function EDI_onMouseMove_WRAPIT(event) {
             indexColumn = lastValidIndexColumn;
         }
 
-        if (ints[fEDI_cursor_indexLine] === indexLine && ints[fEDI_cursor_indexColumn] === indexColumn) {
+        if (INTS[fEDI_cursor_indexLine] === indexLine && INTS[fEDI_cursor_indexColumn] === indexColumn) {
             return;
         }
         
-        ints[fEDI_cursor_indexLine] = indexLine;
-        ints[fEDI_cursor_indexColumn] = indexColumn;
+        INTS[fEDI_cursor_indexLine] = indexLine;
+        INTS[fEDI_cursor_indexColumn] = indexColumn;
 
         if (get_EDI_detailRank() === 3) {
             EDI_onMouseMoveDetailRankThree(indexLine, indexColumn);
@@ -3308,90 +3253,87 @@ function EDI_getCharacterCurrent_KIND(indexColumn, positionIndex, lineEnd) {
 }
 
 function EDI_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
-
-    const ints = INTS;
-
     let nextPositionIndex = EDI_getPositionIndex_Overload(indexLineClicked, indexColumnClicked);
 
-    if (nextPositionIndex <= ints[fEDI_detail_smallPosition]) {
-        if (ints[fEDI_cursor_selectionAnchor] < ints[fEDI_cursor_selectionEnd]) {
-            ints[fEDI_cursor_selectionAnchor] = ints[fEDI_detail_largePosition];
+    if (nextPositionIndex <= INTS[fEDI_detail_smallPosition]) {
+        if (INTS[fEDI_cursor_selectionAnchor] < INTS[fEDI_cursor_selectionEnd]) {
+            INTS[fEDI_cursor_selectionAnchor] = INTS[fEDI_detail_largePosition];
         }
 
-        ints[fEDI_cursor_indexLine] = indexLineClicked;
-        ints[fEDI_cursor_indexColumn] = indexColumnClicked;
+        INTS[fEDI_cursor_indexLine] = indexLineClicked;
+        INTS[fEDI_cursor_indexColumn] = indexColumnClicked;
         let positionIndex = nextPositionIndex;
 
-        ints[fEDI_cursor_selectionEnd] = positionIndex;
+        INTS[fEDI_cursor_selectionEnd] = positionIndex;
 
-        if (nextPositionIndex < ints[fEDI_detail_smallPosition]) {
-            let goalCharacterKind = EDI_getCharacterCurrent_KIND(ints[fEDI_cursor_indexColumn], positionIndex, EDI_getLineEnd_pos(ints[fEDI_cursor_indexLine]));
+        if (nextPositionIndex < INTS[fEDI_detail_smallPosition]) {
+            let goalCharacterKind = EDI_getCharacterCurrent_KIND(INTS[fEDI_cursor_indexColumn], positionIndex, EDI_getLineEnd_pos(INTS[fEDI_cursor_indexLine]));
 
             let leftWasFound = false;
 
             let tempPositionIndex = positionIndex;
 
-            while (ints[fEDI_cursor_indexColumn] > 0) {
-                let leftCharacterKind = EDI_getCharacterPrevious_KIND(ints[fEDI_cursor_indexColumn], tempPositionIndex);
+            while (INTS[fEDI_cursor_indexColumn] > 0) {
+                let leftCharacterKind = EDI_getCharacterPrevious_KIND(INTS[fEDI_cursor_indexColumn], tempPositionIndex);
                 if (leftCharacterKind !== goalCharacterKind) {
-                    ints[fEDI_cursor_selectionEnd] = tempPositionIndex;
+                    INTS[fEDI_cursor_selectionEnd] = tempPositionIndex;
                     leftWasFound = true;
                     break;
                 }
                 tempPositionIndex--;
-                ints[fEDI_cursor_indexColumn]--;
+                INTS[fEDI_cursor_indexColumn]--;
             }
 
             if (!leftWasFound) {
-                ints[fEDI_cursor_selectionEnd] = tempPositionIndex;
+                INTS[fEDI_cursor_selectionEnd] = tempPositionIndex;
             }
         }
 
         EDI_render_request(RenderKind_Cursor_flag_doNotScrollIntoView);
     }
     else {
-        if (ints[fEDI_cursor_selectionAnchor] > ints[fEDI_cursor_selectionEnd]) {
-            ints[fEDI_cursor_selectionAnchor] = ints[fEDI_detail_smallPosition];
+        if (INTS[fEDI_cursor_selectionAnchor] > INTS[fEDI_cursor_selectionEnd]) {
+            INTS[fEDI_cursor_selectionAnchor] = INTS[fEDI_detail_smallPosition];
         }
 
-        if (nextPositionIndex >= ints[fEDI_detail_largePosition]) {
-            ints[fEDI_cursor_indexLine] = indexLineClicked;
-            ints[fEDI_cursor_indexColumn] = indexColumnClicked;
+        if (nextPositionIndex >= INTS[fEDI_detail_largePosition]) {
+            INTS[fEDI_cursor_indexLine] = indexLineClicked;
+            INTS[fEDI_cursor_indexColumn] = indexColumnClicked;
             let positionIndex = nextPositionIndex;
 
-            ints[fEDI_cursor_selectionEnd] = positionIndex;
+            INTS[fEDI_cursor_selectionEnd] = positionIndex;
 
-            let leftCharacterKind = EDI_getCharacterPrevious_KIND(ints[fEDI_cursor_indexColumn], positionIndex);
+            let leftCharacterKind = EDI_getCharacterPrevious_KIND(INTS[fEDI_cursor_indexColumn], positionIndex);
             let goalCharacterKind = leftCharacterKind;
 
-            let line = EDI_getLineBoundaryPositions(ints[fEDI_cursor_indexLine]);
+            let line = EDI_getLineBoundaryPositions(INTS[fEDI_cursor_indexLine]);
             let lineLength = line.end - line.start;
             let rightWasFound = false;
 
             let tempPositionIndex = positionIndex;
-            while (ints[fEDI_cursor_indexColumn] < lineLength) {
-                let rightCharacterKind = EDI_getCharacterCurrent_KIND(ints[fEDI_cursor_indexColumn], tempPositionIndex, line.end);
+            while (INTS[fEDI_cursor_indexColumn] < lineLength) {
+                let rightCharacterKind = EDI_getCharacterCurrent_KIND(INTS[fEDI_cursor_indexColumn], tempPositionIndex, line.end);
                 if (rightCharacterKind !== goalCharacterKind) {
-                    ints[fEDI_cursor_selectionEnd] = tempPositionIndex;
+                    INTS[fEDI_cursor_selectionEnd] = tempPositionIndex;
                     rightWasFound = true;
                     break;
                 }
                 tempPositionIndex++;
-                ints[fEDI_cursor_indexColumn]++;
+                INTS[fEDI_cursor_indexColumn]++;
             }
 
             if (!rightWasFound) {
                 // end of line
-                ints[fEDI_cursor_selectionEnd] = tempPositionIndex;
+                INTS[fEDI_cursor_selectionEnd] = tempPositionIndex;
             }
         }
         else {
-            EDI_getLineAndColumnIndices(ints[fEDI_detail_largePosition]);
-            let largeLineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
-            let largeLineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
-            ints[fEDI_cursor_indexLine] = largeLineAndColumnIndices_indexLine;
-            ints[fEDI_cursor_indexColumn] = largeLineAndColumnIndices_indexColumn;
-            ints[fEDI_cursor_selectionEnd] = ints[fEDI_detail_largePosition];
+            EDI_getLineAndColumnIndices(INTS[fEDI_detail_largePosition]);
+            let largeLineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+            let largeLineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
+            INTS[fEDI_cursor_indexLine] = largeLineAndColumnIndices_indexLine;
+            INTS[fEDI_cursor_indexColumn] = largeLineAndColumnIndices_indexColumn;
+            INTS[fEDI_cursor_selectionEnd] = INTS[fEDI_detail_largePosition];
         }
 
         EDI_render_request(RenderKind_Cursor_flag_doNotScrollIntoView);
@@ -3399,82 +3341,79 @@ function EDI_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
 }
 
 function EDI_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked) {
-
-    const ints = INTS;
-
     // TODO: I remember this being bugged I think it makes sense why. You're checking if the cursor is exactly at the threshold rather than determining if the distance from previous event to this one puts you past the threshold.
-    if (indexLineClicked === ints[fEDI_detailRank3OriginLine]) {
+    if (indexLineClicked === INTS[fEDI_detailRank3OriginLine]) {
         // TODO: 'cursor.positionIndex' is incorrect there is no such field, but was this referring to the clicked position or the position that the cursor currently is at...
         // ...it is presumed to be the position that the cursor is currently at because it would explain the bug where if you move the cursor somewhere that the mouse move events don't get
         // sent then bring your mouse back into a place where they do you'll snap ahead by some indices and skip the threshold and it visually bugs.
         // You could attach to I think it is window? but then I'm wondering if a race condition could ever occur.
         // so you'd probably want to do both attach to window and protect against large movements that skip the exact threshold when transitioning.
         //
-        if (EDI_getPositionIndex_raw_cursor() !== ints[fEDI_detail_smallPosition]) {
-            EDI_getLineAndColumnIndices(ints[fEDI_detail_smallPosition]);
-            let smallLineAndColumnPositionIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
-            let smallLineAndColumnPositionIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
-            ints[fEDI_cursor_indexLine] = smallLineAndColumnPositionIndices_indexLine;
-            ints[fEDI_cursor_indexColumn] = smallLineAndColumnPositionIndices_indexColumn;
+        if (EDI_getPositionIndex_raw_cursor() !== INTS[fEDI_detail_smallPosition]) {
+            EDI_getLineAndColumnIndices(INTS[fEDI_detail_smallPosition]);
+            let smallLineAndColumnPositionIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+            let smallLineAndColumnPositionIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
+            INTS[fEDI_cursor_indexLine] = smallLineAndColumnPositionIndices_indexLine;
+            INTS[fEDI_cursor_indexColumn] = smallLineAndColumnPositionIndices_indexColumn;
         }
 
-        if (ints[fEDI_cursor_selectionEnd] !== ints[fEDI_detail_smallPosition]) {
-            ints[fEDI_cursor_selectionEnd] = ints[fEDI_detail_smallPosition];
+        if (INTS[fEDI_cursor_selectionEnd] !== INTS[fEDI_detail_smallPosition]) {
+            INTS[fEDI_cursor_selectionEnd] = INTS[fEDI_detail_smallPosition];
         }
 
-        if (ints[fEDI_cursor_selectionAnchor] !== ints[fEDI_detail_largePosition]) {
-            ints[fEDI_cursor_selectionAnchor] = ints[fEDI_detail_largePosition];
+        if (INTS[fEDI_cursor_selectionAnchor] !== INTS[fEDI_detail_largePosition]) {
+            INTS[fEDI_cursor_selectionAnchor] = INTS[fEDI_detail_largePosition];
         }
 
         EDI_render_request(RenderKind_Cursor_flag_doNotScrollIntoView);
     }
-    else if (indexLineClicked < ints[fEDI_detailRank3OriginLine]) {
-        if (ints[fEDI_cursor_selectionAnchor] < ints[fEDI_cursor_selectionEnd]) {
-            EDI_getLineAndColumnIndices(ints[fEDI_detail_smallPosition]);
-            let smallLineAndColumnPositionIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
-            let smallLineAndColumnPositionIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
+    else if (indexLineClicked < INTS[fEDI_detailRank3OriginLine]) {
+        if (INTS[fEDI_cursor_selectionAnchor] < INTS[fEDI_cursor_selectionEnd]) {
+            EDI_getLineAndColumnIndices(INTS[fEDI_detail_smallPosition]);
+            let smallLineAndColumnPositionIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+            let smallLineAndColumnPositionIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
 
-            ints[fEDI_cursor_indexLine] = smallLineAndColumnPositionIndices_indexLine;
-            ints[fEDI_cursor_indexColumn] = smallLineAndColumnPositionIndices_indexColumn;
+            INTS[fEDI_cursor_indexLine] = smallLineAndColumnPositionIndices_indexLine;
+            INTS[fEDI_cursor_indexColumn] = smallLineAndColumnPositionIndices_indexColumn;
 
-            ints[fEDI_cursor_selectionEnd] = ints[fEDI_detail_smallPosition];
+            INTS[fEDI_cursor_selectionEnd] = INTS[fEDI_detail_smallPosition];
 
             EDI_render_request(RenderKind_Cursor_flag_doNotScrollIntoView);
         }
 
-        ints[fEDI_cursor_indexLine] = indexLineClicked;
-        ints[fEDI_cursor_indexColumn] = 0;
+        INTS[fEDI_cursor_indexLine] = indexLineClicked;
+        INTS[fEDI_cursor_indexColumn] = 0;
 
-        ints[fEDI_cursor_selectionEnd] = EDI_getPositionIndex_Overload(indexLineClicked, 0);
+        INTS[fEDI_cursor_selectionEnd] = EDI_getPositionIndex_Overload(indexLineClicked, 0);
 
         EDI_render_request(RenderKind_Cursor_flag_doNotScrollIntoView);
     }
-    else if (indexLineClicked > ints[fEDI_detailRank3OriginLine]) {
+    else if (indexLineClicked > INTS[fEDI_detailRank3OriginLine]) {
 
-        if (ints[fEDI_cursor_selectionAnchor] !== ints[fEDI_detail_smallPosition]) {
-            ints[fEDI_cursor_selectionAnchor] = ints[fEDI_detail_smallPosition];
+        if (INTS[fEDI_cursor_selectionAnchor] !== INTS[fEDI_detail_smallPosition]) {
+            INTS[fEDI_cursor_selectionAnchor] = INTS[fEDI_detail_smallPosition];
         }
 
-        ints[fEDI_cursor_indexLine] = indexLineClicked;
-        ints[fEDI_cursor_indexColumn] = indexColumnClicked;
+        INTS[fEDI_cursor_indexLine] = indexLineClicked;
+        INTS[fEDI_cursor_indexColumn] = indexColumnClicked;
         let positionIndex = EDI_getPositionIndex_Overload(indexLineClicked, indexColumnClicked);
 
         // move to end of line...
-        let line = EDI_getLineBoundaryPositions(ints[fEDI_cursor_indexLine]);
+        let line = EDI_getLineBoundaryPositions(INTS[fEDI_cursor_indexLine]);
         let lineLength = line.end - line.start;
-        positionIndex += lineLength - ints[fEDI_cursor_indexColumn];
+        positionIndex += lineLength - INTS[fEDI_cursor_indexColumn];
 
-        if (ints[fEDI_cursor_indexLine] === EDI_lineEndPositionList.count - 1) {
-            ints[fEDI_cursor_indexColumn] = lineLength;
-            ints[fEDI_cursor_selectionEnd] = positionIndex;
+        if (INTS[fEDI_cursor_indexLine] === EDI_lineEndPositionList.count - 1) {
+            INTS[fEDI_cursor_indexColumn] = lineLength;
+            INTS[fEDI_cursor_selectionEnd] = positionIndex;
         }
         else {
             // wrap to the next line
-            ints[fEDI_cursor_indexLine]++;
-            ints[fEDI_cursor_indexColumn] = 0;
+            INTS[fEDI_cursor_indexLine]++;
+            INTS[fEDI_cursor_indexColumn] = 0;
             positionIndex++;
 
-            ints[fEDI_cursor_selectionEnd] = positionIndex;
+            INTS[fEDI_cursor_selectionEnd] = positionIndex;
         }
 
         EDI_render_request(RenderKind_Cursor_flag_doNotScrollIntoView);
@@ -3530,43 +3469,41 @@ function EDI_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLineCli
         return;
     }
 
-    const ints = INTS;
-
-    ints[fEDI_cursor_indexLine] = indexLineClicked;
-    ints[fEDI_cursor_indexColumn] = indexColumnClicked;
+    INTS[fEDI_cursor_indexLine] = indexLineClicked;
+    INTS[fEDI_cursor_indexColumn] = indexColumnClicked;
     let positionIndex = EDI_getPositionIndex_cursor();
     
-    let line = EDI_getLineBoundaryPositions(ints[fEDI_cursor_indexLine]);
+    let line = EDI_getLineBoundaryPositions(INTS[fEDI_cursor_indexLine]);
 
-    let leftCharacterKind = EDI_getCharacterPrevious_KIND(ints[fEDI_cursor_indexColumn], positionIndex);
-    let rightCharacterKind = EDI_getCharacterCurrent_KIND(ints[fEDI_cursor_indexColumn], positionIndex, line.end);
+    let leftCharacterKind = EDI_getCharacterPrevious_KIND(INTS[fEDI_cursor_indexColumn], positionIndex);
+    let rightCharacterKind = EDI_getCharacterCurrent_KIND(INTS[fEDI_cursor_indexColumn], positionIndex, line.end);
 
     if (leftCharacterKind === rightCharacterKind) {
         let goalCharacterKind = rightCharacterKind;
 
-        let tempIndexColumn = ints[fEDI_cursor_indexColumn];
-        let tempPositionIndex = EDI_getPositionIndex_Overload(ints[fEDI_cursor_indexLine], tempIndexColumn);
+        let tempIndexColumn = INTS[fEDI_cursor_indexColumn];
+        let tempPositionIndex = EDI_getPositionIndex_Overload(INTS[fEDI_cursor_indexLine], tempIndexColumn);
         while (tempIndexColumn > 0) {
             tempIndexColumn--;
             tempPositionIndex--;
             leftCharacterKind = EDI_getCharacterPrevious_KIND(tempIndexColumn, tempPositionIndex);
             if (leftCharacterKind !== goalCharacterKind) {
-                ints[fEDI_cursor_selectionAnchor] = tempPositionIndex;
+                INTS[fEDI_cursor_selectionAnchor] = tempPositionIndex;
                 break;
             }
         }
 
         let lineLength = line.end - line.start;
         let rightWasFound = false;
-        tempIndexColumn = ints[fEDI_cursor_indexColumn];
-        tempPositionIndex = EDI_getPositionIndex_Overload(ints[fEDI_cursor_indexLine], tempIndexColumn);
+        tempIndexColumn = INTS[fEDI_cursor_indexColumn];
+        tempPositionIndex = EDI_getPositionIndex_Overload(INTS[fEDI_cursor_indexLine], tempIndexColumn);
         while (tempIndexColumn < lineLength) {
             tempIndexColumn++;
             tempPositionIndex++;
             rightCharacterKind = EDI_getCharacterCurrent_KIND(tempIndexColumn, tempPositionIndex, line.end);
             if (rightCharacterKind !== goalCharacterKind) {
-                ints[fEDI_cursor_indexColumn] = tempIndexColumn;
-                ints[fEDI_cursor_selectionEnd] = tempPositionIndex;
+                INTS[fEDI_cursor_indexColumn] = tempIndexColumn;
+                INTS[fEDI_cursor_selectionEnd] = tempPositionIndex;
                 rightWasFound = true;
                 break;
             }
@@ -3574,8 +3511,8 @@ function EDI_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLineCli
 
         if (!rightWasFound) {
             // end of line
-            ints[fEDI_cursor_indexColumn] = tempIndexColumn;
-            ints[fEDI_cursor_selectionEnd] = tempPositionIndex;
+            INTS[fEDI_cursor_indexColumn] = tempIndexColumn;
+            INTS[fEDI_cursor_selectionEnd] = tempPositionIndex;
         }
 
         EDI_render_request(RenderKind_Cursor_n);
@@ -3583,39 +3520,39 @@ function EDI_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLineCli
     else if (leftCharacterKind > rightCharacterKind) {
         let goalCharacterKind = leftCharacterKind;
 
-        let tempIndexColumn = ints[fEDI_cursor_indexColumn];
-        let originalPositionIndex = EDI_getPositionIndex_Overload(ints[fEDI_cursor_indexLine], tempIndexColumn);
+        let tempIndexColumn = INTS[fEDI_cursor_indexColumn];
+        let originalPositionIndex = EDI_getPositionIndex_Overload(INTS[fEDI_cursor_indexLine], tempIndexColumn);
         let tempPositionIndex = originalPositionIndex;
 
-        while (ints[fEDI_cursor_indexColumn] > 0) {
+        while (INTS[fEDI_cursor_indexColumn] > 0) {
             tempIndexColumn--;
             tempPositionIndex--;
             leftCharacterKind = EDI_getCharacterPrevious_KIND(tempIndexColumn, tempPositionIndex);
             if (leftCharacterKind !== goalCharacterKind) {
-                ints[fEDI_cursor_selectionAnchor] = tempPositionIndex;
+                INTS[fEDI_cursor_selectionAnchor] = tempPositionIndex;
                 break;
             }
         }
 
-        ints[fEDI_cursor_selectionEnd] = originalPositionIndex;
+        INTS[fEDI_cursor_selectionEnd] = originalPositionIndex;
 
         EDI_render_request(RenderKind_Cursor_n);
     }
     else {
         let goalCharacterKind = rightCharacterKind;
 
-        let positionIndex = EDI_getPositionIndex_Overload(ints[fEDI_cursor_indexLine], ints[fEDI_cursor_indexColumn]);
-        ints[fEDI_cursor_selectionAnchor] = positionIndex;
+        let positionIndex = EDI_getPositionIndex_Overload(INTS[fEDI_cursor_indexLine], INTS[fEDI_cursor_indexColumn]);
+        INTS[fEDI_cursor_selectionAnchor] = positionIndex;
 
         let lineLength = line.end - line.start;
         let rightWasFound = false;
 
-        while (ints[fEDI_cursor_indexColumn] < lineLength) {
-            ints[fEDI_cursor_indexColumn]++;
+        while (INTS[fEDI_cursor_indexColumn] < lineLength) {
+            INTS[fEDI_cursor_indexColumn]++;
             positionIndex++;
-            rightCharacterKind = EDI_getCharacterCurrent_KIND(ints[fEDI_cursor_indexColumn], positionIndex, line.end);
+            rightCharacterKind = EDI_getCharacterCurrent_KIND(INTS[fEDI_cursor_indexColumn], positionIndex, line.end);
             if (rightCharacterKind !== goalCharacterKind) {
-                ints[fEDI_cursor_selectionEnd] = positionIndex;
+                INTS[fEDI_cursor_selectionEnd] = positionIndex;
                 rightWasFound = true;
                 break;
             }
@@ -3623,19 +3560,19 @@ function EDI_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLineCli
 
         if (!rightWasFound) {
             // end of line
-            ints[fEDI_cursor_selectionEnd] = positionIndex;
+            INTS[fEDI_cursor_selectionEnd] = positionIndex;
         }
 
         EDI_render_request(RenderKind_Cursor_n);
     }
 
-    if (ints[fEDI_cursor_selectionAnchor] < ints[fEDI_cursor_selectionEnd]) {
-        ints[fEDI_detail_smallPosition] = ints[fEDI_cursor_selectionAnchor];
-        ints[fEDI_detail_largePosition] = ints[fEDI_cursor_selectionEnd];
+    if (INTS[fEDI_cursor_selectionAnchor] < INTS[fEDI_cursor_selectionEnd]) {
+        INTS[fEDI_detail_smallPosition] = INTS[fEDI_cursor_selectionAnchor];
+        INTS[fEDI_detail_largePosition] = INTS[fEDI_cursor_selectionEnd];
     }
     else {
-        ints[fEDI_detail_smallPosition] = ints[fEDI_cursor_selectionEnd];
-        ints[fEDI_detail_largePosition] = ints[fEDI_cursor_selectionAnchor];
+        INTS[fEDI_detail_smallPosition] = INTS[fEDI_cursor_selectionEnd];
+        INTS[fEDI_detail_largePosition] = INTS[fEDI_cursor_selectionAnchor];
     }
 }
 
@@ -3645,35 +3582,33 @@ function EDI_onMouseDownDetailRankThree(event_button, event_shiftKey, indexLineC
         return;
     }
 
-    const ints = INTS;
-
-    ints[fEDI_cursor_indexLine] = indexLineClicked;
-    ints[fEDI_cursor_indexColumn] = indexColumnClicked;
+    INTS[fEDI_cursor_indexLine] = indexLineClicked;
+    INTS[fEDI_cursor_indexColumn] = indexColumnClicked;
     
-    ints[fEDI_cursor_selectionAnchor] = EDI_getPositionIndex_Overload(ints[fEDI_cursor_indexLine], 0);
+    INTS[fEDI_cursor_selectionAnchor] = EDI_getPositionIndex_Overload(INTS[fEDI_cursor_indexLine], 0);
     
-    ints[fEDI_detailRank3OriginLine] = ints[fEDI_cursor_indexLine];
+    INTS[fEDI_detailRank3OriginLine] = INTS[fEDI_cursor_indexLine];
 
-    if (ints[fEDI_cursor_indexLine] === EDI_lineEndPositionList.count - 1) {
-        let line = EDI_getLineBoundaryPositions(ints[fEDI_cursor_indexLine]);
-        ints[fEDI_cursor_selectionEnd] = line.end;
+    if (INTS[fEDI_cursor_indexLine] === EDI_lineEndPositionList.count - 1) {
+        let line = EDI_getLineBoundaryPositions(INTS[fEDI_cursor_indexLine]);
+        INTS[fEDI_cursor_selectionEnd] = line.end;
         EDI_render_request(RenderKind_Cursor_n);
     }
     else {
-        ints[fEDI_cursor_indexLine]++;
-        ints[fEDI_cursor_indexColumn] = 0;
-        let line = EDI_getLineBoundaryPositions(ints[fEDI_cursor_indexLine]);
-        ints[fEDI_cursor_selectionEnd] = line.start;
+        INTS[fEDI_cursor_indexLine]++;
+        INTS[fEDI_cursor_indexColumn] = 0;
+        let line = EDI_getLineBoundaryPositions(INTS[fEDI_cursor_indexLine]);
+        INTS[fEDI_cursor_selectionEnd] = line.start;
         EDI_render_request(RenderKind_Cursor_n);
     }
 
-    if (ints[fEDI_cursor_selectionAnchor] < ints[fEDI_cursor_selectionEnd]) {
-        ints[fEDI_detail_smallPosition] = ints[fEDI_cursor_selectionAnchor];
-        ints[fEDI_detail_largePosition] = ints[fEDI_cursor_selectionEnd];
+    if (INTS[fEDI_cursor_selectionAnchor] < INTS[fEDI_cursor_selectionEnd]) {
+        INTS[fEDI_detail_smallPosition] = INTS[fEDI_cursor_selectionAnchor];
+        INTS[fEDI_detail_largePosition] = INTS[fEDI_cursor_selectionEnd];
     }
     else {
-        ints[fEDI_detail_smallPosition] = ints[fEDI_cursor_selectionEnd];
-        ints[fEDI_detail_largePosition] = ints[fEDI_cursor_selectionAnchor];
+        INTS[fEDI_detail_smallPosition] = INTS[fEDI_cursor_selectionEnd];
+        INTS[fEDI_detail_largePosition] = INTS[fEDI_cursor_selectionAnchor];
     }
 }
 
@@ -3711,12 +3646,11 @@ function EDI_insertGapBufferSpan() {
  * @param {*} editLength 
  */
 function EDI_startEdit(editKind, editPosition, editLength) {
-    const ints = INTS;
-    ints[fEDI_cursor_editKind] = editKind;
-    ints[fEDI_cursor_editPosition] = editPosition;
-    ints[fEDI_cursor_editIndexLine] = ints[fEDI_cursor_indexLine];
-    ints[fEDI_cursor_editIndexColumn] = ints[fEDI_cursor_indexColumn];
-    ints[fEDI_cursor_editLength] = editLength;
+    INTS[fEDI_cursor_editKind] = editKind;
+    INTS[fEDI_cursor_editPosition] = editPosition;
+    INTS[fEDI_cursor_editIndexLine] = INTS[fEDI_cursor_indexLine];
+    INTS[fEDI_cursor_editIndexColumn] = INTS[fEDI_cursor_indexColumn];
+    INTS[fEDI_cursor_editLength] = editLength;
 
     switch (editKind) {
         case EditKind_InsertLtr:
@@ -3729,11 +3663,10 @@ function EDI_startEdit(editKind, editPosition, editLength) {
  * @returns 
  */
 function EDI_NOTcanBatch_insert() {
-    const ints = INTS;
-    return ints[fEDI_cursor_editKind] != EditKind_InsertLtr ||
-           ints[fEDI_cursor_indexLine] !== ints[fEDI_cursor_editIndexLine] ||
-           ints[fEDI_cursor_indexColumn] !== ints[fEDI_cursor_editIndexColumn] + ints[fEDI_cursor_editLength] ||
-           ints[fEDI_cursor_editLength] >= CONST_EDI_cursor_GAP_BUFFER_CAPACITY ||
+    return INTS[fEDI_cursor_editKind] != EditKind_InsertLtr ||
+           INTS[fEDI_cursor_indexLine] !== INTS[fEDI_cursor_editIndexLine] ||
+           INTS[fEDI_cursor_indexColumn] !== INTS[fEDI_cursor_editIndexColumn] + INTS[fEDI_cursor_editLength] ||
+           INTS[fEDI_cursor_editLength] >= CONST_EDI_cursor_GAP_BUFFER_CAPACITY ||
            EDI_cursor_hasSelection();
 }
 
@@ -3741,12 +3674,11 @@ function EDI_NOTcanBatch_insert() {
  * @returns 
  */
 function EDI_NOTcanBatch_enter() {
-    const ints = INTS;
     return true || // turn off batching until it works. The initial enter event is what matters everything else can be recreated based on the amount of lineFeeds that were inserted.
-           ints[fEDI_cursor_editKind] != EditKind_Enter ||
-           ints[fEDI_cursor_indexLine] !== ints[fEDI_cursor_END_editIndexLine] ||
-           ints[fEDI_cursor_indexColumn] !== ints[fEDI_cursor_END_editIndexColumn] ||
-           ints[fEDI_cursor_editLength] >= CONST_EDI_cursor_GAP_BUFFER_CAPACITY ||
+           INTS[fEDI_cursor_editKind] != EditKind_Enter ||
+           INTS[fEDI_cursor_indexLine] !== INTS[fEDI_cursor_END_editIndexLine] ||
+           INTS[fEDI_cursor_indexColumn] !== INTS[fEDI_cursor_END_editIndexColumn] ||
+           INTS[fEDI_cursor_editLength] >= CONST_EDI_cursor_GAP_BUFFER_CAPACITY ||
            !EDI_cursor_enterKey_newLinePlusIndentation_byteList ||
            EDI_cursor_hasSelection();
 }
@@ -3755,10 +3687,9 @@ function EDI_NOTcanBatch_enter() {
  * @returns 
  */
 function EDI_NOTcanBatch_backspace() {
-    const ints = INTS;
-    return ints[fEDI_cursor_editKind] != EditKind_BackspaceRtl ||
-           ints[fEDI_cursor_indexLine] !== ints[fEDI_cursor_editIndexLine] ||
-           ints[fEDI_cursor_indexColumn] !== ints[fEDI_cursor_editIndexColumn] ||
+    return INTS[fEDI_cursor_editKind] != EditKind_BackspaceRtl ||
+           INTS[fEDI_cursor_indexLine] !== INTS[fEDI_cursor_editIndexLine] ||
+           INTS[fEDI_cursor_indexColumn] !== INTS[fEDI_cursor_editIndexColumn] ||
            EDI_cursor_hasSelection();
 }
 
@@ -3766,10 +3697,9 @@ function EDI_NOTcanBatch_backspace() {
  * @returns 
  */
 function EDI_NOTcanBatch_delete() {
-    const ints = INTS;
-    return ints[fEDI_cursor_editKind] != EditKind_DeleteLtr ||
-           ints[fEDI_cursor_indexLine] !== ints[fEDI_cursor_editIndexLine] ||
-           ints[fEDI_cursor_indexColumn] !== ints[fEDI_cursor_editIndexColumn] ||
+    return INTS[fEDI_cursor_editKind] != EditKind_DeleteLtr ||
+           INTS[fEDI_cursor_indexLine] !== INTS[fEDI_cursor_editIndexLine] ||
+           INTS[fEDI_cursor_indexColumn] !== INTS[fEDI_cursor_editIndexColumn] ||
            EDI_cursor_hasSelection();
 }
 
@@ -3779,18 +3709,16 @@ function EDI_NOTcanBatch_delete() {
 function EDI_preKeyboardMovementSelectionLogic(shiftKey) {
     if (shiftKey) {
         if (!EDI_cursor_hasSelection()) {
-            const ints = INTS;
-            ints[fEDI_cursor_selectionAnchor] = EDI_getPositionIndex_cursor();
-            ints[fEDI_cursor_selectionIndexAnchorLine] = ints[fEDI_cursor_indexLine];
-            ints[fEDI_cursor_selectionIndexAnchorColumn] = ints[fEDI_cursor_indexColumn];
+            INTS[fEDI_cursor_selectionAnchor] = EDI_getPositionIndex_cursor();
+            INTS[fEDI_cursor_selectionIndexAnchorLine] = INTS[fEDI_cursor_indexLine];
+            INTS[fEDI_cursor_selectionIndexAnchorColumn] = INTS[fEDI_cursor_indexColumn];
         }
     }
     else {
         if (EDI_cursor_hasSelection()) {
-            const ints = INTS;
-            ints[fEDI_cursor_selectionAnchor] = ints[fEDI_cursor_selectionEnd];
-            ints[fEDI_cursor_selectionIndexAnchorLine] = ints[fEDI_cursor_selectionIndexEndLine];
-            ints[fEDI_cursor_selectionIndexAnchorColumn] = ints[fEDI_cursor_selectionIndexEndColumn];
+            INTS[fEDI_cursor_selectionAnchor] = INTS[fEDI_cursor_selectionEnd];
+            INTS[fEDI_cursor_selectionIndexAnchorLine] = INTS[fEDI_cursor_selectionIndexEndLine];
+            INTS[fEDI_cursor_selectionIndexAnchorColumn] = INTS[fEDI_cursor_selectionIndexEndColumn];
         }
     }
 }
@@ -3800,10 +3728,9 @@ function EDI_preKeyboardMovementSelectionLogic(shiftKey) {
  */
 function EDI_postKeyboardMovementSelectionLogic(shiftKey) {
     if (shiftKey) {
-        const ints = INTS;
-        ints[fEDI_cursor_selectionEnd] = EDI_getPositionIndex_cursor();
-        ints[fEDI_cursor_selectionIndexEndLine] = ints[fEDI_cursor_indexLine];
-        ints[fEDI_cursor_selectionIndexEndColumn] = ints[fEDI_cursor_indexColumn];
+        INTS[fEDI_cursor_selectionEnd] = EDI_getPositionIndex_cursor();
+        INTS[fEDI_cursor_selectionIndexEndLine] = INTS[fEDI_cursor_indexLine];
+        INTS[fEDI_cursor_selectionIndexEndColumn] = INTS[fEDI_cursor_indexColumn];
     }
 }
 
@@ -3811,17 +3738,16 @@ function EDI_postKeyboardMovementSelectionLogic(shiftKey) {
  * @param {*} shiftKey 
  */
 function EDI_arrowDown(shiftKey) {
-    const ints = INTS;
     EDI_movementBasedCacheInvalidation();
     EDI_preKeyboardMovementSelectionLogic(shiftKey);
-    if (ints[fEDI_cursor_indexLine] < EDI_lineEndPositionList.count - 1) {
-        ints[fEDI_cursor_indexLine]++;
-        let lastValidIndexColumn = EDI_getLastValidIndexColumn(ints[fEDI_cursor_indexLine]);
-        if (ints[fEDI_cursor_STORED_indexColumn] > lastValidIndexColumn) {
-            ints[fEDI_cursor_indexColumn] = lastValidIndexColumn;
+    if (INTS[fEDI_cursor_indexLine] < EDI_lineEndPositionList.count - 1) {
+        INTS[fEDI_cursor_indexLine]++;
+        let lastValidIndexColumn = EDI_getLastValidIndexColumn(INTS[fEDI_cursor_indexLine]);
+        if (INTS[fEDI_cursor_STORED_indexColumn] > lastValidIndexColumn) {
+            INTS[fEDI_cursor_indexColumn] = lastValidIndexColumn;
         }
         else {
-            ints[fEDI_cursor_indexColumn] = ints[fEDI_cursor_STORED_indexColumn];
+            INTS[fEDI_cursor_indexColumn] = INTS[fEDI_cursor_STORED_indexColumn];
         }
     }
     EDI_postKeyboardMovementSelectionLogic(shiftKey);
@@ -3974,19 +3900,18 @@ function EDI_editEvent(editKind, event, clipboardContent) {
 }
 
 function EDI_editEvent_theEditIself_InsertLtr(event) {
-    const ints = INTS;
     EDI_movementBasedCacheInvalidation();
-    if (ints[fEDI_offsetColumn_withRespectToThisIndexLine] !== ints[fEDI_cursor_indexLine]) {
-        ints[fEDI_offsetColumn_withRespectToThisIndexLine] = ints[fEDI_cursor_indexLine];
-        ints[fEDI_offsetColumn] = 0;
+    if (INTS[fEDI_offsetColumn_withRespectToThisIndexLine] !== INTS[fEDI_cursor_indexLine]) {
+        INTS[fEDI_offsetColumn_withRespectToThisIndexLine] = INTS[fEDI_cursor_indexLine];
+        INTS[fEDI_offsetColumn] = 0;
     }
     // You can do this because the function 'EDI_NOTcanBatch_insert' was already checked for all the cursors, if it is possible to batch, the editKind will stay InsertLtr otherwise it is finalized and set to None.
     // TODO: Use if === EditKind_None for copy and paste safety / it might just even be more readable
-    if (ints[fEDI_cursor_editKind] !== EditKind_InsertLtr) {
+    if (INTS[fEDI_cursor_editKind] !== EditKind_InsertLtr) {
         EDI_startEdit(EditKind_InsertLtr, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
     }
     EDI_insertDo(event.key);
-    ints[fEDI_cursor_STORED_indexColumn] = ints[fEDI_cursor_indexColumn];
+    INTS[fEDI_cursor_STORED_indexColumn] = INTS[fEDI_cursor_indexColumn];
     EDI_render_request(RenderKind_Cursor_n);
     //ints[fEDI_offsetColumn] = ints[fEDI_offsetColumn] + ints[fEDI_cursor_editLength];
     //ints[fEDI_totalShift] = get_EDI_totalShift() + ints[fEDI_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
@@ -3994,17 +3919,16 @@ function EDI_editEvent_theEditIself_InsertLtr(event) {
 }
 
 function EDI_editEvent_theEditIself_DeleteLtr(event) {
-    const ints = INTS;
     EDI_movementBasedCacheInvalidation();
-    if (ints[fEDI_offsetColumn_withRespectToThisIndexLine] !== ints[fEDI_cursor_indexLine]) {
-        ints[fEDI_offsetColumn_withRespectToThisIndexLine] = ints[fEDI_cursor_indexLine];
-        ints[fEDI_offsetColumn] = 0;
+    if (INTS[fEDI_offsetColumn_withRespectToThisIndexLine] !== INTS[fEDI_cursor_indexLine]) {
+        INTS[fEDI_offsetColumn_withRespectToThisIndexLine] = INTS[fEDI_cursor_indexLine];
+        INTS[fEDI_offsetColumn] = 0;
     }
     if (EDI_cursor_hasSelection()) {
         EDI_removeSelection();
     }
     else {
-        if (ints[fEDI_cursor_editKind] !== EditKind_DeleteLtr) {
+        if (INTS[fEDI_cursor_editKind] !== EditKind_DeleteLtr) {
             EDI_startEdit(EditKind_DeleteLtr, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
         }
         EDI_deleteDo(event);
@@ -4015,21 +3939,20 @@ function EDI_editEvent_theEditIself_DeleteLtr(event) {
 }
 
 function EDI_editEvent_theEditIself_BackspaceRtl(event) {
-    const ints = INTS;
     EDI_movementBasedCacheInvalidation();
-    if (ints[fEDI_offsetColumn_withRespectToThisIndexLine] !== ints[fEDI_cursor_indexLine]) {
-        ints[fEDI_offsetColumn_withRespectToThisIndexLine] = ints[fEDI_cursor_indexLine];
-        ints[fEDI_offsetColumn] = 0;
+    if (INTS[fEDI_offsetColumn_withRespectToThisIndexLine] !== INTS[fEDI_cursor_indexLine]) {
+        INTS[fEDI_offsetColumn_withRespectToThisIndexLine] = INTS[fEDI_cursor_indexLine];
+        INTS[fEDI_offsetColumn] = 0;
     }
     if (EDI_cursor_hasSelection()) {
         EDI_removeSelection();
     }
     else {
-        if (ints[fEDI_cursor_editKind] !== EditKind_BackspaceRtl) {
+        if (INTS[fEDI_cursor_editKind] !== EditKind_BackspaceRtl) {
             EDI_startEdit(EditKind_BackspaceRtl, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
         }
         EDI_backspaceDo(event);
-        ints[fEDI_cursor_STORED_indexColumn] = ints[fEDI_cursor_indexColumn];
+        INTS[fEDI_cursor_STORED_indexColumn] = INTS[fEDI_cursor_indexColumn];
     }
     EDI_render_request(RenderKind_Cursor_n);
     //ints[fEDI_offsetColumn] = ints[fEDI_offsetColumn] - ints[fEDI_cursor_editLength];
@@ -4367,17 +4290,14 @@ hmmm is google AI just hyping me up... I need to clarify that those few conditio
  * TODO: timing issue of async paste and copy
  */
 function EDI_onKeyDown(event) {
-
-    const ints = INTS;
-
     // Explicitly inlining 'clearMulticursorState()' because it currently is and I just don't want to make a decision about this right now.
     // So what I can do is mark the code paragraph for later decision making.
-    ints[fEDI_offsetLine] = 0;
-    ints[fEDI_offsetColumn_withRespectToThisIndexLine] = 0;
-    ints[fEDI_offsetColumn] = 0;
-    ints[fEDI_totalShift] = 0;
+    INTS[fEDI_offsetLine] = 0;
+    INTS[fEDI_offsetColumn_withRespectToThisIndexLine] = 0;
+    INTS[fEDI_offsetColumn] = 0;
+    INTS[fEDI_totalShift] = 0;
     EDI_offsetWithinSpan_withRespectToThisSpan = null;
-    ints[fEDI_offsetWithinSpan] = 0;
+    INTS[fEDI_offsetWithinSpan] = 0;
 
     switch (event.key) {
         case 'ArrowLeft':
@@ -4456,42 +4376,40 @@ function EDI_onKeyDown_ArrowLeft(event) {
 
     EDI_movementBasedCacheInvalidation();
 
-    const ints = INTS;
-
-    if (ints[fEDI_offsetColumn_withRespectToThisIndexLine] !== ints[fEDI_cursor_indexLine]) {
-        ints[fEDI_offsetColumn_withRespectToThisIndexLine] = ints[fEDI_cursor_indexLine];
-        ints[fEDI_offsetColumn] = 0;
+    if (INTS[fEDI_offsetColumn_withRespectToThisIndexLine] !== INTS[fEDI_cursor_indexLine]) {
+        INTS[fEDI_offsetColumn_withRespectToThisIndexLine] = INTS[fEDI_cursor_indexLine];
+        INTS[fEDI_offsetColumn] = 0;
     }
 
     if (EDI_cursor_hasSelection() && !event.shiftKey) {
         let small;
-        if (ints[fEDI_cursor_selectionAnchor] < ints[fEDI_cursor_selectionEnd]) {
-            small = ints[fEDI_cursor_selectionAnchor];
+        if (INTS[fEDI_cursor_selectionAnchor] < INTS[fEDI_cursor_selectionEnd]) {
+            small = INTS[fEDI_cursor_selectionAnchor];
         }
         else {
-            small = ints[fEDI_cursor_selectionEnd];
+            small = INTS[fEDI_cursor_selectionEnd];
         }
         EDI_getLineAndColumnIndices(small); // TODO: Check all of these whether they can be inlined (remove the single stage middle-man variable)
-        let lineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
-        let lineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
-        ints[fEDI_cursor_indexLine] = lineAndColumnIndices_indexLine;
-        ints[fEDI_cursor_indexColumn] = lineAndColumnIndices_indexColumn;
-        ints[fEDI_cursor_selectionAnchor] = ints[fEDI_cursor_selectionEnd];
-        ints[fEDI_cursor_selectionIndexAnchorLine] = ints[fEDI_cursor_selectionIndexEndLine];
-        ints[fEDI_cursor_selectionIndexAnchorColumn] = ints[fEDI_cursor_selectionIndexEndColumn];
+        let lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+        let lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
+        INTS[fEDI_cursor_indexLine] = lineAndColumnIndices_indexLine;
+        INTS[fEDI_cursor_indexColumn] = lineAndColumnIndices_indexColumn;
+        INTS[fEDI_cursor_selectionAnchor] = INTS[fEDI_cursor_selectionEnd];
+        INTS[fEDI_cursor_selectionIndexAnchorLine] = INTS[fEDI_cursor_selectionIndexEndLine];
+        INTS[fEDI_cursor_selectionIndexAnchorColumn] = INTS[fEDI_cursor_selectionIndexEndColumn];
     }
     else {
         EDI_preKeyboardMovementSelectionLogic(event.shiftKey);
-        if (event.ctrlKey & ints[fEDI_cursor_indexColumn] > 0) {
-            let line = EDI_getLineBoundaryPositions(ints[fEDI_cursor_indexLine]);
-            let indexPosition = line.start + ints[fEDI_cursor_indexColumn];
-            let originalCharacterKind = EDI_getCharacterPrevious_KIND(ints[fEDI_cursor_indexColumn], indexPosition);
-            ints[fEDI_cursor_indexColumn]--;
+        if (event.ctrlKey & INTS[fEDI_cursor_indexColumn] > 0) {
+            let line = EDI_getLineBoundaryPositions(INTS[fEDI_cursor_indexLine]);
+            let indexPosition = line.start + INTS[fEDI_cursor_indexColumn];
+            let originalCharacterKind = EDI_getCharacterPrevious_KIND(INTS[fEDI_cursor_indexColumn], indexPosition);
+            INTS[fEDI_cursor_indexColumn]--;
             indexPosition--;
 
-            while (ints[fEDI_cursor_indexColumn] > 0) {
-                if (EDI_getCharacterPrevious_KIND(ints[fEDI_cursor_indexColumn], indexPosition) === originalCharacterKind) {
-                    ints[fEDI_cursor_indexColumn]--;
+            while (INTS[fEDI_cursor_indexColumn] > 0) {
+                if (EDI_getCharacterPrevious_KIND(INTS[fEDI_cursor_indexColumn], indexPosition) === originalCharacterKind) {
+                    INTS[fEDI_cursor_indexColumn]--;
                     indexPosition--;
                 }
                 else {
@@ -4500,17 +4418,17 @@ function EDI_onKeyDown_ArrowLeft(event) {
             }
         }
         else {
-            if (ints[fEDI_cursor_indexColumn] > 0) {
-                ints[fEDI_cursor_indexColumn]--;
+            if (INTS[fEDI_cursor_indexColumn] > 0) {
+                INTS[fEDI_cursor_indexColumn]--;
             }
-            else if (ints[fEDI_cursor_indexLine] > 0) {
-                ints[fEDI_cursor_indexLine]--;
-                ints[fEDI_cursor_indexColumn] = EDI_getLastValidIndexColumn(ints[fEDI_cursor_indexLine]);
+            else if (INTS[fEDI_cursor_indexLine] > 0) {
+                INTS[fEDI_cursor_indexLine]--;
+                INTS[fEDI_cursor_indexColumn] = EDI_getLastValidIndexColumn(INTS[fEDI_cursor_indexLine]);
             }
         }
         EDI_postKeyboardMovementSelectionLogic(event.shiftKey);
     }
-    ints[fEDI_cursor_STORED_indexColumn] = ints[fEDI_cursor_indexColumn];
+    INTS[fEDI_cursor_STORED_indexColumn] = INTS[fEDI_cursor_indexColumn];
     EDI_render_request(RenderKind_Cursor_n);
     if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
@@ -4573,43 +4491,41 @@ function EDI_onKeyDown_ArrowRight(event) {
 
     EDI_movementBasedCacheInvalidation();
 
-    const ints = INTS;
-
-    if (ints[fEDI_offsetColumn_withRespectToThisIndexLine] !== ints[fEDI_cursor_indexLine]) {
-        ints[fEDI_offsetColumn_withRespectToThisIndexLine] = ints[fEDI_cursor_indexLine];
-        ints[fEDI_offsetColumn] = 0;
+    if (INTS[fEDI_offsetColumn_withRespectToThisIndexLine] !== INTS[fEDI_cursor_indexLine]) {
+        INTS[fEDI_offsetColumn_withRespectToThisIndexLine] = INTS[fEDI_cursor_indexLine];
+        INTS[fEDI_offsetColumn] = 0;
     }
 
     if (EDI_cursor_hasSelection() && !event.shiftKey) {
         let large;
-        if (ints[fEDI_cursor_selectionAnchor] < ints[fEDI_cursor_selectionEnd]) {
-            large = ints[fEDI_cursor_selectionEnd];
+        if (INTS[fEDI_cursor_selectionAnchor] < INTS[fEDI_cursor_selectionEnd]) {
+            large = INTS[fEDI_cursor_selectionEnd];
         }
         else {
-            large = ints[fEDI_cursor_selectionAnchor];
+            large = INTS[fEDI_cursor_selectionAnchor];
         }
         EDI_getLineAndColumnIndices(large);
-        let lineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
-        let lineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
-        ints[fEDI_cursor_indexLine] = lineAndColumnIndices_indexLine;
-        ints[fEDI_cursor_indexColumn] = lineAndColumnIndices_indexColumn;
-        ints[fEDI_cursor_selectionAnchor] = ints[fEDI_cursor_selectionEnd];
-        ints[fEDI_cursor_selectionIndexAnchorLine] = ints[fEDI_cursor_selectionIndexEndLine];
-        ints[fEDI_cursor_selectionIndexAnchorColumn] = ints[fEDI_cursor_selectionIndexEndColumn];
+        let lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+        let lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
+        INTS[fEDI_cursor_indexLine] = lineAndColumnIndices_indexLine;
+        INTS[fEDI_cursor_indexColumn] = lineAndColumnIndices_indexColumn;
+        INTS[fEDI_cursor_selectionAnchor] = INTS[fEDI_cursor_selectionEnd];
+        INTS[fEDI_cursor_selectionIndexAnchorLine] = INTS[fEDI_cursor_selectionIndexEndLine];
+        INTS[fEDI_cursor_selectionIndexAnchorColumn] = INTS[fEDI_cursor_selectionIndexEndColumn];
     }
     else {
         EDI_preKeyboardMovementSelectionLogic(event.shiftKey);
-        let lastValidIndexColumn = EDI_getLastValidIndexColumn(ints[fEDI_cursor_indexLine]);
-        if (event.ctrlKey & ints[fEDI_cursor_indexColumn] < lastValidIndexColumn) {
-            let line = EDI_getLineBoundaryPositions(ints[fEDI_cursor_indexLine]);
-            let indexPosition = line.start + ints[fEDI_cursor_indexColumn];
-            let originalCharacterKind = EDI_getCharacterCurrent_KIND(ints[fEDI_cursor_indexColumn], indexPosition, line.end);
-            ints[fEDI_cursor_indexColumn]++;
+        let lastValidIndexColumn = EDI_getLastValidIndexColumn(INTS[fEDI_cursor_indexLine]);
+        if (event.ctrlKey & INTS[fEDI_cursor_indexColumn] < lastValidIndexColumn) {
+            let line = EDI_getLineBoundaryPositions(INTS[fEDI_cursor_indexLine]);
+            let indexPosition = line.start + INTS[fEDI_cursor_indexColumn];
+            let originalCharacterKind = EDI_getCharacterCurrent_KIND(INTS[fEDI_cursor_indexColumn], indexPosition, line.end);
+            INTS[fEDI_cursor_indexColumn]++;
             indexPosition++;
 
-            while (ints[fEDI_cursor_indexColumn] < lastValidIndexColumn) {
-                if (EDI_getCharacterCurrent_KIND(ints[fEDI_cursor_indexColumn], indexPosition, line.end) === originalCharacterKind) {
-                    ints[fEDI_cursor_indexColumn]++;
+            while (INTS[fEDI_cursor_indexColumn] < lastValidIndexColumn) {
+                if (EDI_getCharacterCurrent_KIND(INTS[fEDI_cursor_indexColumn], indexPosition, line.end) === originalCharacterKind) {
+                    INTS[fEDI_cursor_indexColumn]++;
                     indexPosition++;
                 }
                 else {
@@ -4618,17 +4534,17 @@ function EDI_onKeyDown_ArrowRight(event) {
             }
         }
         else {
-            if (ints[fEDI_cursor_indexColumn] < lastValidIndexColumn) {
-                ints[fEDI_cursor_indexColumn]++;
+            if (INTS[fEDI_cursor_indexColumn] < lastValidIndexColumn) {
+                INTS[fEDI_cursor_indexColumn]++;
             }
-            else if (ints[fEDI_cursor_indexLine] < EDI_lineEndPositionList.count - 1) {
-                ints[fEDI_cursor_indexColumn] = 0;
-                ints[fEDI_cursor_indexLine]++;
+            else if (INTS[fEDI_cursor_indexLine] < EDI_lineEndPositionList.count - 1) {
+                INTS[fEDI_cursor_indexColumn] = 0;
+                INTS[fEDI_cursor_indexLine]++;
             }
         }
         EDI_postKeyboardMovementSelectionLogic(event.shiftKey);
     }
-    ints[fEDI_cursor_STORED_indexColumn] = ints[fEDI_cursor_indexColumn];
+    INTS[fEDI_cursor_STORED_indexColumn] = INTS[fEDI_cursor_indexColumn];
     EDI_render_request(RenderKind_Cursor_n);
     if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
@@ -5279,9 +5195,6 @@ function EDI_btnNext_onclick() {
 }
 
 function EDI_render_do_IndentMore() {
-
-    const ints = INTS;
-
     // When you're done with IndentLess batch editing correctly.
     // You still need to come back to the render for
     // - [ ] IndentMore and
@@ -5289,8 +5202,8 @@ function EDI_render_do_IndentMore() {
     //
     // and ensure that they render properly. This currently if two edits get done in a single "rAF" the second is cancelled for redundancy yet each one only handles 1 editDisplacement so you missed 1 displacement.
 
-    let startingIndex = ints[fEDI_indent_startingIndex];
-    let SMALL_lineAndColumnIndices_indexLine = ints[fEDI_indent_SMALL_lineAndColumnIndices_indexLine];
+    let startingIndex = INTS[fEDI_indent_startingIndex];
+    let SMALL_lineAndColumnIndices_indexLine = INTS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine];
 
     // TODO: Consider having this string available rather than making it everytime this function is invoked.
     let EDI_on_tab_string = '';
@@ -5298,11 +5211,11 @@ function EDI_render_do_IndentMore() {
         EDI_on_tab_string += String.fromCharCode(EDI_on_tab_bytes[i]);
     }
 
-    if (ints[fEDI_cursor_editKind] !== EditKind_IndentMore) {
+    if (INTS[fEDI_cursor_editKind] !== EditKind_IndentMore) {
         return;
     }
-    if (ints[fEDI_cursor_editRenderedDisplacement] < ints[fEDI_cursor_editLength]) {
-        ints[fEDI_cursor_editRenderedDisplacement]++;
+    if (INTS[fEDI_cursor_editRenderedDisplacement] < INTS[fEDI_cursor_editLength]) {
+        INTS[fEDI_cursor_editRenderedDisplacement]++;
         for (var lineI = startingIndex; lineI >= SMALL_lineAndColumnIndices_indexLine; lineI--) {
             let linePos = EDI_getLineBoundaryPositions(lineI);
 
@@ -5313,9 +5226,9 @@ function EDI_render_do_IndentMore() {
             // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-            let beltIndexLine = (lineI + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-            if (beltIndexLine >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine < 0) beltIndexLine = -1;
-            else beltIndexLine = (beltIndexLine + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+            let beltIndexLine = (lineI + INTS[fEDI_offsetLine]) - INTS[fEDI_virtualIndexLine];
+            if (beltIndexLine >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine < 0) beltIndexLine = -1;
+            else beltIndexLine = (beltIndexLine + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
             if (beltIndexLine >= 0) {
                     let div = EDI_textElement.children[beltIndexLine];
@@ -5450,18 +5363,15 @@ function EDI_indentMore() {
 }
 
 function EDI_render_do_IndentLess() {
-    
-    const ints = INTS;
+    let startingIndex = INTS[fEDI_indent_startingIndex] = startingIndex;
+    let SMALL_lineAndColumnIndices_indexLine = INTS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine];
 
-    let startingIndex = ints[fEDI_indent_startingIndex] = startingIndex;
-    let SMALL_lineAndColumnIndices_indexLine = ints[fEDI_indent_SMALL_lineAndColumnIndices_indexLine];
-
-    if (ints[fEDI_cursor_editKind] !== EditKind_IndentLess) {
+    if (INTS[fEDI_cursor_editKind] !== EditKind_IndentLess) {
         return;
     }
-    if (ints[fEDI_cursor_editRenderedDisplacement] < ints[fEDI_cursor_editLength]) {
+    if (INTS[fEDI_cursor_editRenderedDisplacement] < INTS[fEDI_cursor_editLength]) {
         
-        ints[fEDI_cursor_editRenderedDisplacement]++;
+        INTS[fEDI_cursor_editRenderedDisplacement]++;
 
         /////////////////////// P_1
         let textSelectionDiv;
@@ -5549,9 +5459,9 @@ function EDI_render_do_IndentLess() {
             // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-            let beltIndexLine = (lineI + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-            if (beltIndexLine >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine < 0) beltIndexLine = -1;
-            else beltIndexLine = (beltIndexLine + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+            let beltIndexLine = (lineI + INTS[fEDI_offsetLine]) - INTS[fEDI_virtualIndexLine];
+            if (beltIndexLine >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine < 0) beltIndexLine = -1;
+            else beltIndexLine = (beltIndexLine + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
             if (beltIndexLine >= 0) {
                     let div = EDI_textElement.children[beltIndexLine];
@@ -5561,8 +5471,8 @@ function EDI_render_do_IndentLess() {
         }
 
         /////////////////////// P_3
-        ints[fEDI_cursor_DRAWN_selectionAnchor] = ints[fEDI_cursor_selectionAnchor];
-        ints[fEDI_cursor_DRAWN_selectionEnd] = ints[fEDI_cursor_selectionEnd];
+        INTS[fEDI_cursor_DRAWN_selectionAnchor] = INTS[fEDI_cursor_selectionAnchor];
+        INTS[fEDI_cursor_DRAWN_selectionEnd] = INTS[fEDI_cursor_selectionEnd];
         /////////////////////// P_3
     }
 }
@@ -5654,17 +5564,14 @@ async function EDI_copySelection() {
  * Invoking 'EDI_finalizeAllCursors()' is a good idea prior to invoking this. Long term perhaps this won't be so important.
  */
 async function EDI_duplicateSelection() {
-
-    const ints = INTS;
-
 	if (!EDI_cursor_hasSelection()) {
 		// TODO: This code has a bug and doesn't work with multicursor... EDI_onMouseDownDetailRankThree needs to accept a cursor rather than acting on EDI_primaryCursor...
         // ...these days the todo is somewhat incorrect, it takes cursor now, but you'd need to check whether this causes the selection of two cursors to overlap.
-    	EDI_onMouseDownDetailRankThree(0, false, ints[fEDI_cursor_indexLine], ints[fEDI_cursor_indexColumn]);
+    	EDI_onMouseDownDetailRankThree(0, false, INTS[fEDI_cursor_indexLine], INTS[fEDI_cursor_indexColumn]);
 	}
 
-	let selectionAnchor = ints[fEDI_cursor_selectionAnchor];
-    let selectionEnd = ints[fEDI_cursor_selectionEnd];
+	let selectionAnchor = INTS[fEDI_cursor_selectionAnchor];
+    let selectionEnd = INTS[fEDI_cursor_selectionEnd];
     let small;
     let large;
     if (selectionAnchor < selectionEnd) {
@@ -5678,31 +5585,28 @@ async function EDI_duplicateSelection() {
 
     let length = large - small;
 
-    ints[fEDI_cursor_editPosition] = large;
+    INTS[fEDI_cursor_editPosition] = large;
     EDI_getLineAndColumnIndices(large);
-    let large_lineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
-    let large_lineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
-    ints[fEDI_cursor_editIndexLine] = large_lineAndColumnIndices_indexLine;
-    ints[fEDI_cursor_editIndexColumn] = large_lineAndColumnIndices_indexColumn;
-    ints[fEDI_cursor_editLength] = length;
+    let large_lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+    let large_lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
+    INTS[fEDI_cursor_editIndexLine] = large_lineAndColumnIndices_indexLine;
+    INTS[fEDI_cursor_editIndexColumn] = large_lineAndColumnIndices_indexColumn;
+    INTS[fEDI_cursor_editLength] = length;
 
-    ints[fEDI_cursor_indexLine] = large_lineAndColumnIndices_indexLine;
-    ints[fEDI_cursor_indexColumn] = large_lineAndColumnIndices_indexColumn;
+    INTS[fEDI_cursor_indexLine] = large_lineAndColumnIndices_indexLine;
+    INTS[fEDI_cursor_indexColumn] = large_lineAndColumnIndices_indexColumn;
 
-    ints[fEDI_cursor_EDI_duplicate_small] = small;
-    ints[fEDI_cursor_EDI_duplicate_length] = length;
+    INTS[fEDI_cursor_EDI_duplicate_small] = small;
+    INTS[fEDI_cursor_EDI_duplicate_length] = length;
 
-    ints[fEDI_cursor_selectionAnchor] = large;
-    ints[fEDI_cursor_selectionEnd] = large + length;
+    INTS[fEDI_cursor_selectionAnchor] = large;
+    INTS[fEDI_cursor_selectionEnd] = large + length;
 
     // TODO: The previous render logic was actually moving the cursor as well. Just something to keep in mind, you might see a bug related to this.
     EDI_render_request(RenderKind_DuplicateOrPaste);
 }
 
 function EDI_render_do_DuplicateOrPaste() {
-
-    const ints = INTS;
-
     // Word
     // Tab
     // LineFeed
@@ -5720,13 +5624,13 @@ function EDI_render_do_DuplicateOrPaste() {
 
     let hasSeenLinefeed = false;
 
-    if (ints[fEDI_cursor_editKind] !== EditKind_Duplicate && ints[fEDI_cursor_editKind] !== EditKind_Paste) {
+    if (INTS[fEDI_cursor_editKind] !== EditKind_Duplicate && INTS[fEDI_cursor_editKind] !== EditKind_Paste) {
         return;
     }
-    if (ints[fEDI_cursor_editRenderedDisplacement] < ints[fEDI_cursor_editLength] || ints[fEDI_cursor_editKind] === EditKind_Paste /* Paste has an editLength of 0 currently */) {
+    if (INTS[fEDI_cursor_editRenderedDisplacement] < INTS[fEDI_cursor_editLength] || INTS[fEDI_cursor_editKind] === EditKind_Paste /* Paste has an editLength of 0 currently */) {
 
-        let small = ints[fEDI_cursor_EDI_duplicate_small];
-        let length = ints[fEDI_cursor_EDI_duplicate_length];
+        let small = INTS[fEDI_cursor_EDI_duplicate_small];
+        let length = INTS[fEDI_cursor_EDI_duplicate_length];
         let large = small + length;
         
         // TODO: update the 'ints[fEDI_cursor_editRenderedDisplacement]'
@@ -5734,10 +5638,10 @@ function EDI_render_do_DuplicateOrPaste() {
         let byteArray;
 
         // TODO: re-use the paste byte array
-        if (ints[fEDI_cursor_editKind] === EditKind_Duplicate) {
+        if (INTS[fEDI_cursor_editKind] === EditKind_Duplicate) {
             byteArray = EDI_textByteList.bytes.subarray(small, large);
         }
-        else if (ints[fEDI_cursor_editKind] === EditKind_Paste) {
+        else if (INTS[fEDI_cursor_editKind] === EditKind_Paste) {
             large = EDI_getPositionIndex_raw_cursor();
             let clipboardContent = EDI_cursor_EDI_paste_clipboardContent;
             let clipboardContentLength = clipboardContent.length;
@@ -5772,7 +5676,7 @@ function EDI_render_do_DuplicateOrPaste() {
             byteArray = new Uint8Array(lengthBytes);
             length = lengthBytes;
             // TODO: You need 'ints[fEDI_cursor_editLength]' when finalizing the cursor right? It isn't set until this point for Paste edits.
-            ints[fEDI_cursor_editLength] = lengthBytes;
+            INTS[fEDI_cursor_editLength] = lengthBytes;
 
             // I'm gonna re-use lengthBytes to populate the array to avoid messing something up just to get a different variable with the name of maybe 'offsetBytes' or some such.
             lengthBytes = 0;
@@ -5832,17 +5736,17 @@ function EDI_render_do_DuplicateOrPaste() {
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexLine_current = ((ints[fEDI_cursor_indexLine]) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-        if (beltIndexLine_current >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_current < 0) beltIndexLine_current = -1;
-        else beltIndexLine_current = (beltIndexLine_current + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+        let beltIndexLine_current = ((INTS[fEDI_cursor_indexLine]) + INTS[fEDI_offsetLine]) - INTS[fEDI_virtualIndexLine];
+        if (beltIndexLine_current >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_current < 0) beltIndexLine_current = -1;
+        else beltIndexLine_current = (beltIndexLine_current + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
         // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexLine_first = ((ints[fEDI_virtualIndexLine]) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-        if (beltIndexLine_first >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_first < 0) beltIndexLine_first = -1;
-        else beltIndexLine_first = (beltIndexLine_first + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+        let beltIndexLine_first = ((INTS[fEDI_virtualIndexLine]) + INTS[fEDI_offsetLine]) - INTS[fEDI_virtualIndexLine];
+        if (beltIndexLine_first >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_first < 0) beltIndexLine_first = -1;
+        else beltIndexLine_first = (beltIndexLine_first + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
         // TODO: Use PREVIOUS here from 'beltIndexLine_first'
 
@@ -5850,12 +5754,12 @@ function EDI_render_do_DuplicateOrPaste() {
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexLine_last = ((ints[fEDI_virtualIndexLine] + ints[fEDI_virtualCount] - 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-        if (beltIndexLine_last >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
-        else beltIndexLine_last = (beltIndexLine_last + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+        let beltIndexLine_last = ((INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) + INTS[fEDI_offsetLine]) - INTS[fEDI_virtualIndexLine];
+        if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
+        else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
 
-        let last_valid_indexColumn_currentLine = EDI_getLastValidIndexColumn(ints[fEDI_cursor_indexLine]);
+        let last_valid_indexColumn_currentLine = EDI_getLastValidIndexColumn(INTS[fEDI_cursor_indexLine]);
 
         // TODO: An optimization to check whether you even need to redraw any lines perhaps is possible but it would add too much complexity at the moment and so it isn't being considered...
         // ...i.e.: if you're inserting so many lines that you know you'll scroll or that only a small amount of lines need to be redrawn due to predicting a scroll event.
@@ -5863,9 +5767,9 @@ function EDI_render_do_DuplicateOrPaste() {
         let shouldPreserveCssClassWhenSplittingAmongLine = false;
         let hasSeenLinefeed = false;
 
-        let original_indexColumn_SpanTextContentRelative = ints[fEDI_w_indexColumn_SpanTextContentRelative];
+        let original_indexColumn_SpanTextContentRelative = INTS[fEDI_w_indexColumn_SpanTextContentRelative];
         let original_span_textContent_length = w_span.textContent.length;
-        let original_tracked_syntax_start = positionIndex - ints[fEDI_cursor_indexColumn] + ints[fEDI_w_indexColumn_Sum];
+        let original_tracked_syntax_start = positionIndex - INTS[fEDI_cursor_indexColumn] + INTS[fEDI_w_indexColumn_Sum];
 
         let offset = 0;
 
@@ -5939,8 +5843,8 @@ function EDI_render_do_DuplicateOrPaste() {
             }
         }
 
-        ints[fEDI_cursor_editLength] = insertionLength;
-        ints[fEDI_cursor_editPosition] = large;
+        INTS[fEDI_cursor_editLength] = insertionLength;
+        INTS[fEDI_cursor_editPosition] = large;
 
         if (linesInsertedCount > 0) {
             update_verticalVirtualizationBoundary(EDI_lineEndPositionList.count + linesInsertedCount);
@@ -5968,29 +5872,29 @@ function EDI_render_do_DuplicateOrPaste() {
                     break;
                 }
 
-                if (ints[fEDI_cursor_indexColumn] === 0 && last_valid_indexColumn_currentLine !== 0) { // start of line
+                if (INTS[fEDI_cursor_indexColumn] === 0 && last_valid_indexColumn_currentLine !== 0) { // start of line
                     
                     EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, beltIndexLine_current);
                     EDI_textElement.children[beltIndexLine_current].appendChild(document.createElement('span'));
 
-                    beltIndexLine_current = (beltIndexLine_current + 1) % ints[fEDI_ArrayFrom_textElement_children_length];
+                    beltIndexLine_current = (beltIndexLine_current + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
                     let lineDiv = EDI_textElement.children[beltIndexLine_current];
                     w_div = lineDiv;
-                    ints[fEDI_w_indexSpan] = 0;
-                    w_span = lineDiv.children[ints[fEDI_w_indexSpan]];
-                    ints[fEDI_w_indexColumn_Goal] = 0;
-                    ints[fEDI_w_indexColumn_Sum] = 0;
-                    ints[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
-                    ints[fEDI_cursor_indexLine]++;
-                    ints[fEDI_cursor_indexColumn] = 0;
+                    INTS[fEDI_w_indexSpan] = 0;
+                    w_span = lineDiv.children[INTS[fEDI_w_indexSpan]];
+                    INTS[fEDI_w_indexColumn_Goal] = 0;
+                    INTS[fEDI_w_indexColumn_Sum] = 0;
+                    INTS[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
+                    INTS[fEDI_cursor_indexLine]++;
+                    INTS[fEDI_cursor_indexColumn] = 0;
 
                     continue;
                 }
                 else {
                     // ensure this conditional branch continues if handled, otherwise it will execute the fallback case erroneously
-                    if (last_valid_indexColumn_currentLine === ints[fEDI_cursor_indexColumn]) { // end of line
+                    if (last_valid_indexColumn_currentLine === INTS[fEDI_cursor_indexColumn]) { // end of line
 
-                        beltIndexLine_current = (beltIndexLine_current + 1) % ints[fEDI_ArrayFrom_textElement_children_length];
+                        beltIndexLine_current = (beltIndexLine_current + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
                         
                         EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, beltIndexLine_current);
                         let span = document.createElement('span');
@@ -5998,13 +5902,13 @@ function EDI_render_do_DuplicateOrPaste() {
 
                         let lineDiv = EDI_textElement.children[beltIndexLine_current];
                         w_div = lineDiv;
-                        ints[fEDI_w_indexSpan] = 0;
-                        w_span = lineDiv.children[ints[fEDI_w_indexSpan]];
-                        ints[fEDI_w_indexColumn_Goal] = 0;
-                        ints[fEDI_w_indexColumn_Sum] = 0;
-                        ints[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
-                        ints[fEDI_cursor_indexLine]++;
-                        ints[fEDI_cursor_indexColumn] = 0;
+                        INTS[fEDI_w_indexSpan] = 0;
+                        w_span = lineDiv.children[INTS[fEDI_w_indexSpan]];
+                        INTS[fEDI_w_indexColumn_Goal] = 0;
+                        INTS[fEDI_w_indexColumn_Sum] = 0;
+                        INTS[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
+                        INTS[fEDI_cursor_indexLine]++;
+                        INTS[fEDI_cursor_indexColumn] = 0;
                         last_valid_indexColumn_currentLine = 0;
                         
 
@@ -6016,10 +5920,10 @@ function EDI_render_do_DuplicateOrPaste() {
                         let spanClassName = '';
                         let spanText = '';
 
-                        if (ints[fEDI_w_indexColumn_Goal] > 0) {
-                            if (ints[fEDI_w_indexColumn_Goal] !== ints[fEDI_w_indexColumn_Sum] + w_span.textContent.length) {
-                                let firstText = w_span.textContent.substring(0, ints[fEDI_w_indexColumn_SpanTextContentRelative]);
-                                let lastText = w_span.textContent.substring(ints[fEDI_w_indexColumn_SpanTextContentRelative]);
+                        if (INTS[fEDI_w_indexColumn_Goal] > 0) {
+                            if (INTS[fEDI_w_indexColumn_Goal] !== INTS[fEDI_w_indexColumn_Sum] + w_span.textContent.length) {
+                                let firstText = w_span.textContent.substring(0, INTS[fEDI_w_indexColumn_SpanTextContentRelative]);
+                                let lastText = w_span.textContent.substring(INTS[fEDI_w_indexColumn_SpanTextContentRelative]);
                                 last_valid_indexColumn_currentLine = lastText.length;
                                 w_span.textContent = firstText;
                                 spanText += lastText; // This might NOT have to be +=, but it is due to the enter key method having needed += and this continues the pattern.
@@ -6029,7 +5933,7 @@ function EDI_render_do_DuplicateOrPaste() {
                             }
                         }
 
-                        beltIndexLine_current = (beltIndexLine_current + 1) % ints[fEDI_ArrayFrom_textElement_children_length];
+                        beltIndexLine_current = (beltIndexLine_current + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
 
                         EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, beltIndexLine_current);
 
@@ -6039,7 +5943,7 @@ function EDI_render_do_DuplicateOrPaste() {
                         span.textContent = spanText;
                         aaa.appendChild(span);
 
-                        let rememberIndex = ints[fEDI_w_indexSpan] + 1;
+                        let rememberIndex = INTS[fEDI_w_indexSpan] + 1;
                         let rememberLength = w_div.children.length;
                         for (let i = rememberIndex; i < rememberLength; i++) {
                             aaa.appendChild(w_div.children[rememberIndex]);
@@ -6047,13 +5951,13 @@ function EDI_render_do_DuplicateOrPaste() {
 
                         let lineDiv = EDI_textElement.children[beltIndexLine_current];
                         w_div = lineDiv;
-                        ints[fEDI_w_indexSpan] = 0;
-                        w_span = lineDiv.children[ints[fEDI_w_indexSpan]];
-                        ints[fEDI_w_indexColumn_Goal] = 0;
-                        ints[fEDI_w_indexColumn_Sum] = 0;
-                        ints[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
-                        ints[fEDI_cursor_indexLine]++;
-                        ints[fEDI_cursor_indexColumn] = 0;
+                        INTS[fEDI_w_indexSpan] = 0;
+                        w_span = lineDiv.children[INTS[fEDI_w_indexSpan]];
+                        INTS[fEDI_w_indexColumn_Goal] = 0;
+                        INTS[fEDI_w_indexColumn_Sum] = 0;
+                        INTS[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
+                        INTS[fEDI_cursor_indexLine]++;
+                        INTS[fEDI_cursor_indexColumn] = 0;
                         // last_valid_indexColumn_currentLine is being set when splitting the text.
 
                         continue;
@@ -6066,12 +5970,12 @@ function EDI_render_do_DuplicateOrPaste() {
 
         function EDI_duplicate_and_paste_writeWord(wordLength, word) {
             w_span.textContent = 
-                w_span.textContent.slice(0, ints[fEDI_w_indexColumn_SpanTextContentRelative]) +
+                w_span.textContent.slice(0, INTS[fEDI_w_indexColumn_SpanTextContentRelative]) +
                 word +
-                w_span.textContent.slice(ints[fEDI_w_indexColumn_SpanTextContentRelative]);
+                w_span.textContent.slice(INTS[fEDI_w_indexColumn_SpanTextContentRelative]);
 
-            ints[fEDI_cursor_indexColumn] += wordLength;
-            ints[fEDI_w_indexColumn_SpanTextContentRelative] += wordLength;
+            INTS[fEDI_cursor_indexColumn] += wordLength;
+            INTS[fEDI_w_indexColumn_SpanTextContentRelative] += wordLength;
         }
     }
 }
@@ -6082,11 +5986,9 @@ function EDI_render_do_DuplicateOrPaste() {
 function EDI_paste(content) {
     let positionIndex = EDI_getPositionIndex_cursor();
 
-    const ints = INTS;
-
-    ints[fEDI_cursor_editPosition] = positionIndex;
-    ints[fEDI_cursor_editIndexLine] = ints[fEDI_cursor_indexLine];
-    ints[fEDI_cursor_editIndexColumn] = ints[fEDI_cursor_indexColumn];
+    INTS[fEDI_cursor_editPosition] = positionIndex;
+    INTS[fEDI_cursor_editIndexLine] = INTS[fEDI_cursor_indexLine];
+    INTS[fEDI_cursor_editIndexColumn] = INTS[fEDI_cursor_indexColumn];
 
     EDI_cursor_EDI_paste_clipboardContent = content;
 
@@ -6118,17 +6020,17 @@ function EDI_paste(content) {
     // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-    let beltIndexLine_current = ((ints[fEDI_cursor_indexLine]) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-    if (beltIndexLine_current >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_current < 0) beltIndexLine_current = -1;
-    else beltIndexLine_current = (beltIndexLine_current + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+    let beltIndexLine_current = ((INTS[fEDI_cursor_indexLine]) + INTS[fEDI_offsetLine]) - INTS[fEDI_virtualIndexLine];
+    if (beltIndexLine_current >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_current < 0) beltIndexLine_current = -1;
+    else beltIndexLine_current = (beltIndexLine_current + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
     // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
     // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-    let beltIndexLine_first = ((ints[fEDI_virtualIndexLine]) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-    if (beltIndexLine_first >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_first < 0) beltIndexLine_first = -1;
-    else beltIndexLine_first = (beltIndexLine_first + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+    let beltIndexLine_first = ((INTS[fEDI_virtualIndexLine]) + INTS[fEDI_offsetLine]) - INTS[fEDI_virtualIndexLine];
+    if (beltIndexLine_first >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_first < 0) beltIndexLine_first = -1;
+    else beltIndexLine_first = (beltIndexLine_first + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
     // TODO: Use PREVIOUS here from 'beltIndexLine_first'
     
@@ -6136,11 +6038,11 @@ function EDI_paste(content) {
     // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
     // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-    let beltIndexLine_last = ((ints[fEDI_virtualIndexLine] + ints[fEDI_virtualCount] - 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-    if (beltIndexLine_last >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
-    else beltIndexLine_last = (beltIndexLine_last + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+    let beltIndexLine_last = ((INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) + INTS[fEDI_offsetLine]) - INTS[fEDI_virtualIndexLine];
+    if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
+    else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
-    let last_valid_indexColumn_currentLine = EDI_getLastValidIndexColumn(ints[fEDI_cursor_indexLine]);
+    let last_valid_indexColumn_currentLine = EDI_getLastValidIndexColumn(INTS[fEDI_cursor_indexLine]);
 
     // TODO: An optimization to check whether you even need to redraw any lines perhaps is possible but it would add too much complexity at the moment and so it isn't being considered...
     // ...i.e.: if you're inserting so many lines that you know you'll scroll or that only a small amount of lines need to be redrawn due to predicting a scroll event.
@@ -6441,25 +6343,21 @@ function EDI_lineWasInsertedValidateGutter() {
  * @param {*} insertionCount 
  */
 function EDI_trackedSyntaxList_inefficientUpdateStartAndLength(indexPosition, insertionCount) {
-    const ints = INTS;
     for (var i = 0; i < EDI_trackedSyntaxList.count_abstract; i++) {
         EDI_trackedSyntaxList.getElementAt(i);
-        if (indexPosition <= ints[fEDI_pooledTrackedSyntax_start]) {
-            EDI_trackedSyntaxList.setStart(i, ints[fEDI_pooledTrackedSyntax_start] + insertionCount);
+        if (indexPosition <= INTS[fEDI_pooledTrackedSyntax_start]) {
+            EDI_trackedSyntaxList.setStart(i, INTS[fEDI_pooledTrackedSyntax_start] + insertionCount);
         }
-        else if (indexPosition > ints[fEDI_pooledTrackedSyntax_start] && indexPosition < ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_pooledTrackedSyntax_length]) {
-            EDI_trackedSyntaxList.setLength(i, ints[fEDI_pooledTrackedSyntax_length] + insertionCount);
+        else if (indexPosition > INTS[fEDI_pooledTrackedSyntax_start] && indexPosition < INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length]) {
+            EDI_trackedSyntaxList.setLength(i, INTS[fEDI_pooledTrackedSyntax_length] + insertionCount);
         }
     }
 }
 
 function EDI_render_do_EnterKey() {
-
-    const ints = INTS;
-
     update_verticalVirtualizationBoundary();
 
-    if (ints[fEDI_cursor_editKind] !== EditKind_Enter) {
+    if (INTS[fEDI_cursor_editKind] !== EditKind_Enter) {
         return;
     }
 
@@ -6467,7 +6365,7 @@ function EDI_render_do_EnterKey() {
     // - for loop
     // - or preferably a shift by some count other than just one
     //
-    if (ints[fEDI_cursor_editRenderedDisplacement] < ints[fEDI_cursor_editLineFeedCount]) {
+    if (INTS[fEDI_cursor_editRenderedDisplacement] < INTS[fEDI_cursor_editLineFeedCount]) {
 
         // TODO: This is missing a loop or etc... as was also stated elsewhere.
         // ...
@@ -6475,7 +6373,7 @@ function EDI_render_do_EnterKey() {
         // i.e.: This is wrong because if more than one enter key event was rendered as an edit length > 1 there's probably gonna be a rendering issue
         // and the invocation of 'EDI_render_do_EnterKey' from finalize edit will cause confusion because a length of 2 could pass given certain timing of events.
         //
-        ints[fEDI_cursor_editRenderedDisplacement]++;
+        INTS[fEDI_cursor_editRenderedDisplacement]++;
 
         // TODO: You're gonna have to tighten the virtualization logic?
 
@@ -6483,9 +6381,9 @@ function EDI_render_do_EnterKey() {
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexLine_firstTilde = ((EDI_lineEndPositionList.count) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-        if (beltIndexLine_firstTilde >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_firstTilde < 0) beltIndexLine_firstTilde = -1;
-        else beltIndexLine_firstTilde = (beltIndexLine_firstTilde + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+        let beltIndexLine_firstTilde = ((EDI_lineEndPositionList.count) + INTS[fEDI_offsetLine]) - INTS[fEDI_virtualIndexLine];
+        if (beltIndexLine_firstTilde >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_firstTilde < 0) beltIndexLine_firstTilde = -1;
+        else beltIndexLine_firstTilde = (beltIndexLine_firstTilde + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
         if (beltIndexLine_firstTilde >= 0) {
             EDI_gutter.children[beltIndexLine_firstTilde].textContent = EDI_lineEndPositionList.count + 1;
@@ -6497,24 +6395,24 @@ function EDI_render_do_EnterKey() {
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexLine_current = ((ints[fEDI_cursor_editIndexLine]) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-        if (beltIndexLine_current >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_current < 0) beltIndexLine_current = -1;
-        else beltIndexLine_current = (beltIndexLine_current + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+        let beltIndexLine_current = ((INTS[fEDI_cursor_editIndexLine]) + INTS[fEDI_offsetLine]) - INTS[fEDI_virtualIndexLine];
+        if (beltIndexLine_current >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_current < 0) beltIndexLine_current = -1;
+        else beltIndexLine_current = (beltIndexLine_current + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
         if (beltIndexLine_current < 0)
             shouldRenderEntireViewport = true;
 
         // There are some cases that I don't feel like thinking about at the moment, this if statement singles them out.
-        if (ints[fEDI_virtualCount] <= 1 || EDI_textElement.children.length !== ints[fEDI_virtualCount])
+        if (INTS[fEDI_virtualCount] <= 1 || EDI_textElement.children.length !== INTS[fEDI_virtualCount])
             shouldRenderEntireViewport = true;
 
         // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexLine_first = ((ints[fEDI_virtualIndexLine]) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-        if (beltIndexLine_first >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_first < 0) beltIndexLine_first = -1;
-        else beltIndexLine_first = (beltIndexLine_first + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+        let beltIndexLine_first = ((INTS[fEDI_virtualIndexLine]) + INTS[fEDI_offsetLine]) - INTS[fEDI_virtualIndexLine];
+        if (beltIndexLine_first >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_first < 0) beltIndexLine_first = -1;
+        else beltIndexLine_first = (beltIndexLine_first + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
         // TODO: Use PREVIOUS here from 'beltIndexLine_first'
 
@@ -6522,9 +6420,9 @@ function EDI_render_do_EnterKey() {
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexLine_last = ((ints[fEDI_virtualIndexLine] + ints[fEDI_virtualCount] - 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-        if (beltIndexLine_last >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
-        else beltIndexLine_last = (beltIndexLine_last + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+        let beltIndexLine_last = ((INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) + INTS[fEDI_offsetLine]) - INTS[fEDI_virtualIndexLine];
+        if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
+        else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
         // TODO: reminder for when virtualization padding is improved, this function might need to be looked at.
         // TODO: Track the enter keystroke the same as any other insertion edit and have it pending until it needs to be finalized.
@@ -6539,7 +6437,7 @@ function EDI_render_do_EnterKey() {
 
         // Is holding down ctrl+enter / shift+enter batchable?
 
-        if (!shouldRenderEntireViewport && ints[fEDI_cursor_editIndexColumn] === 0) { // start of line
+        if (!shouldRenderEntireViewport && INTS[fEDI_cursor_editIndexColumn] === 0) { // start of line
             EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, beltIndexLine_current);
             EDI_textElement.children[beltIndexLine_current].appendChild(document.createElement('span'));
 
@@ -6549,11 +6447,11 @@ function EDI_render_do_EnterKey() {
         else {
             if (!shouldRenderEntireViewport) {
                 // ensure this conditional branch returns if handled, otherwise it will execute the fallback case erroneously
-                let lastValidIndexColumn = EDI_getLastValidIndexColumn(ints[fEDI_cursor_editIndexLine]);
+                let lastValidIndexColumn = EDI_getLastValidIndexColumn(INTS[fEDI_cursor_editIndexLine]);
 
-                if (lastValidIndexColumn === ints[fEDI_cursor_editIndexColumn]) { // end of line
+                if (lastValidIndexColumn === INTS[fEDI_cursor_editIndexColumn]) { // end of line
                     
-                    let next_beltIndexLine = (beltIndexLine_current + 1) % ints[fEDI_ArrayFrom_textElement_children_length];
+                    let next_beltIndexLine = (beltIndexLine_current + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
 
                     EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, next_beltIndexLine);
                     let span = document.createElement('span');
@@ -6574,11 +6472,11 @@ function EDI_render_do_EnterKey() {
                     // Set them to the edit respective fields.
                     // Prior to returning from this function restore the original 'indexLine', and 'indexColumn'.
 
-                    let remember_cursorIndexLine = ints[fEDI_cursor_indexLine];
-                    let remember_cursorIndexColumn = ints[fEDI_cursor_indexColumn];
+                    let remember_cursorIndexLine = INTS[fEDI_cursor_indexLine];
+                    let remember_cursorIndexColumn = INTS[fEDI_cursor_indexColumn];
 
-                    ints[fEDI_cursor_indexLine] = ints[fEDI_cursor_editIndexLine];
-                    ints[fEDI_cursor_indexColumn] = ints[fEDI_cursor_editIndexColumn];
+                    INTS[fEDI_cursor_indexLine] = INTS[fEDI_cursor_editIndexLine];
+                    INTS[fEDI_cursor_indexColumn] = INTS[fEDI_cursor_editIndexColumn];
 
                     let spanClassName = '';
                     let spanText = EDI_cursor_cached_indentation_string;
@@ -6589,11 +6487,11 @@ function EDI_render_do_EnterKey() {
                     
                     switch (w_span.className) {
                         case 'eCm':
-                            if (ints[fEDI_w_indexColumn_SpanTextContentRelative] >= 2 && (ints[fEDI_w_indexColumn_SpanTextContentRelative] <= w_span.textContent.length - 2)) {
+                            if (INTS[fEDI_w_indexColumn_SpanTextContentRelative] >= 2 && (INTS[fEDI_w_indexColumn_SpanTextContentRelative] <= w_span.textContent.length - 2)) {
                                 w_span.className = 'eCM';
                                 let indexPosition = EDI_getPositionIndex_raw_cursor();
                                 let indexOfGreaterThanOrEqual = EDI_trackedSyntaxReposition_find(indexPosition);
-                                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_Comment, indexPosition - ints[fEDI_cursor_indexColumn] + ints[fEDI_w_indexColumn_Sum], w_span.textContent.length);
+                                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_Comment, indexPosition - INTS[fEDI_cursor_indexColumn] + INTS[fEDI_w_indexColumn_Sum], w_span.textContent.length);
                                 shouldPreserveCssClassWhenSplittingAmongLine = true;
                             }
                             break;
@@ -6601,11 +6499,11 @@ function EDI_render_do_EnterKey() {
                             shouldPreserveCssClassWhenSplittingAmongLine = true;
                             break;
                         case 'eSm':
-                            if (ints[fEDI_w_indexColumn_SpanTextContentRelative] >= 1 && (ints[fEDI_w_indexColumn_SpanTextContentRelative] <= w_span.textContent.length - 1)) {
+                            if (INTS[fEDI_w_indexColumn_SpanTextContentRelative] >= 1 && (INTS[fEDI_w_indexColumn_SpanTextContentRelative] <= w_span.textContent.length - 1)) {
                                 w_span.className = 'eSM';
                                 let indexPosition = EDI_getPositionIndex_raw_cursor();
                                 let indexOfGreaterThanOrEqual = EDI_trackedSyntaxReposition_find(indexPosition);
-                                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_String, indexPosition - ints[fEDI_cursor_indexColumn] + ints[fEDI_w_indexColumn_Sum], w_span.textContent.length);
+                                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_String, indexPosition - INTS[fEDI_cursor_indexColumn] + INTS[fEDI_w_indexColumn_Sum], w_span.textContent.length);
                                 shouldPreserveCssClassWhenSplittingAmongLine = true;
                             }
                             break;
@@ -6614,10 +6512,10 @@ function EDI_render_do_EnterKey() {
                             break;
                     }
                     
-                    if (ints[fEDI_w_indexColumn_Goal] > 0) {
-                        if (ints[fEDI_w_indexColumn_Goal] !== ints[fEDI_w_indexColumn_Sum] + w_span.textContent.length) {
-                            let firstText = w_span.textContent.substring(0, ints[fEDI_w_indexColumn_SpanTextContentRelative]);
-                            let lastText = w_span.textContent.substring(ints[fEDI_w_indexColumn_SpanTextContentRelative]);
+                    if (INTS[fEDI_w_indexColumn_Goal] > 0) {
+                        if (INTS[fEDI_w_indexColumn_Goal] !== INTS[fEDI_w_indexColumn_Sum] + w_span.textContent.length) {
+                            let firstText = w_span.textContent.substring(0, INTS[fEDI_w_indexColumn_SpanTextContentRelative]);
+                            let lastText = w_span.textContent.substring(INTS[fEDI_w_indexColumn_SpanTextContentRelative]);
                             w_span.textContent = firstText;
                             spanText += lastText; // += due to the possibility of indentation
                             if (shouldPreserveCssClassWhenSplittingAmongLine) {
@@ -6626,7 +6524,7 @@ function EDI_render_do_EnterKey() {
                         }
                     }
 
-                    let next_beltIndexLine = (ints[fEDI_w_beltIndexLine] + 1) % ints[fEDI_ArrayFrom_textElement_children_length];
+                    let next_beltIndexLine = (INTS[fEDI_w_beltIndexLine] + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
 
                     EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, next_beltIndexLine);
 
@@ -6636,7 +6534,7 @@ function EDI_render_do_EnterKey() {
                     span.textContent = spanText;
                     aaa.appendChild(span);
 
-                    let rememberIndex = ints[fEDI_w_indexSpan] + 1;
+                    let rememberIndex = INTS[fEDI_w_indexSpan] + 1;
                     let rememberLength = w_div.children.length;
                     for (let i = rememberIndex; i < rememberLength; i++) {
                         aaa.appendChild(w_div.children[rememberIndex]);
@@ -6644,8 +6542,8 @@ function EDI_render_do_EnterKey() {
 
                     EDI_lineWasInsertedValidateGutter();
 
-                    ints[fEDI_cursor_indexLine] = remember_cursorIndexLine;
-                    ints[fEDI_cursor_indexColumn] = remember_cursorIndexColumn;
+                    INTS[fEDI_cursor_indexLine] = remember_cursorIndexLine;
+                    INTS[fEDI_cursor_indexColumn] = remember_cursorIndexColumn;
                     return;
                 }
             }
@@ -6945,98 +6843,92 @@ And then I got response of
  * @returns 
  */
 function EDI_removeSelection() {
-
-    const ints = INTS;
-
-    if (ints[fEDI_cursor_editKind] != EditKind_None) {
+    if (INTS[fEDI_cursor_editKind] != EditKind_None) {
         // TODO: multicursor confusion scenario is likely to happy due to this code, but the code isn't related enough for me to change it yet.
         EDI_finalizeEdit();
     }
 
     let smallPosition;
     let largePosition;
-    if (ints[fEDI_cursor_selectionAnchor] < ints[fEDI_cursor_selectionEnd]) {
-        smallPosition = ints[fEDI_cursor_selectionAnchor];
-        largePosition = ints[fEDI_cursor_selectionEnd];
+    if (INTS[fEDI_cursor_selectionAnchor] < INTS[fEDI_cursor_selectionEnd]) {
+        smallPosition = INTS[fEDI_cursor_selectionAnchor];
+        largePosition = INTS[fEDI_cursor_selectionEnd];
     }
     else {
-        smallPosition = ints[fEDI_cursor_selectionEnd];
-        largePosition = ints[fEDI_cursor_selectionAnchor];
+        smallPosition = INTS[fEDI_cursor_selectionEnd];
+        largePosition = INTS[fEDI_cursor_selectionAnchor];
     }
 
-    ints[fEDI_EDI_RemoveSelection_smallPosition] = smallPosition;
-    ints[fEDI_EDI_RemoveSelection_largePosition] = largePosition;
+    INTS[fEDI_EDI_RemoveSelection_smallPosition] = smallPosition;
+    INTS[fEDI_EDI_RemoveSelection_largePosition] = largePosition;
 
-    ints[fEDI_cursor_selectionAnchor] = 0;
-    ints[fEDI_cursor_selectionEnd] = 0;
+    INTS[fEDI_cursor_selectionAnchor] = 0;
+    INTS[fEDI_cursor_selectionEnd] = 0;
 
     let editLength = largePosition - smallPosition;
     // editLength is 0 in this ...startEdit invocation intentionally, you cannot set the editLength until the end (TODO: remember what the exact reason was and put it here... I think it was because 'EDI_readLineEndPositionList' function is used rather than reading directly)
     EDI_startEdit(EditKind_RemoveTextNoBatching, smallPosition, /*editLength*/ 0);
 
     EDI_getLineAndColumnIndices(smallPosition);
-    let smallLineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
-    let smallLineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
-    ints[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine] = smallLineAndColumnIndices_indexLine;
-    ints[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn] = smallLineAndColumnIndices_indexColumn;
-    ints[fEDI_cursor_indexLine] = smallLineAndColumnIndices_indexLine;
-    ints[fEDI_cursor_indexColumn] = smallLineAndColumnIndices_indexColumn;
-    ints[fEDI_cursor_editIndexLine] = smallLineAndColumnIndices_indexLine;
-    ints[fEDI_cursor_editIndexColumn] = smallLineAndColumnIndices_indexColumn;
+    let smallLineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+    let smallLineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
+    INTS[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine] = smallLineAndColumnIndices_indexLine;
+    INTS[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn] = smallLineAndColumnIndices_indexColumn;
+    INTS[fEDI_cursor_indexLine] = smallLineAndColumnIndices_indexLine;
+    INTS[fEDI_cursor_indexColumn] = smallLineAndColumnIndices_indexColumn;
+    INTS[fEDI_cursor_editIndexLine] = smallLineAndColumnIndices_indexLine;
+    INTS[fEDI_cursor_editIndexColumn] = smallLineAndColumnIndices_indexColumn;
 
     EDI_getLineAndColumnIndices(largePosition);
-    let largeLineAndColumnIndices_indexLine = ints[fEDI_getLineAndColumnIndices_indexLine];
-    let largeLineAndColumnIndices_indexColumn = ints[fEDI_getLineAndColumnIndices_indexColumn];
-    ints[fEDI_cursor_END_editIndexLine] = largeLineAndColumnIndices_indexLine;
-    ints[fEDI_cursor_END_editIndexColumn] = largeLineAndColumnIndices_indexColumn;
+    let largeLineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+    let largeLineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
+    INTS[fEDI_cursor_END_editIndexLine] = largeLineAndColumnIndices_indexLine;
+    INTS[fEDI_cursor_END_editIndexColumn] = largeLineAndColumnIndices_indexColumn;
 
-    ints[fEDI_cursor_indexLine] = smallLineAndColumnIndices_indexLine;
-    ints[fEDI_cursor_indexColumn] = smallLineAndColumnIndices_indexColumn;
+    INTS[fEDI_cursor_indexLine] = smallLineAndColumnIndices_indexLine;
+    INTS[fEDI_cursor_indexColumn] = smallLineAndColumnIndices_indexColumn;
 
-    ints[fEDI_cursor_editLength] = editLength;
+    INTS[fEDI_cursor_editLength] = editLength;
     
-    ints[fEDI_cursor_STORED_indexColumn] = ints[fEDI_cursor_indexColumn];
+    INTS[fEDI_cursor_STORED_indexColumn] = INTS[fEDI_cursor_indexColumn];
 
     EDI_render_request(RenderKind_RemoveSelection);
 }
 
 function EDI_render_do_RemoveSelection() {
-
-    const ints = INTS;
-
-    let smallPosition = ints[fEDI_EDI_RemoveSelection_smallPosition];
-    let largePosition = ints[fEDI_EDI_RemoveSelection_largePosition];
+    let smallPosition = INTS[fEDI_EDI_RemoveSelection_smallPosition];
+    let largePosition = INTS[fEDI_EDI_RemoveSelection_largePosition];
 
     let editLength = largePosition - smallPosition;
 
-    let smallLineAndColumnIndices_indexLine = ints[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine];
-    let smallLineAndColumnIndices_indexColumn = ints[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn];
+    let smallLineAndColumnIndices_indexLine = INTS[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexLine];
+    let smallLineAndColumnIndices_indexColumn = INTS[fEDI_RemoveSelection_smallLineAndColumnIndices_small_indexColumn];
 
     ///////////
     ///////////
 
-    if (ints[fEDI_cursor_editKind] !== EditKind_RemoveTextNoBatching) {
+    if (INTS[fEDI_cursor_editKind] !== EditKind_RemoveTextNoBatching) {
         return;
     }
-    if (ints[fEDI_cursor_editRenderedDisplacement] < ints[fEDI_cursor_editLength]) {
-        let original_edit_length = ints[fEDI_cursor_editLength];
-        ints[fEDI_cursor_editLength] = 0;
+    if (INTS[fEDI_cursor_editRenderedDisplacement] < INTS[fEDI_cursor_editLength]) {
+        let original_edit_length = INTS[fEDI_cursor_editLength];
+        INTS[fEDI_cursor_editLength] = 0;
 
-        let indexTrackedSyntax = EDI_drawViewPort_FindTrackedSyntax_StartingIndex(ints[fEDI_cursor_indexLine]);
+        let indexTrackedSyntax = EDI_drawViewPort_FindTrackedSyntax_StartingIndex(INTS[fEDI_cursor_indexLine]);
         if (indexTrackedSyntax === NaN || indexTrackedSyntax === -1) {
             indexTrackedSyntax = EDI_trackedSyntaxList.count_abstract;
         }
         let possibleTrackedSyntaxToSpanSingleLine = false;
         if (indexTrackedSyntax < EDI_trackedSyntaxList.count_abstract) {
             EDI_trackedSyntaxList.getElementAt(indexTrackedSyntax);
-            if (ints[fEDI_pooledTrackedSyntax_start] < EDI_lineEndPositionList.data[ints[fEDI_cursor_indexLine]]) {
+            if (INTS[fEDI_pooledTrackedSyntax_start] < EDI_lineEndPositionList.data[INTS[fEDI_cursor_indexLine]]) {
                 possibleTrackedSyntaxToSpanSingleLine = true;
             }
             // TODO: This has no reason to be a for loop
-            for (let i = ints[fEDI_cursor_indexLine] - 1; i >= 0; i--) {
+            for (let i = INTS[fEDI_cursor_indexLine] - 1; i >= 0; i--) {
                 let lineEndPosition = EDI_lineEndPositionList.data[i];
-                if (ints[fEDI_pooledTrackedSyntax_start] < lineEndPosition &&
-                    ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_pooledTrackedSyntax_length] > lineEndPosition) {
+                if (INTS[fEDI_pooledTrackedSyntax_start] < lineEndPosition &&
+                    INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length] > lineEndPosition) {
                         possibleTrackedSyntaxToSpanSingleLine = false;
                         break;
                 }
@@ -7048,19 +6940,19 @@ function EDI_render_do_RemoveSelection() {
 
         let linesRemovedCount = 0;
         // -1 since you can't remove EOF
-        for (var iVarDependent = ints[fEDI_cursor_indexLine]; iVarDependent < EDI_lineEndPositionList.count - 1; iVarDependent++) {
+        for (var iVarDependent = INTS[fEDI_cursor_indexLine]; iVarDependent < EDI_lineEndPositionList.count - 1; iVarDependent++) {
             // TODO: all of these reads need to be raw for this work with multicursor just remember that for tomorrow don't worry about this right now just focus on the one task but remember this for tomorrow.
             let lineEnding = EDI_readLineEndPositionList(iVarDependent);
-            if (lineEnding >= ints[fEDI_cursor_editPosition] && lineEnding < ints[fEDI_cursor_editPosition] + editLength) {
+            if (lineEnding >= INTS[fEDI_cursor_editPosition] && lineEnding < INTS[fEDI_cursor_editPosition] + editLength) {
                 linesRemovedCount++;
-                ints[fEDI_cursor_editLineFeedCount]++;
+                INTS[fEDI_cursor_editLineFeedCount]++;
                 EDI_lineEndPositionList_PENDING.insert(EDI_lineEndPositionList_PENDING.count, lineEnding);
 
                 if (possibleTrackedSyntaxToSpanSingleLine) {
                     let NOTlineEndBelongsToSyntax;
                     if (iVarDependent >= EDI_lineEndPositionList.count)
                         NOTlineEndBelongsToSyntax = true;
-                    else if (ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_pooledTrackedSyntax_length] <= EDI_lineEndPositionList.data[iVarDependent])
+                    else if (INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length] <= EDI_lineEndPositionList.data[iVarDependent])
                         NOTlineEndBelongsToSyntax = true;
                     
                     if (NOTlineEndBelongsToSyntax) {
@@ -7070,8 +6962,8 @@ function EDI_render_do_RemoveSelection() {
                         possibleTrackedSyntaxToSpanSingleLine = false;
                         if (indexTrackedSyntax < EDI_trackedSyntaxList.count_abstract) {
                             EDI_trackedSyntaxList.getElementAt(indexTrackedSyntax);
-                            if (ints[fEDI_pooledTrackedSyntax_start] < lineEnding &&
-                                ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_pooledTrackedSyntax_length] > lineEnding) {
+                            if (INTS[fEDI_pooledTrackedSyntax_start] < lineEnding &&
+                                INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length] > lineEnding) {
                                     possibleTrackedSyntaxToSpanSingleLine = true;
                             }
                         }
@@ -7091,15 +6983,15 @@ function EDI_render_do_RemoveSelection() {
             let NOTlineEndBelongsToSyntax;
             if (iVarDependent >= EDI_lineEndPositionList.count)
                 NOTlineEndBelongsToSyntax = true;
-            else if (ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_pooledTrackedSyntax_length] <= EDI_lineEndPositionList.data[iVarDependent])
+            else if (INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length] <= EDI_lineEndPositionList.data[iVarDependent])
                 NOTlineEndBelongsToSyntax = true;
             
             if (NOTlineEndBelongsToSyntax)
                 EDI_trackedSyntaxList.removeAt(indexTrackedSyntax, 1);
         }
 
-        let finalLineEndPosition = EDI_readLineEndPositionList(ints[fEDI_cursor_indexLine] + linesRemovedCount);
-        let largestDrawnIndexLine = ints[fEDI_virtualIndexLine] + ints[fEDI_virtualCount] - 1;
+        let finalLineEndPosition = EDI_readLineEndPositionList(INTS[fEDI_cursor_indexLine] + linesRemovedCount);
+        let largestDrawnIndexLine = INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1;
         let visibleLinesRemovedCount = 0;
 
         // 5 stages
@@ -7113,12 +7005,12 @@ function EDI_render_do_RemoveSelection() {
         // Remove selection on small position line
         let smallLineDiv = null;
         {
-            ints[fEDI_cursor_indexLine] = smallLineAndColumnIndices_indexLine;
-            ints[fEDI_cursor_indexColumn] = smallLineAndColumnIndices_indexColumn;
+            INTS[fEDI_cursor_indexLine] = smallLineAndColumnIndices_indexLine;
+            INTS[fEDI_cursor_indexColumn] = smallLineAndColumnIndices_indexColumn;
 
             walkLineUntilIndexColumn();
             
-            let lineBoundaryPositions = EDI_getLineBoundaryPositions(ints[fEDI_cursor_indexLine]);
+            let lineBoundaryPositions = EDI_getLineBoundaryPositions(INTS[fEDI_cursor_indexLine]);
             let remaining;
             if (largePosition > lineBoundaryPositions.end) {
                 remaining = lineBoundaryPositions.end - smallPosition;
@@ -7127,28 +7019,28 @@ function EDI_render_do_RemoveSelection() {
                 remaining = largePosition - smallPosition;
             }
 
-            if (w_span && ints[fEDI_w_indexColumn_SpanTextContentRelative] >= 0) {
+            if (w_span && INTS[fEDI_w_indexColumn_SpanTextContentRelative] >= 0) {
                 smallLineDiv = w_div;
                 while (remaining > 0) {
-                    let available = w_span.textContent.length - ints[fEDI_w_indexColumn_SpanTextContentRelative];
+                    let available = w_span.textContent.length - INTS[fEDI_w_indexColumn_SpanTextContentRelative];
                     let count = remaining > available ? available : remaining;
                     remaining -= count;    
                     
                     if (count > 0) {
-                        w_span.textContent = w_span.textContent.slice(0, ints[fEDI_w_indexColumn_SpanTextContentRelative]) + w_span.textContent.slice(ints[fEDI_w_indexColumn_SpanTextContentRelative] + count);
+                        w_span.textContent = w_span.textContent.slice(0, INTS[fEDI_w_indexColumn_SpanTextContentRelative]) + w_span.textContent.slice(INTS[fEDI_w_indexColumn_SpanTextContentRelative] + count);
                     }
 
                     if (w_div.children.length > 1 && w_span.textContent.length === 0) {
                         w_div.removeChild(w_span);
                     }
                     else {
-                        ints[fEDI_w_indexSpan]++;
+                        INTS[fEDI_w_indexSpan]++;
                     }
         
                     if (remaining > 0) {
-                        if (ints[fEDI_w_indexSpan] >= w_div.children.length) break;
-                        w_span = w_div.children[ints[fEDI_w_indexSpan]];
-                        ints[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
+                        if (INTS[fEDI_w_indexSpan] >= w_div.children.length) break;
+                        w_span = w_div.children[INTS[fEDI_w_indexSpan]];
+                        INTS[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
                     }
                 }
             }
@@ -7157,33 +7049,33 @@ function EDI_render_do_RemoveSelection() {
         // Remove selection on large position line
         let largeLineDiv = null;
         if (linesRemovedCount > 0) {
-            ints[fEDI_cursor_indexLine] = ints[fEDI_cursor_indexLine] + linesRemovedCount;
-            ints[fEDI_cursor_indexColumn] = 0;
+            INTS[fEDI_cursor_indexLine] = INTS[fEDI_cursor_indexLine] + linesRemovedCount;
+            INTS[fEDI_cursor_indexColumn] = 0;
 
-            let lineBoundaryPositions = EDI_getLineBoundaryPositions(ints[fEDI_cursor_indexLine]);
+            let lineBoundaryPositions = EDI_getLineBoundaryPositions(INTS[fEDI_cursor_indexLine]);
             let remaining = largePosition - lineBoundaryPositions.start;
 
             walkLineUntilIndexColumn();
 
-            if (w_span && ints[fEDI_w_indexColumn_SpanTextContentRelative] >= 0) {
+            if (w_span && INTS[fEDI_w_indexColumn_SpanTextContentRelative] >= 0) {
                 largeLineDiv = w_div;
                 while (remaining > 0) {
-                    let available = w_span.textContent.length - ints[fEDI_w_indexColumn_SpanTextContentRelative];
+                    let available = w_span.textContent.length - INTS[fEDI_w_indexColumn_SpanTextContentRelative];
                     let count = remaining > available ? available : remaining;
                     remaining -= count;
 
                     if (count > 0)
-                        w_span.textContent = w_span.textContent.slice(0, ints[fEDI_w_indexColumn_SpanTextContentRelative]) + w_span.textContent.slice(ints[fEDI_w_indexColumn_SpanTextContentRelative] + count);
+                        w_span.textContent = w_span.textContent.slice(0, INTS[fEDI_w_indexColumn_SpanTextContentRelative]) + w_span.textContent.slice(INTS[fEDI_w_indexColumn_SpanTextContentRelative] + count);
 
                     if (w_div.children.length > 1 && w_span.textContent.length === 0)
                         w_div.removeChild(w_span);
                     else
-                        ints[fEDI_w_indexSpan]++;
+                        INTS[fEDI_w_indexSpan]++;
         
                     if (remaining > 0) {
-                        if (ints[fEDI_w_indexSpan] >= w_div.children.length) break;
-                        w_span = w_div.children[ints[fEDI_w_indexSpan]];
-                        ints[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
+                        if (INTS[fEDI_w_indexSpan] >= w_div.children.length) break;
+                        w_span = w_div.children[INTS[fEDI_w_indexSpan]];
+                        INTS[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
                     }
                 }
             }
@@ -7201,8 +7093,8 @@ function EDI_render_do_RemoveSelection() {
         // - [ ] Ensure all 4 cases of existence handle 'EDI_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine(cursor);'
         //
         if (linesRemovedCount > 0) {
-            ints[fEDI_cursor_indexLine] = smallLineAndColumnIndices_indexLine;
-            ints[fEDI_cursor_indexColumn] = smallLineAndColumnIndices_indexColumn;
+            INTS[fEDI_cursor_indexLine] = smallLineAndColumnIndices_indexLine;
+            INTS[fEDI_cursor_indexColumn] = smallLineAndColumnIndices_indexColumn;
 
             if (smallLineDiv) {
                 if (largeLineDiv) { // - [x] keeping, removing
@@ -7240,17 +7132,17 @@ function EDI_render_do_RemoveSelection() {
             // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-            let beltIndexLine_current = ((smallLineAndColumnIndices_indexLine + 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-            if (beltIndexLine_current >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_current < 0) beltIndexLine_current = -1;
-            else beltIndexLine_current = (beltIndexLine_current + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+            let beltIndexLine_current = ((smallLineAndColumnIndices_indexLine + 1) + INTS[fEDI_offsetLine]) - INTS[fEDI_virtualIndexLine];
+            if (beltIndexLine_current >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_current < 0) beltIndexLine_current = -1;
+            else beltIndexLine_current = (beltIndexLine_current + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
             // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
             // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-            let beltIndexLine_last = ((ints[fEDI_virtualIndexLine] + ints[fEDI_virtualCount] - 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-            if (beltIndexLine_last >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
-            else beltIndexLine_last = (beltIndexLine_last + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+            let beltIndexLine_last = ((INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) + INTS[fEDI_offsetLine]) - INTS[fEDI_virtualIndexLine];
+            if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
+            else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
             // TODO: This will be wrong because you'd need to explicitly redraw the large selection line index.
             EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last, beltIndexLine_current, linesRemovedCount);
@@ -7262,7 +7154,7 @@ function EDI_render_do_RemoveSelection() {
             }
         }
 
-        ints[fEDI_cursor_editLength] = original_edit_length;
+        INTS[fEDI_cursor_editLength] = original_edit_length;
     }
 }
 
@@ -7313,39 +7205,37 @@ comments from EDI_removeSelection(cursor) that may or may not be useful idk I ju
 
 /** TODO: this is nearly identical to backspace, the difference is the check 'if (INTS[fEDI_cursor_editKind] !== EditKind_DeleteLtr)', thus dedupe the logic or no? */
 function EDI_render_do_Delete() {
-    const ints = INTS;
-
-    if (ints[fEDI_cursor_editKind] !== EditKind_DeleteLtr) {
+    if (INTS[fEDI_cursor_editKind] !== EditKind_DeleteLtr) {
         return;
     }
-    if (ints[fEDI_cursor_editRenderedDisplacement] < ints[fEDI_cursor_editLength]) {
+    if (INTS[fEDI_cursor_editRenderedDisplacement] < INTS[fEDI_cursor_editLength]) {
         walkLineUntilIndexColumn();
 
         if (!w_span) {
             // TODO: this
         }
         else {
-            let remaining = ints[fEDI_cursor_editLength] - ints[fEDI_cursor_editRenderedDisplacement];
-            ints[fEDI_cursor_editRenderedDisplacement] = ints[fEDI_cursor_editLength];
+            let remaining = INTS[fEDI_cursor_editLength] - INTS[fEDI_cursor_editRenderedDisplacement];
+            INTS[fEDI_cursor_editRenderedDisplacement] = INTS[fEDI_cursor_editLength];
             while (remaining > 0) {
                 // When the cursor is at the end of a span, there is no text to delete, because the text starts in the next span.
-                let available = w_span.textContent.length - ints[fEDI_w_indexColumn_SpanTextContentRelative];
+                let available = w_span.textContent.length - INTS[fEDI_w_indexColumn_SpanTextContentRelative];
                 let count = remaining > available ? available : remaining;
                 remaining -= count;
 
                 if (count > 0) {
-                    w_span.textContent = w_span.textContent.slice(0, ints[fEDI_w_indexColumn_SpanTextContentRelative]) + w_span.textContent.slice(ints[fEDI_w_indexColumn_SpanTextContentRelative] + count);
+                    w_span.textContent = w_span.textContent.slice(0, INTS[fEDI_w_indexColumn_SpanTextContentRelative]) + w_span.textContent.slice(INTS[fEDI_w_indexColumn_SpanTextContentRelative] + count);
                 }
 
                 if (w_div.children.length > 1 && w_span.textContent.length === 0) {
                     w_div.removeChild(w_span);
                 }
                 else {
-                    ints[fEDI_w_indexSpan]++;
+                    INTS[fEDI_w_indexSpan]++;
                 }
 
                 if (remaining > 0) {
-                    if (ints[fEDI_w_indexSpan] >= w_div.children.length) {
+                    if (INTS[fEDI_w_indexSpan] >= w_div.children.length) {
 
                         // This is a pain I'm not sure if the finalizeEdit will bug it all out timing wise
                         // but I'll presume for now that it won't and then everything should become clear in time (not always but in this scenario I feel it is the case).
@@ -7353,7 +7243,7 @@ function EDI_render_do_Delete() {
                         // Extreme cancellation logic whenever finalizeEdit runs, if there were any pending specific draws, skip them and force full screen redraw
                         // would permit a bridge of having the code work as I narrow down the edge cases more and more maybe.
                         //
-                        if (ints[fEDI_cursor_indexLine] < EDI_lineEndPositionList.count - 1) {
+                        if (INTS[fEDI_cursor_indexLine] < EDI_lineEndPositionList.count - 1) {
 
                             remaining--;
 
@@ -7368,9 +7258,9 @@ function EDI_render_do_Delete() {
                             // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
                             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-                            let beltIndexLine_next = ((ints[fEDI_cursor_indexLine] + 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-                            if (beltIndexLine_next >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_next < 0) beltIndexLine_next = -1;
-                            else beltIndexLine_next = (beltIndexLine_next + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+                            let beltIndexLine_next = ((INTS[fEDI_cursor_indexLine] + 1) + INTS[fEDI_offsetLine]) - INTS[fEDI_virtualIndexLine];
+                            if (beltIndexLine_next >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_next < 0) beltIndexLine_next = -1;
+                            else beltIndexLine_next = (beltIndexLine_next + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
                             if (beltIndexLine_next >= 0) {
                                 let keepingDiv = w_div;
@@ -7395,9 +7285,9 @@ function EDI_render_do_Delete() {
                                 // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
                                 // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-                                let beltIndexLine_last = ((ints[fEDI_virtualIndexLine] + ints[fEDI_virtualCount] - 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-                                if (beltIndexLine_last >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
-                                else beltIndexLine_last = (beltIndexLine_last + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+                                let beltIndexLine_last = ((INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) + INTS[fEDI_offsetLine]) - INTS[fEDI_virtualIndexLine];
+                                if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
+                                else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
                                 EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last, beltIndexLine_next, 1);
                             }
@@ -7407,8 +7297,8 @@ function EDI_render_do_Delete() {
                         }
                     }
                     else {
-                        w_span = w_div.children[ints[fEDI_w_indexSpan]];
-                        ints[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
+                        w_span = w_div.children[INTS[fEDI_w_indexSpan]];
+                        INTS[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
                     }
                 }
             }
@@ -7422,16 +7312,14 @@ function EDI_state_do_Delete(event) {
         return;
     }
 
-    const ints = INTS;
-
-    let virtual_cursorIndexLine = ints[fEDI_cursor_indexLine] + ints[fEDI_cursor_editLineFeedCount];
+    let virtual_cursorIndexLine = INTS[fEDI_cursor_indexLine] + INTS[fEDI_cursor_editLineFeedCount];
 
     let virtual_cursorIndexColumn;
     if (EDI_cursor_edit_flagLineChanged === -1) {
-        virtual_cursorIndexColumn = ints[fEDI_cursor_indexColumn];
+        virtual_cursorIndexColumn = INTS[fEDI_cursor_indexColumn];
     }
     else {
-        virtual_cursorIndexColumn = ints[fEDI_cursor_editLength] - EDI_cursor_edit_flagLineChanged;
+        virtual_cursorIndexColumn = INTS[fEDI_cursor_editLength] - EDI_cursor_edit_flagLineChanged;
     }
 
     let lineEnd = EDI_getLineEnd_pos_raw(virtual_cursorIndexLine);
@@ -7446,11 +7334,11 @@ function EDI_state_do_Delete(event) {
 
             // flag the current editlength whenever u change lines so you can check the editlength relative to the line
 
-            ints[fEDI_cursor_editLength]++;
-            ints[fEDI_cursor_editLineFeedCount]++;
+            INTS[fEDI_cursor_editLength]++;
+            INTS[fEDI_cursor_editLineFeedCount]++;
             EDI_lineEndPositionList_PENDING.insert(EDI_lineEndPositionList_PENDING.count, lineEnd);
 
-            EDI_cursor_edit_flagLineChanged = ints[fEDI_cursor_editLength];
+            EDI_cursor_edit_flagLineChanged = INTS[fEDI_cursor_editLength];
 
             EDI_render_request(RenderKind_DeleteLtr);
         }
@@ -7462,8 +7350,8 @@ function EDI_state_do_Delete(event) {
     else {
         if (event.ctrlKey) {
             // ints[fEDI_cursor_editPosition] is intended to be equal due to the batch requirements / a new edit would also be equal.
-            let tempIndexColumn = ints[fEDI_cursor_indexColumn];
-            let tempPosition = ints[fEDI_cursor_editPosition];
+            let tempIndexColumn = INTS[fEDI_cursor_indexColumn];
+            let tempPosition = INTS[fEDI_cursor_editPosition];
 
 
             let originalCharacterKind;
@@ -7478,9 +7366,9 @@ function EDI_state_do_Delete(event) {
             
             tempIndexColumn++;
             tempPosition++;
-            ints[fEDI_cursor_editLength]++;
+            INTS[fEDI_cursor_editLength]++;
             
-            while (ints[fEDI_cursor_indexColumn] < lastValidIndexColumn) {
+            while (INTS[fEDI_cursor_indexColumn] < lastValidIndexColumn) {
                 if (tempIndexColumn < lineEnd) {
                     thisCharacterKind = getCharacter_kind_raw(tempPosition);
                 }
@@ -7492,11 +7380,11 @@ function EDI_state_do_Delete(event) {
                 }
                 tempIndexColumn++;
                 tempPosition++;
-                ints[fEDI_cursor_editLength]++;
+                INTS[fEDI_cursor_editLength]++;
             }
         }
         else {
-            ints[fEDI_cursor_editLength]++;
+            INTS[fEDI_cursor_editLength]++;
         }
 
         EDI_render_request(RenderKind_DeleteLtr);
@@ -7512,42 +7400,39 @@ function EDI_deleteDo(event) {
 }
 
 function EDI_render_do_Backspace() {
-
-    const ints = INTS;
-
-    if (ints[fEDI_cursor_editKind] !== EditKind_BackspaceRtl) {
+    if (INTS[fEDI_cursor_editKind] !== EditKind_BackspaceRtl) {
         return;
     }
 
-    if (ints[fEDI_cursor_editRenderedDisplacement] < ints[fEDI_cursor_editLength]) {
+    if (INTS[fEDI_cursor_editRenderedDisplacement] < INTS[fEDI_cursor_editLength]) {
         walkLineUntilIndexColumn();
 
         if (!w_span) {
             // TODO: this
         }
         else {
-            let remaining = ints[fEDI_cursor_editLength] - ints[fEDI_cursor_editRenderedDisplacement];
-            ints[fEDI_cursor_editRenderedDisplacement] = ints[fEDI_cursor_editLength];
+            let remaining = INTS[fEDI_cursor_editLength] - INTS[fEDI_cursor_editRenderedDisplacement];
+            INTS[fEDI_cursor_editRenderedDisplacement] = INTS[fEDI_cursor_editLength];
             while (remaining > 0) {
-                let available = w_span.textContent.length - ints[fEDI_w_indexColumn_SpanTextContentRelative];
+                let available = w_span.textContent.length - INTS[fEDI_w_indexColumn_SpanTextContentRelative];
                 let count = remaining > available ? available : remaining;
                 remaining -= count;
     
                 // When the cursor is at the end of a span, there is no text to delete, because the text starts in the next span.
                 if (count > 0) {
-                    w_span.textContent = w_span.textContent.slice(0, ints[fEDI_w_indexColumn_SpanTextContentRelative]) + w_span.textContent.slice(ints[fEDI_w_indexColumn_SpanTextContentRelative] + count);
+                    w_span.textContent = w_span.textContent.slice(0, INTS[fEDI_w_indexColumn_SpanTextContentRelative]) + w_span.textContent.slice(INTS[fEDI_w_indexColumn_SpanTextContentRelative] + count);
                 }
 
                 if (w_div.children.length > 1 && w_span.textContent.length === 0) {
                     w_div.removeChild(w_span);
                 }
                 else {
-                    ints[fEDI_w_indexSpan]++;
+                    INTS[fEDI_w_indexSpan]++;
                 }
     
                 if (remaining > 0) {
-                    if (ints[fEDI_w_indexSpan] >= w_div.children.length) {
-                        if (ints[fEDI_cursor_indexLine] < EDI_lineEndPositionList.count - 1) {
+                    if (INTS[fEDI_w_indexSpan] >= w_div.children.length) {
+                        if (INTS[fEDI_cursor_indexLine] < EDI_lineEndPositionList.count - 1) {
 
                             remaining--;
 
@@ -7562,9 +7447,9 @@ function EDI_render_do_Backspace() {
                             // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
                             // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                             // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-                            let beltIndexLine_next = ((ints[fEDI_cursor_indexLine] + 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-                            if (beltIndexLine_next >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_next < 0) beltIndexLine_next = -1;
-                            else beltIndexLine_next = (beltIndexLine_next + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+                            let beltIndexLine_next = ((INTS[fEDI_cursor_indexLine] + 1) + INTS[fEDI_offsetLine]) - INTS[fEDI_virtualIndexLine];
+                            if (beltIndexLine_next >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_next < 0) beltIndexLine_next = -1;
+                            else beltIndexLine_next = (beltIndexLine_next + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
                             if (beltIndexLine_next >= 0) {
                                 let keepingDiv = w_div;
@@ -7589,9 +7474,9 @@ function EDI_render_do_Backspace() {
                                 // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
                                 // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-                                let beltIndexLine_last = ((ints[fEDI_virtualIndexLine] + ints[fEDI_virtualCount] - 1) + ints[fEDI_offsetLine]) - ints[fEDI_virtualIndexLine];
-                                if (beltIndexLine_last >= ints[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
-                                else beltIndexLine_last = (beltIndexLine_last + ints[fEDI_EDI_beltIndexZero]) % ints[fEDI_virtualCount];
+                                let beltIndexLine_last = ((INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) + INTS[fEDI_offsetLine]) - INTS[fEDI_virtualIndexLine];
+                                if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
+                                else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
                                 EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last, beltIndexLine_next, 1);
                             }
@@ -7601,8 +7486,8 @@ function EDI_render_do_Backspace() {
                         }
                     }
                     else {
-                        w_span = w_div.children[ints[fEDI_w_indexSpan]];
-                        ints[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
+                        w_span = w_div.children[INTS[fEDI_w_indexSpan]];
+                        INTS[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
                     }
                 }
             }
@@ -7615,26 +7500,24 @@ function EDI_state_do_Backspace(event) {
         EDI_removeSelection();
         return;
     }
-
-    const ints = INTS;
     
-    if (ints[fEDI_cursor_indexColumn] === 0) {
-        if (ints[fEDI_cursor_indexLine] > 0) {
+    if (INTS[fEDI_cursor_indexColumn] === 0) {
+        if (INTS[fEDI_cursor_indexLine] > 0) {
 
             // TODO: multicursor bugs are more likely to occur with this logic:
             // TODO: this logic is extremely suspect given editIndexLine and editIndexColumn...
             // ...as well if you move the cursor during a pending edit then finalize does it edit the correct positions?
             //
             // wrap to previous line
-            ints[fEDI_cursor_indexLine]--;
-            ints[fEDI_cursor_indexColumn] = EDI_getLastValidIndexColumn(ints[fEDI_cursor_indexLine]);
-            ints[fEDI_cursor_editPosition]--;
-            ints[fEDI_cursor_editLength]++;
-            ints[fEDI_cursor_editIndexLine] = ints[fEDI_cursor_indexLine];
-            ints[fEDI_cursor_editIndexColumn] = ints[fEDI_cursor_indexColumn];
+            INTS[fEDI_cursor_indexLine]--;
+            INTS[fEDI_cursor_indexColumn] = EDI_getLastValidIndexColumn(INTS[fEDI_cursor_indexLine]);
+            INTS[fEDI_cursor_editPosition]--;
+            INTS[fEDI_cursor_editLength]++;
+            INTS[fEDI_cursor_editIndexLine] = INTS[fEDI_cursor_indexLine];
+            INTS[fEDI_cursor_editIndexColumn] = INTS[fEDI_cursor_indexColumn];
 
-            ints[fEDI_cursor_editLineFeedCount]++;
-            EDI_lineEndPositionList_PENDING.insert(0, ints[fEDI_cursor_editPosition]);
+            INTS[fEDI_cursor_editLineFeedCount]++;
+            EDI_lineEndPositionList_PENDING.insert(0, INTS[fEDI_cursor_editPosition]);
         }
         else {
             return;
@@ -7644,27 +7527,27 @@ function EDI_state_do_Backspace(event) {
         if (event.ctrlKey) {
             // ints[fEDI_cursor_editPosition] is intended to be equal due to the batch requirements / a new edit would also be equal.
 
-            let originalCharacterKind = getCharacter_kind_raw(ints[fEDI_cursor_editPosition] - 1);
-            ints[fEDI_cursor_indexColumn]--;
-            ints[fEDI_cursor_editPosition]--;
-            ints[fEDI_cursor_editIndexColumn]--;
-            ints[fEDI_cursor_editLength]++;
+            let originalCharacterKind = getCharacter_kind_raw(INTS[fEDI_cursor_editPosition] - 1);
+            INTS[fEDI_cursor_indexColumn]--;
+            INTS[fEDI_cursor_editPosition]--;
+            INTS[fEDI_cursor_editIndexColumn]--;
+            INTS[fEDI_cursor_editLength]++;
 
-            while (ints[fEDI_cursor_indexColumn] > 0) {
-                if (getCharacter_kind_raw(ints[fEDI_cursor_editPosition] - 1) !== originalCharacterKind) {
+            while (INTS[fEDI_cursor_indexColumn] > 0) {
+                if (getCharacter_kind_raw(INTS[fEDI_cursor_editPosition] - 1) !== originalCharacterKind) {
                     break;
                 }
-                ints[fEDI_cursor_indexColumn]--;
-                ints[fEDI_cursor_editPosition]--;
-                ints[fEDI_cursor_editIndexColumn]--;
-                ints[fEDI_cursor_editLength]++;
+                INTS[fEDI_cursor_indexColumn]--;
+                INTS[fEDI_cursor_editPosition]--;
+                INTS[fEDI_cursor_editIndexColumn]--;
+                INTS[fEDI_cursor_editLength]++;
             }
         }
         else {
-            ints[fEDI_cursor_indexColumn] -= 1;
-            ints[fEDI_cursor_editPosition] -= 1;
-            ints[fEDI_cursor_editIndexColumn] -= 1;
-            ints[fEDI_cursor_editLength]++;
+            INTS[fEDI_cursor_indexColumn] -= 1;
+            INTS[fEDI_cursor_editPosition] -= 1;
+            INTS[fEDI_cursor_editIndexColumn] -= 1;
+            INTS[fEDI_cursor_editLength]++;
         }
     }
 
@@ -7722,24 +7605,21 @@ function EDI_insertDo(character) {
 }
 
 function EDI_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine() {
-
-    const ints = INTS;
-
     // binary search for 'if (ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_pooledTrackedSyntax_length] > positionIndex)'
-    let indexTrackedSyntax = EDI_drawViewPort_FindTrackedSyntax_StartingIndex(ints[fEDI_cursor_indexLine]);
+    let indexTrackedSyntax = EDI_drawViewPort_FindTrackedSyntax_StartingIndex(INTS[fEDI_cursor_indexLine]);
     if (indexTrackedSyntax === NaN || indexTrackedSyntax === -1) {
         indexTrackedSyntax = EDI_trackedSyntaxList.count_abstract;
     }
     if (indexTrackedSyntax < EDI_trackedSyntaxList.count_abstract) {
         EDI_trackedSyntaxList.getElementAt(indexTrackedSyntax);
-        if (ints[fEDI_pooledTrackedSyntax_start] < ints[fEDI_cursor_editPosition]) {
+        if (INTS[fEDI_pooledTrackedSyntax_start] < INTS[fEDI_cursor_editPosition]) {
             let moreThanOneLineEndPositionIsEncompassed = false;
 
             // TODO: This has no reason to be a for loop
-            for (let i = ints[fEDI_cursor_indexLine] - 1; i >= 0; i--) {
+            for (let i = INTS[fEDI_cursor_indexLine] - 1; i >= 0; i--) {
                 let lineEndPosition = EDI_lineEndPositionList.data[i];
-                if (ints[fEDI_pooledTrackedSyntax_start] < lineEndPosition &&
-                    ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_pooledTrackedSyntax_length] > lineEndPosition) {
+                if (INTS[fEDI_pooledTrackedSyntax_start] < lineEndPosition &&
+                    INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length] > lineEndPosition) {
                         moreThanOneLineEndPositionIsEncompassed = true;
                         break;
                 }
@@ -7750,10 +7630,10 @@ function EDI_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine() {
             
             if (!moreThanOneLineEndPositionIsEncompassed) {
                 // TODO: This has no reason to be a for loop
-                for (let i = ints[fEDI_cursor_indexLine] + 1; i < EDI_lineEndPositionList.count; i++) {
+                for (let i = INTS[fEDI_cursor_indexLine] + 1; i < EDI_lineEndPositionList.count; i++) {
                     let lineEndPosition = EDI_lineEndPositionList.data[i];
-                    if (ints[fEDI_pooledTrackedSyntax_start] < lineEndPosition &&
-                        ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_pooledTrackedSyntax_length] > lineEndPosition) {
+                    if (INTS[fEDI_pooledTrackedSyntax_start] < lineEndPosition &&
+                        INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length] > lineEndPosition) {
                             moreThanOneLineEndPositionIsEncompassed = true;
                             break;
                     }
@@ -7771,37 +7651,34 @@ function EDI_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine() {
 }
 
 function EDI_scrollCursorIntoView() {
-
-    const ints = INTS;
-
     let scrollX = 0;
     let scrollY = 0;
 
-    let local_lastReadNumber_scrollTop = ints[fEDI_lastReadNumber_scrollTop];
+    let local_lastReadNumber_scrollTop = INTS[fEDI_lastReadNumber_scrollTop];
 
-    if (ints[fEDI_cursor_cursorTranslateYValue] < local_lastReadNumber_scrollTop) {
-        scrollY = ints[fEDI_cursor_cursorTranslateYValue] - local_lastReadNumber_scrollTop;
+    if (INTS[fEDI_cursor_cursorTranslateYValue] < local_lastReadNumber_scrollTop) {
+        scrollY = INTS[fEDI_cursor_cursorTranslateYValue] - local_lastReadNumber_scrollTop;
     }
-    else if (ints[fEDI_cursor_cursorTranslateYValue] >= local_lastReadNumber_scrollTop + ints[fEDI_lastReadNumber_offsetHeight]) {
+    else if (INTS[fEDI_cursor_cursorTranslateYValue] >= local_lastReadNumber_scrollTop + INTS[fEDI_lastReadNumber_offsetHeight]) {
         // I want to use clientHeight but I don't have any logic for no scrollbar thus single page fitting text might bug out and trigger
         // scrollBy over and over.
 
         // make the bottom touch then add lineHeight is probably the algorithm to get a perfect fill maybe do lineHeight * 2 skip an event when spamming arrowDown?
-        let currentBottom = local_lastReadNumber_scrollTop + ints[fEDI_lastReadNumber_offsetHeight];
-        let changeToMakeBottomTouch = ints[fEDI_cursor_cursorTranslateYValue] - currentBottom;
-        scrollY = changeToMakeBottomTouch + (2 * ints[fEDI_lineHeight]);
+        let currentBottom = local_lastReadNumber_scrollTop + INTS[fEDI_lastReadNumber_offsetHeight];
+        let changeToMakeBottomTouch = INTS[fEDI_cursor_cursorTranslateYValue] - currentBottom;
+        scrollY = changeToMakeBottomTouch + (2 * INTS[fEDI_lineHeight]);
     }
 
-    if (ints[fEDI_cursor_cursorTranslateXValue] < ints[fEDI_lastReadNumber_scrollLeft]) {
-        scrollX = ints[fEDI_cursor_cursorTranslateXValue] - ints[fEDI_lastReadNumber_scrollLeft];
+    if (INTS[fEDI_cursor_cursorTranslateXValue] < INTS[fEDI_lastReadNumber_scrollLeft]) {
+        scrollX = INTS[fEDI_cursor_cursorTranslateXValue] - INTS[fEDI_lastReadNumber_scrollLeft];
     }
-    else if (ints[fEDI_cursor_cursorTranslateXValue] >= ints[fEDI_lastReadNumber_scrollLeft] + ints[fEDI_lastReadNumber_offsetWidth]) {
+    else if (INTS[fEDI_cursor_cursorTranslateXValue] >= INTS[fEDI_lastReadNumber_scrollLeft] + INTS[fEDI_lastReadNumber_offsetWidth]) {
         // I want to use clientWidth but I don't have any logic for no scrollbar thus single page fitting text might bug out and trigger
         // scrollBy over and over.
 
         // make the right touch then add characterWidth is probably the algorithm to get a perfect fill maybe do characterWidth * 2 skip an event when spamming arrowRight?
-        let currentRight = ints[fEDI_lastReadNumber_scrollLeft] + ints[fEDI_lastReadNumber_offsetWidth];
-        let changeToMakeRightTouch = ints[fEDI_cursor_cursorTranslateXValue] - currentRight;
+        let currentRight = INTS[fEDI_lastReadNumber_scrollLeft] + INTS[fEDI_lastReadNumber_offsetWidth];
+        let changeToMakeRightTouch = INTS[fEDI_cursor_cursorTranslateXValue] - currentRight;
         scrollX = changeToMakeRightTouch + (4 * EDI_characterWidth);
     }
 

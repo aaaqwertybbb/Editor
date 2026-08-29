@@ -396,9 +396,9 @@ function EDI_render_do_InsertLtr() {
             let x = EDI_decoder.decode(EDI_cursor_gapBuffer.subarray(INTS[fEDI_cursor_editRenderedDisplacement], INTS[fEDI_cursor_editLength]));
 
             EDI_cursor_gapBufferWriteToSpanElement.textContent = 
-                EDI_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]/* + ints[fEDI_offsetWithinSpan]*/) + INTS[fEDI_cursor_editRenderedDisplacement]) +
+                EDI_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]/* + INTS[fEDI_offsetWithinSpan]*/) + INTS[fEDI_cursor_editRenderedDisplacement]) +
                 x +
-                EDI_cursor_gapBufferWriteToSpanElement.textContent.slice((INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]/* + ints[fEDI_offsetWithinSpan]*/) + INTS[fEDI_cursor_editRenderedDisplacement]);
+                EDI_cursor_gapBufferWriteToSpanElement.textContent.slice((INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]/* + INTS[fEDI_offsetWithinSpan]*/) + INTS[fEDI_cursor_editRenderedDisplacement]);
 
             INTS[fEDI_cursor_editRenderedDisplacement] = INTS[fEDI_cursor_editLength];
         }
@@ -693,7 +693,7 @@ function EDI_render_do_Scroll(timestamp) {
 
         INTS[fEDI_sum_diffPositive] += diff;
 
-        // Note: this case has 'vertical = (ints[fEDI_prevVli] + ints[fEDI_virtualCount]) * local_lineHeight;' I believe 'ints[fEDI_virtualCount]' === 'ints[fEDI_ONSCROLLvirtualCount]' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
+        // Note: this case has 'vertical = (INTS[fEDI_prevVli] + INTS[fEDI_virtualCount]) * local_lineHeight;' I believe 'INTS[fEDI_virtualCount]' === 'INTS[fEDI_ONSCROLLvirtualCount]' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
         lowerBound = local_prevVli + INTS[fEDI_ONSCROLLvirtualCount];
         upperBound = lowerBound + diff;
 
@@ -786,7 +786,7 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
 
     INTS[fEDI_intFalsey_isScrolling] = 1;
 
-    // TODO: If you can prove that the leading edge or 'ints[fEDI_intFalsey_isScrolling]' is "equivalent" to 'BYTES[byteisCheckingTrailingEdge]' then you can reduce the code here.
+    // TODO: If you can prove that the leading edge or 'INTS[fEDI_intFalsey_isScrolling]' is "equivalent" to 'BYTES[byteisCheckingTrailingEdge]' then you can reduce the code here.
     //
     // If we aren't tracking the trailing edge yet, start the rAF countdown loop
     if (!BYTES[byteisCheckingTrailingEdge]) {
@@ -810,20 +810,20 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
     if (INTS[fEDI_ONSCROLLvirtualCount] !== INTS[fEDI_virtualCount]) {
             // Force case 3
             //
-            // An overflow will wrap around and still give you a diff of 'ints[fEDI_virtualCount]'.
+            // An overflow will wrap around and still give you a diff of 'INTS[fEDI_virtualCount]'.
             // You cannot modify 'INTS[fEDI_currVli]' because the value is used by case '3' itself.
             //
             // This is very awkward because all other UI that has this sliding window logic just uses 'INTS[fEDI_currVli]'.
             //
-            // The reason is because they're also re-evaluating their equivalent of 'ints[fEDI_virtualIndexLine]'.
+            // The reason is because they're also re-evaluating their equivalent of 'INTS[fEDI_virtualIndexLine]'.
             //
-            // The editor has a local variable 'let local_currVli = ints[fEDI_virtualIndexLine];'
+            // The editor has a local variable 'let local_currVli = INTS[fEDI_virtualIndexLine];'
             // 
             // If you scroll enough to get a case 3 (full screen "draw") rather than doing some hacky forcing of case 3
-            // you'll find that 'ints[fEDI_virtualIndexLine]' within case 3 is
+            // you'll find that 'INTS[fEDI_virtualIndexLine]' within case 3 is
             // equal to 'local_currVli'.
             //
-            // But 'ints[fEDI_virtualIndexLine]' was being used within case 3
+            // But 'INTS[fEDI_virtualIndexLine]' was being used within case 3
             // due to this awkward setting of the 'INTS[fEDI_currVli]' when doing a hack to force case 3.
             //
             // This meant case 3 was incurring an extra global variable lookup (global variable lookup of 'INTS')
@@ -843,8 +843,8 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
             // TODO: What happens when you overflow 'INTS[fEDI_prevVli]' does it overflow such that you're the correct diff?
             //
             INTS[fEDI_prevVli] = INTS[fEDI_currVli] + INTS[fEDI_virtualCount];
-            //ints[fEDI_prevVli] = 0;
-            //ints[fEDI_currVli] = ints[fEDI_virtualCount];
+            //INTS[fEDI_prevVli] = 0;
+            //INTS[fEDI_currVli] = INTS[fEDI_virtualCount];
 
             EDI_render_do_CreateViewport();
             return false;
@@ -989,7 +989,7 @@ function EDI_render_do_SyntaxHighlighting() {
         // EDI_beltIndexLine_mutate_NEXT(beltIndexCurrent);
         //
         //
-        // ++beltIndexCurrent >= ints[fEDI_ArrayFrom_textElement_children_length] ? beltIndexCurrent -= ints[fEDI_ArrayFrom_textElement_children_length] : beltIndexCurrent;
+        // ++beltIndexCurrent >= INTS[fEDI_ArrayFrom_textElement_children_length] ? beltIndexCurrent -= INTS[fEDI_ArrayFrom_textElement_children_length] : beltIndexCurrent;
         //
         //
         // You might have to be careful though because it doesn't come with parenthesis. If you tried nesting it.
@@ -1387,7 +1387,7 @@ function EDI_drawHorizontalScrollbar() {
     
     // TODO: this is directly tied to a scroll event on EDI_baseElement so handle it from there perhaps?
     // TODO: this code is duplicated inside EDI_onScroll_WRAPIT when it returns early due to nothing vertically having changed, reduce duplication?
-    // TODO: 'ints[fEDI_lastReadNumber_scrollLeft]' here?
+    // TODO: 'INTS[fEDI_lastReadNumber_scrollLeft]' here?
     if (EDI_horizontal_scrollbar.scrollLeft !== EDI_baseElement.scrollLeft) {
         EDI_horizontal_scrollbar.scrollLeft = EDI_baseElement.scrollLeft;
     }
@@ -1642,9 +1642,9 @@ function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
     let ORIGINAL_incrementBy = (startingIndex + 1 - SMALL_lineAndColumnIndices_indexLine) * 4;
     let incrementBy = ORIGINAL_incrementBy;
 
-    //let ORIGINAL_incrementBy = ints[fEDI_indent_ORIGINAL_indentBy];
-    //let incrementBy = ints[fEDI_indent_ORIGINAL_indentBy];
-    //ints[fEDI_indent_ORIGINAL_indentBy] = 0;
+    //let ORIGINAL_incrementBy = INTS[fEDI_indent_ORIGINAL_indentBy];
+    //let incrementBy = INTS[fEDI_indent_ORIGINAL_indentBy];
+    //INTS[fEDI_indent_ORIGINAL_indentBy] = 0;
 
     let bytes = EDI_on_tab_bytes;
     let bytesLength = 4;
@@ -1745,9 +1745,9 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
     // multiply by n to get the decrement because it deals with the existence of whitespace to be removed so you need to actually sum this as you handle each event
     // so that when you get to the finalize you have it all sum'd up (although yes this logic probably doesn't even belong in the event but it is there and 1 thing at a time).
 
-    //let ORIGINAL_decrementBy = ints[fEDI_indent_ORIGINAL_indentBy];
-    //let decrementBy = ints[fEDI_indent_ORIGINAL_indentBy];
-    //ints[fEDI_indent_ORIGINAL_indentBy] = 0;
+    //let ORIGINAL_decrementBy = INTS[fEDI_indent_ORIGINAL_indentBy];
+    //let decrementBy = INTS[fEDI_indent_ORIGINAL_indentBy];
+    //INTS[fEDI_indent_ORIGINAL_indentBy] = 0;
 
     let startingIndex = INTS[fEDI_indent_startingIndex];
     INTS[fEDI_indent_startingIndex] = 0;
@@ -1813,7 +1813,7 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
 
     // Remember the total whitespace removed
     let ORIGINAL_decrementBy = DETERMINE_decrementBy;
-    //ints[fEDI_indent_ORIGINAL_indentBy] = ORIGINAL_decrementBy;
+    //INTS[fEDI_indent_ORIGINAL_indentBy] = ORIGINAL_decrementBy;
     let decrementBy = ORIGINAL_decrementBy;
 
     //// TODO: use better formatting
@@ -1850,26 +1850,26 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
 //
     //    let smallLinePos = EDI_getLineBoundaryPositions(SMALL_lineAndColumnIndices_indexLine);
     //    if (SMALL_pos > smallLinePos.start) {
-    //        if (ints[fEDI_cursor_selectionAnchor] < ints[fEDI_cursor_selectionEnd]) {
-    //            ints[fEDI_cursor_selectionAnchor] -= count;
+    //        if (INTS[fEDI_cursor_selectionAnchor] < INTS[fEDI_cursor_selectionEnd]) {
+    //            INTS[fEDI_cursor_selectionAnchor] -= count;
     //        }
     //        else {
-    //            ints[fEDI_cursor_selectionEnd] -= count;
+    //            INTS[fEDI_cursor_selectionEnd] -= count;
     //        }
     //    }
 //
-    //    if (ints[fEDI_cursor_indexLine] === SMALL_lineAndColumnIndices_indexLine) {
-    //        ints[fEDI_cursor_indexColumn] -= count;
+    //    if (INTS[fEDI_cursor_indexLine] === SMALL_lineAndColumnIndices_indexLine) {
+    //        INTS[fEDI_cursor_indexColumn] -= count;
     //    }
     //}
 
     // TODO: This at a glance seems to not account for when the cursor is small-position-ended and large-position-anchored...
     // ...this is moving the cursor actually, maybe it is fine? but maybe it is logic that could've been done during a loop but instead you made a new one to separately do this?
     // Also, this entire function is terribly written. You seemingly hacked something together; the code doesn't feel self explanatory. Furthermore there are both a lack of comments (given the confusing nature of how this is written), and dead comments.
-    //if (ints[fEDI_cursor_indexLine] !== SMALL_lineAndColumnIndices_indexLine) {
-    //    let linePos = EDI_getLineBoundaryPositions(ints[fEDI_cursor_indexLine]);
+    //if (INTS[fEDI_cursor_indexLine] !== SMALL_lineAndColumnIndices_indexLine) {
+    //    let linePos = EDI_getLineBoundaryPositions(INTS[fEDI_cursor_indexLine]);
     //    let line = linePos;
-    //    let lastValidIndexColumn = EDI_getLastValidIndexColumn(ints[fEDI_cursor_indexLine]);
+    //    let lastValidIndexColumn = EDI_getLastValidIndexColumn(INTS[fEDI_cursor_indexLine]);
     //    let upperLimitIndexColumn;
     //    if (lastValidIndexColumn > that_four) {
     //        upperLimitIndexColumn = that_four;
@@ -1895,19 +1895,19 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
     //                break outer;
     //        }
     //    }
-    //    //let c = EDI_getLineBoundaryPositions(ints[fEDI_cursor_indexLine]);
+    //    //let c = EDI_getLineBoundaryPositions(INTS[fEDI_cursor_indexLine]);
     //    // TODO: git blame the below todo and remind them to delete the dead code
     //    // TODO: Delete this dead code / use better formatting
     //    /*if (SMALL_pos > smallLinePos.start) {
-    //        if (ints[fEDI_cursor_selectionAnchor] < ints[fEDI_cursor_selectionEnd]) {
-    //            ints[fEDI_cursor_selectionAnchor] -= count;
+    //        if (INTS[fEDI_cursor_selectionAnchor] < INTS[fEDI_cursor_selectionEnd]) {
+    //            INTS[fEDI_cursor_selectionAnchor] -= count;
     //        }
     //        else {
-    //            ints[fEDI_cursor_selectionEnd] -= count;
+    //            INTS[fEDI_cursor_selectionEnd] -= count;
     //        }
     //    }*/
-    //    //if (ints[fEDI_cursor_indexLine] === LARGE_lineAndColumnIndices.indexLine) {
-    //    //    ints[fEDI_cursor_indexColumn] -= count;
+    //    //if (INTS[fEDI_cursor_indexLine] === LARGE_lineAndColumnIndices.indexLine) {
+    //    //    INTS[fEDI_cursor_indexColumn] -= count;
     //    //}
     //}
 
@@ -3913,8 +3913,8 @@ function EDI_editEvent_theEditIself_InsertLtr(event) {
     EDI_insertDo(event.key);
     INTS[fEDI_cursor_STORED_indexColumn] = INTS[fEDI_cursor_indexColumn];
     EDI_render_request(RenderKind_Cursor_n);
-    //ints[fEDI_offsetColumn] = ints[fEDI_offsetColumn] + ints[fEDI_cursor_editLength];
-    //ints[fEDI_totalShift] = get_EDI_totalShift() + ints[fEDI_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
+    //INTS[fEDI_offsetColumn] = INTS[fEDI_offsetColumn] + INTS[fEDI_cursor_editLength];
+    //INTS[fEDI_totalShift] = get_EDI_totalShift() + INTS[fEDI_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
     EDI_render_request(RenderKind_InsertLtr);
 }
 
@@ -3934,8 +3934,8 @@ function EDI_editEvent_theEditIself_DeleteLtr(event) {
         EDI_deleteDo(event);
     }
     EDI_render_request(RenderKind_Cursor_n);
-    //ints[fEDI_offsetColumn] = ints[fEDI_offsetColumn] - ints[fEDI_cursor_editLength];
-    //ints[fEDI_totalShift] = get_EDI_totalShift() - ints[fEDI_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
+    //INTS[fEDI_offsetColumn] = INTS[fEDI_offsetColumn] - INTS[fEDI_cursor_editLength];
+    //INTS[fEDI_totalShift] = get_EDI_totalShift() - INTS[fEDI_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
 }
 
 function EDI_editEvent_theEditIself_BackspaceRtl(event) {
@@ -3955,8 +3955,8 @@ function EDI_editEvent_theEditIself_BackspaceRtl(event) {
         INTS[fEDI_cursor_STORED_indexColumn] = INTS[fEDI_cursor_indexColumn];
     }
     EDI_render_request(RenderKind_Cursor_n);
-    //ints[fEDI_offsetColumn] = ints[fEDI_offsetColumn] - ints[fEDI_cursor_editLength];
-    //ints[fEDI_totalShift] = get_EDI_totalShift() - ints[fEDI_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
+    //INTS[fEDI_offsetColumn] = INTS[fEDI_offsetColumn] - INTS[fEDI_cursor_editLength];
+    //INTS[fEDI_totalShift] = get_EDI_totalShift() - INTS[fEDI_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
 }
 
 function EDI_editEvent_theEditIself_Tab(event) {
@@ -4433,8 +4433,8 @@ function EDI_onKeyDown_ArrowLeft(event) {
     if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
     }
-    //ints[fEDI_offsetColumn] = ints[fEDI_offsetColumn] + ints[fEDI_cursor_editLength];
-    //ints[fEDI_totalShift] = get_EDI_totalShift() + ints[fEDI_cursor_editLength];
+    //INTS[fEDI_offsetColumn] = INTS[fEDI_offsetColumn] + INTS[fEDI_cursor_editLength];
+    //INTS[fEDI_totalShift] = get_EDI_totalShift() + INTS[fEDI_cursor_editLength];
 }
 
 /** @returns {boolean} whether invoking function ought to return */
@@ -4549,8 +4549,8 @@ function EDI_onKeyDown_ArrowRight(event) {
     if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
     }
-    //ints[fEDI_offsetColumn] = ints[fEDI_offsetColumn] + ints[fEDI_cursor_editLength];
-    //ints[fEDI_totalShift] = get_EDI_totalShift() + ints[fEDI_cursor_editLength];
+    //INTS[fEDI_offsetColumn] = INTS[fEDI_offsetColumn] + INTS[fEDI_cursor_editLength];
+    //INTS[fEDI_totalShift] = get_EDI_totalShift() + INTS[fEDI_cursor_editLength];
 }
 
 /** @returns {boolean} whether invoking function ought to return */
@@ -5633,7 +5633,7 @@ function EDI_render_do_DuplicateOrPaste() {
         let length = INTS[fEDI_cursor_EDI_duplicate_length];
         let large = small + length;
         
-        // TODO: update the 'ints[fEDI_cursor_editRenderedDisplacement]'
+        // TODO: update the 'INTS[fEDI_cursor_editRenderedDisplacement]'
 
         let byteArray;
 
@@ -5675,7 +5675,7 @@ function EDI_render_do_DuplicateOrPaste() {
 
             byteArray = new Uint8Array(lengthBytes);
             length = lengthBytes;
-            // TODO: You need 'ints[fEDI_cursor_editLength]' when finalizing the cursor right? It isn't set until this point for Paste edits.
+            // TODO: You need 'INTS[fEDI_cursor_editLength]' when finalizing the cursor right? It isn't set until this point for Paste edits.
             INTS[fEDI_cursor_editLength] = lengthBytes;
 
             // I'm gonna re-use lengthBytes to populate the array to avoid messing something up just to get a different variable with the name of maybe 'offsetBytes' or some such.
@@ -6050,9 +6050,9 @@ function EDI_paste(content) {
     let shouldPreserveCssClassWhenSplittingAmongLine = false;
     let hasSeenLinefeed = false;
 
-    //let original_indexColumn_SpanTextContentRelative = ints[fEDI_w_indexColumn_SpanTextContentRelative];
+    //let original_indexColumn_SpanTextContentRelative = INTS[fEDI_w_indexColumn_SpanTextContentRelative];
     //let original_span_textContent_length = w_span.textContent.length;
-    //let original_tracked_syntax_start = positionIndex - ints[fEDI_cursor_indexColumn] + ints[fEDI_w_indexColumn_Sum];
+    //let original_tracked_syntax_start = positionIndex - INTS[fEDI_cursor_indexColumn] + INTS[fEDI_w_indexColumn_Sum];
 
     for (var sourceI = 0; sourceI < content.length; sourceI++) {
         switch (content[sourceI]) {
@@ -6369,7 +6369,7 @@ function EDI_render_do_EnterKey() {
 
         // TODO: This is missing a loop or etc... as was also stated elsewhere.
         // ...
-        // Thus 'ints[fEDI_cursor_editRenderedDisplacement]' is being incremented by 1 only.
+        // Thus 'INTS[fEDI_cursor_editRenderedDisplacement]' is being incremented by 1 only.
         // i.e.: This is wrong because if more than one enter key event was rendered as an edit length > 1 there's probably gonna be a rendering issue
         // and the invocation of 'EDI_render_do_EnterKey' from finalize edit will cause confusion because a length of 2 could pass given certain timing of events.
         //
@@ -6465,7 +6465,7 @@ function EDI_render_do_EnterKey() {
 
 
                     // among a line uses 'walkLineUntilIndexColumn', this function takes a cursor and accesses the fields: 'indexLine', and 'indexColumn'.
-                    // This is problematic because one needs to use ints[fEDI_cursor_editIndexColumn] for this renderKind.
+                    // This is problematic because one needs to use INTS[fEDI_cursor_editIndexColumn] for this renderKind.
                     // Since only this case needs the logic I'm going to isolate it to here.
                     //
                     // Remember 'indexLine', and 'indexColumn'.
@@ -7349,7 +7349,7 @@ function EDI_state_do_Delete(event) {
     }
     else {
         if (event.ctrlKey) {
-            // ints[fEDI_cursor_editPosition] is intended to be equal due to the batch requirements / a new edit would also be equal.
+            // INTS[fEDI_cursor_editPosition] is intended to be equal due to the batch requirements / a new edit would also be equal.
             let tempIndexColumn = INTS[fEDI_cursor_indexColumn];
             let tempPosition = INTS[fEDI_cursor_editPosition];
 
@@ -7525,7 +7525,7 @@ function EDI_state_do_Backspace(event) {
     }
     else {
         if (event.ctrlKey) {
-            // ints[fEDI_cursor_editPosition] is intended to be equal due to the batch requirements / a new edit would also be equal.
+            // INTS[fEDI_cursor_editPosition] is intended to be equal due to the batch requirements / a new edit would also be equal.
 
             let originalCharacterKind = getCharacter_kind_raw(INTS[fEDI_cursor_editPosition] - 1);
             INTS[fEDI_cursor_indexColumn]--;
@@ -7605,7 +7605,7 @@ function EDI_insertDo(character) {
 }
 
 function EDI_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine() {
-    // binary search for 'if (ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_pooledTrackedSyntax_length] > positionIndex)'
+    // binary search for 'if (INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length] > positionIndex)'
     let indexTrackedSyntax = EDI_drawViewPort_FindTrackedSyntax_StartingIndex(INTS[fEDI_cursor_indexLine]);
     if (indexTrackedSyntax === NaN || indexTrackedSyntax === -1) {
         indexTrackedSyntax = EDI_trackedSyntaxList.count_abstract;

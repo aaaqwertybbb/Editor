@@ -9396,4 +9396,11 @@ Google AI:
 
 I checked the flame graph for a lack of warning on a function that used gINT_FIELDS directly and I indeed do NOT see a warning.
 
+!!!
+If this is true... module const being that way you have so many local variables you can remove
+
+this also means that 'const' is a massive performance improvement.
+From what I understand it is a mixture of using ES6 modules AND declaring the variable as const.
+!!!
+
 */

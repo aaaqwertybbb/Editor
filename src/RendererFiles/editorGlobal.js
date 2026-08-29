@@ -9394,5 +9394,6 @@ Google AI:
 < Would you like to try setting up a quick benchmark using performance.now() to compare both approaches side-by-side in your actual Electron setup,
 < or would you prefer to look into how to structure your text editor loops to ensure V8 never accidentally de-optimizes them?
 
+I checked the flame graph for a lack of warning on a function that used gINT_FIELDS directly and I indeed do NOT see a warning.
 
 */

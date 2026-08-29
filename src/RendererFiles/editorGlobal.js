@@ -9311,4 +9311,24 @@ Google AI:
 < Are you currently writing loops that read/write to this array thousands of times per second (like a syntax highlighter or text layout engine)?
 < If so, I can show you how to structure those loops to ensure V8 triggers its "JIT compiler" (TurboFan) for maximum hardware speed.
 
+> This was my exact confusion: "2. Module Scope vs. Local Scope in V8", thank you
+
+< ...
+< In the earlier days of JavaScript, walking the scope chain to find a variable outside of a function did have a measurable performance cost.
+< ...
+<
+< Modern engines like V8 completely changed the rules by optimizing top-level ES6 module scopes into highly static, direct lookups.
+< 
+< ...
+
+> I believe that what you're saying is true.
+> 
+> But the difference in performance is massive for an engine where this module scope optimization exists versus an engine where it doesn't.
+> 
+> And for that reason, I just worry whether this module scope optimization is supported "everywhere".
+> 
+> Is there a way to verify that this module scope optimization is taking place given the environment I'm running the app in?
+
+< ...
+
 */

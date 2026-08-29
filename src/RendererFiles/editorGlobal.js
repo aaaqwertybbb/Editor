@@ -9149,4 +9149,20 @@ I want to get this done as soon as possible today.
 - [ ] Look into array caching and whether you could put hot path data a certain way that it reads fastest due to caching
 - [ ] ???
 
+Google AI:
+==========
+
+> I am making a text editor app. A lot of the code is written already, and so my question is more specifically going to relate to
+> a generalized performance question. The app uses electron, and vanilla javascript as a single monolithic ES6 module.
+
+< ...
+
+> The preface to my performance question: The text editor state has various number variables.
+> Rather than declare these variables at the top-level scope of my module. I have a 'const gINT_FIELDS = new Uint32Array(168);'
+> wherein I store every number, such as the cursor's line index.
+
+< ...
+
+
+
 */

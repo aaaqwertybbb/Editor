@@ -9135,4 +9135,18 @@ just make sure you do something everyday and things will just lead into one anot
 
 When is renderer -> ipc serialized is this part synchronous? you can pool the DTOs
 
+==========
+
+11:30 AM
+
+I want to get this done as soon as possible today.
+
+- [ ] Editor local variable int field buffer.
+    - [ ] I believe this is good, but you need to look into it.
+- [ ] Move booleans where the use of it from boolean field buffer, that the scope already has a reference to a local of the int field buffer.
+    - [ ] ONLY if it is a hot path / meaningful for some reason.
+- [ ] Move all Editor related state so that it is contiguous within the field buffers.
+- [ ] Look into array caching and whether you could put hot path data a certain way that it reads fastest due to caching
+- [ ] ???
+
 */

@@ -9176,8 +9176,13 @@ Google AI:
 < This allows zero-copy data sharing between threads.
 <
 < ...
-<
-< 
+
+> The performance question: when within a function, should this 'gINT_FIELDS' variable be made a local variable such as 'const intFields = gINT_FIELDS'.
+> 
+> The thought process: you are reducing pointer chasing.
+
+< No, you should not do this because it does not actually reduce pointer chasing or provide any performance benefit.
+< ...
 
 
 

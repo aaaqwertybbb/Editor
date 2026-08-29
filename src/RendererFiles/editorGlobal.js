@@ -9216,4 +9216,13 @@ Google AI:
 < To help optimize your hot paths further, what does a typical heavy or high-frequency function look like in your editor
 < (e.g., your keystroke handler or rendering loop)? If you share a snippet, I can look for actual V8 optimization bottlenecks.
 
+> Can you give more information on why the local variable doesn't change anything? i.e.:
+> 
+> ```js
+> ```
+
+(I pressed the enter key without holding shift like a goof)
+
+< ...
+
 */

@@ -9135,4 +9135,12 @@ just make sure you do something everyday and things will just lead into one anot
 
 When is renderer -> ipc serialized is this part synchronous? you can pool the DTOs
 
+=========
+
+"but it's always some else's fault"
+
+don't misinterpret lol
+
+I'm eating a 1lb of chicken typing 1 hand
+
 */

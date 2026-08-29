@@ -9163,6 +9163,22 @@ Google AI:
 
 < ...
 
+< ...
+< ...
+< 2. Inter-Process Communication (IPC) Bottlenecks
+< 
+< In Electron, the Main process and the Renderer process live in isolated memory spaces.
+< If you need to send this state from the Renderer (UI) to the Main process (e.g., saving a file or updating a native OS menu),
+< copying a standard JS object requires expensive JSON serialization.
+< 
+< The Solution: You can pass the underlying ArrayBuffer directly across the IPC channel as a Transferable Object,
+< or use SharedArrayBuffer if you are utilizing Web Workers for heavy background processing (like syntax highlighting).
+< This allows zero-copy data sharing between threads.
+<
+< ...
+<
+< 
+
 
 
 */

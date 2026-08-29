@@ -290,6 +290,9 @@ const CONST_EDI_cursor_htmlId = "EDI_cursor-1";
 ////////////////////////////
 
 /**
+ * unsigned int32 array
+ * TODO: Rename to 'UINTS'?
+ * 
  * The code does not make local variables such as: 'const ints = const INTS',
  * because ES6 modules are expected (and thus module scopes remove the usefulness of making a local variable):
  *     index.html the script tag: 'type="module" src="..."'

@@ -9182,8 +9182,38 @@ Google AI:
 > The thought process: you are reducing pointer chasing.
 
 < No, you should not do this because it does not actually reduce pointer chasing or provide any performance benefit.
-< ...
-
-
+< In JavaScript, assigning const intFields = gINT_FIELDS does not copy the array or change how the memory is accessed;
+< it simply creates a new local reference pointing to the exact same object in memory.
+<
+< # Why It Doesn't Reduce Pointer Chasing:
+< - Both are direct pointers: In the V8 engine, a top-level const module variable and a local function variable are both resolved as direct pointers
+<   to the underlying typed array object.
+< - The real "chase" is the same: The only actual pointer chasing happens when V8 looks up the array's elements in physical memory.
+<   Since both gINT_FIELDS and intFields point to the exact same ArrayBuffer, the CPU executes the exact same memory lookup steps either way.
+<
+< # When Local Aliasing Does Help (The V8 Exception):
+< There is only one scenario where creating a local alias improves performance: when you are caching a property lookup from a deeply nested object.
+<
+< ```js
+< // HELPS: Avoids repeating the property lookup chain (.state and .integers) inside a hot loop
+< const intFields = app.state.integers; 
+< for (let i = 0; i < 1000; i++) { intFields[0] = i; }
+< 
+< // DOES NOT HELP: gINT_FIELDS is already at the top-level module scope
+< const intFields = gINT_FIELDS; 
+< ```
+< 
+< Because gINT_FIELDS is already declared at the top-level of your ES6 module, V8 can optimize access to it globally.
+< Aliasing it locally just adds an extra variable allocation to the function's stack frame for no technical gain.
+<
+< # The Best Way to Keep This Fast
+< |
+< If you want to ensure your hot functions stay fully optimized by V8's TurboFan compiler, focus on Monomorphism.
+< |
+< Keep your function signatures clean and avoid changing the type of data passed into functions that read from gINT_FIELDS.
+< V8 optimizes heavily when it knows a function only ever deals with that specific Uint32Array.
+< |
+< To help optimize your hot paths further, what does a typical heavy or high-frequency function look like in your editor
+< (e.g., your keystroke handler or rendering loop)? If you share a snippet, I can look for actual V8 optimization bottlenecks.
 
 */

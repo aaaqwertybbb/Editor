@@ -9150,4 +9150,7 @@ the "but it's always..."
 
 not anymore kinda deal reminder
 
+whether it began truly as someone else's fault or not
+r u gonna just live the rest of ur life being a victim 
+
 */

@@ -9294,6 +9294,166 @@ From what I understand it is a mixture of using ES6 modules AND declaring the va
 > 
 > Note how I have so many local variables that simply alias a module scope variable.
 
-< ...
+< To answer your question directly: Yes, you should apply structural changes to this function,
+< but you should actually remove most of these local variable aliases rather than keeping them.
+< 
+< The logic we established earlier—that top-level module scope variables require zero pointer-chasing in V8—applies entirely here.
+< Because you have control over the version of Chromium bundled inside Electron, aliases like let local_EDI_decoder = EDI_decoder; do not speed anything up.
+< V8 is already loading EDI_decoder directly into a CPU register.
+<
+< However, this function is a goldmine for true V8 optimizations. Inside a "hot loop" (like text rendering during scrolling),
+< the performance bottlenecks are not scope lookups; they are DOM manipulation, Garbage Collection (GC) churn, and deoptimizations from dynamic object types.
+<
+< Here is an optimized refactor of your function, stripping away the useless scope-aliasing while targeting the real bottlenecks that will drastically improve your app's performance.
+<
+< ```js
+< function EDI_render_do_Scroll(timestamp) {
+<     const local_lineHeight = INTS[fEDI_lineHeight];
+< 
+<     // 1. Structural Cleanups & Typed Bounds
+<     INTS[fEDI_virtualIndexLine] = Math.floor(INTS[fEDI_lastReadNumber_scrollTop] / local_lineHeight);
+<     
+<     // Note: No need to localize these into let bindings unless they change or make code cleaner.
+<     // They point to the flat typed array register, which V8 accesses instantly.
+<     const local_prevVli = INTS[fEDI_ONSCROLLvirtualIndexLine];
+<     const local_currVli = INTS[fEDI_virtualIndexLine];
+<     INTS[fEDI_ONSCROLLvirtualIndexLine] = local_currVli;
+< 
+<     INTS[fEDI_scrollEndDeadline] = timestamp + 1000; 
+< 
+<     if (INTS[fEDI_intFalsey_isScrolling] === 0) {
+<         if (EDI_onScroll_LeadingEdge(local_prevVli, local_currVli)) return;
+<         // Restoring after potential leading edge mutations
+<         INTS[fEDI_prevVli] = INTS[fEDI_prevVli]; 
+<         INTS[fEDI_currVli] = INTS[fEDI_currVli];
+<     }
+< 
+<     INTS[fEDI_ONSCROLLscrollTop] = INTS[fEDI_lastReadNumber_scrollTop];
+< 
+<     if (INTS[fEDI_cursor_editKind] !== EditKind_None) {
+<         EDI_finalizeEdit();
+<     }
+< 
+<     // Early return: Best possible optimization to skip calculating DOM modifications entirely
+<     const diff = local_currVli - local_prevVli;
+<     if (diff === 0) return;
+< 
+<     let lowerBound = 0;
+<     let upperBound = 0;
+<     let beltIndexLine = 0;
+< 
+<     const local_ArrayFrom_textElement_children_length = INTS[fEDI_ArrayFrom_textElement_children_length];
+<     const virtualCount = INTS[fEDI_virtualCount];
+< 
+<     if (diff > 0 && diff < virtualCount) {
+<         INTS[fEDI_sum_diffPositive] += diff;
+<         lowerBound = local_prevVli + INTS[fEDI_ONSCROLLvirtualCount];
+<         upperBound = lowerBound + diff;
+<         beltIndexLine = INTS[fEDI_EDI_beltIndexZero] - 1;
+<         INTS[fEDI_EDI_beltIndexZero] = (beltIndexLine + 1 + diff) % local_ArrayFrom_textElement_children_length;
+<     } 
+<     else if (diff < 0 && (diff * -1) < virtualCount) {
+<         const absDiff = diff * -1;
+<         INTS[fEDI_sum_diffNegative] += absDiff;
+<         lowerBound = local_currVli;
+<         upperBound = lowerBound + absDiff;
+< 
+<         INTS[fEDI_EDI_beltIndexZero] = (
+<             ((INTS[fEDI_EDI_beltIndexZero] - 1 + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length) -
+<             (absDiff - 1) + local_ArrayFrom_textElement_children_length
+<         ) % local_ArrayFrom_textElement_children_length;
+< 
+<         beltIndexLine = INTS[fEDI_EDI_beltIndexZero] - 1;
+<     } 
+<     else {
+<         lowerBound = local_currVli;
+<         upperBound = lowerBound + virtualCount;
+<         INTS[fEDI_sum_diffPositive] += virtualCount;
+<         beltIndexLine = INTS[fEDI_EDI_beltIndexZero] - 1;
+<     }
+< 
+<     let vertical = lowerBound * local_lineHeight;
+< 
+<     let lineStart = 0;
+<     let lineEnd = -1;
+<     const count = EDI_lineEndPositionList.count;
+<     const data = EDI_lineEndPositionList.data;
+< 
+<     if (lowerBound < count && lowerBound !== 0) {
+<         lineEnd = data[lowerBound - 1];
+<     }
+< 
+<     // CRITICAL HOT LOOP OPTIMIZATION
+<     // Removed unnecessary aliasing of globals like EDI_decoder and EDI_textByteList.
+<     // Cached DOM structure variables to reduce property lookups inside the loop body.
+<     const textBytes = EDI_textByteList.bytes;
+< 
+<     for (let indexLine = lowerBound; indexLine < upperBound; indexLine++) {
+<         
+<         beltIndexLine = (beltIndexLine + 1) % local_ArrayFrom_textElement_children_length;
+< 
+<         // Caching references directly from the global array wrappers
+<         const gutter = ArrayFrom_gutter_children[beltIndexLine];
+<         const div = ArrayFrom_textElement_children[beltIndexLine];
+< 
+<         lineStart = lineEnd + 1;
+<         if (indexLine < count) {
+<             gutter.textContent = indexLine + 1;
+<             lineEnd = data[indexLine];
+<         } else {
+<             gutter.textContent = '~';
+<             lineEnd = lineStart;
+<         }
+< 
+<         const span = div.children[0];
+<         span.className = 'eN';
+<         
+<         // OPTIMIZATION: Avoid subarray allocation if line length is zero
+<         if (lineStart === lineEnd) {
+<             span.textContent = '';
+<         } else {
+<             // CRITICAL: V8 can optimize this because textBytes is an immutable Uint8Array reference
+<             span.textContent = EDI_decoder.decode(textBytes.subarray(lineStart, lineEnd));
+<         }
+< 
+<         // OPTIMIZATION: Faster node purging than looping over live DOM elements
+<         while (div.children.length > 1) {
+<             div.removeChild(div.lastChild);
+<         }
+< 
+<         // OPTIMIZATION: Combined layout string building 
+<         const translateY = `translateY(${vertical}px)`;
+<         vertical += local_lineHeight;
+< 
+<         gutter.style.transform = translateY;
+<         div.style.transform = translateY;
+<     }
+< }
+< ```
+<
+< # Why this Refactor actually improves Performance
+<
+< 1. We removed the "Fake" Optimizations
+< |
+< Declaring statements like let local_EDI_decoder = EDI_decoder; before a loop actually introduces an extra variable assignment block onto the function’s local stack frame.
+< Inside modern V8, it forces an extra read/write assignment step before execution. By eliminating those aliases, your code is shorter, more readable, and
+< matches V8's preferred direct-access pattern.
+<
+< 2. Fixed DOM Removals (removeChild)
+< |
+< Your original code was checking div.children.length - 1 and decrementing i backwards to remove children.
+< Walking backwards through a live DOM array while mutating it causes the browser layout engine to repeatedly re-evaluate the array length.
+< - Changing it to while (div.children.length > 1) { div.removeChild(div.lastChild); } executes vastly fewer operations and uses lastChild which is natively optimized in Chromium.
+<
+< 3. Reduced Heap Allocations on Empty Lines
+< |
+< When handling a blank line (lineStart === lineEnd), passing it directly into .subarray() forces the JavaScript memory heap to instantiate a temporary,
+< empty Uint8Array view object just to pass it to the decoder.
+< - Checking if (lineStart === lineEnd) completely bypasses the creation of that temporary object, drastically reducing Garbage Collection (GC) pauses while scrolling past blank space.
+<
+< To take this a step further:
+< - Are the ArrayFrom_gutter_children and ArrayFrom_textElement_children variables normal arrays, or are they live HTMLCollections / NodeLists
+<   (e.g., returned from getElementsByClassName or querySelectorAll)? If they are live collections, changing them to static arrays will give you another massive frame-rate boost.
+
 
 */

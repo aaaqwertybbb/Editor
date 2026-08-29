@@ -192,7 +192,7 @@ let ArrayFrom_textElement_children = [];
 let EDI_language_line_lex;
 
 function EDI_cursor_hasSelection() {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
     return ints[fEDI_cursor_selectionAnchor] >= 0 &&
             ints[fEDI_cursor_selectionEnd] >= 0 &&
             ints[fEDI_cursor_selectionAnchor] != ints[fEDI_cursor_selectionEnd];
@@ -204,7 +204,7 @@ function EDI_cursor_hasSelection() {
  * Somewhat duplicated code: This messes with the language features if I invoke clear() in the constructor, it puts "| undefined" on all the types.
  */
 function EDI_cursor_clear() {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
     ints[fEDI_cursor_indexLine] = 0;
     ints[fEDI_cursor_indexColumn] = 0;
     ints[fEDI_cursor_STORED_indexColumn] = 0;
@@ -249,7 +249,7 @@ function EDI_init() {
 
     EDI_horizontal_scrollbar = EDI_baseElement.children[2].children[0];
     EDI_horizontal_scrollbar.style.left = '0px';
-    gINT_FIELDS[fEDI_DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left] = 0;
+    INTS[fEDI_DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left] = 0;
 
     EDI_horizontal_scrollbar_virtualization_boundary = EDI_baseElement.children[2].children[0].children[0];
     EDI_body = EDI_baseElement.children[5];
@@ -271,11 +271,11 @@ function EDI_init() {
     EDI_gutterBackgroundColor.style.paddingLeft = gutterPaddingLeft;
     EDI_gutterBackgroundColor.style.paddingRight = gutterPaddingRight;
 
-    gINT_FIELDS[fEDI_gutterWidthStyleValue] = EDI_characterWidth;
+    INTS[fEDI_gutterWidthStyleValue] = EDI_characterWidth;
 
     EDI_drawGutter_Width();
 
-    gINT_FIELDS[fEDI_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar] = 1; // necessary for the first render, otherwise the if statement sees 0 !== 0.
+    INTS[fEDI_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar] = 1; // necessary for the first render, otherwise the if statement sees 0 !== 0.
     EDI_drawHorizontalScrollbar();
     EDI_draw_all_cursors();
 
@@ -365,12 +365,12 @@ function EDI_render_do(timestamp) {
 }
 
 function EDI_render_do_cursor(timestamp) {
-    gINT_FIELDS[fEDI_EDI_cursorBlinkLastTimestamp] = timestamp;
+    INTS[fEDI_EDI_cursorBlinkLastTimestamp] = timestamp;
     EDI_drawCursor();
 }
 
 function EDI_render_do_cursor_flag_scrollIntoViewExplicit(timestamp) {
-    gINT_FIELDS[fEDI_EDI_cursorBlinkLastTimestamp] = timestamp;
+    INTS[fEDI_EDI_cursorBlinkLastTimestamp] = timestamp;
     let notShouldScrollIntoView = false;
     let flag_scrollIntoViewExplicit = false;
 
@@ -384,12 +384,12 @@ function EDI_render_do_cursor_flag_scrollIntoViewExplicit(timestamp) {
 }
 
 function EDI_render_do_cursor_flag_doNotScrollIntoView(timestamp) {
-    gINT_FIELDS[fEDI_EDI_cursorBlinkLastTimestamp] = timestamp;
+    INTS[fEDI_EDI_cursorBlinkLastTimestamp] = timestamp;
     EDI_drawCursor(true);
 }
 
 function EDI_render_do_InsertLtr() {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
     if (ints[fEDI_cursor_editKind] !== EditKind_InsertLtr) {
         return;
     }
@@ -415,10 +415,10 @@ function EDI_render_do_Clear() {
     EDI_gutter.innerHTML = '';
 
     // Force case 3
-    gINT_FIELDS[fEDI_prevVli] = 0;
-    gINT_FIELDS[fEDI_currVli] = gINT_FIELDS[fEDI_virtualCount];
+    INTS[fEDI_prevVli] = 0;
+    INTS[fEDI_currVli] = INTS[fEDI_virtualCount];
     // TODO: Duplicated setting of scrolltop; this case and just baseline everytime vertical scrolls it is done in this method elsewhere
-    gINT_FIELDS[fEDI_ONSCROLLscrollTop] = gINT_FIELDS[fEDI_lastReadNumber_scrollTop];
+    INTS[fEDI_ONSCROLLscrollTop] = INTS[fEDI_lastReadNumber_scrollTop];
     EDI_render_do_CreateViewport();
 }
 
@@ -431,11 +431,11 @@ function EDI_render_do_SetText(timestamp) {
 
     EDI_render_do_Scroll(timestamp)
 
-    gINT_FIELDS[fEDI_prevVli] = gINT_FIELDS[fEDI_ONSCROLLvirtualIndexLine];
-    gINT_FIELDS[fEDI_currVli] = gINT_FIELDS[fEDI_virtualIndexLine];
-    gINT_FIELDS[fEDI_ONSCROLLvirtualIndexLine] = gINT_FIELDS[fEDI_virtualIndexLine];
+    INTS[fEDI_prevVli] = INTS[fEDI_ONSCROLLvirtualIndexLine];
+    INTS[fEDI_currVli] = INTS[fEDI_virtualIndexLine];
+    INTS[fEDI_ONSCROLLvirtualIndexLine] = INTS[fEDI_virtualIndexLine];
 
-    gINT_FIELDS[fEDI_scrollEndDeadline] = timestamp + 1000;
+    INTS[fEDI_scrollEndDeadline] = timestamp + 1000;
     if (!BYTES[byteisCheckingTrailingEdge]) {
         BYTES[byteisCheckingTrailingEdge] = true;
         requestAnimationFrame(EDI_render_do_ScrollTrailingEdgeCheck);
@@ -456,7 +456,7 @@ function EDI_render_request(renderKind) {
 
 function EDI_render_do_CreateViewport() {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     let remember_scrollTop = ints[fEDI_lastReadNumber_scrollTop];
     let remember_scrollLeft = ints[fEDI_lastReadNumber_scrollLeft];
@@ -536,7 +536,7 @@ function EDI_createViewport() {
  * 
  * If the scroll and mouse down events are handled prior to my rAF
  * 
- * and I've moved all the gINT_FIELDS[fEDI_virtualIndexLine] logic from here to the rAF
+ * and I've moved all the INTS[fEDI_virtualIndexLine] logic from here to the rAF
  * then the user will "click the wrong line".
  * 
  * "I don't want to limit the speed of editing to that of the screen's refresh rate"
@@ -566,8 +566,8 @@ function EDI_onScroll_WRAPIT() {
     // and vice versa.
     // thus it is thought you might as well touch scrollLeft too here, if you're going down this path.
     //
-    gINT_FIELDS[fEDI_lastReadNumber_scrollLeft] = EDI_baseElement.scrollLeft;
-    gINT_FIELDS[fEDI_lastReadNumber_scrollTop] = EDI_baseElement.scrollTop;
+    INTS[fEDI_lastReadNumber_scrollLeft] = EDI_baseElement.scrollLeft;
+    INTS[fEDI_lastReadNumber_scrollTop] = EDI_baseElement.scrollTop;
 
     EDI_render_request(RenderKind_Scroll);
 }
@@ -642,7 +642,7 @@ function EDI_onScroll_WRAPIT() {
  * 
  */
 function EDI_render_do_Scroll(timestamp) {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
     let local_lineHeight = ints[fEDI_lineHeight];
 
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
@@ -786,7 +786,7 @@ function EDI_render_do_Scroll(timestamp) {
  * @returns true if scrollTop (and a few other details) have not changed, thus indicating the invoker should immediately return from their own rather than continuing with scroll logic.
  */
 function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
     
     // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 2 of 4)
     // ...and here the locals are moved to the global scope.
@@ -820,9 +820,9 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
             // Force case 3
             //
             // An overflow will wrap around and still give you a diff of 'ints[fEDI_virtualCount]'.
-            // You cannot modify 'gINT_FIELDS[fEDI_currVli]' because the value is used by case '3' itself.
+            // You cannot modify 'INTS[fEDI_currVli]' because the value is used by case '3' itself.
             //
-            // This is very awkward because all other UI that has this sliding window logic just uses 'gINT_FIELDS[fEDI_currVli]'.
+            // This is very awkward because all other UI that has this sliding window logic just uses 'INTS[fEDI_currVli]'.
             //
             // The reason is because they're also re-evaluating their equivalent of 'ints[fEDI_virtualIndexLine]'.
             //
@@ -833,9 +833,9 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
             // equal to 'local_currVli'.
             //
             // But 'ints[fEDI_virtualIndexLine]' was being used within case 3
-            // due to this awkward setting of the 'gINT_FIELDS[fEDI_currVli]' when doing a hack to force case 3.
+            // due to this awkward setting of the 'INTS[fEDI_currVli]' when doing a hack to force case 3.
             //
-            // This meant case 3 was incurring an extra global variable lookup (global variable lookup of 'gINT_FIELDS')
+            // This meant case 3 was incurring an extra global variable lookup (global variable lookup of 'INTS')
             // - (or with 'ints' you are incurring a read of the array only, but still this is presumed to be more than just using the local variable).
             //
             // Wait I'm wrong with that explanation...
@@ -847,9 +847,9 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
             //
             // I don't know I'm tired and confused.
             //
-            // TODO: Look into all the usages of 'gINT_FIELDS[fEDI_prevVli] and gINT_FIELDS[fEDI_currVli]' or like hacks to force cases
+            // TODO: Look into all the usages of 'INTS[fEDI_prevVli] and INTS[fEDI_currVli]' or like hacks to force cases
             //
-            // TODO: What happens when you overflow 'gINT_FIELDS[fEDI_prevVli]' does it overflow such that you're the correct diff?
+            // TODO: What happens when you overflow 'INTS[fEDI_prevVli]' does it overflow such that you're the correct diff?
             //
             ints[fEDI_prevVli] = ints[fEDI_currVli] + ints[fEDI_virtualCount];
             //ints[fEDI_prevVli] = 0;
@@ -864,7 +864,7 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
 
 function EDI_render_do_ScrollTrailingEdgeCheck(timestamp) {
     // If the scroll deadline hasn't been met yet, keep checking on the next frame
-    if (timestamp < gINT_FIELDS[fEDI_scrollEndDeadline]) {
+    if (timestamp < INTS[fEDI_scrollEndDeadline]) {
         requestAnimationFrame(EDI_render_do_ScrollTrailingEdgeCheck);
         return;
     }
@@ -874,10 +874,10 @@ function EDI_render_do_ScrollTrailingEdgeCheck(timestamp) {
 }
 
 /**
- * must set 'gINT_FIELDS[fEDI_intFalsey_isScrolling] = 0;' within this function.
+ * must set 'INTS[fEDI_intFalsey_isScrolling] = 0;' within this function.
  */
 function EDI_onScroll_TrailingEdge() {
-    gINT_FIELDS[fEDI_intFalsey_isScrolling] = 0;
+    INTS[fEDI_intFalsey_isScrolling] = 0;
     BYTES[byteisCheckingTrailingEdge] = false; // Reset the flag here
     EDI_render_request(RenderKind_SyntaxHighlighting);
 }
@@ -898,7 +898,7 @@ but there is 0 reasoning, understanding, or measurements behind my decision.
 
 function EDI_render_do_SyntaxHighlighting() {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     let local_sum_diffNegative = ints[fEDI_sum_diffNegative];
     let local_sum_diffPositive = ints[fEDI_sum_diffPositive];
@@ -1087,10 +1087,10 @@ More accurately the ones that seem to not have an importance of position, they d
     //     - [ ] [BABEL] Note: The code generator has deoptimised the styling of C:\Users\hunte\Repos\New folder (3)\Edit\preprocessor\__PREPROCESSEDbundle__.js as it exceeds the max of 500KB.
     //     - ... I don't actually know if they're counting whitespace as part of that 500KB, I'd presume they are so you should stop doing it. At least when it comes to the comments that are indented, and you include the indentation for no reason even though you removed the comment.
 
-//if (diff > 0 && diff < gINT_FIELDS[fEDI_virtualCount]) {
+//if (diff > 0 && diff < INTS[fEDI_virtualCount]) {
     //    
     //}
-    //else if (diff < 0 && (diff *= -1) < gINT_FIELDS[fEDI_virtualCount]) {
+    //else if (diff < 0 && (diff *= -1) < INTS[fEDI_virtualCount]) {
     //    
     //}
     //else {
@@ -1102,8 +1102,8 @@ More accurately the ones that seem to not have an importance of position, they d
     //}
 
     //You know there's diff many lines to syntax highlight.
-    //You can guess that is diff < gINT_FIELDS[fEDI_virtualCount]
-    //that you'll start at 'gINT_FIELDS[fEDI_EDI_beltIndexZero]'
+    //You can guess that is diff < INTS[fEDI_virtualCount]
+    //that you'll start at 'INTS[fEDI_EDI_beltIndexZero]'
     //and loop diff amount of times.
 //
     //Then you maybe have to check the next div whether it has the not syntax highlighted css class
@@ -1111,23 +1111,23 @@ More accurately the ones that seem to not have an importance of position, they d
     //and do it only at the edge instead of entire.
 //
     //It's always either the first or last.
-    //So your edges to check might be 'gINT_FIELDS[fEDI_EDI_beltIndexZero]' and PREVIOUS('gINT_FIELDS[fEDI_EDI_beltIndexZero]')
+    //So your edges to check might be 'INTS[fEDI_EDI_beltIndexZero]' and PREVIOUS('INTS[fEDI_EDI_beltIndexZero]')
 //
     //Then you can loop positive or negative depending on first or last.
 //
     //My concern is with a scroll to a larger scrollY, then a scroll to a smaller scrollY
     //such that either scrollY are not equal, and that there is at least a difference of 1 lineHeight between both scrollY to ensure the changes aren't cancelling out.
 //
-    //I think then you'd need to edge check 'gINT_FIELDS[fEDI_EDI_beltIndexZero]' find a hit, loop until you no longer see the not syntax highlighted css class
-    //then this tells you to edge check PREVIOUS('gINT_FIELDS[fEDI_EDI_beltIndexZero]') and the remainder of your 'diff' to loop is in reverse.
+    //I think then you'd need to edge check 'INTS[fEDI_EDI_beltIndexZero]' find a hit, loop until you no longer see the not syntax highlighted css class
+    //then this tells you to edge check PREVIOUS('INTS[fEDI_EDI_beltIndexZero]') and the remainder of your 'diff' to loop is in reverse.
 //
     //I'm trying to think about whether the scroll function could leave behind data that indicates to this function
-    //whether it is a 'gINT_FIELDS[fEDI_EDI_beltIndexZero]', PREVIOUS('gINT_FIELDS[fEDI_EDI_beltIndexZero]'), or both case without checking the edge divs whether they have the not syntax highlighted css class.
+    //whether it is a 'INTS[fEDI_EDI_beltIndexZero]', PREVIOUS('INTS[fEDI_EDI_beltIndexZero]'), or both case without checking the edge divs whether they have the not syntax highlighted css class.
 */
 
 function EDI_state_clear() {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     // the smi would exist on the object instance all near one another if you just used a class
     // it is essentially the field buffer but you don't eat a global scope variable lookup at any point
@@ -1166,7 +1166,7 @@ function EDI_clear() {
 
 function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMATTED_textSourceIdentifier, extensionKind, lineEndString) {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     EDI_baseElement.scrollTop = 0;
     ints[fEDI_lastReadNumber_scrollTop] = 0;
@@ -1272,10 +1272,10 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     // ...I believe this works because when you change the text you guarantee a virtual index line of '0' because the scrollTop gets moved to 0...
     // ...the partial solution is to set it to anything other than '0' so the editor detects that a line of text needs to be drawn...
     // ...but this isn't enough because you want the editor to draw every line, thus you make the difference...
-    // ...in the virtual index line equal to the count of lines being displayed, i.e.: set virtual index line to 'gINT_FIELDS[fEDI_virtualCount]'...
+    // ...in the virtual index line equal to the count of lines being displayed, i.e.: set virtual index line to 'INTS[fEDI_virtualCount]'...
     // ...then it sees the new value for virtual index line is 0...
-    // ...the difference between the previous and new value is 'gINT_FIELDS[fEDI_virtualCount]'...
-    // ...thus 'gINT_FIELDS[fEDI_virtualCount]' amount of lines get redrawn...
+    // ...the difference between the previous and new value is 'INTS[fEDI_virtualCount]'...
+    // ...thus 'INTS[fEDI_virtualCount]' amount of lines get redrawn...
     // ...i.e.: the entire viewport is redrawn with the new file's text.
     ints[fEDI_ONSCROLLvirtualIndexLine] = ints[fEDI_virtualCount];
 }
@@ -1298,7 +1298,7 @@ function EDI_setText(text, fileStartsWithBom, textSourceIdentifier, FORMATTED_te
  */
 function update_verticalVirtualizationBoundary(lineCount) {
     if (!lineCount) lineCount = EDI_lineEndPositionList.count;
-    EDI_virtualization_vertical.style.height = ((lineCount + gINT_FIELDS[fEDI_virtualCount] - 1) * gINT_FIELDS[fEDI_lineHeight]) + 'px';
+    EDI_virtualization_vertical.style.height = ((lineCount + INTS[fEDI_virtualCount] - 1) * INTS[fEDI_lineHeight]) + 'px';
 }
 
 /**
@@ -1309,23 +1309,23 @@ function update_VirtualIndexLine() {
     // and vice versa.
     // thus it is thought you might as well touch scrollLeft too here, if you're going down this path.
     //
-    gINT_FIELDS[fEDI_lastReadNumber_scrollLeft] = EDI_baseElement.scrollLeft;
-    gINT_FIELDS[fEDI_lastReadNumber_scrollTop] = EDI_baseElement.scrollTop;
+    INTS[fEDI_lastReadNumber_scrollLeft] = EDI_baseElement.scrollLeft;
+    INTS[fEDI_lastReadNumber_scrollTop] = EDI_baseElement.scrollTop;
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
-    gINT_FIELDS[fEDI_virtualIndexLine] = Math.floor(gINT_FIELDS[fEDI_lastReadNumber_scrollTop] / gINT_FIELDS[fEDI_lineHeight]);
+    INTS[fEDI_virtualIndexLine] = Math.floor(INTS[fEDI_lastReadNumber_scrollTop] / INTS[fEDI_lineHeight]);
 }
 
 function update_virtualCount() {
-    gINT_FIELDS[fEDI_virtualCount] = Math.ceil(gINT_FIELDS[fEDI_lastReadNumber_offsetHeight] / gINT_FIELDS[fEDI_lineHeight]);
+    INTS[fEDI_virtualCount] = Math.ceil(INTS[fEDI_lastReadNumber_offsetHeight] / INTS[fEDI_lineHeight]);
 }
 
 /**
- * If the 'gINT_FIELDS[fEDI_drawn_count_of_digits_longest_line_number] === positiveNumbersOnly_countDigitsLoop(EDI_lineEndPositionList.count)'
+ * If the 'INTS[fEDI_drawn_count_of_digits_longest_line_number] === positiveNumbersOnly_countDigitsLoop(EDI_lineEndPositionList.count)'
  * then the function does nothing.
  * 
  * TODO: Track the min and max until length changes and then only 2 operations at worst case than while
  * 
- * @returns a bool indicating whether the gutter was drawn (if 'gINT_FIELDS[fEDI_drawn_count_of_digits_longest_line_number]' has not changed then false is returned because the gutter didn't need to be "re-" drawn)
+ * @returns a bool indicating whether the gutter was drawn (if 'INTS[fEDI_drawn_count_of_digits_longest_line_number]' has not changed then false is returned because the gutter didn't need to be "re-" drawn)
  * 
  * Dependent UI: EDI_draw_all_cursors(); EDI_drawHorizontalScrollbar();
  * 
@@ -1335,7 +1335,7 @@ function update_virtualCount() {
  * The confusion, if there is any, comes from the dependent UI in some scenarios being required independently of whether drawGutter changes. And at other times they're solely dependent on whether drawGutter changes.
  */
 function EDI_drawGutter_Width() {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
     let count = EDI_lineEndPositionList.count;
     if (BYTES[byteEDI_cursor_enterKeyEventKind] !== EnterKeyEventKind_None) {
         count += 1;
@@ -1372,7 +1372,7 @@ function EDI_drawGutter_Width() {
  * then at that point you redraw this.
  */
 function EDI_drawHorizontalScrollbar() {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
     if (ints[fEDI_DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left] !== ints[fEDI_gutterWidthTotal]) {
         EDI_horizontal_scrollbar.style.left = gutterWidthTotal_withPxUnits;
         ints[fEDI_DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left] = ints[fEDI_gutterWidthTotal];
@@ -1460,7 +1460,7 @@ function EDI_finalizeEdit() {
      */
     let indexLine_editOccurredOn = -1;
 
-    switch (gINT_FIELDS[fEDI_cursor_editKind]) {
+    switch (INTS[fEDI_cursor_editKind]) {
         case EditKind_InsertLtr:
             indexLine_editOccurredOn = EDI_finalizeEdit_InsertLtr(indexLine_editOccurredOn);
             break;
@@ -1495,8 +1495,8 @@ function EDI_finalizeEdit() {
     // You need to NOT do this when you are working with multiple cursors however, because it bugs everything out.
     // 
     if (indexLine_editOccurredOn >= 0 && indexLine_editOccurredOn < EDI_lineEndPositionList.count) {
-        if (EDI_gutter.children.length === gINT_FIELDS[fEDI_virtualCount] &&
-            EDI_textElement.children.length === gINT_FIELDS[fEDI_virtualCount]) {
+        if (EDI_gutter.children.length === INTS[fEDI_virtualCount] &&
+            EDI_textElement.children.length === INTS[fEDI_virtualCount]) {
 
                 // TODO: The 'awkward explicit inlining' for this case isn't seemingly working...
                 // ...I need to type 'function' then more characters until I hit 32 and force a finalization of the edit due to the length being too long.
@@ -1510,9 +1510,9 @@ function EDI_finalizeEdit() {
                 // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
                 // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                 // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-                let beltIndexLine = (indexLine_editOccurredOn + gINT_FIELDS[fEDI_offsetLine]) - gINT_FIELDS[fEDI_virtualIndexLine];
-                if (beltIndexLine >= gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine < 0) beltIndexLine = -1;
-                else beltIndexLine = (beltIndexLine + gINT_FIELDS[fEDI_EDI_beltIndexZero]) % gINT_FIELDS[fEDI_virtualCount];
+                let beltIndexLine = (indexLine_editOccurredOn + INTS[fEDI_offsetLine]) - INTS[fEDI_virtualIndexLine];
+                if (beltIndexLine >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine < 0) beltIndexLine = -1;
+                else beltIndexLine = (beltIndexLine + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
                 if (beltIndexLine >= 0) {
                     let gutterLineElement = EDI_gutter.children[beltIndexLine];
@@ -1532,7 +1532,7 @@ function EDI_finalizeEdit() {
 }
 
 function EDI_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     for (let i = EDI_lineEndPositionList.count - 1; i >= 0; i--) {
         if (ints[fEDI_cursor_editPosition] <= EDI_lineEndPositionList.data[i]) {
@@ -1596,7 +1596,7 @@ function EDI_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
 }
 
 function EDI_finalizeEdit_Enter(indexLine_editOccurredOn) {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     if (ints[fEDI_cursor_editRenderedDisplacement] !== ints[fEDI_cursor_editLength]) {
         EDI_render_do_EnterKey();
@@ -1632,8 +1632,8 @@ function EDI_finalizeEdit_Tab(indexLine_editOccurredOn) {
 
     let bytes = EDI_on_tab_bytes;
 
-    if (gINT_FIELDS[fEDI_cursor_editLength] > 1) {
-        that_four *= gINT_FIELDS[fEDI_cursor_editLength];
+    if (INTS[fEDI_cursor_editLength] > 1) {
+        that_four *= INTS[fEDI_cursor_editLength];
         bytes = new Uint8Array(that_four);
         let src_bytes = EDI_on_tab_bytes;
         // TODO: typed array function usage
@@ -1644,11 +1644,11 @@ function EDI_finalizeEdit_Tab(indexLine_editOccurredOn) {
         }
     }
 
-    EDI_trackedSyntaxList_inefficientUpdateStartAndLength(gINT_FIELDS[fEDI_cursor_editPosition], that_four);
+    EDI_trackedSyntaxList_inefficientUpdateStartAndLength(INTS[fEDI_cursor_editPosition], that_four);
 
-    EDI_textByteList.insertBytes(gINT_FIELDS[fEDI_cursor_editPosition], bytes, /*offset*/ 0, /*length*/ that_four);
+    EDI_textByteList.insertBytes(INTS[fEDI_cursor_editPosition], bytes, /*offset*/ 0, /*length*/ that_four);
 
-    for (var i = gINT_FIELDS[fEDI_cursor_editIndexLine]; i < EDI_lineEndPositionList.count; i++) {
+    for (var i = INTS[fEDI_cursor_editIndexLine]; i < EDI_lineEndPositionList.count; i++) {
         EDI_lineEndPositionList.data[i] += that_four;
     }
 
@@ -1659,7 +1659,7 @@ function EDI_finalizeEdit_Tab(indexLine_editOccurredOn) {
 
 function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     let startingIndex = ints[fEDI_indent_startingIndex];
     ints[fEDI_indent_startingIndex] = 0;
@@ -1768,7 +1768,7 @@ function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
 
 function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     // Both indentMore and indentLess have logic in the initial event that needs to be moved here.
     // Nevertheless there is a difference between indentLess and indentMore in that you cannot simply
@@ -2034,7 +2034,7 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
 
 function EDI_finalizeEdit_Paste(indexLine_editOccurredOn) {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
     
     EDI_trackedSyntaxList_inefficientUpdateStartAndLength(ints[fEDI_cursor_editPosition], ints[fEDI_cursor_editLength]);
     
@@ -2083,7 +2083,7 @@ function EDI_finalizeEdit_Paste(indexLine_editOccurredOn) {
 
 function EDI_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     EDI_trackedSyntaxList_inefficientUpdateStartAndLength(ints[fEDI_cursor_editPosition], ints[fEDI_cursor_editLength]);
 
@@ -2130,7 +2130,7 @@ function EDI_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
 
 function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_editOccurredOn) {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     // TODO: surely u'd get this before doing the edit?
     let startLineAndColumnIndices_indexLine;
@@ -2255,7 +2255,7 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
 }
 
 function EDI_finalizeEdit_ClearEditState() {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     ints[fEDI_cursor_editKind] = EditKind_None;
     ints[fEDI_cursor_editLength] = 0;
@@ -2340,15 +2340,15 @@ function EDI_readLineEndPositionList(indexLine) {
     let lineEndPositionIndex = EDI_lineEndPositionList.data[indexLine];
 
     // If you need to determine the text without finalizing an edit, you DO have to loop forwards right?
-    if (gINT_FIELDS[fEDI_cursor_editLength] > 0 & gINT_FIELDS[fEDI_cursor_editPosition] <= lineEndPositionIndex) {
-        switch (gINT_FIELDS[fEDI_cursor_editKind]) {
+    if (INTS[fEDI_cursor_editLength] > 0 & INTS[fEDI_cursor_editPosition] <= lineEndPositionIndex) {
+        switch (INTS[fEDI_cursor_editKind]) {
             case EditKind_InsertLtr:
-                lineEndPositionIndex += gINT_FIELDS[fEDI_cursor_editLength];
+                lineEndPositionIndex += INTS[fEDI_cursor_editLength];
                 break;
             case EditKind_DeleteLtr:
             case EditKind_BackspaceRtl:
             case EditKind_RemoveTextNoBatching:
-                lineEndPositionIndex -= gINT_FIELDS[fEDI_cursor_editLength];
+                lineEndPositionIndex -= INTS[fEDI_cursor_editLength];
                 break;
         }
     }
@@ -2367,7 +2367,7 @@ function EDI_readLineEndPositionList(indexLine) {
  */
 function EDI_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_I) {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
 	let childIndex = 0;
 
@@ -2457,7 +2457,7 @@ function EDI_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_I) 
 
 function walkLineUntilIndexColumn() {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     // TODO: delete key until you delete a linefeed and join the next line onto your own then press backspace everything breaks.
 
@@ -2555,7 +2555,7 @@ function EDI_drawViewPort_FindTrackedSyntax_StartingIndex(indexLineAaa) {
 
     // TODO: 'indexLineAaa' and 'indexLineBbb'; babel compiler error when both were named indexLine.
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
     let local_EDI_trackedSyntaxList = EDI_trackedSyntaxList;
 
     let line = EDI_getLineBoundaryPositions(indexLineAaa);
@@ -2657,7 +2657,7 @@ function EDI_draw_all_cursors() {
  * @param {boolean} NOTscrollCursorIntoView 
  */
 function EDI_drawCursor(NOTscrollCursorIntoView) {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     ints[fEDI_cursor_cursorTranslateYValue] = (ints[fEDI_cursor_indexLine] + ints[fEDI_offsetLine]) * ints[fEDI_lineHeight];
     ints[fEDI_cursor_cursorTranslateXValue] = (ints[fEDI_cursor_indexColumn] + ints[fEDI_offsetColumn]) * EDI_characterWidth;
@@ -2694,7 +2694,7 @@ function EDI_drawCursor(NOTscrollCursorIntoView) {
 
 /**
  * Returns 'true' if success otherwise 'false' the "return" values are indexLine, and indexColumn; which are stored in 'fieldBuffer.js'
- * as 'gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine] = indexLine;' and 'gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn] = indexColumn;'.
+ * as 'INTS[fEDI_getLineAndColumnIndices_indexLine] = indexLine;' and 'INTS[fEDI_getLineAndColumnIndices_indexColumn] = indexColumn;'.
  * 
  * TODO: Local variables for this looping logic?
  */
@@ -2740,14 +2740,14 @@ function EDI_getLineAndColumnIndices_raw(positionIndex) {
         indexColumn = positionIndex - (EDI_lineEndPositionList.data[indexLine - 1] + 1);
     }
 
-    gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine] = indexLine;
-    gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn] = indexColumn;
+    INTS[fEDI_getLineAndColumnIndices_indexLine] = indexLine;
+    INTS[fEDI_getLineAndColumnIndices_indexColumn] = indexColumn;
     return true;
 }
 
 /**
  * Returns 'true' if success otherwise 'false' the "return" values are indexLine, and indexColumn; which are stored in 'fieldBuffer.js'
- * as 'gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine] = indexLine;' and 'gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn] = indexColumn;'.
+ * as 'INTS[fEDI_getLineAndColumnIndices_indexLine] = indexLine;' and 'INTS[fEDI_getLineAndColumnIndices_indexColumn] = indexColumn;'.
  * 
  * TODO: Local variables for this looping logic?
  */
@@ -2793,8 +2793,8 @@ function EDI_getLineAndColumnIndices(positionIndex) {
         indexColumn = positionIndex - (EDI_readLineEndPositionList(indexLine - 1) + 1);
     }
 
-    gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine] = indexLine;
-    gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn] = indexColumn;
+    INTS[fEDI_getLineAndColumnIndices_indexLine] = indexLine;
+    INTS[fEDI_getLineAndColumnIndices_indexColumn] = indexColumn;
     return true;
 }
 
@@ -2818,7 +2818,7 @@ function EDI_clearSelectionStyle() {
 }
 
 function EDI_createStyleForSelection() {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     if (ints[fEDI_cursor_DRAWN_selectionAnchor] !== ints[fEDI_cursor_selectionAnchor] ||
         ints[fEDI_cursor_DRAWN_selectionEnd] !== ints[fEDI_cursor_selectionEnd] ||
@@ -2983,8 +2983,8 @@ function EDI_createStyleForSelection_indentMore() {
         lineSelectionDiv.style.width = widthNumberValue + 'px';
     }
 
-    gINT_FIELDS[fEDI_cursor_DRAWN_selectionAnchor] = gINT_FIELDS[fEDI_cursor_selectionAnchor];
-    gINT_FIELDS[fEDI_cursor_DRAWN_selectionEnd] = gINT_FIELDS[fEDI_cursor_selectionEnd];
+    INTS[fEDI_cursor_DRAWN_selectionAnchor] = INTS[fEDI_cursor_selectionAnchor];
+    INTS[fEDI_cursor_DRAWN_selectionEnd] = INTS[fEDI_cursor_selectionEnd];
 }
 
 function EDI_getLastValidIndexColumn(indexLine) {
@@ -3023,7 +3023,7 @@ function EDI_getLastValidIndexColumn_raw(indexLine) {
  * 
  * @returns an object with properties 'start' inclusive, 'end' exclusive
  * 
- * TODO: Remove this function or move the output to two entries of 'gINT_FIELDS'
+ * TODO: Remove this function or move the output to two entries of 'INTS'
  */
 function EDI_getLineBoundaryPositions(indexLine) {
     if (indexLine < EDI_lineEndPositionList.count) {
@@ -3128,7 +3128,7 @@ function EDI_getLineEnd_pos_raw(indexLine) {
 function EDI_onMouseMove_WRAPIT(event) {
     if ((event.buttons & 1) && !get_EDI_recentBoundingClientRect_isNull_intFalsey()) {
 
-        const ints = gINT_FIELDS;
+        const ints = INTS;
 
         // TODO: Consider short circuiting at via event.clientX and clientY by tracking the necessary thresholds for the cursor position to pass rather than the previous and current indices. (you can possibly thereby skip the calculation of the indices entirely for the redundant events).
         // TODO: Is it correct to use the cursor's indexLine and indexColumn directly as a means of determining redundancy? I worry about odd interactions, but I have no proof that such an odd interaction could exist.
@@ -3185,10 +3185,10 @@ function EDI_onMouseMove_WRAPIT(event) {
 
 function EDI_onMouseMoveDetailRankOne(indexLineClicked, indexColumnClicked) {
     // TODO: These two sets the ones to line and column seem redundant weren't these just done by the original EDI_onMouseMove_WRAPIT?
-    gINT_FIELDS[fEDI_cursor_indexLine] = indexLineClicked;
-    gINT_FIELDS[fEDI_cursor_indexColumn] = indexColumnClicked;
+    INTS[fEDI_cursor_indexLine] = indexLineClicked;
+    INTS[fEDI_cursor_indexColumn] = indexColumnClicked;
 
-    gINT_FIELDS[fEDI_cursor_selectionEnd] = EDI_getPositionIndex_cursor();
+    INTS[fEDI_cursor_selectionEnd] = EDI_getPositionIndex_cursor();
 
     EDI_render_request(RenderKind_Cursor_flag_doNotScrollIntoView);
 }
@@ -3228,23 +3228,23 @@ function getCharacter(positionIndex) {
 
     let totalShift = 0;
     // If you need to determine the text without finalizing an edit, you DO have to loop forwards right?
-    switch (gINT_FIELDS[fEDI_cursor_editKind]) {
+    switch (INTS[fEDI_cursor_editKind]) {
         case EditKind_InsertLtr:
-            if (positionIndex >= gINT_FIELDS[fEDI_cursor_editPosition] & positionIndex < gINT_FIELDS[fEDI_cursor_editPosition] + gINT_FIELDS[fEDI_cursor_editLength]) {
+            if (positionIndex >= INTS[fEDI_cursor_editPosition] & positionIndex < INTS[fEDI_cursor_editPosition] + INTS[fEDI_cursor_editLength]) {
                 // TODO: I hear fromCharCode is faster than 'String.fromCodePoint(...)' thus I'm seeing if it is sufficient for my current personal usage...
                 // ...long term it presumably fails for characters that I don't tend to type, but until then this is working so I'll just use fromCharCode.
                 //
                 // TODO: This takes a spread/array; if I give it a single byte does it allocate a length of 1 array every invocation?
-                return String.fromCharCode(EDI_cursor_gapBuffer[positionIndex - gINT_FIELDS[fEDI_cursor_editPosition]]);
+                return String.fromCharCode(EDI_cursor_gapBuffer[positionIndex - INTS[fEDI_cursor_editPosition]]);
             }
-            else if (gINT_FIELDS[fEDI_cursor_editPosition] <= positionIndex) {
-                totalShift += gINT_FIELDS[fEDI_cursor_editLength];
+            else if (INTS[fEDI_cursor_editPosition] <= positionIndex) {
+                totalShift += INTS[fEDI_cursor_editLength];
             }
             break;
         case EditKind_DeleteLtr:
         case EditKind_BackspaceRtl:
         case EditKind_RemoveTextNoBatching:
-            totalShift -= gINT_FIELDS[fEDI_cursor_editLength];
+            totalShift -= INTS[fEDI_cursor_editLength];
             break;
     }
     // TODO: I hear fromCharCode is faster than 'String.fromCodePoint(...)' thus I'm seeing if it is sufficient for my current personal usage...
@@ -3309,7 +3309,7 @@ function EDI_getCharacterCurrent_KIND(indexColumn, positionIndex, lineEnd) {
 
 function EDI_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     let nextPositionIndex = EDI_getPositionIndex_Overload(indexLineClicked, indexColumnClicked);
 
@@ -3400,7 +3400,7 @@ function EDI_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
 
 function EDI_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked) {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     // TODO: I remember this being bugged I think it makes sense why. You're checking if the cursor is exactly at the threshold rather than determining if the distance from previous event to this one puts you past the threshold.
     if (indexLineClicked === ints[fEDI_detailRank3OriginLine]) {
@@ -3485,7 +3485,7 @@ function EDI_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked) {
  * @returns 
  */
 function EDI_getPositionIndex_cursor() {
-    return EDI_getLineStart_pos(gINT_FIELDS[fEDI_cursor_indexLine]) + gINT_FIELDS[fEDI_cursor_indexColumn];
+    return EDI_getLineStart_pos(INTS[fEDI_cursor_indexLine]) + INTS[fEDI_cursor_indexColumn];
 }
 
 function EDI_getPositionIndex_Overload(indexLine, indexColumn) {
@@ -3496,7 +3496,7 @@ function EDI_getPositionIndex_Overload(indexLine, indexColumn) {
  * @returns 
  */
 function EDI_getPositionIndex_raw_cursor() {
-    return EDI_getLineStart_pos_raw(gINT_FIELDS[fEDI_cursor_indexLine]) + gINT_FIELDS[fEDI_cursor_indexColumn];
+    return EDI_getLineStart_pos_raw(INTS[fEDI_cursor_indexLine]) + INTS[fEDI_cursor_indexColumn];
 }
 
 function EDI_onMouseDownDetailRankOne(event_button, event_shiftKey, indexLineClicked, indexColumnClicked) {
@@ -3505,19 +3505,19 @@ function EDI_onMouseDownDetailRankOne(event_button, event_shiftKey, indexLineCli
 
     if (event_shiftKey && !selectionPlusContextMenuCase) {
         if (!EDI_cursor_hasSelection()) {
-            gINT_FIELDS[fEDI_cursor_selectionAnchor] = EDI_getPositionIndex_cursor();
+            INTS[fEDI_cursor_selectionAnchor] = EDI_getPositionIndex_cursor();
         }
     }
 
     if (!selectionPlusContextMenuCase) {
-        gINT_FIELDS[fEDI_cursor_indexLine] = indexLineClicked;
-        gINT_FIELDS[fEDI_cursor_indexColumn] = indexColumnClicked;
-        gINT_FIELDS[fEDI_cursor_STORED_indexColumn] = gINT_FIELDS[fEDI_cursor_indexColumn];
+        INTS[fEDI_cursor_indexLine] = indexLineClicked;
+        INTS[fEDI_cursor_indexColumn] = indexColumnClicked;
+        INTS[fEDI_cursor_STORED_indexColumn] = INTS[fEDI_cursor_indexColumn];
     
-        gINT_FIELDS[fEDI_cursor_selectionEnd] = EDI_getPositionIndex_cursor();
+        INTS[fEDI_cursor_selectionEnd] = EDI_getPositionIndex_cursor();
 
         if (!event_shiftKey) {
-            gINT_FIELDS[fEDI_cursor_selectionAnchor] = gINT_FIELDS[fEDI_cursor_selectionEnd];
+            INTS[fEDI_cursor_selectionAnchor] = INTS[fEDI_cursor_selectionEnd];
         }
     }
 
@@ -3530,7 +3530,7 @@ function EDI_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLineCli
         return;
     }
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     ints[fEDI_cursor_indexLine] = indexLineClicked;
     ints[fEDI_cursor_indexColumn] = indexColumnClicked;
@@ -3645,7 +3645,7 @@ function EDI_onMouseDownDetailRankThree(event_button, event_shiftKey, indexLineC
         return;
     }
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     ints[fEDI_cursor_indexLine] = indexLineClicked;
     ints[fEDI_cursor_indexColumn] = indexColumnClicked;
@@ -3684,23 +3684,23 @@ function EDI_insertGapBufferSpan() {
     walkLineUntilIndexColumn();
     if (!w_span || !w_div) {
         EDI_cursor_gapBufferWriteToSpanElement = null;
-        gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] = 0;
+        INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] = 0;
         return;
     }
 
-    if (gINT_FIELDS[fEDI_w_indexColumn_Goal] == 0) {
+    if (INTS[fEDI_w_indexColumn_Goal] == 0) {
         // TODO: Ensure 'w_div.children[0]' is equal to the 'w_span' and then change this line to use 'w_span'
         EDI_cursor_gapBufferWriteToSpanElement = w_span;
-        gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] = 0;
+        INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] = 0;
     }
     else {
-        EDI_cursor_gapBufferWriteToSpanElement = w_div.children[gINT_FIELDS[fEDI_w_indexSpan]];
+        EDI_cursor_gapBufferWriteToSpanElement = w_div.children[INTS[fEDI_w_indexSpan]];
 
-        if (gINT_FIELDS[fEDI_w_indexColumn_Goal] === gINT_FIELDS[fEDI_w_indexColumn_Sum] + EDI_cursor_gapBufferWriteToSpanElement.textContent.length) {
-            gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] = EDI_cursor_gapBufferWriteToSpanElement.textContent.length;
+        if (INTS[fEDI_w_indexColumn_Goal] === INTS[fEDI_w_indexColumn_Sum] + EDI_cursor_gapBufferWriteToSpanElement.textContent.length) {
+            INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] = EDI_cursor_gapBufferWriteToSpanElement.textContent.length;
         }
         else {
-            gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] = gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative];
+            INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] = INTS[fEDI_w_indexColumn_SpanTextContentRelative];
         }
     }
 }
@@ -3711,7 +3711,7 @@ function EDI_insertGapBufferSpan() {
  * @param {*} editLength 
  */
 function EDI_startEdit(editKind, editPosition, editLength) {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
     ints[fEDI_cursor_editKind] = editKind;
     ints[fEDI_cursor_editPosition] = editPosition;
     ints[fEDI_cursor_editIndexLine] = ints[fEDI_cursor_indexLine];
@@ -3729,7 +3729,7 @@ function EDI_startEdit(editKind, editPosition, editLength) {
  * @returns 
  */
 function EDI_NOTcanBatch_insert() {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
     return ints[fEDI_cursor_editKind] != EditKind_InsertLtr ||
            ints[fEDI_cursor_indexLine] !== ints[fEDI_cursor_editIndexLine] ||
            ints[fEDI_cursor_indexColumn] !== ints[fEDI_cursor_editIndexColumn] + ints[fEDI_cursor_editLength] ||
@@ -3741,7 +3741,7 @@ function EDI_NOTcanBatch_insert() {
  * @returns 
  */
 function EDI_NOTcanBatch_enter() {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
     return true || // turn off batching until it works. The initial enter event is what matters everything else can be recreated based on the amount of lineFeeds that were inserted.
            ints[fEDI_cursor_editKind] != EditKind_Enter ||
            ints[fEDI_cursor_indexLine] !== ints[fEDI_cursor_END_editIndexLine] ||
@@ -3755,7 +3755,7 @@ function EDI_NOTcanBatch_enter() {
  * @returns 
  */
 function EDI_NOTcanBatch_backspace() {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
     return ints[fEDI_cursor_editKind] != EditKind_BackspaceRtl ||
            ints[fEDI_cursor_indexLine] !== ints[fEDI_cursor_editIndexLine] ||
            ints[fEDI_cursor_indexColumn] !== ints[fEDI_cursor_editIndexColumn] ||
@@ -3766,7 +3766,7 @@ function EDI_NOTcanBatch_backspace() {
  * @returns 
  */
 function EDI_NOTcanBatch_delete() {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
     return ints[fEDI_cursor_editKind] != EditKind_DeleteLtr ||
            ints[fEDI_cursor_indexLine] !== ints[fEDI_cursor_editIndexLine] ||
            ints[fEDI_cursor_indexColumn] !== ints[fEDI_cursor_editIndexColumn] ||
@@ -3779,7 +3779,7 @@ function EDI_NOTcanBatch_delete() {
 function EDI_preKeyboardMovementSelectionLogic(shiftKey) {
     if (shiftKey) {
         if (!EDI_cursor_hasSelection()) {
-            const ints = gINT_FIELDS;
+            const ints = INTS;
             ints[fEDI_cursor_selectionAnchor] = EDI_getPositionIndex_cursor();
             ints[fEDI_cursor_selectionIndexAnchorLine] = ints[fEDI_cursor_indexLine];
             ints[fEDI_cursor_selectionIndexAnchorColumn] = ints[fEDI_cursor_indexColumn];
@@ -3787,7 +3787,7 @@ function EDI_preKeyboardMovementSelectionLogic(shiftKey) {
     }
     else {
         if (EDI_cursor_hasSelection()) {
-            const ints = gINT_FIELDS;
+            const ints = INTS;
             ints[fEDI_cursor_selectionAnchor] = ints[fEDI_cursor_selectionEnd];
             ints[fEDI_cursor_selectionIndexAnchorLine] = ints[fEDI_cursor_selectionIndexEndLine];
             ints[fEDI_cursor_selectionIndexAnchorColumn] = ints[fEDI_cursor_selectionIndexEndColumn];
@@ -3800,7 +3800,7 @@ function EDI_preKeyboardMovementSelectionLogic(shiftKey) {
  */
 function EDI_postKeyboardMovementSelectionLogic(shiftKey) {
     if (shiftKey) {
-        const ints = gINT_FIELDS;
+        const ints = INTS;
         ints[fEDI_cursor_selectionEnd] = EDI_getPositionIndex_cursor();
         ints[fEDI_cursor_selectionIndexEndLine] = ints[fEDI_cursor_indexLine];
         ints[fEDI_cursor_selectionIndexEndColumn] = ints[fEDI_cursor_indexColumn];
@@ -3811,7 +3811,7 @@ function EDI_postKeyboardMovementSelectionLogic(shiftKey) {
  * @param {*} shiftKey 
  */
 function EDI_arrowDown(shiftKey) {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
     EDI_movementBasedCacheInvalidation();
     EDI_preKeyboardMovementSelectionLogic(shiftKey);
     if (ints[fEDI_cursor_indexLine] < EDI_lineEndPositionList.count - 1) {
@@ -3839,7 +3839,7 @@ function EDI_arrowDown(shiftKey) {
  * TODO: I believe this function to be an unoptimized solution, just that there are more pressing matters to attend to.
  */
 function EDI_movementBasedCacheInvalidation() {
-    if (gINT_FIELDS[fEDI_cursor_editKind] === EditKind_Enter) {
+    if (INTS[fEDI_cursor_editKind] === EditKind_Enter) {
         //
         // this only happens once even if you have many cursors because the next cursor that enters this function would be and editKind of None.
         //
@@ -3873,8 +3873,8 @@ function EDI_editEvent(editKind, event, clipboardContent) {
 
         shouldFinalizeAllCursors = false;
         
-        if ((editKind === EditKind_Tab && gINT_FIELDS[fEDI_cursor_editKind] === EditKind_IndentMore) ||
-            (editKind === EditKind_Tab && gINT_FIELDS[fEDI_cursor_editKind] === EditKind_IndentLess && event.shiftKey)) {
+        if ((editKind === EditKind_Tab && INTS[fEDI_cursor_editKind] === EditKind_IndentMore) ||
+            (editKind === EditKind_Tab && INTS[fEDI_cursor_editKind] === EditKind_IndentLess && event.shiftKey)) {
 
                 // TODO: IndentLess when no selection however shiftTab then it does indentLess even still but I haven't gone out of the way to handle that hack...
                 // ...maybe it'll be covered maybe it won't.
@@ -3974,7 +3974,7 @@ function EDI_editEvent(editKind, event, clipboardContent) {
 }
 
 function EDI_editEvent_theEditIself_InsertLtr(event) {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
     EDI_movementBasedCacheInvalidation();
     if (ints[fEDI_offsetColumn_withRespectToThisIndexLine] !== ints[fEDI_cursor_indexLine]) {
         ints[fEDI_offsetColumn_withRespectToThisIndexLine] = ints[fEDI_cursor_indexLine];
@@ -3994,7 +3994,7 @@ function EDI_editEvent_theEditIself_InsertLtr(event) {
 }
 
 function EDI_editEvent_theEditIself_DeleteLtr(event) {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
     EDI_movementBasedCacheInvalidation();
     if (ints[fEDI_offsetColumn_withRespectToThisIndexLine] !== ints[fEDI_cursor_indexLine]) {
         ints[fEDI_offsetColumn_withRespectToThisIndexLine] = ints[fEDI_cursor_indexLine];
@@ -4015,7 +4015,7 @@ function EDI_editEvent_theEditIself_DeleteLtr(event) {
 }
 
 function EDI_editEvent_theEditIself_BackspaceRtl(event) {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
     EDI_movementBasedCacheInvalidation();
     if (ints[fEDI_offsetColumn_withRespectToThisIndexLine] !== ints[fEDI_cursor_indexLine]) {
         ints[fEDI_offsetColumn_withRespectToThisIndexLine] = ints[fEDI_cursor_indexLine];
@@ -4040,13 +4040,13 @@ function EDI_editEvent_theEditIself_Tab(event) {
     EDI_movementBasedCacheInvalidation();
     if (EDI_cursor_hasSelection()) {
         if (event.shiftKey) {
-            if (gINT_FIELDS[fEDI_cursor_editKind] !== EditKind_IndentLess) {
+            if (INTS[fEDI_cursor_editKind] !== EditKind_IndentLess) {
                 EDI_startEdit(EditKind_IndentLess, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
             }
             EDI_indentLess();
         }
         else {
-            if (gINT_FIELDS[fEDI_cursor_editKind] !== EditKind_IndentMore) {
+            if (INTS[fEDI_cursor_editKind] !== EditKind_IndentMore) {
                 EDI_startEdit(EditKind_IndentMore, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
             }
             EDI_indentMore();
@@ -4058,14 +4058,14 @@ function EDI_editEvent_theEditIself_Tab(event) {
             // ...multi-cursor in and of itself is buggy that's why I'm not overly concerned with adding this in a bugged state...
             // ...everything is buggy and it is very anxiety inducing and for the time being I guess it just has to be that way as I transition
             // towards a useable editor all the features are coming together but there's this awkward phase of "I can start using it but also not really" or something I just idk.
-            EDI_onMouseDownDetailRankThree(0, false, gINT_FIELDS[fEDI_cursor_indexLine], gINT_FIELDS[fEDI_cursor_indexColumn]);
-            if (gINT_FIELDS[fEDI_cursor_editKind] !== EditKind_IndentLess) {
+            EDI_onMouseDownDetailRankThree(0, false, INTS[fEDI_cursor_indexLine], INTS[fEDI_cursor_indexColumn]);
+            if (INTS[fEDI_cursor_editKind] !== EditKind_IndentLess) {
                 EDI_startEdit(EditKind_IndentLess, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
             }
             EDI_indentLess();
         }
         else {
-            if (gINT_FIELDS[fEDI_cursor_editKind] !== EditKind_Tab) {
+            if (INTS[fEDI_cursor_editKind] !== EditKind_Tab) {
                 EDI_startEdit(EditKind_Tab, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
             }
             EDI_tabKey();
@@ -4075,30 +4075,30 @@ function EDI_editEvent_theEditIself_Tab(event) {
 }
 
 function EDI_editEvent_theEditIself_Enter(event) {
-    if (gINT_FIELDS[fEDI_cursor_editKind] !== EditKind_Enter) {
+    if (INTS[fEDI_cursor_editKind] !== EditKind_Enter) {
         EDI_startEdit(EditKind_Enter, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
     }
     EDI_EnterKey(event.ctrlKey, event.shiftKey);
-    gINT_FIELDS[fEDI_cursor_STORED_indexColumn] = gINT_FIELDS[fEDI_cursor_indexColumn];
+    INTS[fEDI_cursor_STORED_indexColumn] = INTS[fEDI_cursor_indexColumn];
     EDI_render_request(RenderKind_Cursor_n);
-    //gINT_FIELDS[fEDI_offsetLine] = gINT_FIELDS[fEDI_offsetLine] + 1;
+    //INTS[fEDI_offsetLine] = INTS[fEDI_offsetLine] + 1;
 }
 
 function EDI_editEvent_theEditIself_Paste(clipboardContent) {
-    if (gINT_FIELDS[fEDI_cursor_editKind] !== EditKind_Enter) {
+    if (INTS[fEDI_cursor_editKind] !== EditKind_Enter) {
         EDI_startEdit(EditKind_Paste, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
     }
     EDI_paste(clipboardContent);
-    gINT_FIELDS[fEDI_cursor_STORED_indexColumn] = gINT_FIELDS[fEDI_cursor_indexColumn];
+    INTS[fEDI_cursor_STORED_indexColumn] = INTS[fEDI_cursor_indexColumn];
     EDI_render_request(RenderKind_Cursor_n);
 }
 
 function EDI_editEvent_theEditIself_Duplicate() {
-    if (gINT_FIELDS[fEDI_cursor_editKind] !== EditKind_Duplicate) {
+    if (INTS[fEDI_cursor_editKind] !== EditKind_Duplicate) {
         EDI_startEdit(EditKind_Duplicate, EDI_getPositionIndex_raw_cursor(), /*editLength*/ 0);
     }
     EDI_duplicateSelection();
-    gINT_FIELDS[fEDI_cursor_STORED_indexColumn] = gINT_FIELDS[fEDI_cursor_indexColumn];
+    INTS[fEDI_cursor_STORED_indexColumn] = INTS[fEDI_cursor_indexColumn];
     EDI_render_request(RenderKind_Cursor_n);
 }
 
@@ -4140,8 +4140,8 @@ function EDI_editEvent_checkFor_NOTcanBatch_Tab(event) {
             return EDI_editEvent_checkFor_NOTcanBatch_IndentLess();
         }
         else {
-            if (gINT_FIELDS[fEDI_cursor_editIndexLine] === gINT_FIELDS[fEDI_cursor_indexLine] &&
-                gINT_FIELDS[fEDI_cursor_editIndexColumn] + (4 * gINT_FIELDS[fEDI_cursor_editLength]) === gINT_FIELDS[fEDI_cursor_indexColumn]) {
+            if (INTS[fEDI_cursor_editIndexLine] === INTS[fEDI_cursor_indexLine] &&
+                INTS[fEDI_cursor_editIndexColumn] + (4 * INTS[fEDI_cursor_editLength]) === INTS[fEDI_cursor_indexColumn]) {
                     return false;
             }
         }
@@ -4157,29 +4157,29 @@ function EDI_editEvent_checkFor_NOTcanBatch_Tab(event) {
  * 
  */
 function EDI_editEvent_checkFor_NOTcanBatch_IndentMore() {
-    if (gINT_FIELDS[fEDI_cursor_editKind] === EditKind_IndentLess) {
+    if (INTS[fEDI_cursor_editKind] === EditKind_IndentLess) {
         return true;
     }
     
     /////
     let SMALL_pos;
     let LARGE_pos;
-    if (gINT_FIELDS[fEDI_cursor_selectionAnchor] < gINT_FIELDS[fEDI_cursor_selectionEnd]) {
-        SMALL_pos = gINT_FIELDS[fEDI_cursor_selectionAnchor];
-        LARGE_pos = gINT_FIELDS[fEDI_cursor_selectionEnd];
+    if (INTS[fEDI_cursor_selectionAnchor] < INTS[fEDI_cursor_selectionEnd]) {
+        SMALL_pos = INTS[fEDI_cursor_selectionAnchor];
+        LARGE_pos = INTS[fEDI_cursor_selectionEnd];
     }
     else {
-        SMALL_pos = gINT_FIELDS[fEDI_cursor_selectionEnd];
-        LARGE_pos = gINT_FIELDS[fEDI_cursor_selectionAnchor];
+        SMALL_pos = INTS[fEDI_cursor_selectionEnd];
+        LARGE_pos = INTS[fEDI_cursor_selectionAnchor];
     }
 
     EDI_getLineAndColumnIndices(SMALL_pos);
-    let SMALL_lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-    let SMALL_lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
+    let SMALL_lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+    let SMALL_lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
 
     EDI_getLineAndColumnIndices(LARGE_pos);
-    let LARGE_lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-    let LARGE_lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
+    let LARGE_lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+    let LARGE_lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
 
     // # Determine the starting indexLine (the start is the large position, this confused me for a moment)
     let startingIndex = LARGE_lineAndColumnIndices_indexLine;
@@ -4197,8 +4197,8 @@ function EDI_editEvent_checkFor_NOTcanBatch_IndentMore() {
     // TODO: '..._EDI_indent_ORIGINAL_indentBy()' is no longer in use
 
     // # Determine the total count of text that will be inserted, prior to actually beginning the edit.
-    if (gINT_FIELDS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] === SMALL_lineAndColumnIndices_indexLine &&
-        gINT_FIELDS[fEDI_indent_startingIndex] === startingIndex) {
+    if (INTS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] === SMALL_lineAndColumnIndices_indexLine &&
+        INTS[fEDI_indent_startingIndex] === startingIndex) {
 
             return false;
     }
@@ -4214,7 +4214,7 @@ function EDI_editEvent_checkFor_NOTcanBatch_IndentMore() {
  * 
  */
 function EDI_editEvent_checkFor_NOTcanBatch_IndentLess() {
-    if (gINT_FIELDS[fEDI_cursor_editKind] === EditKind_IndentMore) {
+    if (INTS[fEDI_cursor_editKind] === EditKind_IndentMore) {
         return true;
     }
     
@@ -4222,22 +4222,22 @@ function EDI_editEvent_checkFor_NOTcanBatch_IndentLess() {
     // selection positions
     let SMALL_pos;
     let LARGE_pos;
-    if (gINT_FIELDS[fEDI_cursor_selectionAnchor] < gINT_FIELDS[fEDI_cursor_selectionEnd]) {
-        SMALL_pos = gINT_FIELDS[fEDI_cursor_selectionAnchor];
-        LARGE_pos = gINT_FIELDS[fEDI_cursor_selectionEnd];
+    if (INTS[fEDI_cursor_selectionAnchor] < INTS[fEDI_cursor_selectionEnd]) {
+        SMALL_pos = INTS[fEDI_cursor_selectionAnchor];
+        LARGE_pos = INTS[fEDI_cursor_selectionEnd];
     }
     else {
-        SMALL_pos = gINT_FIELDS[fEDI_cursor_selectionEnd];
-        LARGE_pos = gINT_FIELDS[fEDI_cursor_selectionAnchor];
+        SMALL_pos = INTS[fEDI_cursor_selectionEnd];
+        LARGE_pos = INTS[fEDI_cursor_selectionAnchor];
     }
 
     EDI_getLineAndColumnIndices_raw(SMALL_pos);
-    let SMALL_lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-    let SMALL_lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
+    let SMALL_lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+    let SMALL_lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
 
     EDI_getLineAndColumnIndices_raw(LARGE_pos);
-    let LARGE_lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-    let LARGE_lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
+    let LARGE_lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+    let LARGE_lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
 
     // starting index
     let startingIndex = LARGE_lineAndColumnIndices_indexLine;
@@ -4253,8 +4253,8 @@ function EDI_editEvent_checkFor_NOTcanBatch_IndentLess() {
     }
 
     // # Determine the total count of text that will be inserted, prior to actually beginning the edit.
-    if (gINT_FIELDS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] === SMALL_lineAndColumnIndices_indexLine &&
-        gINT_FIELDS[fEDI_indent_startingIndex] === startingIndex) {
+    if (INTS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] === SMALL_lineAndColumnIndices_indexLine &&
+        INTS[fEDI_indent_startingIndex] === startingIndex) {
 
             return false;
     }
@@ -4281,18 +4281,18 @@ function EDI_editEvent_checkFor_NOTcanBatch_Enter(event) {
  * - enqueue rAF for drawing the cursor
  * - *optional* check if statement for 'BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]' to avoid redundant invocations of 'EDI_cursorBlink_startChecking'
  * - invoke 'EDI_cursorBlink_startChecking'
- * - downstream trigger the rAF for drawing the cursor wherein 'gINT_FIELDS[fEDI_EDI_cursorBlinkLastTimestamp]' gets set to the rAF timestamp.
+ * - downstream trigger the rAF for drawing the cursor wherein 'INTS[fEDI_EDI_cursorBlinkLastTimestamp]' gets set to the rAF timestamp.
  *     - or, modify some other part of the rAF pipeline (only if necessary) / etc...
  * 
  * NOTE: the draw cursor rAF needs to be enqueued prior to the 'EDI_cursorBlink_startChecking' invocation.
  */
 function EDI_cursorBlink_trailingEdge(timestamp) {
-    const time = timestamp - gINT_FIELDS[fEDI_EDI_cursorBlinkLastTimestamp];
+    const time = timestamp - INTS[fEDI_EDI_cursorBlinkLastTimestamp];
     if (time >= 500) {
         BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge] = false;
         // TODO: This is a timing issue of the rAF vs you losing focus on the editor.
         EDI_cursor_cursorElement.classList.add('EDI_cursor_focus');
-        gINT_FIELDS[fEDI_EDI_cursorBlinkLastTimestamp] = 0;
+        INTS[fEDI_EDI_cursorBlinkLastTimestamp] = 0;
     }
     else {
         requestAnimationFrame(EDI_cursorBlink_trailingEdge);
@@ -4368,7 +4368,7 @@ hmmm is google AI just hyping me up... I need to clarify that those few conditio
  */
 function EDI_onKeyDown(event) {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     // Explicitly inlining 'clearMulticursorState()' because it currently is and I just don't want to make a decision about this right now.
     // So what I can do is mark the code paragraph for later decision making.
@@ -4456,7 +4456,7 @@ function EDI_onKeyDown_ArrowLeft(event) {
 
     EDI_movementBasedCacheInvalidation();
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     if (ints[fEDI_offsetColumn_withRespectToThisIndexLine] !== ints[fEDI_cursor_indexLine]) {
         ints[fEDI_offsetColumn_withRespectToThisIndexLine] = ints[fEDI_cursor_indexLine];
@@ -4525,7 +4525,7 @@ function EDI_onKeyDown_ArrowDown(event) {
     event.stopPropagation();
     if (event.ctrlKey) {
         // TODO: raf or something this scrollBy?
-        EDI_baseElement.scrollBy(0, gINT_FIELDS[fEDI_lineHeight]);
+        EDI_baseElement.scrollBy(0, INTS[fEDI_lineHeight]);
     }
     else {
         EDI_arrowDown(/*shiftKey*/ event.shiftKey);
@@ -4543,19 +4543,19 @@ function EDI_onKeyDown_ArrowUp(event) {
     event.stopPropagation();
     if (event.ctrlKey) {
         // TODO: raf or something this scrollBy?
-        EDI_baseElement.scrollBy(0, -1 * gINT_FIELDS[fEDI_lineHeight]);
+        EDI_baseElement.scrollBy(0, -1 * INTS[fEDI_lineHeight]);
     }
     else {
         EDI_movementBasedCacheInvalidation();
         EDI_preKeyboardMovementSelectionLogic(event.shiftKey);
-        if (gINT_FIELDS[fEDI_cursor_indexLine] > 0) {
-            gINT_FIELDS[fEDI_cursor_indexLine]--;
-            let lastValidIndexColumn = EDI_getLastValidIndexColumn(gINT_FIELDS[fEDI_cursor_indexLine]);
-            if (gINT_FIELDS[fEDI_cursor_STORED_indexColumn] > lastValidIndexColumn) {
-                gINT_FIELDS[fEDI_cursor_indexColumn] = lastValidIndexColumn;
+        if (INTS[fEDI_cursor_indexLine] > 0) {
+            INTS[fEDI_cursor_indexLine]--;
+            let lastValidIndexColumn = EDI_getLastValidIndexColumn(INTS[fEDI_cursor_indexLine]);
+            if (INTS[fEDI_cursor_STORED_indexColumn] > lastValidIndexColumn) {
+                INTS[fEDI_cursor_indexColumn] = lastValidIndexColumn;
             }
             else {
-                gINT_FIELDS[fEDI_cursor_indexColumn] = gINT_FIELDS[fEDI_cursor_STORED_indexColumn];
+                INTS[fEDI_cursor_indexColumn] = INTS[fEDI_cursor_STORED_indexColumn];
             }
         }
         EDI_postKeyboardMovementSelectionLogic(event.shiftKey);
@@ -4573,7 +4573,7 @@ function EDI_onKeyDown_ArrowRight(event) {
 
     EDI_movementBasedCacheInvalidation();
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     if (ints[fEDI_offsetColumn_withRespectToThisIndexLine] !== ints[fEDI_cursor_indexLine]) {
         ints[fEDI_offsetColumn_withRespectToThisIndexLine] = ints[fEDI_cursor_indexLine];
@@ -4645,20 +4645,20 @@ function EDI_onKeyDown_Home(event) {
     EDI_movementBasedCacheInvalidation();
     EDI_preKeyboardMovementSelectionLogic(event.shiftKey);
     if (event.ctrlKey) {
-        gINT_FIELDS[fEDI_cursor_indexLine] = 0;
-        gINT_FIELDS[fEDI_cursor_indexColumn] = 0;
+        INTS[fEDI_cursor_indexLine] = 0;
+        INTS[fEDI_cursor_indexColumn] = 0;
     }
     else {
         let endExclusiveIndentationIndexColumn = EDI_findEndExclusiveIndentationIndexColumn();
-        if (gINT_FIELDS[fEDI_cursor_indexColumn] == endExclusiveIndentationIndexColumn) {
-            gINT_FIELDS[fEDI_cursor_indexColumn] = 0;
+        if (INTS[fEDI_cursor_indexColumn] == endExclusiveIndentationIndexColumn) {
+            INTS[fEDI_cursor_indexColumn] = 0;
         }
         else {
-            gINT_FIELDS[fEDI_cursor_indexColumn] = endExclusiveIndentationIndexColumn;
+            INTS[fEDI_cursor_indexColumn] = endExclusiveIndentationIndexColumn;
         }
     }
     EDI_postKeyboardMovementSelectionLogic(event.shiftKey);
-    gINT_FIELDS[fEDI_cursor_STORED_indexColumn] = gINT_FIELDS[fEDI_cursor_indexColumn];
+    INTS[fEDI_cursor_STORED_indexColumn] = INTS[fEDI_cursor_indexColumn];
     EDI_render_request(RenderKind_Cursor_n);
     if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
@@ -4674,11 +4674,11 @@ function EDI_onKeyDown_End(event) {
     EDI_movementBasedCacheInvalidation();
     EDI_preKeyboardMovementSelectionLogic(event.shiftKey);
     if (event.ctrlKey) {
-        gINT_FIELDS[fEDI_cursor_indexLine] = EDI_lineEndPositionList.count - 1;
+        INTS[fEDI_cursor_indexLine] = EDI_lineEndPositionList.count - 1;
     }
-    gINT_FIELDS[fEDI_cursor_indexColumn] = EDI_getLastValidIndexColumn(gINT_FIELDS[fEDI_cursor_indexLine]);
+    INTS[fEDI_cursor_indexColumn] = EDI_getLastValidIndexColumn(INTS[fEDI_cursor_indexLine]);
     EDI_postKeyboardMovementSelectionLogic(event.shiftKey);
-    gINT_FIELDS[fEDI_cursor_STORED_indexColumn] = gINT_FIELDS[fEDI_cursor_indexColumn];
+    INTS[fEDI_cursor_STORED_indexColumn] = INTS[fEDI_cursor_indexColumn];
     EDI_render_request(RenderKind_Cursor_n);
     if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
@@ -4690,18 +4690,18 @@ function EDI_onKeyDown_PageDown(event) {
     event.stopPropagation();
 
     if (event.ctrlKey) {
-        gINT_FIELDS[fEDI_cursor_indexLine] = gINT_FIELDS[fEDI_virtualIndexLine] + gINT_FIELDS[fEDI_virtualCount];
-        if (gINT_FIELDS[fEDI_virtualCount] > 1) {
+        INTS[fEDI_cursor_indexLine] = INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount];
+        if (INTS[fEDI_virtualCount] > 1) {
             // this seems to more commonly have the cursor staying within the viewport rather than overlapping outside.
-            gINT_FIELDS[fEDI_cursor_indexLine]--;
+            INTS[fEDI_cursor_indexLine]--;
         }
-        if (gINT_FIELDS[fEDI_cursor_indexLine] >= EDI_lineEndPositionList.count) {
+        if (INTS[fEDI_cursor_indexLine] >= EDI_lineEndPositionList.count) {
             // TODO: You can't delete EOF can you? i.e.: cursor final position of file then delete?
-            gINT_FIELDS[fEDI_cursor_indexLine] = EDI_lineEndPositionList.count - 1;
+            INTS[fEDI_cursor_indexLine] = EDI_lineEndPositionList.count - 1;
         }
-        gINT_FIELDS[fEDI_cursor_indexColumn] = 0;
+        INTS[fEDI_cursor_indexColumn] = 0;
         // TODO: allow someone to select via this keybind, but for now it causes a bad selection if you { 'Ctrl' + 'a' } then use it so I'm clearing any active selection here for now.
-        gINT_FIELDS[fEDI_cursor_selectionAnchor] = gINT_FIELDS[fEDI_cursor_selectionEnd];
+        INTS[fEDI_cursor_selectionAnchor] = INTS[fEDI_cursor_selectionEnd];
         EDI_render_request(RenderKind_Cursor_n);
         if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
             EDI_cursorBlink_startChecking();
@@ -4713,18 +4713,18 @@ function EDI_onKeyDown_PageUp(event) {
     event.stopPropagation();
 
     if (event.ctrlKey) {        
-        gINT_FIELDS[fEDI_cursor_indexLine] = gINT_FIELDS[fEDI_virtualIndexLine];
-        if (gINT_FIELDS[fEDI_virtualCount] > 1) {
+        INTS[fEDI_cursor_indexLine] = INTS[fEDI_virtualIndexLine];
+        if (INTS[fEDI_virtualCount] > 1) {
             // this seems to more commonly have the cursor staying within the viewport rather than overlapping outside.
-            gINT_FIELDS[fEDI_cursor_indexLine]++;
+            INTS[fEDI_cursor_indexLine]++;
         }
-        if (gINT_FIELDS[fEDI_cursor_indexLine] >= EDI_lineEndPositionList.count) {
+        if (INTS[fEDI_cursor_indexLine] >= EDI_lineEndPositionList.count) {
             // TODO: You can't delete EOF can you? i.e.: cursor final position of file then delete?
-            gINT_FIELDS[fEDI_cursor_indexLine] = EDI_lineEndPositionList.count - 1;
+            INTS[fEDI_cursor_indexLine] = EDI_lineEndPositionList.count - 1;
         }
-        gINT_FIELDS[fEDI_cursor_indexColumn] = 0;
+        INTS[fEDI_cursor_indexColumn] = 0;
         // TODO: allow someone to select via this keybind, but for now it causes a bad selection if you { 'Ctrl' + 'a' } then use it so I'm clearing any active selection here for now.
-        gINT_FIELDS[fEDI_cursor_selectionAnchor] = gINT_FIELDS[fEDI_cursor_selectionEnd];
+        INTS[fEDI_cursor_selectionAnchor] = INTS[fEDI_cursor_selectionEnd];
         EDI_render_request(RenderKind_Cursor_n);
         if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
             EDI_cursorBlink_startChecking();
@@ -4804,13 +4804,13 @@ async function EDI_onKeyDown_keyLengthEqualsOne_ctrlKey(event) {
             event.stopPropagation();
 
             EDI_finalizeAllCursors(); // TODO: Multicursor bad
-            gINT_FIELDS[fEDI_cursor_selectionAnchor] = 0;
-            gINT_FIELDS[fEDI_cursor_selectionEnd] = EDI_textByteList.count;
-            EDI_getLineAndColumnIndices(gINT_FIELDS[fEDI_cursor_selectionEnd]);
-            let selectionEndLineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-            let selectionEndLineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
-            gINT_FIELDS[fEDI_cursor_indexLine] = selectionEndLineAndColumnIndices_indexLine;
-            gINT_FIELDS[fEDI_cursor_indexColumn] = selectionEndLineAndColumnIndices_indexColumn;
+            INTS[fEDI_cursor_selectionAnchor] = 0;
+            INTS[fEDI_cursor_selectionEnd] = EDI_textByteList.count;
+            EDI_getLineAndColumnIndices(INTS[fEDI_cursor_selectionEnd]);
+            let selectionEndLineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+            let selectionEndLineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
+            INTS[fEDI_cursor_indexLine] = selectionEndLineAndColumnIndices_indexLine;
+            INTS[fEDI_cursor_indexColumn] = selectionEndLineAndColumnIndices_indexColumn;
             EDI_render_request(RenderKind_Cursor_flag_doNotScrollIntoView);
             break;
         case 'f':
@@ -4842,13 +4842,13 @@ function EDI_onMouseDown(event) {
     EDI_movementBasedCacheInvalidation();
     
     // TODO: You might want to do this inside 'EDI_finalizeAllCursors_andClearNonPrimaryCursors();' at the end... I'm not sure.
-    gINT_FIELDS[fEDI_offsetColumn] = 0;
-    gINT_FIELDS[fEDI_offsetLine] = 0;
+    INTS[fEDI_offsetColumn] = 0;
+    INTS[fEDI_offsetLine] = 0;
 
     if (get_EDI_recentBoundingClientRect_isNull_intFalsey()) {
         let boundingClientRect = EDI_baseElement.getBoundingClientRect();
-        gINT_FIELDS[fEDI_recentBoundingClientRect_left] = boundingClientRect.left;
-        gINT_FIELDS[fEDI_recentBoundingClientRect_top] = boundingClientRect.top;
+        INTS[fEDI_recentBoundingClientRect_left] = boundingClientRect.left;
+        INTS[fEDI_recentBoundingClientRect_top] = boundingClientRect.top;
         set_EDI_recentBoundingClientRect_isNull_intFalsey(0);
     }
 
@@ -4857,10 +4857,10 @@ function EDI_onMouseDown(event) {
         EDI_baseElement.addEventListener('mousemove', EDI_onMouseMove_WRAPIT);
     }
 
-    let rY = event.clientY - gINT_FIELDS[fEDI_recentBoundingClientRect_top] + gINT_FIELDS[fEDI_lastReadNumber_scrollTop];
-    let rX = event.clientX - gINT_FIELDS[fEDI_recentBoundingClientRect_left] - gINT_FIELDS[fEDI_gutterWidthTotal] + gINT_FIELDS[fEDI_lastReadNumber_scrollLeft];
+    let rY = event.clientY - INTS[fEDI_recentBoundingClientRect_top] + INTS[fEDI_lastReadNumber_scrollTop];
+    let rX = event.clientX - INTS[fEDI_recentBoundingClientRect_left] - INTS[fEDI_gutterWidthTotal] + INTS[fEDI_lastReadNumber_scrollLeft];
     
-    let indexLine = Math.floor(rY / gINT_FIELDS[fEDI_lineHeight]);
+    let indexLine = Math.floor(rY / INTS[fEDI_lineHeight]);
     let indexColumn = Math.round(rX / EDI_characterWidth);
 
     if (indexLine < 0) {
@@ -4915,8 +4915,8 @@ function EDI_onContextMenu() {
         new MenuOption(CommandKind_Find, 'Find', null),
     ];
 
-    let menuLeft = gINT_FIELDS[fEDI_recentBoundingClientRect_left] + gINT_FIELDS[fEDI_gutterWidthTotal] + gINT_FIELDS[fEDI_cursor_cursorTranslateXValue] - gINT_FIELDS[fEDI_lastReadNumber_scrollLeft];
-    let menuTop = gINT_FIELDS[fEDI_recentBoundingClientRect_top] + gINT_FIELDS[fEDI_cursor_cursorTranslateYValue] + gINT_FIELDS[fEDI_lineHeight] - gINT_FIELDS[fEDI_lastReadNumber_scrollTop];
+    let menuLeft = INTS[fEDI_recentBoundingClientRect_left] + INTS[fEDI_gutterWidthTotal] + INTS[fEDI_cursor_cursorTranslateXValue] - INTS[fEDI_lastReadNumber_scrollLeft];
+    let menuTop = INTS[fEDI_recentBoundingClientRect_top] + INTS[fEDI_cursor_cursorTranslateYValue] + INTS[fEDI_lineHeight] - INTS[fEDI_lastReadNumber_scrollTop];
 
     return menuSet('EDITOR', null, optionList, menuLeft, menuTop);
 }
@@ -4924,7 +4924,7 @@ function EDI_onContextMenu() {
 function EDI_onWheel(event) {
     if (event.shiftKey) {
         EDI_baseElement.scrollBy(event.deltaY, 0);
-        // TODO: 'gINT_FIELDS[fEDI_lastReadNumber_scrollLeft]' here?
+        // TODO: 'INTS[fEDI_lastReadNumber_scrollLeft]' here?
         EDI_horizontal_scrollbar.scrollLeft = EDI_baseElement.scrollLeft;
     }
 }
@@ -4959,11 +4959,11 @@ function EDI_findOverlay_doSearch() {
     let nextMatchPos;
 
     if (EDI_cursor_hasSelection()) {
-        let small = gINT_FIELDS[fEDI_cursor_selectionAnchor];
-        let large = gINT_FIELDS[fEDI_cursor_selectionEnd];
-        if (gINT_FIELDS[fEDI_cursor_selectionAnchor] > gINT_FIELDS[fEDI_cursor_selectionEnd]) {
-            small = gINT_FIELDS[fEDI_cursor_selectionEnd];
-            large = gINT_FIELDS[fEDI_cursor_selectionAnchor];
+        let small = INTS[fEDI_cursor_selectionAnchor];
+        let large = INTS[fEDI_cursor_selectionEnd];
+        if (INTS[fEDI_cursor_selectionAnchor] > INTS[fEDI_cursor_selectionEnd]) {
+            small = INTS[fEDI_cursor_selectionEnd];
+            large = INTS[fEDI_cursor_selectionAnchor];
         }
         nextMatchPos = small;
     }
@@ -5164,8 +5164,8 @@ function EDI_findOverlay_showSetter(showValue) {
         
         if (EDI_cursor_hasSelection()) {
         	EDI_finalizeAllCursors();
-            let selectionAnchor = gINT_FIELDS[fEDI_cursor_selectionAnchor];
-            let selectionEnd = gINT_FIELDS[fEDI_cursor_selectionEnd];
+            let selectionAnchor = INTS[fEDI_cursor_selectionAnchor];
+            let selectionEnd = INTS[fEDI_cursor_selectionEnd];
             let small;
             let large;
             if (selectionAnchor < selectionEnd) {
@@ -5280,7 +5280,7 @@ function EDI_btnNext_onclick() {
 
 function EDI_render_do_IndentMore() {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     // When you're done with IndentLess batch editing correctly.
     // You still need to come back to the render for
@@ -5386,22 +5386,22 @@ function EDI_indentMore() {
     // # Small and large selection positions
     let SMALL_pos;
     let LARGE_pos;
-    if (gINT_FIELDS[fEDI_cursor_selectionAnchor] < gINT_FIELDS[fEDI_cursor_selectionEnd]) {
-        SMALL_pos = gINT_FIELDS[fEDI_cursor_selectionAnchor];
-        LARGE_pos = gINT_FIELDS[fEDI_cursor_selectionEnd];
+    if (INTS[fEDI_cursor_selectionAnchor] < INTS[fEDI_cursor_selectionEnd]) {
+        SMALL_pos = INTS[fEDI_cursor_selectionAnchor];
+        LARGE_pos = INTS[fEDI_cursor_selectionEnd];
     }
     else {
-        SMALL_pos = gINT_FIELDS[fEDI_cursor_selectionEnd];
-        LARGE_pos = gINT_FIELDS[fEDI_cursor_selectionAnchor];
+        SMALL_pos = INTS[fEDI_cursor_selectionEnd];
+        LARGE_pos = INTS[fEDI_cursor_selectionAnchor];
     }
 
     EDI_getLineAndColumnIndices_raw(SMALL_pos);
-    let SMALL_lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-    let SMALL_lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
+    let SMALL_lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+    let SMALL_lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
 
     EDI_getLineAndColumnIndices_raw(LARGE_pos);
-    let LARGE_lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-    let LARGE_lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
+    let LARGE_lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+    let LARGE_lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
 
     // # Determine the starting indexLine (the start is the large position, this confused me for a moment)
     let startingIndex = LARGE_lineAndColumnIndices_indexLine;
@@ -5416,42 +5416,42 @@ function EDI_indentMore() {
         return;
     }
 
-    gINT_FIELDS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] = SMALL_lineAndColumnIndices_indexLine;
-    gINT_FIELDS[fEDI_indent_startingIndex] = startingIndex;
+    INTS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] = SMALL_lineAndColumnIndices_indexLine;
+    INTS[fEDI_indent_startingIndex] = startingIndex;
 
-    if (gINT_FIELDS[fEDI_cursor_editLength] === 0) {
-        gINT_FIELDS[fEDI_EDI_indentLess_startingLinePos_end] = startingLinePos.end;
+    if (INTS[fEDI_cursor_editLength] === 0) {
+        INTS[fEDI_EDI_indentLess_startingLinePos_end] = startingLinePos.end;
     } 
 
     //// # Update the cursor's selection to reflect the inserted text
-    //if (gINT_FIELDS[fEDI_cursor_selectionAnchor] < gINT_FIELDS[fEDI_cursor_selectionEnd]) {
-    //    gINT_FIELDS[fEDI_cursor_selectionEnd] += ORIGINAL_incrementBy;
+    //if (INTS[fEDI_cursor_selectionAnchor] < INTS[fEDI_cursor_selectionEnd]) {
+    //    INTS[fEDI_cursor_selectionEnd] += ORIGINAL_incrementBy;
     //}
     //else {
-    //    gINT_FIELDS[fEDI_cursor_selectionAnchor] += ORIGINAL_incrementBy;
+    //    INTS[fEDI_cursor_selectionAnchor] += ORIGINAL_incrementBy;
     //}
 
     // # Update the cursor's indexColumn to reflect the inserted text
-    gINT_FIELDS[fEDI_cursor_indexColumn] += 4;
+    INTS[fEDI_cursor_indexColumn] += 4;
 
     //// # Update the cursor's selection to reflect the inserted text
     //let smallLinePos = EDI_getLineBoundaryPositions(SMALL_lineAndColumnIndices.indexLine);
     //if (SMALL_pos > smallLinePos.start) {
-    //    if (gINT_FIELDS[fEDI_cursor_selectionAnchor] < gINT_FIELDS[fEDI_cursor_selectionEnd]) {
-    //        gINT_FIELDS[fEDI_cursor_selectionAnchor] += 4;
+    //    if (INTS[fEDI_cursor_selectionAnchor] < INTS[fEDI_cursor_selectionEnd]) {
+    //        INTS[fEDI_cursor_selectionAnchor] += 4;
     //    }
     //    else {
-    //        gINT_FIELDS[fEDI_cursor_selectionEnd] += 4;
+    //        INTS[fEDI_cursor_selectionEnd] += 4;
     //    }
     //}
 
-    gINT_FIELDS[fEDI_cursor_editLength]++;
+    INTS[fEDI_cursor_editLength]++;
     EDI_render_request(RenderKind_IndentMore);
 }
 
 function EDI_render_do_IndentLess() {
     
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     let startingIndex = ints[fEDI_indent_startingIndex] = startingIndex;
     let SMALL_lineAndColumnIndices_indexLine = ints[fEDI_indent_SMALL_lineAndColumnIndices_indexLine];
@@ -5576,22 +5576,22 @@ function EDI_indentLess() {
     // selection positions
     let SMALL_pos;
     let LARGE_pos;
-    if (gINT_FIELDS[fEDI_cursor_selectionAnchor] < gINT_FIELDS[fEDI_cursor_selectionEnd]) {
-        SMALL_pos = gINT_FIELDS[fEDI_cursor_selectionAnchor];
-        LARGE_pos = gINT_FIELDS[fEDI_cursor_selectionEnd];
+    if (INTS[fEDI_cursor_selectionAnchor] < INTS[fEDI_cursor_selectionEnd]) {
+        SMALL_pos = INTS[fEDI_cursor_selectionAnchor];
+        LARGE_pos = INTS[fEDI_cursor_selectionEnd];
     }
     else {
-        SMALL_pos = gINT_FIELDS[fEDI_cursor_selectionEnd];
-        LARGE_pos = gINT_FIELDS[fEDI_cursor_selectionAnchor];
+        SMALL_pos = INTS[fEDI_cursor_selectionEnd];
+        LARGE_pos = INTS[fEDI_cursor_selectionAnchor];
     }
 
     EDI_getLineAndColumnIndices(SMALL_pos);
-    let SMALL_lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-    let SMALL_lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+    let SMALL_lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+    let SMALL_lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
     
     EDI_getLineAndColumnIndices(LARGE_pos);
-    let LARGE_lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-    let LARGE_lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+    let LARGE_lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+    let LARGE_lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
 
     // starting index
     let startingIndex = LARGE_lineAndColumnIndices_indexLine;
@@ -5606,24 +5606,24 @@ function EDI_indentLess() {
         return;
     }
 
-    gINT_FIELDS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] = SMALL_lineAndColumnIndices_indexLine;
-    gINT_FIELDS[fEDI_indent_startingIndex] = startingIndex;
+    INTS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] = SMALL_lineAndColumnIndices_indexLine;
+    INTS[fEDI_indent_startingIndex] = startingIndex;
 
-    if (gINT_FIELDS[fEDI_cursor_editLength] === 0) {
-        gINT_FIELDS[fEDI_EDI_indentLess_startingLinePos_end] = startingLinePos.end;
+    if (INTS[fEDI_cursor_editLength] === 0) {
+        INTS[fEDI_EDI_indentLess_startingLinePos_end] = startingLinePos.end;
     }
 
     // TODO: Some kind of "fake" selection somehow because you really only need to modify the top-left most selection and the bottom-right most selection.
     // Then when you perhaps hit 'ctrl + c' to copy. You'd need to finalize the edit then and there so you copy the text correctly.
     //
-    //if (gINT_FIELDS[fEDI_cursor_selectionAnchor] < gINT_FIELDS[fEDI_cursor_selectionEnd]) {
-    //    gINT_FIELDS[fEDI_cursor_selectionEnd] -= ORIGINAL_decrementBy;
+    //if (INTS[fEDI_cursor_selectionAnchor] < INTS[fEDI_cursor_selectionEnd]) {
+    //    INTS[fEDI_cursor_selectionEnd] -= ORIGINAL_decrementBy;
     //}
     //else {
-    //    gINT_FIELDS[fEDI_cursor_selectionAnchor] -= ORIGINAL_decrementBy;
+    //    INTS[fEDI_cursor_selectionAnchor] -= ORIGINAL_decrementBy;
     //}
 
-    gINT_FIELDS[fEDI_cursor_editLength]++;
+    INTS[fEDI_cursor_editLength]++;
     EDI_render_request(RenderKind_IndentLess);
 }
 
@@ -5633,10 +5633,10 @@ function EDI_indentLess() {
 async function EDI_copySelection() {
 	if (!EDI_cursor_hasSelection()) {
 		// TODO: This code has a bug and doesn't work with multicursor... EDI_onMouseDownDetailRankThree needs to accept a cursor rather than acting on EDI_primaryCursor
-    	EDI_onMouseDownDetailRankThree(0, false, gINT_FIELDS[fEDI_cursor_indexLine], gINT_FIELDS[fEDI_cursor_indexColumn]);
+    	EDI_onMouseDownDetailRankThree(0, false, INTS[fEDI_cursor_indexLine], INTS[fEDI_cursor_indexColumn]);
 	}
-	let selectionAnchor = gINT_FIELDS[fEDI_cursor_selectionAnchor];
-    let selectionEnd = gINT_FIELDS[fEDI_cursor_selectionEnd];
+	let selectionAnchor = INTS[fEDI_cursor_selectionAnchor];
+    let selectionEnd = INTS[fEDI_cursor_selectionEnd];
     let small;
     let large;
     if (selectionAnchor < selectionEnd) {
@@ -5655,7 +5655,7 @@ async function EDI_copySelection() {
  */
 async function EDI_duplicateSelection() {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
 	if (!EDI_cursor_hasSelection()) {
 		// TODO: This code has a bug and doesn't work with multicursor... EDI_onMouseDownDetailRankThree needs to accept a cursor rather than acting on EDI_primaryCursor...
@@ -5701,7 +5701,7 @@ async function EDI_duplicateSelection() {
 
 function EDI_render_do_DuplicateOrPaste() {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     // Word
     // Tab
@@ -6082,7 +6082,7 @@ function EDI_render_do_DuplicateOrPaste() {
 function EDI_paste(content) {
     let positionIndex = EDI_getPositionIndex_cursor();
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     ints[fEDI_cursor_editPosition] = positionIndex;
     ints[fEDI_cursor_editIndexLine] = ints[fEDI_cursor_indexLine];
@@ -6256,7 +6256,7 @@ function EDI_duplicate_and_paste_handleNotHasSeenLinefeed(hasSeenLinefeed, origi
             if (original_indexColumn_SpanTextContentRelative >= 2 && (original_indexColumn_SpanTextContentRelative <= original_span_textContent_length - 2)) {
                 w_span.className = 'eCM';
                 let indexOfGreaterThanOrEqual = EDI_trackedSyntaxReposition_find(indexPosition);
-                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_Comment, indexPosition - gINT_FIELDS[fEDI_cursor_indexColumn] + gINT_FIELDS[fEDI_w_indexColumn_Sum], original_span_textContent_length);
+                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_Comment, indexPosition - INTS[fEDI_cursor_indexColumn] + INTS[fEDI_w_indexColumn_Sum], original_span_textContent_length);
                 return true;
             }
             return false;
@@ -6266,7 +6266,7 @@ function EDI_duplicate_and_paste_handleNotHasSeenLinefeed(hasSeenLinefeed, origi
             if (original_indexColumn_SpanTextContentRelative >= 1 && (original_indexColumn_SpanTextContentRelative <= original_span_textContent_length - 1)) {
                 w_span.className = 'eSM';
                 let indexOfGreaterThanOrEqual = EDI_trackedSyntaxReposition_find(indexPosition);
-                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_String, indexPosition - gINT_FIELDS[fEDI_cursor_indexColumn] + gINT_FIELDS[fEDI_w_indexColumn_Sum], original_span_textContent_length);
+                EDI_trackedSyntaxList.insert(indexOfGreaterThanOrEqual, TrackedSyntaxKind_String, indexPosition - INTS[fEDI_cursor_indexColumn] + INTS[fEDI_w_indexColumn_Sum], original_span_textContent_length);
                 return true;
             }
             return false;
@@ -6278,12 +6278,12 @@ function EDI_duplicate_and_paste_handleNotHasSeenLinefeed(hasSeenLinefeed, origi
 }
 
 function EDI_render_do_TabKey() {
-    if (gINT_FIELDS[fEDI_cursor_editKind] !== EditKind_Tab) {
+    if (INTS[fEDI_cursor_editKind] !== EditKind_Tab) {
         return;
     }
-    if (gINT_FIELDS[fEDI_cursor_editRenderedDisplacement] < gINT_FIELDS[fEDI_cursor_editLength] || gINT_FIELDS[fEDI_cursor_editKind] === EditKind_Tab) {
+    if (INTS[fEDI_cursor_editRenderedDisplacement] < INTS[fEDI_cursor_editLength] || INTS[fEDI_cursor_editKind] === EditKind_Tab) {
 
-        gINT_FIELDS[fEDI_cursor_indexColumn] -= 4; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
+        INTS[fEDI_cursor_indexColumn] -= 4; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
 
         walkLineUntilIndexColumn();
 
@@ -6299,25 +6299,25 @@ function EDI_render_do_TabKey() {
         }
 
         w_span.textContent = 
-            w_span.textContent.slice(0, gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative]) +
+            w_span.textContent.slice(0, INTS[fEDI_w_indexColumn_SpanTextContentRelative]) +
             EDI_on_tab_string +
-            w_span.textContent.slice(gINT_FIELDS[fEDI_w_indexColumn_SpanTextContentRelative]);
+            w_span.textContent.slice(INTS[fEDI_w_indexColumn_SpanTextContentRelative]);
 
-        gINT_FIELDS[fEDI_cursor_indexColumn] += 4; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
+        INTS[fEDI_cursor_indexColumn] += 4; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
     }
 }
 
 function EDI_tabKey() {
 
-    if (gINT_FIELDS[fEDI_cursor_editLength] === 0) {
-        gINT_FIELDS[fEDI_cursor_editPosition] = EDI_getPositionIndex_cursor();
-        gINT_FIELDS[fEDI_cursor_editIndexLine] = gINT_FIELDS[fEDI_cursor_indexLine];
-        gINT_FIELDS[fEDI_cursor_editIndexColumn] = gINT_FIELDS[fEDI_cursor_indexColumn];
+    if (INTS[fEDI_cursor_editLength] === 0) {
+        INTS[fEDI_cursor_editPosition] = EDI_getPositionIndex_cursor();
+        INTS[fEDI_cursor_editIndexLine] = INTS[fEDI_cursor_indexLine];
+        INTS[fEDI_cursor_editIndexColumn] = INTS[fEDI_cursor_indexColumn];
     }
 
-    gINT_FIELDS[fEDI_cursor_editLength]++;
+    INTS[fEDI_cursor_editLength]++;
 
-    gINT_FIELDS[fEDI_cursor_indexColumn] += 4; // this has to come after the 'walkLineUntilIndexColumn' invocation.
+    INTS[fEDI_cursor_indexColumn] += 4; // this has to come after the 'walkLineUntilIndexColumn' invocation.
 
     EDI_render_request(RenderKind_TabKey);
 }
@@ -6326,8 +6326,8 @@ function EDI_tabKey() {
  * @returns the COLUMN index that exclusively ends the indentation.
  */
 function EDI_findEndExclusiveIndentationIndexColumn() {
-    let lastValidIndexColumn = EDI_getLastValidIndexColumn(gINT_FIELDS[fEDI_cursor_indexLine]);
-    let line = EDI_getLineBoundaryPositions(gINT_FIELDS[fEDI_cursor_indexLine]);
+    let lastValidIndexColumn = EDI_getLastValidIndexColumn(INTS[fEDI_cursor_indexLine]);
+    let line = EDI_getLineBoundaryPositions(INTS[fEDI_cursor_indexLine]);
 
     for (var i = 0; i < lastValidIndexColumn; i++) {
         let c = getCharacter(line.start + i);
@@ -6356,13 +6356,13 @@ function EDI_cacheIndentation() {
     EDI_cursor_enterKey_newLinePlusIndentation_byteList = new ByteList(32);
     EDI_cursor_enterKey_newLinePlusIndentation_byteList.insert(EDI_cursor_enterKey_newLinePlusIndentation_byteList.count, CONST_EDI_ASCII_LINE_FEED);
     let indentationBuilder = [];
-    let lastValidIndexColumn = EDI_getLastValidIndexColumn(gINT_FIELDS[fEDI_cursor_indexLine]);
-    let line = EDI_getLineBoundaryPositions(gINT_FIELDS[fEDI_cursor_indexLine]);
+    let lastValidIndexColumn = EDI_getLastValidIndexColumn(INTS[fEDI_cursor_indexLine]);
+    let line = EDI_getLineBoundaryPositions(INTS[fEDI_cursor_indexLine]);
 
     let upperLimitIndexColumn;
 
-    if (lastValidIndexColumn > gINT_FIELDS[fEDI_cursor_indexColumn]) {
-        upperLimitIndexColumn = gINT_FIELDS[fEDI_cursor_indexColumn];
+    if (lastValidIndexColumn > INTS[fEDI_cursor_indexColumn]) {
+        upperLimitIndexColumn = INTS[fEDI_cursor_indexColumn];
     }
     else {
         upperLimitIndexColumn = lastValidIndexColumn;
@@ -6397,7 +6397,7 @@ function EDI_lineWasInsertedValidateGutter() {
     //     - [ ] 'break' when you start moving '~' lines to '~' lines.
     //     - [ ] When you move from 'existing lines of text' to '~' lines, you need to set the line number of that '~' line.
     // 
-    //if (EDI_gutter.children.length > 0 && EDI_gutter.children.length === gINT_FIELDS[fEDI_virtualCount]) {
+    //if (EDI_gutter.children.length > 0 && EDI_gutter.children.length === INTS[fEDI_virtualCount]) {
     //    if (EDI_gutter.children[EDI_gutter.children.length - 1].textContent === '~') {
     //        let successFoundTildeAtIndex = EDI_gutter.children.length - 1;
     //        for (let i = EDI_gutter.children.length - 2; i >= 0; i--) {
@@ -6441,7 +6441,7 @@ function EDI_lineWasInsertedValidateGutter() {
  * @param {*} insertionCount 
  */
 function EDI_trackedSyntaxList_inefficientUpdateStartAndLength(indexPosition, insertionCount) {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
     for (var i = 0; i < EDI_trackedSyntaxList.count_abstract; i++) {
         EDI_trackedSyntaxList.getElementAt(i);
         if (indexPosition <= ints[fEDI_pooledTrackedSyntax_start]) {
@@ -6455,7 +6455,7 @@ function EDI_trackedSyntaxList_inefficientUpdateStartAndLength(indexPosition, in
 
 function EDI_render_do_EnterKey() {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     update_verticalVirtualizationBoundary();
 
@@ -6661,7 +6661,7 @@ function EDI_render_do_EnterKey() {
  * @returns 
  * 
  * The batching logic is a pattern of (for this function):
- *     if (gINT_FIELDS[fEDI_cursor_editLength] === 0) {...}
+ *     if (INTS[fEDI_cursor_editLength] === 0) {...}
  * 
  * 3 cases:
  * - "start of line":
@@ -6672,46 +6672,46 @@ function EDI_EnterKey(ctrlKey, shiftKey) {
     if (!EDI_cursor_enterKey_newLinePlusIndentation_byteList)
         EDI_cacheIndentation();
 
-    if (ctrlKey) gINT_FIELDS[fEDI_cursor_indexColumn] = 0;
-    else if (shiftKey) gINT_FIELDS[fEDI_cursor_indexColumn] = EDI_getLastValidIndexColumn(gINT_FIELDS[fEDI_cursor_indexLine]);
+    if (ctrlKey) INTS[fEDI_cursor_indexColumn] = 0;
+    else if (shiftKey) INTS[fEDI_cursor_indexColumn] = EDI_getLastValidIndexColumn(INTS[fEDI_cursor_indexLine]);
 
-    if (gINT_FIELDS[fEDI_cursor_editLength] === 0) {
+    if (INTS[fEDI_cursor_editLength] === 0) {
 
         BYTES[byteEDI_cursor_enterKeyEventKind] = EnterKeyEventKind_None;
 
-        gINT_FIELDS[fEDI_cursor_editPosition] = EDI_getPositionIndex_raw_cursor();
-        gINT_FIELDS[fEDI_cursor_editIndexLine] = gINT_FIELDS[fEDI_cursor_indexLine];
-        gINT_FIELDS[fEDI_cursor_editIndexColumn] = gINT_FIELDS[fEDI_cursor_indexColumn];
+        INTS[fEDI_cursor_editPosition] = EDI_getPositionIndex_raw_cursor();
+        INTS[fEDI_cursor_editIndexLine] = INTS[fEDI_cursor_indexLine];
+        INTS[fEDI_cursor_editIndexColumn] = INTS[fEDI_cursor_indexColumn];
     }
 
     let insertionCount = EDI_cursor_enterKey_newLinePlusIndentation_byteList.count;
     
-    if (gINT_FIELDS[fEDI_cursor_indexColumn] === 0) { // start of line
+    if (INTS[fEDI_cursor_indexColumn] === 0) { // start of line
         if (BYTES[byteEDI_cursor_enterKeyEventKind] === 0) {
             BYTES[byteEDI_cursor_enterKeyEventKind] = EnterKeyEventKind_StartOfLine;
         }
 
         if (!ctrlKey)
-            gINT_FIELDS[fEDI_cursor_indexLine]++;
+            INTS[fEDI_cursor_indexLine]++;
     }
     else {
-        let lastValidIndexColumn = EDI_getLastValidIndexColumn(gINT_FIELDS[fEDI_cursor_indexLine]);
+        let lastValidIndexColumn = EDI_getLastValidIndexColumn(INTS[fEDI_cursor_indexLine]);
 
         if (BYTES[byteEDI_cursor_enterKeyEventKind] === 0) {
-            BYTES[byteEDI_cursor_enterKeyEventKind] = lastValidIndexColumn === gINT_FIELDS[fEDI_cursor_indexColumn]
+            BYTES[byteEDI_cursor_enterKeyEventKind] = lastValidIndexColumn === INTS[fEDI_cursor_indexColumn]
                 ? EnterKeyEventKind_EndOfLine
                 : EnterKeyEventKind_AmongALine;
         }
         
-        gINT_FIELDS[fEDI_cursor_indexLine]++;
+        INTS[fEDI_cursor_indexLine]++;
     }
 
-    gINT_FIELDS[fEDI_cursor_indexColumn] = insertionCount - 1;
-    gINT_FIELDS[fEDI_cursor_editLength] += insertionCount;
-    gINT_FIELDS[fEDI_cursor_editLineFeedCount]++;
+    INTS[fEDI_cursor_indexColumn] = insertionCount - 1;
+    INTS[fEDI_cursor_editLength] += insertionCount;
+    INTS[fEDI_cursor_editLineFeedCount]++;
 
-    gINT_FIELDS[fEDI_cursor_END_editIndexLine] = gINT_FIELDS[fEDI_cursor_indexLine];
-    gINT_FIELDS[fEDI_cursor_END_editIndexColumn] = gINT_FIELDS[fEDI_cursor_indexColumn];
+    INTS[fEDI_cursor_END_editIndexLine] = INTS[fEDI_cursor_indexLine];
+    INTS[fEDI_cursor_END_editIndexColumn] = INTS[fEDI_cursor_indexColumn];
 
     EDI_render_request(RenderKind_Enter);
 }
@@ -6732,7 +6732,7 @@ function EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, incl
     // - for some reason only had a virtualization count of '1',
     // you might need to run this logic otherwise an enter key at column index 0 of a line wouldn't show any changes.
     // 
-    let local_ArrayFrom_textElement_children_length = gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length];
+    let local_ArrayFrom_textElement_children_length = INTS[fEDI_ArrayFrom_textElement_children_length];
 
     let lastDiv = EDI_textElement.children[beltIndexLine_last];
     for (let i = lastDiv.children.length - 1; i >= 0; i--) {
@@ -6755,12 +6755,12 @@ function EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, incl
 function EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last, smallestBeltIndexLineToReceive, distance, local_virtualIndexLine, local_virtualCount) {
 
     // TODO: Does 'coalesce assignment' exist, and is it equivalent?
-    if (!local_virtualIndexLine) local_virtualIndexLine = gINT_FIELDS[fEDI_virtualIndexLine];
-    if (!local_virtualCount) local_virtualCount = gINT_FIELDS[fEDI_virtualCount];
+    if (!local_virtualIndexLine) local_virtualIndexLine = INTS[fEDI_virtualIndexLine];
+    if (!local_virtualCount) local_virtualCount = INTS[fEDI_virtualCount];
 
     // TODO: if smallestBeltIndexLineToReceive < 0 throw an error?
 
-    let local_ArrayFrom_textElement_children_length = gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length];
+    let local_ArrayFrom_textElement_children_length = INTS[fEDI_ArrayFrom_textElement_children_length];
 
     let breakingPoint = beltIndexLine_last;
     for (let i = 1 /*starts at one*/; i < distance; i++) {
@@ -6795,15 +6795,15 @@ function EDI_render_do_Resize(timestamp) {
 
     EDI_measureBaseElement();
 
-    let remember_virtualCount = gINT_FIELDS[fEDI_virtualCount];
+    let remember_virtualCount = INTS[fEDI_virtualCount];
     update_virtualCount();
-    if (gINT_FIELDS[fEDI_virtualCount] !== remember_virtualCount) {
+    if (INTS[fEDI_virtualCount] !== remember_virtualCount) {
         // why 'update_verticalVirtualizationBoundary' here???
         update_verticalVirtualizationBoundary(EDI_lineEndPositionList.count + 1);
 
-        gINT_FIELDS[fEDI_intFalsey_isScrolling] = 0;
+        INTS[fEDI_intFalsey_isScrolling] = 0;
 
-        gINT_FIELDS[fEDI_scrollEndDeadline] = timestamp + 1000;
+        INTS[fEDI_scrollEndDeadline] = timestamp + 1000;
 
         EDI_render_do_Scroll(timestamp); //EDI_onScroll_WRAPIT();
         // # Redraw cursor selection virtualization
@@ -6823,7 +6823,7 @@ function EDI_onResize() {
 // 1. The Entry Point (Replaces WRAPIT)
 function EDI_onResize_WRAPIT() {
     // If timer is running, just note that a trailing call is needed
-    if (gINT_FIELDS[fEDI_onResize_timer]) {
+    if (INTS[fEDI_onResize_timer]) {
         BYTES[byteEDI_onResize_hasTrailingCall] = true;
         return;
     }
@@ -6837,29 +6837,29 @@ function EDI_onResize_WRAPIT() {
 
 // 2. The Gatekeeper
 function EDI_onResize_startThrottleTimeout() {
-    gINT_FIELDS[fEDI_onResize_timer] = setTimeout(() => {
+    INTS[fEDI_onResize_timer] = setTimeout(() => {
         if (BYTES[byteEDI_onResize_hasTrailingCall]) {
             BYTES[byteEDI_onResize_hasTrailingCall] = false;
             EDI_onResize();
             
             EDI_onResize_startThrottleTimeout();
         } else {
-            gINT_FIELDS[fEDI_onResize_timer] = 0;
+            INTS[fEDI_onResize_timer] = 0;
         }
     }, 500);
 }
 
 function EDI_measureBaseElement() {
-    gINT_FIELDS[fEDI_lastReadNumber_offsetWidth] = Math.floor(EDI_baseElement.offsetWidth);
-    gINT_FIELDS[fEDI_lastReadNumber_offsetHeight] = Math.floor(EDI_baseElement.offsetHeight);
+    INTS[fEDI_lastReadNumber_offsetWidth] = Math.floor(EDI_baseElement.offsetWidth);
+    INTS[fEDI_lastReadNumber_offsetHeight] = Math.floor(EDI_baseElement.offsetHeight);
     
-    EDI_baseElement.style.width = gINT_FIELDS[fEDI_lastReadNumber_offsetWidth] + 'px';
-    EDI_baseElement.style.height = gINT_FIELDS[fEDI_lastReadNumber_offsetHeight] + 'px';
+    EDI_baseElement.style.width = INTS[fEDI_lastReadNumber_offsetWidth] + 'px';
+    EDI_baseElement.style.height = INTS[fEDI_lastReadNumber_offsetHeight] + 'px';
 
     EDI_baseElement.style.contain = 'layout';
 
-    gINT_FIELDS[fEDI_lastReadNumber_offsetWidth] = EDI_baseElement.offsetWidth;
-    gINT_FIELDS[fEDI_lastReadNumber_offsetHeight] = EDI_baseElement.offsetHeight;
+    INTS[fEDI_lastReadNumber_offsetWidth] = EDI_baseElement.offsetWidth;
+    INTS[fEDI_lastReadNumber_offsetHeight] = EDI_baseElement.offsetHeight;
 
 /*
 > what does css "contain = 'layout'" do
@@ -6890,11 +6890,11 @@ and I don't know...
 <     // 1. Read once, accurately capturing subpixels
 <     const rect = EDI_baseElement.getBoundingClientRect();
 <     
-<     gINT_FIELDS[fEDI_lastReadNumber_offsetWidth] = rect.width;
-<     gINT_FIELDS[fEDI_lastReadNumber_offsetHeight] = rect.height;
+<     INTS[fEDI_lastReadNumber_offsetWidth] = rect.width;
+<     INTS[fEDI_lastReadNumber_offsetHeight] = rect.height;
 < 
 <     // 2. Calculate lines safely without modifying the DOM
-<     const rawLineCount = gINT_FIELDS[fEDI_lastReadNumber_offsetHeight] / KNOWN_LINE_HEIGHT;
+<     const rawLineCount = INTS[fEDI_lastReadNumber_offsetHeight] / KNOWN_LINE_HEIGHT;
 <     
 <     // Math.floor gives you ONLY fully visible lines
 <     const fullyVisibleLines = Math.floor(rawLineCount); 
@@ -6946,7 +6946,7 @@ And then I got response of
  */
 function EDI_removeSelection() {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     if (ints[fEDI_cursor_editKind] != EditKind_None) {
         // TODO: multicursor confusion scenario is likely to happy due to this code, but the code isn't related enough for me to change it yet.
@@ -7002,7 +7002,7 @@ function EDI_removeSelection() {
 
 function EDI_render_do_RemoveSelection() {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     let smallPosition = ints[fEDI_EDI_RemoveSelection_smallPosition];
     let largePosition = ints[fEDI_EDI_RemoveSelection_largePosition];
@@ -7290,7 +7290,7 @@ comments from EDI_removeSelection(cursor) that may or may not be useful idk I ju
         // Each case might be the same solution I don't know I just need time to think I'm completely exhausted but ima figure it out by just typing everything out and overtime it will happen
         // 
 
-        let beltIndexLine_last = EDI_indexLineTo_beltIndexLine(gINT_FIELDS[fEDI_virtualIndexLine] + gINT_FIELDS[fEDI_virtualCount] - 1);
+        let beltIndexLine_last = EDI_indexLineTo_beltIndexLine(INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1);
 
         if (EDI_textElement.children.length === EDI_gutter.children.length) {
             for (let i = 0; i < visibleLinesRemovedCount; i++) {
@@ -7311,9 +7311,9 @@ comments from EDI_removeSelection(cursor) that may or may not be useful idk I ju
     }
 */
 
-/** TODO: this is nearly identical to backspace, the difference is the check 'if (gINT_FIELDS[fEDI_cursor_editKind] !== EditKind_DeleteLtr)', thus dedupe the logic or no? */
+/** TODO: this is nearly identical to backspace, the difference is the check 'if (INTS[fEDI_cursor_editKind] !== EditKind_DeleteLtr)', thus dedupe the logic or no? */
 function EDI_render_do_Delete() {
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     if (ints[fEDI_cursor_editKind] !== EditKind_DeleteLtr) {
         return;
@@ -7422,7 +7422,7 @@ function EDI_state_do_Delete(event) {
         return;
     }
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     let virtual_cursorIndexLine = ints[fEDI_cursor_indexLine] + ints[fEDI_cursor_editLineFeedCount];
 
@@ -7513,7 +7513,7 @@ function EDI_deleteDo(event) {
 
 function EDI_render_do_Backspace() {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     if (ints[fEDI_cursor_editKind] !== EditKind_BackspaceRtl) {
         return;
@@ -7616,7 +7616,7 @@ function EDI_state_do_Backspace(event) {
         return;
     }
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
     
     if (ints[fEDI_cursor_indexColumn] === 0) {
         if (ints[fEDI_cursor_indexLine] > 0) {
@@ -7701,29 +7701,29 @@ function EDI_insertDo(character) {
     */
     
     /*if (EDI_cursor_gapBufferWriteToSpanElement !== EDI_offsetWithinSpan_withRespectToThisSpan) {
-        gINT_FIELDS[fEDI_offsetWithinSpan] = 0;
+        INTS[fEDI_offsetWithinSpan] = 0;
         EDI_offsetWithinSpan_withRespectToThisSpan = EDI_cursor_gapBufferWriteToSpanElement;
     }
 
     if (EDI_cursor_gapBufferWriteToSpanElement) {
         EDI_cursor_gapBufferWriteToSpanElement.textContent = 
-            EDI_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] + gINT_FIELDS[fEDI_offsetWithinSpan]) + gINT_FIELDS[fEDI_cursor_gapBufferCount]) +
+            EDI_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] + INTS[fEDI_offsetWithinSpan]) + INTS[fEDI_cursor_gapBufferCount]) +
             character +
-            EDI_cursor_gapBufferWriteToSpanElement.textContent.slice((gINT_FIELDS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] + gINT_FIELDS[fEDI_offsetWithinSpan]) + gINT_FIELDS[fEDI_cursor_gapBufferCount]);
+            EDI_cursor_gapBufferWriteToSpanElement.textContent.slice((INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] + INTS[fEDI_offsetWithinSpan]) + INTS[fEDI_cursor_gapBufferCount]);
     }*/
 
-    EDI_cursor_gapBuffer[gINT_FIELDS[fEDI_cursor_gapBufferCount]] = character.charCodeAt(0);
-    gINT_FIELDS[fEDI_cursor_gapBufferCount]++;
+    EDI_cursor_gapBuffer[INTS[fEDI_cursor_gapBufferCount]] = character.charCodeAt(0);
+    INTS[fEDI_cursor_gapBufferCount]++;
 
-    gINT_FIELDS[fEDI_cursor_editLength]++;
-    gINT_FIELDS[fEDI_cursor_indexColumn]++;
+    INTS[fEDI_cursor_editLength]++;
+    INTS[fEDI_cursor_indexColumn]++;
 
-    gINT_FIELDS[fEDI_offsetWithinSpan] = gINT_FIELDS[fEDI_offsetWithinSpan] + gINT_FIELDS[fEDI_cursor_gapBufferCount];
+    INTS[fEDI_offsetWithinSpan] = INTS[fEDI_offsetWithinSpan] + INTS[fEDI_cursor_gapBufferCount];
 }
 
 function EDI_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine() {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     // binary search for 'if (ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_pooledTrackedSyntax_length] > positionIndex)'
     let indexTrackedSyntax = EDI_drawViewPort_FindTrackedSyntax_StartingIndex(ints[fEDI_cursor_indexLine]);
@@ -7772,7 +7772,7 @@ function EDI_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine() {
 
 function EDI_scrollCursorIntoView() {
 
-    const ints = gINT_FIELDS;
+    const ints = INTS;
 
     let scrollX = 0;
     let scrollY = 0;
@@ -7921,8 +7921,8 @@ async function EDI_MenuOnClick(indexClicked, elementClicked) {
  */
 function EDI_moveCursor_position(intValue) {
     EDI_getLineAndColumnIndices(intValue);
-    let lineAndColumnIndices_indexLine = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexLine];
-    let lineAndColumnIndices_indexColumn = gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn];
+    let lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
+    let lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
     EDI_moveCursor_indexLine_indexColumn(lineAndColumnIndices_indexLine, lineAndColumnIndices_indexColumn);
 }
 
@@ -7933,16 +7933,16 @@ function EDI_moveCursor_indexLine_indexColumn(indexLine, indexColumn) {
     let lastValidIndexColumn = EDI_getLastValidIndexColumn(indexLine);
 
     if (indexColumn > lastValidIndexColumn) {
-        gINT_FIELDS[fEDI_cursor_indexColumn] = lastValidIndexColumn;
+        INTS[fEDI_cursor_indexColumn] = lastValidIndexColumn;
     }
     else {
-        gINT_FIELDS[fEDI_cursor_indexColumn] = indexColumn;
+        INTS[fEDI_cursor_indexColumn] = indexColumn;
     }
 
-    gINT_FIELDS[fEDI_cursor_indexLine] = indexLine;
+    INTS[fEDI_cursor_indexLine] = indexLine;
     
     // TODO: selectionAnchor = selectionEnd; EDI_drawCursor(); # being the way to clear a selection should be documented / wrapped by a method for ease of use / readability?
-    gINT_FIELDS[fEDI_cursor_selectionAnchor] = gINT_FIELDS[fEDI_cursor_selectionEnd];
+    INTS[fEDI_cursor_selectionAnchor] = INTS[fEDI_cursor_selectionEnd];
     EDI_render_request(RenderKind_Cursor_n);
 }
 
@@ -8335,10 +8335,10 @@ function PLAINTEXT_line_lex(div, substart, lineEnd, childIndex) {
 ///**
 // * These tend to be performed within a loop, and the logic seems simplistic enough to compiler-inline to the build file, consider?
 // * 
-// * The argument is a beltIndexLine i.e.: the result of 'EDI_indexLineTo_beltIndexLine' (no validation is performed on the argument, it is presumed to be the index of a valid text editor line div dom element). This returns -1 if you go out of viewport. It will wrap around if you go too large because 'gINT_FIELDS[fEDI_EDI_beltIndexZero]' isn't 0.
+// * The argument is a beltIndexLine i.e.: the result of 'EDI_indexLineTo_beltIndexLine' (no validation is performed on the argument, it is presumed to be the index of a valid text editor line div dom element). This returns -1 if you go out of viewport. It will wrap around if you go too large because 'INTS[fEDI_EDI_beltIndexZero]' isn't 0.
 // */
 //function EDI_beltIndexLine_NEXT(beltIndexLine) {
-//    return ++beltIndexLine >= gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length] ? beltIndexLine -= gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length] : beltIndexLine;
+//    return ++beltIndexLine >= INTS[fEDI_ArrayFrom_textElement_children_length] ? beltIndexLine -= INTS[fEDI_ArrayFrom_textElement_children_length] : beltIndexLine;
 //
 //
 ///*
@@ -8347,7 +8347,7 @@ function PLAINTEXT_line_lex(div, substart, lineEnd, childIndex) {
 //> I have the code 'beltIndexCurrent = EDI_beltIndexLine_NEXT(beltIndexCurrent);'.
 //> 
 //> This runs very often within a loop. The 'EDI_beltIndexLine_NEXT' function is:
-//> return ++beltIndexLine >= gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length] ? beltIndexLine -= gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length] : beltIndexLine;
+//> return ++beltIndexLine >= INTS[fEDI_ArrayFrom_textElement_children_length] ? beltIndexLine -= INTS[fEDI_ArrayFrom_textElement_children_length] : beltIndexLine;
 //
 //< To optimize this operation, the most effective approach is to replace the function call and conditional branch with a
 //< bitwise AND mask or a direct modulo operation, while inlining the logic to eliminate function call overhead.
@@ -8357,7 +8357,7 @@ function PLAINTEXT_line_lex(div, substart, lineEnd, childIndex) {
 //< beltIndexCurrent = (beltIndexCurrent + 1) & (ARRAY_LENGTH - 1);
 //<
 //< 2. The Cleanest Micro-Optimization (Dynamic Length)
-//< beltIndexCurrent = (beltIndexCurrent + 1) % gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length];
+//< beltIndexCurrent = (beltIndexCurrent + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
 //<
 //
 //*/
@@ -8366,17 +8366,17 @@ function PLAINTEXT_line_lex(div, substart, lineEnd, childIndex) {
 ///**
 // * These tend to be performed within a loop, and the logic seems simplistic enough to compiler-inline to the build file, consider?
 // * 
-// * The argument is a beltIndexLine i.e.: the result of 'EDI_indexLineTo_beltIndexLine' (no validation is performed on the argument, it is presumed to be the index of a valid text editor line div dom element). This returns -1 if you go out of viewport. It will wrap around if you go too small because 'gINT_FIELDS[fEDI_EDI_beltIndexZero]' isn't 0.
+// * The argument is a beltIndexLine i.e.: the result of 'EDI_indexLineTo_beltIndexLine' (no validation is performed on the argument, it is presumed to be the index of a valid text editor line div dom element). This returns -1 if you go out of viewport. It will wrap around if you go too small because 'INTS[fEDI_EDI_beltIndexZero]' isn't 0.
 // */
 //function EDI_beltIndexLine_PREVIOUS(beltIndexLine) {
-//    return --beltIndexLine < 0 ? beltIndexLine += gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length] : beltIndexLine;
+//    return --beltIndexLine < 0 ? beltIndexLine += INTS[fEDI_ArrayFrom_textElement_children_length] : beltIndexLine;
 //
 ///*
 //< 1. The Fastest Approach (Power of 2)
 //< beltIndexCurrent = (beltIndexCurrent - 1) & (ARRAY_LENGTH - 1);
 //< 
 //< 2. The Cleanest Universal Approach (Dynamic Length)
-//< beltIndexCurrent = (beltIndexCurrent - 1 + gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length]) % gINT_FIELDS[fEDI_ArrayFrom_textElement_children_length];
+//< beltIndexCurrent = (beltIndexCurrent - 1 + INTS[fEDI_ArrayFrom_textElement_children_length]) % INTS[fEDI_ArrayFrom_textElement_children_length];
 //*/
 //}
 
@@ -8408,14 +8408,14 @@ function EDI_measureLineHeightAndCharacterWidth() {
     measureElement.innerHTML = 'A'.repeat(len);
     let measureElementBoundingClientRect = measureElement.getBoundingClientRect();
     EDI_characterWidth = measureElementBoundingClientRect.width / len; // 7.146002258917298
-    gINT_FIELDS[fEDI_lineHeight] = Math.ceil(measureElementBoundingClientRect.height); // 15
+    INTS[fEDI_lineHeight] = Math.ceil(measureElementBoundingClientRect.height); // 15
 
     wrapper.removeChild(measureElement);
     EDI_textElement.removeChild(wrapper);
 
     const root = document.documentElement;
     const computedStyles = window.getComputedStyle(root);
-    let teLineHeight = gINT_FIELDS[fEDI_lineHeight] + 'px';
+    let teLineHeight = INTS[fEDI_lineHeight] + 'px';
     let propertyName = '--EDITOR-line-height';
     if (computedStyles.getPropertyValue(propertyName) !== teLineHeight) {
         // avoid layout with if statement
@@ -8494,7 +8494,7 @@ function EDI_registerHandlers() {
 < ```js
 < // Mouse hits Token 1:
 < EDI_mouseOver_event = e1; // Reference to e1 is created
-< gINT_FIELDS[fEDI_hoverTimeout] = setTimeout(..., 1000); // Timer 1 created, traps e1 in background
+< INTS[fEDI_hoverTimeout] = setTimeout(..., 1000); // Timer 1 created, traps e1 in background
 < 
 < // Mouse hits Token 2 (0.1 seconds later):
 < EDI_mouseOver_event = e2; // Overwrites the global! 
@@ -8509,7 +8509,7 @@ function EDI_registerHandlers() {
 < When mouseOut eventually fired much later, it executed:
 <
 < ```js
-< clearTimeout(gINT_FIELDS[fEDI_hoverTimeout]); // This ONLY clears Timer 2 (the current ID)!
+< clearTimeout(INTS[fEDI_hoverTimeout]); // This ONLY clears Timer 2 (the current ID)!
 < EDI_mouseOver_event = null;     // This ONLY nulls e2!
 < ```
 <
@@ -8537,20 +8537,20 @@ function EDI_mouseOver(e) {
     //if (!tokenElement) return;
     //
     // Clear previous timer because the mouse is still moving
-    clearTimeout(gINT_FIELDS[fEDI_hoverTimeout]);
+    clearTimeout(INTS[fEDI_hoverTimeout]);
     //
     // Extract line and column stored in the DOM node's data attributes
     //const line = parseInt(tokenElement.dataset.line);
     //const column = parseInt(tokenElement.dataset.column);
     //
     // Wait 300ms. If the mouse leaves or moves, this timer gets cleared.
-    gINT_FIELDS[fEDI_hoverTimeout] = setTimeout(EDI_requestLspHover, 1000);
+    INTS[fEDI_hoverTimeout] = setTimeout(EDI_requestLspHover, 1000);
 }
 
 I said "it doesn't need all these comments"
 
 and I removed what I thought was one continuously block of single line comments
-but there's actually a 'clearTimeout(gINT_FIELDS[fEDI_hoverTimeout]);' hidden among the single line comments.
+but there's actually a 'clearTimeout(INTS[fEDI_hoverTimeout]);' hidden among the single line comments.
 
 So I ended up removing that.
 
@@ -8563,8 +8563,8 @@ I tried explaining what I'm a goof to the AI after the fact. It seems to have br
  * Oh wow I can clearly see why this is better than mouseMove with heavy throttling/debouncing
  */
 function EDI_mouseOver(e) {
-    gINT_FIELDS[fEDI_EDI_mouseOver_event_clientY] = e.clientY;
-    gINT_FIELDS[fEDI_EDI_mouseOver_event_clientX] = e.clientX;
+    INTS[fEDI_EDI_mouseOver_event_clientY] = e.clientY;
+    INTS[fEDI_EDI_mouseOver_event_clientX] = e.clientX;
     
     //const tokenElement = event.target.closest('.editor-token');
     //if (!tokenElement) return;
@@ -8573,7 +8573,7 @@ function EDI_mouseOver(e) {
 
 
     
-    clearTimeout(gINT_FIELDS[fEDI_hoverTimeout]);
+    clearTimeout(INTS[fEDI_hoverTimeout]);
 
 
 
@@ -8583,7 +8583,7 @@ function EDI_mouseOver(e) {
     //const column = parseInt(tokenElement.dataset.column);
     //
     // Wait 300ms. If the mouse leaves or moves, this timer gets cleared.
-    gINT_FIELDS[fEDI_hoverTimeout] = setTimeout(EDI_requestLspHover, 1000);
+    INTS[fEDI_hoverTimeout] = setTimeout(EDI_requestLspHover, 1000);
 }
 
 // Partially it was:
@@ -8593,22 +8593,22 @@ function EDI_mouseOver(e) {
 
 function EDI_mouseLeave() {
     // Clear timer if mouse leaves the token before 1000ms
-    clearTimeout(gINT_FIELDS[fEDI_hoverTimeout]);
-    gINT_FIELDS[fEDI_hoverTimeout] = 0;
+    clearTimeout(INTS[fEDI_hoverTimeout]);
+    INTS[fEDI_hoverTimeout] = 0;
     EDI_hideTooltip();
 }
 
 function EDI_requestLspComplete() {
-    window.myAPI.editorCompletionRequest(gINT_FIELDS[fEDI_cursor_indexLine], gINT_FIELDS[fEDI_cursor_indexColumn]);
+    window.myAPI.editorCompletionRequest(INTS[fEDI_cursor_indexLine], INTS[fEDI_cursor_indexColumn]);
 }
 
 function EDI_doEditorGoToDefinitionRequest() {
-    window.myAPI.editorGoToDefinitionRequest(gINT_FIELDS[fEDI_cursor_indexLine], gINT_FIELDS[fEDI_cursor_indexColumn]);
+    window.myAPI.editorGoToDefinitionRequest(INTS[fEDI_cursor_indexLine], INTS[fEDI_cursor_indexColumn]);
 }
 
 function EDI_requestLspHover() {
-    let event_clientY = gINT_FIELDS[fEDI_EDI_mouseOver_event_clientY];
-    let event_clientX = gINT_FIELDS[fEDI_EDI_mouseOver_event_clientX];
+    let event_clientY = INTS[fEDI_EDI_mouseOver_event_clientY];
+    let event_clientX = INTS[fEDI_EDI_mouseOver_event_clientX];
 
     ///////////
     ///////////
@@ -8617,15 +8617,15 @@ function EDI_requestLspHover() {
     ///////////
     if (get_EDI_recentBoundingClientRect_isNull_intFalsey()) {
         let boundingClientRect = EDI_baseElement.getBoundingClientRect();
-        gINT_FIELDS[fEDI_recentBoundingClientRect_left] = boundingClientRect.left;
-        gINT_FIELDS[fEDI_recentBoundingClientRect_top] = boundingClientRect.top;
+        INTS[fEDI_recentBoundingClientRect_left] = boundingClientRect.left;
+        INTS[fEDI_recentBoundingClientRect_top] = boundingClientRect.top;
         set_EDI_recentBoundingClientRect_isNull_intFalsey(0);
     }
 
-    let rY = event_clientY - gINT_FIELDS[fEDI_recentBoundingClientRect_top] + gINT_FIELDS[fEDI_lastReadNumber_scrollTop];
-    let rX = event_clientX - gINT_FIELDS[fEDI_recentBoundingClientRect_left] - gINT_FIELDS[fEDI_gutterWidthTotal] + gINT_FIELDS[fEDI_lastReadNumber_scrollLeft];
+    let rY = event_clientY - INTS[fEDI_recentBoundingClientRect_top] + INTS[fEDI_lastReadNumber_scrollTop];
+    let rX = event_clientX - INTS[fEDI_recentBoundingClientRect_left] - INTS[fEDI_gutterWidthTotal] + INTS[fEDI_lastReadNumber_scrollLeft];
     
-    let indexLine = Math.floor(rY / gINT_FIELDS[fEDI_lineHeight]);
+    let indexLine = Math.floor(rY / INTS[fEDI_lineHeight]);
     let indexColumn = Math.round(rX / EDI_characterWidth);
 
     if (indexLine < 0) return;
@@ -8779,7 +8779,7 @@ Theprimeagen is the quote. Maybe he said 12 not 13 big deal what a stupid statem
 
 I think about it daily cause of how much I hate what he said
 
-I haven't done anything yet, but I'm now able to hoist the gINT_FIELDS as a local variable anywhere it is used a lot.
+I haven't done anything yet, but I'm now able to hoist the INTS as a local variable anywhere it is used a lot.
 
 ====
 
@@ -9158,7 +9158,7 @@ Google AI:
 < ...
 
 > The preface to my performance question: The text editor state has various number variables.
-> Rather than declare these variables at the top-level scope of my module. I have a 'const gINT_FIELDS = new Uint32Array(168);'
+> Rather than declare these variables at the top-level scope of my module. I have a 'const INTS = new Uint32Array(168);'
 > wherein I store every number, such as the cursor's line index.
 
 < ...
@@ -9177,19 +9177,19 @@ Google AI:
 <
 < ...
 
-> The performance question: when within a function, should this 'gINT_FIELDS' variable be made a local variable such as 'const intFields = gINT_FIELDS'.
+> The performance question: when within a function, should this 'INTS' variable be made a local variable such as 'const intFields = INTS'.
 > 
 > The thought process: you are reducing pointer chasing.
 
 < No, you should not do this because it does not actually reduce pointer chasing or provide any performance benefit.
-< In JavaScript, assigning const intFields = gINT_FIELDS does not copy the array or change how the memory is accessed;
+< In JavaScript, assigning const intFields = INTS does not copy the array or change how the memory is accessed;
 < it simply creates a new local reference pointing to the exact same object in memory.
 <
 < # Why It Doesn't Reduce Pointer Chasing:
 < - Both are direct pointers: In the V8 engine, a top-level const module variable and a local function variable are both resolved as direct pointers
 <   to the underlying typed array object.
 < - The real "chase" is the same: The only actual pointer chasing happens when V8 looks up the array's elements in physical memory.
-<   Since both gINT_FIELDS and intFields point to the exact same ArrayBuffer, the CPU executes the exact same memory lookup steps either way.
+<   Since both INTS and intFields point to the exact same ArrayBuffer, the CPU executes the exact same memory lookup steps either way.
 <
 < # When Local Aliasing Does Help (The V8 Exception):
 < There is only one scenario where creating a local alias improves performance: when you are caching a property lookup from a deeply nested object.
@@ -9199,18 +9199,18 @@ Google AI:
 < const intFields = app.state.integers; 
 < for (let i = 0; i < 1000; i++) { intFields[0] = i; }
 < 
-< // DOES NOT HELP: gINT_FIELDS is already at the top-level module scope
-< const intFields = gINT_FIELDS; 
+< // DOES NOT HELP: INTS is already at the top-level module scope
+< const intFields = INTS; 
 < ```
 < 
-< Because gINT_FIELDS is already declared at the top-level of your ES6 module, V8 can optimize access to it globally.
+< Because INTS is already declared at the top-level of your ES6 module, V8 can optimize access to it globally.
 < Aliasing it locally just adds an extra variable allocation to the function's stack frame for no technical gain.
 <
 < # The Best Way to Keep This Fast
 < |
 < If you want to ensure your hot functions stay fully optimized by V8's TurboFan compiler, focus on Monomorphism.
 < |
-< Keep your function signatures clean and avoid changing the type of data passed into functions that read from gINT_FIELDS.
+< Keep your function signatures clean and avoid changing the type of data passed into functions that read from INTS.
 < V8 optimizes heavily when it knows a function only ever deals with that specific Uint32Array.
 < |
 < To help optimize your hot paths further, what does a typical heavy or high-frequency function look like in your editor
@@ -9223,7 +9223,7 @@ Google AI:
 
 (I pressed the enter key without holding shift like a goof)
 
-< To understand exactly why const intFields = gINT_FIELDS changes nothing under the hood,
+< To understand exactly why const intFields = INTS changes nothing under the hood,
 < we have to look at how JavaScript engines (like V8 in Electron) manage memory and compile your code.
 <
 < Here is the deep dive into why this local variable doesn't change anything, broken down by how V8 handles variables,
@@ -9236,14 +9236,14 @@ Google AI:
 < |
 < When you write:
 < ```js
-< const intFields = gINT_FIELDS;
+< const intFields = INTS;
 < ```
 < 
 < You are not moving the Uint32Array closer to the function.
 < You are simply creating a second label (a pointer) that points to the exact same memory address as the first label.
 <
 < ```
-< [ gINT_FIELDS ] ----\
+< [ INTS ] ----\
 <                      +---> [ Memory Address: 0x7FFF1234 ] (The actual Uint32Array)
 < [  intFields  ] ----/
 < ```
@@ -9254,12 +9254,12 @@ Google AI:
 < in older JavaScript engines (or inside deeply nested objects), looking up a variable meant walking up a scope chain or an object chain.
 < 
 < However, V8 optimizes top-level ES6 module variables incredibly well:
-< - Top-Level Module Constants: Because gINT_FIELDS is declared as a const at the top level of your ES6 module,
+< - Top-Level Module Constants: Because INTS is declared as a const at the top level of your ES6 module,
 <   its location in memory is fixed and known to V8. It is treated almost like a global register.
 < - Local Variables: When your function executes, it creates a stack frame.
 <   Assigning intFields inside that function just places a pointer on the local stack frame.
 <
-< To read a value using gINT_FIELDS[0], V8 takes the fixed module pointer and grabs the index.
+< To read a value using INTS[0], V8 takes the fixed module pointer and grabs the index.
 < To read a value using intFields[0], V8 takes the local stack pointer and grabs the index.
 < The number of CPU instructions to resolve the pointer and find the array element is identical.
 <
@@ -9272,7 +9272,7 @@ Google AI:
 < 1. JS TypedArray Object: Contains metadata (length, byte offset).
 < 2. Backing Store Pointer: A physical pointer inside that object pointing to the raw block of bytes.
 <
-< Whether you use gINT_FIELDS or intFields, both lookups must go through this exact same jump to get to the raw bytes.
+< Whether you use INTS or intFields, both lookups must go through this exact same jump to get to the raw bytes.
 < Creating a local alias does not bypass the object wrapper or bring the raw bytes any closer to the CPU registers.
 <
 < Summary: When Aliasing Actually Matters
@@ -9297,15 +9297,15 @@ Google AI:
 < 
 < // YOUR CASE: Already Optimized (No change)
 < function process() {
-<   // gINT_FIELDS is already a direct, flat reference at the module level.
+<   // INTS is already a direct, flat reference at the module level.
 <   // There are no nested properties to skip or cache.
 <   for (let i = 0; i < 1000; i++) {
-<     gINT_FIELDS[0] += 1; 
+<     INTS[0] += 1; 
 <   }
 < }
 < ```
 <
-< Since your gINT_FIELDS is already a flat, non-nested, top-level constant,
+< Since your INTS is already a flat, non-nested, top-level constant,
 < it represents the absolute shortest path to that memory block that JavaScript allows.
 <
 < Are you currently writing loops that read/write to this array thousands of times per second (like a syntax highlighter or text layout engine)?
@@ -9352,13 +9352,13 @@ Google AI:
 <
 < ```js
 < // Your top-level module variable
-< const gINT_FIELDS = new Uint32Array(168);
+< const INTS = new Uint32Array(168);
 < 
 < export function runHotLoop() {
 <   let sum = 0;
 <   // Loop 1 million times to force TurboFan optimization
 <   for (let i = 0; i < 1_000_000; i++) {
-<     sum += gINT_FIELDS[0]; 
+<     sum += INTS[0]; 
 <   }
 <   return sum;
 < }
@@ -9389,12 +9389,12 @@ Google AI:
 < - `--trace-deopt`: Prints a message if V8 starts to optimize your function but bails out because a variable lookup was too slow or dynamic.
 <
 < If you see runHotLoop get optimized and it never shows up in the --trace-deopt logs,
-< it proves V8 successfully converted gINT_FIELDS into a zero-overhead native memory address lookup.
+< it proves V8 successfully converted INTS into a zero-overhead native memory address lookup.
 <
 < Would you like to try setting up a quick benchmark using performance.now() to compare both approaches side-by-side in your actual Electron setup,
 < or would you prefer to look into how to structure your text editor loops to ensure V8 never accidentally de-optimizes them?
 
-I checked the flame graph for a lack of warning on a function that used gINT_FIELDS directly and I indeed do NOT see a warning.
+I checked the flame graph for a lack of warning on a function that used INTS directly and I indeed do NOT see a warning.
 
 !!!
 If this is true... module const being that way you have so many local variables you can remove

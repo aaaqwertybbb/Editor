@@ -22,7 +22,7 @@ class DIALOG_FindAll_TreeViewDirector {
             return;
         }
 
-        this.component.setItems(this, gINT_FIELDS[fAPP_lineHeight], gINT_FIELDS[fAPP_lineHeight] + 'px');
+        this.component.setItems(this, INTS[fAPP_lineHeight], INTS[fAPP_lineHeight] + 'px');
 
         for (let i = 0; i < actualData.length; i++) {
             let nodeKind = TreeViewNodeKind_isExpandable_NOTisExpanded;
@@ -94,8 +94,8 @@ class DIALOG_FindAll_TreeViewDirector {
             }
             else {
                 this.nodeList.getElementAt(indexItem);
-                let key = gINT_FIELDS[fTreeView_pooledNode_key];
-                depth = gINT_FIELDS[fTreeView_pooledNode_depth];
+                let key = INTS[fTreeView_pooledNode_key];
+                depth = INTS[fTreeView_pooledNode_depth];
                 nodeKind = BYTES[byteTreeView_pooledNode_nodeKind];
 
                 let textNode = divItem.lastChild;
@@ -152,8 +152,8 @@ class DIALOG_FindAll_TreeViewDirector {
     
     async tvd_ondblclick_async(divItem, indexItem) {
         this.nodeList.getElementAt(indexItem);
-        let key = gINT_FIELDS[fTreeView_pooledNode_key];
-        let depth = gINT_FIELDS[fTreeView_pooledNode_depth];
+        let key = INTS[fTreeView_pooledNode_key];
+        let depth = INTS[fTreeView_pooledNode_depth];
         let nodeKind = BYTES[byteTreeView_pooledNode_nodeKind];
 
         if (nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded) {
@@ -198,8 +198,8 @@ class DIALOG_FindAll_TreeViewDirector {
      */
     async tvd_expandCollapseIconWasClicked_async(divItem, indexItem) {
         this.nodeList.getElementAt(indexItem);
-        let key = gINT_FIELDS[fTreeView_pooledNode_key];
-        let depth = gINT_FIELDS[fTreeView_pooledNode_depth];
+        let key = INTS[fTreeView_pooledNode_key];
+        let depth = INTS[fTreeView_pooledNode_depth];
         let nodeKind = BYTES[byteTreeView_pooledNode_nodeKind];
 
         if (nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded) {
@@ -478,7 +478,7 @@ async function DIALOG_DocumentSymbol_Create_async() {
     if (EDI_documentSymbolResult) {
         let div = document.createElement('div');
         div.textContent = 'EDI_documentSymbolResult.length: ' + EDI_documentSymbolResult.length;
-        div.style.height = gINT_FIELDS[fAPP_lineHeight] + 'px';
+        div.style.height = INTS[fAPP_lineHeight] + 'px';
         div.style.whiteSpace = 'nowrap';
         dialogBody.appendChild(div);
         EDI_listComponent.rootElement.style.height = `calc(100% - ${div.style.height})`;
@@ -514,7 +514,7 @@ async function DIALOG_Debug_Create_async() {
 //    if (!DEBUG_listComponent) {
 //        DEBUG_listComponent = new ListComponent();
 //    }
-//    DEBUG_listComponent.setItems(gINT_FIELDS[fAPP_lineHeight], gINT_FIELDS[fAPP_lineHeight] + 'px',
+//    DEBUG_listComponent.setItems(INTS[fAPP_lineHeight], INTS[fAPP_lineHeight] + 'px',
 //        /*drawItemAction*/ (div, index) => {
 //            if (index === -1) {
 //                div.textContent = '';
@@ -549,7 +549,7 @@ async function DIALOG_Debug_Create_async() {
 //    if (DEBUG_listData) {
 //        let div = document.createElement('div');
 //        div.textContent = 'DEBUG_listData.length: ' + DEBUG_listData.length;
-//        div.style.height = gINT_FIELDS[fAPP_lineHeight] + 'px';
+//        div.style.height = INTS[fAPP_lineHeight] + 'px';
 //        div.style.whiteSpace = 'nowrap';
 //        dialogBody.appendChild(div);
 //        DEBUG_listComponent.rootElement.style.height = `calc(100% - ${div.style.height})`;

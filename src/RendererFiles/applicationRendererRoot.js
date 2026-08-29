@@ -48,24 +48,24 @@ function APP_measureLineHeightAndCharacterWidth() {
     wrapper.appendChild(measureElement);
     document.body.appendChild(wrapper);
 
-    gINT_FIELDS[fAPP_lineHeight] = Math.ceil(measureElement.getBoundingClientRect().height);
+    INTS[fAPP_lineHeight] = Math.ceil(measureElement.getBoundingClientRect().height);
 
     // This permits me to in 'explorer.js' set the first span of every "tree-view-node" to be the same width, regardless of whether its content is '-', '+', or '' (an empty string).
-    // In theory this width calculation and 'gINT_FIELDS[fAPP_lineHeight]' can be done at the same time. But combining the steps could result in confusion or unexpected side effects when trying to modify lineheight or width but then again they do rely on the same css styling so you're already doing this
+    // In theory this width calculation and 'INTS[fAPP_lineHeight]' can be done at the same time. But combining the steps could result in confusion or unexpected side effects when trying to modify lineheight or width but then again they do rely on the same css styling so you're already doing this
     measureElement.textContent = "-";
     const minusWidth = Math.ceil(measureElement.getBoundingClientRect().width);
     measureElement.textContent = "+";
     const plusWidth = Math.ceil(measureElement.getBoundingClientRect().width);
     const largerWidth = minusWidth > plusWidth ? minusWidth : plusWidth; // 11
-    gINT_FIELDS[fEXPLORER_firstSpanWidthValue] = largerWidth;
-    EXPLORER_firstSpanWidth = gINT_FIELDS[fEXPLORER_firstSpanWidthValue] + 'px';
+    INTS[fEXPLORER_firstSpanWidthValue] = largerWidth;
+    EXPLORER_firstSpanWidth = INTS[fEXPLORER_firstSpanWidthValue] + 'px';
 
     wrapper.removeChild(measureElement);
     document.body.removeChild(wrapper);
 
     const root = document.documentElement;
     const computedStyles = window.getComputedStyle(root);
-    const appLineHeight = gINT_FIELDS[fAPP_lineHeight] + 'px';
+    const appLineHeight = INTS[fAPP_lineHeight] + 'px';
     const propertyName = '--APP-line-height';
     if (computedStyles.getPropertyValue(propertyName) !== appLineHeight) {
         root.style.setProperty(propertyName, appLineHeight);
@@ -78,7 +78,7 @@ async function window_myAPI_onMessage(data) {
         if (!EDI_listComponent) {
             EDI_listComponent = new ListComponent();
         }
-        EDI_listComponent.setItems(gINT_FIELDS[fAPP_lineHeight], gINT_FIELDS[fAPP_lineHeight] + 'px',
+        EDI_listComponent.setItems(INTS[fAPP_lineHeight], INTS[fAPP_lineHeight] + 'px',
             EDI_listComponent_drawItemAction,
             EDI_listComponent_onkeydownAction,
             EDI_listComponent_getItemsCountFunc);

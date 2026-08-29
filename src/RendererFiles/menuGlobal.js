@@ -82,7 +82,7 @@ const MENUrenderKind_Hide = 3;
 function MENU_render_request(renderKind) {
     if (MENU_renderKindArray[MENU_renderKindArray.length - 1] !== renderKind) {
         MENU_renderKindArray.push(renderKind);
-        if (renderKind === MENUrenderKind_Set) gINT_FIELDS[fMENU_renderKind_Set_countOfPendingRequests]++;
+        if (renderKind === MENUrenderKind_Set) INTS[fMENU_renderKind_Set_countOfPendingRequests]++;
     }
     
     if (!BYTES[byteMENU_isRenderPending]) {
@@ -100,7 +100,7 @@ function MENU_render_do() {
                 MENU_render_do_Cursor();
                 break;
             case MENUrenderKind_Set:
-                if (gINT_FIELDS[fMENU_renderKind_Set_countOfPendingRequests]-- > 1) break;
+                if (INTS[fMENU_renderKind_Set_countOfPendingRequests]-- > 1) break;
                 MENU_render_do_Set();
                 break;
             case MENUrenderKind_Hide:
@@ -139,7 +139,7 @@ async function MENU_state_do_hide(shouldRestoreFocus) {
     }
     MENU_onHideAction = null;
 
-    gINT_FIELDS[fMENU_last_handled_ticketId] = gINT_FIELDS[fMENU_ticketId_drawn];
+    INTS[fMENU_last_handled_ticketId] = INTS[fMENU_ticketId_drawn];
 
     MENU_optionList = null;
 
@@ -156,7 +156,7 @@ async function MENU_state_do_hide(shouldRestoreFocus) {
 async function menuHide(shouldRestoreFocus) {
     // TODO: Don't put this line here when you could instead just think about async code and figure out the truth of what will happen...
     // ...I'm anxious and can't think straight I swear...
-    gINT_FIELDS[fMENU_last_handled_ticketId] = gINT_FIELDS[fMENU_ticketId_drawn];
+    INTS[fMENU_last_handled_ticketId] = INTS[fMENU_ticketId_drawn];
     await MENU_state_do_hide(shouldRestoreFocus);
     MENU_render_request(MENUrenderKind_Hide);
 }
@@ -168,7 +168,7 @@ function MENU_render_do_Set() {
         MENU_render_do_Hide();
     }
 
-    gINT_FIELDS[fMENU_ticketId_drawn] = gINT_FIELDS[fMENU_ticketId_pending];
+    INTS[fMENU_ticketId_drawn] = INTS[fMENU_ticketId_pending];
 
     menuElement = document.createElement('div');
     menuElement.id = 'MENU';
@@ -219,13 +219,13 @@ function MENU_render_do_Set() {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
-    let finalLeft = gINT_FIELDS[fMENU_left];
-    let finalTop = gINT_FIELDS[fMENU_top];
+    let finalLeft = INTS[fMENU_left];
+    let finalTop = INTS[fMENU_top];
     //let rect = menuElement.getBoundingClientRect();
 
     // Check right edge
     //if (rect.right > viewportWidth) {
-    if (gINT_FIELDS[fMENU_left] + menuElement.offsetWidth > viewportWidth) {
+    if (INTS[fMENU_left] + menuElement.offsetWidth > viewportWidth) {
       finalLeft = viewportWidth - menuElement.offsetWidth - 10; // 10px padding boundary
     }
     // Check left edge (fallback if menu is wider than screen)
@@ -233,7 +233,7 @@ function MENU_render_do_Set() {
 
     // Check bottom edge
     //if (rect.bottom > viewportHeight) {
-    if (gINT_FIELDS[fMENU_top] + menuElement.offsetHeight > viewportHeight) {
+    if (INTS[fMENU_top] + menuElement.offsetHeight > viewportHeight) {
       finalTop = viewportHeight - menuElement.offsetHeight - 10; 
     }
     // Check top edge
@@ -248,11 +248,11 @@ function MENU_render_do_Set() {
     /////////////
     /////////////
 
-    if (!gINT_FIELDS[fMENU_SET_index]) {
-        gINT_FIELDS[fMENU_SET_index] = 0;
+    if (!INTS[fMENU_SET_index]) {
+        INTS[fMENU_SET_index] = 0;
     }
-    if (gINT_FIELDS[fMENU_cursorIndex] !== gINT_FIELDS[fMENU_SET_index]) {
-        MENU_state_do_Cursor(gINT_FIELDS[fMENU_SET_index]);
+    if (INTS[fMENU_cursorIndex] !== INTS[fMENU_SET_index]) {
+        MENU_state_do_Cursor(INTS[fMENU_SET_index]);
     }
     MENU_render_do_Cursor();
 
@@ -264,22 +264,22 @@ function MENU_render_do_Set() {
 }
 
 async function menuSet(context, target, optionList, left, top, NOTshouldFocus, index, onHideAction) {
-    gINT_FIELDS[fMENU_ticketId_pending] = gINT_FIELDS[fMENU_ticketId_counter]++;
+    INTS[fMENU_ticketId_pending] = INTS[fMENU_ticketId_counter]++;
     
     // TODO: These 'if (MENU_optionList)' and 'if (MENU_ArrayFrom_menuOptionList_children)' won't work because for some reason you decided that a menu could be "empty", thus these could be null and no longer would indicate that whether only the state function ran or both the state function and the render function ran or etc...
     if (MENU_optionList) {
         await MENU_state_do_hide();
     }
 
-    gINT_FIELDS[fMENU_left] = left;
-    gINT_FIELDS[fMENU_top] = top;
+    INTS[fMENU_left] = left;
+    INTS[fMENU_top] = top;
 
     if (index) {
-        gINT_FIELDS[fMENU_SET_index] = index;
+        INTS[fMENU_SET_index] = index;
     }
     else {
-        gINT_FIELDS[fMENU_SET_index] = 0; // an '|| 0' check in the preceeding 'if' would fall here anyways.
-        // TODO: Is this just 'gINT_FIELDS[fMENU_SET_index] = index ?? 0;'
+        INTS[fMENU_SET_index] = 0; // an '|| 0' check in the preceeding 'if' would fall here anyways.
+        // TODO: Is this just 'INTS[fMENU_SET_index] = index ?? 0;'
     }
 
     MENU_context = context;
@@ -302,8 +302,8 @@ function MENU_onMouseMove(event) {
     }
 
     let relativeY = event.clientY - (MENU_recentBoundingClientRectTop + 4 /*paddingTop*/);
-    let index = Math.floor(relativeY / gINT_FIELDS[fAPP_lineHeight]);
-    if (gINT_FIELDS[fMENU_cursorIndex] === index) {
+    let index = Math.floor(relativeY / INTS[fAPP_lineHeight]);
+    if (INTS[fMENU_cursorIndex] === index) {
         return;
     }
     
@@ -311,8 +311,8 @@ function MENU_onMouseMove(event) {
 }
 
 async function optionOnClick(indexClicked, elementClicked) {
-    if (gINT_FIELDS[fMENU_ticketId_drawn] === gINT_FIELDS[fMENU_ticketId_pending] && gINT_FIELDS[fMENU_ticketId_drawn] !== gINT_FIELDS[fMENU_last_handled_ticketId]) {
-        gINT_FIELDS[fMENU_last_handled_ticketId] = gINT_FIELDS[fMENU_ticketId_drawn];
+    if (INTS[fMENU_ticketId_drawn] === INTS[fMENU_ticketId_pending] && INTS[fMENU_ticketId_drawn] !== INTS[fMENU_last_handled_ticketId]) {
+        INTS[fMENU_last_handled_ticketId] = INTS[fMENU_ticketId_drawn];
         BYTES[byteMENU_HIDE_shouldRestoreFocus] = true;
         switch (MENU_context) {
             case 'EXPLORER':
@@ -333,7 +333,7 @@ async function optionOnClick(indexClicked, elementClicked) {
 function menuGetRelativeMouseEventData(event_clientY) {
     let paddingTop = 4;
     let relativeY = event_clientY - (MENU_recentBoundingClientRectTop + paddingTop);
-    return Math.floor(relativeY / gINT_FIELDS[fAPP_lineHeight]);
+    return Math.floor(relativeY / INTS[fAPP_lineHeight]);
 }
 
 function MENU_addEvents() {
@@ -364,7 +364,7 @@ function MENU_render_do_Cursor() {
     const cursorElement = document.getElementById('MENU_cursor');
     if (!cursorElement) return;
     // The menu 'padding-top: 4px'
-    cursorElement.style.top = 4 + (gINT_FIELDS[fAPP_lineHeight] * gINT_FIELDS[fMENU_cursorIndex]) + 'px';
+    cursorElement.style.top = 4 + (INTS[fAPP_lineHeight] * INTS[fMENU_cursorIndex]) + 'px';
 }
 
 function MENU_state_do_Cursor(index) {
@@ -374,7 +374,7 @@ function MENU_state_do_Cursor(index) {
     if (index < 0)
         index = 0;
 
-    gINT_FIELDS[fMENU_cursorIndex] = index;
+    INTS[fMENU_cursorIndex] = index;
 }
 
 function MENU_setCursorIndex(index) {
@@ -391,7 +391,7 @@ function MENU_setCursorIndex(index) {
 // mainly I feel anxious, I feel like a clown. I feel like I'm completely incompetent at coding.
 
 function MENU_validateCursor() {
-    if (gINT_FIELDS[fMENU_cursorIndex] >= MENU_ArrayFrom_menuOptionList_children.length) {
+    if (INTS[fMENU_cursorIndex] >= MENU_ArrayFrom_menuOptionList_children.length) {
         if (MENU_ArrayFrom_menuOptionList_children.length > 0) {
             MENU_setCursorIndex(MENU_ArrayFrom_menuOptionList_children.length - 1);
         }
@@ -400,8 +400,8 @@ function MENU_validateCursor() {
         }
         return;
     }
-    else if (gINT_FIELDS[fMENU_cursorIndex] < 0) {
-        gINT_FIELDS[fMENU_cursorIndex] = 0;
+    else if (INTS[fMENU_cursorIndex] < 0) {
+        INTS[fMENU_cursorIndex] = 0;
     }
 }
 
@@ -425,20 +425,20 @@ function MENU_onKeyDown(event) {
 
     switch (event.key) {
         case 'ArrowDown':
-            if (gINT_FIELDS[fMENU_cursorIndex] < MENU_ArrayFrom_menuOptionList_children.length - 1) {
-                MENU_setCursorIndex(gINT_FIELDS[fMENU_cursorIndex] + 1);
+            if (INTS[fMENU_cursorIndex] < MENU_ArrayFrom_menuOptionList_children.length - 1) {
+                MENU_setCursorIndex(INTS[fMENU_cursorIndex] + 1);
             }
             break;
         case 'ArrowUp':
-            if (gINT_FIELDS[fMENU_cursorIndex] > 0) {
-                MENU_setCursorIndex(gINT_FIELDS[fMENU_cursorIndex] - 1);
+            if (INTS[fMENU_cursorIndex] > 0) {
+                MENU_setCursorIndex(INTS[fMENU_cursorIndex] - 1);
             }
             break;
         case 'Escape':
             return menuHide(/*shouldRestoreFocus*/ true);
         case 'Enter':
         case ' ':
-            return optionOnClick(gINT_FIELDS[fMENU_cursorIndex], MENU_ArrayFrom_menuOptionList_children[gINT_FIELDS[fMENU_cursorIndex]]);
+            return optionOnClick(INTS[fMENU_cursorIndex], MENU_ArrayFrom_menuOptionList_children[INTS[fMENU_cursorIndex]]);
     }
 }
 

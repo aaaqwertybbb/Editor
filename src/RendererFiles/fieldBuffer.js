@@ -290,14 +290,14 @@ const CONST_EDI_cursor_htmlId = "EDI_cursor-1";
 ////////////////////////////
 
 /**
- * The code does not make local variables such as: 'const ints = const gINT_FIELDS',
+ * The code does not make local variables such as: 'const ints = const INTS',
  * because ES6 modules are expected (and thus module scopes remove the usefulness of making a local variable):
  *     index.html the script tag: 'type="module" src="..."'
  */
-const gINT_FIELDS = new Uint32Array(168);
+const INTS = new Uint32Array(168);
 
 const fEDI_lineHeight = 0;
-gINT_FIELDS[fEDI_lineHeight] = 20;
+INTS[fEDI_lineHeight] = 20;
 
 /** The first line of text that you should see shown in the UI given the current scrollTop */
 const fEDI_virtualIndexLine = 1;
@@ -308,7 +308,7 @@ const fEDI_lastReadNumber_scrollTop = 2;
 const fEDI_ONSCROLLvirtualIndexLine = 3;
 //throw new Error('-1');
 // This set used to be -1 to indicate a non existent value, 500 "seems to work" but a proof of it being an equivalent solution has not thoroughly been thought out, only a sort of "yeah that probably works" kinda vibe.
-gINT_FIELDS[fEDI_ONSCROLLvirtualIndexLine] = 500;
+INTS[fEDI_ONSCROLLvirtualIndexLine] = 500;
 
 /** Also is used from 'EDI_render_do_SetText()', and 'EDI_render_do_Resize()', not just 'EDI_render_do_Scroll()' */
 const fEDI_scrollEndDeadline = 4;
@@ -316,7 +316,7 @@ const fEDI_scrollEndDeadline = 4;
 const fEDI_ONSCROLLscrollTop = 5;
 //throw new Error('-1');
 // This set used to be -1 to indicate a non existent value, 500 "seems to work" but a proof of it being an equivalent solution has not thoroughly been thought out, only a sort of "yeah that probably works" kinda vibe.
-gINT_FIELDS[fEDI_ONSCROLLscrollTop] = 500;
+INTS[fEDI_ONSCROLLscrollTop] = 500;
 
 
 const fEDI_virtualCount = 6;
@@ -324,7 +324,7 @@ const fEDI_virtualCount = 6;
 const fEDI_sum_diffPositive = 7;
 
 const fEDI_ONSCROLLvirtualCount = 8;
-gINT_FIELDS[fEDI_ONSCROLLvirtualCount] = 0;
+INTS[fEDI_ONSCROLLvirtualCount] = 0;
 
 const fEDI_sum_diffNegative = 9;
 
@@ -347,7 +347,7 @@ const fEDI_detailRank3OriginLine = 14;
  * Whereas the line height is a css variable (and thus could cause layout for the entire application whenever it changes).
  */
 const fEDI_gutterWidthStyleValue = 15;
-gINT_FIELDS[fEDI_gutterWidthStyleValue] = 32;
+INTS[fEDI_gutterWidthStyleValue] = 32;
 
 /**
  * This is the sum of the 'fEDI_gutterWidthStyleValue()' in addition to paddig
@@ -355,7 +355,7 @@ gINT_FIELDS[fEDI_gutterWidthStyleValue] = 32;
  */
 const fEDI_gutterWidthTotal = 16;
 /** WARNING: This will not set 'gutterWidthTotal_withPxUnits' and thus is somewhat prone to a mistake at some point. */
-gINT_FIELDS[fEDI_gutterWidthTotal] = 32;
+INTS[fEDI_gutterWidthTotal] = 32;
 
 const F_didChangeTextDocument_version = 17;
 
@@ -404,12 +404,12 @@ const fEDI_pooledTrackedSyntax_length = 34;
 /**
  * Also is used from 'EDI_render_do_SetText()', and 'EDI_render_do_Resize()', not just 'EDI_render_do_Scroll()'
  * 
- * I'm gonna store this in the int32 array so that the editor scroll render function can access it from the already existing local reference of gINT_FIELDS.
+ * I'm gonna store this in the int32 array so that the editor scroll render function can access it from the already existing local reference of INTS.
  */
 const fEDI_intFalsey_isScrolling = 35;
 
 /**
- * I'm gonna store this in the int32 array so that the editor scroll render function can access it from the already existing local reference of gINT_FIELDS.
+ * I'm gonna store this in the int32 array so that the editor scroll render function can access it from the already existing local reference of INTS.
  */
 const fEDI_cursor_editKind = 36;
 
@@ -543,9 +543,9 @@ const fEDI_EDI_cursorBlinkLastTimestamp = 93;
 /** 'EDI_init' and 'EDI_drawHorizontalScrollbar' related */
 const fEDI_DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left = 94;
 
-/** TODO: What happens when you overflow 'gINT_FIELDS[fEDI_prevVli]' does it overflow such that you're the correct diff? */
+/** TODO: What happens when you overflow 'INTS[fEDI_prevVli]' does it overflow such that you're the correct diff? */
 const fEDI_prevVli = 95;
-/** TODO: What happens when you overflow 'gINT_FIELDS[fEDI_prevVli]' does it overflow such that you're the correct diff? */
+/** TODO: What happens when you overflow 'INTS[fEDI_prevVli]' does it overflow such that you're the correct diff? */
 const fEDI_currVli = 96;
 
 // I don't think 'slice' is in LSP specification but I need to start like this cause it is only way I'll get something "initially working".
@@ -572,7 +572,7 @@ const fAUTOCOMPLETE_scrollTop = 110;
 const fAUTOCOMPLETE_scrollEndDeadline = 111;
 
 const fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = 112;
-gINT_FIELDS[fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] = 2;
+INTS[fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] = 2;
 
 /**
  * This value ought to be an int (no decimal places) due to its high frequency usage in drawing UI,
@@ -581,7 +581,7 @@ gINT_FIELDS[fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] = 2;
  * TODO: (speculation) I've never liked saying "line height" I believe that deals with the vertical alignment of text within some container is "line height" a good wording.
  * */
 const fAPP_lineHeight = 113;
-gINT_FIELDS[fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] = 20;
+INTS[fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] = 20;
 
 /**
  * start it at 1 because you thought about starting it at 0 then using a prefix incrementation to ensure the 0 state is never used as a means of detecting an empty state
@@ -598,7 +598,7 @@ gINT_FIELDS[fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] = 20;
  * okay yeah it is a ticket dispenser we're good
  */
 const fWIDGET_ticketId_counter = 114;
-gINT_FIELDS[fWIDGET_ticketId_counter] = 1;
+INTS[fWIDGET_ticketId_counter] = 1;
 
 const fWIDGET_ticketId_pending = 115;
 const fWIDGET_ticketId_drawn = 116;
@@ -609,7 +609,7 @@ const fWIDGET_top = 118;
 const fWIDGETrenderKind_Show_countOfPendingRequests = 119;
 
 const fMENU_ticketId_counter = 120;
-gINT_FIELDS[fMENU_ticketId_counter] = 1;
+INTS[fMENU_ticketId_counter] = 1;
 
 /** TODO: It might read better to make this 'null' or something after you've drawn the pending. */
 const fMENU_ticketId_pending = 121;
@@ -645,7 +645,7 @@ const fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex = 135
 
 /** 8 or the measured value */
 const fEXPLORER_firstSpanWidthValue = 136;
-gINT_FIELDS[fEXPLORER_firstSpanWidthValue] = 8;
+INTS[fEXPLORER_firstSpanWidthValue] = 8;
 
 const fEXPLORER_menuOptionX = 137;
 const fEXPLORER_menuOptionY = 138;
@@ -664,7 +664,7 @@ const fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop = 144;
 
 /** Hacky: Must initialize to a number other than 0 or else nothing renders. */
 const fEXPLORER_TreeViewDirector_virtualCount = 145
-gINT_FIELDS[fEXPLORER_TreeViewDirector_virtualCount] = 1;
+INTS[fEXPLORER_TreeViewDirector_virtualCount] = 1;
 
 const fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex = 146;
 const fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount = 147;
@@ -686,7 +686,7 @@ const fEXPLORER_TreeViewDirector_caseThreeOrigin = 155;
 
 /** TODO: what height should this start at? applicationRendererRoot.ts will eventually run initialization logic that actually does the measuring. */
 const fEXPLORER_TreeViewDirector_itemHeightNumber = 156;
-gINT_FIELDS[fEXPLORER_TreeViewDirector_itemHeightNumber] = 20;
+INTS[fEXPLORER_TreeViewDirector_itemHeightNumber] = 20;
 
 const fEXPLORER_TreeViewDirector_SET_ITEMS_itemHeightNumber = 157;
 
@@ -709,7 +709,7 @@ const fEXPLORER_TreeViewDirector_pullData_result_count = 165;
 const fEDI_getLineAndColumnIndices_indexLine = 166;
 const fEDI_getLineAndColumnIndices_indexColumn = 167;
 
-// gINT_FIELDS[fEDI_getLineAndColumnIndices_indexColumn]
+// INTS[fEDI_getLineAndColumnIndices_indexColumn]
 
 // inclusive final index is 138
 
@@ -742,7 +742,7 @@ a fast bitwise AND mask (index & (size - 1)).
 // ... / figure out details of caching so you read them all in one go if possible.
 
 // TODO: Move all the other smi's here
-// TODO: a local copy of 'gINT_FIELDS' is likely always a meaningful performance gain once you've moved everything because of how much state is being stored here, but it still depends maybe some functions only access it once or something etc...
+// TODO: a local copy of 'INTS' is likely always a meaningful performance gain once you've moved everything because of how much state is being stored here, but it still depends maybe some functions only access it once or something etc...
 
 /*
 The smi's are when you do a collection you start at the roots

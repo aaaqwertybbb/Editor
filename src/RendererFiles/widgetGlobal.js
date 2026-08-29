@@ -40,7 +40,7 @@ let WIDGET_restoreFocusToElementOverride = null;
 function WIDGET_render_request(renderKind) {
     if (WIDGET_renderKindArray[WIDGET_renderKindArray.length - 1] !== renderKind) {
         WIDGET_renderKindArray.push(renderKind);
-        if (renderKind === WIDGETrenderKind_Show) gINT_FIELDS[fWIDGETrenderKind_Show_countOfPendingRequests]++;
+        if (renderKind === WIDGETrenderKind_Show) INTS[fWIDGETrenderKind_Show_countOfPendingRequests]++;
     }
     
     if (!BYTES[byteWIDGET_isRenderPending]) {
@@ -55,7 +55,7 @@ function WIDGET_render_do() {
     while (renderKind = WIDGET_renderKindArray.shift()) {
         switch (renderKind) {
             case WIDGETrenderKind_Show:
-                if (gINT_FIELDS[fWIDGETrenderKind_Show_countOfPendingRequests]-- > 1) break;
+                if (INTS[fWIDGETrenderKind_Show_countOfPendingRequests]-- > 1) break;
                 WIDGET_render_do_Show();
                 break;
             case WIDGETrenderKind_Hide:
@@ -93,7 +93,7 @@ function WIDGET_render_do_Show() {
         WIDGET_restoreFocusToElement_drawn = document.activeElement;
     }
     
-    gINT_FIELDS[fWIDGET_ticketId_drawn] = gINT_FIELDS[fWIDGET_ticketId_pending];
+    INTS[fWIDGET_ticketId_drawn] = INTS[fWIDGET_ticketId_pending];
 
     switch (BYTES[byteWIDGET_WidgetKind_drawn]) {
         case WidgetKind_InputText:
@@ -107,13 +107,13 @@ function WIDGET_render_do_Show() {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
-    let finalLeft = gINT_FIELDS[fWIDGET_left];
-    let finalTop = gINT_FIELDS[fWIDGET_top];
+    let finalLeft = INTS[fWIDGET_left];
+    let finalTop = INTS[fWIDGET_top];
     //let rect = WIDGET_element.getBoundingClientRect();
 
     // Check right edge
     //if (rect.right > viewportWidth) {
-    if (gINT_FIELDS[fWIDGET_left] + WIDGET_element.offsetWidth > viewportWidth) {
+    if (INTS[fWIDGET_left] + WIDGET_element.offsetWidth > viewportWidth) {
       finalLeft = viewportWidth - WIDGET_element.offsetWidth - 10; // 10px padding boundary
     }
     // Check left edge (fallback if menu is wider than screen)
@@ -121,7 +121,7 @@ function WIDGET_render_do_Show() {
 
     // Check bottom edge
     //if (rect.bottom > viewportHeight) {
-    if (gINT_FIELDS[fWIDGET_top] + WIDGET_element.offsetHeight > viewportHeight) {
+    if (INTS[fWIDGET_top] + WIDGET_element.offsetHeight > viewportHeight) {
       finalTop = viewportHeight - WIDGET_element.offsetHeight - 10; 
     }
     // Check top edge
@@ -148,7 +148,7 @@ function WIDGET_render_do_Show() {
  */
 async function WIDGET_show(widgetKind, left, top, placeholder, value, target, callback) {
 
-    gINT_FIELDS[fWIDGET_ticketId_pending] = gINT_FIELDS[fWIDGET_ticketId_counter]++;
+    INTS[fWIDGET_ticketId_pending] = INTS[fWIDGET_ticketId_counter]++;
     BYTES[byteWIDGET_WidgetKind_pending] = widgetKind;
 
     // TODO: Does this go before the above ticketId logic? I'm not sure but I feel confident that it makes more sense at the least above the '_left and _top' logic.
@@ -157,8 +157,8 @@ async function WIDGET_show(widgetKind, left, top, placeholder, value, target, ca
     }
     WIDGET_currentCallback = callback;
 
-    gINT_FIELDS[fWIDGET_left] = left;
-    gINT_FIELDS[fWIDGET_top] = top;
+    INTS[fWIDGET_left] = left;
+    INTS[fWIDGET_top] = top;
     WIDGET_placeholder = placeholder;
     WIDGET_value = value;
     WIDGET_target = target;
@@ -190,7 +190,7 @@ function WIDGET_render_do_Hide() {
 async function WIDGET_state_do_Hide(shouldRestoreFocus) {
 
     // TODO: This is believed to prevent any funny business where a UI is being shown, asked to be hidden, submitted before the hide rAF. Once this is confirmed to be true (or other...) remove or update this comment accordingly.
-    gINT_FIELDS[fWIDGET_ticketId_pending] = gINT_FIELDS[fWIDGET_ticketId_counter]++;
+    INTS[fWIDGET_ticketId_pending] = INTS[fWIDGET_ticketId_counter]++;
 
     BYTES[byteWIDGET_shouldRestoreFocus] = shouldRestoreFocus;
     if (WIDGET_currentCallback) {
@@ -214,12 +214,12 @@ async function WIDGET_hide(shouldRestoreFocus) {
  * 
  * This function is used for the UI event handlers.
  * Any internal "completion" due to for example invoking 'hide' when a UI" is being shown skips this function.
- * If anyone desires to in the future change this such that the internal "completion" uses this function, take care because 'gINT_FIELDS[fWIDGET_ticketId_pending] === gINT_FIELDS[fWIDGET_ticketId_drawn]'
+ * If anyone desires to in the future change this such that the internal "completion" uses this function, take care because 'INTS[fWIDGET_ticketId_pending] === INTS[fWIDGET_ticketId_drawn]'
  * isn't quite as sensible when dealing with internal "completion" that needs to cancel the previous UI.
  */
 async function WIDGET_completeForm(resultObject) {
     if (WIDGET_currentCallback) {
-        if (gINT_FIELDS[fWIDGET_ticketId_pending] !== gINT_FIELDS[fWIDGET_ticketId_drawn]) {
+        if (INTS[fWIDGET_ticketId_pending] !== INTS[fWIDGET_ticketId_drawn]) {
             resultObject.isCancelled = true;
         }
         // Avoid duplicate submissions

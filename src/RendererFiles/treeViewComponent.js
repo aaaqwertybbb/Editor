@@ -333,11 +333,11 @@ class TreeViewComponent {
         if (this.itemListElement.children.length !== this.virtualCount) {
             this.itemListElement.innerHTML = '';
 
-            // padding of 2ch (the style attribute receives the width as a pixel by using 'gINT_FIELDS[fEXPLORER_firstSpanWidthValue]' as a baseline (not quite ch))
+            // padding of 2ch (the style attribute receives the width as a pixel by using 'INTS[fEXPLORER_firstSpanWidthValue]' as a baseline (not quite ch))
             // TODO: this is all very inaccurate and prone to eventual rounding issues due to not monospace font.
             //
             this.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = 2;
-            let widthAttributeValueNumber = Math.ceil((this.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING + 2/*padding*/) * gINT_FIELDS[fEXPLORER_firstSpanWidthValue]);
+            let widthAttributeValueNumber = Math.ceil((this.WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING + 2/*padding*/) * INTS[fEXPLORER_firstSpanWidthValue]);
             // This is actually more complicated you have to track whether you go above the minimum requirement lest you add 1 character over and over in width just to keep redrawing widths.
             //if (widthAttributeValueNumber < this.lastReadNumber_offsetWidth) {
             //    widthAttributeValueNumber = this.lastReadNumber_offsetWidth;
@@ -764,8 +764,8 @@ class TreeViewNodeList {
     getElementAt(index_abstract) {
         let index_literal = index_abstract * this.field_count;
         BYTES[byteTreeView_pooledNode_nodeKind] = this.data_literal[index_literal + this.nodeKind_offset];
-        gINT_FIELDS[fTreeView_pooledNode_key] = this.data_literal[index_literal + this.key_offset];
-        gINT_FIELDS[fTreeView_pooledNode_depth] = this.data_literal[index_literal + this.depth_offset];
+        INTS[fTreeView_pooledNode_key] = this.data_literal[index_literal + this.key_offset];
+        INTS[fTreeView_pooledNode_depth] = this.data_literal[index_literal + this.depth_offset];
     }
 
     getKey(index_abstract) {

@@ -9143,4 +9143,11 @@ don't misinterpret lol
 
 I'm eating a 1lb of chicken typing 1 hand
 
+I still type 1 hand:
+
+I listen it on loop as an opposite
+the "but it's always..."
+
+not anymore kinda deal reminder
+
 */

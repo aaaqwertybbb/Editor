@@ -201,7 +201,7 @@ async function window_myAPI_onMessage(data) {
         EDI_trackedSyntaxList = trackedSyntaxList;
     }
     else if (data.method === 'textDocument/hover') {
-        if (!gBYTE_FIELDS[byteEDI_mousemove_eventListener_isActive]) {
+        if (!BYTES[byteEDI_mousemove_eventListener_isActive]) {
             TOOLTIP_show(data.result);
         }
     }

@@ -199,7 +199,7 @@ function EDI_cursor_hasSelection() {
 }
 
 /**
- * The code that clears the editor is dependent on this method NOT clearing 'gBYTE_FIELDS[byteEDI_cursor_selectionDivExists]'
+ * The code that clears the editor is dependent on this method NOT clearing 'BYTES[byteEDI_cursor_selectionDivExists]'
  * 
  * Somewhat duplicated code: This messes with the language features if I invoke clear() in the constructor, it puts "| undefined" on all the types.
  */
@@ -230,7 +230,7 @@ function EDI_cursor_clear() {
 
     EDI_cursor_enterKey_newLinePlusIndentation_byteList = null;
     EDI_cursor_cached_indentation_string = null;
-    gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind] = EnterKeyEventKind_None;
+    BYTES[byteEDI_cursor_enterKeyEventKind] = EnterKeyEventKind_None;
 
     ints[fEDI_cursor_editLineFeedCount] = 0;
     EDI_cursor_edit_flagLineChanged = -1;
@@ -361,7 +361,7 @@ function EDI_render_do(timestamp) {
         }
     }
     
-    gBYTE_FIELDS[byteEDI_isRenderPending] = false; // Reset the lock
+    BYTES[byteEDI_isRenderPending] = false; // Reset the lock
 }
 
 function EDI_render_do_cursor(timestamp) {
@@ -436,8 +436,8 @@ function EDI_render_do_SetText(timestamp) {
     gINT_FIELDS[fEDI_ONSCROLLvirtualIndexLine] = gINT_FIELDS[fEDI_virtualIndexLine];
 
     gINT_FIELDS[fEDI_scrollEndDeadline] = timestamp + 1000;
-    if (!gBYTE_FIELDS[byteisCheckingTrailingEdge]) {
-        gBYTE_FIELDS[byteisCheckingTrailingEdge] = true;
+    if (!BYTES[byteisCheckingTrailingEdge]) {
+        BYTES[byteisCheckingTrailingEdge] = true;
         requestAnimationFrame(EDI_render_do_ScrollTrailingEdgeCheck);
     }
 }
@@ -448,8 +448,8 @@ function EDI_render_request(renderKind) {
         EDI_renderKindArray.push(renderKind);
     }
     
-    if (!gBYTE_FIELDS[byteEDI_isRenderPending]) {
-        gBYTE_FIELDS[byteEDI_isRenderPending] = true;
+    if (!BYTES[byteEDI_isRenderPending]) {
+        BYTES[byteEDI_isRenderPending] = true;
         requestAnimationFrame(EDI_render_do);
     }
 }
@@ -795,11 +795,11 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
 
     ints[fEDI_intFalsey_isScrolling] = 1;
 
-    // TODO: If you can prove that the leading edge or 'ints[fEDI_intFalsey_isScrolling]' is "equivalent" to 'gBYTE_FIELDS[byteisCheckingTrailingEdge]' then you can reduce the code here.
+    // TODO: If you can prove that the leading edge or 'ints[fEDI_intFalsey_isScrolling]' is "equivalent" to 'BYTES[byteisCheckingTrailingEdge]' then you can reduce the code here.
     //
     // If we aren't tracking the trailing edge yet, start the rAF countdown loop
-    if (!gBYTE_FIELDS[byteisCheckingTrailingEdge]) {
-        gBYTE_FIELDS[byteisCheckingTrailingEdge] = true;
+    if (!BYTES[byteisCheckingTrailingEdge]) {
+        BYTES[byteisCheckingTrailingEdge] = true;
         requestAnimationFrame(EDI_render_do_ScrollTrailingEdgeCheck);
     }
 
@@ -878,7 +878,7 @@ function EDI_render_do_ScrollTrailingEdgeCheck(timestamp) {
  */
 function EDI_onScroll_TrailingEdge() {
     gINT_FIELDS[fEDI_intFalsey_isScrolling] = 0;
-    gBYTE_FIELDS[byteisCheckingTrailingEdge] = false; // Reset the flag here
+    BYTES[byteisCheckingTrailingEdge] = false; // Reset the flag here
     EDI_render_request(RenderKind_SyntaxHighlighting);
 }
 
@@ -1139,7 +1139,7 @@ function EDI_state_clear() {
     set_EDI_recentBoundingClientRect_isNull_intFalsey(1);
     EDI_textSourceIdentifier = '';
     EDI_FORMATTED_textSourceIdentifier = '';
-    gBYTE_FIELDS[byteEDI_extensionKind] = ExtensionKind_None;
+    BYTES[byteEDI_extensionKind] = ExtensionKind_None;
     set_EDI_fileStartsWithBom(false);
     EDI_lineEndString = null;
     EDI_lineEndPositionList.clear();
@@ -1179,8 +1179,8 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
 
     EDI_textSourceIdentifier = textSourceIdentifier;
     EDI_FORMATTED_textSourceIdentifier = FORMATTED_textSourceIdentifier;
-    gBYTE_FIELDS[byteEDI_extensionKind] = extensionKind;
-    EDI_language_line_lex_SET(gBYTE_FIELDS[byteEDI_extensionKind]);
+    BYTES[byteEDI_extensionKind] = extensionKind;
+    EDI_language_line_lex_SET(BYTES[byteEDI_extensionKind]);
     EDI_lineEndString = lineEndString; // use 'lineEndString' for the within-loop checks of '!lineEndString' to avoid reading global scope during loop when 'lineEndString' is equivalent.
 
     let local_EDI_lineEndPositionList = EDI_lineEndPositionList;
@@ -1254,7 +1254,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
 
     update_verticalVirtualizationBoundary();
 
-    //switch (gBYTE_FIELDS[byteEDI_extensionKind]) {
+    //switch (BYTES[byteEDI_extensionKind]) {
     //    case ExtensionKind_JavaScript:
     //        // This 'JS_full_lex' only runs when you open a file for the first time.
     //        // The logic likely has some JIT overhead that is long term persistent in the GC. I have no proof of this but I need to look into it.
@@ -1337,7 +1337,7 @@ function update_virtualCount() {
 function EDI_drawGutter_Width() {
     const ints = gINT_FIELDS;
     let count = EDI_lineEndPositionList.count;
-    if (gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind] !== EnterKeyEventKind_None) {
+    if (BYTES[byteEDI_cursor_enterKeyEventKind] !== EnterKeyEventKind_None) {
         count += 1;
     }
     let digitCountOfLargestLineNumber = positiveNumbersOnly_countDigitsLoop(count);
@@ -1553,7 +1553,7 @@ function EDI_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
         if (ints[fEDI_cursor_editPosition] <= ints[fEDI_pooledTrackedSyntax_start]) {
             EDI_trackedSyntaxList.setStart(i, ints[fEDI_pooledTrackedSyntax_start] + ints[fEDI_cursor_editLength]);
         }
-        else if (gBYTE_FIELDS[byteEDI_pooledTrackedSyntax_trackedSyntaxKind] === TrackedSyntaxKind_Comment &&
+        else if (BYTES[byteEDI_pooledTrackedSyntax_trackedSyntaxKind] === TrackedSyntaxKind_Comment &&
                 ints[fEDI_cursor_editPosition] === ints[fEDI_pooledTrackedSyntax_start] + 1) {
 
             // TODO: Insertion of '*' probably shouldn't remove.
@@ -1607,7 +1607,7 @@ function EDI_finalizeEdit_Enter(indexLine_editOccurredOn) {
     EDI_trackedSyntaxList_inefficientUpdateStartAndLength(ints[fEDI_cursor_editPosition], ints[fEDI_cursor_editLength]);
 
     // throws an exception if 'EnterKeyEventKind_None' (...or falsey).
-    if (!gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind] || gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind] === EnterKeyEventKind_None) { EDI_finalizeEdit_ClearEditState(); throw new Error('if (!enterKeyEventKind...)'); }
+    if (!BYTES[byteEDI_cursor_enterKeyEventKind] || BYTES[byteEDI_cursor_enterKeyEventKind] === EnterKeyEventKind_None) { EDI_finalizeEdit_ClearEditState(); throw new Error('if (!enterKeyEventKind...)'); }
 
     EDI_textByteList.insertBytes(ints[fEDI_cursor_editPosition], EDI_cursor_enterKey_newLinePlusIndentation_byteList.bytes, /*offset*/ 0, EDI_cursor_enterKey_newLinePlusIndentation_byteList.count);
 
@@ -2198,7 +2198,7 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
             // TODO: This needs to remove more than 1 at a time
             EDI_trackedSyntaxList.removeAt(i, 1);
         }
-        else if (gBYTE_FIELDS[byteEDI_pooledTrackedSyntax_trackedSyntaxKind] === TrackedSyntaxKind_Comment &&
+        else if (BYTES[byteEDI_pooledTrackedSyntax_trackedSyntaxKind] === TrackedSyntaxKind_Comment &&
                 (ints[fEDI_pooledTrackedSyntax_start] + 1) >= ints[fEDI_cursor_editPosition] && (ints[fEDI_pooledTrackedSyntax_start] + 1) < ints[fEDI_cursor_editPosition] + ints[fEDI_cursor_editLength]) {
             // TODO: You can invalidate a >1 char long by removing beyond just the first unless a character afterwards falls into place that is valid by chance
             //
@@ -2278,8 +2278,8 @@ function enqueueLSPNotification(payload) {
 }
 
 async function processLspQueue() {
-    if (gBYTE_FIELDS[byteisProcessingLspQueue]) return;
-    gBYTE_FIELDS[byteisProcessingLspQueue] = true;
+    if (BYTES[byteisProcessingLspQueue]) return;
+    BYTES[byteisProcessingLspQueue] = true;
 
     while (lspQueue.length > 0) {
         const item = lspQueue.shift(); // Guarantees strict FIFO order
@@ -2300,7 +2300,7 @@ async function processLspQueue() {
         }
     }
 
-    gBYTE_FIELDS[byteisProcessingLspQueue] = false;
+    BYTES[byteisProcessingLspQueue] = false;
 }
 
 /**
@@ -2421,7 +2421,7 @@ function EDI_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_I) 
                 let subend = trackedSyntaxEnd > lineEnd ? lineEnd : trackedSyntaxEnd;
                 span.textContent = EDI_decoder.decode(EDI_textByteList.bytes.subarray(substart, subend));
                 substart += (subend - substart);
-                switch (gBYTE_FIELDS[byteEDI_pooledTrackedSyntax_trackedSyntaxKind]) {
+                switch (BYTES[byteEDI_pooledTrackedSyntax_trackedSyntaxKind]) {
                     case TrackedSyntaxKind_Comment:
                         span.className = 'eCM';
                         break;
@@ -2671,7 +2671,7 @@ function EDI_drawCursor(NOTscrollCursorIntoView) {
 
     text += '(' + ints[fEDI_cursor_indexLine] + ', ' + ints[fEDI_cursor_indexColumn] + ')';
     
-    if (gBYTE_FIELDS[byteDIALOG_Settings_editorDebugShowAdjacentCharacters]) {
+    if (BYTES[byteDIALOG_Settings_editorDebugShowAdjacentCharacters]) {
         let previous = EDI_getCharacterPrevious(ints[fEDI_cursor_indexColumn], EDI_getPositionIndex_cursor());
         if (previous === '\n') previous = '\\n';
         else if (previous === '\t') previous = '\\t';
@@ -2799,17 +2799,17 @@ function EDI_getLineAndColumnIndices(positionIndex) {
 }
 
 /**
- * This function only clears both the 'gBYTE_FIELDS[byteEDI_cursor_selectionDivExists]' and the HTML associated with the selection NOT the actual selection position properties of the cursor.
+ * This function only clears both the 'BYTES[byteEDI_cursor_selectionDivExists]' and the HTML associated with the selection NOT the actual selection position properties of the cursor.
  */
 function EDI_clearSelectionStyle() {
     let shouldExistSelectionDiv = false;
-    if (gBYTE_FIELDS[byteEDI_cursor_selectionDivExists]) {
+    if (BYTES[byteEDI_cursor_selectionDivExists]) {
         for (var i = 0; i < EDI_presentation.children.length; i++) {
             if (EDI_presentation.children[i].id === CONST_EDI_cursor_htmlId) {
                 let textSelectionDiv = EDI_presentation.children[i];
                 if (!shouldExistSelectionDiv) {
                     EDI_presentation.removeChild(textSelectionDiv);
-                    gBYTE_FIELDS[byteEDI_cursor_selectionDivExists] = false;
+                    BYTES[byteEDI_cursor_selectionDivExists] = false;
                 }
                 break;
             }
@@ -2840,13 +2840,13 @@ function EDI_createStyleForSelection() {
 
         let textSelectionDiv;
 
-        if (gBYTE_FIELDS[byteEDI_cursor_selectionDivExists]) {
+        if (BYTES[byteEDI_cursor_selectionDivExists]) {
             for (var i = 0; i < EDI_presentation.children.length; i++) {
                 if (EDI_presentation.children[i].id === CONST_EDI_cursor_htmlId) {
                     textSelectionDiv = EDI_presentation.children[i];
                     if (!shouldExistSelectionDiv) {
                         EDI_presentation.removeChild(textSelectionDiv);
-                        gBYTE_FIELDS[byteEDI_cursor_selectionDivExists] = false;
+                        BYTES[byteEDI_cursor_selectionDivExists] = false;
                     }
                     break;
                 }
@@ -2857,10 +2857,10 @@ function EDI_createStyleForSelection() {
             textSelectionDiv.id = CONST_EDI_cursor_htmlId;
             textSelectionDiv.style.display = 'contents';
             EDI_presentation.appendChild(textSelectionDiv);
-            gBYTE_FIELDS[byteEDI_cursor_selectionDivExists] = true;
+            BYTES[byteEDI_cursor_selectionDivExists] = true;
         }
 
-        if (!gBYTE_FIELDS[byteEDI_cursor_selectionDivExists]) return;
+        if (!BYTES[byteEDI_cursor_selectionDivExists]) return;
 
         // TODO: only somewhat simple viewport based virtualization is implemented from what I remember. i.e.: I think the divs are re-used, but every div is redrawn for the viewport, rather than only recalculating the css for the divs that came or left the viewport.
 
@@ -2962,7 +2962,7 @@ function EDI_createStyleForSelection() {
 
 function EDI_createStyleForSelection_indentMore() {
     let textSelectionDiv;
-    if (gBYTE_FIELDS[byteEDI_cursor_selectionDivExists]) {
+    if (BYTES[byteEDI_cursor_selectionDivExists]) {
         for (var i = 0; i < EDI_presentation.children.length; i++) {
             if (EDI_presentation.children[i].id === CONST_EDI_cursor_htmlId) {
                 textSelectionDiv = EDI_presentation.children[i];
@@ -3173,12 +3173,12 @@ function EDI_onMouseMove_WRAPIT(event) {
             EDI_onMouseMoveDetailRankOne(indexLine, indexColumn);
         }
 
-        if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
+        if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
             EDI_cursorBlink_startChecking();
         }
     }
     else {
-        gBYTE_FIELDS[byteEDI_mousemove_eventListener_isActive] = false;
+        BYTES[byteEDI_mousemove_eventListener_isActive] = false;
         EDI_baseElement.removeEventListener('mousemove', EDI_onMouseMove_WRAPIT);
     }
 }
@@ -3968,7 +3968,7 @@ function EDI_editEvent(editKind, event, clipboardContent) {
             throw new Error(`The EditKind:${editKind} was not recognized.`);
     }
 
-    if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
+    if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
     }
 }
@@ -4279,7 +4279,7 @@ function EDI_editEvent_checkFor_NOTcanBatch_Enter(event) {
 /**
  * Any code that wants to stop then start the cursor blinking again needs to:
  * - enqueue rAF for drawing the cursor
- * - *optional* check if statement for 'gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]' to avoid redundant invocations of 'EDI_cursorBlink_startChecking'
+ * - *optional* check if statement for 'BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]' to avoid redundant invocations of 'EDI_cursorBlink_startChecking'
  * - invoke 'EDI_cursorBlink_startChecking'
  * - downstream trigger the rAF for drawing the cursor wherein 'gINT_FIELDS[fEDI_EDI_cursorBlinkLastTimestamp]' gets set to the rAF timestamp.
  *     - or, modify some other part of the rAF pipeline (only if necessary) / etc...
@@ -4289,7 +4289,7 @@ function EDI_editEvent_checkFor_NOTcanBatch_Enter(event) {
 function EDI_cursorBlink_trailingEdge(timestamp) {
     const time = timestamp - gINT_FIELDS[fEDI_EDI_cursorBlinkLastTimestamp];
     if (time >= 500) {
-        gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge] = false;
+        BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge] = false;
         // TODO: This is a timing issue of the rAF vs you losing focus on the editor.
         EDI_cursor_cursorElement.classList.add('EDI_cursor_focus');
         gINT_FIELDS[fEDI_EDI_cursorBlinkLastTimestamp] = 0;
@@ -4300,7 +4300,7 @@ function EDI_cursorBlink_trailingEdge(timestamp) {
 }
 
 function EDI_cursorBlink_startChecking() {
-    gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge] = true;
+    BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge] = true;
     EDI_cursor_cursorElement.classList.remove('EDI_cursor_focus');
     requestAnimationFrame(EDI_cursorBlink_trailingEdge);
 }
@@ -4512,7 +4512,7 @@ function EDI_onKeyDown_ArrowLeft(event) {
     }
     ints[fEDI_cursor_STORED_indexColumn] = ints[fEDI_cursor_indexColumn];
     EDI_render_request(RenderKind_Cursor_n);
-    if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
+    if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
     }
     //ints[fEDI_offsetColumn] = ints[fEDI_offsetColumn] + ints[fEDI_cursor_editLength];
@@ -4530,7 +4530,7 @@ function EDI_onKeyDown_ArrowDown(event) {
     else {
         EDI_arrowDown(/*shiftKey*/ event.shiftKey);
         EDI_render_request(RenderKind_Cursor_n);
-        if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
+        if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
             EDI_cursorBlink_startChecking();
         }
     }
@@ -4560,7 +4560,7 @@ function EDI_onKeyDown_ArrowUp(event) {
         }
         EDI_postKeyboardMovementSelectionLogic(event.shiftKey);
         EDI_render_request(RenderKind_Cursor_n);
-        if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
+        if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
             EDI_cursorBlink_startChecking();
         }
     }
@@ -4630,7 +4630,7 @@ function EDI_onKeyDown_ArrowRight(event) {
     }
     ints[fEDI_cursor_STORED_indexColumn] = ints[fEDI_cursor_indexColumn];
     EDI_render_request(RenderKind_Cursor_n);
-    if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
+    if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
     }
     //ints[fEDI_offsetColumn] = ints[fEDI_offsetColumn] + ints[fEDI_cursor_editLength];
@@ -4660,7 +4660,7 @@ function EDI_onKeyDown_Home(event) {
     EDI_postKeyboardMovementSelectionLogic(event.shiftKey);
     gINT_FIELDS[fEDI_cursor_STORED_indexColumn] = gINT_FIELDS[fEDI_cursor_indexColumn];
     EDI_render_request(RenderKind_Cursor_n);
-    if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
+    if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
     }
     return false;
@@ -4680,7 +4680,7 @@ function EDI_onKeyDown_End(event) {
     EDI_postKeyboardMovementSelectionLogic(event.shiftKey);
     gINT_FIELDS[fEDI_cursor_STORED_indexColumn] = gINT_FIELDS[fEDI_cursor_indexColumn];
     EDI_render_request(RenderKind_Cursor_n);
-    if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
+    if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
     }
     return false;
@@ -4703,7 +4703,7 @@ function EDI_onKeyDown_PageDown(event) {
         // TODO: allow someone to select via this keybind, but for now it causes a bad selection if you { 'Ctrl' + 'a' } then use it so I'm clearing any active selection here for now.
         gINT_FIELDS[fEDI_cursor_selectionAnchor] = gINT_FIELDS[fEDI_cursor_selectionEnd];
         EDI_render_request(RenderKind_Cursor_n);
-        if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
+        if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
             EDI_cursorBlink_startChecking();
         }
     }
@@ -4726,7 +4726,7 @@ function EDI_onKeyDown_PageUp(event) {
         // TODO: allow someone to select via this keybind, but for now it causes a bad selection if you { 'Ctrl' + 'a' } then use it so I'm clearing any active selection here for now.
         gINT_FIELDS[fEDI_cursor_selectionAnchor] = gINT_FIELDS[fEDI_cursor_selectionEnd];
         EDI_render_request(RenderKind_Cursor_n);
-        if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
+        if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
             EDI_cursorBlink_startChecking();
         }
     }
@@ -4779,7 +4779,7 @@ async function EDI_onKeyDown_keyLengthEqualsOne_ctrlKey(event) {
             await EDI_copySelection();
             EDI_removeSelection(); // TODO: Multicursor bad
             EDI_render_request(RenderKind_Cursor_n);
-            if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
+            if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
                 EDI_cursorBlink_startChecking(); // TODO: this one is especially questionable since it invoked 'EDI_removeSelection' prior to the draw cursor?
             }
             break;
@@ -4853,7 +4853,7 @@ function EDI_onMouseDown(event) {
     }
 
     if (event.button === 0) {
-        gBYTE_FIELDS[byteEDI_mousemove_eventListener_isActive] = true;
+        BYTES[byteEDI_mousemove_eventListener_isActive] = true;
         EDI_baseElement.addEventListener('mousemove', EDI_onMouseMove_WRAPIT);
     }
 
@@ -4883,7 +4883,7 @@ function EDI_onMouseDown(event) {
     if (rX < -1 * CONST_EDI_gutterPaddingRight) {
         set_EDI_detailRank(3);
         EDI_onMouseDownDetailRankThree(event.button, event.shiftKey, indexLine, indexColumn);
-        if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
+        if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
             EDI_cursorBlink_startChecking();
         }
         return;
@@ -4902,7 +4902,7 @@ function EDI_onMouseDown(event) {
         EDI_onMouseDownDetailRankOne(event.button, event.shiftKey, indexLine, indexColumn);
     }
 
-    if (!gBYTE_FIELDS[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
+    if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
     }
 }
@@ -5465,7 +5465,7 @@ function EDI_render_do_IndentLess() {
 
         /////////////////////// P_1
         let textSelectionDiv;
-        if (gBYTE_FIELDS[byteEDI_cursor_selectionDivExists]) {
+        if (BYTES[byteEDI_cursor_selectionDivExists]) {
             for (var i = 0; i < EDI_presentation.children.length; i++) {
                 if (EDI_presentation.children[i].id === CONST_EDI_cursor_htmlId) {
                     textSelectionDiv = EDI_presentation.children[i];
@@ -6535,7 +6535,7 @@ function EDI_render_do_EnterKey() {
         // - "among a line":
         // - "fallback case": this last case is a fallback case and redraws the entire viewport in the case that the UI is in an "unpredictable state" and cannot be optimally redrawn in a smaller more specific redraw.
 
-        // consider using 'gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind]' for the 'render'?
+        // consider using 'BYTES[byteEDI_cursor_enterKeyEventKind]' for the 'render'?
 
         // Is holding down ctrl+enter / shift+enter batchable?
 
@@ -6677,7 +6677,7 @@ function EDI_EnterKey(ctrlKey, shiftKey) {
 
     if (gINT_FIELDS[fEDI_cursor_editLength] === 0) {
 
-        gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind] = EnterKeyEventKind_None;
+        BYTES[byteEDI_cursor_enterKeyEventKind] = EnterKeyEventKind_None;
 
         gINT_FIELDS[fEDI_cursor_editPosition] = EDI_getPositionIndex_raw_cursor();
         gINT_FIELDS[fEDI_cursor_editIndexLine] = gINT_FIELDS[fEDI_cursor_indexLine];
@@ -6687,8 +6687,8 @@ function EDI_EnterKey(ctrlKey, shiftKey) {
     let insertionCount = EDI_cursor_enterKey_newLinePlusIndentation_byteList.count;
     
     if (gINT_FIELDS[fEDI_cursor_indexColumn] === 0) { // start of line
-        if (gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind] === 0) {
-            gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind] = EnterKeyEventKind_StartOfLine;
+        if (BYTES[byteEDI_cursor_enterKeyEventKind] === 0) {
+            BYTES[byteEDI_cursor_enterKeyEventKind] = EnterKeyEventKind_StartOfLine;
         }
 
         if (!ctrlKey)
@@ -6697,8 +6697,8 @@ function EDI_EnterKey(ctrlKey, shiftKey) {
     else {
         let lastValidIndexColumn = EDI_getLastValidIndexColumn(gINT_FIELDS[fEDI_cursor_indexLine]);
 
-        if (gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind] === 0) {
-            gBYTE_FIELDS[byteEDI_cursor_enterKeyEventKind] = lastValidIndexColumn === gINT_FIELDS[fEDI_cursor_indexColumn]
+        if (BYTES[byteEDI_cursor_enterKeyEventKind] === 0) {
+            BYTES[byteEDI_cursor_enterKeyEventKind] = lastValidIndexColumn === gINT_FIELDS[fEDI_cursor_indexColumn]
                 ? EnterKeyEventKind_EndOfLine
                 : EnterKeyEventKind_AmongALine;
         }
@@ -6824,7 +6824,7 @@ function EDI_onResize() {
 function EDI_onResize_WRAPIT() {
     // If timer is running, just note that a trailing call is needed
     if (gINT_FIELDS[fEDI_onResize_timer]) {
-        gBYTE_FIELDS[byteEDI_onResize_hasTrailingCall] = true;
+        BYTES[byteEDI_onResize_hasTrailingCall] = true;
         return;
     }
 
@@ -6838,8 +6838,8 @@ function EDI_onResize_WRAPIT() {
 // 2. The Gatekeeper
 function EDI_onResize_startThrottleTimeout() {
     gINT_FIELDS[fEDI_onResize_timer] = setTimeout(() => {
-        if (gBYTE_FIELDS[byteEDI_onResize_hasTrailingCall]) {
-            gBYTE_FIELDS[byteEDI_onResize_hasTrailingCall] = false;
+        if (BYTES[byteEDI_onResize_hasTrailingCall]) {
+            BYTES[byteEDI_onResize_hasTrailingCall] = false;
             EDI_onResize();
             
             EDI_onResize_startThrottleTimeout();
@@ -8642,7 +8642,7 @@ function EDI_requestLspHover() {
     ///////////
 
     // Indices are wrong... they're likely outdated
-    if (!gBYTE_FIELDS[byteEDI_mousemove_eventListener_isActive]) {
+    if (!BYTES[byteEDI_mousemove_eventListener_isActive]) {
         window.myAPI.editorHoverRequest(indexLine, indexColumn);
     }
 }

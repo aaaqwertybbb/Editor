@@ -85,8 +85,8 @@ function MENU_render_request(renderKind) {
         if (renderKind === MENUrenderKind_Set) gINT_FIELDS[fMENU_renderKind_Set_countOfPendingRequests]++;
     }
     
-    if (!gBYTE_FIELDS[byteMENU_isRenderPending]) {
-        gBYTE_FIELDS[byteMENU_isRenderPending] = true;
+    if (!BYTES[byteMENU_isRenderPending]) {
+        BYTES[byteMENU_isRenderPending] = true;
         requestAnimationFrame(MENU_render_do);
     }
 }
@@ -109,7 +109,7 @@ function MENU_render_do() {
         }
     }
     
-    gBYTE_FIELDS[byteMENU_isRenderPending] = false; // Reset the paint lock
+    BYTES[byteMENU_isRenderPending] = false; // Reset the paint lock
 }
 
 function MENU_render_do_Hide() {
@@ -125,7 +125,7 @@ function MENU_render_do_Hide() {
     MENU_recentBoundingClientRectTop = null;
 
     if (MENU_restoreFocusToElement) {
-        if (gBYTE_FIELDS[byteMENU_HIDE_shouldRestoreFocus]) {
+        if (BYTES[byteMENU_HIDE_shouldRestoreFocus]) {
             MENU_restoreFocusToElement.focus();
         }
         MENU_restoreFocusToElement = null;
@@ -149,7 +149,7 @@ async function MENU_state_do_hide(shouldRestoreFocus) {
     MENU_target = null;
 
     if (shouldRestoreFocus === true || shouldRestoreFocus === false) {
-        gBYTE_FIELDS[byteMENU_HIDE_shouldRestoreFocus] = shouldRestoreFocus;
+        BYTES[byteMENU_HIDE_shouldRestoreFocus] = shouldRestoreFocus;
     }
 }
 
@@ -258,7 +258,7 @@ function MENU_render_do_Set() {
 
     MENU_restoreFocusToElement = document.activeElement;
 
-    if (!gBYTE_FIELDS[byteMENU_SET_NOTshouldFocus]) {
+    if (!BYTES[byteMENU_SET_NOTshouldFocus]) {
         menuElement.focus();
     }
 }
@@ -287,7 +287,7 @@ async function menuSet(context, target, optionList, left, top, NOTshouldFocus, i
 
     MENU_optionList = optionList;
 
-    gBYTE_FIELDS[byteMENU_NOTshouldFocus] = NOTshouldFocus;
+    BYTES[byteMENU_NOTshouldFocus] = NOTshouldFocus;
 
     MENU_recentBoundingClientRectTop = null;
 
@@ -313,7 +313,7 @@ function MENU_onMouseMove(event) {
 async function optionOnClick(indexClicked, elementClicked) {
     if (gINT_FIELDS[fMENU_ticketId_drawn] === gINT_FIELDS[fMENU_ticketId_pending] && gINT_FIELDS[fMENU_ticketId_drawn] !== gINT_FIELDS[fMENU_last_handled_ticketId]) {
         gINT_FIELDS[fMENU_last_handled_ticketId] = gINT_FIELDS[fMENU_ticketId_drawn];
-        gBYTE_FIELDS[byteMENU_HIDE_shouldRestoreFocus] = true;
+        BYTES[byteMENU_HIDE_shouldRestoreFocus] = true;
         switch (MENU_context) {
             case 'EXPLORER':
                 await EXPLORER_MenuOnClick(indexClicked, elementClicked);

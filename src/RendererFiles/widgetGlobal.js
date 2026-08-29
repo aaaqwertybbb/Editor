@@ -43,8 +43,8 @@ function WIDGET_render_request(renderKind) {
         if (renderKind === WIDGETrenderKind_Show) gINT_FIELDS[fWIDGETrenderKind_Show_countOfPendingRequests]++;
     }
     
-    if (!gBYTE_FIELDS[byteWIDGET_isRenderPending]) {
-        gBYTE_FIELDS[byteWIDGET_isRenderPending] = true;
+    if (!BYTES[byteWIDGET_isRenderPending]) {
+        BYTES[byteWIDGET_isRenderPending] = true;
         requestAnimationFrame(WIDGET_render_do);
     }
 }
@@ -64,16 +64,16 @@ function WIDGET_render_do() {
         }
     }
     
-    gBYTE_FIELDS[byteWIDGET_isRenderPending] = false; // Reset the paint lock
+    BYTES[byteWIDGET_isRenderPending] = false; // Reset the paint lock
 }
 
 function WIDGET_render_do_Show() {
 
     let WIDGET_element = document.getElementById('WIDGET');
-    if (gBYTE_FIELDS[byteWIDGET_WidgetKind_drawn] !== WidgetKind_None) {
+    if (BYTES[byteWIDGET_WidgetKind_drawn] !== WidgetKind_None) {
         WIDGET_element = null;
         // You don't have to invoke 'WIDGET_state_do_Hide' because there was a 1 to 1 overwrite of all the state due to the 'WIDGET_show' invocation which triggered this function.
-        gBYTE_FIELDS[byteWIDGET_shouldRestoreFocus] = false; // going to show a different widget so don't bother with focus here
+        BYTES[byteWIDGET_shouldRestoreFocus] = false; // going to show a different widget so don't bother with focus here
         WIDGET_render_do_Hide();
     }
 
@@ -83,7 +83,7 @@ function WIDGET_render_do_Show() {
         document.body.appendChild(WIDGET_element);
     }
 
-    gBYTE_FIELDS[byteWIDGET_WidgetKind_drawn] = gBYTE_FIELDS[byteWIDGET_WidgetKind_pending];
+    BYTES[byteWIDGET_WidgetKind_drawn] = BYTES[byteWIDGET_WidgetKind_pending];
 
     if (WIDGET_restoreFocusToElementOverride) {
         WIDGET_restoreFocusToElement_drawn = WIDGET_restoreFocusToElementOverride;
@@ -95,7 +95,7 @@ function WIDGET_render_do_Show() {
     
     gINT_FIELDS[fWIDGET_ticketId_drawn] = gINT_FIELDS[fWIDGET_ticketId_pending];
 
-    switch (gBYTE_FIELDS[byteWIDGET_WidgetKind_drawn]) {
+    switch (BYTES[byteWIDGET_WidgetKind_drawn]) {
         case WidgetKind_InputText:
             WIDGET_CreateInputText();
             break;
@@ -149,7 +149,7 @@ function WIDGET_render_do_Show() {
 async function WIDGET_show(widgetKind, left, top, placeholder, value, target, callback) {
 
     gINT_FIELDS[fWIDGET_ticketId_pending] = gINT_FIELDS[fWIDGET_ticketId_counter]++;
-    gBYTE_FIELDS[byteWIDGET_WidgetKind_pending] = widgetKind;
+    BYTES[byteWIDGET_WidgetKind_pending] = widgetKind;
 
     // TODO: Does this go before the above ticketId logic? I'm not sure but I feel confident that it makes more sense at the least above the '_left and _top' logic.
     if (WIDGET_currentCallback) {
@@ -169,7 +169,7 @@ async function WIDGET_show(widgetKind, left, top, placeholder, value, target, ca
 function WIDGET_render_do_Hide() {
     const WIDGET_element = document.getElementById('WIDGET');
 
-    switch (gBYTE_FIELDS[byteWIDGET_WidgetKind_drawn]) {
+    switch (BYTES[byteWIDGET_WidgetKind_drawn]) {
         case WidgetKind_InputText:
             let input = document.getElementById('WIDGET_inputText');
             input.removeEventListener('keydown', WIDGET_inputTextOnKeyDown);
@@ -181,9 +181,9 @@ function WIDGET_render_do_Hide() {
             cancelButtonElement.removeEventListener('click', WIDGET_YesCancelButtonOnClick_cancel);
             break;
     }
-    gBYTE_FIELDS[byteWIDGET_WidgetKind_drawn] = WidgetKind_None;
+    BYTES[byteWIDGET_WidgetKind_drawn] = WidgetKind_None;
     WIDGET_element.remove();
-    if (gBYTE_FIELDS[byteWIDGET_shouldRestoreFocus] && WIDGET_restoreFocusToElement_drawn)
+    if (BYTES[byteWIDGET_shouldRestoreFocus] && WIDGET_restoreFocusToElement_drawn)
         WIDGET_restoreFocusToElement_drawn.focus();
 }
 
@@ -192,12 +192,12 @@ async function WIDGET_state_do_Hide(shouldRestoreFocus) {
     // TODO: This is believed to prevent any funny business where a UI is being shown, asked to be hidden, submitted before the hide rAF. Once this is confirmed to be true (or other...) remove or update this comment accordingly.
     gINT_FIELDS[fWIDGET_ticketId_pending] = gINT_FIELDS[fWIDGET_ticketId_counter]++;
 
-    gBYTE_FIELDS[byteWIDGET_shouldRestoreFocus] = shouldRestoreFocus;
+    BYTES[byteWIDGET_shouldRestoreFocus] = shouldRestoreFocus;
     if (WIDGET_currentCallback) {
         await WIDGET_currentCallback({isCancelled:true, value:undefined});
     }
     WIDGET_currentCallback = null;
-    gBYTE_FIELDS[byteWIDGET_WidgetKind_pending] = WidgetKind_None;
+    BYTES[byteWIDGET_WidgetKind_pending] = WidgetKind_None;
     WIDGET_target = null;
 }
 

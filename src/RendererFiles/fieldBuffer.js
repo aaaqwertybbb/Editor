@@ -45,48 +45,48 @@ it is as if I typed the expression body everywhere I typed the fat arrow functio
  * 
  * TODO: index 8 is available because 'EDI_onScroll_bool' was removed.
  * 
- * The code does not make local variables such as: 'const bytes = const gBYTE_FIELDS',
+ * The code does not make local variables such as: 'const bytes = const BYTES',
  * because ES6 modules are expected (and thus module scopes remove the usefulness of making a local variable):
  *     index.html the script tag: 'type="module" src="..."'
  */
-const gBYTE_FIELDS = new Uint8Array(48);
+const BYTES = new Uint8Array(48);
 
 /** returns a number, beware '===' */
-const get_EDI_detailRank = () => gBYTE_FIELDS[0];
-const set_EDI_detailRank = (byte) => gBYTE_FIELDS[0] = byte;
+const get_EDI_detailRank = () => BYTES[0];
+const set_EDI_detailRank = (byte) => BYTES[0] = byte;
 
 /** returns a number, beware '===' */
-const get_EDI_recentBoundingClientRect_isNull_intFalsey = () => gBYTE_FIELDS[1];
-const set_EDI_recentBoundingClientRect_isNull_intFalsey = (byte) => gBYTE_FIELDS[1] = byte;
+const get_EDI_recentBoundingClientRect_isNull_intFalsey = () => BYTES[1];
+const set_EDI_recentBoundingClientRect_isNull_intFalsey = (byte) => BYTES[1] = byte;
 set_EDI_recentBoundingClientRect_isNull_intFalsey(1);
 
 /** returns a number, beware '===' */
-const get_EDI_findOverlay_show = () => gBYTE_FIELDS[2];
-const set_EDI_findOverlay_show = (byte) => gBYTE_FIELDS[2] = byte;
+const get_EDI_findOverlay_show = () => BYTES[2];
+const set_EDI_findOverlay_show = (byte) => BYTES[2] = byte;
 
 /** returns a number, beware '===' */
-const get_EDI_findOverlay_isBeingShownDueToMultiCursorMatching = () => gBYTE_FIELDS[3];
-const set_EDI_findOverlay_isBeingShownDueToMultiCursorMatching = (byte) => gBYTE_FIELDS[3] = byte;
+const get_EDI_findOverlay_isBeingShownDueToMultiCursorMatching = () => BYTES[3];
+const set_EDI_findOverlay_isBeingShownDueToMultiCursorMatching = (byte) => BYTES[3] = byte;
 
 /** returns a number, beware '===' */
-const get_EDI_fileStartsWithBom = () => gBYTE_FIELDS[4];
-const set_EDI_fileStartsWithBom = (byte) => gBYTE_FIELDS[4] = byte;
+const get_EDI_fileStartsWithBom = () => BYTES[4];
+const set_EDI_fileStartsWithBom = (byte) => BYTES[4] = byte;
 
 /** returns a number, beware '===' */
-const get_EDI_findOverlay_wasSearched = () => gBYTE_FIELDS[5];
-const set_EDI_findOverlay_wasSearched = (byte) => gBYTE_FIELDS[5] = byte;
+const get_EDI_findOverlay_wasSearched = () => BYTES[5];
+const set_EDI_findOverlay_wasSearched = (byte) => BYTES[5] = byte;
 
 /** returns a number, beware '===' */
-const get_EDI_findOverlay_options_matchWord = () => gBYTE_FIELDS[6];
-const set_EDI_findOverlay_options_matchWord = (byte) => gBYTE_FIELDS[6] = byte;
+const get_EDI_findOverlay_options_matchWord = () => BYTES[6];
+const set_EDI_findOverlay_options_matchWord = (byte) => BYTES[6] = byte;
 
 const byteDIALOG_FindAll_options_matchWord = 7;
 
 const byteDIALOG_Settings_isDark = 8;
-gBYTE_FIELDS[byteDIALOG_Settings_isDark] = 1;
+BYTES[byteDIALOG_Settings_isDark] = 1;
 
 const byteDIALOG_Settings_trueTabs_falseSpaces = 9;
-gBYTE_FIELDS[byteDIALOG_Settings_trueTabs_falseSpaces] = 1;
+BYTES[byteDIALOG_Settings_trueTabs_falseSpaces] = 1;
 
 const byteDIALOG_Settings_editorDebugShowAdjacentCharacters = 10;
 
@@ -101,7 +101,7 @@ const byteAUTOCOMPLETE_exists = 14;
 const byteAUTOCOMPLETE_isRenderPending = 15;
 
 const byteAUTOCOMPLETE_rect_isNull = 16;
-gBYTE_FIELDS[byteAUTOCOMPLETE_rect_isNull] = 1;
+BYTES[byteAUTOCOMPLETE_rect_isNull] = 1;
 
 const byteAUTOCOMPLETE_isCheckingTrailingEdge = 17;
 
@@ -110,7 +110,7 @@ const byteAUTOCOMPLETE_scrollIsFetchingData = 18;
 const byteWIDGET_isRenderPending = 19;
 
 const byteWIDGET_shouldRestoreFocus = 20;
-gBYTE_FIELDS[byteWIDGET_shouldRestoreFocus] = 1;
+BYTES[byteWIDGET_shouldRestoreFocus] = 1;
 
 const byteDIALOG_isRenderPending = 21;
 
@@ -130,7 +130,7 @@ const byteDIALOG_currentDialogKind = 25;
 const byteDIALOG_SHOW_currentDialogKind = 26;
 
 const byteMENU_HIDE_shouldRestoreFocus = 27;
-gBYTE_FIELDS[byteMENU_HIDE_shouldRestoreFocus] = 1;
+BYTES[byteMENU_HIDE_shouldRestoreFocus] = 1;
 
 const byteMENU_SET_NOTshouldFocus = 28;
 
@@ -165,7 +165,7 @@ const byteEDI_isRenderPending = 42;
 const byteEDI_mousemove_eventListener_isActive = 43;
 
 const byteEXPLORER_show = 44;
-gBYTE_FIELDS[byteEXPLORER_show] = 1;
+BYTES[byteEXPLORER_show] = 1;
 
 const byteEXPLORER_TreeViewDirector_TREEVIEW_isRenderPending = 45;
 
@@ -173,12 +173,12 @@ const byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge = 46;
 
 const byteEXPLORER_TreeViewDirector_scrollIsFetchingData = 47;
 
-// gBYTE_FIELDS[byteEXPLORER_TreeViewDirector_scrollIsFetchingData]
+// BYTES[byteEXPLORER_TreeViewDirector_scrollIsFetchingData]
 
-// TODO: some things to consider when moving from a boolean to gBYTE_FIELDS
+// TODO: some things to consider when moving from a boolean to BYTES
 // - [ ] triple equals
 // - [ ] type coercion overhead
-// - [ ] Extremely high access gBYTE_FIELDS move to the int fields if there would otherwise be both a local reference to the byteFields and intFields if it is sensible.
+// - [ ] Extremely high access BYTES move to the int fields if there would otherwise be both a local reference to the byteFields and intFields if it is sensible.
 // - [ ] Move stored enums here if they're <= 255
 
 // inclusive final index is 44

@@ -24,8 +24,8 @@ function AUTOCOMPLETE_render_request(renderKind) {
         AUTOCOMPLETE_renderKindArray.push(renderKind);
     }
     
-    if (!gBYTE_FIELDS[byteAUTOCOMPLETE_isRenderPending]) {
-        gBYTE_FIELDS[byteAUTOCOMPLETE_isRenderPending] = true;
+    if (!BYTES[byteAUTOCOMPLETE_isRenderPending]) {
+        BYTES[byteAUTOCOMPLETE_isRenderPending] = true;
         requestAnimationFrame(AUTOCOMPLETE_renderDo);
     }
 }
@@ -53,7 +53,7 @@ function AUTOCOMPLETE_renderDo(timestamp) {
         }
     }
     
-    gBYTE_FIELDS[byteAUTOCOMPLETE_isRenderPending] = false; // Reset the lock
+    BYTES[byteAUTOCOMPLETE_isRenderPending] = false; // Reset the lock
 }
 
 function AUTOCOMPLETE_render_create_lines(AUTOCOMPLETE_itemList) {
@@ -150,13 +150,13 @@ function AUTOCOMPLETE_render_do_show(timestamp) {
     // (the reason specfically I think relates to when you change a file i.e.: changing a file can race condition regardless of this being forced to false)
     // (UGH not changing a file I'm gonna pass out I'm almost done but I mean the changing the autocomplete menu or some such)
     // (also something in the code seems buggy about having the items in the correct order or something? am I missing a belt?)
-    gBYTE_FIELDS[byteAUTOCOMPLETE_scrollIsFetchingData] = false;
+    BYTES[byteAUTOCOMPLETE_scrollIsFetchingData] = false;
 
     let local_AUTOCOMPLETEElement;
     let AUTOCOMPLETE_itemList;
     let AUTOCOMPLETE_virtualization;
 
-    if (gBYTE_FIELDS[byteAUTOCOMPLETE_exists]) {
+    if (BYTES[byteAUTOCOMPLETE_exists]) {
         local_AUTOCOMPLETEElement = document.getElementById('AUTOCOMPLETE');
 
         AUTOCOMPLETE_itemList = document.getElementById('AUTOCOMPLETE_itemList');
@@ -175,7 +175,7 @@ function AUTOCOMPLETE_render_do_show(timestamp) {
         // And then if it is truly meaningful from an optimization standpoint such as the scrolling of the editor
         // I take on the state corruption risk, otherwise I just defensively handle it.
         if (!local_AUTOCOMPLETEElement) {
-            gBYTE_FIELDS[byteAUTOCOMPLETE_exists] = false;
+            BYTES[byteAUTOCOMPLETE_exists] = false;
             AUTOCOMPLETE_render_do_show();
             return;
         }
@@ -208,7 +208,7 @@ function AUTOCOMPLETE_render_do_show(timestamp) {
         gINT_FIELDS[fAUTOCOMPLETE_rectHeight] = Math.floor(rect.height);
         gINT_FIELDS[fAUTOCOMPLETE_rectLeft] = rect.left;
         gINT_FIELDS[fAUTOCOMPLETE_rectTop] = rect.top;
-        gBYTE_FIELDS[byteAUTOCOMPLETE_rect_isNull] = false;
+        BYTES[byteAUTOCOMPLETE_rect_isNull] = false;
 
         AUTOCOMPLETE_render_create_lines(AUTOCOMPLETE_itemList);
 
@@ -228,7 +228,7 @@ function AUTOCOMPLETE_render_do_show(timestamp) {
     let itemHeightTotalNumber = gINT_FIELDS[fAUTOCOMPLETE_items_totalLength] * gINT_FIELDS[fAPP_lineHeight] + CONST_AUTOCOMPLETE_topPadding;
     AUTOCOMPLETE_virtualization.style.height = itemHeightTotalNumber + 'px';
 
-    gBYTE_FIELDS[byteAUTOCOMPLETE_exists] = true;
+    BYTES[byteAUTOCOMPLETE_exists] = true;
 
     local_AUTOCOMPLETEElement.focus();
 
@@ -246,7 +246,7 @@ function AUTOCOMPLETE_show(lspResult) {
 
 function AUTOCOMPLETE_slice(lspResult) {
 
-    gBYTE_FIELDS[byteAUTOCOMPLETE_scrollIsFetchingData] = false;
+    BYTES[byteAUTOCOMPLETE_scrollIsFetchingData] = false;
     if (gINT_FIELDS[fAUTOCOMPLETE_sliceVirtualIndex_SLICE] != gINT_FIELDS[fAUTOCOMPLETE_virtualIndex] ||
         gINT_FIELDS[fAUTOCOMPLETE_sliceVirtualCount_SLICE] != gINT_FIELDS[fAUTOCOMPLETE_virtualCount] ||
         gINT_FIELDS[fAUTOCOMPLETE_sliceBeltIndexZero_SLICE] != gINT_FIELDS[fAUTOCOMPLETE_beltIndexZero]) {
@@ -304,7 +304,7 @@ function AUTOCOMPLETE_render_do_hide() {
         AUTOCOMPLETEElement = null;
     }
 
-    gBYTE_FIELDS[byteAUTOCOMPLETE_exists] = false;
+    BYTES[byteAUTOCOMPLETE_exists] = false;
 }
 
 function AUTOCOMPLETE_hide() {
@@ -313,7 +313,7 @@ function AUTOCOMPLETE_hide() {
 }
 
 function AUTOCOMPLETE_cursor_render_set() {
-    if (!gBYTE_FIELDS[byteAUTOCOMPLETE_exists]) return;
+    if (!BYTES[byteAUTOCOMPLETE_exists]) return;
     
     let cursorElement = document.getElementById('AUTOCOMPLETE_cursor');
 
@@ -321,7 +321,7 @@ function AUTOCOMPLETE_cursor_render_set() {
     let cursorTranslateYNumber = CONST_AUTOCOMPLETE_topPadding + (gINT_FIELDS[fAPP_lineHeight] * gINT_FIELDS[fAUTOCOMPLETE_cursorIndex]);
 
     // Preferably this hasn't changed thus the function immediately just returns.
-    if (gBYTE_FIELDS[byteAUTOCOMPLETE_rect_isNull])
+    if (BYTES[byteAUTOCOMPLETE_rect_isNull])
         AUTOCOMPLETE_ensure_boundingClientRect();
     
     // If no UI modifications were made prior that are still pending this might avoid a synchronous layout.
@@ -357,12 +357,12 @@ function AUTOCOMPLETE_cursor_validate(cursorIndex) {
 }
 
 function AUTOCOMPLETE_ensure_boundingClientRect() {
-    if (gBYTE_FIELDS[byteAUTOCOMPLETE_rect_isNull] && gBYTE_FIELDS[byteAUTOCOMPLETE_exists]) {
+    if (BYTES[byteAUTOCOMPLETE_rect_isNull] && BYTES[byteAUTOCOMPLETE_exists]) {
         let rect = AUTOCOMPLETEElement.getBoundingClientRect();
         gINT_FIELDS[fAUTOCOMPLETE_rectHeight] = rect.height;
         gINT_FIELDS[fAUTOCOMPLETE_rectLeft] = rect.left;
         gINT_FIELDS[fAUTOCOMPLETE_rectTop] = rect.top;
-        gBYTE_FIELDS[byteAUTOCOMPLETE_rect_isNull] = false;
+        BYTES[byteAUTOCOMPLETE_rect_isNull] = false;
     }
 }
 
@@ -381,7 +381,7 @@ function AUTOCOMPLETE_events_remove(AUTOCOMPLETEElement) {
 }
 
 function AUTOCOMPLETE_events_resize() {
-    gBYTE_FIELDS[byteAUTOCOMPLETE_rect_isNull] = true;
+    BYTES[byteAUTOCOMPLETE_rect_isNull] = true;
 }
 
 function AUTOCOMPLETE_events_blur_receive() {
@@ -401,8 +401,8 @@ function AUTOCOMPLETE_events_scroll_render(timestamp) {
 
     gINT_FIELDS[fAUTOCOMPLETE_scrollEndDeadline] = timestamp + 300;
 
-    if (!gBYTE_FIELDS[byteAUTOCOMPLETE_isCheckingTrailingEdge]) {
-        gBYTE_FIELDS[byteAUTOCOMPLETE_isCheckingTrailingEdge] = true;
+    if (!BYTES[byteAUTOCOMPLETE_isCheckingTrailingEdge]) {
+        BYTES[byteAUTOCOMPLETE_isCheckingTrailingEdge] = true;
         requestAnimationFrame(AUTOCOMPLETE_events_scroll_render_trailingEdgeCheck);
     }
 
@@ -479,16 +479,16 @@ function AUTOCOMPLETE_events_scroll_render_trailingEdgeCheck(timestamp) {
         return;
     }
 
-    gBYTE_FIELDS[byteAUTOCOMPLETE_isCheckingTrailingEdge] = false;
+    BYTES[byteAUTOCOMPLETE_isCheckingTrailingEdge] = false;
     AUTOCOMPLETE_events_scroll_render_trailingEdgeDo();
 }
 
 function AUTOCOMPLETE_events_scroll_render_trailingEdgeDo() {
-    if (!gBYTE_FIELDS[byteAUTOCOMPLETE_scrollIsFetchingData]) {
+    if (!BYTES[byteAUTOCOMPLETE_scrollIsFetchingData]) {
         gINT_FIELDS[fAUTOCOMPLETE_sliceVirtualIndex_SLICE] = gINT_FIELDS[fAUTOCOMPLETE_virtualIndex];
         gINT_FIELDS[fAUTOCOMPLETE_sliceVirtualCount_SLICE] = gINT_FIELDS[fAUTOCOMPLETE_virtualCount];
         gINT_FIELDS[fAUTOCOMPLETE_sliceBeltIndexZero_SLICE] = gINT_FIELDS[fAUTOCOMPLETE_beltIndexZero];
-        gBYTE_FIELDS[byteAUTOCOMPLETE_scrollIsFetchingData] = true;
+        BYTES[byteAUTOCOMPLETE_scrollIsFetchingData] = true;
         window.myAPI.editorCompletionRequest_slice(gINT_FIELDS[fAUTOCOMPLETE_virtualIndex], gINT_FIELDS[fAUTOCOMPLETE_virtualIndex] + gINT_FIELDS[fAUTOCOMPLETE_virtualCount]);
     }
 }

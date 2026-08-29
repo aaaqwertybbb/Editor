@@ -30,8 +30,8 @@ function DIALOG_render_request(renderKind) {
         DIALOG_renderKindArray.push(renderKind);
     }
     
-    if (!gBYTE_FIELDS[byteDIALOG_isRenderPending]) {
-        gBYTE_FIELDS[byteDIALOG_isRenderPending] = true;
+    if (!BYTES[byteDIALOG_isRenderPending]) {
+        BYTES[byteDIALOG_isRenderPending] = true;
         requestAnimationFrame(DIALOG_render_do);
     }
 }
@@ -53,7 +53,7 @@ function DIALOG_render_do() {
         }
     }
     
-    gBYTE_FIELDS[byteDIALOG_isRenderPending] = false; // Reset the paint lock
+    BYTES[byteDIALOG_isRenderPending] = false; // Reset the paint lock
 }
 
 function DIALOG_render_do_DimensionsChanged() {
@@ -82,8 +82,8 @@ function DIALOG_render_do_DimensionsChanged() {
 }
 
 async function DIALOG_render_do_Show() {
-    if (gBYTE_FIELDS[byteDIALOG_currentDialogKind] !== DialogKind_None) {
-        gBYTE_FIELDS[byteDIALOG_HIDE_shouldRestoreFocus] = true;
+    if (BYTES[byteDIALOG_currentDialogKind] !== DialogKind_None) {
+        BYTES[byteDIALOG_HIDE_shouldRestoreFocus] = true;
         await DIALOG_render_do_Hide();
     }
 
@@ -95,12 +95,12 @@ async function DIALOG_render_do_Show() {
     }
 
     DIALOG_restoreFocusToElement = DIALOG_SHOW_restoreFocusToElement;
-    gBYTE_FIELDS[byteDIALOG_currentDialogKind] = gBYTE_FIELDS[byteDIALOG_SHOW_currentDialogKind];
+    BYTES[byteDIALOG_currentDialogKind] = BYTES[byteDIALOG_SHOW_currentDialogKind];
     DIALOG_onResizeAction = DIALOG_SHOW_onResizeAction;
 
     DIALOG_createWindow();
 
-    switch (gBYTE_FIELDS[byteDIALOG_currentDialogKind]) {
+    switch (BYTES[byteDIALOG_currentDialogKind]) {
         case DialogKind_FindAll:
             return DIALOG_FindAll_Create_async();
         case DialogKind_Settings:
@@ -114,7 +114,7 @@ async function DIALOG_render_do_Show() {
 
 async function DIALOG_show_async(dialogKind, onResizeAction) {    
     DIALOG_SHOW_restoreFocusToElement = document.activeElement;
-    gBYTE_FIELDS[byteDIALOG_SHOW_currentDialogKind] = dialogKind;
+    BYTES[byteDIALOG_SHOW_currentDialogKind] = dialogKind;
     DIALOG_SHOW_onResizeAction = onResizeAction;
     DIALOG_render_request(DIALOGrenderKind_Show);
 }
@@ -123,7 +123,7 @@ async function DIALOG_render_do_Hide() {
     const DIALOG_element = document.getElementById('DIALOG');
     if (!DIALOG_element) return;
 
-    switch (gBYTE_FIELDS[byteDIALOG_currentDialogKind]) {
+    switch (BYTES[byteDIALOG_currentDialogKind]) {
         case DialogKind_FindAll:
             await DIALOG_FindAll_Delete_async();
             break;
@@ -142,7 +142,7 @@ async function DIALOG_render_do_Hide() {
 
     DIALOG_onResizeAction = null;
     DIALOG_element.remove();
-    gBYTE_FIELDS[byteDIALOG_currentDialogKind] = DialogKind_None;
+    BYTES[byteDIALOG_currentDialogKind] = DialogKind_None;
     if (shouldRestoreFocus) {
         if (DIALOG_restoreFocusToElement) {
             DIALOG_restoreFocusToElement.focus();
@@ -152,7 +152,7 @@ async function DIALOG_render_do_Hide() {
 }
 
 function DIALOG_hide_request(shouldRestoreFocus) {
-    gBYTE_FIELDS[byteDIALOG_HIDE_shouldRestoreFocus] = shouldRestoreFocus;
+    BYTES[byteDIALOG_HIDE_shouldRestoreFocus] = shouldRestoreFocus;
     DIALOG_render_request(DIALOGrenderKind_Hide);
 }
 
@@ -200,7 +200,7 @@ function DIALOG_resize_onmousedown(event) {
     gINT_FIELDS[fDIALOG_top] = dialogBoundingClientRect.top;
     gINT_FIELDS[fDIALOG_width] = dialogBoundingClientRect.width;
     gINT_FIELDS[fDIALOG_height] = dialogBoundingClientRect.height;
-    gBYTE_FIELDS[byteDIALOG_hasBeenMeasured] = true;
+    BYTES[byteDIALOG_hasBeenMeasured] = true;
 
     document.body.classList.add('unselectable');
     window.addEventListener('mousemove', DIALOG_resize_body_onmousemove, /*useCapture*/ true);
@@ -447,7 +447,7 @@ function DIALOG_window_onresize() {
     const DIALOG_element = document.getElementById('DIALOG');
     if (!DIALOG_element) return;
 
-    if (!gBYTE_FIELDS[byteDIALOG_hasBeenMeasured]) return;
+    if (!BYTES[byteDIALOG_hasBeenMeasured]) return;
 
     // Max width and min width depend on the left/top so they need to come first.
     if (gINT_FIELDS[fDIALOG_left] <= CONST_DIALOG_minLeft) {
@@ -610,7 +610,7 @@ function DIALOG_toolbar_onmousedown(event) {
     gINT_FIELDS[fDIALOG_top] = dialogBoundingClientRect.top;
     gINT_FIELDS[fDIALOG_width] = dialogBoundingClientRect.width;
     gINT_FIELDS[fDIALOG_height] = dialogBoundingClientRect.height;
-    gBYTE_FIELDS[byteDIALOG_hasBeenMeasured] = true;
+    BYTES[byteDIALOG_hasBeenMeasured] = true;
 
     document.body.classList.add('unselectable');
     window.addEventListener('mousemove', DIALOG_toolbar_body_onmousemove, /*useCapture*/ true);
@@ -625,8 +625,8 @@ function DIALOG_createWindow() {
     if (!DIALOG_element) return;
 
     // TODO: Might want to check if the HTML element exists instead.
-    if (gBYTE_FIELDS[byteDIALOG_windowExists]) return;
-    gBYTE_FIELDS[byteDIALOG_windowExists] = true;
+    if (BYTES[byteDIALOG_windowExists]) return;
+    BYTES[byteDIALOG_windowExists] = true;
 
     let toolbar = document.createElement('div');
     toolbar.id = 'DIALOG_toolbar';
@@ -646,7 +646,7 @@ function DIALOG_createWindow() {
     DIALOG_element.appendChild(body);
 
     // TODO: You have to actually make sure the text fits
-    toolbar.textContent = gBYTE_FIELDS[byteDIALOG_currentDialogKind];
+    toolbar.textContent = BYTES[byteDIALOG_currentDialogKind];
 
     let closeButton = document.createElement('button');
     closeButton.textContent = 'x';
@@ -668,10 +668,10 @@ function DIALOG_deleteWindow() {
     if (!DIALOG_element) return;
 
     // TODO: Might want to check if the HTML element exists instead.
-    if (!gBYTE_FIELDS[byteDIALOG_windowExists]) return;
+    if (!BYTES[byteDIALOG_windowExists]) return;
     // TODO: Perhaps move these respective sets to the end of their functions.
     // This way them being set as a certain value reflects that the entirety of their respective code had been ran but then again... idk
-    gBYTE_FIELDS[byteDIALOG_windowExists] = false;
+    BYTES[byteDIALOG_windowExists] = false;
 
     gINT_FIELDS[fDIALOG_left] = 0;
     gINT_FIELDS[fDIALOG_top] = 0;

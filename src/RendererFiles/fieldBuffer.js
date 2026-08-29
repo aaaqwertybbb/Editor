@@ -44,6 +44,10 @@ it is as if I typed the expression body everywhere I typed the fat arrow functio
  * and that takes time albeit a small amount of time.
  * 
  * TODO: index 8 is available because 'EDI_onScroll_bool' was removed.
+ * 
+ * The code does not make local variables such as: 'const bytes = const gBYTE_FIELDS',
+ * because ES6 modules are expected (and thus module scopes remove the usefulness of making a local variable):
+ *     index.html the script tag: 'type="module" src="..."'
  */
 const gBYTE_FIELDS = new Uint8Array(48);
 
@@ -285,6 +289,11 @@ const CONST_EDI_cursor_htmlId = "EDI_cursor-1";
 ////////////////////////////
 ////////////////////////////
 
+/**
+ * The code does not make local variables such as: 'const ints = const gINT_FIELDS',
+ * because ES6 modules are expected (and thus module scopes remove the usefulness of making a local variable):
+ *     index.html the script tag: 'type="module" src="..."'
+ */
 const gINT_FIELDS = new Uint32Array(168);
 
 const fEDI_lineHeight = 0;

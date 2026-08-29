@@ -9458,5 +9458,7 @@ From what I understand it is a mixture of using ES6 modules AND declaring the va
 < - Are the ArrayFrom_gutter_children and ArrayFrom_textElement_children variables normal arrays, or are they live HTMLCollections / NodeLists
 <   (e.g., returned from getElementsByClassName or querySelectorAll)? If they are live collections, changing them to static arrays will give you another massive frame-rate boost.
 
+TODO: look at "< Here is an optimized refactor of your function" more.
+
 
 */

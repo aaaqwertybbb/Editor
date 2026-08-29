@@ -9280,4 +9280,20 @@ this also means that 'const' is a massive performance improvement.
 From what I understand it is a mixture of using ES6 modules AND declaring the variable as const.
 !!!
 
+> I've made all the changes that were just talked about.
+> 
+> I'm now wondering though if I can apply this change to an extremely hot function.
+> 
+> Because if so, it would drastically improve the performance of the app.
+> 
+> ```js
+> function EDI_render_do_Scroll(timestamp) {
+>     // I gave the AI the code here, no point in including the code in this comment though
+> }
+> ```
+> 
+> Note how I have so many local variables that simply alias a module scope variable.
+
+< ...
+
 */

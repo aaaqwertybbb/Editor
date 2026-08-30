@@ -9709,4 +9709,8 @@ Like I'm so bad at coding that all you'd need is a pulse to replace me.
 
 ANYWAYS
 
+Oh wait I wanted to dissect the frog because
+I was anxious that someone would interpret what I said
+as "in the future all you'll need to be a developer is a pulse"
+
 */

@@ -9593,5 +9593,32 @@ that a human provided.
 In which case developers still have job security because someone needs
 to moderate the AI, even if writing code by hand were to become overtaken by AI writing the code.
 
+====
+
+When it comes to the "1. Eliminating the "Temporal Dead Zone" (TDZ) Checks".
+I'd have to double check, but I always thought in C#:
+```csharp
+// This has a pointless '3' assignment that just wastes CPU initializing the value to 3 for no reason.
+var foo = 3;
+if (bar)
+{
+    foo = 7;
+}
+else
+{
+    foo = 21;
+}
+
+// This doesn't.
+int foo;
+if (bar)
+{
+    foo = 7;
+}
+else
+{
+    foo = 21;
+}
+```
 
 */

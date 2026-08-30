@@ -9460,5 +9460,24 @@ From what I understand it is a mixture of using ES6 modules AND declaring the va
 
 TODO: look at "< Here is an optimized refactor of your function" more.
 
+=======
+
+I gotta eat 4 strawberry nutrigrain bars real quick.
+
+But in Guild Wars 2 when you enter a "downed state", if you have the text changed to show spanish translations
+it uses the word "abatido" I think.
+
+And then last night after taking note of them using the word "abatido" I was watching a chubbyemu video
+and he kept saying "abated".
+
+And then I was laying in bed trying to fall asleep and I was like wait a second...
+
+Cause abated is like "reduced" or something.
+"abatido" would be like "reduced" somewhat like "downed state"
+
+But I haven't verified the words used in the spanish translation I just from memory think it is "abatido"
+
+and then I don't know I gotta get bac kt oeating the food I'll look into this though aftgter.
+
 
 */

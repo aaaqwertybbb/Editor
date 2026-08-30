@@ -9479,5 +9479,30 @@ But I haven't verified the words used in the spanish translation I just from mem
 
 and then I don't know I gotta get bac kt oeating the food I'll look into this though aftgter.
 
+Google AI:
+
+> is the english word "abated" and the spanish word "abatido" related
+
+< Yes, the English word "abated" and the Spanish word "abatido" are closely related etymologically.
+<
+< Shared Roots
+< 
+< Both words trace back to the same Latin building blocks:
+< - The prefix: Latin ad- (or ab-) meaning "to" or "down".
+< - The base verb: Latin battuere, meaning "to beat or strike".
+< 
+< From battuere, the root evolved into Old/Middle French as abattre ("to beat down, knock down, or fell").
+<
+< English borrowed this via Anglo-Norman as abate (to beat down, lessen, or reduce in intensity, like a storm or a fever). "Abated" is simply the past tense form of this verb.
+< Spanish adopted the same French or Late Latin root as abatir ("to knock down, bring down, or depress"), and abatido is the past participle used as an adjective meaning cast down, dejected, or dispirited.
+<
+< Meaning Differences
+<
+< While they share a literal ancestral meaning of "beating down," their modern everyday uses drifted apart:
+< - Abated in English generally describes an external force, event, or quantity growing weaker (e.g., the wind abated).
+< - Abatido in Spanish generally describes a person's emotional or physical state of low energy or depression—literally feeling "beaten down" in spirit (e.g., se siente abatido).
+< 
+< If you'd like, we can look at more false friends or cognates between English and Spanish that share surprising Latin roots.
+
 
 */

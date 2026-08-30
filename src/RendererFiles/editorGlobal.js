@@ -675,7 +675,7 @@ function EDI_render_do_Scroll(timestamp) {
     }
 
     // TODO: Consider moving the 0 diff case to the soonest possible line to skip as much code as possible.
-    const diff = local_currVli - local_prevVli;
+    let diff = local_currVli - local_prevVli;
     if (diff === 0) return;
 
     let lowerBound;

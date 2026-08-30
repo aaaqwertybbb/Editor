@@ -720,6 +720,7 @@ function EDI_render_do_Scroll(timestamp) {
     // TODO: I think I saw how to do it in a way that is more sensible. There is no reason to not just put the lineStart = lineEnd + 1 inside the if that is immediately following I think? Then you'd avoid this 'note'... ugh for completeness I need to mention that this would be an issue now that I see it. You have lineEnd = -1 so then you'd need a note for that unless you changed the initial value to be 0 somehow or something, just idk.
     let lineStart = 0;
     let lineEnd;
+    // TODO: 'let lineEnd = -1; if (lowerBound < count && lowerBound !== 0) { lineEnd = data[lowerBound - 1]; }
     if (lowerBound < EDI_lineEndPositionList_count) {
         if (lowerBound === 0) {
             lineEnd = -1;
@@ -9513,6 +9514,14 @@ Google AI:
 < Down State / Downstate: This is the shorthand version heavily favored by players and community discussions for quick typing and conversation.
 <
 < Would you like to know more about how to rally from down state or the best professions for surviving it?
+
+====
+
+> I'm looking through your "The Optimized Refactor", I like it a lot but I have some questions.
+> 
+> Is initializing the numbers to '0' rather than leaving them uninitialized and then assigning them from every possible conditional branch done for a reason (i.e.: monomorphism?)
+
+< ...
 
 
 */

@@ -9713,4 +9713,21 @@ Oh wait I wanted to dissect the frog because
 I was anxious that someone would interpret what I said
 as "in the future all you'll need to be a developer is a pulse"
 
+< ...
+<
+< # Where the "Contradiction" Actually Happens: Class Fields
+<
+< Your intuition does hold true in C# if we move out of local methods and
+< look at Class Fields (variables declared at the class level instead of inside a function).
+<
+< In C#, all class fields are automatically initialized to their default values
+< (0 for integers, null for objects) when the object is created in memory.
+<
+< - Writing private int _foo = 0; explicitly forces the compiler to generate extra code inside
+<   the class constructor to assign 0 a second time.
+< 
+< - Writing private int _foo; relies on the memory allocation default, saving a CPU instruction.
+<
+< To see exactly how C# rewrites your code under the hood, I can show you the IL (Intermediate Language) or optimized JIT
+< assembly output for both of your examples. Would you like to take a look at how the compiler strips the assignment away?
 */

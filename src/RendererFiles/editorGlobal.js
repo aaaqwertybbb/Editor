@@ -9504,5 +9504,17 @@ Google AI:
 < 
 < If you'd like, we can look at more false friends or cognates between English and Spanish that share surprising Latin roots.
 
+> guild wars 2 is it "downed state" or "down state"
+
+< Both downed state and down state are correct and used interchangeably by the developers at ArenaNet and the Guild Wars 2 community.
+< 
+< Official vs. Community Usage
+<
+< Downed State: This is the more formal and grammatically complete term often found in official game documentation, release notes, and formal mechanics explanations.
+<
+< Down State / Downstate: This is the shorthand version heavily favored by players and community discussions for quick typing and conversation.
+<
+< Would you like to know more about how to rally from down state or the best professions for surviving it?
+
 
 */

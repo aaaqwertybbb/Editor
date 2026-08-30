@@ -9625,4 +9625,7 @@ So some of these specificities of languages completely contradict what you know 
 All of them overlap, you can write 'var foo = 3' in both C# and JavaScript or whatever, but
 the specificities of optimization, it can completely contradict what you know.
 
+And now having heard about the "Temporal Dead Zone" it instantly makes sense
+it is easy to understand, but somewhat hard information to naturally come to the conclusion about.
+
 */

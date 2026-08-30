@@ -9579,7 +9579,19 @@ because AI needs me just as much as I need it to tell me all these specificities
 I'm being hyperbolic when I say that I need the AI, but it is an extremely powerful tool
 to broadly search for a concept. "AI needs me just as much as I need it to tell me all these specificities about V8."
 
+"one day the AI will generate flawless code and completely replace you"
+It is fundamentally impossible for that to be the case.
+I say this all the time but when you start learning to code
+maybe they do an exercise where you describe how to make a peanut butter and jelly sandwich.
+Then someone re-enacts your description of the steps, and it is a complete mess
+due to the imprecise nature of a spoken language.
 
+The closest thing you'll get to, is developers writing guard rails,
+and then an AI en masse generating code that fullfills the specifications
+that a human provided.
+
+In which case developers still have job security because someone needs
+to moderate the AI, even if writing code by hand were to become overtaken by AI writing the code.
 
 
 */

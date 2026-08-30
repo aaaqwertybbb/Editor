@@ -9733,7 +9733,7 @@ as "in the future all you'll need to be a developer is a pulse"
 
 ====
 
-< I just watched "Serial Experiments Lain - THE MOVIE" on youtube.
-< Can you give me a summary of what the anime is about with spoilers?
+> I just watched "Serial Experiments Lain - THE MOVIE" on youtube.
+> Can you give me a summary of what the anime is about with spoilers?
 
 */

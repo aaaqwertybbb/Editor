@@ -678,9 +678,9 @@ function EDI_render_do_Scroll(timestamp) {
     let diff = local_currVli - local_prevVli;
     if (diff === 0) return;
 
-    let lowerBound;
-    let upperBound;
-    let beltIndexLine; // The 0th loop will increment somewhat awkwardly. see the: "This decrement avoids that." comments for each case.
+    let lowerBound = 0;
+    let upperBound = 0;
+    let beltIndexLine = 0; // The 0th loop will increment somewhat awkwardly. see the: "This decrement avoids that." comments for each case.
 
     const local_ArrayFrom_textElement_children_length =
         INTS[fEDI_ArrayFrom_textElement_children_length];
@@ -719,18 +719,10 @@ function EDI_render_do_Scroll(timestamp) {
     // Important detail to consider: the lines that are >= EDI_lineEndPositionList_count will continually increment lineStart by 1 So if you expect this to accurately represent the EOF position when it is in view, it probably does NOT.
     // TODO: I think I saw how to do it in a way that is more sensible. There is no reason to not just put the lineStart = lineEnd + 1 inside the if that is immediately following I think? Then you'd avoid this 'note'... ugh for completeness I need to mention that this would be an issue now that I see it. You have lineEnd = -1 so then you'd need a note for that unless you changed the initial value to be 0 somehow or something, just idk.
     let lineStart = 0;
-    let lineEnd;
+    let lineEnd = -1;
     // TODO: 'let lineEnd = -1; if (lowerBound < count && lowerBound !== 0) { lineEnd = data[lowerBound - 1]; }
-    if (lowerBound < EDI_lineEndPositionList_count) {
-        if (lowerBound === 0) {
-            lineEnd = -1;
-        }
-        else {
-            lineEnd = EDI_lineEndPositionList_data[lowerBound - 1];
-        }
-    }
-    else {
-        lineEnd = -1;
+    if (lowerBound < EDI_lineEndPositionList_count && lowerBound !== 0) {
+        lineEnd = EDI_lineEndPositionList_data[lowerBound - 1];
     }
 
     const EDI_textByteList_bytes = EDI_textByteList.bytes;
@@ -9698,5 +9690,23 @@ it is easy to understand, but somewhat hard information to naturally come to the
 I'm not worried about getting replaced by AI, I'm worried about getting replaced by anyone with a pulse
 It's like world of warcraft getting kicked from a raid and then in looking for group chat you see:
 "LFM ICC just need one person with a pulse as a replacement".
+
+=====
+
+I was wondering whether I should "dissect the frog" or not.
+
+I'm gonna do it...
+
+The joke '"LFM ICC just need one person with a pulse as a replacement"'
+implies that I was so bad that you'd need to
+be better is have a pulse.
+
+This relates to the previous topic because I
+keep saying "xyz" then AI says "no"
+so I thought it was funny lol.
+
+Like I'm so bad at coding that all you'd need is a pulse to replace me.
+
+ANYWAYS
 
 */

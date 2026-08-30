@@ -9621,4 +9621,8 @@ else
 }
 ```
 
+So some of these specificities of languages completely contradict what you know from other languages.
+All of them overlap, you can write 'var foo = 3' in both C# and JavaScript or whatever, but
+the specificities of optimization, it can completely contradict what you know.
+
 */

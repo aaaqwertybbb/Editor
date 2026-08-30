@@ -636,14 +636,18 @@ function EDI_onScroll_WRAPIT() {
  * 
  */
 function EDI_render_do_Scroll(timestamp) {
+
+    // TODO: Is initializing the numbers to '0' rather than leaving them uninitialized and then assigning them from every possible conditional branch done for a reason (i.e.: monomorphism?)
+
     const local_lineHeight = INTS[fEDI_lineHeight];
 
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
-    INTS[fEDI_virtualIndexLine] = (Math.floor(INTS[fEDI_lastReadNumber_scrollTop] / local_lineHeight));
+    INTS[fEDI_virtualIndexLine] =
+        Math.floor(INTS[fEDI_lastReadNumber_scrollTop] / local_lineHeight);
     
     // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 1 of 4)
     let local_prevVli = INTS[fEDI_ONSCROLLvirtualIndexLine];
-    let local_currVli = INTS[fEDI_virtualIndexLine];
+    const local_currVli = INTS[fEDI_virtualIndexLine];
     INTS[fEDI_ONSCROLLvirtualIndexLine] = local_currVli;
 
     // TODO: Instead of adding 1000 here you should do it when you check the debounce
@@ -660,48 +664,39 @@ function EDI_render_do_Scroll(timestamp) {
         // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 4 of 4)
         // ...and here the locals assigned the same value as the globals in case 'EDI_onScroll_LeadingEdge' modified the globals.
         local_prevVli = INTS[fEDI_prevVli];
-        local_currVli = INTS[fEDI_currVli];
     }
 
     INTS[fEDI_ONSCROLLscrollTop] = INTS[fEDI_lastReadNumber_scrollTop]; // TODO: Move this to the scroll event handler (probably-maybe)
 
     // TODO: Move this to the leading edge? (maybe)
     if (INTS[fEDI_cursor_editKind] !== EditKind_None) {
-        // TODO: Timing issue, someone typing while they scroll
-        // TODO: You need to finalize all the cursors not just the primary
-        // TODO: You probably need to "check all the cursors" too not just the primary
+        // ... not applicable while this is in EDI_render_do_Scroll, only applicable when moved to leading edge: TODO: Timing issue, someone typing while they scroll
         EDI_finalizeEdit();
     }
 
     // TODO: Consider moving the 0 diff case to the soonest possible line to skip as much code as possible.
-    let diff = local_currVli - local_prevVli;
+    const diff = local_currVli - local_prevVli;
     if (diff === 0) return;
 
     let lowerBound;
     let upperBound;
     let beltIndexLine; // The 0th loop will increment somewhat awkwardly. see the: "This decrement avoids that." comments for each case.
 
-    let local_ArrayFrom_textElement_children_length = INTS[fEDI_ArrayFrom_textElement_children_length];
-    let EDI_lineEndPositionList_data = EDI_lineEndPositionList.data;
-    let EDI_lineEndPositionList_count = EDI_lineEndPositionList.count;
-    let EDI_textByteList_bytes = EDI_textByteList.bytes;
+    const local_ArrayFrom_textElement_children_length =
+        INTS[fEDI_ArrayFrom_textElement_children_length];
+    // TODO: consider 'const virtualCount = INTS[fEDI_virtualCount];'
 
+    // TODO: This if elseif else can probably be optimized
     if (diff > 0 && diff < INTS[fEDI_virtualCount]) {
-
         INTS[fEDI_sum_diffPositive] += diff;
-
         // Note: this case has 'vertical = (INTS[fEDI_prevVli] + INTS[fEDI_virtualCount]) * local_lineHeight;' I believe 'INTS[fEDI_virtualCount]' === 'INTS[fEDI_ONSCROLLvirtualCount]' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
         lowerBound = local_prevVli + INTS[fEDI_ONSCROLLvirtualCount];
         upperBound = lowerBound + diff;
-
         beltIndexLine = INTS[fEDI_EDI_beltIndexZero] - 1 /*This decrement avoids that.*/;
-
         INTS[fEDI_EDI_beltIndexZero] = (beltIndexLine + 1/*This decrement avoids that... but here you need to undo it for a moment*/ + diff) % local_ArrayFrom_textElement_children_length;
     }
     else if (diff < 0 && (diff *= -1) < INTS[fEDI_virtualCount]) {
-
         INTS[fEDI_sum_diffNegative] += diff;
-
         lowerBound = local_currVli;
         upperBound = lowerBound + diff;
 
@@ -712,15 +707,14 @@ function EDI_render_do_Scroll(timestamp) {
         beltIndexLine = INTS[fEDI_EDI_beltIndexZero] - 1/*This decrement avoids that.*/;
     }
     else {
+        INTS[fEDI_sum_diffPositive] += INTS[fEDI_virtualCount];
         lowerBound = local_currVli;
         upperBound = lowerBound + INTS[fEDI_virtualCount];
-
-        INTS[fEDI_sum_diffPositive] += INTS[fEDI_virtualCount];
-
         beltIndexLine = INTS[fEDI_EDI_beltIndexZero] - 1/*This decrement avoids that.*/;
     }
 
-    let vertical = lowerBound * local_lineHeight;
+    const EDI_lineEndPositionList_data = EDI_lineEndPositionList.data;
+    const EDI_lineEndPositionList_count = EDI_lineEndPositionList.count;
 
     // Important detail to consider: the lines that are >= EDI_lineEndPositionList_count will continually increment lineStart by 1 So if you expect this to accurately represent the EOF position when it is in view, it probably does NOT.
     // TODO: I think I saw how to do it in a way that is more sensible. There is no reason to not just put the lineStart = lineEnd + 1 inside the if that is immediately following I think? Then you'd avoid this 'note'... ugh for completeness I need to mention that this would be an issue now that I see it. You have lineEnd = -1 so then you'd need a note for that unless you changed the initial value to be 0 somehow or something, just idk.
@@ -737,6 +731,10 @@ function EDI_render_do_Scroll(timestamp) {
     else {
         lineEnd = -1;
     }
+
+    const EDI_textByteList_bytes = EDI_textByteList.bytes;
+    
+    let vertical = lowerBound * local_lineHeight;
 
     for (var indexLine = lowerBound; indexLine < upperBound; indexLine++) {
         

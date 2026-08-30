@@ -9628,4 +9628,36 @@ the specificities of optimization, it can completely contradict what you know.
 And now having heard about the "Temporal Dead Zone" it instantly makes sense
 it is easy to understand, but somewhat hard information to naturally come to the conclusion about.
 
+=====
+
+> You mentioned to me about javascript V8 "Temporal Dead Zone". I am wondering about a similar case within C#.
+> 
+> Because I was internalizing what you said and was thinking something like this "So some of these specificities of languages completely contradict what you know from other languages.
+> All of them overlap, you can write 'var foo = 3' in both C# and JavaScript or whatever, but
+> the specificities of optimization, it can completely contradict what you know."
+> 
+> ```csharp
+> // This has a pointless '3' assignment that just wastes CPU initializing the value to 3 for no reason.
+> var foo = 3;
+> if (bar)
+> {
+>     foo = 7;
+> }
+> else
+> {
+>     foo = 21;
+> }
+> 
+> // This doesn't.
+> int foo;
+> if (bar)
+> {
+>     foo = 7;
+> }
+> else
+> {
+>     foo = 21;
+> }
+> ```
+
 */

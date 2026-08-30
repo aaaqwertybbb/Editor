@@ -9571,4 +9571,15 @@ Google AI:
 < - How V8 treats let vs const inside hot loops
 < - The difference between standard arrays and Live DOM NodeLists in this specific loop
 
+btw, the "< Here is an optimized refactor of your function" doesn't run, it immediately throws an error.
+I don't ever expect correct code from an AI.
+And I feel completely safe in terms of job security if I were to ever enter this as a career
+because AI needs me just as much as I need it to tell me all these specificities about V8.
+
+I'm being hyperbolic when I say that I need the AI, but it is an extremely powerful tool
+to broadly search for a concept. "AI needs me just as much as I need it to tell me all these specificities about V8."
+
+
+
+
 */

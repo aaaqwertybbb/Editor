@@ -444,8 +444,8 @@ function EDI_render_request(renderKind) {
 }
 
 function EDI_render_do_CreateViewport() {
-    let remember_scrollTop = INTS[fEDI_lastReadNumber_scrollTop];
-    let remember_scrollLeft = INTS[fEDI_lastReadNumber_scrollLeft];
+    const remember_scrollTop = INTS[fEDI_lastReadNumber_scrollTop];
+    const remember_scrollLeft = INTS[fEDI_lastReadNumber_scrollLeft];
 
     EDI_baseElement.scrollTop = 0;
     EDI_baseElement.scrollLeft = 0;
@@ -457,15 +457,16 @@ function EDI_render_do_CreateViewport() {
     EDI_textElement.innerHTML = '';
 
     INTS[fEDI_EDI_beltIndexZero] = 0;
-    let translateY = `translateY(0px)`;
-    let left = gutterWidthTotal_withPxUnits;
-    let gutterWidth = `${INTS[fEDI_gutterWidthStyleValue]}px`;
+    const translateY = `translateY(0px)`;
+    const left = gutterWidthTotal_withPxUnits;
+    const gutterWidth = `${INTS[fEDI_gutterWidthStyleValue]}px`;
 
     for (var i = 0; i < INTS[fEDI_virtualCount]; i++) {
 
-        let indexLine = i + INTS[fEDI_virtualIndexLine];
+        // TODO: Move this to the for loop initializer
+        const indexLine = i + INTS[fEDI_virtualIndexLine];
 
-        let gutterLineElement = document.createElement('div');
+        const gutterLineElement = document.createElement('div');
         if (indexLine >= EDI_lineEndPositionList.count) {
             gutterLineElement.textContent = '~';
         }
@@ -477,7 +478,7 @@ function EDI_render_do_CreateViewport() {
         gutterLineElement.style.top = top;
         gutterLineElement.style.width = gutterWidth;
 
-        let div = document.createElement('div');
+        const div = document.createElement('div');
         div.className = 'eT';
         EDI_textElement.appendChild(div);
         div.style.transform = translateY;

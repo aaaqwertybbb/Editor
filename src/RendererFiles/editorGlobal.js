@@ -9800,4 +9800,6 @@ I'm gonna actually do the math and see how many calories that routine I listed i
 
 a bmr calculator says at 2,287 calories a day I'll lose 2 lbs per week
 
+well I just gotta not eat any further today I barely overate just keep hitting the routine don't be trippin
+
 */

@@ -937,15 +937,10 @@ function EDI_render_do_SyntaxHighlighting() {
     // Important detail to consider: the lines that are >= EDI_lineEndPositionList_count will continually increment lineStart by 1 So if you expect this to accurately represent the EOF position when it is in view, it probably does NOT.
     // TODO: I think I saw how to do it in a way that is more sensible. There is no reason to not just put the lineStart = lineEnd + 1 inside the if that is immediately following I think? Then you'd avoid this 'note'... ugh for completeness I need to mention that this would be an issue now that I see it. You have lineEnd = -1 so then you'd need a note for that unless you changed the initial value to be 0 somehow or something, just idk.
     let lineStart = 0;
-    let lineEnd;
-    if (indexLine < local_EDI_lineEndPositionList_count) {
-        if (indexLine === 0)
-            lineEnd = -1;
-        else
-            lineEnd = local_EDI_lineEndPositionList_data[indexLine - 1];
-    }
-    else {
-        lineEnd = -1;
+    let lineEnd = -1;
+    // TODO: 'let lineEnd = -1; if (lowerBound < count && lowerBound !== 0) { lineEnd = data[lowerBound - 1]; }
+    if (indexLine < local_EDI_lineEndPositionList_count && indexLine !== 0) {
+        lineEnd = local_EDI_lineEndPositionList_data[indexLine - 1];
     }
 
     let trackedSyntax_I = EDI_drawViewPort_FindTrackedSyntax_StartingIndex(indexLine);

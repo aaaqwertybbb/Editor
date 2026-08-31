@@ -290,6 +290,8 @@ function EDI_init() {
 function EDI_render_do(timestamp) {
     let renderKind = 0;
 
+    // TODO: Could combining the low frequency RenderKinds somehow such that they invoke another intermediate function that then does a switch within it...
+    // ...as a means of reducing the stackframe size of the function, be performance impactful?
     while (renderKind = EDI_renderKindArray.shift()) {
         switch (renderKind) {
             case RenderKind_Scroll:

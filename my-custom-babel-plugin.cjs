@@ -67,7 +67,7 @@ module.exports = function (babel) {
     "fEDI_indexCursor",
     
 
-    "fEDI_offsetLine",
+    //"fEDI_offsetLine",
     
 
     "fEDI_offsetColumn_withRespectToThisIndexLine",

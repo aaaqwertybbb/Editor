@@ -70,7 +70,7 @@ let EDI_trackedSyntaxList = new TrackedSyntaxList(32);
  */
 let EDI_findOverlay_searchResultPositionList = null;
 
-let EDI_textByteList = new ByteList(1024);
+const EDI_textByteList = new ByteList(1024);
 const EDI_encoder = new TextEncoder();
 const EDI_decoder = new TextDecoder();
 
@@ -84,11 +84,11 @@ let EDI_characterWidth = 8;
 /**
  * When this is cleared the information is not removed, only 'gapBufferCount' is set to 0.
  */
-let EDI_cursor_gapBuffer = new Uint8Array(CONST_EDI_cursor_GAP_BUFFER_CAPACITY);
+const EDI_cursor_gapBuffer = new Uint8Array(CONST_EDI_cursor_GAP_BUFFER_CAPACITY);
 
 let EDI_cursor_gapBufferWriteToSpanElement = null;
 
-let EDI_cursor_caretRow = document.createElement('div');
+const EDI_cursor_caretRow = document.createElement('div');
 EDI_cursor_caretRow.id = "EDI_caretRow-1";
 EDI_cursor_caretRow.className = "EDI_caretRow";
 EDI_cursor_caretRow.style.left = gutterWidthTotal_withPxUnits;
@@ -96,7 +96,7 @@ if (EDI_horizontal_scrollbar_virtualization_boundary) {
     EDI_cursor_caretRow.style.width = EDI_horizontal_scrollbar_virtualization_boundary.style.width;
 }
 
-let EDI_cursor_cursorElement = document.createElement('div');
+const EDI_cursor_cursorElement = document.createElement('div');
 EDI_cursor_cursorElement.id = "EDI_cursor-1";
 EDI_cursor_cursorElement.className = "EDI_cursor";
 
@@ -153,13 +153,13 @@ EDI_on_tab_bytes[3] = 0;
 /**
  * When a cursor removes a line end the position of the line end is stored in this list until the edit is finalized.
  */
-let EDI_lineEndPositionList_PENDING = new UInt32List(128);
+const EDI_lineEndPositionList_PENDING = new UInt32List(128);
 
 /**
  * IMPORTANT: use EDI_readLineEndPositionList(...) rather than indexing into this directly...
  * ...due to the possibility of pending edits.
  */
-let EDI_lineEndPositionList = new UInt32List(128);
+const EDI_lineEndPositionList = new UInt32List(128);
 
 let EDI_textSourceIdentifier = '';
 let EDI_FORMATTED_textSourceIdentifier = '';
@@ -183,7 +183,7 @@ let w_div = null;
  */
 const lspQueue = [];
 
-let EDI_renderKindArray = [];
+const EDI_renderKindArray = [];
 
 // Persistent, flat JS arrays that stay alive forever in memory
 let ArrayFrom_gutter_children = [];
@@ -418,7 +418,7 @@ function EDI_render_do_SetText(timestamp) {
     update_VirtualIndexLine();
     
 
-    EDI_render_do_Scroll(timestamp)
+    EDI_render_do_Scroll(timestamp);
 
     INTS[fEDI_prevVli] = INTS[fEDI_ONSCROLLvirtualIndexLine];
     INTS[fEDI_currVli] = INTS[fEDI_virtualIndexLine];

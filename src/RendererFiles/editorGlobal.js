@@ -1148,7 +1148,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     for (var sourceI = 0; sourceI < text.length; sourceI++) {
         switch (text[sourceI]) {
             case '\r':
-                if (sourceI < text.length - 1 & text[sourceI + 1] === '\n') {
+                if (sourceI < text.length - 1 && text[sourceI + 1] === '\n') {
                     if (!lineEndString) {
                         lineEndString = EDI_lineEndString = '\r\n';
                     }

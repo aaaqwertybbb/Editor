@@ -9798,4 +9798,6 @@ I'm gonna actually do the math and see how many calories that routine I listed i
 
 2000 calories total if you don't count the sriracha
 
+a bmr calculator says at 2,287 calories a day I'll lose 2 lbs per week
+
 */

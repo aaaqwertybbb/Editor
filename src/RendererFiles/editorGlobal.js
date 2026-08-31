@@ -9744,4 +9744,15 @@ I keep having diarrhea or something every morning.
 I feel phsyically strong though. Like super strong. Everyday I feel a ton stronger
 and I can see it in the minimal exercise I do that I'm getting drastically stronger everyday.
 
+Breakfast:
+- 1 lb of 98% fat free ground chicken drenched with sriracha
+- 4 strawberry nutrigrain bars
+
+Dinner:
+- 1 lb of 98% fat free ground chicken drenched with sriracha
+- 4 strawberry nutrigrain bars
+
+That's it
+
+
 */

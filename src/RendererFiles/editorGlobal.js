@@ -9810,6 +9810,9 @@ I'll do
 =
 then the repeats are less reps as I go cause I'm fatiguing.
 
+The dumbbells are my parents so I'm just working with what I got lol
+as for why I'm doing 30 reps and such
+
 
 
 

@@ -1126,7 +1126,13 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     EDI_FORMATTED_textSourceIdentifier = FORMATTED_textSourceIdentifier;
     BYTES[byteEDI_extensionKind] = extensionKind;
     EDI_language_line_lex_SET(BYTES[byteEDI_extensionKind]);
-    EDI_lineEndString = lineEndString; // use 'lineEndString' for the within-loop checks of '!lineEndString' to avoid reading global scope during loop when 'lineEndString' is equivalent.
+
+    // TODO: Does this matter:
+    // use 'lineEndString' for the within-loop checks of '!lineEndString' to avoid reading non-cont global scope during loop when 'lineEndString' is equivalent.
+    // ^ NOTE: (it was an old comment when not using ES6 modules but even with modules,
+    //          'EDI_lineEndString' technically isn't a const does that change things? i.e.: with modules you'd remove this
+    //          "local alias" of the 'global scope' variable because now it points to the 'module scope' and is very optimized.)
+    EDI_lineEndString = lineEndString;
 
     let EDI_lineEndPositionList_count = EDI_lineEndPositionList.count;
     let EDI_textByteList_count = EDI_textByteList.count;
@@ -1146,9 +1152,10 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     // TODO: Insert multiple characters at the same time when you do this?
 
     for (var sourceI = 0; sourceI < text.length; sourceI++) {
-        switch (text[sourceI]) {
-            case '\r':
-                if (sourceI < text.length - 1 && text[sourceI + 1] === '\n') {
+        const code = text.charCodeAt(sourceI);
+        switch (code) {
+            case 13 /* carriage return '\r' */:
+                if (sourceI < text.length - 1 && text.charCodeAt(sourceI + 1) === CONST_EDI_ASCII_LINE_FEED) {
                     if (!lineEndString) {
                         lineEndString = EDI_lineEndString = '\r\n';
                     }
@@ -1167,7 +1174,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
                 EDI_lineEndPositionList.insert(EDI_lineEndPositionList_count++, EDI_textByteList_count);
                 EDI_textByteList.insert(EDI_textByteList_count++, CONST_EDI_ASCII_LINE_FEED);
                 break;
-            case '\n':
+            case CONST_EDI_ASCII_LINE_FEED:
                 if (!lineEndString) {
                     lineEndString = EDI_lineEndString = '\n';
                 }
@@ -1179,7 +1186,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
                 EDI_lineEndPositionList.insert(EDI_lineEndPositionList_count++, EDI_textByteList_count);
                 EDI_textByteList.insert(EDI_textByteList_count++, CONST_EDI_ASCII_LINE_FEED);
                 break;
-            case '\t':
+            case CONST_EDI_ASCII_TAB:
                 lineLength += 4;
                 EDI_textByteList.insertBytes(EDI_textByteList_count, EDI_tab_tabsbytes, /*offset*/ 0, /*length*/ 4);
                 // 'EDI_textByteList_count++' pattern breaking line here
@@ -1192,7 +1199,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
                 // tbh: TODO: 'charCodeAt' also might be more allocation expensive than you expect. It returns a JavaScript number. Switching and returning an index from byte array prehardcoded might avoid an allocation per number returned?
                 // ... although I hear most engines store numbers such that the pointer represents the value and you avoid the allocation but even then where is the metadata that tells you how to read that pointer differently than the other ones etc...
                 //
-                EDI_textByteList.insert(EDI_textByteList_count++, text.charCodeAt(sourceI));
+                EDI_textByteList.insert(EDI_textByteList_count++, code);
                 break;
         }
     }

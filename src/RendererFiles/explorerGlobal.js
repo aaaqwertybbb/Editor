@@ -70,7 +70,7 @@ let EXPLORER_TreeViewDirector_chosenWorkspace = -1;
 /**
  * @type {TreeViewNodeList}
  * */
-let EXPLORER_TreeViewDirector_nodeList = new TreeViewNodeList(32);
+const EXPLORER_TreeViewDirector_nodeList = new TreeViewNodeList(32);
 
 /** Starting with an empty array so I can have undefined/null signify that the "TreeViewDirector" is "opting out" of this feature, thus the component should not allocate this on the "TreeViewDirector"'s behalf. */
 let EXPLORER_TreeViewDirector_pullData_array = new Uint32Array(0);

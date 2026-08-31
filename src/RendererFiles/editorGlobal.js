@@ -9736,4 +9736,12 @@ as "in the future all you'll need to be a developer is a pulse"
 > I just watched "Serial Experiments Lain - THE MOVIE" on youtube.
 > Can you give me a summary of what the anime is about with spoilers?
 
+236 lbs this morning.
+I feel kinda gross maybe I feel "flat"
+It was messing with my sleep last night I just kept thinking how much I wanted to eat something lol
+Once I feel asleep it was fine but it took like 2 hours.
+I keep having diarrhea or something every morning.
+I feel phsyically strong though. Like super strong. Everyday I feel a ton stronger
+and I can see it in the minimal exercise I do that I'm getting drastically stronger everyday.
+
 */

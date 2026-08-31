@@ -68,13 +68,13 @@ let EDI_trackedSyntaxList = new TrackedSyntaxList(32);
 /**
  * @type {UInt32List}
  */
-let EDI_findOverlay_searchResultPositionList;
+let EDI_findOverlay_searchResultPositionList = null;
 
 let EDI_textByteList = new ByteList(1024);
 const EDI_encoder = new TextEncoder();
 const EDI_decoder = new TextDecoder();
 
-let gutterWidthTotal_withPxUnits;
+let gutterWidthTotal_withPxUnits = '';
 
 /** This is likely a decimal value once it gets measured for real, do not try to put it in an int container. */
 let EDI_characterWidth = 8;
@@ -166,7 +166,7 @@ let EDI_FORMATTED_textSourceIdentifier = '';
 
 let EDI_lineEndString = null;
 
-let EDI_documentSymbolResult;
+let EDI_documentSymbolResult = null;
 /**
  * @type {ListComponent}
  */
@@ -189,7 +189,7 @@ let EDI_renderKindArray = [];
 let ArrayFrom_gutter_children = [];
 let ArrayFrom_textElement_children = [];
 
-let EDI_language_line_lex;
+let EDI_language_line_lex = null;
 
 function EDI_cursor_hasSelection() {
     return INTS[fEDI_cursor_selectionAnchor] >= 0 &&
@@ -288,7 +288,7 @@ function EDI_init() {
  * You need to have each switch statement invoke a corresponding function in order to keep the stack frame as small as possible.
  */
 function EDI_render_do(timestamp) {
-    let renderKind;
+    let renderKind = 0;
     // Note the functions being invoked might internally invoke a shift() if they see that the next renderKind is a 'flag'.
 
     while (renderKind = EDI_renderKindArray.shift()) {

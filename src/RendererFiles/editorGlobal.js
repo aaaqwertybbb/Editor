@@ -240,22 +240,16 @@ function EDI_cursor_clear() {
 }
 
 function EDI_init() {
-
-    
-
-
     EDI_horizontal_scrollbar.style.left = '0px';
     INTS[fEDI_DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left] = 0;
-
-    
 
     EDI_cursorListElement.appendChild(EDI_cursor_caretRow);
 
     EDI_measureLineHeightAndCharacterWidth();
     EDI_measureBaseElement();
 
-    let gutterPaddingLeft = CONST_EDI_gutterPaddingLeft + 'px';
-    let gutterPaddingRight = CONST_EDI_gutterPaddingRight + 'px';
+    const gutterPaddingLeft = CONST_EDI_gutterPaddingLeft + 'px';
+    const gutterPaddingRight = CONST_EDI_gutterPaddingRight + 'px';
 
     EDI_gutter.style.paddingLeft = gutterPaddingLeft;
     EDI_gutter.style.paddingRight = gutterPaddingRight;

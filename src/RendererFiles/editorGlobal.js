@@ -9796,6 +9796,19 @@ So it's:
 all one after another
 then I go for the "hour long walk"
 
+I do as many reps as it takes to reach "safe failure".
+I don't want to do the exercises with bad form so I don't go to "failure failure"
+I stop once I can no longer perform the exercise cleanly.
+And I stop at 30 reps no matter what (if I feel like I can do more than 30 then I need higher weight etc...).
+
+So the first "="
+I'll do
+- rotator cuff (30 reps)
+- lateral raises with a  (2 lb dumbbell each hand 30 reps)
+- shoulder press (5 lb dumbbell each hand 30 reps)
+- flex my arms for 10 seconds (as hard as I safely can)
+=
+then the repeats are less reps as I go cause I'm fatiguing.
 
 
 

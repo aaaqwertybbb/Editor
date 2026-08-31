@@ -289,7 +289,6 @@ function EDI_init() {
  */
 function EDI_render_do(timestamp) {
     let renderKind = 0;
-    // Note the functions being invoked might internally invoke a shift() if they see that the next renderKind is a 'flag'.
 
     while (renderKind = EDI_renderKindArray.shift()) {
         switch (renderKind) {
@@ -344,22 +343,13 @@ function EDI_render_do(timestamp) {
             case RenderKind_Cursor_flag_doNotScrollIntoView:
                 EDI_render_do_cursor_flag_doNotScrollIntoView(timestamp);
                 break;
-            // Don't include these you're wasting stackframe space.
-            // You could perhaps "debug mode" check for these
-            //case RenderKind_None: // this is a duplicate case ???
-            //case RenderKind_Cursor_flag_doNotScrollIntoView: // TODO: This is a silent error
-            //case RenderKind_Cursor_flag_scrollIntoViewExplicit: // TODO: This is a silent error
-            //    break;
             case RenderKind_Cursor_n:
-                // the 'default case' is RenderKind_Cursor_n:
                 EDI_render_do_cursor(timestamp);
                 break;
-            //default:
-            //    break;
         }
     }
     
-    BYTES[byteEDI_isRenderPending] = false; // Reset the lock
+    BYTES[byteEDI_isRenderPending] = false;
 }
 
 function EDI_render_do_cursor(timestamp) {

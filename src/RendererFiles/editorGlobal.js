@@ -2745,7 +2745,7 @@ function EDI_createStyleForSelection() {
         INTS[fEDI_cursor_DRAWN_selection_virtualCount] = INTS[fEDI_virtualCount];
         INTS[fEDI_cursor_DRAWN_selection_virtualIndexLine] = INTS[fEDI_virtualIndexLine];
 
-        let shouldExistSelectionDiv;
+        let shouldExistSelectionDiv = false;
         if (INTS[fEDI_cursor_DRAWN_selectionAnchor] === INTS[fEDI_cursor_DRAWN_selectionEnd]) {
             shouldExistSelectionDiv = false;
         }
@@ -2768,7 +2768,7 @@ function EDI_createStyleForSelection() {
             }
         }
         else if (shouldExistSelectionDiv) {
-            textSelectionDiv = document.createElement('div')
+            textSelectionDiv = document.createElement('div');
             textSelectionDiv.id = CONST_EDI_cursor_htmlId;
             textSelectionDiv.style.display = 'contents';
             EDI_presentation.appendChild(textSelectionDiv);

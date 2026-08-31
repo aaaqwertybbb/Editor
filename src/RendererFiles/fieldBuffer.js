@@ -787,15 +787,15 @@ But I don't know
 
 const EDI_baseElement = document.getElementById('EDITOR');
 
-let EDI_virtualization_horizontal;
-let EDI_virtualization_vertical;
-let EDI_gutter;
-let EDI_horizontal_scrollbar;
-let EDI_horizontal_scrollbar_virtualization_boundary;
-let EDI_body;
-let EDI_presentation;
-let EDI_cursorListElement;
-let EDI_textElement;
+const EDI_virtualization_horizontal = EDI_baseElement.children[0];
+const EDI_virtualization_vertical = EDI_baseElement.children[1];
+const EDI_gutter = EDI_baseElement.children[4];
+const EDI_horizontal_scrollbar = EDI_baseElement.children[2].children[0];
+const EDI_horizontal_scrollbar_virtualization_boundary = EDI_baseElement.children[2].children[0].children[0];
+const EDI_body = EDI_baseElement.children[5];
+const EDI_presentation = EDI_baseElement.children[5].children[0];
+const EDI_cursorListElement = EDI_baseElement.children[5].children[1];
+const EDI_textElement = EDI_baseElement.children[5].children[2];
 
 /**
  * TODO: I wanted to get rid of this array but when you open a file you for certain want to take the text as is.

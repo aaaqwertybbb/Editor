@@ -241,19 +241,13 @@ function EDI_cursor_clear() {
 
 function EDI_init() {
 
-    EDI_virtualization_horizontal = EDI_baseElement.children[0];
-    EDI_virtualization_vertical = EDI_baseElement.children[1];
-    EDI_gutter = EDI_baseElement.children[4];
+    
 
-    EDI_horizontal_scrollbar = EDI_baseElement.children[2].children[0];
+
     EDI_horizontal_scrollbar.style.left = '0px';
     INTS[fEDI_DRAWN_NUMBER_EDI_horizontal_scrollbar_style_left] = 0;
 
-    EDI_horizontal_scrollbar_virtualization_boundary = EDI_baseElement.children[2].children[0].children[0];
-    EDI_body = EDI_baseElement.children[5];
-    EDI_presentation = EDI_baseElement.children[5].children[0];
-    EDI_cursorListElement = EDI_baseElement.children[5].children[1];
-    EDI_textElement = EDI_baseElement.children[5].children[2];
+    
 
     EDI_cursorListElement.appendChild(EDI_cursor_caretRow);
 

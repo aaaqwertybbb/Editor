@@ -9756,5 +9756,6 @@ That's it
 
 Immediately after saying that I'm seeing 'Brennan Heart -Don't speak (Full)' in my youtube recommendations
 
+Once I hit 199 lbs I'll mess around with the food until then I'm just gonna ride it out
 
 */

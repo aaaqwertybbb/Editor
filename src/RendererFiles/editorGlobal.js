@@ -861,8 +861,8 @@ but there is 0 reasoning, understanding, or measurements behind my decision.
 */
 
 function EDI_render_do_SyntaxHighlighting() {
-    let local_sum_diffNegative = INTS[fEDI_sum_diffNegative];
-    let local_sum_diffPositive = INTS[fEDI_sum_diffPositive];
+    const local_sum_diffNegative = INTS[fEDI_sum_diffNegative];
+    const local_sum_diffPositive = INTS[fEDI_sum_diffPositive];
     let total_diff = local_sum_diffNegative + local_sum_diffPositive;
 
     /*
@@ -918,8 +918,8 @@ function EDI_render_do_SyntaxHighlighting() {
         }
     }
 
-    let local_EDI_lineEndPositionList_data = EDI_lineEndPositionList.data;
-    let local_EDI_lineEndPositionList_count = EDI_lineEndPositionList.count;
+    const local_EDI_lineEndPositionList_data = EDI_lineEndPositionList.data;
+    const local_EDI_lineEndPositionList_count = EDI_lineEndPositionList.count;
 
     // Important detail to consider: the lines that are >= EDI_lineEndPositionList_count will continually increment lineStart by 1 So if you expect this to accurately represent the EOF position when it is in view, it probably does NOT.
     // TODO: I think I saw how to do it in a way that is more sensible. There is no reason to not just put the lineStart = lineEnd + 1 inside the if that is immediately following I think? Then you'd avoid this 'note'... ugh for completeness I need to mention that this would be an issue now that I see it. You have lineEnd = -1 so then you'd need a note for that unless you changed the initial value to be 0 somehow or something, just idk.

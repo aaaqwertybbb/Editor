@@ -37,7 +37,7 @@ function DIALOG_render_request(renderKind) {
 }
 
 function DIALOG_render_do() {
-    let renderKind;
+    let renderKind = 0;
     
     while (renderKind = DIALOG_renderKindArray.shift()) {
         switch (renderKind) {

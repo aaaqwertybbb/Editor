@@ -31,7 +31,7 @@ function AUTOCOMPLETE_render_request(renderKind) {
 }
 
 function AUTOCOMPLETE_renderDo(timestamp) {
-    let renderKind;
+    let renderKind = 0;
 
     while (renderKind = AUTOCOMPLETE_renderKindArray.shift()) {
         switch (renderKind) {

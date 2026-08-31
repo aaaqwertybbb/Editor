@@ -50,7 +50,7 @@ function WIDGET_render_request(renderKind) {
 }
 
 function WIDGET_render_do() {
-    let renderKind;
+    let renderKind = 0;
     
     while (renderKind = WIDGET_renderKindArray.shift()) {
         switch (renderKind) {

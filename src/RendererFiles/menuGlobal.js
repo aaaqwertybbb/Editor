@@ -92,7 +92,7 @@ function MENU_render_request(renderKind) {
 }
 
 function MENU_render_do() {
-    let renderKind;
+    let renderKind = 0;
     
     while (renderKind = MENU_renderKindArray.shift()) {
         switch (renderKind) {

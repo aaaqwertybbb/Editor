@@ -91,7 +91,7 @@ class TreeViewComponent {
     }
 
     renderDo = (timestamp) => {
-        let renderKind;
+        let renderKind = 0;
         
         // Synchronously exhaust the item queue for this animation frame
         while (renderKind = this.TREEVIEW_renderKindArray.shift()) {

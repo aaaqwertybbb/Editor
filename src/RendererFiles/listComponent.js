@@ -65,7 +65,7 @@ class ListComponent {
     }
 
     renderDo = () => {
-        let renderKind;
+        let renderKind = 0;
         
         // Synchronously exhaust the item queue for this animation frame
         while (renderKind = this.LIST_renderKindArray.shift()) {

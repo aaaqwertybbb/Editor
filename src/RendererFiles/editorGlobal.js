@@ -1978,19 +1978,20 @@ function EDI_finalizeEdit_Paste(indexLine_editOccurredOn) {
     let insertionLength = 0;
 
     for (var sourceI = 0; sourceI < content.length; sourceI++) {
-        switch (content[sourceI]) {
-            case '\t':
+        const code = content.charCodeAt(sourceI);
+        switch (code) {
+            case CONST_EDI_ASCII_TAB:
                 EDI_textByteList.insertBytes(INTS[fEDI_cursor_editPosition] + insertionLength, EDI_tab_tabsbytes, /*offset*/ 0, /*length*/ 4);
                 insertionLength += 4;
                 break;
-            case '\n':
+            case CONST_EDI_ASCII_LINE_FEED:
                 EDI_textByteList.insert(INTS[fEDI_cursor_editPosition] + insertionLength, CONST_EDI_ASCII_LINE_FEED);
                 EDI_lineEndPositionList.insert(INTS[fEDI_cursor_editIndexLine] + linesInsertedCount, INTS[fEDI_cursor_editPosition] + insertionLength);
                 insertionLength++;
                 linesInsertedCount++;
                 break;
-            case '\r':
-                if (sourceI < content.length - 1 && content[sourceI + 1] === '\n') {
+            case 13 /* carriage return '\r' */:
+                if (sourceI < content.length - 1 && content.charCodeAt(sourceI + 1) === CONST_EDI_ASCII_LINE_FEED) {
                     sourceI++;
                 }
                 EDI_textByteList.insert(INTS[fEDI_cursor_editPosition] + insertionLength, CONST_EDI_ASCII_LINE_FEED);
@@ -1999,7 +2000,7 @@ function EDI_finalizeEdit_Paste(indexLine_editOccurredOn) {
                 linesInsertedCount++;
                 break;
             default:
-                EDI_textByteList.insert(INTS[fEDI_cursor_editPosition] + insertionLength, content.charCodeAt(sourceI));
+                EDI_textByteList.insert(INTS[fEDI_cursor_editPosition] + insertionLength, code);
                 insertionLength++;
                 break;
         }
@@ -6016,8 +6017,8 @@ function EDI_paste(content) {
     //let original_tracked_syntax_start = positionIndex - INTS[fEDI_cursor_indexColumn] + INTS[fEDI_w_indexColumn_Sum];
 
     for (var sourceI = 0; sourceI < content.length; sourceI++) {
-        switch (content[sourceI]) {
-            case '\n':
+        switch (content.charCodeAt(sourceI)) {
+            case CONST_EDI_ASCII_LINE_FEED:
                 //
                 if (wordLength > 0) {
                     //EDI_duplicate_and_paste_writeWord(wordLength, content.substring(wordStart, wordStart + wordLength));
@@ -6032,7 +6033,7 @@ function EDI_paste(content) {
                 //
                 linefeedLength++;
                 break;
-            case '\r':
+            case 13 /* carriage return '\r' */:
                 //
                 if (wordLength > 0) {
                     //EDI_duplicate_and_paste_writeWord(wordLength, content.substring(wordStart, wordStart + wordLength));
@@ -6042,7 +6043,7 @@ function EDI_paste(content) {
                 }
                 //else if (tabLength > 0) writeTab();
                 //
-                if (sourceI < content.length - 1 && content[sourceI + 1] === '\n') {
+                if (sourceI < content.length - 1 && content.charCodeAt(sourceI + 1) === CONST_EDI_ASCII_LINE_FEED) {
                     sourceI++;
                 }
                 insertionLength++;
@@ -6050,7 +6051,7 @@ function EDI_paste(content) {
                 //
                 linefeedLength++;
                 break;
-            case '\t':
+            case CONST_EDI_ASCII_TAB:
                 //
                 if (wordLength > 0) {
                     //EDI_duplicate_and_paste_writeWord(wordLength, content.substring(wordStart, wordStart + wordLength));

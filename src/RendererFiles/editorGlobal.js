@@ -9784,7 +9784,12 @@ then the repeats are less reps as I go cause I'm fatiguing.
 The dumbbells are my parents so I'm just working with what I got lol
 as for why I'm doing 30 reps and such
 
+======
 
+I just ate 3 small rolls
+and ~20 chips of some "healthy chip brand thing"
+
+I'm somewhat upset.
 
 
 */

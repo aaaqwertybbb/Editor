@@ -45,7 +45,7 @@ let EXPLORER_TreeViewDirector_itemListElement = document.createElement('div');
 EXPLORER_TreeViewDirector_itemListElement.className = 'TREEVIEW_itemList';
 EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_itemListElement);
 
-let EXPLORER_TreeViewDirector_TREEVIEW_renderKindArray = [];
+const EXPLORER_TreeViewDirector_TREEVIEW_renderKindArray = [];
 
 let EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children = [];
 
@@ -700,7 +700,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_request(renderKind) {
 }
 
 function EXPLORER_TreeViewDirector_renderDo(timestamp) {
-    let renderKind;
+    let renderKind = 0;
     
     // Synchronously exhaust the item queue for this animation frame
     while (renderKind = EXPLORER_TreeViewDirector_TREEVIEW_renderKindArray.shift()) {

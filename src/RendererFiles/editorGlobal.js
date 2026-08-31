@@ -2258,7 +2258,7 @@ function EDI_readLineEndPositionList(indexLine) {
     let lineEndPositionIndex = EDI_lineEndPositionList.data[indexLine];
 
     // If you need to determine the text without finalizing an edit, you DO have to loop forwards right?
-    if (INTS[fEDI_cursor_editLength] > 0 & INTS[fEDI_cursor_editPosition] <= lineEndPositionIndex) {
+    if (INTS[fEDI_cursor_editLength] > 0 && INTS[fEDI_cursor_editPosition] <= lineEndPositionIndex) {
         switch (INTS[fEDI_cursor_editKind]) {
             case EditKind_InsertLtr:
                 lineEndPositionIndex += INTS[fEDI_cursor_editLength];
@@ -3134,7 +3134,7 @@ function getCharacter(positionIndex) {
     // If you need to determine the text without finalizing an edit, you DO have to loop forwards right?
     switch (INTS[fEDI_cursor_editKind]) {
         case EditKind_InsertLtr:
-            if (positionIndex >= INTS[fEDI_cursor_editPosition] & positionIndex < INTS[fEDI_cursor_editPosition] + INTS[fEDI_cursor_editLength]) {
+            if (positionIndex >= INTS[fEDI_cursor_editPosition] && positionIndex < INTS[fEDI_cursor_editPosition] + INTS[fEDI_cursor_editLength]) {
                 // TODO: I hear fromCharCode is faster than 'String.fromCodePoint(...)' thus I'm seeing if it is sufficient for my current personal usage...
                 // ...long term it presumably fails for characters that I don't tend to type, but until then this is working so I'll just use fromCharCode.
                 //
@@ -4355,7 +4355,7 @@ function EDI_onKeyDown_ArrowLeft(event) {
     }
     else {
         EDI_preKeyboardMovementSelectionLogic(event.shiftKey);
-        if (event.ctrlKey & INTS[fEDI_cursor_indexColumn] > 0) {
+        if (event.ctrlKey && INTS[fEDI_cursor_indexColumn] > 0) {
             let line = EDI_getLineBoundaryPositions(INTS[fEDI_cursor_indexLine]);
             let indexPosition = line.start + INTS[fEDI_cursor_indexColumn];
             let originalCharacterKind = EDI_getCharacterPrevious_KIND(INTS[fEDI_cursor_indexColumn], indexPosition);
@@ -4471,7 +4471,7 @@ function EDI_onKeyDown_ArrowRight(event) {
     else {
         EDI_preKeyboardMovementSelectionLogic(event.shiftKey);
         let lastValidIndexColumn = EDI_getLastValidIndexColumn(INTS[fEDI_cursor_indexLine]);
-        if (event.ctrlKey & INTS[fEDI_cursor_indexColumn] < lastValidIndexColumn) {
+        if (event.ctrlKey && INTS[fEDI_cursor_indexColumn] < lastValidIndexColumn) {
             let line = EDI_getLineBoundaryPositions(INTS[fEDI_cursor_indexLine]);
             let indexPosition = line.start + INTS[fEDI_cursor_indexColumn];
             let originalCharacterKind = EDI_getCharacterCurrent_KIND(INTS[fEDI_cursor_indexColumn], indexPosition, line.end);

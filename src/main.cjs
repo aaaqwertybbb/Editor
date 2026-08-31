@@ -73,7 +73,7 @@ if (require('electron-squirrel-startup')) {
 function isValidAbsolutePath(absolutePath) {
     // The provided absolute file path is validated.
     // If the absolute file path is NOT recognized, then an empty enumeration is returned.
-    if (absolutePath !== openedDirectory & !database.contains(absolutePath)) return false;
+    if (absolutePath !== openedDirectory && !database.contains(absolutePath)) return false;
 
 	return true;
 }
@@ -1748,7 +1748,7 @@ async function copyClipboardAbsolutePathToDirectory(event, directory, menuOption
 			fs.cpSync(sourceFile, destinationFile, { force: false, errorOnExist: true, recursive: true });
 			let pathId = database.addAbsolutePath(destinationFile, filename);
 			let sourceFileWasDeleted = false;
-			if (sourceWasMenuOptionCut & fs.existsSync(destinationFile)) {
+			if (sourceWasMenuOptionCut && fs.existsSync(destinationFile)) {
 				fs.rmSync(sourceFile, { recursive: true });
 				sourceFileWasDeleted = true;
 			}
@@ -1765,7 +1765,7 @@ async function copyClipboardAbsolutePathToDirectory(event, directory, menuOption
 			fs.copyFileSync(sourceFile, destinationFile, fs.constants.COPYFILE_EXCL);
 			let pathId = database.addAbsolutePath(destinationFile, filename);
 			let sourceFileWasDeleted = false;
-			if (sourceWasMenuOptionCut & fs.existsSync(destinationFile)) {
+			if (sourceWasMenuOptionCut && fs.existsSync(destinationFile)) {
 				fs.unlinkSync(sourceFile);
 				sourceFileWasDeleted = true;
 			}

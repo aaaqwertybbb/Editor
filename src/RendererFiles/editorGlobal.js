@@ -623,8 +623,7 @@ function EDI_render_do_Scroll(timestamp) {
     const local_lineHeight = INTS[fEDI_lineHeight];
 
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
-    INTS[fEDI_virtualIndexLine] =
-        Math.floor(INTS[fEDI_lastReadNumber_scrollTop] / local_lineHeight);
+    INTS[fEDI_virtualIndexLine] = Math.floor(INTS[fEDI_lastReadNumber_scrollTop] / local_lineHeight);
     
     // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 1 of 4)
     let local_prevVli = INTS[fEDI_ONSCROLLvirtualIndexLine];
@@ -663,8 +662,7 @@ function EDI_render_do_Scroll(timestamp) {
     let upperBound = 0;
     let beltIndexLine = 0; // The 0th loop will increment somewhat awkwardly. see the: "This decrement avoids that." comments for each case.
 
-    const local_ArrayFrom_textElement_children_length =
-        INTS[fEDI_ArrayFrom_textElement_children_length];
+    const local_ArrayFrom_textElement_children_length = INTS[fEDI_ArrayFrom_textElement_children_length];
     // TODO: consider 'const virtualCount = INTS[fEDI_virtualCount];'
 
     // TODO: This if elseif else can probably be optimized

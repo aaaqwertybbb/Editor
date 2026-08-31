@@ -5612,17 +5612,17 @@ function EDI_render_do_DuplicateOrPaste() {
             let pos = 0;
 
             while (pos < clipboardContentLength) {
-                switch (clipboardContent[pos]) {
-                    case '\r':
+                switch (clipboardContent.charCodeAt(pos)) {
+                    case 13 /* carriage return '\r' */:
                         lengthBytes++;
-                        if (pos < clipboardContentLength - 1 && clipboardContent[pos + 1] === '\n') {
+                        if (pos < clipboardContentLength - 1 && clipboardContent.charCodeAt(pos + 1) === CONST_EDI_ASCII_LINE_FEED) {
                             pos += 2;
                         }
                         else {
                             pos++;
                         }
                         break;
-                    case '\t':
+                    case CONST_EDI_ASCII_TAB:
                         // '\t\0\0\0' was likely a bad idea and should "TODO: be changed", but nevertheless it is how the editor works at the moment.
                         //
                         lengthBytes += 4;
@@ -5645,17 +5645,18 @@ function EDI_render_do_DuplicateOrPaste() {
             pos = 0;
 
             while (pos < clipboardContentLength) {
-                switch (clipboardContent[pos]) {
-                    case '\r':
+                const code = clipboardContent.charCodeAt(pos);
+                switch (code) {
+                    case 13 /* carriage return '\r' */:
                         byteArray[lengthBytes++] = 10; // char code for '\n' is 10
-                        if (pos < clipboardContentLength - 1 && clipboardContent[pos + 1] === '\n') { // Editor tracks all linefeeds as '\n', then when saving out the file swaps the '\n' for whatever the originally first encountered line end kind was (perhaps '\r', '\n' or '\r\n').
+                        if (pos < clipboardContentLength - 1 && clipboardContent.charCodeAt(pos + 1) === CONST_EDI_ASCII_LINE_FEED) { // Editor tracks all linefeeds as '\n', then when saving out the file swaps the '\n' for whatever the originally first encountered line end kind was (perhaps '\r', '\n' or '\r\n').
                             pos += 2;
                         }
                         else {
                             pos++;
                         }
                         break;
-                    case '\t':
+                    case CONST_EDI_ASCII_TAB:
                         // '\t\0\0\0' was likely a bad idea and should "TODO: be changed", but nevertheless it is how the editor works at the moment.
                         //
                         byteArray[lengthBytes++] = 9; // char code for '\t' is 9
@@ -5665,7 +5666,7 @@ function EDI_render_do_DuplicateOrPaste() {
                         pos++;
                         break;
                     default:
-                        byteArray[lengthBytes++] = clipboardContent.charCodeAt(pos);
+                        byteArray[lengthBytes++] = code;
                         pos++;
                         break;
                 }

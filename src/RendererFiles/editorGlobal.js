@@ -6348,6 +6348,8 @@ function EDI_render_do_EnterKey() {
 
         // TODO: You're gonna have to tighten the virtualization logic?
 
+        // TODO: This 'beltIndexLine_firstTilde' is maybe correct I don't know but it's been a long time since I wrote this line of code, and glancing at it, it looks like you need to subtract 1?
+
         // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
         // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
         // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily

@@ -1478,7 +1478,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
         return;
     }
 
-    if (commandKind !== CommandKind_Cut & commandKind !== CommandKind_Paste) {
+    if (commandKind !== CommandKind_Cut && commandKind !== CommandKind_Paste) {
         EXPLORER_menuOptionCut_object = null;
     }
 

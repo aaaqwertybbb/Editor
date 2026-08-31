@@ -2037,7 +2037,7 @@ function EDI_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
     for (let offset = 0; offset < length; offset++) {
         switch (EDI_textByteList.bytes[small + offset]) {
             case CONST_EDI_ASCII_TAB:
-                insertionLength += 4; // ??? I think this is copy pasted from 'paste' logic where the tab would change to 4 characters total, in the case of duplication you get what you select.
+                insertionLength += 4; // TODO: (this is probably wrong given the context of duplicating you already would have '\t\0\0\0' so tab is (PROBABLY) just 1 insertion length in this context.) ??? I think this is copy pasted from 'paste' logic where the tab would change to 4 characters total, in the case of duplication you get what you select.
                 break;
             case CONST_EDI_ASCII_LINE_FEED:
                 EDI_lineEndPositionList.insert(INTS[fEDI_cursor_editIndexLine] + linesInsertedCount, INTS[fEDI_cursor_editPosition] + insertionLength);

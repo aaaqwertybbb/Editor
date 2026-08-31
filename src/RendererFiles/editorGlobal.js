@@ -9758,4 +9758,46 @@ Immediately after saying that I'm seeing 'Brennan Heart -Don't speak (Full)' in 
 
 Once I hit 199 lbs I'll mess around with the food until then I'm just gonna ride it out
 
+====
+
+The exercise is:
+
+Very minor lifting with the dumbbells that my parents have which come in lbs of: 1, 2, 3, 4, 5. Each lb amount has two dumbells so I can grab two 1 lb dumbells or two 5 lb dumbells etc...
+Then I go for an hour long walk.
+- I actually finish this walk prior to an hour but I try to walk "uncomfortably" fast the entire time.
+
+The lifting is:
+- Rotator cuff 90 degrees external rotation with dumbbell (no weight)
+    - I just do 90 degrees of rotation, I see some images online where it is a drawing of how to do the exercise
+      and the drawing is doing 180 degrees of rotation I'm not even sure if anyone's shoulder should be bending like that lol.
+    - And this is the one where you're in position as if you're doing a shoulder press, then you let your forearm come "forward and down" then you pull your forearm back up to the shoulder press position, all while keeping your elbows in the same spot.
+- Lateral raises (1 or 2 lb dumbbells each hand)
+- Shoulder press (5 lb dumbells in each hand)
+- Flex my arms as hard as I can for 10-30 second (no weight, it should be "uncomfortable" as hard as you can safely flex your arms)
+
+I do 3 sets of each exercise and I do them one after another over and over and until I've done all 9 sets no rest.
+
+So it's:
+=
+- rotator cuff
+- lateral raises
+- shoulder press
+- flex my arms for 10 seconds (as hard as I safely can)
+=
+- rotator cuff
+- lateral raises
+- shoulder press
+- flex my arms for 10 seconds (as hard as I safely can)
+=
+- lateral raises
+- shoulder press
+- flex my arms for 10 seconds (as hard as I safely can)
+
+all one after another
+then I go for the "hour long walk"
+
+
+
+
+
 */

@@ -27,21 +27,21 @@ NO ASYNC EVENTS
 /////
 ///// start treeViewComponent.js
 /////
-let EXPLORER_TreeViewDirector_rootElement = document.createElement('div');
+const EXPLORER_TreeViewDirector_rootElement = document.createElement('div');
 EXPLORER_TreeViewDirector_rootElement.classList.add('TREEVIEW', 'unselectable');
 EXPLORER_TreeViewDirector_rootElement.tabIndex = 0;
 EXPLORER_TreeViewDirector_rootElement.style.height = '100%';
 
-let EXPLORER_TreeViewDirector_virtualizationElement = document.createElement('div');
+const EXPLORER_TreeViewDirector_virtualizationElement = document.createElement('div');
 EXPLORER_TreeViewDirector_virtualizationElement.className = 'TREEVIEW_virtualization';
 EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_virtualizationElement);
 
 /** Consider the existence of such methods as 'state_cursor_setIndex' before mutating state directly */
-let EXPLORER_TreeViewDirector_cursorElement = document.createElement('div');
+const EXPLORER_TreeViewDirector_cursorElement = document.createElement('div');
 EXPLORER_TreeViewDirector_cursorElement.className = 'TREEVIEW_cursor';
 EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_cursorElement);
 
-let EXPLORER_TreeViewDirector_itemListElement = document.createElement('div');
+const EXPLORER_TreeViewDirector_itemListElement = document.createElement('div');
 EXPLORER_TreeViewDirector_itemListElement.className = 'TREEVIEW_itemList';
 EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_itemListElement);
 

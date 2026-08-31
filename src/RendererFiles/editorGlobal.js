@@ -1128,8 +1128,8 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     EDI_language_line_lex_SET(BYTES[byteEDI_extensionKind]);
     EDI_lineEndString = lineEndString; // use 'lineEndString' for the within-loop checks of '!lineEndString' to avoid reading global scope during loop when 'lineEndString' is equivalent.
 
-    let local_EDI_lineEndPositionList = EDI_lineEndPositionList;
-    let local_EDI_textByteList = EDI_textByteList;
+    let EDI_lineEndPositionList_count = EDI_lineEndPositionList.count;
+    let EDI_textByteList_count = EDI_textByteList.count;
 
     /**
      * TODO: I don't know whether I should calculate this from the EDI_lineEndPositionList or some such...
@@ -1137,6 +1137,9 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
      * so I stop drawing the horizontal scrollbar during some scroll events.
      * 
      * In terms of changing it after the fact it isn't a big deal is what I mean.
+     * 
+     * TODO: Track the linePosition last seen when making a line or something
+     * you don't have to increment this per character, you just need the difference of the last line drawn to the current or something.
      */
     let lineLength = 0;
 
@@ -1158,11 +1161,11 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
                 }
                 if (lineLength > INTS[fEDI_longestLine_length]) {
                     INTS[fEDI_longestLine_length] = lineLength;
-                    INTS[fEDI_longestLine_indexLine] = local_EDI_lineEndPositionList.count;
+                    INTS[fEDI_longestLine_indexLine] = EDI_lineEndPositionList_count;
                 }
                 lineLength = 0;
-                local_EDI_lineEndPositionList.insert(local_EDI_lineEndPositionList.count, local_EDI_textByteList.count);
-                local_EDI_textByteList.insert(local_EDI_textByteList.count, CONST_EDI_ASCII_LINE_FEED);
+                EDI_lineEndPositionList.insert(EDI_lineEndPositionList_count++, EDI_textByteList_count);
+                EDI_textByteList.insert(EDI_textByteList_count++, CONST_EDI_ASCII_LINE_FEED);
                 break;
             case '\n':
                 if (!lineEndString) {
@@ -1170,15 +1173,17 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
                 }
                 if (lineLength > INTS[fEDI_longestLine_length]) {
                     INTS[fEDI_longestLine_length] = lineLength;
-                    INTS[fEDI_longestLine_indexLine] = local_EDI_lineEndPositionList.count;
+                    INTS[fEDI_longestLine_indexLine] = EDI_lineEndPositionList_count;
                 }
                 lineLength = 0;
-                local_EDI_lineEndPositionList.insert(local_EDI_lineEndPositionList.count, local_EDI_textByteList.count);
-                local_EDI_textByteList.insert(local_EDI_textByteList.count, CONST_EDI_ASCII_LINE_FEED);
+                EDI_lineEndPositionList.insert(EDI_lineEndPositionList_count++, EDI_textByteList_count);
+                EDI_textByteList.insert(EDI_textByteList_count++, CONST_EDI_ASCII_LINE_FEED);
                 break;
             case '\t':
                 lineLength += 4;
-                local_EDI_textByteList.insertBytes(local_EDI_textByteList.count, EDI_tab_tabsbytes, /*offset*/ 0, /*length*/ 4);
+                EDI_textByteList.insertBytes(EDI_textByteList_count, EDI_tab_tabsbytes, /*offset*/ 0, /*length*/ 4);
+                // 'EDI_textByteList_count++' pattern breaking line here
+                EDI_textByteList_count += 4;
                 break;
             default:
                 lineLength++;
@@ -1187,27 +1192,18 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
                 // tbh: TODO: 'charCodeAt' also might be more allocation expensive than you expect. It returns a JavaScript number. Switching and returning an index from byte array prehardcoded might avoid an allocation per number returned?
                 // ... although I hear most engines store numbers such that the pointer represents the value and you avoid the allocation but even then where is the metadata that tells you how to read that pointer differently than the other ones etc...
                 //
-                local_EDI_textByteList.insert(local_EDI_textByteList.count, text.charCodeAt(sourceI));
+                EDI_textByteList.insert(EDI_textByteList_count++, text.charCodeAt(sourceI));
                 break;
         }
     }
 
-    local_EDI_lineEndPositionList.insert(local_EDI_lineEndPositionList.count, local_EDI_textByteList.count);
+    // TODO: The ++ here "isn't needed" but it makes the code consistent and less prone to future mistakes should another access of 'EDI_lineEndPositionList_count' be made after this point in the future.
+    EDI_lineEndPositionList.insert(EDI_lineEndPositionList_count++, EDI_textByteList_count);
 
     update_VirtualIndexLine();
     update_virtualCount();
 
     update_verticalVirtualizationBoundary();
-
-    //switch (BYTES[byteEDI_extensionKind]) {
-    //    case ExtensionKind_JavaScript:
-    //        // This 'JS_full_lex' only runs when you open a file for the first time.
-    //        // The logic likely has some JIT overhead that is long term persistent in the GC. I have no proof of this but I need to look into it.
-    //        // If so, moving this to be an LSP request to get the initial list of tracked syntax could be a massive improvement.
-    //        EDI_trackedSyntaxList = JS_full_lex(EDI_textByteList.bytes, EDI_textByteList.count);
-    //        let aaa = JSON.stringify(EDI_trackedSyntaxList);
-    //        break;
-    //}
 
     EDI_drawGutter_Width();
     EDI_draw_all_cursors();

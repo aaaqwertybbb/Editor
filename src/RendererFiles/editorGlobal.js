@@ -948,6 +948,9 @@ function EDI_render_do_SyntaxHighlighting() {
         trackedSyntax_I = EDI_trackedSyntaxList.count_abstract;
     
     for (; i < i_bounded; i++) {
+        //
+        // TODO: Would in some way reading 'ArrayFrom_textElement_children[beltIndexCurrent].children[0]' into a variable be beneficial to avoid the double read.
+        //
         // short circuit avoid double dipping of c++ internals, only the 'bothButNotFull' is inaccurate at the moment.
         if (!bothButNotFull || ArrayFrom_textElement_children[beltIndexCurrent].children[0].className === 'eN') {
             ArrayFrom_textElement_children[beltIndexCurrent].children[0].className = '';
@@ -962,9 +965,9 @@ function EDI_render_do_SyntaxHighlighting() {
     
             trackedSyntax_I = JS_line_lex_newVersion(ArrayFrom_textElement_children[beltIndexCurrent], beltIndexCurrent, trackedSyntax_I, lineStart);
         }
-        else {
-            //console.log("(did nothing) if (ArrayFrom_textElement_children[beltIndexCurrent].children[0].className !== 'eN') {");
-        }
+        //else {
+        //    console.log("(did nothing) if (ArrayFrom_textElement_children[beltIndexCurrent].children[0].className !== 'eN') {");
+        //}
 
         // The code would be written like this:
         // EDI_beltIndexLine_mutate_NEXT(beltIndexCurrent);

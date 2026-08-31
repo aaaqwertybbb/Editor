@@ -109,7 +109,9 @@ async function window_myAPI_onMessage(data) {
 
         let data_countAbstract = data.result.length / fieldCount;
 
-        let trackedSyntaxList = new TrackedSyntaxList(data_countAbstract);
+        // TODO: Just use 'EDI_trackedSyntaxList' directly
+        let trackedSyntaxList = EDI_trackedSyntaxList;
+        trackedSyntaxList.clear();
 
         // '_psuedoFourFieldTrackedSyntaxList.Add((int)TrackedSyntaxKind.Comment);'
         // 
@@ -198,7 +200,7 @@ async function window_myAPI_onMessage(data) {
         //    }
         //}
 
-        EDI_trackedSyntaxList = trackedSyntaxList;
+        //EDI_trackedSyntaxList = trackedSyntaxList;
     }
     else if (data.method === 'textDocument/hover') {
         if (!BYTES[byteEDI_mousemove_eventListener_isActive]) {

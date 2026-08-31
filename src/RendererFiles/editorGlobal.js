@@ -63,7 +63,7 @@ And it can introduce oddities involving tabstop or very tiny changes in horizont
 '\0' is a similar problem, it is a special character that might cause odd behavior.
 */
 
-let EDI_trackedSyntaxList = new TrackedSyntaxList(32);
+const EDI_trackedSyntaxList = new TrackedSyntaxList(32);
 
 /**
  * @type {UInt32List}

@@ -9791,5 +9791,6 @@ and ~20 chips of some "healthy chip brand thing"
 
 I'm somewhat upset.
 
+I'm gonna actually do the math and see how many calories that routine I listed is cause something doesn't add up it is unbearable.
 
 */

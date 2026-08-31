@@ -16,7 +16,7 @@ let DIALOG_restoreFocusToElement = null;
 let DIALOG_SHOW_restoreFocusToElement = null;
 let DIALOG_SHOW_onResizeAction = null;
 
-let DIALOG_renderKindArray = [];
+const DIALOG_renderKindArray = [];
 
 //let DIALOG_ArrayFrom_menuOptionList_children = [];
 

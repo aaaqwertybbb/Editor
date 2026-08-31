@@ -14,7 +14,7 @@ const AUTOCOMPLETErenderKind_CursorSet = 3;
 const AUTOCOMPLETErenderKind_CreateLines = 4;
 const AUTOCOMPLETErenderKind_Scroll = 5;
 
-let AUTOCOMPLETE_renderKindArray = [];
+const AUTOCOMPLETE_renderKindArray = [];
 
 let AUTOCOMPLETEElement = null;
 let AUTOCOMPLETE_arrayFromItemListElement = null;

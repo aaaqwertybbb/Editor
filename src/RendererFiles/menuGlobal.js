@@ -63,7 +63,7 @@ let MENU_restoreFocusToElement = null;
 
 let MENU_recentBoundingClientRectTop = null;
 
-let MENU_renderKindArray = [];
+const MENU_renderKindArray = [];
 
 let MENU_optionList = null;
 /** TODO: Perhaps use 'MENU_optionList' instead? */

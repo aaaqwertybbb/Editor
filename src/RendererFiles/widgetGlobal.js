@@ -30,7 +30,7 @@ let WIDGET_target = null;
 //
 // Although you'd want to ensure that every callback has the 'cancel' passed to it when it gets overwritten
 
-let WIDGET_renderKindArray = [];
+const WIDGET_renderKindArray = [];
 
 let WIDGET_restoreFocusToElementOverride = null;
 

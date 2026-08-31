@@ -9794,5 +9794,8 @@ I'm somewhat upset.
 I'm gonna actually do the math and see how many calories that routine I listed is cause something doesn't add up it is unbearable.
 
 8x strawberry nutrigrain bars is 1,040 calories
+2 lbs of 98% fat free ground chicken is 960 calories
+
+2000 calories total if you don't count the sriracha
 
 */

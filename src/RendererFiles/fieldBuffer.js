@@ -7,6 +7,13 @@
 99.9% of code should NEVER be doing what I'm doing here. I thought the idea sounded interesting so I went playing around with it.
 !!!!
 
+The 'f' prefix appears a lot in this file. It was to stand for 'field'.
+I started with the INTS, then I thought "I can't use 'f' for the "fields" that are stored in the Uint8Array
+otherwise I won't at a glace know whether the "const variable" is being used on the correct corresponding array.
+So I ended up dropping the 'f' prefix for the Uint8Array even though that array just as much as the Uint32Array is conceptually
+a bunch of "fields" in my mind.
+i.e.: you'd have some class with fields, but now I'm just shoving them all into this array.
+
 Every variable in javascript is in essence a reference.
 
 Most engines optimize the storage of various primitives,

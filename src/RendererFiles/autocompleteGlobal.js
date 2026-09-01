@@ -25,7 +25,7 @@ function AUTOCOMPLETE_render_request(renderKind) {
     }
     
     if (!BYTES[byteAUTOCOMPLETE_isRenderPending]) {
-        BYTES[byteAUTOCOMPLETE_isRenderPending] = true;
+        BYTES[byteAUTOCOMPLETE_isRenderPending] = 1;
         requestAnimationFrame(AUTOCOMPLETE_renderDo);
     }
 }
@@ -228,7 +228,7 @@ function AUTOCOMPLETE_render_do_show(timestamp) {
     let itemHeightTotalNumber = INTS[fAUTOCOMPLETE_items_totalLength] * INTS[fAPP_lineHeight] + CONST_AUTOCOMPLETE_topPadding;
     AUTOCOMPLETE_virtualization.style.height = itemHeightTotalNumber + 'px';
 
-    BYTES[byteAUTOCOMPLETE_exists] = true;
+    BYTES[byteAUTOCOMPLETE_exists] = 1;
 
     local_AUTOCOMPLETEElement.focus();
 
@@ -381,7 +381,7 @@ function AUTOCOMPLETE_events_remove(AUTOCOMPLETEElement) {
 }
 
 function AUTOCOMPLETE_events_resize() {
-    BYTES[byteAUTOCOMPLETE_rect_isNull] = true;
+    BYTES[byteAUTOCOMPLETE_rect_isNull] = 1;
 }
 
 function AUTOCOMPLETE_events_blur_receive() {
@@ -402,7 +402,7 @@ function AUTOCOMPLETE_events_scroll_render(timestamp) {
     INTS[fAUTOCOMPLETE_scrollEndDeadline] = timestamp + 300;
 
     if (!BYTES[byteAUTOCOMPLETE_isCheckingTrailingEdge]) {
-        BYTES[byteAUTOCOMPLETE_isCheckingTrailingEdge] = true;
+        BYTES[byteAUTOCOMPLETE_isCheckingTrailingEdge] = 1;
         requestAnimationFrame(AUTOCOMPLETE_events_scroll_render_trailingEdgeCheck);
     }
 
@@ -488,7 +488,7 @@ function AUTOCOMPLETE_events_scroll_render_trailingEdgeDo() {
         INTS[fAUTOCOMPLETE_sliceVirtualIndex_SLICE] = INTS[fAUTOCOMPLETE_virtualIndex];
         INTS[fAUTOCOMPLETE_sliceVirtualCount_SLICE] = INTS[fAUTOCOMPLETE_virtualCount];
         INTS[fAUTOCOMPLETE_sliceBeltIndexZero_SLICE] = INTS[fAUTOCOMPLETE_beltIndexZero];
-        BYTES[byteAUTOCOMPLETE_scrollIsFetchingData] = true;
+        BYTES[byteAUTOCOMPLETE_scrollIsFetchingData] = 1;
         window.myAPI.editorCompletionRequest_slice(INTS[fAUTOCOMPLETE_virtualIndex], INTS[fAUTOCOMPLETE_virtualIndex] + INTS[fAUTOCOMPLETE_virtualCount]);
     }
 }

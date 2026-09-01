@@ -44,7 +44,7 @@ function WIDGET_render_request(renderKind) {
     }
     
     if (!BYTES[byteWIDGET_isRenderPending]) {
-        BYTES[byteWIDGET_isRenderPending] = true;
+        BYTES[byteWIDGET_isRenderPending] = 1;
         requestAnimationFrame(WIDGET_render_do);
     }
 }

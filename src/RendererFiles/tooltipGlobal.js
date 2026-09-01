@@ -4,7 +4,7 @@ function TOOLTIP_render_request(renderKind) {
     BYTES[byteTOOLTIP_pending_renderKind] = renderKind;
     
     if (!BYTES[byteTOOLTIP_isRenderPending]) {
-        BYTES[byteTOOLTIP_isRenderPending] = true;
+        BYTES[byteTOOLTIP_isRenderPending] = 1;
         requestAnimationFrame(TOOLTIP_renderDo);
     }
 }
@@ -58,7 +58,7 @@ function TOOLTIP_render_do_show() {
     tooltipElement.textContent = TOOLTIP_pending_textContent;
     TOOLTIP_pending_textContent = null;
 
-    BYTES[byteTOOLTIP_exists] = true;
+    BYTES[byteTOOLTIP_exists] = 1;
 }
 
 function TOOLTIP_show(textContent) {

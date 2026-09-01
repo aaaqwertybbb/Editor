@@ -438,7 +438,7 @@ function DIALOG_buttonTheme_onclick() {
         document.body.classList.add('light-theme');
     }
     else {
-        BYTES[byteDIALOG_Settings_isDark] = true;
+        BYTES[byteDIALOG_Settings_isDark] = 1;
         document.body.classList.remove('light-theme');
         document.body.classList.add('dark-theme');
     }

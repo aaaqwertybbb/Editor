@@ -414,7 +414,7 @@ function EDI_render_do_SetText(timestamp) {
 
     INTS[fEDI_scrollEndDeadline] = timestamp + 1000;
     if (!BYTES[byteisCheckingTrailingEdge]) {
-        BYTES[byteisCheckingTrailingEdge] = true;
+        BYTES[byteisCheckingTrailingEdge] = 1;
         requestAnimationFrame(EDI_render_do_ScrollTrailingEdgeCheck);
     }
 }
@@ -426,7 +426,7 @@ function EDI_render_request(renderKind) {
     }
     
     if (!BYTES[byteEDI_isRenderPending]) {
-        BYTES[byteEDI_isRenderPending] = true;
+        BYTES[byteEDI_isRenderPending] = 1;
         requestAnimationFrame(EDI_render_do);
     }
 }
@@ -763,7 +763,7 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
     //
     // If we aren't tracking the trailing edge yet, start the rAF countdown loop
     if (!BYTES[byteisCheckingTrailingEdge]) {
-        BYTES[byteisCheckingTrailingEdge] = true;
+        BYTES[byteisCheckingTrailingEdge] = 1;
         requestAnimationFrame(EDI_render_do_ScrollTrailingEdgeCheck);
     }
 
@@ -2205,7 +2205,7 @@ function enqueueLSPNotification(payload) {
 
 async function processLspQueue() {
     if (BYTES[byteisProcessingLspQueue]) return;
-    BYTES[byteisProcessingLspQueue] = true;
+    BYTES[byteisProcessingLspQueue] = 1;
 
     while (lspQueue.length > 0) {
         const item = lspQueue.shift(); // Guarantees strict FIFO order
@@ -2772,7 +2772,7 @@ function EDI_createStyleForSelection() {
             textSelectionDiv.id = CONST_EDI_cursor_htmlId;
             textSelectionDiv.style.display = 'contents';
             EDI_presentation.appendChild(textSelectionDiv);
-            BYTES[byteEDI_cursor_selectionDivExists] = true;
+            BYTES[byteEDI_cursor_selectionDivExists] = 1;
         }
 
         if (!BYTES[byteEDI_cursor_selectionDivExists]) return;
@@ -4189,7 +4189,7 @@ function EDI_cursorBlink_trailingEdge(timestamp) {
 }
 
 function EDI_cursorBlink_startChecking() {
-    BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge] = true;
+    BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge] = 1;
     EDI_cursor_cursorElement.classList.remove('EDI_cursor_focus');
     requestAnimationFrame(EDI_cursorBlink_trailingEdge);
 }
@@ -4731,7 +4731,7 @@ function EDI_onMouseDown(event) {
     }
 
     if (event.button === 0) {
-        BYTES[byteEDI_mousemove_eventListener_isActive] = true;
+        BYTES[byteEDI_mousemove_eventListener_isActive] = 1;
         EDI_baseElement.addEventListener('mousemove', EDI_onMouseMove_WRAPIT);
     }
 
@@ -6687,7 +6687,7 @@ function EDI_onResize() {
 function EDI_onResize_WRAPIT() {
     // If timer is running, just note that a trailing call is needed
     if (INTS[fEDI_onResize_timer]) {
-        BYTES[byteEDI_onResize_hasTrailingCall] = true;
+        BYTES[byteEDI_onResize_hasTrailingCall] = 1;
         return;
     }
 

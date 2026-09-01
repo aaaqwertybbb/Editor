@@ -31,7 +31,7 @@ function DIALOG_render_request(renderKind) {
     }
     
     if (!BYTES[byteDIALOG_isRenderPending]) {
-        BYTES[byteDIALOG_isRenderPending] = true;
+        BYTES[byteDIALOG_isRenderPending] = 1;
         requestAnimationFrame(DIALOG_render_do);
     }
 }
@@ -81,7 +81,7 @@ function DIALOG_render_do_DimensionsChanged() {
 
 async function DIALOG_render_do_Show() {
     if (BYTES[byteDIALOG_currentDialogKind] !== DialogKind_None) {
-        BYTES[byteDIALOG_HIDE_shouldRestoreFocus] = true;
+        BYTES[byteDIALOG_HIDE_shouldRestoreFocus] = 1;
         await DIALOG_render_do_Hide();
     }
 
@@ -198,7 +198,7 @@ function DIALOG_resize_onmousedown(event) {
     INTS[fDIALOG_top] = dialogBoundingClientRect.top;
     INTS[fDIALOG_width] = dialogBoundingClientRect.width;
     INTS[fDIALOG_height] = dialogBoundingClientRect.height;
-    BYTES[byteDIALOG_hasBeenMeasured] = true;
+    BYTES[byteDIALOG_hasBeenMeasured] = 1;
 
     document.body.classList.add('unselectable');
     window.addEventListener('mousemove', DIALOG_resize_body_onmousemove, /*useCapture*/ true);
@@ -608,7 +608,7 @@ function DIALOG_toolbar_onmousedown(event) {
     INTS[fDIALOG_top] = dialogBoundingClientRect.top;
     INTS[fDIALOG_width] = dialogBoundingClientRect.width;
     INTS[fDIALOG_height] = dialogBoundingClientRect.height;
-    BYTES[byteDIALOG_hasBeenMeasured] = true;
+    BYTES[byteDIALOG_hasBeenMeasured] = 1;
 
     document.body.classList.add('unselectable');
     window.addEventListener('mousemove', DIALOG_toolbar_body_onmousemove, /*useCapture*/ true);
@@ -624,7 +624,7 @@ function DIALOG_createWindow() {
 
     // TODO: Might want to check if the HTML element exists instead.
     if (BYTES[byteDIALOG_windowExists]) return;
-    BYTES[byteDIALOG_windowExists] = true;
+    BYTES[byteDIALOG_windowExists] = 1;
 
     let toolbar = document.createElement('div');
     toolbar.id = 'DIALOG_toolbar';

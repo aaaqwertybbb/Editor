@@ -129,7 +129,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck(ti
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_trailingEdge() {
     BYTES[byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge] = false; // Reset the flag here
     if (!BYTES[byteEXPLORER_TreeViewDirector_scrollIsFetchingData]) {
-        BYTES[byteEXPLORER_TreeViewDirector_scrollIsFetchingData] = true;
+        BYTES[byteEXPLORER_TreeViewDirector_scrollIsFetchingData] = 1;
         EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData(); // no await
     }
 };
@@ -143,7 +143,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositive
     INTS[fEXPLORER_TreeViewDirector_scrollEndDeadline] = timestamp + 300;
 
     if (!BYTES[byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge]) {
-        BYTES[byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge] = true;
+        BYTES[byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge] = 1;
         requestAnimationFrame(EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck);
     }
 
@@ -690,7 +690,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_request(renderKind) {
     }
     
     if (!BYTES[byteEXPLORER_TreeViewDirector_TREEVIEW_isRenderPending]) {
-        BYTES[byteEXPLORER_TreeViewDirector_TREEVIEW_isRenderPending] = true;
+        BYTES[byteEXPLORER_TreeViewDirector_TREEVIEW_isRenderPending] = 1;
         requestAnimationFrame(EXPLORER_TreeViewDirector_renderDo);
     }
 }
@@ -1210,7 +1210,7 @@ function EXPLORER_TreeViewDirector_ensure_boundingClientRect() {
         INTS[fEXPLORER_TreeViewDirector_boundingClientRect_height] = rect.height;
         INTS[fEXPLORER_TreeViewDirector_boundingClientRect_left] = rect.left;
         INTS[fEXPLORER_TreeViewDirector_boundingClientRect_top] = rect.top;
-        BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = true;
+        BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = 1;
         INTS[fEXPLORER_TreeViewDirector_virtualCount] = Math.ceil(EXPLORER_TreeViewDirector_rootElement.offsetHeight / INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]);
     }
 }

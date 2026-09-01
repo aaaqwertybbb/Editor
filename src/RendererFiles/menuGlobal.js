@@ -86,7 +86,7 @@ function MENU_render_request(renderKind) {
     }
     
     if (!BYTES[byteMENU_isRenderPending]) {
-        BYTES[byteMENU_isRenderPending] = true;
+        BYTES[byteMENU_isRenderPending] = 1;
         requestAnimationFrame(MENU_render_do);
     }
 }
@@ -313,7 +313,7 @@ function MENU_onMouseMove(event) {
 async function optionOnClick(indexClicked, elementClicked) {
     if (INTS[fMENU_ticketId_drawn] === INTS[fMENU_ticketId_pending] && INTS[fMENU_ticketId_drawn] !== INTS[fMENU_last_handled_ticketId]) {
         INTS[fMENU_last_handled_ticketId] = INTS[fMENU_ticketId_drawn];
-        BYTES[byteMENU_HIDE_shouldRestoreFocus] = true;
+        BYTES[byteMENU_HIDE_shouldRestoreFocus] = 1;
         switch (MENU_context) {
             case 'EXPLORER':
                 await EXPLORER_MenuOnClick(indexClicked, elementClicked);

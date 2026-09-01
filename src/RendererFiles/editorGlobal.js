@@ -6712,6 +6712,13 @@ function EDI_onResize_startThrottleTimeout() {
     }, 500);
 }
 
+/**
+ * See comment above 'EXPLORER_TreeViewDirector_measureBaseElement'
+ * for explanation why this code is a bad idea.
+ * 
+ * I can't get rid of it because I don't fully understand my mistake yet.
+ * When I get around to it I'm gonna end up looking into this more.
+ */
 function EDI_measureBaseElement() {
     INTS[fEDI_lastReadNumber_offsetWidth] = Math.floor(EDI_baseElement.offsetWidth);
     INTS[fEDI_lastReadNumber_offsetHeight] = Math.floor(EDI_baseElement.offsetHeight);

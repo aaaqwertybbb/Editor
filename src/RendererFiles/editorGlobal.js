@@ -9824,4 +9824,14 @@ i.e.:
 - consistency over stupid things like 13 hour coding sessions
     - if it happens on ocassion for a short term reason then it's fine but that shouldn't be the goal.
 
+Don't confuse pleasure for capability or progress
+Be prepared that progress doesn't always bring pleasure immediately
+- and just understand that in the long run you will get that pleasure and you'll be glad to have endured
+
+and feeling constant pleasure actually make you a worse programmer.
+Being tired from time to time, these varying moods.
+You endure them you get different perspectives you grow rather than
+mind numbing pleasure sit there doing the same thing over and over thinking that you're right.
+You gotta feel pain and that you're completely incompetent that's how you get good.
+
 */

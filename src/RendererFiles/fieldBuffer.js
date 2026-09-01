@@ -3,6 +3,10 @@
 # Goal of file: #
 #################
 
+!!!!
+99.9% of code should NEVER be doing what I'm doing here. I thought the idea sounded interesting so I went playing around with it.
+!!!!
+
 Every variable in javascript is in essence a reference.
 
 Most engines optimize the storage of various primitives,

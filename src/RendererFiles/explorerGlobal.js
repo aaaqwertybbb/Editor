@@ -56,7 +56,6 @@ let EXPLORER_TreeViewDirector_itemHeightStyleAttributeValueString = '20px';
 
 let EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightStyleAttributeValueString = '';
 
-let EXPLORER_TreeViewDirector_boundingClientRect_isValid = false;
 /////
 ///// end treeViewComponent.js
 /////
@@ -747,7 +746,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_SetItems() {
     EXPLORER_TreeViewDirector_cursorElement.style.height = EXPLORER_TreeViewDirector_itemHeightStyleAttributeValueString;
     INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
     EXPLORER_TreeViewDirector_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
-    EXPLORER_TreeViewDirector_boundingClientRect_isValid = false;
+    BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = false;
 }
 
 /**
@@ -819,7 +818,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Batch(timestamp) {
 function EXPLORER_TreeViewDirector_draw_delete() {
     if (!EXPLORER_TreeViewDirector_rootElement.parentElement) return;
     EXPLORER_TreeViewDirector_draw_removeEvents();
-    EXPLORER_TreeViewDirector_boundingClientRect_isValid = false;
+    BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = false;
     EXPLORER_TreeViewDirector_rootElement.parentElement.removeChild(EXPLORER_TreeViewDirector_rootElement);
 }
 
@@ -1181,7 +1180,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Resize(timestamp) {
 
     EXPLORER_TreeViewDirector_measureBaseElement();
 
-    EXPLORER_TreeViewDirector_boundingClientRect_isValid = false;
+    BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = false;
     EXPLORER_TreeViewDirector_ensure_boundingClientRect();
     EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp);
 }
@@ -1206,12 +1205,12 @@ function EXPLORER_TreeViewDirector_event_scroll() {
 }
 
 function EXPLORER_TreeViewDirector_ensure_boundingClientRect() {
-    if (!EXPLORER_TreeViewDirector_boundingClientRect_isValid) {
+    if (!BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid]) {
         let rect = EXPLORER_TreeViewDirector_rootElement.getBoundingClientRect();
         INTS[fEXPLORER_TreeViewDirector_boundingClientRect_height] = rect.height;
         INTS[fEXPLORER_TreeViewDirector_boundingClientRect_left] = rect.left;
         INTS[fEXPLORER_TreeViewDirector_boundingClientRect_top] = rect.top;
-        EXPLORER_TreeViewDirector_boundingClientRect_isValid = true;
+        BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = true;
         INTS[fEXPLORER_TreeViewDirector_virtualCount] = Math.ceil(EXPLORER_TreeViewDirector_rootElement.offsetHeight / INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]);
     }
 }

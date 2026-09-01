@@ -60,7 +60,7 @@ it is as if I typed the expression body everywhere I typed the fat arrow functio
  * because ES6 modules are expected (and thus module scopes remove the usefulness of making a local variable):
  *     index.html the script tag: 'type="module" src="..."'
  */
-const BYTES = new Uint8Array(48);
+const BYTES = new Uint8Array(49);
 
 /** returns a number, beware '===' */
 const get_EDI_detailRank = () => BYTES[0];
@@ -184,7 +184,9 @@ const byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge = 46;
 
 const byteEXPLORER_TreeViewDirector_scrollIsFetchingData = 47;
 
-// BYTES[byteEXPLORER_TreeViewDirector_scrollIsFetchingData]
+const byteEXPLORER_TreeViewDirector_boundingClientRect_isValid = 48;
+
+// BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid]
 
 // TODO: some things to consider when moving from a boolean to BYTES
 // - [ ] triple equals

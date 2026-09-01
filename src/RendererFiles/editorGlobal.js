@@ -9816,4 +9816,12 @@ I don't feel like explaining why it is the best outcome.
 I'm tired and etc... but it is and I'm glad for this outcome.
 I think if I could do this routine till the day I die that I would.
 
+That and I actually only consume 200mg of caffeine each day for a long time now.
+
+i.e.:
+- job good
+- caffeine 200mg actually is preferable
+- consistency over stupid things like 13 hour coding sessions
+    - if it happens on ocassion for a short term reason then it's fine but that shouldn't be the goal.
+
 */

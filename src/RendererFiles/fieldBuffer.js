@@ -308,7 +308,7 @@ const CONST_EDI_cursor_htmlId = "EDI_cursor-1";
  * because ES6 modules are expected (and thus module scopes remove the usefulness of making a local variable):
  *     index.html the script tag: 'type="module" src="..."'
  */
-const INTS = new Uint32Array(168);
+const INTS = new Uint32Array(171);
 
 const fEDI_lineHeight = 0;
 INTS[fEDI_lineHeight] = 20;
@@ -723,7 +723,11 @@ const fEXPLORER_TreeViewDirector_pullData_result_count = 165;
 const fEDI_getLineAndColumnIndices_indexLine = 166;
 const fEDI_getLineAndColumnIndices_indexColumn = 167;
 
-// INTS[fEDI_getLineAndColumnIndices_indexColumn]
+const fEXPLORER_TreeViewDirector_boundingClientRect_height = 168;
+const fEXPLORER_TreeViewDirector_boundingClientRect_left = 169;
+const fEXPLORER_TreeViewDirector_boundingClientRect_top = 170;
+
+// INTS[fEXPLORER_TreeViewDirector_boundingClientRect_top]
 
 // inclusive final index is 138
 

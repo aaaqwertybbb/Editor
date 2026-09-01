@@ -59,6 +59,17 @@ it is as if I typed the expression body everywhere I typed the fat arrow functio
  * The code does not make local variables such as: 'const bytes = const BYTES',
  * because ES6 modules are expected (and thus module scopes remove the usefulness of making a local variable):
  *     index.html the script tag: 'type="module" src="..."'
+ * 
+ * Important: use '0' or '1' when assigning to an array entry.
+ *     - "When you assign true to an entry in a Uint8Array, JavaScript handles the conversion automatically, but it forces the engine to do extra work at runtime." Google AI
+ *     - "passing a boolean directly to a typed array can cause microscopic stutters if it triggers a JIT deoptimization." Google AI
+ * LessImportant: '!BYTES[byteEDI_mousemove_eventListener_isActive]' versus 'BYTES[byteEDI_mousemove_eventListener_isActive] === 0'.
+ *     - I'm being told by Google AI that these are "equivalent" in terms of performance.
+ *     - I read what it said and I more or less agree so I'm not overly pressed to make these changes as much as I was the assignments.
+ *     - Essentially some minifiers actually will replace
+ *         - 'false' with '!1' and 
+ *         - 'true' with '!0'
+ *     - i.e.: such an expression is known to be rather performant.
  */
 const BYTES = new Uint8Array(49);
 

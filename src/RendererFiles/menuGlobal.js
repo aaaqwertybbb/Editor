@@ -109,7 +109,7 @@ function MENU_render_do() {
         }
     }
     
-    BYTES[byteMENU_isRenderPending] = false; // Reset the paint lock
+    BYTES[byteMENU_isRenderPending] = 0; // Reset the paint lock
 }
 
 function MENU_render_do_Hide() {

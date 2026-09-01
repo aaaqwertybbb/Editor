@@ -339,7 +339,7 @@ function EDI_render_do(timestamp) {
         }
     }
     
-    BYTES[byteEDI_isRenderPending] = false;
+    BYTES[byteEDI_isRenderPending] = 0;
 }
 
 function EDI_render_do_cursor(timestamp) {
@@ -842,7 +842,7 @@ function EDI_render_do_ScrollTrailingEdgeCheck(timestamp) {
  */
 function EDI_onScroll_TrailingEdge() {
     INTS[fEDI_intFalsey_isScrolling] = 0;
-    BYTES[byteisCheckingTrailingEdge] = false; // Reset the flag here
+    BYTES[byteisCheckingTrailingEdge] = 0; // Reset the flag here
     EDI_render_request(RenderKind_SyntaxHighlighting);
 }
 
@@ -2226,7 +2226,7 @@ async function processLspQueue() {
         }
     }
 
-    BYTES[byteisProcessingLspQueue] = false;
+    BYTES[byteisProcessingLspQueue] = 0;
 }
 
 /**
@@ -2726,7 +2726,7 @@ function EDI_clearSelectionStyle() {
                 let textSelectionDiv = EDI_presentation.children[i];
                 if (!shouldExistSelectionDiv) {
                     EDI_presentation.removeChild(textSelectionDiv);
-                    BYTES[byteEDI_cursor_selectionDivExists] = false;
+                    BYTES[byteEDI_cursor_selectionDivExists] = 0;
                 }
                 break;
             }
@@ -2761,7 +2761,7 @@ function EDI_createStyleForSelection() {
                     textSelectionDiv = EDI_presentation.children[i];
                     if (!shouldExistSelectionDiv) {
                         EDI_presentation.removeChild(textSelectionDiv);
-                        BYTES[byteEDI_cursor_selectionDivExists] = false;
+                        BYTES[byteEDI_cursor_selectionDivExists] = 0;
                     }
                     break;
                 }
@@ -3090,7 +3090,7 @@ function EDI_onMouseMove_WRAPIT(event) {
         }
     }
     else {
-        BYTES[byteEDI_mousemove_eventListener_isActive] = false;
+        BYTES[byteEDI_mousemove_eventListener_isActive] = 0;
         EDI_baseElement.removeEventListener('mousemove', EDI_onMouseMove_WRAPIT);
     }
 }
@@ -4178,7 +4178,7 @@ function EDI_editEvent_checkFor_NOTcanBatch_Enter(event) {
 function EDI_cursorBlink_trailingEdge(timestamp) {
     const time = timestamp - INTS[fEDI_EDI_cursorBlinkLastTimestamp];
     if (time >= 500) {
-        BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge] = false;
+        BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge] = 0;
         // TODO: This is a timing issue of the rAF vs you losing focus on the editor.
         EDI_cursor_cursorElement.classList.add('EDI_cursor_focus');
         INTS[fEDI_EDI_cursorBlinkLastTimestamp] = 0;
@@ -6702,7 +6702,7 @@ function EDI_onResize_WRAPIT() {
 function EDI_onResize_startThrottleTimeout() {
     INTS[fEDI_onResize_timer] = setTimeout(() => {
         if (BYTES[byteEDI_onResize_hasTrailingCall]) {
-            BYTES[byteEDI_onResize_hasTrailingCall] = false;
+            BYTES[byteEDI_onResize_hasTrailingCall] = 0;
             EDI_onResize();
             
             EDI_onResize_startThrottleTimeout();

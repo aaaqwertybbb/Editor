@@ -433,7 +433,7 @@ async function DIALOG_Settings_Delete_async() {
 
 function DIALOG_buttonTheme_onclick() {
     if (BYTES[byteDIALOG_Settings_isDark]) {
-        BYTES[byteDIALOG_Settings_isDark] = false;
+        BYTES[byteDIALOG_Settings_isDark] = 0;
         document.body.classList.remove('dark-theme');
         document.body.classList.add('light-theme');
     }

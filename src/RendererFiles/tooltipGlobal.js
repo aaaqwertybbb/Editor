@@ -23,7 +23,7 @@ function TOOLTIP_renderDo() {
         throw new Error();
     }
     
-    BYTES[byteTOOLTIP_isRenderPending] = false; // Reset the paint lock
+    BYTES[byteTOOLTIP_isRenderPending] = 0; // Reset the paint lock
 };
 
 function TOOLTIP_render_do_show() {
@@ -39,7 +39,7 @@ function TOOLTIP_render_do_show() {
         // And then if it is truly meaningful from an optimization standpoint such as the scrolling of the editor
         // I take on the state corruption risk, otherwise I just defensively handle it.
         if (!tooltipElement) {
-            BYTES[byteTOOLTIP_exists] = false;
+            BYTES[byteTOOLTIP_exists] = 0;
             TOOLTIP_show(textContent);
             return;
         }
@@ -72,7 +72,7 @@ function TOOLTIP_render_do_hide() {
         tooltip.remove();
     }
 
-    BYTES[byteTOOLTIP_exists] = false;
+    BYTES[byteTOOLTIP_exists] = 0;
 }
 
 function TOOLTIP_hide() {

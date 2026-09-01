@@ -127,7 +127,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck(ti
 }
 
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_trailingEdge() {
-    BYTES[byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge] = false; // Reset the flag here
+    BYTES[byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge] = 0; // Reset the flag here
     if (!BYTES[byteEXPLORER_TreeViewDirector_scrollIsFetchingData]) {
         BYTES[byteEXPLORER_TreeViewDirector_scrollIsFetchingData] = 1;
         EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData(); // no await
@@ -362,7 +362,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     EXPLORER_TreeViewDirector_pullData_result = EXPLORER_TreeViewDirector_pullData_array;
     INTS[fEXPLORER_TreeViewDirector_pullData_result_count] = INTS[fEXPLORER_TreeViewDirector_pullData_array_count];
 
-    BYTES[byteEXPLORER_TreeViewDirector_scrollIsFetchingData] = false; // TODO: try/catch/finally; put this in the finally.
+    BYTES[byteEXPLORER_TreeViewDirector_scrollIsFetchingData] = 0; // TODO: try/catch/finally; put this in the finally.
 
     EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Scroll_PullDataDrawResult);
 };
@@ -728,7 +728,7 @@ function EXPLORER_TreeViewDirector_renderDo(timestamp) {
         }
     }
     
-    BYTES[byteEXPLORER_TreeViewDirector_TREEVIEW_isRenderPending] = false; // Reset the paint lock
+    BYTES[byteEXPLORER_TreeViewDirector_TREEVIEW_isRenderPending] = 0; // Reset the paint lock
 };
 
 /**
@@ -746,7 +746,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_SetItems() {
     EXPLORER_TreeViewDirector_cursorElement.style.height = EXPLORER_TreeViewDirector_itemHeightStyleAttributeValueString;
     INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
     EXPLORER_TreeViewDirector_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
-    BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = false;
+    BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = 0;
 }
 
 /**
@@ -818,7 +818,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Batch(timestamp) {
 function EXPLORER_TreeViewDirector_draw_delete() {
     if (!EXPLORER_TreeViewDirector_rootElement.parentElement) return;
     EXPLORER_TreeViewDirector_draw_removeEvents();
-    BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = false;
+    BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = 0;
     EXPLORER_TreeViewDirector_rootElement.parentElement.removeChild(EXPLORER_TreeViewDirector_rootElement);
 }
 
@@ -1180,7 +1180,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Resize(timestamp) {
 
     EXPLORER_TreeViewDirector_measureBaseElement();
 
-    BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = false;
+    BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = 0;
     EXPLORER_TreeViewDirector_ensure_boundingClientRect();
     EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp);
 }
@@ -1669,7 +1669,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 // TODO: optimize this?
                 const entry = await window.myAPI.getFilesystemEntryById(MENU_target.id);
                 if (!entry) return;
-                BYTES[byteMENU_HIDE_shouldRestoreFocus] = false;
+                BYTES[byteMENU_HIDE_shouldRestoreFocus] = 0;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
                 await WIDGET_show(WidgetKind_InputText, INTS[fEXPLORER_menuOptionX], INTS[fEXPLORER_menuOptionY], 'filename', entry, MENU_target, NewFile_Directory_WIDGET_InputText_callback);
                 break;
@@ -1680,7 +1680,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 // TODO: optimize this?
                 const entry = await window.myAPI.getFilesystemEntryById(MENU_target.id);
                 if (!entry) return;
-                BYTES[byteMENU_HIDE_shouldRestoreFocus] = false;
+                BYTES[byteMENU_HIDE_shouldRestoreFocus] = 0;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
                 await WIDGET_show(WidgetKind_InputText, INTS[fEXPLORER_menuOptionX], INTS[fEXPLORER_menuOptionY], 'filename', entry, MENU_target, NewFile_File_WIDGET_InputText_callback);
                 break;
@@ -1692,7 +1692,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 const entry = await window.myAPI.getFilesystemEntryById(MENU_target.id);
                 if (!entry) return;
                 let filename = entry.basename;
-                BYTES[byteMENU_HIDE_shouldRestoreFocus] = false;
+                BYTES[byteMENU_HIDE_shouldRestoreFocus] = 0;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
                 await WIDGET_show(WidgetKind_YesCancel, INTS[fEXPLORER_menuOptionX], INTS[fEXPLORER_menuOptionY], 'delete ' + filename, entry, MENU_target, DeleteFile_Directory_YesCancel_callback);
                 break;
@@ -1704,7 +1704,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 const entry = await window.myAPI.getFilesystemEntryById(MENU_target.id);
                 if (!entry) return;
                 let filename = entry.basename;
-                BYTES[byteMENU_HIDE_shouldRestoreFocus] = false;
+                BYTES[byteMENU_HIDE_shouldRestoreFocus] = 0;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
                 await WIDGET_show(WidgetKind_YesCancel, INTS[fEXPLORER_menuOptionX], INTS[fEXPLORER_menuOptionY], 'delete ' + filename, entry, MENU_target, DeleteFile_File_YesCancel_callback);
                 break;
@@ -1716,7 +1716,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 const entry = await window.myAPI.getFilesystemEntryById(MENU_target.id);
                 if (!entry) return;
                 let filename = entry.basename;
-                BYTES[byteMENU_HIDE_shouldRestoreFocus] = false;
+                BYTES[byteMENU_HIDE_shouldRestoreFocus] = 0;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
                 await WIDGET_show(WidgetKind_InputText, INTS[fEXPLORER_menuOptionX], INTS[fEXPLORER_menuOptionY], 'rename', filename, {MENU_target:MENU_target, entry:entry}, RenameFile_Directory_InputText_callback);
                 break;
@@ -1735,7 +1735,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                 const entry = await window.myAPI.getFilesystemEntryById(MENU_target.id);
                 if (!entry) return;
                 let filename = entry.basename;
-                BYTES[byteMENU_HIDE_shouldRestoreFocus] = false;
+                BYTES[byteMENU_HIDE_shouldRestoreFocus] = 0;
                 WIDGET_restoreFocusToElementOverride = MENU_restoreFocusToElement;
                 await WIDGET_show(WidgetKind_InputText, INTS[fEXPLORER_menuOptionX], INTS[fEXPLORER_menuOptionY], 'rename', filename, {MENU_target: MENU_target, entry: entry}, RenameFile_File_InputText_callback);
                 break;

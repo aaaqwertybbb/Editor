@@ -53,7 +53,7 @@ function AUTOCOMPLETE_renderDo(timestamp) {
         }
     }
     
-    BYTES[byteAUTOCOMPLETE_isRenderPending] = false; // Reset the lock
+    BYTES[byteAUTOCOMPLETE_isRenderPending] = 0; // Reset the lock
 }
 
 function AUTOCOMPLETE_render_create_lines(AUTOCOMPLETE_itemList) {
@@ -150,7 +150,7 @@ function AUTOCOMPLETE_render_do_show(timestamp) {
     // (the reason specfically I think relates to when you change a file i.e.: changing a file can race condition regardless of this being forced to false)
     // (UGH not changing a file I'm gonna pass out I'm almost done but I mean the changing the autocomplete menu or some such)
     // (also something in the code seems buggy about having the items in the correct order or something? am I missing a belt?)
-    BYTES[byteAUTOCOMPLETE_scrollIsFetchingData] = false;
+    BYTES[byteAUTOCOMPLETE_scrollIsFetchingData] = 0;
 
     let local_AUTOCOMPLETEElement;
     let AUTOCOMPLETE_itemList;
@@ -175,7 +175,7 @@ function AUTOCOMPLETE_render_do_show(timestamp) {
         // And then if it is truly meaningful from an optimization standpoint such as the scrolling of the editor
         // I take on the state corruption risk, otherwise I just defensively handle it.
         if (!local_AUTOCOMPLETEElement) {
-            BYTES[byteAUTOCOMPLETE_exists] = false;
+            BYTES[byteAUTOCOMPLETE_exists] = 0;
             AUTOCOMPLETE_render_do_show();
             return;
         }
@@ -208,7 +208,7 @@ function AUTOCOMPLETE_render_do_show(timestamp) {
         INTS[fAUTOCOMPLETE_rectHeight] = Math.floor(rect.height);
         INTS[fAUTOCOMPLETE_rectLeft] = rect.left;
         INTS[fAUTOCOMPLETE_rectTop] = rect.top;
-        BYTES[byteAUTOCOMPLETE_rect_isNull] = false;
+        BYTES[byteAUTOCOMPLETE_rect_isNull] = 0;
 
         AUTOCOMPLETE_render_create_lines(AUTOCOMPLETE_itemList);
 
@@ -246,7 +246,7 @@ function AUTOCOMPLETE_show(lspResult) {
 
 function AUTOCOMPLETE_slice(lspResult) {
 
-    BYTES[byteAUTOCOMPLETE_scrollIsFetchingData] = false;
+    BYTES[byteAUTOCOMPLETE_scrollIsFetchingData] = 0;
     if (INTS[fAUTOCOMPLETE_sliceVirtualIndex_SLICE] != INTS[fAUTOCOMPLETE_virtualIndex] ||
         INTS[fAUTOCOMPLETE_sliceVirtualCount_SLICE] != INTS[fAUTOCOMPLETE_virtualCount] ||
         INTS[fAUTOCOMPLETE_sliceBeltIndexZero_SLICE] != INTS[fAUTOCOMPLETE_beltIndexZero]) {
@@ -304,7 +304,7 @@ function AUTOCOMPLETE_render_do_hide() {
         AUTOCOMPLETEElement = null;
     }
 
-    BYTES[byteAUTOCOMPLETE_exists] = false;
+    BYTES[byteAUTOCOMPLETE_exists] = 0;
 }
 
 function AUTOCOMPLETE_hide() {
@@ -362,7 +362,7 @@ function AUTOCOMPLETE_ensure_boundingClientRect() {
         INTS[fAUTOCOMPLETE_rectHeight] = rect.height;
         INTS[fAUTOCOMPLETE_rectLeft] = rect.left;
         INTS[fAUTOCOMPLETE_rectTop] = rect.top;
-        BYTES[byteAUTOCOMPLETE_rect_isNull] = false;
+        BYTES[byteAUTOCOMPLETE_rect_isNull] = 0;
     }
 }
 
@@ -479,7 +479,7 @@ function AUTOCOMPLETE_events_scroll_render_trailingEdgeCheck(timestamp) {
         return;
     }
 
-    BYTES[byteAUTOCOMPLETE_isCheckingTrailingEdge] = false;
+    BYTES[byteAUTOCOMPLETE_isCheckingTrailingEdge] = 0;
     AUTOCOMPLETE_events_scroll_render_trailingEdgeDo();
 }
 

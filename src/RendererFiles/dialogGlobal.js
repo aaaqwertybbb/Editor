@@ -53,7 +53,7 @@ function DIALOG_render_do() {
         }
     }
     
-    BYTES[byteDIALOG_isRenderPending] = false; // Reset the paint lock
+    BYTES[byteDIALOG_isRenderPending] = 0; // Reset the paint lock
 }
 
 function DIALOG_render_do_DimensionsChanged() {
@@ -669,7 +669,7 @@ function DIALOG_deleteWindow() {
     if (!BYTES[byteDIALOG_windowExists]) return;
     // TODO: Perhaps move these respective sets to the end of their functions.
     // This way them being set as a certain value reflects that the entirety of their respective code had been ran but then again... idk
-    BYTES[byteDIALOG_windowExists] = false;
+    BYTES[byteDIALOG_windowExists] = 0;
 
     INTS[fDIALOG_left] = 0;
     INTS[fDIALOG_top] = 0;

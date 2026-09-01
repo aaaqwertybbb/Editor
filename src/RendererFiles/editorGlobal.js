@@ -9805,4 +9805,15 @@ well I just gotta not eat any further today I barely overate just keep hitting t
 I privated the playlist last night cause I was feeling sad.
 But I got some sleep and it's just w/e at this point
 
+====
+
+Had my shift at quickchek today so I'm gonna set my goal to achieving minimal fatigue with the code.
+i.e.: work load changing on a day to day basis.
+Even just 1 hour on these days though is massive.
+And when it comes to my perspective on my life
+I believe this is the best outcome, and I want to keep things this way.
+I don't feel like explaining why it is the best outcome.
+I'm tired and etc... but it is and I'm glad for this outcome.
+I think if I could do this routine till the day I die that I would.
+
 */

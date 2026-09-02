@@ -9841,4 +9841,8 @@ You endure them you get different perspectives you grow rather than
 mind numbing pleasure sit there doing the same thing over and over thinking that you're right.
 You gotta feel pain and that you're completely incompetent that's how you get good.
 
+======
+
+7:55 AM
+
 */

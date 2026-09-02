@@ -93,8 +93,6 @@ let gutterWidthTotal_withPxUnits = '';
 
 /** This is likely a decimal value once it gets measured for real, do not try to put it in an int container. */
 let EDI_characterWidth = 8;
-// EDI_characterWidth
-// EDI_characterWidth
 
 /**
  * When this is cleared the information is not removed, only 'gapBufferCount' is set to 0.
@@ -9631,5 +9629,25 @@ You gotta feel pain and that you're completely incompetent that's how you get go
 ======
 
 7:55 AM
+
+I wasn't expecting this at all lol. Also it reversed my question >.<
+
+Google AI:
+==========
+
+> is a for loop that uses 'var' less performant than one using 'let'?
+
+< Yes, let can be slightly less performant than var in a for loop, though modern JavaScript engines have closed the gap significantly.
+<
+< The performance difference comes down to scope.
+<
+< The Core Difference: Function vs. Block Scope
+< |
+< - var is function-scoped: The variable is created once for the entire function. In each iteration of the loop, the engine updates the same variable in memory.
+< - let is block-scoped: A brand-new variable instance is created for every single iteration of the loop.
+< |
+< Because let forces the JavaScript engine to create a new lexical environment (scope) for each loop cycle to lock in that iteration's value, it introduces a microscopic amount of overhead.
+<
+< ...
 
 */

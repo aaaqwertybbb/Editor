@@ -834,23 +834,16 @@ function EDI_onScroll_TrailingEdge() {
  * - [ ] textContent on the span,
  * 
  * but there is 0 reasoning, understanding, or measurements behind my decision.
+ * 
+ * ===
+ * 
+ * TODO: Instead of having two counters 'fEDI_sum_diffNegative' and 'fEDI_sum_diffPositive' could you do this one? i.e.:
+ * "it's wrong wait I see what's going on. You can't just sum them because overlap cancels out sometimes. If you have both but no full the larger side is cancelled out by the smaller amount I think... I'm gonna rain check that one... I'm thinking about more than 1 instance of an overlap breaking that math"
 */
 function EDI_render_do_SyntaxHighlighting() {
     const local_sum_diffNegative = INTS[fEDI_sum_diffNegative];
     const local_sum_diffPositive = INTS[fEDI_sum_diffPositive];
     let total_diff = local_sum_diffNegative + local_sum_diffPositive;
-
-    /*
-    it's wrong wait
-    I see what's going on
-
-    You can't just sum them because overlap cancels out sometimes
-
-    if you have both but no full the larger side is cancelled out by the smaller amount
-    I think...
-
-    I'm gonna rain check that one... I'm thinking about more than 1 instance of an overlap breaking that math
-    */
     
     INTS[fEDI_sum_diffNegative] = 0;
     INTS[fEDI_sum_diffPositive] = 0;
@@ -927,19 +920,7 @@ function EDI_render_do_SyntaxHighlighting() {
     
             trackedSyntax_I = JS_line_lex_newVersion(ArrayFrom_textElement_children[beltIndexCurrent], beltIndexCurrent, trackedSyntax_I, lineStart);
         }
-        //else {
-        //    console.log("(did nothing) if (ArrayFrom_textElement_children[beltIndexCurrent].children[0].className !== 'eN') {");
-        //}
 
-        // The code would be written like this:
-        // EDI_beltIndexLine_mutate_NEXT(beltIndexCurrent);
-        //
-        //
-        // ++beltIndexCurrent >= INTS[fEDI_ArrayFrom_textElement_children_length] ? beltIndexCurrent -= INTS[fEDI_ArrayFrom_textElement_children_length] : beltIndexCurrent;
-        //
-        //
-        // You might have to be careful though because it doesn't come with parenthesis. If you tried nesting it.
-        //
         beltIndexCurrent = (beltIndexCurrent + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
 
         indexLine++;

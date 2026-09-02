@@ -373,12 +373,10 @@ function EDI_render_do_InsertLtr() {
     }
     if (INTS[fEDI_cursor_editRenderedDisplacement] < INTS[fEDI_cursor_editLength]) {
         if (EDI_cursor_gapBufferWriteToSpanElement) {
-
-            let x = EDI_decoder.decode(EDI_cursor_gapBuffer.subarray(INTS[fEDI_cursor_editRenderedDisplacement], INTS[fEDI_cursor_editLength]));
-
+            
             EDI_cursor_gapBufferWriteToSpanElement.textContent = 
                 EDI_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]/* + INTS[fEDI_offsetWithinSpan]*/) + INTS[fEDI_cursor_editRenderedDisplacement]) +
-                x +
+                EDI_decoder.decode(EDI_cursor_gapBuffer.subarray(INTS[fEDI_cursor_editRenderedDisplacement], INTS[fEDI_cursor_editLength])) +
                 EDI_cursor_gapBufferWriteToSpanElement.textContent.slice((INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]/* + INTS[fEDI_offsetWithinSpan]*/) + INTS[fEDI_cursor_editRenderedDisplacement]);
 
             INTS[fEDI_cursor_editRenderedDisplacement] = INTS[fEDI_cursor_editLength];

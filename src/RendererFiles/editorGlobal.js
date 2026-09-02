@@ -955,7 +955,7 @@ function EDI_render_do_SyntaxHighlighting() {
 }
 
 function EDI_state_clear() {
-    EDI_finalizeAllCursors_andClearNonPrimaryCursors();
+    EDI_finalizeEdit();
     EDI_cursor_clear();
     set_EDI_recentBoundingClientRect_isNull_intFalsey(1);
     EDI_textSourceIdentifier = '';
@@ -1227,10 +1227,6 @@ function EDI_drawHorizontalScrollbar() {
     if (EDI_horizontal_scrollbar.scrollLeft !== EDI_baseElement.scrollLeft) {
         EDI_horizontal_scrollbar.scrollLeft = EDI_baseElement.scrollLeft;
     }
-}
-
-function EDI_finalizeAllCursors_andClearNonPrimaryCursors() {
-    EDI_finalizeEdit();
 }
 
 /**
@@ -4143,7 +4139,7 @@ function EDI_onKeyDown(event) {
             EDI_editEvent(EditKind_BackspaceRtl, event);
             break;
         case 'Escape':
-            EDI_finalizeAllCursors_andClearNonPrimaryCursors();
+            EDI_finalizeEdit();
             break;
         case 'Tab':
             event.preventDefault();
@@ -4561,7 +4557,7 @@ function EDI_onKeyDown_keyLengthEqualsOne_altKey(event) {
 function EDI_onMouseDown(event) {
     EDI_movementBasedCacheInvalidation();
     
-    // TODO: You might want to do this inside 'EDI_finalizeAllCursors_andClearNonPrimaryCursors();' at the end... I'm not sure.
+    // TODO: You might want to do this inside 'EDI_finalizeEdit();' at the end... I'm not sure.
     INTS[fEDI_offsetColumn] = 0;
 
     if (get_EDI_recentBoundingClientRect_isNull_intFalsey()) {

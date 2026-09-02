@@ -625,9 +625,9 @@ function EDI_render_do_Scroll(timestamp) {
     INTS[fEDI_scrollEndDeadline] = timestamp + 1000;
 
     if (INTS[fEDI_intFalsey_isScrolling] === 0) {
-        // ...and here the locals are passed to the LeadingEdge because only when performing the LeadingEdge do you need to use the global versions. (part 1 of 3)
+        // (Comment group ID: 'do_Scroll/LeadingEdge')...and here the locals are passed to the LeadingEdge because only when performing the LeadingEdge do you need to use the global versions. (part 1 of 3)
         if (EDI_onScroll_LeadingEdge(local_prevVli, local_currVli)) return; // This if statement reads poorly. You return for a reason that isn't gleaned by reading the function name alone.
-        // ...and here the locals assigned the same value as the "globals" in case 'EDI_onScroll_LeadingEdge' modified the globals. (part 3 of 3)
+        // (Comment group ID: 'do_Scroll/LeadingEdge')...and here the locals assigned the same value as the "globals" in case 'EDI_onScroll_LeadingEdge' modified the globals. (part 3 of 3)
         local_prevVli = INTS[fEDI_prevVli];
     }
 
@@ -737,16 +737,14 @@ function EDI_render_do_Scroll(timestamp) {
  * @returns true if scrollTop (and a few other details) have not changed, thus indicating the invoker should immediately return from their own rather than continuing with scroll logic.
  */
 function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
-    // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 2 of 4)
-    // ...and here the locals are moved to the global scope.
+    
+    // (Comment group ID: 'do_Scroll/LeadingEdge')...and here the locals are moved to the global scope. (part 2 of 3)
     INTS[fEDI_prevVli] = local_prevVli;
     INTS[fEDI_currVli] = local_currVli;
 
     INTS[fEDI_intFalsey_isScrolling] = 1;
 
     // TODO: If you can prove that the leading edge or 'INTS[fEDI_intFalsey_isScrolling]' is "equivalent" to 'BYTES[byteisCheckingTrailingEdge]' then you can reduce the code here.
-    //
-    // If we aren't tracking the trailing edge yet, start the rAF countdown loop
     if (!BYTES[byteisCheckingTrailingEdge]) {
         BYTES[byteisCheckingTrailingEdge] = 1;
         requestAnimationFrame(EDI_render_do_ScrollTrailingEdgeCheck);
@@ -801,8 +799,6 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
             // TODO: What happens when you overflow 'INTS[fEDI_prevVli]' does it overflow such that you're the correct diff?
             //
             INTS[fEDI_prevVli] = INTS[fEDI_currVli] + INTS[fEDI_virtualCount];
-            //INTS[fEDI_prevVli] = 0;
-            //INTS[fEDI_currVli] = INTS[fEDI_virtualCount];
 
             EDI_render_do_CreateViewport();
             return false;

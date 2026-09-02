@@ -808,13 +808,11 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
 }
 
 function EDI_render_do_ScrollTrailingEdgeCheck(timestamp) {
-    // If the scroll deadline hasn't been met yet, keep checking on the next frame
     if (timestamp < INTS[fEDI_scrollEndDeadline]) {
         requestAnimationFrame(EDI_render_do_ScrollTrailingEdgeCheck);
         return;
     }
 
-    // The 1,000ms has passed! Fire your trailing edge logic safely
     EDI_onScroll_TrailingEdge();
 }
 

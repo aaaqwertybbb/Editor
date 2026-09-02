@@ -821,24 +821,20 @@ function EDI_render_do_ScrollTrailingEdgeCheck(timestamp) {
  */
 function EDI_onScroll_TrailingEdge() {
     INTS[fEDI_intFalsey_isScrolling] = 0;
-    BYTES[byteisCheckingTrailingEdge] = 0; // Reset the flag here
+    BYTES[byteisCheckingTrailingEdge] = 0;
     EDI_render_request(RenderKind_SyntaxHighlighting);
 }
 
-
-// the scroll layout happens before the finalize???
-
-/*
-TODO: for function 2, you need to determine whether you will lex the
-- [ ] textContent on the span,
-- [ ] or if you will decode from the bytes again.
-
-I'm going to do
-- [ ] textContent on the span,
-
-but there is 0 reasoning, understanding, or measurements behind my decision.
+/**
+ * TODO: for this function, you need to determine whether you will lex the
+ * - [ ] textContent on the span,
+ * - [ ] or if you will decode from the bytes again.
+ * 
+ * I'm going to do
+ * - [ ] textContent on the span,
+ * 
+ * but there is 0 reasoning, understanding, or measurements behind my decision.
 */
-
 function EDI_render_do_SyntaxHighlighting() {
     const local_sum_diffNegative = INTS[fEDI_sum_diffNegative];
     const local_sum_diffPositive = INTS[fEDI_sum_diffPositive];

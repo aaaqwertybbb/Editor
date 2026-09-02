@@ -4,6 +4,8 @@ import "./fieldBuffer"
 import "./javascriptFeatures"
 //__#__
 
+// Extremely important softlock bug: see documentation comment for 'EDI_finalizeEdit()'.
+
 /*
 ###################################
 # Wording related to "indexLine": #

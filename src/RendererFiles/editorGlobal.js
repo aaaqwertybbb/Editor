@@ -185,8 +185,6 @@ let EDI_documentSymbolResult = null;
  */
 let EDI_listComponent = null;
 
-let EDI_offsetWithinSpan_withRespectToThisSpan = null;
-
 let w_span = null;
 let w_div = null;
 
@@ -980,8 +978,6 @@ function EDI_state_clear() {
     EDI_textByteList.clear();
     INTS[fEDI_longestLine_indexLine] = 0;
     INTS[fEDI_longestLine_length] = 0;
-    
-    EDI_offsetWithinSpan_withRespectToThisSpan = null;
     
     EDI_trackedSyntaxList.clear();
 }
@@ -4069,8 +4065,6 @@ hmmm is google AI just hyping me up... I need to clarify that those few conditio
  * TODO: timing issue of async paste and copy
  */
 function EDI_onKeyDown(event) {
-    EDI_offsetWithinSpan_withRespectToThisSpan = null;
-
     switch (event.key) {
         case 'ArrowLeft':
             EDI_onKeyDown_ArrowLeft(event);

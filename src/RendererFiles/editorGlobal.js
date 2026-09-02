@@ -9633,5 +9633,6 @@ Google AI:
 I got and played Megabonk on steam for the first time yesterday.
 The game is wild I love it
 I'm somewhat counting down the minutes until 9:55 AM so I can say I did two hours then go play Megabonk.
+I gotta make sure I hit 2 hours so I get the guilt free gaming. I did my homework before play kinda stuff.
 
 */

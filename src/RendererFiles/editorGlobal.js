@@ -981,7 +981,6 @@ function EDI_state_clear() {
     INTS[fEDI_longestLine_indexLine] = 0;
     INTS[fEDI_longestLine_length] = 0;
     
-    INTS[fEDI_offsetColumn] = 0;
     INTS[fEDI_totalShift] = 0;
     EDI_offsetWithinSpan_withRespectToThisSpan = null;
     INTS[fEDI_offsetWithinSpan] = 0;
@@ -2239,7 +2238,7 @@ function walkLineUntilIndexColumn() {
     }
     
     let div = ArrayFrom_textElement_children[INTS[fEDI_w_beltIndexLine]];
-    let indexColumn_Goal = INTS[fEDI_cursor_indexColumn] + INTS[fEDI_offsetColumn];
+    let indexColumn_Goal = INTS[fEDI_cursor_indexColumn];
     let indexColumn_Sum = 0;
 
     for (var indexSpan = 0; indexSpan < div.children.length; indexSpan++) {
@@ -2411,7 +2410,7 @@ function positiveNumbersOnly_countDigitsLoop(number) {
  */
 function EDI_drawCursor(NOTscrollCursorIntoView) {
     INTS[fEDI_cursor_cursorTranslateYValue] = INTS[fEDI_cursor_indexLine] * INTS[fEDI_lineHeight];
-    INTS[fEDI_cursor_cursorTranslateXValue] = (INTS[fEDI_cursor_indexColumn] + INTS[fEDI_offsetColumn]) * EDI_characterWidth;
+    INTS[fEDI_cursor_cursorTranslateXValue] = INTS[fEDI_cursor_indexColumn] * EDI_characterWidth;
 
     EDI_cursor_caretRow.style.transform = `translateY(${INTS[fEDI_cursor_cursorTranslateYValue]}px)`;
     EDI_cursor_cursorElement.style.transform = `translateX(${INTS[fEDI_cursor_cursorTranslateXValue]}px)`;
@@ -3710,7 +3709,6 @@ function EDI_editEvent_theEditIself_InsertLtr(event) {
     EDI_insertDo(event.key);
     INTS[fEDI_cursor_STORED_indexColumn] = INTS[fEDI_cursor_indexColumn];
     EDI_render_request(RenderKind_Cursor_n);
-    //INTS[fEDI_offsetColumn] = INTS[fEDI_offsetColumn] + INTS[fEDI_cursor_editLength];
     //INTS[fEDI_totalShift] = get_EDI_totalShift() + INTS[fEDI_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
     EDI_render_request(RenderKind_InsertLtr);
 }
@@ -3727,7 +3725,6 @@ function EDI_editEvent_theEditIself_DeleteLtr(event) {
         EDI_deleteDo(event);
     }
     EDI_render_request(RenderKind_Cursor_n);
-    //INTS[fEDI_offsetColumn] = INTS[fEDI_offsetColumn] - INTS[fEDI_cursor_editLength];
     //INTS[fEDI_totalShift] = get_EDI_totalShift() - INTS[fEDI_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
 }
 
@@ -3744,7 +3741,6 @@ function EDI_editEvent_theEditIself_BackspaceRtl(event) {
         INTS[fEDI_cursor_STORED_indexColumn] = INTS[fEDI_cursor_indexColumn];
     }
     EDI_render_request(RenderKind_Cursor_n);
-    //INTS[fEDI_offsetColumn] = INTS[fEDI_offsetColumn] - INTS[fEDI_cursor_editLength];
     //INTS[fEDI_totalShift] = get_EDI_totalShift() - INTS[fEDI_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
 }
 
@@ -4078,7 +4074,6 @@ hmmm is google AI just hyping me up... I need to clarify that those few conditio
  * TODO: timing issue of async paste and copy
  */
 function EDI_onKeyDown(event) {
-    INTS[fEDI_offsetColumn] = 0;
     INTS[fEDI_totalShift] = 0;
     EDI_offsetWithinSpan_withRespectToThisSpan = null;
     INTS[fEDI_offsetWithinSpan] = 0;
@@ -4212,7 +4207,6 @@ function EDI_onKeyDown_ArrowLeft(event) {
     if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
     }
-    //INTS[fEDI_offsetColumn] = INTS[fEDI_offsetColumn] + INTS[fEDI_cursor_editLength];
     //INTS[fEDI_totalShift] = get_EDI_totalShift() + INTS[fEDI_cursor_editLength];
 }
 
@@ -4323,7 +4317,6 @@ function EDI_onKeyDown_ArrowRight(event) {
     if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
     }
-    //INTS[fEDI_offsetColumn] = INTS[fEDI_offsetColumn] + INTS[fEDI_cursor_editLength];
     //INTS[fEDI_totalShift] = get_EDI_totalShift() + INTS[fEDI_cursor_editLength];
 }
 
@@ -4530,9 +4523,6 @@ function EDI_onKeyDown_keyLengthEqualsOne_altKey(event) {
 
 function EDI_onMouseDown(event) {
     EDI_movementBasedCacheInvalidation();
-    
-    // TODO: You might want to do this inside 'EDI_finalizeEdit();' at the end... I'm not sure.
-    INTS[fEDI_offsetColumn] = 0;
 
     if (get_EDI_recentBoundingClientRect_isNull_intFalsey()) {
         let boundingClientRect = EDI_baseElement.getBoundingClientRect();

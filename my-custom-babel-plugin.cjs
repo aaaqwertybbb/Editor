@@ -73,7 +73,7 @@ module.exports = function (babel) {
     //"fEDI_offsetColumn_withRespectToThisIndexLine",
     
 
-    "fEDI_offsetColumn",
+    //"fEDI_offsetColumn",
     
 
     "fEDI_totalShift",

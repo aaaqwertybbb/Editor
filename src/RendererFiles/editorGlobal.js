@@ -373,7 +373,7 @@ function EDI_render_do_InsertLtr() {
     }
     if (INTS[fEDI_cursor_editRenderedDisplacement] < INTS[fEDI_cursor_editLength]) {
         if (EDI_cursor_gapBufferWriteToSpanElement) {
-            
+
             EDI_cursor_gapBufferWriteToSpanElement.textContent = 
                 EDI_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]/* + INTS[fEDI_offsetWithinSpan]*/) + INTS[fEDI_cursor_editRenderedDisplacement]) +
                 EDI_decoder.decode(EDI_cursor_gapBuffer.subarray(INTS[fEDI_cursor_editRenderedDisplacement], INTS[fEDI_cursor_editLength])) +
@@ -400,13 +400,10 @@ function EDI_render_do_Clear() {
 
 function EDI_render_do_SetText(timestamp) {
     EDI_render_do_Clear();
-
-    // TODO: This code paragraph will run when scrolling horizontally at the moment, this is unfortunate because it relates to scrolling vertically.
     update_VirtualIndexLine();
-    
-
     EDI_render_do_Scroll(timestamp);
 
+    // TODO: what is paragraph this doing?
     INTS[fEDI_prevVli] = INTS[fEDI_ONSCROLLvirtualIndexLine];
     INTS[fEDI_currVli] = INTS[fEDI_virtualIndexLine];
     INTS[fEDI_ONSCROLLvirtualIndexLine] = INTS[fEDI_virtualIndexLine];

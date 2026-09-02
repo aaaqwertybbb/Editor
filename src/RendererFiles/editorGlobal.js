@@ -67,6 +67,17 @@ And it can introduce oddities involving tabstop or very tiny changes in horizont
 '\0' is a similar problem, it is a special character that might cause odd behavior.
 */
 
+/*
+#################################################################
+# Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine': #
+#################################################################
+
+// TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
+// ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
+// but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+// for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+*/
+
 const EDI_trackedSyntaxList = new TrackedSyntaxList(32);
 
 /**
@@ -1287,19 +1298,8 @@ function EDI_finalizeEdit() {
     if (indexLine_editOccurredOn >= 0 && indexLine_editOccurredOn < EDI_lineEndPositionList.count) {
         if (EDI_gutter.children.length === INTS[fEDI_virtualCount] &&
             EDI_textElement.children.length === INTS[fEDI_virtualCount]) {
-
-                // TODO: The 'awkward explicit inlining' for this case isn't seemingly working...
-                // ...I need to type 'function' then more characters until I hit 32 and force a finalization of the edit due to the length being too long.
-                // 'function' should've received a keyword syntax highlighting but it didn't...
-                // - But I'm not sure if this code even was working prior.
-                // - I've actually wanted to remove it for some time
-                // - I debugged it and line by line as I step it all looks correct.
-                // so I gotta try it in other places.
                 
-                // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
-                // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-                // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-                // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+                // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
                 let beltIndexLine = indexLine_editOccurredOn - INTS[fEDI_virtualIndexLine];
                 if (beltIndexLine >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine < 0) beltIndexLine = -1;
                 else beltIndexLine = (beltIndexLine + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
@@ -2225,10 +2225,7 @@ function EDI_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_I) 
 function walkLineUntilIndexColumn() {
     // TODO: delete key until you delete a linefeed and join the next line onto your own then press backspace everything breaks.
 
-    // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
-    // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-    // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-    // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+    // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
     INTS[fEDI_w_beltIndexLine] = INTS[fEDI_cursor_indexLine] - INTS[fEDI_virtualIndexLine];
     if (INTS[fEDI_w_beltIndexLine] >= INTS[fEDI_ArrayFrom_textElement_children_length] || INTS[fEDI_w_beltIndexLine] < 0) INTS[fEDI_w_beltIndexLine] = -1;
     else INTS[fEDI_w_beltIndexLine] = (INTS[fEDI_w_beltIndexLine] + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
@@ -5028,10 +5025,7 @@ function EDI_render_do_IndentMore() {
             // Draw the line to reflect the edit, if it is being currently shown on screen.
             // TODO: Use NEXT if the lines are one after another?
             
-            // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
-            // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-            // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-            // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+            // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
             let beltIndexLine = lineI - INTS[fEDI_virtualIndexLine];
             if (beltIndexLine >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine < 0) beltIndexLine = -1;
             else beltIndexLine = (beltIndexLine + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
@@ -5261,10 +5255,7 @@ function EDI_render_do_IndentLess() {
             // Draw the line to reflect the edit, if it is being currently shown on screen.
             // TODO: Use NEXT if the lines are one after another?
 
-            // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
-            // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-            // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-            // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+            // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
             let beltIndexLine = lineI - INTS[fEDI_virtualIndexLine];
             if (beltIndexLine >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine < 0) beltIndexLine = -1;
             else beltIndexLine = (beltIndexLine + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
@@ -5539,28 +5530,19 @@ function EDI_render_do_DuplicateOrPaste() {
         // No need to consider '\r\n' and etc... only '\n'
         let linefeedLength = 0;
 
-        // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
-        // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-        // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-        // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+        // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
         let beltIndexLine_current = INTS[fEDI_cursor_indexLine] - INTS[fEDI_virtualIndexLine];
         if (beltIndexLine_current >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_current < 0) beltIndexLine_current = -1;
         else beltIndexLine_current = (beltIndexLine_current + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
-        // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
-        // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-        // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-        // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+        // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
         let beltIndexLine_first = INTS[fEDI_virtualIndexLine] - INTS[fEDI_virtualIndexLine];
         if (beltIndexLine_first >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_first < 0) beltIndexLine_first = -1;
         else beltIndexLine_first = (beltIndexLine_first + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
         // TODO: Use PREVIOUS here from 'beltIndexLine_first'
 
-        // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
-        // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-        // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-        // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+        // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
         let beltIndexLine_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
         if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
         else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
@@ -5823,28 +5805,19 @@ function EDI_paste(content) {
     // Consider '\r\n' and etc...
     let linefeedLength = 0;
 
-    // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
-    // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-    // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-    // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+    // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
     let beltIndexLine_current = INTS[fEDI_cursor_indexLine] - INTS[fEDI_virtualIndexLine];
     if (beltIndexLine_current >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_current < 0) beltIndexLine_current = -1;
     else beltIndexLine_current = (beltIndexLine_current + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
-    // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
-    // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-    // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-    // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+    // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
     let beltIndexLine_first = INTS[fEDI_virtualIndexLine] - INTS[fEDI_virtualIndexLine];
     if (beltIndexLine_first >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_first < 0) beltIndexLine_first = -1;
     else beltIndexLine_first = (beltIndexLine_first + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
     // TODO: Use PREVIOUS here from 'beltIndexLine_first'
     
-    // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
-    // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-    // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-    // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+    // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
     let beltIndexLine_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
     if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
     else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
@@ -6186,10 +6159,7 @@ function EDI_render_do_EnterKey() {
 
         // TODO: This 'beltIndexLine_firstTilde' is maybe correct I don't know but it's been a long time since I wrote this line of code, and glancing at it, it looks like you need to subtract 1?
 
-        // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
-        // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-        // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-        // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+        // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
         let beltIndexLine_firstTilde = EDI_lineEndPositionList.count - INTS[fEDI_virtualIndexLine];
         if (beltIndexLine_firstTilde >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_firstTilde < 0) beltIndexLine_firstTilde = -1;
         else beltIndexLine_firstTilde = (beltIndexLine_firstTilde + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
@@ -6200,10 +6170,7 @@ function EDI_render_do_EnterKey() {
         
         let shouldRenderEntireViewport = false;
 
-        // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
-        // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-        // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-        // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+        // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
         let beltIndexLine_current = INTS[fEDI_cursor_editIndexLine] - INTS[fEDI_virtualIndexLine];
         if (beltIndexLine_current >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_current < 0) beltIndexLine_current = -1;
         else beltIndexLine_current = (beltIndexLine_current + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
@@ -6215,20 +6182,14 @@ function EDI_render_do_EnterKey() {
         if (INTS[fEDI_virtualCount] <= 1 || EDI_textElement.children.length !== INTS[fEDI_virtualCount])
             shouldRenderEntireViewport = true;
 
-        // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
-        // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-        // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-        // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+        // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
         let beltIndexLine_first = INTS[fEDI_virtualIndexLine] - INTS[fEDI_virtualIndexLine];
         if (beltIndexLine_first >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_first < 0) beltIndexLine_first = -1;
         else beltIndexLine_first = (beltIndexLine_first + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
         // TODO: Use PREVIOUS here from 'beltIndexLine_first'
 
-        // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
-        // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-        // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-        // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+        // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
         let beltIndexLine_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
         if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
         else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
@@ -6944,18 +6905,12 @@ function EDI_render_do_RemoveSelection() {
         // Remove middle line(s)
         if (linesRemovedCount > 0) {
 
-            // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
-            // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-            // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-            // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+            // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
             let beltIndexLine_current = (smallLineAndColumnIndices_indexLine + 1) - INTS[fEDI_virtualIndexLine];
             if (beltIndexLine_current >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_current < 0) beltIndexLine_current = -1;
             else beltIndexLine_current = (beltIndexLine_current + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
 
-            // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
-            // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-            // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-            // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+            // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
             let beltIndexLine_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
             if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
             else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
@@ -7070,10 +7025,7 @@ function EDI_render_do_Delete() {
                             // Merge the lines if both are visible.
                             // TODO: Use NEXT here (... + 1)
 
-                            // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
-                            // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-                            // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-                            // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+                            // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
                             let beltIndexLine_next = (INTS[fEDI_cursor_indexLine] + 1) - INTS[fEDI_virtualIndexLine];
                             if (beltIndexLine_next >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_next < 0) beltIndexLine_next = -1;
                             else beltIndexLine_next = (beltIndexLine_next + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
@@ -7097,10 +7049,7 @@ function EDI_render_do_Delete() {
                                     keepingDiv.removeChild(keepingDiv.children[0]);
                                 }
 
-                                // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
-                                // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-                                // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-                                // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+                                // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
                                 let beltIndexLine_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
                                 if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
                                 else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
@@ -7259,10 +7208,7 @@ function EDI_render_do_Backspace() {
                             // Merge the lines if both are visible.
                             // TODO: Use NEXT here (... + 1)
                             
-                            // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
-                            // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-                            // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-                            // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+                            // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
                             let beltIndexLine_next = (INTS[fEDI_cursor_indexLine] + 1) - INTS[fEDI_virtualIndexLine];
                             if (beltIndexLine_next >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_next < 0) beltIndexLine_next = -1;
                             else beltIndexLine_next = (beltIndexLine_next + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];
@@ -7286,10 +7232,7 @@ function EDI_render_do_Backspace() {
                                     keepingDiv.removeChild(keepingDiv.children[0]);
                                 }
 
-                                // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
-                                // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-                                // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-                                // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+                                // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
                                 let beltIndexLine_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
                                 if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
                                 else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_EDI_beltIndexZero]) % INTS[fEDI_virtualCount];

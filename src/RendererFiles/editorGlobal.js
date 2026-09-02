@@ -9630,4 +9630,8 @@ Google AI:
 < - Ask about caching array lengths for maximum loop speed
 < - Ask about the performance impact of const vs let in loops
 
+I got and played Megabonk on steam for the first time yesterday.
+The game is wild I love it
+I'm somewhat counting down the minutes until 9:55 AM so I can say I did two hours then go play Megabonk.
+
 */

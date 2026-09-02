@@ -347,6 +347,7 @@ function EDI_render_do_cursor(timestamp) {
     EDI_drawCursor();
 }
 
+/** obsolete-ish */
 function EDI_render_do_cursor_flag_scrollIntoViewExplicit(timestamp) {
     INTS[fEDI_EDI_cursorBlinkLastTimestamp] = timestamp;
     let notShouldScrollIntoView = false;

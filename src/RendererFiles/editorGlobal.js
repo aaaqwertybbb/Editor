@@ -5,6 +5,7 @@ import "./javascriptFeatures"
 //__#__
 
 // Extremely important softlock bug: see documentation comment for 'EDI_finalizeEdit()'.
+// Retrospectively I'd say... I imagine there'd be more than one scenario of this I have a lot of 'critical booleans'.
 
 /*
 ###################################
@@ -1233,6 +1234,8 @@ function EDI_drawHorizontalScrollbar() {
 
 /**
  * TODO: Exception during finalize softlocks the editor because you can't even clear to reset the state: 'Uncaught (in promise) Error: removeAt(...): index > this.count'
+ * 
+ * Retrospectively I'd say... I imagine there'd be more than one scenario of this I have a lot of 'critical booleans'.
  */
 function EDI_finalizeEdit() {
     /**

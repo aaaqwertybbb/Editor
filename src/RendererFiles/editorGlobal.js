@@ -613,40 +613,29 @@ function EDI_onScroll_WRAPIT() {
  * 
  */
 function EDI_render_do_Scroll(timestamp) {
-
-    // TODO: Is initializing the numbers to '0' rather than leaving them uninitialized and then assigning them from every possible conditional branch done for a reason (i.e.: monomorphism?)
-
     const local_lineHeight = INTS[fEDI_lineHeight];
 
     // TODO: This floor logic seems very odd. Because given the previous and the current you can determine it without dividing maybe I think?
     INTS[fEDI_virtualIndexLine] = Math.floor(INTS[fEDI_lastReadNumber_scrollTop] / local_lineHeight);
     
-    // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 1 of 4)
     let local_prevVli = INTS[fEDI_ONSCROLLvirtualIndexLine];
     const local_currVli = INTS[fEDI_virtualIndexLine];
     INTS[fEDI_ONSCROLLvirtualIndexLine] = local_currVli;
 
-    // TODO: Instead of adding 1000 here you should do it when you check the debounce
-    INTS[fEDI_scrollEndDeadline] = timestamp + 1000; // TODO: Move this to the scroll event handler (probably-maybe)
+    INTS[fEDI_scrollEndDeadline] = timestamp + 1000;
 
-    // TODO: !... vs checking for 0 or 1... '===', then '!', then '=='
-    // because '===' skips any check for type coercion
     if (INTS[fEDI_intFalsey_isScrolling] === 0) {
-        // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 2 of 4)
-        // ...and here the locals are passed to the LeadingEdge because only when performing the LeadingEdge do you need to use the global versions.
-
+        // ...and here the locals are passed to the LeadingEdge because only when performing the LeadingEdge do you need to use the global versions. (part 1 of 3)
         if (EDI_onScroll_LeadingEdge(local_prevVli, local_currVli)) return; // This if statement reads poorly. You return for a reason that isn't gleaned by reading the function name alone.
-        
-        // The render function needs to localize these variables to avoid accessing global scope variables which would take longer than a local. (part 4 of 4)
-        // ...and here the locals assigned the same value as the globals in case 'EDI_onScroll_LeadingEdge' modified the globals.
+        // ...and here the locals assigned the same value as the "globals" in case 'EDI_onScroll_LeadingEdge' modified the globals. (part 3 of 3)
         local_prevVli = INTS[fEDI_prevVli];
     }
 
-    INTS[fEDI_ONSCROLLscrollTop] = INTS[fEDI_lastReadNumber_scrollTop]; // TODO: Move this to the scroll event handler (probably-maybe)
+    INTS[fEDI_ONSCROLLscrollTop] = INTS[fEDI_lastReadNumber_scrollTop];
 
     // TODO: Move this to the leading edge? (maybe)
     if (INTS[fEDI_cursor_editKind] !== EditKind_None) {
-        // ... not applicable while this is in EDI_render_do_Scroll, only applicable when moved to leading edge: TODO: Timing issue, someone typing while they scroll
+        // (the comment at the end of this line is not applicable while this is in EDI_render_do_Scroll, only applicable when moved to leading edge) TODO: Timing issue, someone typing while they scroll
         EDI_finalizeEdit();
     }
 
@@ -664,7 +653,7 @@ function EDI_render_do_Scroll(timestamp) {
     // TODO: This if elseif else can probably be optimized
     if (diff > 0 && diff < INTS[fEDI_virtualCount]) {
         INTS[fEDI_sum_diffPositive] += diff;
-        // Note: this case has 'vertical = (INTS[fEDI_prevVli] + INTS[fEDI_virtualCount]) * local_lineHeight;' I believe 'INTS[fEDI_virtualCount]' === 'INTS[fEDI_ONSCROLLvirtualCount]' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
+        // Note: (TODO: retrospectively reading this comment I'm thinking "what is this talking about?" To be fair I only glanced at it but because it is far too "verbose" I just don't feel like reading this right now to determine whether the comment is worthwhile or not.) this case has 'vertical = (INTS[fEDI_prevVli] + INTS[fEDI_virtualCount]) * local_lineHeight;' I believe 'INTS[fEDI_virtualCount]' === 'INTS[fEDI_ONSCROLLvirtualCount]' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
         lowerBound = local_prevVli + INTS[fEDI_ONSCROLLvirtualCount];
         upperBound = lowerBound + diff;
         beltIndexLine = INTS[fEDI_EDI_beltIndexZero] - 1 /*This decrement avoids that.*/;

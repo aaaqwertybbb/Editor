@@ -395,7 +395,7 @@ const fEDI_indexCursor = 18;
 
 //const fEDI_offsetLine = 19;
 
-const fEDI_offsetColumn_withRespectToThisIndexLine = 20;
+//const fEDI_offsetColumn_withRespectToThisIndexLine = 20;
 
 const fEDI_offsetColumn = 21;
 

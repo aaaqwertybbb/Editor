@@ -981,7 +981,6 @@ function EDI_state_clear() {
     INTS[fEDI_longestLine_indexLine] = 0;
     INTS[fEDI_longestLine_length] = 0;
     
-    INTS[fEDI_offsetColumn_withRespectToThisIndexLine] = 0;
     INTS[fEDI_offsetColumn] = 0;
     INTS[fEDI_totalShift] = 0;
     EDI_offsetWithinSpan_withRespectToThisSpan = null;
@@ -3703,10 +3702,6 @@ function EDI_editEvent(editKind, event, clipboardContent) {
 
 function EDI_editEvent_theEditIself_InsertLtr(event) {
     EDI_movementBasedCacheInvalidation();
-    if (INTS[fEDI_offsetColumn_withRespectToThisIndexLine] !== INTS[fEDI_cursor_indexLine]) {
-        INTS[fEDI_offsetColumn_withRespectToThisIndexLine] = INTS[fEDI_cursor_indexLine];
-        INTS[fEDI_offsetColumn] = 0;
-    }
     // You can do this because the function 'EDI_NOTcanBatch_insert' was already checked for all the cursors, if it is possible to batch, the editKind will stay InsertLtr otherwise it is finalized and set to None.
     // TODO: Use if === EditKind_None for copy and paste safety / it might just even be more readable
     if (INTS[fEDI_cursor_editKind] !== EditKind_InsertLtr) {
@@ -3722,10 +3717,6 @@ function EDI_editEvent_theEditIself_InsertLtr(event) {
 
 function EDI_editEvent_theEditIself_DeleteLtr(event) {
     EDI_movementBasedCacheInvalidation();
-    if (INTS[fEDI_offsetColumn_withRespectToThisIndexLine] !== INTS[fEDI_cursor_indexLine]) {
-        INTS[fEDI_offsetColumn_withRespectToThisIndexLine] = INTS[fEDI_cursor_indexLine];
-        INTS[fEDI_offsetColumn] = 0;
-    }
     if (EDI_cursor_hasSelection()) {
         EDI_removeSelection();
     }
@@ -3742,10 +3733,6 @@ function EDI_editEvent_theEditIself_DeleteLtr(event) {
 
 function EDI_editEvent_theEditIself_BackspaceRtl(event) {
     EDI_movementBasedCacheInvalidation();
-    if (INTS[fEDI_offsetColumn_withRespectToThisIndexLine] !== INTS[fEDI_cursor_indexLine]) {
-        INTS[fEDI_offsetColumn_withRespectToThisIndexLine] = INTS[fEDI_cursor_indexLine];
-        INTS[fEDI_offsetColumn] = 0;
-    }
     if (EDI_cursor_hasSelection()) {
         EDI_removeSelection();
     }
@@ -4091,7 +4078,6 @@ hmmm is google AI just hyping me up... I need to clarify that those few conditio
  * TODO: timing issue of async paste and copy
  */
 function EDI_onKeyDown(event) {
-    INTS[fEDI_offsetColumn_withRespectToThisIndexLine] = 0;
     INTS[fEDI_offsetColumn] = 0;
     INTS[fEDI_totalShift] = 0;
     EDI_offsetWithinSpan_withRespectToThisSpan = null;
@@ -4173,11 +4159,6 @@ function EDI_onKeyDown_ArrowLeft(event) {
     event.stopPropagation();
 
     EDI_movementBasedCacheInvalidation();
-
-    if (INTS[fEDI_offsetColumn_withRespectToThisIndexLine] !== INTS[fEDI_cursor_indexLine]) {
-        INTS[fEDI_offsetColumn_withRespectToThisIndexLine] = INTS[fEDI_cursor_indexLine];
-        INTS[fEDI_offsetColumn] = 0;
-    }
 
     if (EDI_cursor_hasSelection() && !event.shiftKey) {
         let small;
@@ -4288,11 +4269,6 @@ function EDI_onKeyDown_ArrowRight(event) {
     event.stopPropagation();
 
     EDI_movementBasedCacheInvalidation();
-
-    if (INTS[fEDI_offsetColumn_withRespectToThisIndexLine] !== INTS[fEDI_cursor_indexLine]) {
-        INTS[fEDI_offsetColumn_withRespectToThisIndexLine] = INTS[fEDI_cursor_indexLine];
-        INTS[fEDI_offsetColumn] = 0;
-    }
 
     if (EDI_cursor_hasSelection() && !event.shiftKey) {
         let large;

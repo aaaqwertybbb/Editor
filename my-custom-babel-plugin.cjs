@@ -70,7 +70,7 @@ module.exports = function (babel) {
     //"fEDI_offsetLine",
     
 
-    "fEDI_offsetColumn_withRespectToThisIndexLine",
+    //"fEDI_offsetColumn_withRespectToThisIndexLine",
     
 
     "fEDI_offsetColumn",

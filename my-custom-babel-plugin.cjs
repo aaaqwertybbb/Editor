@@ -79,7 +79,7 @@ module.exports = function (babel) {
     //"fEDI_totalShift",
     
 
-    "fEDI_offsetWithinSpan",
+    //"fEDI_offsetWithinSpan",
     
 
     "fEDI_ONSCROLLvirtualIndexLine",

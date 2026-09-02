@@ -401,7 +401,7 @@ const fEDI_indexCursor = 18;
 
 //const fEDI_totalShift = 22;
 
-const fEDI_offsetWithinSpan = 23;
+//const fEDI_offsetWithinSpan = 23;
 
 const fEDI_longestLine_indexLine = 24;
 

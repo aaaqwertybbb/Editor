@@ -388,9 +388,9 @@ function EDI_render_do_InsertLtr() {
         if (EDI_cursor_gapBufferWriteToSpanElement) {
 
             EDI_cursor_gapBufferWriteToSpanElement.textContent = 
-                EDI_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]/* + INTS[fEDI_offsetWithinSpan]*/) + INTS[fEDI_cursor_editRenderedDisplacement]) +
+                EDI_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]) + INTS[fEDI_cursor_editRenderedDisplacement]) +
                 EDI_decoder.decode(EDI_cursor_gapBuffer.subarray(INTS[fEDI_cursor_editRenderedDisplacement], INTS[fEDI_cursor_editLength])) +
-                EDI_cursor_gapBufferWriteToSpanElement.textContent.slice((INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]/* + INTS[fEDI_offsetWithinSpan]*/) + INTS[fEDI_cursor_editRenderedDisplacement]);
+                EDI_cursor_gapBufferWriteToSpanElement.textContent.slice((INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex]) + INTS[fEDI_cursor_editRenderedDisplacement]);
 
             INTS[fEDI_cursor_editRenderedDisplacement] = INTS[fEDI_cursor_editLength];
         }
@@ -982,7 +982,6 @@ function EDI_state_clear() {
     INTS[fEDI_longestLine_length] = 0;
     
     EDI_offsetWithinSpan_withRespectToThisSpan = null;
-    INTS[fEDI_offsetWithinSpan] = 0;
     
     EDI_trackedSyntaxList.clear();
 }
@@ -4071,7 +4070,6 @@ hmmm is google AI just hyping me up... I need to clarify that those few conditio
  */
 function EDI_onKeyDown(event) {
     EDI_offsetWithinSpan_withRespectToThisSpan = null;
-    INTS[fEDI_offsetWithinSpan] = 0;
 
     switch (event.key) {
         case 'ArrowLeft':
@@ -7295,16 +7293,11 @@ function EDI_insertDo(character) {
     And then this removes 1 of the slice invocations, rather than inserting "possibly" among the existing textContent.
     */
     
-    /*if (EDI_cursor_gapBufferWriteToSpanElement !== EDI_offsetWithinSpan_withRespectToThisSpan) {
-        INTS[fEDI_offsetWithinSpan] = 0;
-        EDI_offsetWithinSpan_withRespectToThisSpan = EDI_cursor_gapBufferWriteToSpanElement;
-    }
-
-    if (EDI_cursor_gapBufferWriteToSpanElement) {
+    /*if (EDI_cursor_gapBufferWriteToSpanElement) {
         EDI_cursor_gapBufferWriteToSpanElement.textContent = 
-            EDI_cursor_gapBufferWriteToSpanElement.textContent.slice(0, (INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] + INTS[fEDI_offsetWithinSpan]) + INTS[fEDI_cursor_gapBufferCount]) +
+            EDI_cursor_gapBufferWriteToSpanElement.textContent.slice(0, INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] + INTS[fEDI_cursor_gapBufferCount]) +
             character +
-            EDI_cursor_gapBufferWriteToSpanElement.textContent.slice((INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] + INTS[fEDI_offsetWithinSpan]) + INTS[fEDI_cursor_gapBufferCount]);
+            EDI_cursor_gapBufferWriteToSpanElement.textContent.slice(INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] + INTS[fEDI_cursor_gapBufferCount]);
     }*/
 
     EDI_cursor_gapBuffer[INTS[fEDI_cursor_gapBufferCount]] = character.charCodeAt(0);
@@ -7312,8 +7305,6 @@ function EDI_insertDo(character) {
 
     INTS[fEDI_cursor_editLength]++;
     INTS[fEDI_cursor_indexColumn]++;
-
-    INTS[fEDI_offsetWithinSpan] = INTS[fEDI_offsetWithinSpan] + INTS[fEDI_cursor_gapBufferCount];
 }
 
 function EDI_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine() {

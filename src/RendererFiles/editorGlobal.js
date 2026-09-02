@@ -9648,6 +9648,46 @@ Google AI:
 < |
 < Because let forces the JavaScript engine to create a new lexical environment (scope) for each loop cycle to lock in that iteration's value, it introduces a microscopic amount of overhead.
 <
-< ...
+< # Why let Behaves This Way (The Closure Catch)
+<
+< The engine is forced to create a new let variable every iteration to ensure that closures work correctly. For example:
+< 
+< ```js
+< for (let i = 0; i < 3; i++) {
+<   setTimeout(() => console.log(i), 1); // Prints: 0, 1, 2
+< }
+< 
+< for (var j = 0; j < 3; j++) {
+<   setTimeout(() => console.log(j), 1); // Prints: 3, 3, 3
+< }
+< ```
+<
+< To guarantee let behaves this way, the JS engine has to do extra tracking under the hood.
+<
+< # Does it matter in a monolithic ES6 module?
+<
+< In modern V8 (Chrome/Node.js) and SpiderMonkey (Firefox), compilers use advanced optimization techniques to detect if the loop variable escapes into a closure.
+< If the loop variable never escapes (meaning you don't create functions inside the loop), the compiler will optimize let so that it runs almost identically to var.
+<
+< However, in ultra-performance-critical hot paths (like rendering loops handling tens of thousands of elements per frame), even a minor optimization bailout can hurt.
+<
+< What is the peak performance setup?
+<
+< If you are strictly chasing raw execution speed in a heavy rendering loop, declare the iterator variable outside the loop, or use var:
+< ```js
+< // Peak Performance Method A (Classic var)
+< for (var i = 0; i < EDI_renderKindArray.length; i++) { ... }
+< 
+< // Peak Performance Method B (Pre-declared let outside the block)
+< let i = 0;
+< const len = EDI_renderKindArray.length;
+< for (; i < len; i++) { ... }
+< ```
+<
+< To help tailor the next optimizations for your monolithic module, let me know:
+< - Is this loop running inside a high-frequency animation frame (requestAnimationFrame) or just processing data?
+< - Are you creating functions or callbacks inside these loops?
+< - Ask about caching array lengths for maximum loop speed
+< - Ask about the performance impact of const vs let in loops
 
 */

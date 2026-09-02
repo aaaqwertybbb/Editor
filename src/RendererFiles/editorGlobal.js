@@ -276,7 +276,7 @@ function EDI_init() {
 
     INTS[fEDI_longestLine_length_PreviousValueWhenLastDrewHorizontalScrollbar] = 1; // necessary for the first render, otherwise the if statement sees 0 !== 0.
     EDI_drawHorizontalScrollbar();
-    EDI_draw_all_cursors();
+    EDI_render_request(RenderKind_Cursor_n);
 
     EDI_registerHandlers();
 }
@@ -1096,7 +1096,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     update_verticalVirtualizationBoundary();
 
     EDI_drawGutter_Width();
-    EDI_draw_all_cursors();
+    EDI_render_request(RenderKind_Cursor_n);
     EDI_drawHorizontalScrollbar();
     // Force 'case 3' within 'EDI_onScroll_WRAPIT();' downstream
     // TODO: (this comment is being made sometime after this solution was written but from memory...)...
@@ -1158,10 +1158,10 @@ function update_virtualCount() {
  * 
  * @returns a bool indicating whether the gutter was drawn (if 'INTS[fEDI_drawn_count_of_digits_longest_line_number]' has not changed then false is returned because the gutter didn't need to be "re-" drawn)
  * 
- * Dependent UI: EDI_draw_all_cursors(); EDI_drawHorizontalScrollbar();
+ * Dependent UI: EDI_render_request(RenderKind_Cursor_n); EDI_drawHorizontalScrollbar();
  * 
- * You either guarantee the dependent UI to run by invoking them regardless of this function's result 'EDI_drawGutter_Width(); EDI_draw_all_cursors(); EDI_drawHorizontalScrollbar();'
- * Or you capture the return value to know whether the gutter was "re-" drawn, because if so, you need to invoke 'EDI_draw_all_cursors(); EDI_drawHorizontalScrollbar();'
+ * You either guarantee the dependent UI to run by invoking them regardless of this function's result 'EDI_drawGutter_Width(); EDI_render_request(RenderKind_Cursor_n); EDI_drawHorizontalScrollbar();'
+ * Or you capture the return value to know whether the gutter was "re-" drawn, because if so, you need to invoke 'EDI_render_request(RenderKind_Cursor_n); EDI_drawHorizontalScrollbar();'
  * for the dependent UI.
  * The confusion, if there is any, comes from the dependent UI in some scenarios being required independently of whether drawGutter changes. And at other times they're solely dependent on whether drawGutter changes.
  */
@@ -2398,10 +2398,6 @@ function positiveNumbersOnly_countDigitsLoop(number) {
   }
 
   return count;
-}
-
-function EDI_draw_all_cursors() {
-    EDI_render_request(RenderKind_Cursor_n);
 }
 
 /**
@@ -6109,7 +6105,7 @@ function EDI_lineWasInsertedValidateGutter() {
 
     if (EDI_drawGutter_Width()) {
         // If true then you need to also draw the dependent UI
-        EDI_draw_all_cursors();
+        EDI_render_request(RenderKind_Cursor_n);
         EDI_drawHorizontalScrollbar();
     }
 }
@@ -6918,7 +6914,7 @@ function EDI_render_do_RemoveSelection() {
 
             if (EDI_drawGutter_Width()) {
                 // If true then you need to also draw the dependent UI
-                EDI_draw_all_cursors();
+                EDI_render_request(RenderKind_Cursor_n);
                 EDI_drawHorizontalScrollbar();
             }
         }

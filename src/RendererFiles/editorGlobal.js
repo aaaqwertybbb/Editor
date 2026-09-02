@@ -748,7 +748,7 @@ function EDI_onScroll_LeadingEdge(local_prevVli, local_currVli) {
         requestAnimationFrame(EDI_render_do_ScrollTrailingEdgeCheck);
     }
 
-    EDI_finalizeAllCursors();
+    EDI_finalizeEdit();
 
     if (INTS[fEDI_ONSCROLLscrollTop] === INTS[fEDI_lastReadNumber_scrollTop] &&
         INTS[fEDI_prevVli] === INTS[fEDI_virtualIndexLine] &&
@@ -1229,35 +1229,6 @@ function EDI_drawHorizontalScrollbar() {
     }
 }
 
-/**
- * This function finalizes any pending edits foreach cursor in the EDI_cursorList.
- * 
- * Does NOT clear multicursors, only finalizes their respective edits;
- * 
- * see also: 'EDI_finalizeAllCursors_andClearNonPrimaryCursors'
- * 
- * TODO: many places where this is invoked, it is likely intended to actually invoke 'EDI_finalizeAllCursors_andClearNonPrimaryCursors'...
- * ...in order to permit slow 1 by 1 support for multicursor foreach scenario...
- * ...actually that's a good point...
- * ...you might wanna start by enabling multi-cursor insertion, but anything else invokes 'EDI_finalizeAllCursors_andClearNonPrimaryCursors'...
- * ...then you can slowly add in support without breaking things?...
- * ...so specifically what I'm saying here is, an upcoming task would be...
- * ...simply to ensure that nearly every event invokes 'EDI_finalizeAllCursors_andClearNonPrimaryCursors'...
- * ...and that the ones which can't i.e.: batch insertions; you could do a check if cursor count >1 then finalize only the non-primary or some such...
- * ...then you remove the safeguard for 1 feature at a time.
- */
-function EDI_finalizeAllCursors() {
-    EDI_finalizeEdit();
-}
-
-/**
- * This function finalizes pending edits foreach cursor in the EDI_cursorList
- * AND removes any non-EDI_primaryCursor from the EDI_cursorList.
- * 
- * see also: 'EDI_finalizeAllCursors'
- * 
- * TODO: a good name for this function
- */
 function EDI_finalizeAllCursors_andClearNonPrimaryCursors() {
     EDI_finalizeEdit();
 }
@@ -2118,7 +2089,7 @@ async function processLspQueue() {
  */
 function EDI_getFinalizedEditsAndRawSaveFileData(NOTfinalizePendingEdits) {
     if (!NOTfinalizePendingEdits) {
-        EDI_finalizeAllCursors();
+        EDI_finalizeEdit();
     }
     return {
         uint8arrayTextBytes: EDI_textByteList.bytes,
@@ -3612,7 +3583,7 @@ function EDI_movementBasedCacheInvalidation() {
         // TODO: Cap the amount of enter key edit events that can batch as was done with the insertion.
         // TODO: Having Enter be an insertion, instead of its own EditKind, sounds like the better long term goal but it is believed that this change is trainsitionally helpful in getting to that final best solution.
         //
-        EDI_finalizeAllCursors();
+        EDI_finalizeEdit();
     }
     EDI_cursor_enterKey_newLinePlusIndentation_byteList = null;
     EDI_cursor_cached_indentation_string = null;
@@ -3645,7 +3616,7 @@ function EDI_editEvent(editKind, event, clipboardContent) {
                 // TODO: Rewrite this if statement (it is a hack for the moment while I get indent more of a single cursor to batch)
         }
         else {
-            EDI_finalizeAllCursors();
+            EDI_finalizeEdit();
         }
     }
 
@@ -3663,7 +3634,7 @@ function EDI_editEvent(editKind, event, clipboardContent) {
         }
         if (shouldFinalizeAllCursors) {
             shouldFinalizeAllCursors = false;
-            EDI_finalizeAllCursors();
+            EDI_finalizeEdit();
         }
     }
 
@@ -3701,7 +3672,7 @@ function EDI_editEvent(editKind, event, clipboardContent) {
     }
     if (shouldFinalizeAllCursors) {
         shouldFinalizeAllCursors = false;
-        EDI_finalizeAllCursors();
+        EDI_finalizeEdit();
     }
 
     // start/continue edit... I don't want the switch in the for loop
@@ -4516,7 +4487,7 @@ async function EDI_onKeyDown_keyLengthEqualsOne_ctrlKey(event) {
             event.preventDefault();
             event.stopPropagation();
 
-            EDI_finalizeAllCursors();
+            EDI_finalizeEdit();
             await EDI_copySelection();
             break;
         case 'x':
@@ -4524,7 +4495,7 @@ async function EDI_onKeyDown_keyLengthEqualsOne_ctrlKey(event) {
             event.preventDefault();
             event.stopPropagation();
 
-            EDI_finalizeAllCursors();
+            EDI_finalizeEdit();
             await EDI_copySelection();
             EDI_removeSelection(); // TODO: Multicursor bad
             EDI_render_request(RenderKind_Cursor_n);
@@ -4552,7 +4523,7 @@ async function EDI_onKeyDown_keyLengthEqualsOne_ctrlKey(event) {
             event.preventDefault();
             event.stopPropagation();
 
-            EDI_finalizeAllCursors(); // TODO: Multicursor bad
+            EDI_finalizeEdit();
             INTS[fEDI_cursor_selectionAnchor] = 0;
             INTS[fEDI_cursor_selectionEnd] = EDI_textByteList.count;
             EDI_getLineAndColumnIndices(INTS[fEDI_cursor_selectionEnd]);
@@ -4695,7 +4666,7 @@ function EDI_findOverlay_doSearch() {
 
     let searchEncoded = EDI_encoder.encode(input.value);
 
-    EDI_finalizeAllCursors();
+    EDI_finalizeEdit();
 
     EDI_findOverlay_searchResultPositionList.clear();
 
@@ -4852,7 +4823,7 @@ function EDI_findOverlay_checkboxMatchWord_onchange() {
 }
 
 function EDI_findOverlay_showSetter(showValue) {
-    EDI_finalizeAllCursors();
+    EDI_finalizeEdit();
 
     if (!get_EDI_findOverlay_show() && showValue) {
         EDI_findOverlay.style.visibility = '';
@@ -4911,7 +4882,7 @@ function EDI_findOverlay_showSetter(showValue) {
 	    EDI_findOverlay.appendChild(divOptions);
         
         if (EDI_cursor_hasSelection()) {
-        	EDI_finalizeAllCursors();
+        	EDI_finalizeEdit();
             let selectionAnchor = INTS[fEDI_cursor_selectionAnchor];
             let selectionEnd = INTS[fEDI_cursor_selectionEnd];
             let small;
@@ -5370,7 +5341,7 @@ function EDI_indentLess() {
 }
 
 /**
- * Invoking 'EDI_finalizeAllCursors()' is a good idea prior to invoking this. Long term perhaps this won't be so important.
+ * Invoking 'EDI_finalizeEdit()' is a good idea prior to invoking this. Long term perhaps this won't be so important.
  */
 async function EDI_copySelection() {
 	if (!EDI_cursor_hasSelection()) {
@@ -5393,7 +5364,7 @@ async function EDI_copySelection() {
 }
 
 /**
- * Invoking 'EDI_finalizeAllCursors()' is a good idea prior to invoking this. Long term perhaps this won't be so important.
+ * Invoking 'EDI_finalizeEdit()' is a good idea prior to invoking this. Long term perhaps this won't be so important.
  */
 async function EDI_duplicateSelection() {
 	if (!EDI_cursor_hasSelection()) {
@@ -7013,7 +6984,7 @@ comments from EDI_removeSelection(cursor) that may or may not be useful idk I ju
         // TODO: this needs to be understood but delaying the finalization of an edit is more along the lines of an optimization...
         // ...versus selecting and removing text which needs to work properly both in terms of editing the text and visually displaying the correct result.
         // 
-        EDI_finalizeAllCursors();
+        EDI_finalizeEdit();
 
         // 3 cases (TODO: Ensure these for backspace and delete)
         // =======
@@ -7615,16 +7586,16 @@ async function EDI_MenuOnClick(indexClicked, elementClicked) {
 
     switch (commandKind) {
         case CommandKind_Cut:
-            EDI_finalizeAllCursors();
+            EDI_finalizeEdit();
             await EDI_copySelection();
             EDI_removeSelection();
             EDI_render_request(RenderKind_Cursor_n);
             return;
         case CommandKind_Copy:
-            EDI_finalizeAllCursors();
+            EDI_finalizeEdit();
             return EDI_copySelection();
         case CommandKind_Paste:
-            EDI_finalizeAllCursors();
+            EDI_finalizeEdit();
             let clipboard = await window.myAPI.readClipboard();
             EDI_paste(clipboard);
             EDI_render_request(RenderKind_Cursor_n);

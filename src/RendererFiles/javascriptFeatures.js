@@ -1106,6 +1106,9 @@ function JS_line_lex(div, substart, lineEnd, childIndex) {
     return childIndex;
 }
 
+/**
+ * TODO: rename the 'trackedSyntaxExhausted' variable because it makes me anxious that I will manifest that state of being into reality whenever I read the variable name.
+ */
 function JS_line_lex_newVersion(div, beltIndexOfDiv, trackedSyntax_I, lineStart) {
     
     

@@ -837,8 +837,33 @@ function EDI_onScroll_TrailingEdge() {
  * 
  * ===
  * 
- * TODO: Instead of having two counters 'fEDI_sum_diffNegative' and 'fEDI_sum_diffPositive' could you do this one? i.e.:
+ * TODO: Instead of having two counters 'fEDI_sum_diffNegative' and 'fEDI_sum_diffPositive' could you do this with just one counter?
+ * TODO: Avoid checking for the CSS class that indicates whether a line is not syntax highlighted.
+ * This comment of mine refers to one of the previously listed TODO's but I don't know which one. Furthermore I need to decide whether what I'm saying in this comment is even worth while keeping but that's a TODO for another day.
  * "it's wrong wait I see what's going on. You can't just sum them because overlap cancels out sometimes. If you have both but no full the larger side is cancelled out by the smaller amount I think... I'm gonna rain check that one... I'm thinking about more than 1 instance of an overlap breaking that math"
+ * 
+ * TODO: I believe that the 'EDI_drawViewPort_FindTrackedSyntax_StartingIndex' is actually wrong when you have a multiline comment that spans multiple lines and, after the closing of that syntax you on the same line start typing anything that isn't supposed to receive the comment syntax highlighting, you'll find that it erroneously receives the comment syntax highlighting.
+ * 
+ * ===
+ * 
+ * TODO: My concern is with a scroll to a larger scrollY, then a scroll to a smaller scrollY
+ * such that either scrollY are not equal, and that there is at least a difference of 1 lineHeight between both scrollY to ensure the changes aren't cancelling out.
+ * |
+ * I think then you'd need to edge check 'INTS[fEDI_EDI_beltIndexZero]' find a hit, loop until you no longer see the not syntax highlighted css class
+ * then this tells you to edge check PREVIOUS('INTS[fEDI_EDI_beltIndexZero]') and the remainder of your 'diff' to loop is in reverse.
+ * |
+ * I'm trying to think about whether the scroll function could leave behind data that indicates to this function
+ * whether it is a 'INTS[fEDI_EDI_beltIndexZero]', PREVIOUS('INTS[fEDI_EDI_beltIndexZero]'), or both case without checking the edge divs whether they have the not syntax highlighted css class.
+ * 
+ * ===
+ * 
+ * - [ ] TODO: There is something in this method that is decently pointless overhead relating to...:
+ *     - An empty line, a line only consisting of whitespace, or a line that is indented.
+ *         - ...this one is perhaps less obvious from a non-branching perspective. And perhaps even just adding a conditional branch that avoids invoking 'JS_line_lex_newVersion' in this case is worthwhile.
+ *     - A line that is out of bounds of 'indexLine < EDI_lineEndPositionList.count'
+ *         - ...consider separating the loop bounds in some way to remove conditional branches related to 'if (indexLine < EDI_lineEndPositionList.count)'
+ * 
+ * ===
 */
 function EDI_render_do_SyntaxHighlighting() {
     const local_sum_diffNegative = INTS[fEDI_sum_diffNegative];
@@ -931,114 +956,6 @@ function EDI_render_do_SyntaxHighlighting() {
         EDI_render_do_SyntaxHighlighting();
     }
 }
-
-/*
-old comments from EDI_render_do_SyntaxHighlighting
-that are taking up space and causing cognitive overhead
-but I also don't have energy to read and determine whether they're valuable or not at the moment.
-I'm only moving the ones that seem to NOT be valuable here.
-More accurately the ones that seem to not have an importance of position, they don't have to be above a certain line of code in the function they just kinda "relate" to the function overall.
-
-
-
-    - [x] I wonder if I can keep track of two variables
-    the sum of negative diff
-    the sum of positive diff
-
-    then avoid the className check entirely
-
-    ======
-
-    - [ ] ^ but for the tree view
-
-    - [ ] trackedSyntax_I = EDI_drawViewPort_FindTrackedSyntax_StartingIndex(indexLine);
-        - [ ] passing this in would be nice (for the cases where it is contiguous or something)
-        - [ ] Like the incrementing one after another can re-use
-        - [ ] maybe the decrementing but maybe not
-            - [ ] but you could just determine the ending position of the reverse loop and then reverse it so that it is forwards
-
-
-// - [ ] TODO: lineStart, and lineEnd; these are currently being retrieved via "random access"...
-    // ...But,  this logic currently goes from 1 indexLine to the very next indexLine by a difference of '1'.
-    // Currently, there is not any logic for code folding.
-    // I do not initially believe there is a benefit to leaving the code in the current state by some argument of
-    // "optimizing that the next line is an indexLine of 1, rather than 'random access' would not work if code folding were ever added".
-    // ...
-    // I believe this in part because I don't believe the code in its current state would work if code folding were ever added.
-    // And thus an argument of that kind ought to suggest that the current code is applicable when using a code folding feature.
-    // But ultimately I believe these changes one way or the other are "extremely trivial" given that they're common patterns in the codebase
-    // and can be changed to whatever well known manner is preferable at any moment within this "black box" of a function.
-    // ... 
-    // That felt kinda rambly... what I'm saying is:
-    // "The lineStart of the next line is the lineEnd of the previous line + 1"
-    // - [ ] TODO: in reference to the above TODO about "lineStart, and lineEnd;"...
-    // ...'EDI_onScroll_WRAPIT()' actually has the same logic in it. And that is running synchronously ever scroll event, so you should 100% prioritize that today above anything.
-    //
-    // 
-    // - [ ] TODO: get the initial trackedSyntax_i, then just keep re-using it, rather than doing the binary search for the trackedSyntax_i every line. (pass it in to / return from 'JS_line_lex_newVersion')
-    //
-    // - [ ] TODO: There is something in this method that is decently pointless overhead relating to...:
-    //     - An empty line, a line only consisting of whitespace, or a line that is indented.
-    //         - ...this one is perhaps less obvious from a non-branching perspective. And perhaps even just adding a conditional branch that avoids invoking 'JS_line_lex_newVersion' in this case is worthwhile.
-    //     - A line that is out of bounds of 'indexLine < EDI_lineEndPositionList.count'
-    //         - ...consider separating the loop bounds in some way to remove conditional branches related to 'if (indexLine < EDI_lineEndPositionList.count)'
-    //
-    // - [ ] TODO: The reverse case currently loops in reverse...
-    // ...this means the above 'TODO' cases won't be applicable there, they'll only work for the initial forwards case. So:
-    //     - [ ] determine the smallest index that will be handled by the reverse case and then start from there?
-    //
-    // - [x] TODO: Checking the length is 1 is probably not useful; short of there having been "corrupt state" from someone messing with developer tools or an exception having stopped code early, but it doesn't feel sensible to cover these cases here.
-    //
-    // - [ ] TODO: If you have nothing better to do with you time: give a moment of thought to the reference chasing that may or may not be occuring inside these loops...
-    // ...it is hard to say:
-    // 1. because the engine is gonna do optimizations that I don't necessarily understand completely
-    // 2. the fully optimized "minimal reference chasing" solution might be only nominal
-    // 3. ummm
-    // 
-    // 
-    // - [ ] TODO: rename the 'trackedSyntaxExhausted' variable because it makes me anxious that I will manifest that state of being into reality whenever I read the variable name.
-    //
-    // - [ ] You really should do the logic to not include lines of text that are just whitespace in the preprocessor.cjs cause you now are getting the babel note:
-    //     - [ ] [BABEL] Note: The code generator has deoptimised the styling of C:\Users\hunte\Repos\New folder (3)\Edit\preprocessor\__PREPROCESSEDbundle__.js as it exceeds the max of 500KB.
-    //     - ... I don't actually know if they're counting whitespace as part of that 500KB, I'd presume they are so you should stop doing it. At least when it comes to the comments that are indented, and you include the indentation for no reason even though you removed the comment.
-
-//if (diff > 0 && diff < INTS[fEDI_virtualCount]) {
-    //    
-    //}
-    //else if (diff < 0 && (diff *= -1) < INTS[fEDI_virtualCount]) {
-    //    
-    //}
-    //else {
-    //    
-    //}
-//
-    //for (var indexLine = lowerBound; indexLine < upperBound; indexLine++) {
-    //    
-    //}
-
-    //You know there's diff many lines to syntax highlight.
-    //You can guess that is diff < INTS[fEDI_virtualCount]
-    //that you'll start at 'INTS[fEDI_EDI_beltIndexZero]'
-    //and loop diff amount of times.
-//
-    //Then you maybe have to check the next div whether it has the not syntax highlighted css class
-    //in case many scroll events occured and somehow if this results you lose information you have add a step if needed to check
-    //and do it only at the edge instead of entire.
-//
-    //It's always either the first or last.
-    //So your edges to check might be 'INTS[fEDI_EDI_beltIndexZero]' and PREVIOUS('INTS[fEDI_EDI_beltIndexZero]')
-//
-    //Then you can loop positive or negative depending on first or last.
-//
-    //My concern is with a scroll to a larger scrollY, then a scroll to a smaller scrollY
-    //such that either scrollY are not equal, and that there is at least a difference of 1 lineHeight between both scrollY to ensure the changes aren't cancelling out.
-//
-    //I think then you'd need to edge check 'INTS[fEDI_EDI_beltIndexZero]' find a hit, loop until you no longer see the not syntax highlighted css class
-    //then this tells you to edge check PREVIOUS('INTS[fEDI_EDI_beltIndexZero]') and the remainder of your 'diff' to loop is in reverse.
-//
-    //I'm trying to think about whether the scroll function could leave behind data that indicates to this function
-    //whether it is a 'INTS[fEDI_EDI_beltIndexZero]', PREVIOUS('INTS[fEDI_EDI_beltIndexZero]'), or both case without checking the edge divs whether they have the not syntax highlighted css class.
-*/
 
 function EDI_state_clear() {
     EDI_finalizeAllCursors_andClearNonPrimaryCursors();

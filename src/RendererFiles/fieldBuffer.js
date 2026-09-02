@@ -399,7 +399,7 @@ const fEDI_indexCursor = 18;
 
 //const fEDI_offsetColumn = 21;
 
-const fEDI_totalShift = 22;
+//const fEDI_totalShift = 22;
 
 const fEDI_offsetWithinSpan = 23;
 

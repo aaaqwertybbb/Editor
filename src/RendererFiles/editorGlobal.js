@@ -981,7 +981,6 @@ function EDI_state_clear() {
     INTS[fEDI_longestLine_indexLine] = 0;
     INTS[fEDI_longestLine_length] = 0;
     
-    INTS[fEDI_totalShift] = 0;
     EDI_offsetWithinSpan_withRespectToThisSpan = null;
     INTS[fEDI_offsetWithinSpan] = 0;
     
@@ -3709,7 +3708,6 @@ function EDI_editEvent_theEditIself_InsertLtr(event) {
     EDI_insertDo(event.key);
     INTS[fEDI_cursor_STORED_indexColumn] = INTS[fEDI_cursor_indexColumn];
     EDI_render_request(RenderKind_Cursor_n);
-    //INTS[fEDI_totalShift] = get_EDI_totalShift() + INTS[fEDI_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
     EDI_render_request(RenderKind_InsertLtr);
 }
 
@@ -3725,7 +3723,6 @@ function EDI_editEvent_theEditIself_DeleteLtr(event) {
         EDI_deleteDo(event);
     }
     EDI_render_request(RenderKind_Cursor_n);
-    //INTS[fEDI_totalShift] = get_EDI_totalShift() - INTS[fEDI_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
 }
 
 function EDI_editEvent_theEditIself_BackspaceRtl(event) {
@@ -3741,7 +3738,6 @@ function EDI_editEvent_theEditIself_BackspaceRtl(event) {
         INTS[fEDI_cursor_STORED_indexColumn] = INTS[fEDI_cursor_indexColumn];
     }
     EDI_render_request(RenderKind_Cursor_n);
-    //INTS[fEDI_totalShift] = get_EDI_totalShift() - INTS[fEDI_cursor_editLength]; // this isn't needed here, but it is needed elsewhere so in order to create a pattern it was included here... TODO: maybe get rid of this or...?
 }
 
 function EDI_editEvent_theEditIself_Tab(event) {
@@ -4074,7 +4070,6 @@ hmmm is google AI just hyping me up... I need to clarify that those few conditio
  * TODO: timing issue of async paste and copy
  */
 function EDI_onKeyDown(event) {
-    INTS[fEDI_totalShift] = 0;
     EDI_offsetWithinSpan_withRespectToThisSpan = null;
     INTS[fEDI_offsetWithinSpan] = 0;
 
@@ -4207,7 +4202,6 @@ function EDI_onKeyDown_ArrowLeft(event) {
     if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
     }
-    //INTS[fEDI_totalShift] = get_EDI_totalShift() + INTS[fEDI_cursor_editLength];
 }
 
 /** @returns {boolean} whether invoking function ought to return */
@@ -4317,7 +4311,6 @@ function EDI_onKeyDown_ArrowRight(event) {
     if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
         EDI_cursorBlink_startChecking();
     }
-    //INTS[fEDI_totalShift] = get_EDI_totalShift() + INTS[fEDI_cursor_editLength];
 }
 
 /** @returns {boolean} whether invoking function ought to return */

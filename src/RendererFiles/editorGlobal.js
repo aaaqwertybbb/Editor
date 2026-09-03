@@ -7288,13 +7288,6 @@ function EDI_insertDo(character) {
     make a copy of the span so you only have to "insert" text to the end of the span.
     And then this removes 1 of the slice invocations, rather than inserting "possibly" among the existing textContent.
     */
-    
-    /*if (EDI_cursor_gapBufferWriteToSpanElement) {
-        EDI_cursor_gapBufferWriteToSpanElement.textContent = 
-            EDI_cursor_gapBufferWriteToSpanElement.textContent.slice(0, INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] + INTS[fEDI_cursor_gapBufferCount]) +
-            character +
-            EDI_cursor_gapBufferWriteToSpanElement.textContent.slice(INTS[fEDI_cursor_gapBufferWriteToSpanElement_SpanTextContentRelativeIndex] + INTS[fEDI_cursor_gapBufferCount]);
-    }*/
 
     EDI_cursor_gapBuffer[INTS[fEDI_cursor_gapBufferCount]] = character.charCodeAt(0);
     INTS[fEDI_cursor_gapBufferCount]++;
@@ -7908,53 +7901,7 @@ function PLAINTEXT_line_lex(div, substart, lineEnd, childIndex) {
     return childIndex;
 }
 
-///**
-// * These tend to be performed within a loop, and the logic seems simplistic enough to compiler-inline to the build file, consider?
-// * 
-// * The argument is a beltIndexLine i.e.: the result of 'EDI_indexLineTo_beltIndexLine' (no validation is performed on the argument, it is presumed to be the index of a valid text editor line div dom element). This returns -1 if you go out of viewport. It will wrap around if you go too large because 'INTS[fEDI_EDI_beltIndexZero]' isn't 0.
-// */
-//function EDI_beltIndexLine_NEXT(beltIndexLine) {
-//    return ++beltIndexLine >= INTS[fEDI_ArrayFrom_textElement_children_length] ? beltIndexLine -= INTS[fEDI_ArrayFrom_textElement_children_length] : beltIndexLine;
-//
-//
-///*
-//> Do you have any thoughts on the most optimal way to perform this calculation?
-//> 
-//> I have the code 'beltIndexCurrent = EDI_beltIndexLine_NEXT(beltIndexCurrent);'.
-//> 
-//> This runs very often within a loop. The 'EDI_beltIndexLine_NEXT' function is:
-//> return ++beltIndexLine >= INTS[fEDI_ArrayFrom_textElement_children_length] ? beltIndexLine -= INTS[fEDI_ArrayFrom_textElement_children_length] : beltIndexLine;
-//
-//< To optimize this operation, the most effective approach is to replace the function call and conditional branch with a
-//< bitwise AND mask or a direct modulo operation, while inlining the logic to eliminate function call overhead.
-//< ...
-//< 1. The Fastest Approach (Power of 2)
-//< ...
-//< beltIndexCurrent = (beltIndexCurrent + 1) & (ARRAY_LENGTH - 1);
-//<
-//< 2. The Cleanest Micro-Optimization (Dynamic Length)
-//< beltIndexCurrent = (beltIndexCurrent + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
-//<
-//
-//*/
-//}
 
-///**
-// * These tend to be performed within a loop, and the logic seems simplistic enough to compiler-inline to the build file, consider?
-// * 
-// * The argument is a beltIndexLine i.e.: the result of 'EDI_indexLineTo_beltIndexLine' (no validation is performed on the argument, it is presumed to be the index of a valid text editor line div dom element). This returns -1 if you go out of viewport. It will wrap around if you go too small because 'INTS[fEDI_EDI_beltIndexZero]' isn't 0.
-// */
-//function EDI_beltIndexLine_PREVIOUS(beltIndexLine) {
-//    return --beltIndexLine < 0 ? beltIndexLine += INTS[fEDI_ArrayFrom_textElement_children_length] : beltIndexLine;
-//
-///*
-//< 1. The Fastest Approach (Power of 2)
-//< beltIndexCurrent = (beltIndexCurrent - 1) & (ARRAY_LENGTH - 1);
-//< 
-//< 2. The Cleanest Universal Approach (Dynamic Length)
-//< beltIndexCurrent = (beltIndexCurrent - 1 + INTS[fEDI_ArrayFrom_textElement_children_length]) % INTS[fEDI_ArrayFrom_textElement_children_length];
-//*/
-//}
 
 function EDI_measureLineHeightAndCharacterWidth() {
     let measureElement = document.createElement('div');
@@ -8326,3 +8273,21 @@ Google AI:
 < - Ask about caching array lengths for maximum loop speed
 < - Ask about the performance impact of const vs let in loops
 */
+
+//> Do you have any thoughts on the most optimal way to perform this calculation?
+//> 
+//> I have the code 'beltIndexCurrent = EDI_beltIndexLine_NEXT(beltIndexCurrent);'.
+//> 
+//> This runs very often within a loop. The 'EDI_beltIndexLine_NEXT' function is:
+//> return ++beltIndexLine >= INTS[fEDI_ArrayFrom_textElement_children_length] ? beltIndexLine -= INTS[fEDI_ArrayFrom_textElement_children_length] : beltIndexLine;
+//
+//< To optimize this operation, the most effective approach is to replace the function call and conditional branch with a
+//< bitwise AND mask or a direct modulo operation, while inlining the logic to eliminate function call overhead.
+//< ...
+//< 1. The Fastest Approach (Power of 2)
+//< ...
+//< beltIndexCurrent = (beltIndexCurrent + 1) & (ARRAY_LENGTH - 1);
+//<
+//< 2. The Cleanest Micro-Optimization (Dynamic Length)
+//< beltIndexCurrent = (beltIndexCurrent + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
+//<

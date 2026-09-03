@@ -6702,51 +6702,6 @@ function EDI_render_do_RemoveSelection() {
     }
 }
 
-/*
-comments from EDI_removeSelection(cursor) that may or may not be useful idk I just wanna get them out of the way.
-
-    // 'Draw lines that came into view' / 'clear text for any lines > text length and use a '~' in the gutter'
-    if (linesRemovedCount > 0) {
-
-        // off by 1 character
-        //
-        // Finalizing all cursors fixes the issue... but why was it off by 1 character?
-        // 
-        // TODO: this needs to be understood but delaying the finalization of an edit is more along the lines of an optimization...
-        // ...versus selecting and removing text which needs to work properly both in terms of editing the text and visually displaying the correct result.
-        // 
-        EDI_finalizeEdit();
-
-        // 3 cases (TODO: Ensure these for backspace and delete)
-        // =======
-        // - [ ] inViewTildeCase
-        // - [ ] comesIntoViewDueToRemovalTildeCase
-        // - [ ] notInViewTildeCase
-        //
-        // Each case might be the same solution I don't know I just need time to think I'm completely exhausted but ima figure it out by just typing everything out and overtime it will happen
-        // 
-
-        let beltIndexLine_last = EDI_indexLineTo_beltIndexLine(INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1);
-
-        if (EDI_textElement.children.length === EDI_gutter.children.length) {
-            for (let i = 0; i < visibleLinesRemovedCount; i++) {
-                // TODO: wrap around suspect?
-                let gutterLineElement = EDI_gutter.children[beltIndexLine_last - i];
-                gutterLineElement.innerHTML = ''; // I don't believe this will have already been cleared.
-                // TODO: wrap around suspect?
-                let textLineElement = EDI_textElement.children[beltIndexLine_last - i];
-                textLineElement.innerHTML = ''; // Might already be cleared, furthermore might ALWAYS be cleared.
-                EDI_drawLine(largestDrawnIndexLine - i, gutterLineElement, textLineElement);
-            }
-        }
-
-        TODO: draw gutter?
-
-        // TODO: 'update_verticalVirtualizationBoundary(EDI_lineEndPositionList.count);'?
-        // TODO: EDI_REMOVE_line_drawGutter(linesRemovedCount);
-    }
-*/
-
 /** TODO: this is nearly identical to backspace, the difference is the check 'if (INTS[fEDI_cursor_editKind] !== EditKind_DeleteLtr)', thus dedupe the logic or no? */
 function EDI_render_do_Delete() {
     if (INTS[fEDI_cursor_editKind] !== EditKind_DeleteLtr) {

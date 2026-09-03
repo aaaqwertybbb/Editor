@@ -9727,5 +9727,6 @@ I gotta make sure I hit 2 hours so I get the guilt free gaming. I did my homewor
 < - Explain how a Tokenizer converts text strings into numeric arrays
 < - Break down how the Self-Attention matrix math works
 
+Text Editor time
 
 */

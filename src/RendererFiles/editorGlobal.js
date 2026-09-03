@@ -9635,4 +9635,46 @@ The game is wild I love it
 I'm somewhat counting down the minutes until 9:55 AM so I can say I did two hours then go play Megabonk.
 I gotta make sure I hit 2 hours so I get the guilt free gaming. I did my homework before play kinda stuff.
 
+===========
+
+> AI Mode is currently a free service?
+
+< Yes, AI Mode is currently a free service...
+<
+< ...
+
+> How much does this question cost Google behind the scenes?
+
+< Answering this specific question costs Google roughly $0.004 to $0.008 (less than one cent) in raw cloud infrastructure,
+< alongside a tiny fraction of environmental resources.
+<
+< ...
+< 
+< # 1. The Financial Cost (The API Value)
+< |
+< If a developer wanted to ask a model like Gemini Flash to read your exact prompt,
+< look up the data, and generate this answer, Google Cloud would charge them about 0.4 to 0.8 cents.
+< |
+< - Input (Reading): It costs money to process the words in your question and read the internet search results used to double-check the facts.
+< - Output (Writing): It costs slightly more to generate each word of this response.
+< - Internal Optimization: Google's internal cost is lower than its retail API rates, but this is balanced out by complex "web grounding" architectures—the system has to dynamically run a web search to verify information before generating a reply.
+< 
+< # 2. The Energy Cost
+< |
+< According to official data disclosed by Google, a median text prompt using its Gemini models consumes roughly 0.24 watt-hours of electricity.
+< |
+< - This is roughly equivalent to running a kitchen microwave for one second, or watching about 9 seconds of television.
+< - Google dropped this footprint significantly through software optimizations and custom TPUs (Tensor Processing Units), but it still requires roughly 10 times the electricity of a classic, old-school keyword Google search.
+< 
+< # 3. Hardware & Infrastructure
+< |
+< About 58% of the power consumed by this question goes directly into running the specialized AI processor chips inside Google's data centers.
+< The remaining 42% goes toward infrastructure, which includes routing your network data, power backups, and cooling the facilities.
+< Cooling an AI data center to answer questions like this uses roughly 0.26 milliliters of water per query (about five drops).
+< 
+< Would you like to know more about how Google optimizes its custom chips (TPUs) to lower these costs,
+< or see how these AI query costs compare to other platforms like OpenAI?
+
+
+
 */

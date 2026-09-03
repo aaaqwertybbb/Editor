@@ -4,9 +4,10 @@ import "./fieldBuffer"
 import "./javascriptFeatures"
 //__#__
 
-// Extremely important softlock bug: see documentation comment for 'EDI_finalizeEdit()'.
+// Extremely important softlock possibility: see documentation comment for 'EDI_finalizeEdit()'.
 // Retrospectively I'd say... I imagine there'd be more than one scenario of this I have a lot of 'critical booleans'.
 // i.e.: if you enter the 'critical boolean guarded code path' then throw an exception in the middle of that code path with bad state for the 'critical boolean guarded code path' you might never be able to enter it again.
+// i.e.: I don't see this happen myself unless I'm messing with new code and running the code that I am in progress of writing. But I don't have a try catch so if an error were to occur it'd completely softlock things.
 
 /*
 ###################################
@@ -1239,6 +1240,7 @@ function EDI_drawHorizontalScrollbar() {
  * 
  * Retrospectively I'd say... I imagine there'd be more than one scenario of this I have a lot of 'critical booleans'.
  * i.e.: if you enter the 'critical boolean guarded code path' then throw an exception in the middle of that code path with bad state for the 'critical boolean guarded code path' you might never be able to enter it again.
+ * i.e.: I don't see this happen myself unless I'm messing with new code and running the code that I am in progress of writing. But I don't have a try catch so if an error were to occur it'd completely softlock things.
  */
 function EDI_finalizeEdit() {
     /**

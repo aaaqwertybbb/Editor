@@ -8290,6 +8290,10 @@ for (let i = 0; i < len; i++) {
 < - Are you accessing properties or methods on gutter and div inside this loop?
 < - Does your text editor process the entire file at once, or are you using virtual scrolling to only loop through visible rows?
 
-
+TODO:
+span.textContent = lineStart === lineEnd ? '' : EDI_decoder.decode(EDI_textByteList_bytes.subarray(lineStart, lineEnd));
+let aaa = EDI_decoder.decode;
+let bbb = EDI_textByteList_bytes.subarray;
+???
 
 */

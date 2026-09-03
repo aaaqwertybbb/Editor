@@ -7682,8 +7682,6 @@ function PLAINTEXT_line_lex(div, substart, lineEnd, childIndex) {
     return childIndex;
 }
 
-
-
 function EDI_measureLineHeightAndCharacterWidth() {
     let measureElement = document.createElement('div');
     measureElement.style.width = "fit-content";

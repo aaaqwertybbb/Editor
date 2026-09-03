@@ -8117,3 +8117,33 @@ Google AI:
 //< 2. The Cleanest Micro-Optimization (Dynamic Length)
 //< beltIndexCurrent = (beltIndexCurrent + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
 //<
+
+/*
+(...Turbofan exists but some optimizations that it does I'd rather just have written ahead of time to have 100% certainty of it not getting deoptimized)
+
+> If I declare a variable inside of a for loop.
+> I thought that the stackframe of the function would've already allocated the space for every possible branch in my function.
+> But I'm hearing that 'let' creates a variable each loop.
+> Does the question make sense I'm not sure...
+> 
+> for (...) {
+> 	// ...
+> 	const gutter = ArrayFrom_gutter_children[beltIndexLine];
+> 	const div = ArrayFrom_textElement_children[beltIndexLine];
+> 	// ...
+> }
+> 
+> 
+> // TODO: This would technically introduce temporal deadzone overhead...
+> // ...so if the original question is true, I'd need to assign something here.
+> const gutter;
+> const div;
+> for (...) {
+> 	// ...
+> 	gutter = ArrayFrom_gutter_children[beltIndexLine];
+> 	div = ArrayFrom_textElement_children[beltIndexLine];
+> 	// ...
+> }
+
+< ...
+*/

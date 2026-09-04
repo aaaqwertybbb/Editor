@@ -8327,4 +8327,11 @@ My goal is to work at quickchek in this walk in cooler position for the rest of 
 That would be the perfect life for me.
 If these conditions remained forever.
 
+I've never seen basketball diaries but I see a scene where leonardo dicaprio is begging his mom for money or something
+I think it is such bad taste that you think that I at any point have been leonardo dicaprio in that scene.
+
+Or "he can't keep getting away with this" from breaking bad.
+What am I getting away with? Working at quickchek?
+Why are you so jealous of me
+
 */

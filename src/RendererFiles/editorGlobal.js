@@ -8371,4 +8371,7 @@ What a loser let it go bro
 And as of late a lot of "harvester" related videos have shown up.
 I don't know how to feel about it. I just acknowledge "yep I know why that's there all of a sudden someone looking"
 
+I fully understand what happened in my life at this point.
+I am completely content with everything.
+
 */

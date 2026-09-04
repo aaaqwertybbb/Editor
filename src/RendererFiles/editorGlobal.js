@@ -8418,4 +8418,7 @@ Because I can keep sitting here like a cry baby.
 Or I take control again and better myself
 Marina and the diamonds primadonna
 
+clarification***
+I like it in the sense of "opposite" lol don't get confused.
+
 */

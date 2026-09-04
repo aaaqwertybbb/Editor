@@ -656,54 +656,9 @@ function EDI_render_do_Scroll(timestamp) {
         span.className = 'eN';
         span.textContent = lineStart === lineEnd ? '' : EDI_decoder.decode(EDI_textByteList_bytes.subarray(lineStart, lineEnd));
 
-        // TODO:
-        // 
-        //
-        // div.firstChild versus div.children[0]
-        // div.lastChild versus div.children[div.children.length - 1]
-        //
-        // Also for the lastChild what if you knew the last index without having to access 'div.children.length', would that change anything.
-        //
-        // What I'm wondering is: does lastChild / firstChild will they internally access div.children or...?
-        // 
-        // also in the vscode documentary that came out
-        // they showed the HTML of the monaco editor
-        // and they blatantly had a div > span > tokenSpans
-        // https://youtu.be/kHL3XzjpT5w?si=R3H_9sF9Cywzou5K&t=1271
-        // <div>
-        //     <span>
-        //         <span class='keyword'>
-        //             let
-        //         </span>
-        //         <span class='identifier'>
-        //             foo
-        //         </span>
-        //     </span>
-        // </div>
-        //
-        // I have:
-        // <div>
-        //     <span class='keyword'>
-        //         let
-        //     </span>
-        //     <span class='identifier'>
-        //         foo
-        //     </span>
-        // </div>
-        //
         while (div.lastChild && div.lastChild !== div.firstChild) {
             div.removeChild(div.lastChild);
         }
-        ///
-        //for (let i = div.children.length - 1; i >= 1; i--) {
-        //    div.removeChild(div.children[i]);
-        //}
-        // TODO: This change appears to actually cause re-evaluation of 'div.children.length' every loop.
-        // div.lastChild is good though.
-        //
-        //while (div.children.length > 1) {
-        //    div.removeChild(div.lastChild);
-        //}
 
         const translateY = `translateY(${vertical}px)`;
         vertical += local_lineHeight; // TODO: Hoist this straight up the value that was in the array it is inside a loop
@@ -8341,5 +8296,15 @@ while (div.lastChild && div.lastChild !== div.firstChild) {
 ```
 
 < ...
+
+// TODO:
+//
+// div.firstChild versus div.children[0]
+// div.lastChild versus div.children[div.children.length - 1]
+//
+// Also for the lastChild what if you knew the last index without having to access 'div.children.length', would that change anything.
+//
+// What I'm wondering is: does lastChild / firstChild will they internally access div.children or...?
+// 
 
 */

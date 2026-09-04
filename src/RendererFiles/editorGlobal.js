@@ -8390,4 +8390,6 @@ I am completely content with everything.
 - you act a fool
 - everyone looks at you like you're a fool without a single understanding of the complex past that led to the events.
 
+Me not being coddled and put back into my nest egg but instead forced out to a degree was the best thing that ever happened to me.
+
 */

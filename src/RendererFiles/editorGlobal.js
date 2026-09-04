@@ -8286,4 +8286,13 @@ I only like wearing the same thing everyday so this is really mewssing with my h
 
 "I only like wearing the same thing everyday" as in multiple sets of the clothing that I rotate through not the same exact deach day
 
+============
+
+There's people that are on my side
+
+and there's people that think I'm clown that ruined my life and
+that there is no possible explanation that could
+make sense of my past behavior.
+(not that an explanation forgives it, but it is to say there's at least and understanding)
+
 */

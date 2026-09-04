@@ -8261,4 +8261,7 @@ I gotta quickly check the state of the walk in cooler this morning if you know w
 "That's a good choice"
 ..."Hunter we heard that you're talking to the customers through the walk in cooler that's weird you gotta stop"
 
+Everytime I say something here I think to myself about the breaking bad monologue I am the one who knocks
+but it just starts and ends with him saying "who is it you think you're talking to?"
+
 */

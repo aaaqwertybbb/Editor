@@ -8368,4 +8368,7 @@ that you think that I'm a clown and no idea what I'm doing
 and that "lol he's still failing to make an IDE after xyz years"
 What a loser let it go bro
 
+And as of late a lot of "harvester" related videos have shown up.
+I don't know how to feel about it. I just acknowledge "yep I know why that's there all of a sudden someone looking"
+
 */

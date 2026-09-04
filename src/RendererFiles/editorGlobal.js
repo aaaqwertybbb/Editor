@@ -8307,4 +8307,7 @@ while (div.lastChild && div.lastChild !== div.firstChild) {
 // What I'm wondering is: does lastChild / firstChild will they internally access div.children or...?
 // 
 
+
+Wow lol I was wondering this...
+
 */

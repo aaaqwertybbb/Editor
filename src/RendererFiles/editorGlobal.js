@@ -8321,4 +8321,10 @@ This in total is either $13 or $17 and my Dad pays for this and I am very apprec
 
 And then any side things that I need like lotion or sriracha I use my own money that I save to purchase them.
 
+=============
+
+My goal is to work at quickchek in this walk in cooler position for the rest of my life.
+That would be the perfect life for me.
+If these conditions remained forever.
+
 */

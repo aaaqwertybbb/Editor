@@ -8421,4 +8421,14 @@ Marina and the diamonds primadonna
 clarification***
 I like it in the sense of "opposite" lol don't get confused.
 
+====
+
+"time to go away from you"
+was a perfect example because I never have clicked on that song
+and I have never listened to the band
+I haven't listened to that genre even for quite some time.
+So why is it recommended to me all of a sudden?
+Wanna make that part clear I have literally no idea what the song is I just see it
+I see it right now in fact so that's why I reminded to say this.
+
 */

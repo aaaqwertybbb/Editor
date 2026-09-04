@@ -636,17 +636,7 @@ function EDI_render_do_Scroll(timestamp) {
     
     let vertical = lowerBound * local_lineHeight;
 
-    // I've looked a lot at this 'var' usage versus 'let'.
-    // 
-    // I'm not gonna touch it today I think is my final decision.
-    //
-    // I'm so tired I can't even quite type out the findings but it's about heuristics from turbofan to detect closure and some other things.
-    // Just too nitty gritty to do this right now too tired.
-    //
-    // And honestly I feel like it wouldn't even much be heuristic based
-    // closure is "static analysis(?)" and "mathematical(?)" when you parse it?
-    // I don't know I'm tired. I just wanted to add that it is probably more precise than a heuristic. 
-    //
+    // TODO: I've looked a lot at this 'var' usage versus 'let'... TODO: finalize a thought on this.
     for (var indexLine = lowerBound; indexLine < upperBound; indexLine++) {
         
         // I'm realizing this might be called 'Circular buffer layout indexing' TODO: is it? and if so rename everything.

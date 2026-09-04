@@ -652,7 +652,12 @@ function EDI_render_do_Scroll(timestamp) {
         }
 
         // Corrupt state if assumption is not met: - All lines of text are to contain at least 1 span at all times even if that span is just an empty one.
-        const span = div.children[0];
+        //
+        // oh wow this is actually kind of an interesting situation.
+        //
+        // ...
+        //
+        const span = div.firstChild;
         span.className = 'eN';
         span.textContent = lineStart === lineEnd ? '' : EDI_decoder.decode(EDI_textByteList_bytes.subarray(lineStart, lineEnd));
 
@@ -661,10 +666,10 @@ function EDI_render_do_Scroll(timestamp) {
         }
 
         const translateY = `translateY(${vertical}px)`;
-        vertical += local_lineHeight; // TODO: Hoist this straight up the value that was in the array it is inside a loop
-
         gutter.style.transform = translateY;
         div.style.transform = translateY;
+
+        vertical += local_lineHeight;
     }
 }
 

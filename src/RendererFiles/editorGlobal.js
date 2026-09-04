@@ -8334,4 +8334,7 @@ Or "he can't keep getting away with this" from breaking bad.
 What am I getting away with? Working at quickchek?
 Why are you so jealous of me
 
+Or I'll get recommended videos of pirate software especially ones of his massive array that he puts tons of stuff in.
+You literally aren't reading what I'm saying then cause I'm saying over and over 99.9% of code should not look like that.
+
 */

@@ -631,6 +631,8 @@ function EDI_render_do_Scroll(timestamp) {
     }
 
     const EDI_textByteList_bytes = EDI_textByteList.bytes;
+    const local_ArrayFrom_gutter_children = ArrayFrom_gutter_children;
+    const local_ArrayFrom_textElement_children = ArrayFrom_textElement_children;
     
     let vertical = lowerBound * local_lineHeight;
 
@@ -638,8 +640,8 @@ function EDI_render_do_Scroll(timestamp) {
         
         beltIndexLine = (beltIndexLine + 1) % local_ArrayFrom_textElement_children_length;
 
-        const gutter = ArrayFrom_gutter_children[beltIndexLine];
-        const div = ArrayFrom_textElement_children[beltIndexLine];
+        const gutter = local_ArrayFrom_gutter_children[beltIndexLine];
+        const div = local_ArrayFrom_textElement_children[beltIndexLine];
 
         lineStart = lineEnd + 1;
         if (indexLine < EDI_lineEndPositionList_count) {

@@ -8266,4 +8266,7 @@ but it just starts and ends with him saying "who is it you think you're talking 
 
 I just checked he says "who are you talking to right now" close enough
 
+I get recommended the southpark clip "it could be a trick" constantly.
+I know you guys watch it lol
+
 */

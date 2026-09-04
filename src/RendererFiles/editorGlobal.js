@@ -8255,4 +8255,7 @@ that should be good for today I'm very tired.
 
 I gotta quickly check the state of the walk in cooler this morning if you know what I mean *wink* *wink* *nudge* *nudge*
 
+"Yeah yeah just put the fries in the bag"
+"Yeah yeah just put the drinks on the shelf"
+
 */

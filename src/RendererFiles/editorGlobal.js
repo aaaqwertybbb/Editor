@@ -8393,4 +8393,9 @@ I am completely content with everything.
 Me not being coddled and put back into my nest egg but instead forced out to a degree was the best thing that ever happened to me.
 It just gets a little messy is all trying to make that transition
 
+so now I just wanna lose all the weight get all the way down to 199.9 lbs
+
+and as for coding and etc... I want to focus on non-zero progress but at the end of the day I can't do everything
+and I'm content with that now. I'll just give all I got at the things I do but not worry about doing everything.
+
 */

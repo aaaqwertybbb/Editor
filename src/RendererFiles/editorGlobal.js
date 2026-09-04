@@ -649,12 +649,7 @@ function EDI_render_do_Scroll(timestamp) {
     //
     for (var indexLine = lowerBound; indexLine < upperBound; indexLine++) {
         
-        // I'm realizing this might be called 'Circular buffer layout indexing'
-        // I was getting huge cumulative layout shift scores because I was remove the 0th index div and re-adding it to the end of the parent element
-        // and vice versa.
-        //
-        // So I came up with the 'beltIndex' I need to get around to looking into whether this is called circular buffer and renaming things.
-        //
+        // I'm realizing this might be called 'Circular buffer layout indexing' TODO: is it? and if so rename everything.
         beltIndexLine = (beltIndexLine + 1) % local_ArrayFrom_textElement_children_length;
 
         const gutter = local_ArrayFrom_gutter_children[beltIndexLine];

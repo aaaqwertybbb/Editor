@@ -8356,4 +8356,10 @@ I even attribute that to people on my side
 I totally get it there's this one thing all the time on the youtube posts
 about some person and it was this massive scam and copy cats are constantly trying it again
 
+
+But ultimately I want to focus on that there is more to life than just me it is above me
+the amount of learning I do it all is kinda not end of world amount but just progress is all
+because so many people exist and I won't ever figure EVERYTHING out
+so I wanna just focus on myself and lose weight get to 199.9 lbs
+
 */

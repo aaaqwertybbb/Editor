@@ -8398,4 +8398,10 @@ so now I just wanna lose all the weight get all the way down to 199.9 lbs
 and as for coding and etc... I want to focus on non-zero progress but at the end of the day I can't do everything
 and I'm content with that now. I'll just give all I got at the things I do but not worry about doing everything.
 
+"you are emotionally manipulative because you mention 'anti-psychotics'"
+Well I was 200 lbs before them, then ballooned up to 280 lbs while on them.
+So now even if I get down to 199.9 lbs I'll forever have scars on my body from that remind me of that time.
+Not to mention the whole 'I literally lived it and so yeah it means a lot to me to mention that'
+I'm gonna have some saggy skin. It is what it is I wanna feel healthy.
+
 */

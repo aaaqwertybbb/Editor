@@ -636,6 +636,13 @@ function EDI_render_do_Scroll(timestamp) {
     
     let vertical = lowerBound * local_lineHeight;
 
+    // I've looked a lot at this 'var' usage versus 'let'.
+    // 
+    // I'm not gonna touch it today I think is my final decision.
+    //
+    // I'm so tired I can't even quite type out the findings but it's about heuristics from turbofan to detect closure and some other things.
+    // Just too nitty gritty to do this right now too tired.
+    // 
     for (var indexLine = lowerBound; indexLine < upperBound; indexLine++) {
         
         // I'm realizing this might be called 'Circular buffer layout indexing'

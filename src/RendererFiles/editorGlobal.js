@@ -8492,6 +8492,7 @@ vertical += lineHeight;
 < Integrate this exact initialization setup into your file module's setup function
 < Review how lineStart and lineEnd calculations behave under this new zero-allocation paradigm
 
-
+Reminder to myself:
+Ensure this doesn't break hidden classes before you do this tomorrow.
 
 */

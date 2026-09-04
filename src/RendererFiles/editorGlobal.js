@@ -8300,4 +8300,25 @@ I see some youtube recommendations that demonstrate to me that some people are o
 but I also see the recommendations that demonstrate to me that a lot of people also are not on my side and that they dislike me greatly
 and want to see the worst for me and take pleasure from that.
 
+==========
+
+I save all my paycheck these days.
+
+I eat every day
+
+breakfast:
+==========
+1 lb of 98% fat free ground chicken
+4 strawberry nutrigrain bars
+
+dinner:
+=======
+1 lb of 98% fat free ground chicken
+4 strawberry nutrigrain bars
+
+
+This in total is either $13 or $17 and my Dad pays for this and I am very appreciative of that.
+
+And then any side things that I need like lotion or sriracha I use my own money that I save to purchase them.
+
 */

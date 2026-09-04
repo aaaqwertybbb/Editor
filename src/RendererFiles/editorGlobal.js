@@ -8404,4 +8404,7 @@ So now even if I get down to 199.9 lbs I'll forever have scars on my body from t
 Not to mention the whole 'I literally lived it and so yeah it means a lot to me to mention that'
 I'm gonna have some saggy skin. It is what it is I wanna feel healthy.
 
+But I realize that when I came home from dropping out of college
+I don't know the word "I became complicit" in my own self destruction once I dropped out.
+
 */

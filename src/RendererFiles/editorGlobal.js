@@ -8272,4 +8272,16 @@ I know you guys watch it lol
 There's an ex machina clip I keep getting recommended 'Are You Attracted to Me?'
 I find it super motivating.
 
+===========
+
+I'm waiting for my laundry to finish drying cause I had to put on the pair of pants
+where I see they're all that's left and I immediately know I shoulda done the laundry
+Now I got the pants of shame
+because
+the cuff around my ankle of these is smaller
+or something than the bigger ones
+I 
+I'm uncomfortable I don't like it
+I only like wearing the same thing everyday so this is really mewssing with my head.
+
 */

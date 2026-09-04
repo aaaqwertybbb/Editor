@@ -8264,4 +8264,6 @@ I gotta quickly check the state of the walk in cooler this morning if you know w
 Everytime I say something here I think to myself about the breaking bad monologue I am the one who knocks
 but it just starts and ends with him saying "who is it you think you're talking to?"
 
+I just checked he says "who are you talking to right now" close enough
+
 */

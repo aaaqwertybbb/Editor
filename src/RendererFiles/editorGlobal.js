@@ -8345,4 +8345,7 @@ I am just in constant fight or flight because I see these things
 
 "time to go away from you"
 
+I think the "Meg & Dia - Monster" - "Dark Shadow" is funny though
+I look at it like that's a side of people on my side and we're all just havin a laugh together
+
 */

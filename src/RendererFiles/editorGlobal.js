@@ -8351,4 +8351,9 @@ I look at it like that's a side of people on my side and we're all just havin a 
 CAuse I never opened that myself firstly, it only was that I was recommended it then I opened it
 and I see it constantly
 
+even the southpark I forget the name maybe "it might be a trick"
+I even attribute that to people on my side
+I totally get it there's this one thing all the time on the youtube posts
+about some person and it was this massive scam and copy cats are constantly trying it again
+
 */

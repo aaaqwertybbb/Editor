@@ -8258,4 +8258,7 @@ I gotta quickly check the state of the walk in cooler this morning if you know w
 "Yeah yeah just put the fries in the bag"
 "Yeah yeah just put the drinks on the shelf"
 
+"That's a good choice"
+..."Hunter we heard that you're talking to the customers through the walk in cooler that's weird you gotta stop"
+
 */

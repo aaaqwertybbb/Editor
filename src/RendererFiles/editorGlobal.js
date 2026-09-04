@@ -8362,4 +8362,10 @@ the amount of learning I do it all is kinda not end of world amount but just pro
 because so many people exist and I won't ever figure EVERYTHING out
 so I wanna just focus on myself and lose weight get to 199.9 lbs
 
+Oh "you need to let this love go"
+I get so anxious and panic'd when I see that
+that you think that I'm a clown and no idea what I'm doing
+and that "lol he's still failing to make an IDE after xyz years"
+What a loser let it go bro
+
 */

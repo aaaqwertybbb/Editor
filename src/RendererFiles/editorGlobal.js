@@ -8374,4 +8374,20 @@ I don't know how to feel about it. I just acknowledge "yep I know why that's the
 I fully understand what happened in my life at this point.
 I am completely content with everything.
 
+- Disfunctional household while growing up as a child.
+- Work hard thinking things will get better
+    - but only focus on working hard, not on therapy
+- you achieve all you wanted but nothing changed because you didn't take your mental wellbeing into account
+  and that that will follow you anywhere you go. It needs to be resolved.
+- so you drop out of college and then nest egg in your parents house
+- you feel defeated so you give in to all those negative disfunctional household thoughts that you were fighting
+  while trying to work hard to get out of that because you got the success and found it wasn't enough so now you give in.
+- then you gain 80 lbs while on antipsychotics and things up to 280lbs at the worst.
+- you lose 30 lbs and start messing with Blazor
+- you are still extremely unwell mentally because nothing really changed all this time than you sitting in a nest egg
+- but now you're being told you will age off your parents health insurance
+- and absolute panic has set in for everyone and nobody knows what to do.
+- you act a fool
+- everyone looks at you like you're a fool without a single understanding of the complex past that led to the events.
+
 */

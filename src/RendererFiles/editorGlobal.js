@@ -655,7 +655,45 @@ function EDI_render_do_Scroll(timestamp) {
         //
         // oh wow this is actually kind of an interesting situation.
         //
-        // ...
+        // < You hit the nail on the head. In a high-performance rendering loop inside Electron, div.firstChild (or div.firstElementChild) is superior to div.children[0].
+        // <
+        // < The difference comes down to how Chromium’s Blink layout engine and V8 manage memory and C++ bindings under the hood. Here is the exact breakdown of why firstChild wins:
+        // <
+        // < 1. Direct Memory Reference vs. Collection Instantiation
+        // < - div.children[0]: The .children property returns a live HTMLCollection. Every single time you call div.children, the browser engine has to instantiate or
+        // <     retrieve an object wrapper for that collection, and then access its first index. Even though V8 is incredibly fast, creating or querying a collection wrapper on every loop pass adds unnecessary overhead.
+        // < - div.firstChild: This is a direct pointer reference in the C++ DOM tree. The browser doesn't create a collection; it simply follows a direct pointer from
+        // <     the div node to its immediate child. It is an O(1) operation that bypasses the collection layer completely.
+        // <
+        // < 2. A Crucial Caveat: firstChild vs. firstElementChild
+        // < |
+        // < There is one technical trap to watch out for when using firstChild: it counts text nodes (including whitespaces and line breaks).
+        // < |
+        // < - If your HTML structure looks like this (with whitespace):
+        // <     <div>
+        // <         <span>Text</span>
+        // <     </div>
+        // <     |
+        // <     div.firstChild will actually return the #text node containing the newline and spaces, not the <span>.
+        // <
+        // < - If your HTML is tightly generated in JavaScript without text nodes between elements:
+        // <     <div><span>Text</span></div>
+        // <     |
+        // <     Then div.firstChild works perfectly.
+        // <
+        // < The Performance Bulletproof Alternative
+        // <
+        // < If your HTML contains any formatting whitespace, the safest and fastest drop-in replacement for div.children[0] is actually div.firstElementChild.
+        // <
+        // < Like firstChild, firstElementChild is a direct, lightning-fast C++ pointer reference, but it skips blank text nodes and targets the first actual HTML element (<span>) directly.
+        // <
+        // < # Summary
+        // <
+        // < By switching from div.children[0] to div.firstElementChild (or firstChild if whitespace is absent), you completely eliminate the overhead of the HTMLCollection object inside your hot loop, allowing Chromium to grab the node instantly.
+        // < 
+        // < Now that the DOM node targeting is optimized, would you like to:
+        // < - Check how whitespaces are handled in your row allocation logic to see if firstChild or firstElementChild fits better
+        // < - Look into reusing string memory for translateY to lower GC overhead during scrolls
         //
         const span = div.firstChild;
         span.className = 'eN';

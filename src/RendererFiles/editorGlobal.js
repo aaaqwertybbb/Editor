@@ -8407,4 +8407,10 @@ I'm gonna have some saggy skin. It is what it is I wanna feel healthy.
 But I realize that when I came home from dropping out of college
 I don't know the word "I became complicit" in my own self destruction once I dropped out.
 
+And so this weight gain of going to 280 and etc...
+As much as it hurts to say this.
+Yeah bad things have happened in my life but I embraced this
+"nest egg" 'anti-psychotic' do nothing all day other than attend psych programs or whatever.
+And then I contributed a lot to it all cause I stopped trying to do good.
+
 */

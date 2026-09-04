@@ -8251,4 +8251,6 @@ let bbb = EDI_textByteList_bytes.subarray;
 
 that should be good for today I'm very tired.
 
+234 lbs this morning
+
 */

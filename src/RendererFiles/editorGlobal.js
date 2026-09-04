@@ -8295,4 +8295,9 @@ that there is no possible explanation that could
 make sense of my past behavior.
 (not that an explanation forgives it, but it is to say there's at least and understanding)
 
+I know there are people that think I'm a clown and that I ruined my life because of the youtube recommendations that I get.
+I see some youtube recommendations that demonstrate to me that some people are on my side
+but I also see the recommendations that demonstrate to me that a lot of people also are not on my side and that they dislike me greatly
+and want to see the worst for me and take pleasure from that.
+
 */

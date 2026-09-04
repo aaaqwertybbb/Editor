@@ -8284,4 +8284,6 @@ I
 I'm uncomfortable I don't like it
 I only like wearing the same thing everyday so this is really mewssing with my head.
 
+"I only like wearing the same thing everyday" as in multiple sets of the clothing that I rotate through not the same exact deach day
+
 */

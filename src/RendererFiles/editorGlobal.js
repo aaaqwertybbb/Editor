@@ -8624,4 +8624,6 @@ And it feels like everytime I speak that I see something like this.
 And I just take it as "this guy is such a loser he just wants us to accept an apology or etc..."
 Like no I just wanna say some things sometimes wtf
 
+And maybe that's just me being anxious all the time and reading into things that don't actually exist
+
 */

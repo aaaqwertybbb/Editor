@@ -8586,4 +8586,9 @@ And I worry that it will impact my ability to code well.
 Not that long term it would, long term it'd improve my ability to code.
 But the caloric deficit, the time needed to sit in that feeling of lower energy.
 
+(reference to something a while ago) And I became complicit in part
+by I chose to enter the painting like alicia.
+And my father kept the lights on.
+Then aging of insurance was the "okay here we go gonna toss you in the deep end"
+
 */

@@ -8664,4 +8664,7 @@ So the idea that I see this recommended to me while I'm saying this
 it's like you're my lawyer and I'm just trying to get you to support me
 no I just wanna talk
 
+The southpark clip it could be a trick
+is going CRAZY in my youtube recommended right now lol
+
 */

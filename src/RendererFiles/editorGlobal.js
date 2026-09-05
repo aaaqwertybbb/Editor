@@ -5992,12 +5992,12 @@ function EDI_render_do_EnterKey() {
 
                 if (lastValidIndexColumn === INTS[fEDI_cursor_editIndexColumn]) { // end of line
                     
-                    let next_beltIndexLine = (ringBufferIndex_current + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
+                    let next_ringBufferIndex = (ringBufferIndex_current + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
 
-                    EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(ringBufferIndex_last, next_beltIndexLine);
+                    EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(ringBufferIndex_last, next_ringBufferIndex);
                     let span = document.createElement('span');
                     span.textContent = EDI_cursor_cached_indentation_string;
-                    EDI_textElement.children[next_beltIndexLine].appendChild(span);
+                    EDI_textElement.children[next_ringBufferIndex].appendChild(span);
 
                     EDI_lineWasInsertedValidateGutter();
                     return;
@@ -6065,11 +6065,11 @@ function EDI_render_do_EnterKey() {
                         }
                     }
 
-                    let next_beltIndexLine = (INTS[fEDI_w_ringBufferIndex] + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
+                    let next_ringBufferIndex = (INTS[fEDI_w_ringBufferIndex] + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
 
-                    EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(ringBufferIndex_last, next_beltIndexLine);
+                    EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(ringBufferIndex_last, next_ringBufferIndex);
 
-                    let aaa = EDI_textElement.children[next_beltIndexLine];
+                    let aaa = EDI_textElement.children[next_ringBufferIndex];
                     let span = document.createElement('span');
                     span.className = spanClassName;
                     span.textContent = spanText;
@@ -8576,7 +8576,7 @@ Need to be renamed:
 - [x] beltIndexLine_last => ringBufferIndex_last
 - [x] beltIndexLine_next => ringBufferIndex_next
 - [x] beltIndexLine_firstTilde => ringBufferIndex_firstTilde
-- [ ] next_beltIndexLine
+- [x] next_beltIndexLine => next_ringBufferIndex
 - [ ] inclusiveSmallestBeltIndexLineToShift
 - [ ] smallestBeltIndexLineToReceive
 - [x] ArrayFrom_gutter_children => EDI_ringBuffer_gutter

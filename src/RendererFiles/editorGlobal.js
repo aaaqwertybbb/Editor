@@ -2147,22 +2147,22 @@ function walkLineUntilIndexColumn() {
     // TODO: delete key until you delete a linefeed and join the next line onto your own then press backspace everything breaks.
 
     // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
-    INTS[fEDI_w_beltIndexLine] = INTS[fEDI_cursor_indexLine] - INTS[fEDI_virtualIndexLine];
-    if (INTS[fEDI_w_beltIndexLine] >= INTS[fEDI_ArrayFrom_textElement_children_length] || INTS[fEDI_w_beltIndexLine] < 0) INTS[fEDI_w_beltIndexLine] = -1;
-    else INTS[fEDI_w_beltIndexLine] = (INTS[fEDI_w_beltIndexLine] + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
+    INTS[fEDI_w_ringBufferIndex] = INTS[fEDI_cursor_indexLine] - INTS[fEDI_virtualIndexLine];
+    if (INTS[fEDI_w_ringBufferIndex] >= INTS[fEDI_ArrayFrom_textElement_children_length] || INTS[fEDI_w_ringBufferIndex] < 0) INTS[fEDI_w_ringBufferIndex] = -1;
+    else INTS[fEDI_w_ringBufferIndex] = (INTS[fEDI_w_ringBufferIndex] + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
     
-    if (INTS[fEDI_w_beltIndexLine] < 0) {
+    if (INTS[fEDI_w_ringBufferIndex] < 0) {
         INTS[fEDI_w_indexColumn_Goal] = 0;
         INTS[fEDI_w_indexColumn_Sum] = 0;
         INTS[fEDI_w_indexColumn_SpanTextContentRelative] = 0;
         INTS[fEDI_w_indexSpan] = 0;
         w_span = null;
         w_div = null;
-        INTS[fEDI_w_beltIndexLine] = INTS[fEDI_w_beltIndexLine]; // double assignment but not all that pressing of a matter at the moment I think it reads better to just set it / avoid the temporary 'let' local variable each invocation.
+        INTS[fEDI_w_ringBufferIndex] = INTS[fEDI_w_ringBufferIndex]; // double assignment but not all that pressing of a matter at the moment I think it reads better to just set it / avoid the temporary 'let' local variable each invocation.
         return;
     }
     
-    let div = EDI_ringBuffer_text[INTS[fEDI_w_beltIndexLine]];
+    let div = EDI_ringBuffer_text[INTS[fEDI_w_ringBufferIndex]];
     let indexColumn_Goal = INTS[fEDI_cursor_indexColumn];
     let indexColumn_Sum = 0;
 
@@ -2177,7 +2177,7 @@ function walkLineUntilIndexColumn() {
             INTS[fEDI_w_indexSpan] = indexSpan;
             w_span = span;
             w_div = div;
-            INTS[fEDI_w_beltIndexLine] = INTS[fEDI_w_beltIndexLine];
+            INTS[fEDI_w_ringBufferIndex] = INTS[fEDI_w_ringBufferIndex];
             return;
         }
         else {
@@ -2192,7 +2192,7 @@ function walkLineUntilIndexColumn() {
     INTS[fEDI_w_indexSpan] = 0;
     w_span = null;
     w_div = null;
-    INTS[fEDI_w_beltIndexLine] = INTS[fEDI_w_beltIndexLine];
+    INTS[fEDI_w_ringBufferIndex] = INTS[fEDI_w_ringBufferIndex];
     return;
 }
 
@@ -6065,7 +6065,7 @@ function EDI_render_do_EnterKey() {
                         }
                     }
 
-                    let next_beltIndexLine = (INTS[fEDI_w_beltIndexLine] + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
+                    let next_beltIndexLine = (INTS[fEDI_w_ringBufferIndex] + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
 
                     EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, next_beltIndexLine);
 
@@ -8570,7 +8570,7 @@ Need to be renamed:
 - [x] beltIndexLine => ringBufferIndex
 - [x] beltIndexCurrent => ringBufferIndexCurrent
 - [x] EDI_indexLineTo_beltIndexLine => EDI_indexLineTo_ringBufferIndex
-- [ ] fEDI_w_beltIndexLine
+- [x] fEDI_w_beltIndexLine => fEDI_w_ringBufferIndex
 - [ ] beltIndexLine_current
 - [ ] beltIndexLine_first
 - [ ] beltIndexLine_last

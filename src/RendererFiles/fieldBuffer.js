@@ -533,7 +533,7 @@ const fEDI_w_indexColumn_Sum = 77;
 const fEDI_w_indexColumn_SpanTextContentRelative = 78;
 const fEDI_w_indexSpan = 79;
 // TODO: This -1
-const fEDI_w_beltIndexLine = 80;
+const fEDI_w_ringBufferIndex = 80;
 
 // And this -1
 const fEDI_ringBuffer_indexZero = 81;

@@ -18,7 +18,7 @@ import "./javascriptFeatures"
 - virtualIndexLine // If you map the indexLine to an index that exists from virtualIndex to (virtualIndex + virtualCount - 1); both sides are inclusive;
                    // Then you could imagine that the UI has HTML divs available to be rendered into.
                    // And that this 'virtualIndexLine' says: "given my indexLine, is this being shown in the UI?"
-                   // BUT there is more to this, you next have to consider the position of the belt.
+                   // BUT there is more to this, you next have to consider the position of the ringBuffer.
 
 Why is it not a 'lineIndex' wording pattern?
 
@@ -5413,7 +5413,7 @@ function EDI_render_do_DuplicateOrPaste() {
                             break;
                         default:
                             // TODO: Extremely important next line but it doesn't fully pattern with every case so it is somewhat out of nowhere
-                            // TODO: This is nonsensical you cannot numerically compare a belt index because the zeroth index isn't necessarily 0
+                            // TODO: This is nonsensical you cannot numerically compare a ringBuffer index because the zeroth index isn't necessarily 0
                             if (ringBufferIndex_current > ringBufferIndex_last) return;
                             //
                             insertionLength++;
@@ -5450,7 +5450,7 @@ function EDI_render_do_DuplicateOrPaste() {
 
             // TODO: this is a very lazy solution to the problem, likely a more optimal way is available. Also name the variable?
             for (let handleLineCounter = 0; handleLineCounter < linefeedLength; handleLineCounter++) {
-                // TODO: This is nonsensical you cannot numerically compare a belt index because the zeroth index isn't necessarily 0
+                // TODO: This is nonsensical you cannot numerically compare a ringBuffer index because the zeroth index isn't necessarily 0
                 if (ringBufferIndex_current > ringBufferIndex_last) {
                     // A scroll should take place and handle the rest
                     // Note: any lines indices that don't change between the current scrollTop and what is shown with the new scrollTop...
@@ -5677,7 +5677,7 @@ function EDI_paste(content) {
                 }
                 //else if (linefeedLength > 0) writeLinefeed();
                 // TODO: Extremely important next line but it doesn't fully pattern with every case so it is somewhat out of nowhere
-                // TODO: This is nonsensical you cannot numerically compare a belt index because the zeroth index isn't necessarily 0
+                // TODO: This is nonsensical you cannot numerically compare a ringBuffer index because the zeroth index isn't necessarily 0
                 if (ringBufferIndex_current > ringBufferIndex_last) return;
                 //
                 insertionLength += 4;
@@ -5689,7 +5689,7 @@ function EDI_paste(content) {
                 //if (tabLength > 0) writeTab();
                 //else if (linefeedLength > 0) writeLinefeed();
                 // TODO: Extremely important next line but it doesn't fully pattern with every case so it is somewhat out of nowhere
-                // TODO: This is nonsensical you cannot numerically compare a belt index because the zeroth index isn't necessarily 0
+                // TODO: This is nonsensical you cannot numerically compare a ringBuffer index because the zeroth index isn't necessarily 0
                 if (ringBufferIndex_current > ringBufferIndex_last) return;
                 //
                 insertionLength++;
@@ -6157,8 +6157,8 @@ function EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(ringBufferIndex_last, in
     // ...
     // It appears that this logic for 99% of cases is NOT needed.
     // But that if you:
-    // - "Were at belt index zero" (I'm not sure what I'm thinking by this I need to focus on my task at hand but this edge case is being slightly-considered in my mind while typing this)
-    //     - I think the correct wording is if you were at 'PREVIOUS(belt_index_zero)' then you'd be the last line
+    // - "Were at ringBuffer index zero" (I'm not sure what I'm thinking by this I need to focus on my task at hand but this edge case is being slightly-considered in my mind while typing this)
+    //     - I think the correct wording is if you were at 'PREVIOUS(ringBuffer_indexZero)' then you'd be the last line
     //     - i.e.: if 'ringBufferIndex_last === inclusiveSmallestRingBufferIndexToShift'
     // - for some reason only had a virtualization count of '1',
     // you might need to run this logic otherwise an enter key at column index 0 of a line wouldn't show any changes.
@@ -8491,72 +8491,6 @@ vite + typescript in aaaqwertybbb/DifferentialEquations
 
 ===========
 
-> When I started the app. I initially had the virtual scrolling:
-> - remove item at index 0
-> - then append it back onto the parent element
-> 
-> And then, there were 3 cases total.
-> - you scrolled to a smaller scrollTop
-> - you scrolled to a larger scrollTop
-> - you scrolled by at least the entire viewport
->
-> This caused extremely bad 'cumulative layout shift' scoring in the developer tools.
-> 
-> Thus I had an idea for a 'belt'. Where you have a 'belt' wrapped around a pulley.
-> And as you scroll the idea is that the index you scrolled out of view is going to loop around the belt and appear at the other end.
-> 
-> From a physics perspective this is likely impossible because you'd probably first want a length that fits every index in view on one side of the belt.
-> 
-> But in the real world when you spin that pulley it isn't gonna teleport the index you scrolled out of view to the other end it'll just end up
-> out of view until you've scrolled the length to have the backside come back out again. But okay...
->
-> I'll see what you say to this, don't respond too much cause I will ask the exact question next. That's just the context.
-
-< Your "belt and pulley" concept is actually a brilliant intuition! In software engineering, this is exactly what we call a circular buffer or ring buffer approach to DOM virtualization.
-< 
-< You are completely right that in physical physics, the belt doesn't teleport. But in code, you can shift the indices instantly.
-< The reason your initial approach caused massive Cumulative Layout Shift (CLS) is that removing and appending elements physically changes the layout geometry and
-< forces the browser to recalculate the positions of everything else (causing "layout thrash").
-< 
-< To achieve your belt idea without the teleportation physics breaking the layout, the standard industry solution relies on CSS Transforms (translateY) or Absolute Positioning.
-< Instead of moving elements around in the DOM tree (removing and appending), you keep a fixed number of rows permanently in the DOM,
-< and you just update their top offsets and text content as the user scrolls.
-< 
-< I will stop here so you can hit me with your exact question!
-< 
-< What is your exact question regarding this virtualization approach?
-
-> You partially mentioned my question. I wanted to know what the actual terminology for this was so I can fix all the variable names in my code.
-
-< The exact technical terminology for this design pattern and its components includes the following standard terms:
-<
-< 1. The Overall Pattern: Virtual List or Pool-Based Virtualization
-<
-< The strategy of reusing a fixed set of DOM nodes and moving them dynamically as the user scrolls is called DOM Element Pooling or Object Pooling applied to a Virtual Scroll.
-<
-< 2. The "Belt" Concept: Circular Buffer or Ring Buffer
-<
-< The data structure you imagined—where the indices cycle around continuously—is a Circular Buffer (or Ring Buffer).
-< In UI development, this specific implementation is often called a Rotational Pool or Cyclic Queue.
-<
-< 3. The Elements on the Belt: Pool / Recycled Nodes
-< Instead of calling them "items" or "lines," the standard terminology for these reusable elements is:
-< - pool: The collection of actual DOM nodes currently alive in the browser.
-< - recycledNodes / reusedNodes: The specific elements being moved from top to bottom (or vice versa).
-<
-< 4. Moving Elements to the Other Side: Recycling or Shifting
-< The act of taking an element that went out of view and placing it at the other end is called DOM Node Recycling.
-< - When moving an element to its new position, you are repositioning or transforming it (usually via transform: translateY() to avoid layout shifts).
-<
-< Suggested Variable Names for Your Code
-< To make your code easily readable and standard, consider these renames:
-< - Instead of belt, use: nodePool or visiblePool
-< - Instead of pulley, use: scrollContainer or viewport
-< - Instead of loopAround, use: recycleNode or shiftNode
-< - Instead of teleport, use: reposition or translate
-<
-< Would you like to see a minimal code snippet demonstrating how to implement this standard recycling logic with translateY to completely eliminate your CLS issue?
-
 Need to be renamed:
 - [x] fEDI_EDI_beltIndexZero => fEDI_ringBuffer_indexZero
 - [x] beltIndexLine => ringBufferIndex
@@ -8575,77 +8509,10 @@ Need to be renamed:
 - [x] ArrayFrom_textElement_children => EDI_ringBuffer_text
 
 Comments only:
-- [ ] belt
-- [ ] belt_index_zero
+- [x] belt => ringBuffer
+- [x] belt_index_zero => ringBuffer_indexZero
 
 =======
-
-> I made a list of every belt related variable name as a comma separated list:
-> fEDI_EDI_beltIndexZero, beltIndexLine, beltIndexCurrent, (... I gave the entire list to the prompt), smallestBeltIndexLineToReceive
-
-< Here is the mapping of your belt-related variables to standard software engineering terminology.
-< 
-< Because you are using an object/node pooling pattern, we swap out the word "belt" for "pool" (referring to the recycled DOM nodes), and "indexLine" for "node" or "element".
-< 
-< Standard Renaming Guide
-< 
-< Your Variable Name                    | Standard Industry Equivalent | Why this name?
-< ------------------------------------------------------------------------------------------------------------------------------------------------------
-< fEDI_EDI_beltIndexZero                | firstVisibleNodeIndex        | The actual index in the pool corresponding to the very top visible row.
-< beltIndexLine                         | poolNode or poolElement      | An individual DOM element inside your recycling pool.
-< beltIndexCurrent                      | currentNode                  | The element currently being processed or iterated on.
-< EDI_indexLineTo_beltIndexLine         | lineIndexToNodeIndex         | Maps a raw text document line number to a physical DOM pool index.
-< fEDI_w_beltIndexLine                  | nodeWidth (or nodeHeight)    | The physical pixel dimensions of a single pooled element.
-< beltIndexLine_current                 | currentNode                  | The specific DOM node currently active in a loop.
-< beltIndexLine_first                   | firstPoolNode or headNode    | The DOM node at the very beginning of your circular queue.
-< beltIndexLine_last                    | lastPoolNode or tailNode     | The DOM node at the very end of your circular queue.
-< beltIndexLine_next                    | nextPoolNode                 | The next DOM node in the recycling sequence.
-< beltIndexLine_firstTilde              | targetPoolNode               | A placeholder or secondary reference node during a shift operations.
-< next_beltIndexLine                    | nextNodeToRecycle            | The upcoming DOM node scheduled to be moved.
-< inclusiveSmallestBeltIndexLineToShift | minNodeIndexToRecycle        | The lowest index in your pool that needs to be moved during a scroll.
-< smallestBeltIndexLineToReceive        | firstNodeTargetPosition      | The destination coordinate or position index where the recycled node will land.
-< 
-< Core Architectural Terms to Keep in Mind
-< If you are refactoring your comments or documentation, keep these three structural terms in mind:
-< - The List: nodePool (replaces the array holding your belt items).
-< - The Action: recycle() or reposition() (replaces the concept of "looping around the pulley").
-< - The Layout Strategy: translateY / absoluteOffset (replaces physical movement by changing CSS transforms instead of appending/removing).
-< 
-< Would you like to refactor one of your core rendering functions using these new variable names to see how the logic reads?
-
-(
-actually the comma separated list is only related to the editor
-TODO: all the other files
-)
-
-
-I gotta decide on the finalized names now:
-
-Your Variable Name                    | Standard Industry Equivalent | Why this name?
-------------------------------------------------------------------------------------------------------------------------------------------------------
-fEDI_EDI_beltIndexZero                | firstVisibleNodeIndex        | The actual index in the pool corresponding to the very top visible row.
-beltIndexLine                         | poolIndexNode or poolIndexElement      | The index of an individual DOM element inside your recycling pool.
-beltIndexCurrent                      | currentIndexNode                  | The index of the element currently being processed or iterated on.
-EDI_indexLineTo_beltIndexLine         | lineIndexToNodeIndex         | Maps a raw text document line number to a physical DOM pool index.
-fEDI_w_beltIndexLine                  | fEDI_w_nodeIndexLine    | The 'w_'alkLineUntilIndexColumn() resulting poolIndexLine
-beltIndexLine_current                 | currentNode                  | The index of the specific DOM node currently active in a loop.
-beltIndexLine_first                   | nodeIndexLine_first | The index of the DOM node at the very beginning of your circular queue.
-beltIndexLine_last                    | elementPoolIndexLine_last     | The index of the DOM node at the very end of your circular queue.
-beltIndexLine_next                    | nextPoolNode                 | The index of the next DOM node in the recycling sequence.
-beltIndexLine_firstTilde              | targetPoolNode               | poolIndexLine_firstTilde
-next_beltIndexLine                    | nextNodeToRecycle            | The index of the next DOM node in the circular queue relative to some 'current index'.
-inclusiveSmallestBeltIndexLineToShift | minNodeIndexToRecycle        | TODO: The lowest index in your pool that needs to be moved during a scroll.
-smallestBeltIndexLineToReceive        | firstNodeTargetPosition      | TODO: The destination coordinate or position index where the recycled node will land.
-
-belt => node
-belt => nodePool
-belt => element
-belt => elementPool
-
-A circular buffer is done by one element pointing to the next actually.
-I just have an array and am moving index.
-
-A ring buffer is I think the exact wording for what I have.
 
 - [ ] TODO: I saw at least 1 case where the HTML element's children were being read when it should've used the ArrayFrom so go through them all and fix this and possibly any other cases.
 

@@ -6752,13 +6752,13 @@ function EDI_render_do_Delete() {
                             // TODO: Use NEXT here (... + 1)
 
                             // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
-                            let beltIndexLine_next = (INTS[fEDI_cursor_indexLine] + 1) - INTS[fEDI_virtualIndexLine];
-                            if (beltIndexLine_next >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_next < 0) beltIndexLine_next = -1;
-                            else beltIndexLine_next = (beltIndexLine_next + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
+                            let ringBufferIndex_next = (INTS[fEDI_cursor_indexLine] + 1) - INTS[fEDI_virtualIndexLine];
+                            if (ringBufferIndex_next >= INTS[fEDI_ArrayFrom_textElement_children_length] || ringBufferIndex_next < 0) ringBufferIndex_next = -1;
+                            else ringBufferIndex_next = (ringBufferIndex_next + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
-                            if (beltIndexLine_next >= 0) {
+                            if (ringBufferIndex_next >= 0) {
                                 let keepingDiv = w_div;
-                                let removingDiv = EDI_textElement.children[beltIndexLine_next];
+                                let removingDiv = EDI_textElement.children[ringBufferIndex_next];
 
                                 let rememberRemovingDivLength = removingDiv.children.length;
                                 for (let k = 0; k < rememberRemovingDivLength; k++) {
@@ -6780,7 +6780,7 @@ function EDI_render_do_Delete() {
                                 if (ringBufferIndex_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || ringBufferIndex_last < 0) ringBufferIndex_last = -1;
                                 else ringBufferIndex_last = (ringBufferIndex_last + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
-                                EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(ringBufferIndex_last, beltIndexLine_next, 1);
+                                EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(ringBufferIndex_last, ringBufferIndex_next, 1);
                             }
                         }
                         else {
@@ -6935,13 +6935,13 @@ function EDI_render_do_Backspace() {
                             // TODO: Use NEXT here (... + 1)
                             
                             // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
-                            let beltIndexLine_next = (INTS[fEDI_cursor_indexLine] + 1) - INTS[fEDI_virtualIndexLine];
-                            if (beltIndexLine_next >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_next < 0) beltIndexLine_next = -1;
-                            else beltIndexLine_next = (beltIndexLine_next + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
+                            let ringBufferIndex_next = (INTS[fEDI_cursor_indexLine] + 1) - INTS[fEDI_virtualIndexLine];
+                            if (ringBufferIndex_next >= INTS[fEDI_ArrayFrom_textElement_children_length] || ringBufferIndex_next < 0) ringBufferIndex_next = -1;
+                            else ringBufferIndex_next = (ringBufferIndex_next + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
-                            if (beltIndexLine_next >= 0) {
+                            if (ringBufferIndex_next >= 0) {
                                 let keepingDiv = w_div;
-                                let removingDiv = EDI_textElement.children[beltIndexLine_next];
+                                let removingDiv = EDI_textElement.children[ringBufferIndex_next];
 
                                 let rememberRemovingDivLength = removingDiv.children.length;
                                 for (let k = 0; k < rememberRemovingDivLength; k++) {
@@ -6963,7 +6963,7 @@ function EDI_render_do_Backspace() {
                                 if (ringBufferIndex_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || ringBufferIndex_last < 0) ringBufferIndex_last = -1;
                                 else ringBufferIndex_last = (ringBufferIndex_last + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
-                                EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(ringBufferIndex_last, beltIndexLine_next, 1);
+                                EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(ringBufferIndex_last, ringBufferIndex_next, 1);
                             }
                         }
                         else {
@@ -8574,7 +8574,7 @@ Need to be renamed:
 - [x] beltIndexLine_current => ringBufferIndex_current
 - [x] beltIndexLine_first => ringBufferIndex_first
 - [x] beltIndexLine_last => ringBufferIndex_last
-- [ ] beltIndexLine_next
+- [x] beltIndexLine_next => ringBufferIndex_next
 - [ ] beltIndexLine_firstTilde
 - [ ] next_beltIndexLine
 - [ ] inclusiveSmallestBeltIndexLineToShift

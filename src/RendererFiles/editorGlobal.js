@@ -8497,5 +8497,6 @@ All in all I need to just stop for the day
 
 I just read this back and I can't believe how many words I missed
 I literally said them in my mind but u read the text they just aren't typed there
+^ lol btw
 
 */

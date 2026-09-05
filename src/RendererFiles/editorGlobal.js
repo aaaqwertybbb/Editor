@@ -8599,4 +8599,6 @@ and it's working
 and such
 but I just anxiety and thoughts and I just thinking about this is all
 
+Can't just sit there writing toy code.
+
 */

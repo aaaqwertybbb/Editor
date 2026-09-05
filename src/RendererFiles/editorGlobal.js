@@ -8579,8 +8579,8 @@ Need to be renamed:
 - [ ] next_beltIndexLine
 - [ ] inclusiveSmallestBeltIndexLineToShift
 - [ ] smallestBeltIndexLineToReceive
-- [ ] ArrayFrom_gutter_children
-- [ ] ArrayFrom_textElement_children
+- [x] ArrayFrom_gutter_children => EDI_ringBuffer_gutter
+- [x] ArrayFrom_textElement_children => EDI_ringBuffer_text
 
 Comments only:
 - [ ] belt

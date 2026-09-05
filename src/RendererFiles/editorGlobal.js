@@ -5349,9 +5349,9 @@ function EDI_render_do_DuplicateOrPaste() {
         // TODO: Use PREVIOUS here from 'ringBufferIndex_first'
 
         // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
-        let beltIndexLine_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
-        if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
-        else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
+        let ringBufferIndex_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
+        if (ringBufferIndex_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || ringBufferIndex_last < 0) ringBufferIndex_last = -1;
+        else ringBufferIndex_last = (ringBufferIndex_last + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
 
         let last_valid_indexColumn_currentLine = EDI_getLastValidIndexColumn(INTS[fEDI_cursor_indexLine]);
@@ -5422,7 +5422,7 @@ function EDI_render_do_DuplicateOrPaste() {
                         default:
                             // TODO: Extremely important next line but it doesn't fully pattern with every case so it is somewhat out of nowhere
                             // TODO: This is nonsensical you cannot numerically compare a belt index because the zeroth index isn't necessarily 0
-                            if (ringBufferIndex_current > beltIndexLine_last) return;
+                            if (ringBufferIndex_current > ringBufferIndex_last) return;
                             //
                             insertionLength++;
                             //
@@ -5459,7 +5459,7 @@ function EDI_render_do_DuplicateOrPaste() {
             // TODO: this is a very lazy solution to the problem, likely a more optimal way is available. Also name the variable?
             for (let handleLineCounter = 0; handleLineCounter < linefeedLength; handleLineCounter++) {
                 // TODO: This is nonsensical you cannot numerically compare a belt index because the zeroth index isn't necessarily 0
-                if (ringBufferIndex_current > beltIndexLine_last) {
+                if (ringBufferIndex_current > ringBufferIndex_last) {
                     // A scroll should take place and handle the rest
                     // Note: any lines indices that don't change between the current scrollTop and what is shown with the new scrollTop...
                     // ...won't redraw so you still need to run this code for some of the lines.
@@ -5469,7 +5469,7 @@ function EDI_render_do_DuplicateOrPaste() {
 
                 if (INTS[fEDI_cursor_indexColumn] === 0 && last_valid_indexColumn_currentLine !== 0) { // start of line
                     
-                    EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, ringBufferIndex_current);
+                    EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(ringBufferIndex_last, ringBufferIndex_current);
                     EDI_textElement.children[ringBufferIndex_current].appendChild(document.createElement('span'));
 
                     ringBufferIndex_current = (ringBufferIndex_current + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
@@ -5491,7 +5491,7 @@ function EDI_render_do_DuplicateOrPaste() {
 
                         ringBufferIndex_current = (ringBufferIndex_current + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
                         
-                        EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, ringBufferIndex_current);
+                        EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(ringBufferIndex_last, ringBufferIndex_current);
                         let span = document.createElement('span');
                         EDI_textElement.children[ringBufferIndex_current].appendChild(span);
 
@@ -5530,7 +5530,7 @@ function EDI_render_do_DuplicateOrPaste() {
 
                         ringBufferIndex_current = (ringBufferIndex_current + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
 
-                        EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, ringBufferIndex_current);
+                        EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(ringBufferIndex_last, ringBufferIndex_current);
 
                         let aaa = EDI_textElement.children[ringBufferIndex_current];
                         let span = document.createElement('span');
@@ -5624,9 +5624,9 @@ function EDI_paste(content) {
     // TODO: Use PREVIOUS here from 'ringBufferIndex_first'
     
     // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
-    let beltIndexLine_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
-    if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
-    else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
+    let ringBufferIndex_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
+    if (ringBufferIndex_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || ringBufferIndex_last < 0) ringBufferIndex_last = -1;
+    else ringBufferIndex_last = (ringBufferIndex_last + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
     let last_valid_indexColumn_currentLine = EDI_getLastValidIndexColumn(INTS[fEDI_cursor_indexLine]);
 
@@ -5686,7 +5686,7 @@ function EDI_paste(content) {
                 //else if (linefeedLength > 0) writeLinefeed();
                 // TODO: Extremely important next line but it doesn't fully pattern with every case so it is somewhat out of nowhere
                 // TODO: This is nonsensical you cannot numerically compare a belt index because the zeroth index isn't necessarily 0
-                if (ringBufferIndex_current > beltIndexLine_last) return;
+                if (ringBufferIndex_current > ringBufferIndex_last) return;
                 //
                 insertionLength += 4;
                 //
@@ -5698,7 +5698,7 @@ function EDI_paste(content) {
                 //else if (linefeedLength > 0) writeLinefeed();
                 // TODO: Extremely important next line but it doesn't fully pattern with every case so it is somewhat out of nowhere
                 // TODO: This is nonsensical you cannot numerically compare a belt index because the zeroth index isn't necessarily 0
-                if (ringBufferIndex_current > beltIndexLine_last) return;
+                if (ringBufferIndex_current > ringBufferIndex_last) return;
                 //
                 insertionLength++;
                 //
@@ -5961,9 +5961,9 @@ function EDI_render_do_EnterKey() {
         // TODO: Use PREVIOUS here from 'ringBufferIndex_first'
 
         // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
-        let beltIndexLine_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
-        if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
-        else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
+        let ringBufferIndex_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
+        if (ringBufferIndex_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || ringBufferIndex_last < 0) ringBufferIndex_last = -1;
+        else ringBufferIndex_last = (ringBufferIndex_last + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
         // TODO: reminder for when virtualization padding is improved, this function might need to be looked at.
         // TODO: Track the enter keystroke the same as any other insertion edit and have it pending until it needs to be finalized.
@@ -5979,7 +5979,7 @@ function EDI_render_do_EnterKey() {
         // Is holding down ctrl+enter / shift+enter batchable?
 
         if (!shouldRenderEntireViewport && INTS[fEDI_cursor_editIndexColumn] === 0) { // start of line
-            EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, ringBufferIndex_current);
+            EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(ringBufferIndex_last, ringBufferIndex_current);
             EDI_textElement.children[ringBufferIndex_current].appendChild(document.createElement('span'));
 
             EDI_lineWasInsertedValidateGutter();
@@ -5994,7 +5994,7 @@ function EDI_render_do_EnterKey() {
                     
                     let next_beltIndexLine = (ringBufferIndex_current + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
 
-                    EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, next_beltIndexLine);
+                    EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(ringBufferIndex_last, next_beltIndexLine);
                     let span = document.createElement('span');
                     span.textContent = EDI_cursor_cached_indentation_string;
                     EDI_textElement.children[next_beltIndexLine].appendChild(span);
@@ -6067,7 +6067,7 @@ function EDI_render_do_EnterKey() {
 
                     let next_beltIndexLine = (INTS[fEDI_w_ringBufferIndex] + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
 
-                    EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, next_beltIndexLine);
+                    EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(ringBufferIndex_last, next_beltIndexLine);
 
                     let aaa = EDI_textElement.children[next_beltIndexLine];
                     let span = document.createElement('span');
@@ -6160,25 +6160,25 @@ function EDI_EnterKey(ctrlKey, shiftKey) {
  * 
  * TODO: implement this but by an arbitrary distance
  */
-function EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, inclusiveSmallestBeltIndexLineToShift) {
+function EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(ringBufferIndex_last, inclusiveSmallestBeltIndexLineToShift) {
     // TODO: This remove logic for the last line wasn't written with the correct understanding...
     // ...
     // It appears that this logic for 99% of cases is NOT needed.
     // But that if you:
     // - "Were at belt index zero" (I'm not sure what I'm thinking by this I need to focus on my task at hand but this edge case is being slightly-considered in my mind while typing this)
     //     - I think the correct wording is if you were at 'PREVIOUS(belt_index_zero)' then you'd be the last line
-    //     - i.e.: if 'beltIndexLine_last === inclusiveSmallestBeltIndexLineToShift'
+    //     - i.e.: if 'ringBufferIndex_last === inclusiveSmallestBeltIndexLineToShift'
     // - for some reason only had a virtualization count of '1',
     // you might need to run this logic otherwise an enter key at column index 0 of a line wouldn't show any changes.
     // 
     let local_ArrayFrom_textElement_children_length = INTS[fEDI_ArrayFrom_textElement_children_length];
 
-    let lastDiv = EDI_textElement.children[beltIndexLine_last];
+    let lastDiv = EDI_textElement.children[ringBufferIndex_last];
     for (let i = lastDiv.children.length - 1; i >= 0; i--) {
         lastDiv.removeChild(lastDiv.children[i]);
     }
 
-    for (let i = beltIndexLine_last; i !== inclusiveSmallestBeltIndexLineToShift;) {
+    for (let i = ringBufferIndex_last; i !== inclusiveSmallestBeltIndexLineToShift;) {
         let destinationDiv = EDI_textElement.children[i];
         i = (i - 1 + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length;
         let sourceDiv = EDI_textElement.children[i];
@@ -6191,7 +6191,7 @@ function EDI_shiftLinesOfText_ToALarger_IndexLine_byOne(beltIndexLine_last, incl
  * 
  * TODO: an idea that you might be able to short circuit if you start shifting 'out of bounds lines of text' into 'out of bounds lines of text'?
  * */
-function EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last, smallestBeltIndexLineToReceive, distance, local_virtualIndexLine, local_virtualCount) {
+function EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(ringBufferIndex_last, smallestBeltIndexLineToReceive, distance, local_virtualIndexLine, local_virtualCount) {
 
     // TODO: Does 'coalesce assignment' exist, and is it equivalent?
     if (!local_virtualIndexLine) local_virtualIndexLine = INTS[fEDI_virtualIndexLine];
@@ -6201,7 +6201,7 @@ function EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last
 
     let local_ArrayFrom_textElement_children_length = INTS[fEDI_ArrayFrom_textElement_children_length];
 
-    let breakingPoint = beltIndexLine_last;
+    let breakingPoint = ringBufferIndex_last;
     for (let i = 1 /*starts at one*/; i < distance; i++) {
         breakingPoint = (breakingPoint - 1 + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length;
     }
@@ -6222,7 +6222,7 @@ function EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last
     let ringBufferIndex = breakingPoint;
     for (let i = 0; ; i++) {
         EDI_drawLine(local_virtualIndexLine + local_virtualCount - (distance - i), EDI_gutter.children[ringBufferIndex], EDI_textElement.children[ringBufferIndex]);
-        if (ringBufferIndex === beltIndexLine_last) break; // awkward positioning of this break, it seems somewhat necessary but need to take time to read the code further and try to have it moved somewhere more sensible.
+        if (ringBufferIndex === ringBufferIndex_last) break; // awkward positioning of this break, it seems somewhat necessary but need to take time to read the code further and try to have it moved somewhere more sensible.
         ringBufferIndex = (ringBufferIndex + 1) % local_ArrayFrom_textElement_children_length;
     }
 }
@@ -6682,12 +6682,12 @@ function EDI_render_do_RemoveSelection() {
             else ringBufferIndex_current = (ringBufferIndex_current + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
             // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
-            let beltIndexLine_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
-            if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
-            else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
+            let ringBufferIndex_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
+            if (ringBufferIndex_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || ringBufferIndex_last < 0) ringBufferIndex_last = -1;
+            else ringBufferIndex_last = (ringBufferIndex_last + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
             // TODO: This will be wrong because you'd need to explicitly redraw the large selection line index.
-            EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last, ringBufferIndex_current, linesRemovedCount);
+            EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(ringBufferIndex_last, ringBufferIndex_current, linesRemovedCount);
 
             if (EDI_drawGutter_Width()) {
                 // If true then you need to also draw the dependent UI
@@ -6776,11 +6776,11 @@ function EDI_render_do_Delete() {
                                 }
 
                                 // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
-                                let beltIndexLine_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
-                                if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
-                                else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
+                                let ringBufferIndex_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
+                                if (ringBufferIndex_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || ringBufferIndex_last < 0) ringBufferIndex_last = -1;
+                                else ringBufferIndex_last = (ringBufferIndex_last + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
-                                EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last, beltIndexLine_next, 1);
+                                EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(ringBufferIndex_last, beltIndexLine_next, 1);
                             }
                         }
                         else {
@@ -6959,11 +6959,11 @@ function EDI_render_do_Backspace() {
                                 }
 
                                 // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
-                                let beltIndexLine_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
-                                if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
-                                else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
+                                let ringBufferIndex_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
+                                if (ringBufferIndex_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || ringBufferIndex_last < 0) ringBufferIndex_last = -1;
+                                else ringBufferIndex_last = (ringBufferIndex_last + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
-                                EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last, beltIndexLine_next, 1);
+                                EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(ringBufferIndex_last, beltIndexLine_next, 1);
                             }
                         }
                         else {
@@ -8573,7 +8573,7 @@ Need to be renamed:
 - [x] fEDI_w_beltIndexLine => fEDI_w_ringBufferIndex
 - [x] beltIndexLine_current => ringBufferIndex_current
 - [x] beltIndexLine_first => ringBufferIndex_first
-- [ ] beltIndexLine_last
+- [x] beltIndexLine_last => ringBufferIndex_last
 - [ ] beltIndexLine_next
 - [ ] beltIndexLine_firstTilde
 - [ ] next_beltIndexLine

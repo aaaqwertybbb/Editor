@@ -631,8 +631,8 @@ function EDI_render_do_Scroll(timestamp) {
     }
 
     const EDI_textByteList_bytes = EDI_textByteList.bytes;
-    const local_ArrayFrom_gutter_children = EDI_ringBuffer_gutter;
-    const local_ArrayFrom_textElement_children = EDI_ringBuffer_text;
+    const local_EDI_ringBuffer_gutter = EDI_ringBuffer_gutter;
+    const local_EDI_ringBuffer_text = EDI_ringBuffer_text;
     
     let vertical = lowerBound * local_lineHeight;
 
@@ -642,8 +642,8 @@ function EDI_render_do_Scroll(timestamp) {
         // I'm realizing this might be called 'Circular buffer layout indexing' TODO: is it? and if so rename everything.
         beltIndexLine = (beltIndexLine + 1) % local_ArrayFrom_textElement_children_length;
 
-        const gutter = local_ArrayFrom_gutter_children[beltIndexLine];
-        const div = local_ArrayFrom_textElement_children[beltIndexLine];
+        const gutter = local_EDI_ringBuffer_gutter[beltIndexLine];
+        const div = local_EDI_ringBuffer_text[beltIndexLine];
 
         lineStart = lineEnd + 1;
         if (indexLine < EDI_lineEndPositionList_count) {

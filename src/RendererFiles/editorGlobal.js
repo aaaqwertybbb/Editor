@@ -8539,6 +8539,28 @@ But then also in I can't think I'm talking about something else now
 ***SPOILER START?****
 =====================
 serial experiments lain
+something like you don't care about having a body.
+And I remember so clearly a few occassions I.
+One was I was
+
+I had this habit back in the day where every morning I'd drive
+15 minutes I think to a park.
+And then I'd just go for a walk.
+This was a long time ago but while I was on antipsychotics and stuff.
+But it was towards the start of it all.
+And I was like 200 lbs.
+I went into the bathroom and I looked at myself in the mirror and
+I couldn't quite understand what I was looking at I felt so disconnected.
+And like I just wasn't even there.
+
+and then another time when I started losing my physique I was gaining weight
+being more sedentary.
+And I was helping my Mom set up a tent in the backyard I think it was.
+And I was sitting at a table that always we had all since childhood.
+I put my palm down onto the seat that I was on and felt my tricep.
+And I thought to myself in this weird disconnected way.
+That none of this meant anything and none of it mattered to me.
+And I wasn't gonna miss my body.
 =====================
 ***SPOILER END?****
 =====================

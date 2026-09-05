@@ -19,14 +19,6 @@ import "./javascriptFeatures"
                    // Then you could imagine that the UI has HTML divs available to be rendered into.
                    // And that this 'virtualIndexLine' says: "given my indexLine, is this being shown in the UI?"
                    // BUT there is more to this, you next have to consider the position of the belt.
-                   //
-- ringBufferIndex    // I'm not well versed in this topic.
-                   // But I think of a belt and a pulley wheel.
-                   // The belt wraps around the pulley wheel, and the belt has indices from 0 to (virtualCount - 1); both sides are inclusive.
-                   // As you scroll this belt is constantly rotating around the pulley wheel and your zeroth index is constantly changing.
-                   //
-                   // This concept makes far more sense if you consider things from a 'cumulative layout shift' perspective.
-                   // Because the simpler approach of moving the HTML elements around cannot be done in a performant manner given the intracicies of how HTML works.
 
 Why is it not a 'lineIndex' wording pattern?
 
@@ -8578,7 +8570,7 @@ Need to be renamed:
 - [x] beltIndexLine_firstTilde => ringBufferIndex_firstTilde
 - [x] next_beltIndexLine => next_ringBufferIndex
 - [x] inclusiveSmallestBeltIndexLineToShift
-- [ ] smallestBeltIndexLineToReceive => smallestRingBufferIndexToReceive
+- [x] smallestBeltIndexLineToReceive => smallestRingBufferIndexToReceive
 - [x] ArrayFrom_gutter_children => EDI_ringBuffer_gutter
 - [x] ArrayFrom_textElement_children => EDI_ringBuffer_text
 

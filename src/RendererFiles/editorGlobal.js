@@ -8533,4 +8533,15 @@ I can't even type this I'm legit crying
 
 But then also in I can't think I'm talking about something else now
 
+
+
+=====================
+***SPOILER START?****
+=====================
+serial experiments lain
+=====================
+***SPOILER END?****
+=====================
+
+
 */

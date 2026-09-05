@@ -8660,4 +8660,8 @@ I've never seen primal fear btw.
 But I know the cultural impact of the movie.
 I know the idea I've seen the shorts.
 
+So the idea that I see this recommended to me while I'm saying this
+it's like you're my lawyer and I'm just trying to get you to support me
+no I just wanna talk
+
 */

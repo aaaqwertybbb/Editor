@@ -8575,11 +8575,48 @@ Need to be renamed:
 - [ ] beltIndexLine_first
 - [ ] beltIndexLine_last
 - [ ] beltIndexLine_next
-- [ ] belt
 - [ ] beltIndexLine_firstTilde
 - [ ] next_beltIndexLine
 - [ ] inclusiveSmallestBeltIndexLineToShift
-- [ ] belt_index_zero
 - [ ] smallestBeltIndexLineToReceive
+
+Comments only:
+- [ ] belt
+- [ ] belt_index_zero
+
+=======
+
+> I made a list of every belt related variable name as a comma separated list:
+> fEDI_EDI_beltIndexZero, beltIndexLine, beltIndexCurrent, (... I gave the entire list to the prompt), smallestBeltIndexLineToReceive
+
+< Here is the mapping of your belt-related variables to standard software engineering terminology.
+< 
+< Because you are using an object/node pooling pattern, we swap out the word "belt" for "pool" (referring to the recycled DOM nodes), and "indexLine" for "node" or "element".
+< 
+< Standard Renaming Guide
+< 
+< Your Variable Name                    | Standard Industry Equivalent | Why this name?
+< ------------------------------------------------------------------
+< fEDI_EDI_beltIndexZero                | firstVisibleNodeIndex        | The actual index in the pool corresponding to the very top visible row.
+< beltIndexLine                         | poolNode or poolElement      | An individual DOM element inside your recycling pool.
+< beltIndexCurrent                      | currentNode                  | The element currently being processed or iterated on.
+< EDI_indexLineTo_beltIndexLine         | lineIndexToNodeIndex         | Maps a raw text document line number to a physical DOM pool index.
+< fEDI_w_beltIndexLine                  | nodeWidth (or nodeHeight)    | The physical pixel dimensions of a single pooled element.
+< beltIndexLine_current                 | currentNode                  | The specific DOM node currently active in a loop.
+< beltIndexLine_first                   | firstPoolNode or headNode    | The DOM node at the very beginning of your circular queue.
+< beltIndexLine_last                    | lastPoolNode or tailNode     | The DOM node at the very end of your circular queue.
+< beltIndexLine_next                    | nextPoolNode                 | The next DOM node in the recycling sequence.
+< beltIndexLine_firstTilde              | targetPoolNode               | A placeholder or secondary reference node during a shift operations.
+< next_beltIndexLine                    | nextNodeToRecycle            | The upcoming DOM node scheduled to be moved.
+< inclusiveSmallestBeltIndexLineToShift | minNodeIndexToRecycle        | The lowest index in your pool that needs to be moved during a scroll.
+< smallestBeltIndexLineToReceive        | firstNodeTargetPosition      | The destination coordinate or position index where the recycled node will land.
+< 
+< Core Architectural Terms to Keep in Mind
+< If you are refactoring your comments or documentation, keep these three structural terms in mind:
+< - The List: nodePool (replaces the array holding your belt items).
+< - The Action: recycle() or reposition() (replaces the concept of "looping around the pulley").
+< - The Layout Strategy: translateY / absoluteOffset (replaces physical movement by changing CSS transforms instead of appending/removing).
+< 
+< Would you like to refactor one of your core rendering functions using these new variable names to see how the logic reads?
 
 */

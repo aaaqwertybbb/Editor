@@ -8626,4 +8626,8 @@ Like no I just wanna say some things sometimes wtf
 
 And maybe that's just me being anxious all the time and reading into things that don't actually exist
 
+In this very repo in the git history I call you all "----ing morons"
+I haven't made a new repo to erase that history because I like things this way.
+I don't want you to "accept an apology as though yadayada" I'm chillin
+
 */

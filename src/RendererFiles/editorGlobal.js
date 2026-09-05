@@ -8499,5 +8499,7 @@ I just read this back and I can't believe how many words I missed
 I literally said them in my mind but u read the text they just aren't typed there
 ^ lol btw
 yikes sorry idk I'm idk I'm done for the day
+I just felt a sudden surge of cringe go through my body is all so I added the yikes idk if it was cause of what I just previously said or what
+but I just had the vibe
 
 */

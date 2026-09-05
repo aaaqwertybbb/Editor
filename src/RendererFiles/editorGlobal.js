@@ -8673,4 +8673,7 @@ I feel like I can't just talk dude
 How to solve differential equations was good
 I'm glad that you influenced youtube to recommend me that video
 
+When I watched eternal sunshine of the spotless mind I died laughing
+cause of the ven vil you vear vigs comment that I made in one of the earlier repos on this account
+
 */

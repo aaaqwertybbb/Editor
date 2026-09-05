@@ -8596,7 +8596,7 @@ Comments only:
 < Standard Renaming Guide
 < 
 < Your Variable Name                    | Standard Industry Equivalent | Why this name?
-< ------------------------------------------------------------------
+< ------------------------------------------------------------------------------------------------------------------------------------------------------
 < fEDI_EDI_beltIndexZero                | firstVisibleNodeIndex        | The actual index in the pool corresponding to the very top visible row.
 < beltIndexLine                         | poolNode or poolElement      | An individual DOM element inside your recycling pool.
 < beltIndexCurrent                      | currentNode                  | The element currently being processed or iterated on.
@@ -8618,5 +8618,34 @@ Comments only:
 < - The Layout Strategy: translateY / absoluteOffset (replaces physical movement by changing CSS transforms instead of appending/removing).
 < 
 < Would you like to refactor one of your core rendering functions using these new variable names to see how the logic reads?
+
+(
+actually the comma separated list is only related to the editor
+TODO: all the other files
+)
+
+
+I gotta decide on the finalized names now:
+
+Your Variable Name                    | Standard Industry Equivalent | Why this name?
+------------------------------------------------------------------------------------------------------------------------------------------------------
+fEDI_EDI_beltIndexZero                | firstVisibleNodeIndex        | The actual index in the pool corresponding to the very top visible row.
+beltIndexLine                         | poolIndexNode or poolIndexElement      | The index of an individual DOM element inside your recycling pool.
+beltIndexCurrent                      | currentIndexNode                  | The index of the element currently being processed or iterated on.
+EDI_indexLineTo_beltIndexLine         | lineIndexToNodeIndex         | Maps a raw text document line number to a physical DOM pool index.
+fEDI_w_beltIndexLine                  | fEDI_w_nodeIndexLine    | The 'w_'alkLineUntilIndexColumn() resulting poolIndexLine
+beltIndexLine_current                 | currentNode                  | The index of the specific DOM node currently active in a loop.
+beltIndexLine_first                   | nodeIndexLine_first | The index of the DOM node at the very beginning of your circular queue.
+beltIndexLine_last                    | elementPoolIndexLine_last     | The index of the DOM node at the very end of your circular queue.
+beltIndexLine_next                    | nextPoolNode                 | The index of the next DOM node in the recycling sequence.
+beltIndexLine_firstTilde              | targetPoolNode               | poolIndexLine_firstTilde
+next_beltIndexLine                    | nextNodeToRecycle            | The index of the next DOM node in the circular queue relative to some 'current index'.
+inclusiveSmallestBeltIndexLineToShift | minNodeIndexToRecycle        | TODO: The lowest index in your pool that needs to be moved during a scroll.
+smallestBeltIndexLineToReceive        | firstNodeTargetPosition      | TODO: The destination coordinate or position index where the recycled node will land.
+
+belt => node
+belt => nodePool
+belt => element
+belt => elementPool
 
 */

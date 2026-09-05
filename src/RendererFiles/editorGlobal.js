@@ -8495,4 +8495,6 @@ vertical += lineHeight;
 Reminder to myself:
 Ensure this doesn't break hidden classes before you do this tomorrow.
 
+vite + typescript in aaaqwertybbb/DifferentialEquations
+
 */

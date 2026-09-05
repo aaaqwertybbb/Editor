@@ -8613,4 +8613,15 @@ I just
 
 Just the changes are nostalgia and anxiety and ???
 
+=====
+
+Honestly I feel offended constantly when I look at my youtube recommendations.
+
+"Taylor Swift - We Are Never Ever Getting Back Together"
+for example I see this right now.
+
+And it feels like everytime I speak that I see something like this.
+And I just take it as "this guy is such a loser he just wants us to accept an apology or etc..."
+Like no I just wanna say some things sometimes wtf
+
 */

@@ -20,7 +20,7 @@ import "./javascriptFeatures"
                    // And that this 'virtualIndexLine' says: "given my indexLine, is this being shown in the UI?"
                    // BUT there is more to this, you next have to consider the position of the belt.
                    //
-- beltIndexLine    // I'm not well versed in this topic.
+- ringBufferIndex    // I'm not well versed in this topic.
                    // But I think of a belt and a pulley wheel.
                    // The belt wraps around the pulley wheel, and the belt has indices from 0 to (virtualCount - 1); both sides are inclusive.
                    // As you scroll this belt is constantly rotating around the pulley wheel and your zeroth index is constantly changing.
@@ -74,9 +74,9 @@ And it can introduce oddities involving tabstop or very tiny changes in horizont
 #################################################################
 
 // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
-// ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-// but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-// for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+// ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
+// but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+// for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
 */
 
 const EDI_trackedSyntaxList = new TrackedSyntaxList(32);
@@ -588,7 +588,7 @@ function EDI_render_do_Scroll(timestamp) {
 
     let lowerBound = 0;
     let upperBound = 0;
-    let beltIndexLine = 0; // The 0th loop will increment somewhat awkwardly. see the: "This decrement avoids that." comments for each case.
+    let ringBufferIndex = 0; // The 0th loop will increment somewhat awkwardly. see the: "This decrement avoids that." comments for each case.
 
     const local_ArrayFrom_textElement_children_length = INTS[fEDI_ArrayFrom_textElement_children_length];
     // TODO: consider 'const virtualCount = INTS[fEDI_virtualCount];'
@@ -599,8 +599,8 @@ function EDI_render_do_Scroll(timestamp) {
         // Note: (TODO: retrospectively reading this comment I'm thinking "what is this talking about?" To be fair I only glanced at it but because it is far too "verbose" I just don't feel like reading this right now to determine whether the comment is worthwhile or not.) this case has 'vertical = (INTS[fEDI_prevVli] + INTS[fEDI_virtualCount]) * local_lineHeight;' I believe 'INTS[fEDI_virtualCount]' === 'INTS[fEDI_ONSCROLLvirtualCount]' in this case, thus all vertical calculations can be moved after the if statements to be lowerBound * ... All cases other than this one were exact 1 to 1 matches.
         lowerBound = local_prevVli + INTS[fEDI_ONSCROLLvirtualCount];
         upperBound = lowerBound + diff;
-        beltIndexLine = INTS[fEDI_ringBuffer_indexZero] - 1 /*This decrement avoids that.*/;
-        INTS[fEDI_ringBuffer_indexZero] = (beltIndexLine + 1/*This decrement avoids that... but here you need to undo it for a moment*/ + diff) % local_ArrayFrom_textElement_children_length;
+        ringBufferIndex = INTS[fEDI_ringBuffer_indexZero] - 1 /*This decrement avoids that.*/;
+        INTS[fEDI_ringBuffer_indexZero] = (ringBufferIndex + 1/*This decrement avoids that... but here you need to undo it for a moment*/ + diff) % local_ArrayFrom_textElement_children_length;
     }
     else if (diff < 0 && (diff *= -1) < INTS[fEDI_virtualCount]) {
         INTS[fEDI_sum_diffNegative] += diff;
@@ -611,13 +611,13 @@ function EDI_render_do_Scroll(timestamp) {
             (/*let lastIndex = */(INTS[fEDI_ringBuffer_indexZero] - 1 + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length) -
             (diff - 1) + local_ArrayFrom_textElement_children_length) % local_ArrayFrom_textElement_children_length;
 
-        beltIndexLine = INTS[fEDI_ringBuffer_indexZero] - 1/*This decrement avoids that.*/;
+        ringBufferIndex = INTS[fEDI_ringBuffer_indexZero] - 1/*This decrement avoids that.*/;
     }
     else {
         INTS[fEDI_sum_diffPositive] += INTS[fEDI_virtualCount];
         lowerBound = local_currVli;
         upperBound = lowerBound + INTS[fEDI_virtualCount];
-        beltIndexLine = INTS[fEDI_ringBuffer_indexZero] - 1/*This decrement avoids that.*/;
+        ringBufferIndex = INTS[fEDI_ringBuffer_indexZero] - 1/*This decrement avoids that.*/;
     }
 
     const EDI_lineEndPositionList_data = EDI_lineEndPositionList.data;
@@ -640,10 +640,10 @@ function EDI_render_do_Scroll(timestamp) {
     for (var indexLine = lowerBound; indexLine < upperBound; indexLine++) {
         
         // I'm realizing this might be called 'Circular buffer layout indexing' TODO: is it? and if so rename everything.
-        beltIndexLine = (beltIndexLine + 1) % local_ArrayFrom_textElement_children_length;
+        ringBufferIndex = (ringBufferIndex + 1) % local_ArrayFrom_textElement_children_length;
 
-        const gutter = local_EDI_ringBuffer_gutter[beltIndexLine];
-        const div = local_EDI_ringBuffer_text[beltIndexLine];
+        const gutter = local_EDI_ringBuffer_gutter[ringBufferIndex];
+        const div = local_EDI_ringBuffer_text[ringBufferIndex];
 
         lineStart = lineEnd + 1;
         if (indexLine < EDI_lineEndPositionList_count) {
@@ -1221,14 +1221,14 @@ function EDI_finalizeEdit() {
             EDI_textElement.children.length === INTS[fEDI_virtualCount]) {
                 
                 // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
-                let beltIndexLine = indexLine_editOccurredOn - INTS[fEDI_virtualIndexLine];
-                if (beltIndexLine >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine < 0) beltIndexLine = -1;
-                else beltIndexLine = (beltIndexLine + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
+                let ringBufferIndex = indexLine_editOccurredOn - INTS[fEDI_virtualIndexLine];
+                if (ringBufferIndex >= INTS[fEDI_ArrayFrom_textElement_children_length] || ringBufferIndex < 0) ringBufferIndex = -1;
+                else ringBufferIndex = (ringBufferIndex + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
-                if (beltIndexLine >= 0) {
-                    let gutterLineElement = EDI_gutter.children[beltIndexLine];
+                if (ringBufferIndex >= 0) {
+                    let gutterLineElement = EDI_gutter.children[ringBufferIndex];
                     gutterLineElement.innerHTML = '';
-                    let textLineElement = EDI_textElement.children[beltIndexLine];
+                    let textLineElement = EDI_textElement.children[ringBufferIndex];
                     textLineElement.innerHTML = '';
                     EDI_drawLine(indexLine_editOccurredOn, gutterLineElement, textLineElement);
                 }
@@ -4847,12 +4847,12 @@ function EDI_render_do_IndentMore() {
             // TODO: Use NEXT if the lines are one after another?
             
             // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
-            let beltIndexLine = lineI - INTS[fEDI_virtualIndexLine];
-            if (beltIndexLine >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine < 0) beltIndexLine = -1;
-            else beltIndexLine = (beltIndexLine + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
+            let ringBufferIndex = lineI - INTS[fEDI_virtualIndexLine];
+            if (ringBufferIndex >= INTS[fEDI_ArrayFrom_textElement_children_length] || ringBufferIndex < 0) ringBufferIndex = -1;
+            else ringBufferIndex = (ringBufferIndex + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
-            if (beltIndexLine >= 0) {
-                    let div = EDI_textElement.children[beltIndexLine];
+            if (ringBufferIndex >= 0) {
+                    let div = EDI_textElement.children[ringBufferIndex];
                     let span;
                     if (div.children[0].className === '') {
                         span = div.children[0];
@@ -5077,12 +5077,12 @@ function EDI_render_do_IndentLess() {
             // TODO: Use NEXT if the lines are one after another?
 
             // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
-            let beltIndexLine = lineI - INTS[fEDI_virtualIndexLine];
-            if (beltIndexLine >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine < 0) beltIndexLine = -1;
-            else beltIndexLine = (beltIndexLine + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
+            let ringBufferIndex = lineI - INTS[fEDI_virtualIndexLine];
+            if (ringBufferIndex >= INTS[fEDI_ArrayFrom_textElement_children_length] || ringBufferIndex < 0) ringBufferIndex = -1;
+            else ringBufferIndex = (ringBufferIndex + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
-            if (beltIndexLine >= 0) {
-                    let div = EDI_textElement.children[beltIndexLine];
+            if (ringBufferIndex >= 0) {
+                    let div = EDI_textElement.children[ringBufferIndex];
                     let span = div.children[0];
                     span.textContent = span.textContent.slice(innerRemoveCount);
             }
@@ -6219,11 +6219,11 @@ function EDI_shiftLinesOfText_ToASmaller_IndexLine_byDistance(beltIndexLine_last
         destinationIndex = (destinationIndex + 1) % local_ArrayFrom_textElement_children_length;
     }
 
-    let beltIndexLine = breakingPoint;
+    let ringBufferIndex = breakingPoint;
     for (let i = 0; ; i++) {
-        EDI_drawLine(local_virtualIndexLine + local_virtualCount - (distance - i), EDI_gutter.children[beltIndexLine], EDI_textElement.children[beltIndexLine]);
-        if (beltIndexLine === beltIndexLine_last) break; // awkward positioning of this break, it seems somewhat necessary but need to take time to read the code further and try to have it moved somewhere more sensible.
-        beltIndexLine = (beltIndexLine + 1) % local_ArrayFrom_textElement_children_length;
+        EDI_drawLine(local_virtualIndexLine + local_virtualCount - (distance - i), EDI_gutter.children[ringBufferIndex], EDI_textElement.children[ringBufferIndex]);
+        if (ringBufferIndex === beltIndexLine_last) break; // awkward positioning of this break, it seems somewhat necessary but need to take time to read the code further and try to have it moved somewhere more sensible.
+        ringBufferIndex = (ringBufferIndex + 1) % local_ArrayFrom_textElement_children_length;
     }
 }
 
@@ -7873,7 +7873,7 @@ I want to get this done as soon as possible today.
 < 
 <     let lowerBound = 0;
 <     let upperBound = 0;
-<     let beltIndexLine = 0;
+<     let ringBufferIndex = 0;
 < 
 <     const local_ArrayFrom_textElement_children_length = INTS[fEDI_ArrayFrom_textElement_children_length];
 <     const virtualCount = INTS[fEDI_virtualCount];
@@ -7882,8 +7882,8 @@ I want to get this done as soon as possible today.
 <         INTS[fEDI_sum_diffPositive] += diff;
 <         lowerBound = local_prevVli + INTS[fEDI_ONSCROLLvirtualCount];
 <         upperBound = lowerBound + diff;
-<         beltIndexLine = INTS[fEDI_ringBuffer_indexZero] - 1;
-<         INTS[fEDI_ringBuffer_indexZero] = (beltIndexLine + 1 + diff) % local_ArrayFrom_textElement_children_length;
+<         ringBufferIndex = INTS[fEDI_ringBuffer_indexZero] - 1;
+<         INTS[fEDI_ringBuffer_indexZero] = (ringBufferIndex + 1 + diff) % local_ArrayFrom_textElement_children_length;
 <     } 
 <     else if (diff < 0 && (diff * -1) < virtualCount) {
 <         const absDiff = diff * -1;
@@ -7896,13 +7896,13 @@ I want to get this done as soon as possible today.
 <             (absDiff - 1) + local_ArrayFrom_textElement_children_length
 <         ) % local_ArrayFrom_textElement_children_length;
 < 
-<         beltIndexLine = INTS[fEDI_ringBuffer_indexZero] - 1;
+<         ringBufferIndex = INTS[fEDI_ringBuffer_indexZero] - 1;
 <     } 
 <     else {
 <         lowerBound = local_currVli;
 <         upperBound = lowerBound + virtualCount;
 <         INTS[fEDI_sum_diffPositive] += virtualCount;
-<         beltIndexLine = INTS[fEDI_ringBuffer_indexZero] - 1;
+<         ringBufferIndex = INTS[fEDI_ringBuffer_indexZero] - 1;
 <     }
 < 
 <     let vertical = lowerBound * local_lineHeight;
@@ -7923,11 +7923,11 @@ I want to get this done as soon as possible today.
 < 
 <     for (let indexLine = lowerBound; indexLine < upperBound; indexLine++) {
 <         
-<         beltIndexLine = (beltIndexLine + 1) % local_ArrayFrom_textElement_children_length;
+<         ringBufferIndex = (ringBufferIndex + 1) % local_ArrayFrom_textElement_children_length;
 < 
 <         // Caching references directly from the global array wrappers
-<         const gutter = EDI_ringBuffer_gutter[beltIndexLine];
-<         const div = EDI_ringBuffer_text[beltIndexLine];
+<         const gutter = EDI_ringBuffer_gutter[ringBufferIndex];
+<         const div = EDI_ringBuffer_text[ringBufferIndex];
 < 
 <         lineStart = lineEnd + 1;
 <         if (indexLine < count) {
@@ -8056,7 +8056,7 @@ Google AI:
 //> I have the code 'beltIndexCurrent = EDI_beltIndexLine_NEXT(beltIndexCurrent);'.
 //> 
 //> This runs very often within a loop. The 'EDI_beltIndexLine_NEXT' function is:
-//> return ++beltIndexLine >= INTS[fEDI_ArrayFrom_textElement_children_length] ? beltIndexLine -= INTS[fEDI_ArrayFrom_textElement_children_length] : beltIndexLine;
+//> return ++ringBufferIndex >= INTS[fEDI_ArrayFrom_textElement_children_length] ? ringBufferIndex -= INTS[fEDI_ArrayFrom_textElement_children_length] : ringBufferIndex;
 //
 //< To optimize this operation, the most effective approach is to replace the function call and conditional branch with a
 //< bitwise AND mask or a direct modulo operation, while inlining the logic to eliminate function call overhead.
@@ -8080,8 +8080,8 @@ Google AI:
 > 
 > for (...) {
 > 	// ...
-> 	const gutter = EDI_ringBuffer_gutter[beltIndexLine];
-> 	const div = EDI_ringBuffer_text[beltIndexLine];
+> 	const gutter = EDI_ringBuffer_gutter[ringBufferIndex];
+> 	const div = EDI_ringBuffer_text[ringBufferIndex];
 > 	// ...
 > }
 > 
@@ -8092,8 +8092,8 @@ Google AI:
 > const div;
 > for (...) {
 > 	// ...
-> 	gutter = EDI_ringBuffer_gutter[beltIndexLine];
-> 	div = EDI_ringBuffer_text[beltIndexLine];
+> 	gutter = EDI_ringBuffer_gutter[ringBufferIndex];
+> 	div = EDI_ringBuffer_text[ringBufferIndex];
 > 	// ...
 > }
 
@@ -8138,8 +8138,8 @@ Google AI:
 < Approach A: Declaring inside the loop (Your original code)
 < ```js
 for (let i = 0; i < len; i++) {
-    const gutter = EDI_ringBuffer_gutter[beltIndexLine];
-    const div = EDI_ringBuffer_text[beltIndexLine];
+    const gutter = EDI_ringBuffer_gutter[ringBufferIndex];
+    const div = EDI_ringBuffer_text[ringBufferIndex];
 }
 < ```
 <
@@ -8155,8 +8155,8 @@ let gutter = undefined;
 let div = undefined;
 
 for (let i = 0; i < len; i++) {
-    gutter = EDI_ringBuffer_gutter[beltIndexLine];
-    div = EDI_ringBuffer_text[beltIndexLine];
+    gutter = EDI_ringBuffer_gutter[ringBufferIndex];
+    div = EDI_ringBuffer_text[ringBufferIndex];
 }
 < ```
 < 
@@ -8224,8 +8224,8 @@ let div = dummyElement;
 for (let i = 0; i < len; i++) {
     // V8 sees: "This variable started as an Element, and stays an Element."
     // Monomorphic optimization kicks in.
-    gutter = EDI_ringBuffer_gutter[beltIndexLine]; 
-    div = EDI_ringBuffer_text[beltIndexLine];
+    gutter = EDI_ringBuffer_gutter[ringBufferIndex]; 
+    div = EDI_ringBuffer_text[ringBufferIndex];
     
     // Safety check only needed if the array lookup might return undefined
     if (gutter) { 
@@ -8369,9 +8369,9 @@ function renderLines(lowerBound, upperBound) {
 
     for (let indexLine = lowerBound; indexLine < upperBound; indexLine++) {
         // V8 now uses blazing-fast register lookups for gutterChildren and textChildren
-        beltIndexLine = (beltIndexLine + 1) % local_ArrayFrom_textElement_children_length;
-        const gutter = gutterChildren[beltIndexLine];
-        const div = textChildren[beltIndexLine];
+        ringBufferIndex = (ringBufferIndex + 1) % local_ArrayFrom_textElement_children_length;
+        const gutter = gutterChildren[ringBufferIndex];
+        const div = textChildren[ringBufferIndex];
         
         // ... rest of your loop logic
     }
@@ -8467,8 +8467,8 @@ for (let i = 0; i < local_ArrayFrom_textElement_children_length; i++) {
 < ```js
 // ... top of your loop ...
 
-const gutter = gutterChildren[beltIndexLine];
-const div = textChildren[beltIndexLine];
+const gutter = gutterChildren[ringBufferIndex];
+const div = textChildren[ringBufferIndex];
 
 // ... line text parsing and span slicing logic ...
 
@@ -8566,8 +8566,8 @@ vite + typescript in aaaqwertybbb/DifferentialEquations
 < Would you like to see a minimal code snippet demonstrating how to implement this standard recycling logic with translateY to completely eliminate your CLS issue?
 
 Need to be renamed:
-- [ ] fEDI_EDI_beltIndexZero
-- [ ] beltIndexLine
+- [x] fEDI_EDI_beltIndexZero => fEDI_ringBuffer_indexZero
+- [x] beltIndexLine => ringBufferIndex
 - [ ] beltIndexCurrent
 - [ ] EDI_indexLineTo_beltIndexLine
 - [ ] fEDI_w_beltIndexLine
@@ -8654,6 +8654,8 @@ A circular buffer is done by one element pointing to the next actually.
 I just have an array and am moving index.
 
 A ring buffer is I think the exact wording for what I have.
+
+- [ ] TODO: I saw at least 1 case where the HTML element's children were being read when it should've used the ArrayFrom so go through them all and fix this and possibly any other cases.
 
 
 

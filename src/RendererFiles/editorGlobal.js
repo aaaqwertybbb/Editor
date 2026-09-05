@@ -8656,4 +8656,8 @@ rather than on ocassion staying up all night.
 bro stop recommending me primal fear
 just let me talk
 
+I've never seen primal fear btw.
+But I know the cultural impact of the movie.
+I know the idea I've seen the shorts.
+
 */

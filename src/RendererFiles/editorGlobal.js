@@ -5928,15 +5928,15 @@ function EDI_render_do_EnterKey() {
 
         // TODO: You're gonna have to tighten the virtualization logic?
 
-        // TODO: This 'beltIndexLine_firstTilde' is maybe correct I don't know but it's been a long time since I wrote this line of code, and glancing at it, it looks like you need to subtract 1?
+        // TODO: This 'ringBufferIndex_firstTilde' is maybe correct I don't know but it's been a long time since I wrote this line of code, and glancing at it, it looks like you need to subtract 1?
 
         // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
-        let beltIndexLine_firstTilde = EDI_lineEndPositionList.count - INTS[fEDI_virtualIndexLine];
-        if (beltIndexLine_firstTilde >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_firstTilde < 0) beltIndexLine_firstTilde = -1;
-        else beltIndexLine_firstTilde = (beltIndexLine_firstTilde + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
+        let ringBufferIndex_firstTilde = EDI_lineEndPositionList.count - INTS[fEDI_virtualIndexLine];
+        if (ringBufferIndex_firstTilde >= INTS[fEDI_ArrayFrom_textElement_children_length] || ringBufferIndex_firstTilde < 0) ringBufferIndex_firstTilde = -1;
+        else ringBufferIndex_firstTilde = (ringBufferIndex_firstTilde + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
-        if (beltIndexLine_firstTilde >= 0) {
-            EDI_gutter.children[beltIndexLine_firstTilde].textContent = EDI_lineEndPositionList.count + 1;
+        if (ringBufferIndex_firstTilde >= 0) {
+            EDI_gutter.children[ringBufferIndex_firstTilde].textContent = EDI_lineEndPositionList.count + 1;
         }
         
         let shouldRenderEntireViewport = false;
@@ -8575,7 +8575,7 @@ Need to be renamed:
 - [x] beltIndexLine_first => ringBufferIndex_first
 - [x] beltIndexLine_last => ringBufferIndex_last
 - [x] beltIndexLine_next => ringBufferIndex_next
-- [ ] beltIndexLine_firstTilde
+- [x] beltIndexLine_firstTilde => ringBufferIndex_firstTilde
 - [ ] next_beltIndexLine
 - [ ] inclusiveSmallestBeltIndexLineToShift
 - [ ] smallestBeltIndexLineToReceive

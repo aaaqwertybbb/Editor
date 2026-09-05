@@ -198,8 +198,8 @@ const lspQueue = [];
 const EDI_renderKindArray = [];
 
 // Persistent, flat JS arrays that stay alive forever in memory
-let ArrayFrom_gutter_children = [];
-let ArrayFrom_textElement_children = [];
+let EDI_ringBuffer_gutter = [];
+let EDI_ringBuffer_text = [];
 
 let EDI_language_line_lex = null;
 
@@ -484,9 +484,9 @@ function EDI_render_do_CreateViewport() {
         div.appendChild(document.createElement('span'));
     }
 
-    ArrayFrom_gutter_children = Array.from(EDI_gutter.children);
-    ArrayFrom_textElement_children = Array.from(EDI_textElement.children);
-    INTS[fEDI_ArrayFrom_textElement_children_length] = ArrayFrom_textElement_children.length;
+    EDI_ringBuffer_gutter = Array.from(EDI_gutter.children);
+    EDI_ringBuffer_text = Array.from(EDI_textElement.children);
+    INTS[fEDI_ArrayFrom_textElement_children_length] = EDI_ringBuffer_text.length;
 
     EDI_drawHorizontalScrollbar(); // TODO: The 'setting EDI_baseElement.scrollLeft' line appearing after 'EDI_drawHorizontalScrollbar();' in this function strikes me as odd when skimming the code. (1 of 2)
 
@@ -631,8 +631,8 @@ function EDI_render_do_Scroll(timestamp) {
     }
 
     const EDI_textByteList_bytes = EDI_textByteList.bytes;
-    const local_ArrayFrom_gutter_children = ArrayFrom_gutter_children;
-    const local_ArrayFrom_textElement_children = ArrayFrom_textElement_children;
+    const local_ArrayFrom_gutter_children = EDI_ringBuffer_gutter;
+    const local_ArrayFrom_textElement_children = EDI_ringBuffer_text;
     
     let vertical = lowerBound * local_lineHeight;
 
@@ -867,11 +867,11 @@ function EDI_render_do_SyntaxHighlighting() {
     
     for (; i < i_bounded; i++) {
         //
-        // TODO: Would in some way reading 'ArrayFrom_textElement_children[beltIndexCurrent].children[0]' into a variable be beneficial to avoid the double read.
+        // TODO: Would in some way reading 'EDI_ringBuffer_text[beltIndexCurrent].children[0]' into a variable be beneficial to avoid the double read.
         //
         // short circuit avoid double dipping of c++ internals, only the 'bothButNotFull' is inaccurate at the moment.
-        if (!bothButNotFull || ArrayFrom_textElement_children[beltIndexCurrent].children[0].className === 'eN') {
-            ArrayFrom_textElement_children[beltIndexCurrent].children[0].className = '';
+        if (!bothButNotFull || EDI_ringBuffer_text[beltIndexCurrent].children[0].className === 'eN') {
+            EDI_ringBuffer_text[beltIndexCurrent].children[0].className = '';
     
             lineStart = lineEnd + 1;
             if (indexLine < local_EDI_lineEndPositionList_count) {
@@ -881,7 +881,7 @@ function EDI_render_do_SyntaxHighlighting() {
                 lineEnd = lineStart;
             }
     
-            trackedSyntax_I = JS_line_lex_newVersion(ArrayFrom_textElement_children[beltIndexCurrent], beltIndexCurrent, trackedSyntax_I, lineStart);
+            trackedSyntax_I = JS_line_lex_newVersion(EDI_ringBuffer_text[beltIndexCurrent], beltIndexCurrent, trackedSyntax_I, lineStart);
         }
 
         beltIndexCurrent = (beltIndexCurrent + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
@@ -1106,11 +1106,11 @@ function EDI_drawGutter_Width() {
     EDI_gutterBackgroundColor.style.width = gutterWidth;
 
     for (let i = 0; i < INTS[fEDI_ArrayFrom_textElement_children_length]/*a 'ArrayFrom_gutter_children_length' would always be equal to the textElement equivalent*/; i++) {
-        ArrayFrom_gutter_children[i].style.width = gutterWidth;
+        EDI_ringBuffer_gutter[i].style.width = gutterWidth;
     }
     
     for (let i = 0; i < INTS[fEDI_ArrayFrom_textElement_children_length]; i++) {
-        ArrayFrom_textElement_children[i].style.left = gutterWidthTotal_withPxUnits;
+        EDI_ringBuffer_text[i].style.left = gutterWidthTotal_withPxUnits;
     }
 
     EDI_cursor_caretRow.style.left = gutterWidthTotal_withPxUnits;
@@ -1150,7 +1150,7 @@ function EDI_drawHorizontalScrollbar() {
         EDI_virtualization_horizontal.style.width = INTS[fEDI_contentWidth] + INTS[fEDI_gutterWidthTotal] + 'px';
 
         for (let i = 0; i < INTS[fEDI_ArrayFrom_textElement_children_length]; i++) {
-            ArrayFrom_textElement_children[i].style.width = local_EDI_horizontal_scrollbar_virtualization_boundary_style_width;
+            EDI_ringBuffer_text[i].style.width = local_EDI_horizontal_scrollbar_virtualization_boundary_style_width;
         }
 
         EDI_cursor_caretRow.style.width = local_EDI_horizontal_scrollbar_virtualization_boundary_style_width;
@@ -2162,7 +2162,7 @@ function walkLineUntilIndexColumn() {
         return;
     }
     
-    let div = ArrayFrom_textElement_children[INTS[fEDI_w_beltIndexLine]];
+    let div = EDI_ringBuffer_text[INTS[fEDI_w_beltIndexLine]];
     let indexColumn_Goal = INTS[fEDI_cursor_indexColumn];
     let indexColumn_Sum = 0;
 
@@ -7926,8 +7926,8 @@ I want to get this done as soon as possible today.
 <         beltIndexLine = (beltIndexLine + 1) % local_ArrayFrom_textElement_children_length;
 < 
 <         // Caching references directly from the global array wrappers
-<         const gutter = ArrayFrom_gutter_children[beltIndexLine];
-<         const div = ArrayFrom_textElement_children[beltIndexLine];
+<         const gutter = EDI_ringBuffer_gutter[beltIndexLine];
+<         const div = EDI_ringBuffer_text[beltIndexLine];
 < 
 <         lineStart = lineEnd + 1;
 <         if (indexLine < count) {
@@ -7985,7 +7985,7 @@ I want to get this done as soon as possible today.
 < - Checking if (lineStart === lineEnd) completely bypasses the creation of that temporary object, drastically reducing Garbage Collection (GC) pauses while scrolling past blank space.
 <
 < To take this a step further:
-< - Are the ArrayFrom_gutter_children and ArrayFrom_textElement_children variables normal arrays, or are they live HTMLCollections / NodeLists
+< - Are the EDI_ringBuffer_gutter and EDI_ringBuffer_text variables normal arrays, or are they live HTMLCollections / NodeLists
 <   (e.g., returned from getElementsByClassName or querySelectorAll)? If they are live collections, changing them to static arrays will give you another massive frame-rate boost.
 
 ====
@@ -8080,8 +8080,8 @@ Google AI:
 > 
 > for (...) {
 > 	// ...
-> 	const gutter = ArrayFrom_gutter_children[beltIndexLine];
-> 	const div = ArrayFrom_textElement_children[beltIndexLine];
+> 	const gutter = EDI_ringBuffer_gutter[beltIndexLine];
+> 	const div = EDI_ringBuffer_text[beltIndexLine];
 > 	// ...
 > }
 > 
@@ -8092,8 +8092,8 @@ Google AI:
 > const div;
 > for (...) {
 > 	// ...
-> 	gutter = ArrayFrom_gutter_children[beltIndexLine];
-> 	div = ArrayFrom_textElement_children[beltIndexLine];
+> 	gutter = EDI_ringBuffer_gutter[beltIndexLine];
+> 	div = EDI_ringBuffer_text[beltIndexLine];
 > 	// ...
 > }
 
@@ -8138,8 +8138,8 @@ Google AI:
 < Approach A: Declaring inside the loop (Your original code)
 < ```js
 for (let i = 0; i < len; i++) {
-    const gutter = ArrayFrom_gutter_children[beltIndexLine];
-    const div = ArrayFrom_textElement_children[beltIndexLine];
+    const gutter = EDI_ringBuffer_gutter[beltIndexLine];
+    const div = EDI_ringBuffer_text[beltIndexLine];
 }
 < ```
 <
@@ -8155,8 +8155,8 @@ let gutter = undefined;
 let div = undefined;
 
 for (let i = 0; i < len; i++) {
-    gutter = ArrayFrom_gutter_children[beltIndexLine];
-    div = ArrayFrom_textElement_children[beltIndexLine];
+    gutter = EDI_ringBuffer_gutter[beltIndexLine];
+    div = EDI_ringBuffer_text[beltIndexLine];
 }
 < ```
 < 
@@ -8196,7 +8196,7 @@ Or would there still be checks injected but now they're for checking 'null' rath
 < 2. Enter V8's "Type Feedback" and Operations Checks
 < Instead of TDZ checks, V8 now tracks the type of the variable to optimize the code inside the loop.
 < - When you initialize it to null, V8 marks the variable's type as Null.
-< - When the loop runs and you assign an object reference (gutter = ArrayFrom_gutter_children[...]), V8 updates its tracking: the variable is now a Union type (Null | Object).
+< - When the loop runs and you assign an object reference (gutter = EDI_ringBuffer_gutter[...]), V8 updates its tracking: the variable is now a Union type (Null | Object).
 < 
 < Because V8 now knows the variable could be either null or an object, it has to inject hidden checks wherever you use that variable.
 < For example, if you write gutter.style.color = 'red', V8 must inject a check to ensure gutter is not null before reading .style to avoid crashing.
@@ -8224,8 +8224,8 @@ let div = dummyElement;
 for (let i = 0; i < len; i++) {
     // V8 sees: "This variable started as an Element, and stays an Element."
     // Monomorphic optimization kicks in.
-    gutter = ArrayFrom_gutter_children[beltIndexLine]; 
-    div = ArrayFrom_textElement_children[beltIndexLine];
+    gutter = EDI_ringBuffer_gutter[beltIndexLine]; 
+    div = EDI_ringBuffer_text[beltIndexLine];
     
     // Safety check only needed if the array lookup might return undefined
     if (gutter) { 
@@ -8316,13 +8316,13 @@ Wow lol I was wondering this...
 
 > '// 1. Hoist your array lookups and layout metrics outside the loop'
 > 
-> The variables 'ArrayFrom_textElement_children' and etc...
+> The variables 'EDI_ringBuffer_text' and etc...
 > 
-> Are module scope variables 'let ArrayFrom_gutter_children = [];'.
+> Are module scope variables 'let EDI_ringBuffer_gutter = [];'.
 > 
 > This gets a bit awkard due to differences in 'const' and 'let'
 > 
-> 'EDI_decoder' was declared with 'const' for example whereas 'ArrayFrom_gutter_children' with let.
+> 'EDI_decoder' was declared with 'const' for example whereas 'EDI_ringBuffer_gutter' with let.
 > 
 > 'const EDI_decoder = new TextDecoder();'
 
@@ -8332,17 +8332,17 @@ Wow lol I was wondering this...
 <
 < The Scope Lookup Problem
 < 
-< When a variable like ArrayFrom_gutter_children is declared in the module scope using let, V8 places it in a script-level context or "lexical environment."
+< When a variable like EDI_ringBuffer_gutter is declared in the module scope using let, V8 places it in a script-level context or "lexical environment."
 < 
 < - Because it is a let variable, its reference could theoretically change at any moment if another function in your
-<     monolithic file assigns a new array to it (ArrayFrom_gutter_children = newArray).
+<     monolithic file assigns a new array to it (EDI_ringBuffer_gutter = newArray).
 < - As a result, when V8 compiles your for loop, it cannot treat that array reference as an unchangeable constant.
 <     Every single iteration of the loop requires the engine to look up the current reference from the module scope.
 < 
 < Why Hoisting to a Local const Fixes It
 < 
 < By creating a local alias right before the loop starts:
-< const gutterChildren = ArrayFrom_gutter_children;
+< const gutterChildren = EDI_ringBuffer_gutter;
 < 
 < You are taking a snapshot of that reference and anchoring it into the loop's immediate local execution block (activation record/stack frame).
 <
@@ -8353,14 +8353,14 @@ Wow lol I was wondering this...
 <
 < # How to Cleanly Structure It
 < 
-< You do not need to rewrite your module variables. Your module structure (let ArrayFrom_gutter_children = [];) is perfectly fine for managing application state.
+< You do not need to rewrite your module variables. Your module structure (let EDI_ringBuffer_gutter = [];) is perfectly fine for managing application state.
 < You simply perform the local binding snapshot right before entering the loop:
 <
 < ```js
 function renderLines(lowerBound, upperBound) {
     // 1. Take a local const snapshot of module-level 'let' arrays
-    const gutterChildren = ArrayFrom_gutter_children;
-    const textChildren = ArrayFrom_textElement_children;
+    const gutterChildren = EDI_ringBuffer_gutter;
+    const textChildren = EDI_ringBuffer_text;
     
     // 2. Module variables already declared as 'const' (like EDI_decoder) 
     // can be used directly, but local aliasing keeps the loop readable.
@@ -8441,14 +8441,14 @@ function renderLines(lowerBound, upperBound) {
 <
 < 1. Initialization (Run once when creating DOM elements)
 <
-< When you populate ArrayFrom_gutter_children and ArrayFrom_textElement_children, instantiate and
+< When you populate EDI_ringBuffer_gutter and EDI_ringBuffer_text, instantiate and
 < attach the Typed OM wrapper references directly to the DOM element node objects so they are cached:
 < 
 < ```js
 // Do this when your viewport rows are first created
 for (let i = 0; i < local_ArrayFrom_textElement_children_length; i++) {
-    const gutter = ArrayFrom_gutter_children[i];
-    const div = ArrayFrom_textElement_children[i];
+    const gutter = EDI_ringBuffer_gutter[i];
+    const div = EDI_ringBuffer_text[i];
 
     // Create the mutable scale/translate objects once
     gutter._transformValue = new CSSTranslate(CSS.px(0), CSS.px(0));

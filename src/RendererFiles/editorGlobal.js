@@ -8653,4 +8653,7 @@ I came home and I showered.
 and I've been consistently aiming to get 9 hours of sleep
 rather than on ocassion staying up all night.
 
+bro stop recommending me primal fear
+just let me talk
+
 */

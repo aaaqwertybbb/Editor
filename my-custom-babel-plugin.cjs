@@ -411,7 +411,7 @@ module.exports = function (babel) {
     "fEDI_w_indexColumn_SpanTextContentRelative",
     "fEDI_w_indexSpan",
     "fEDI_w_beltIndexLine",
-    "fEDI_EDI_beltIndexZero",
+    "fEDI_ringBuffer_indexZero",
     //"fEDI_EDI_characterWidth",
     "fEDI_EDI_horizontal_scrollbar_widthValue",
     "fEDI_lastReadNumber_scrollLeft",

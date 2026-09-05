@@ -536,7 +536,7 @@ const fEDI_w_indexSpan = 79;
 const fEDI_w_beltIndexLine = 80;
 
 // And this -1
-const fEDI_EDI_beltIndexZero = 81;
+const fEDI_ringBuffer_indexZero = 81;
 
 //const fEDI_EDI_characterWidth = 82;
 

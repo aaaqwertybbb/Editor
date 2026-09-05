@@ -8605,4 +8605,10 @@ I didn't even know how garbage collection worked
 and it wasn't like ignoring it was genuine naivety
 and it's so crazy to think about
 
+I had this ID that was an object allocation.
+For the sake of not using anyone's names unknowing whether they'd be okay with me doing so.
+"they" said something about making it a value type.
+And it is such a blatant lack of understanding and a blatant showcase of being a complete beginner
+I just
+
 */

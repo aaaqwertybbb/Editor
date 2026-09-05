@@ -8630,4 +8630,7 @@ In this very repo in the git history I call you all "----ing morons"
 I haven't made a new repo to erase that history because I like things this way.
 I don't want you to "accept an apology as though yadayada" I'm chillin
 
+"You need to let this love go || multifandom" is another one that really offends me when I see it
+"this loser is still sitting here trying to make an IDE let it go bro"
+
 */

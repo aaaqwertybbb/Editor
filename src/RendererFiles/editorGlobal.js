@@ -70,10 +70,10 @@ And it can introduce oddities involving tabstop or very tiny changes in horizont
 
 /*
 #################################################################
-# Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine': #
+# Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex': #
 #################################################################
 
-// TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'...
+// TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'...
 // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
 // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
 // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
@@ -816,7 +816,7 @@ function EDI_render_do_SyntaxHighlighting() {
 
     let i = 0;
     
-    let beltIndexCurrent = INTS[fEDI_ringBuffer_indexZero];
+    let ringBufferIndexCurrent = INTS[fEDI_ringBuffer_indexZero];
     let indexLine = INTS[fEDI_virtualIndexLine];
 
     let i_bounded = 0;
@@ -837,11 +837,11 @@ function EDI_render_do_SyntaxHighlighting() {
             let originalI = i;
             let local_sum_diffPositive_MINUS_ONE = local_sum_diffPositive - 1; // I want to end on the inclusive lower bound dom element.
 
-            beltIndexCurrent = (beltIndexCurrent - 1 + INTS[fEDI_ArrayFrom_textElement_children_length]) % INTS[fEDI_ArrayFrom_textElement_children_length];
+            ringBufferIndexCurrent = (ringBufferIndexCurrent - 1 + INTS[fEDI_ArrayFrom_textElement_children_length]) % INTS[fEDI_ArrayFrom_textElement_children_length];
             indexLine = indexLine + INTS[fEDI_virtualCount] - 1;
             
             for (; i < local_sum_diffPositive_MINUS_ONE; i++) {
-                beltIndexCurrent = (beltIndexCurrent - 1 + INTS[fEDI_ArrayFrom_textElement_children_length]) % INTS[fEDI_ArrayFrom_textElement_children_length];
+                ringBufferIndexCurrent = (ringBufferIndexCurrent - 1 + INTS[fEDI_ArrayFrom_textElement_children_length]) % INTS[fEDI_ArrayFrom_textElement_children_length];
                 indexLine--;
             }
 
@@ -867,11 +867,11 @@ function EDI_render_do_SyntaxHighlighting() {
     
     for (; i < i_bounded; i++) {
         //
-        // TODO: Would in some way reading 'EDI_ringBuffer_text[beltIndexCurrent].children[0]' into a variable be beneficial to avoid the double read.
+        // TODO: Would in some way reading 'EDI_ringBuffer_text[ringBufferIndexCurrent].children[0]' into a variable be beneficial to avoid the double read.
         //
         // short circuit avoid double dipping of c++ internals, only the 'bothButNotFull' is inaccurate at the moment.
-        if (!bothButNotFull || EDI_ringBuffer_text[beltIndexCurrent].children[0].className === 'eN') {
-            EDI_ringBuffer_text[beltIndexCurrent].children[0].className = '';
+        if (!bothButNotFull || EDI_ringBuffer_text[ringBufferIndexCurrent].children[0].className === 'eN') {
+            EDI_ringBuffer_text[ringBufferIndexCurrent].children[0].className = '';
     
             lineStart = lineEnd + 1;
             if (indexLine < local_EDI_lineEndPositionList_count) {
@@ -881,10 +881,10 @@ function EDI_render_do_SyntaxHighlighting() {
                 lineEnd = lineStart;
             }
     
-            trackedSyntax_I = JS_line_lex_newVersion(EDI_ringBuffer_text[beltIndexCurrent], beltIndexCurrent, trackedSyntax_I, lineStart);
+            trackedSyntax_I = JS_line_lex_newVersion(EDI_ringBuffer_text[ringBufferIndexCurrent], ringBufferIndexCurrent, trackedSyntax_I, lineStart);
         }
 
-        beltIndexCurrent = (beltIndexCurrent + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
+        ringBufferIndexCurrent = (ringBufferIndexCurrent + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
 
         indexLine++;
     }
@@ -1220,7 +1220,7 @@ function EDI_finalizeEdit() {
         if (EDI_gutter.children.length === INTS[fEDI_virtualCount] &&
             EDI_textElement.children.length === INTS[fEDI_virtualCount]) {
                 
-                // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
+                // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
                 let ringBufferIndex = indexLine_editOccurredOn - INTS[fEDI_virtualIndexLine];
                 if (ringBufferIndex >= INTS[fEDI_ArrayFrom_textElement_children_length] || ringBufferIndex < 0) ringBufferIndex = -1;
                 else ringBufferIndex = (ringBufferIndex + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
@@ -2146,7 +2146,7 @@ function EDI_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_I) 
 function walkLineUntilIndexColumn() {
     // TODO: delete key until you delete a linefeed and join the next line onto your own then press backspace everything breaks.
 
-    // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
+    // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
     INTS[fEDI_w_beltIndexLine] = INTS[fEDI_cursor_indexLine] - INTS[fEDI_virtualIndexLine];
     if (INTS[fEDI_w_beltIndexLine] >= INTS[fEDI_ArrayFrom_textElement_children_length] || INTS[fEDI_w_beltIndexLine] < 0) INTS[fEDI_w_beltIndexLine] = -1;
     else INTS[fEDI_w_beltIndexLine] = (INTS[fEDI_w_beltIndexLine] + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
@@ -4846,7 +4846,7 @@ function EDI_render_do_IndentMore() {
             // Draw the line to reflect the edit, if it is being currently shown on screen.
             // TODO: Use NEXT if the lines are one after another?
             
-            // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
+            // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
             let ringBufferIndex = lineI - INTS[fEDI_virtualIndexLine];
             if (ringBufferIndex >= INTS[fEDI_ArrayFrom_textElement_children_length] || ringBufferIndex < 0) ringBufferIndex = -1;
             else ringBufferIndex = (ringBufferIndex + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
@@ -5076,7 +5076,7 @@ function EDI_render_do_IndentLess() {
             // Draw the line to reflect the edit, if it is being currently shown on screen.
             // TODO: Use NEXT if the lines are one after another?
 
-            // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
+            // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
             let ringBufferIndex = lineI - INTS[fEDI_virtualIndexLine];
             if (ringBufferIndex >= INTS[fEDI_ArrayFrom_textElement_children_length] || ringBufferIndex < 0) ringBufferIndex = -1;
             else ringBufferIndex = (ringBufferIndex + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
@@ -5336,19 +5336,19 @@ function EDI_render_do_DuplicateOrPaste() {
         // No need to consider '\r\n' and etc... only '\n'
         let linefeedLength = 0;
 
-        // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
+        // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
         let beltIndexLine_current = INTS[fEDI_cursor_indexLine] - INTS[fEDI_virtualIndexLine];
         if (beltIndexLine_current >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_current < 0) beltIndexLine_current = -1;
         else beltIndexLine_current = (beltIndexLine_current + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
-        // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
+        // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
         let beltIndexLine_first = INTS[fEDI_virtualIndexLine] - INTS[fEDI_virtualIndexLine];
         if (beltIndexLine_first >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_first < 0) beltIndexLine_first = -1;
         else beltIndexLine_first = (beltIndexLine_first + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
         // TODO: Use PREVIOUS here from 'beltIndexLine_first'
 
-        // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
+        // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
         let beltIndexLine_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
         if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
         else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
@@ -5611,19 +5611,19 @@ function EDI_paste(content) {
     // Consider '\r\n' and etc...
     let linefeedLength = 0;
 
-    // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
+    // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
     let beltIndexLine_current = INTS[fEDI_cursor_indexLine] - INTS[fEDI_virtualIndexLine];
     if (beltIndexLine_current >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_current < 0) beltIndexLine_current = -1;
     else beltIndexLine_current = (beltIndexLine_current + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
-    // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
+    // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
     let beltIndexLine_first = INTS[fEDI_virtualIndexLine] - INTS[fEDI_virtualIndexLine];
     if (beltIndexLine_first >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_first < 0) beltIndexLine_first = -1;
     else beltIndexLine_first = (beltIndexLine_first + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
     // TODO: Use PREVIOUS here from 'beltIndexLine_first'
     
-    // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
+    // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
     let beltIndexLine_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
     if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
     else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
@@ -5930,7 +5930,7 @@ function EDI_render_do_EnterKey() {
 
         // TODO: This 'beltIndexLine_firstTilde' is maybe correct I don't know but it's been a long time since I wrote this line of code, and glancing at it, it looks like you need to subtract 1?
 
-        // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
+        // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
         let beltIndexLine_firstTilde = EDI_lineEndPositionList.count - INTS[fEDI_virtualIndexLine];
         if (beltIndexLine_firstTilde >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_firstTilde < 0) beltIndexLine_firstTilde = -1;
         else beltIndexLine_firstTilde = (beltIndexLine_firstTilde + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
@@ -5941,7 +5941,7 @@ function EDI_render_do_EnterKey() {
         
         let shouldRenderEntireViewport = false;
 
-        // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
+        // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
         let beltIndexLine_current = INTS[fEDI_cursor_editIndexLine] - INTS[fEDI_virtualIndexLine];
         if (beltIndexLine_current >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_current < 0) beltIndexLine_current = -1;
         else beltIndexLine_current = (beltIndexLine_current + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
@@ -5953,14 +5953,14 @@ function EDI_render_do_EnterKey() {
         if (INTS[fEDI_virtualCount] <= 1 || EDI_textElement.children.length !== INTS[fEDI_virtualCount])
             shouldRenderEntireViewport = true;
 
-        // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
+        // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
         let beltIndexLine_first = INTS[fEDI_virtualIndexLine] - INTS[fEDI_virtualIndexLine];
         if (beltIndexLine_first >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_first < 0) beltIndexLine_first = -1;
         else beltIndexLine_first = (beltIndexLine_first + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
         // TODO: Use PREVIOUS here from 'beltIndexLine_first'
 
-        // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
+        // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
         let beltIndexLine_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
         if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
         else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
@@ -6676,12 +6676,12 @@ function EDI_render_do_RemoveSelection() {
         // Remove middle line(s)
         if (linesRemovedCount > 0) {
 
-            // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
+            // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
             let beltIndexLine_current = (smallLineAndColumnIndices_indexLine + 1) - INTS[fEDI_virtualIndexLine];
             if (beltIndexLine_current >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_current < 0) beltIndexLine_current = -1;
             else beltIndexLine_current = (beltIndexLine_current + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
-            // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
+            // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
             let beltIndexLine_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
             if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
             else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
@@ -6751,7 +6751,7 @@ function EDI_render_do_Delete() {
                             // Merge the lines if both are visible.
                             // TODO: Use NEXT here (... + 1)
 
-                            // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
+                            // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
                             let beltIndexLine_next = (INTS[fEDI_cursor_indexLine] + 1) - INTS[fEDI_virtualIndexLine];
                             if (beltIndexLine_next >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_next < 0) beltIndexLine_next = -1;
                             else beltIndexLine_next = (beltIndexLine_next + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
@@ -6775,7 +6775,7 @@ function EDI_render_do_Delete() {
                                     keepingDiv.removeChild(keepingDiv.children[0]);
                                 }
 
-                                // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
+                                // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
                                 let beltIndexLine_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
                                 if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
                                 else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
@@ -6934,7 +6934,7 @@ function EDI_render_do_Backspace() {
                             // Merge the lines if both are visible.
                             // TODO: Use NEXT here (... + 1)
                             
-                            // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
+                            // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
                             let beltIndexLine_next = (INTS[fEDI_cursor_indexLine] + 1) - INTS[fEDI_virtualIndexLine];
                             if (beltIndexLine_next >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_next < 0) beltIndexLine_next = -1;
                             else beltIndexLine_next = (beltIndexLine_next + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
@@ -6958,7 +6958,7 @@ function EDI_render_do_Backspace() {
                                     keepingDiv.removeChild(keepingDiv.children[0]);
                                 }
 
-                                // See comment "Awkward explicit inlining of 'EDI_indexLineTo_beltIndexLine'" for more information.
+                                // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
                                 let beltIndexLine_last = (INTS[fEDI_virtualIndexLine] + INTS[fEDI_virtualCount] - 1) - INTS[fEDI_virtualIndexLine];
                                 if (beltIndexLine_last >= INTS[fEDI_ArrayFrom_textElement_children_length] || beltIndexLine_last < 0) beltIndexLine_last = -1;
                                 else beltIndexLine_last = (beltIndexLine_last + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
@@ -8053,7 +8053,7 @@ Google AI:
 
 //> Do you have any thoughts on the most optimal way to perform this calculation?
 //> 
-//> I have the code 'beltIndexCurrent = EDI_beltIndexLine_NEXT(beltIndexCurrent);'.
+//> I have the code 'ringBufferIndexCurrent = EDI_beltIndexLine_NEXT(ringBufferIndexCurrent);'.
 //> 
 //> This runs very often within a loop. The 'EDI_beltIndexLine_NEXT' function is:
 //> return ++ringBufferIndex >= INTS[fEDI_ArrayFrom_textElement_children_length] ? ringBufferIndex -= INTS[fEDI_ArrayFrom_textElement_children_length] : ringBufferIndex;
@@ -8063,10 +8063,10 @@ Google AI:
 //< ...
 //< 1. The Fastest Approach (Power of 2)
 //< ...
-//< beltIndexCurrent = (beltIndexCurrent + 1) & (ARRAY_LENGTH - 1);
+//< ringBufferIndexCurrent = (ringBufferIndexCurrent + 1) & (ARRAY_LENGTH - 1);
 //<
 //< 2. The Cleanest Micro-Optimization (Dynamic Length)
-//< beltIndexCurrent = (beltIndexCurrent + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
+//< ringBufferIndexCurrent = (ringBufferIndexCurrent + 1) % INTS[fEDI_ArrayFrom_textElement_children_length];
 //<
 
 /*
@@ -8568,8 +8568,8 @@ vite + typescript in aaaqwertybbb/DifferentialEquations
 Need to be renamed:
 - [x] fEDI_EDI_beltIndexZero => fEDI_ringBuffer_indexZero
 - [x] beltIndexLine => ringBufferIndex
-- [ ] beltIndexCurrent
-- [ ] EDI_indexLineTo_beltIndexLine
+- [x] beltIndexCurrent => ringBufferIndexCurrent
+- [x] EDI_indexLineTo_beltIndexLine => EDI_indexLineTo_ringBufferIndex
 - [ ] fEDI_w_beltIndexLine
 - [ ] beltIndexLine_current
 - [ ] beltIndexLine_first

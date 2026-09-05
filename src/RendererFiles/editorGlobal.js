@@ -8611,4 +8611,6 @@ For the sake of not using anyone's names unknowing whether they'd be okay with m
 And it is such a blatant lack of understanding and a blatant showcase of being a complete beginner
 I just
 
+Just the changes are nostalgia and anxiety and ???
+
 */

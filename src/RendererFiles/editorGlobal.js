@@ -8591,4 +8591,7 @@ by I chose to enter the painting like alicia.
 And my father kept the lights on.
 Then aging of insurance was the "okay here we go gonna toss you in the deep end"
 
+And it was a good thing because I realize how much I regret the time I spent in painting.
+But I have to live with the damage I've done to my body while I was there.
+
 */

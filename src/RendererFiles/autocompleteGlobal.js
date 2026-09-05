@@ -66,7 +66,7 @@ function AUTOCOMPLETE_render_create_lines(AUTOCOMPLETE_itemList) {
     // TODO: minus CONST_AUTOCOMPLETE_topPadding
     INTS[fAUTOCOMPLETE_virtualCount] = Math.floor(INTS[fAUTOCOMPLETE_rectHeight] / INTS[fAPP_lineHeight]);
     INTS[fAUTOCOMPLETE_virtualIndex] = 0;
-    INTS[fAUTOCOMPLETE_beltIndexZero] = 0;
+    INTS[fAUTOCOMPLETE_ringBufferIndexZero] = 0;
     INTS[fAUTOCOMPLETE_scrollTop] = 0;
 
     INTS[fAUTOCOMPLETE_cursorIndex] = 0;
@@ -116,7 +116,7 @@ function AUTOCOMPLETE_render_RESET_lines(AUTOCOMPLETE_itemList) {
     // TODO: minus CONST_AUTOCOMPLETE_topPadding
     INTS[fAUTOCOMPLETE_virtualCount] = Math.floor(INTS[fAUTOCOMPLETE_rectHeight] / INTS[fAPP_lineHeight]);
     INTS[fAUTOCOMPLETE_virtualIndex] = 0;
-    INTS[fAUTOCOMPLETE_beltIndexZero] = 0;
+    INTS[fAUTOCOMPLETE_ringBufferIndexZero] = 0;
     INTS[fAUTOCOMPLETE_scrollTop] = 0;
 
     AUTOCOMPLETEElement.removeEventListener('scroll', AUTOCOMPLETE_events_scroll_receive, { passive: true });
@@ -249,7 +249,7 @@ function AUTOCOMPLETE_slice(lspResult) {
     BYTES[byteAUTOCOMPLETE_scrollIsFetchingData] = 0;
     if (INTS[fAUTOCOMPLETE_sliceVirtualIndex_SLICE] != INTS[fAUTOCOMPLETE_virtualIndex] ||
         INTS[fAUTOCOMPLETE_sliceVirtualCount_SLICE] != INTS[fAUTOCOMPLETE_virtualCount] ||
-        INTS[fAUTOCOMPLETE_sliceRingBufferIndexZero_SLICE] != INTS[fAUTOCOMPLETE_beltIndexZero]) {
+        INTS[fAUTOCOMPLETE_sliceRingBufferIndexZero_SLICE] != INTS[fAUTOCOMPLETE_ringBufferIndexZero]) {
             return;
     }
 
@@ -259,7 +259,7 @@ function AUTOCOMPLETE_slice(lspResult) {
     let currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = INTS[fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING];
     let NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
 
-    let beltIndex = INTS[fAUTOCOMPLETE_beltIndexZero];
+    let beltIndex = INTS[fAUTOCOMPLETE_ringBufferIndexZero];
 
     for (let i = 0; i < lspResult.items.length; i++) {
         let item = lspResult.items[i];
@@ -427,27 +427,27 @@ function AUTOCOMPLETE_events_scroll_render(timestamp) {
         lowerBound = prevVli + INTS[fAUTOCOMPLETE_virtualCount];
         upperBound = lowerBound + diff;
 
-        beltIndexLine = INTS[fAUTOCOMPLETE_beltIndexZero];
+        beltIndexLine = INTS[fAUTOCOMPLETE_ringBufferIndexZero];
 
-        INTS[fAUTOCOMPLETE_beltIndexZero] = (beltIndexLine + diff) % local_AUTOCOMPLETE_arrayFromItemListElement_length;
+        INTS[fAUTOCOMPLETE_ringBufferIndexZero] = (beltIndexLine + diff) % local_AUTOCOMPLETE_arrayFromItemListElement_length;
     }
     else if (diff < 0 && ((diff *= -1) < INTS[fAUTOCOMPLETE_virtualCount])) {
         lowerBound = currVli;
         upperBound = lowerBound + diff;
 
         // TODO: This can be simplified to a modulo operation.
-        let lastIndex = INTS[fAUTOCOMPLETE_beltIndexZero] === 0
+        let lastIndex = INTS[fAUTOCOMPLETE_ringBufferIndexZero] === 0
             ? local_AUTOCOMPLETE_arrayFromItemListElement_length - 1
-            : INTS[fAUTOCOMPLETE_beltIndexZero] - 1;
+            : INTS[fAUTOCOMPLETE_ringBufferIndexZero] - 1;
 
-        INTS[fAUTOCOMPLETE_beltIndexZero] = (lastIndex - (diff - 1) + local_AUTOCOMPLETE_arrayFromItemListElement_length) % local_AUTOCOMPLETE_arrayFromItemListElement_length;
+        INTS[fAUTOCOMPLETE_ringBufferIndexZero] = (lastIndex - (diff - 1) + local_AUTOCOMPLETE_arrayFromItemListElement_length) % local_AUTOCOMPLETE_arrayFromItemListElement_length;
 
-        beltIndexLine = INTS[fAUTOCOMPLETE_beltIndexZero];
+        beltIndexLine = INTS[fAUTOCOMPLETE_ringBufferIndexZero];
     }
     else {
         lowerBound = currVli;
         upperBound = currVli + INTS[fAUTOCOMPLETE_virtualCount];
-        beltIndexLine = INTS[fAUTOCOMPLETE_beltIndexZero];
+        beltIndexLine = INTS[fAUTOCOMPLETE_ringBufferIndexZero];
     }
 
     let verticalOffset = CONST_AUTOCOMPLETE_topPadding + (lowerBound * INTS[fAPP_lineHeight]);
@@ -487,7 +487,7 @@ function AUTOCOMPLETE_events_scroll_render_trailingEdgeDo() {
     if (!BYTES[byteAUTOCOMPLETE_scrollIsFetchingData]) {
         INTS[fAUTOCOMPLETE_sliceVirtualIndex_SLICE] = INTS[fAUTOCOMPLETE_virtualIndex];
         INTS[fAUTOCOMPLETE_sliceVirtualCount_SLICE] = INTS[fAUTOCOMPLETE_virtualCount];
-        INTS[fAUTOCOMPLETE_sliceRingBufferIndexZero_SLICE] = INTS[fAUTOCOMPLETE_beltIndexZero];
+        INTS[fAUTOCOMPLETE_sliceRingBufferIndexZero_SLICE] = INTS[fAUTOCOMPLETE_ringBufferIndexZero];
         BYTES[byteAUTOCOMPLETE_scrollIsFetchingData] = 1;
         window.myAPI.editorCompletionRequest_slice(INTS[fAUTOCOMPLETE_virtualIndex], INTS[fAUTOCOMPLETE_virtualIndex] + INTS[fAUTOCOMPLETE_virtualCount]);
     }

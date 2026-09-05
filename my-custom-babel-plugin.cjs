@@ -440,7 +440,7 @@ module.exports = function (babel) {
     "fAUTOCOMPLETE_sliceRingBufferIndexZero_SLICE",
     "fAUTOCOMPLETE_virtualCount",
     "fAUTOCOMPLETE_virtualIndex",
-    "fAUTOCOMPLETE_beltIndexZero",
+    "fAUTOCOMPLETE_ringBufferIndexZero",
     "fAUTOCOMPLETE_scrollTop",
     "fAUTOCOMPLETE_scrollEndDeadline",
     "fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING",

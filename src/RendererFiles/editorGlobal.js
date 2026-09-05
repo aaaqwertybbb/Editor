@@ -8583,4 +8583,7 @@ Even today I stuck to it 100% (so far and hopefully for the rest of the day as w
 But part of the problem with losing weight is that I have so much anxiety.
 And I worry that it will impact my ability to code well.
 
+Not that long term it would, long term it'd improve my ability to code.
+But the caloric deficit, the time needed to sit in that feeling of lower energy.
+
 */

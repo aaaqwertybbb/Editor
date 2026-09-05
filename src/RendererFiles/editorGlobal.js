@@ -8495,4 +8495,7 @@ I think the explorer has a bug I can't tell though cause I am so tired where I d
 I've just following the ctrl+f and etc... and pasting or find+replace
 All in all I need to just stop for the day
 
+I just read this back and I can't believe how many words I missed
+I literally said them in my mind but u read the text they just aren't typed there
+
 */

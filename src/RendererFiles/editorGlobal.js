@@ -8526,6 +8526,7 @@ is healthy.
 And all in all I think the father eventually sighs
 and says I'll keep the lights on.
 So she can go into her painting and delusion.
+I can't even type this I'm legit crying
 =====================
 ***SPOILER END?****
 =====================

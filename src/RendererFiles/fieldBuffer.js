@@ -588,7 +588,7 @@ const fAUTOCOMPLETE_rectTop = 103;
 
 const fAUTOCOMPLETE_sliceVirtualIndex_SLICE = 104;
 const fAUTOCOMPLETE_sliceVirtualCount_SLICE = 105;
-const fAUTOCOMPLETE_sliceBeltIndexZero_SLICE = 106;
+const fAUTOCOMPLETE_sliceRingBufferIndexZero_SLICE = 106;
 
 const fAUTOCOMPLETE_virtualCount = 107;
 const fAUTOCOMPLETE_virtualIndex = 108;

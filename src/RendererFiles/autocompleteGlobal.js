@@ -249,7 +249,7 @@ function AUTOCOMPLETE_slice(lspResult) {
     BYTES[byteAUTOCOMPLETE_scrollIsFetchingData] = 0;
     if (INTS[fAUTOCOMPLETE_sliceVirtualIndex_SLICE] != INTS[fAUTOCOMPLETE_virtualIndex] ||
         INTS[fAUTOCOMPLETE_sliceVirtualCount_SLICE] != INTS[fAUTOCOMPLETE_virtualCount] ||
-        INTS[fAUTOCOMPLETE_sliceBeltIndexZero_SLICE] != INTS[fAUTOCOMPLETE_beltIndexZero]) {
+        INTS[fAUTOCOMPLETE_sliceRingBufferIndexZero_SLICE] != INTS[fAUTOCOMPLETE_beltIndexZero]) {
             return;
     }
 
@@ -487,7 +487,7 @@ function AUTOCOMPLETE_events_scroll_render_trailingEdgeDo() {
     if (!BYTES[byteAUTOCOMPLETE_scrollIsFetchingData]) {
         INTS[fAUTOCOMPLETE_sliceVirtualIndex_SLICE] = INTS[fAUTOCOMPLETE_virtualIndex];
         INTS[fAUTOCOMPLETE_sliceVirtualCount_SLICE] = INTS[fAUTOCOMPLETE_virtualCount];
-        INTS[fAUTOCOMPLETE_sliceBeltIndexZero_SLICE] = INTS[fAUTOCOMPLETE_beltIndexZero];
+        INTS[fAUTOCOMPLETE_sliceRingBufferIndexZero_SLICE] = INTS[fAUTOCOMPLETE_beltIndexZero];
         BYTES[byteAUTOCOMPLETE_scrollIsFetchingData] = 1;
         window.myAPI.editorCompletionRequest_slice(INTS[fAUTOCOMPLETE_virtualIndex], INTS[fAUTOCOMPLETE_virtualIndex] + INTS[fAUTOCOMPLETE_virtualCount]);
     }

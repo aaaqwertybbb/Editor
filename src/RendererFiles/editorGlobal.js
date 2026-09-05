@@ -8635,4 +8635,19 @@ I don't want you to "accept an apology as though yadayada" I'm chillin
 
 A lot of my inner voice seems to center around me being a loser, that's a psychologist field day right there
 
+And I don't regret spending time coding.
+I regret something more along the lines of how I interpreted 'serial experiments lain'.
+I didn't see the anime I only saw the movie (it is a fan compilation of clips from the anime that is like an hour long).
+And even then I'm really just saying my own thing here cause I 99% deviated from the "movie" plot.
+But I regret deciding that I didn't care for my "body" or the physical world.
+
+Like today I coded a ton.
+I also ate 2 lbs of 98% fat free ground chicken.
+the correct amount of carbohydrates / fats
+    (nutrigrain bars aren't "healthy" I don't wanna give that image lol they're sugary things with vitamins thrown in
+     my emphasis is on the fact that I'm eating 8 of them and no other sources of carbs i.e.: a good amount of carbs just ignore the word "nutrigrain")
+I went did some exercises with weights
+I went for an hour long walk
+I came home and I showered.
+
 */

@@ -8491,4 +8491,8 @@ vite + typescript in aaaqwertybbb/DifferentialEquations
 
 - [ ] TODO: I saw at least 1 case where the HTML element's children were being read when it should've used the ArrayFrom so go through them all and fix this and possibly any other cases.
 
+I think the explorer has a bug I can't tell though cause I am so tired where I don't really what's happening anymore
+I've just following the ctrl+f and etc... and pasting or find+replace
+All in all I need to just stop for the day
+
 */

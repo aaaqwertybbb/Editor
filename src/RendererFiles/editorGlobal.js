@@ -8565,5 +8565,14 @@ And I wasn't gonna miss my body.
 ***SPOILER END?****
 =====================
 
+I want my body back because having a noticeable tricep isn't just
+about looks.
+That's kind of what my mindset was.
+I was like oh who cares.
+But those details are correlated to good health.
+And that good health means energy,
+and moving around in day to day life and not feeling tired.
+And I just want my body back.
+
 
 */

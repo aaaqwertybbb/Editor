@@ -8574,5 +8574,11 @@ And that good health means energy,
 and moving around in day to day life and not feeling tired.
 And I just want my body back.
 
+And I've been doing extremely well with the
+2 lbs of 98% fat free ground chicken with sriracha
+and 8 strawberry nutrigrain bars.
+
+Even today I stuck to it 100% (so far and hopefully for the rest of the day as well)
+
 
 */

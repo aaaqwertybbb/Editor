@@ -149,7 +149,6 @@ function AUTOCOMPLETE_render_do_show(timestamp) {
     // so this continues failing to avoid race condition, but now if the lsp throws an error you don't get locked out forever.
     // (the reason specfically I think relates to when you change a file i.e.: changing a file can race condition regardless of this being forced to false)
     // (UGH not changing a file I'm gonna pass out I'm almost done but I mean the changing the autocomplete menu or some such)
-    // (also something in the code seems buggy about having the items in the correct order or something? am I missing a belt?)
     BYTES[byteAUTOCOMPLETE_scrollIsFetchingData] = 0;
 
     let local_AUTOCOMPLETEElement;
@@ -259,12 +258,12 @@ function AUTOCOMPLETE_slice(lspResult) {
     let currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = INTS[fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING];
     let NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
 
-    let beltIndex = INTS[fAUTOCOMPLETE_ringBufferIndexZero];
+    let ringBufferIndex = INTS[fAUTOCOMPLETE_ringBufferIndexZero];
 
     for (let i = 0; i < lspResult.items.length; i++) {
         let item = lspResult.items[i];
-        let div = local_AUTOCOMPLETE_arrayFromItemListElement[beltIndex];
-        beltIndex = (beltIndex + 1) % local_AUTOCOMPLETE_arrayFromItemListElement_length;
+        let div = local_AUTOCOMPLETE_arrayFromItemListElement[ringBufferIndex];
+        ringBufferIndex = (ringBufferIndex + 1) % local_AUTOCOMPLETE_arrayFromItemListElement_length;
         div.className = '';
         div.textContent = item.label;
 
@@ -417,7 +416,7 @@ function AUTOCOMPLETE_events_scroll_render(timestamp) {
 
     let lowerBound;
     let upperBound;
-    let beltIndexLine;
+    let ringBufferIndex;
 
     let local_AUTOCOMPLETE_arrayFromItemListElement = AUTOCOMPLETE_arrayFromItemListElement;
     let local_AUTOCOMPLETE_arrayFromItemListElement_length = local_AUTOCOMPLETE_arrayFromItemListElement.length;
@@ -427,9 +426,9 @@ function AUTOCOMPLETE_events_scroll_render(timestamp) {
         lowerBound = prevVli + INTS[fAUTOCOMPLETE_virtualCount];
         upperBound = lowerBound + diff;
 
-        beltIndexLine = INTS[fAUTOCOMPLETE_ringBufferIndexZero];
+        ringBufferIndex = INTS[fAUTOCOMPLETE_ringBufferIndexZero];
 
-        INTS[fAUTOCOMPLETE_ringBufferIndexZero] = (beltIndexLine + diff) % local_AUTOCOMPLETE_arrayFromItemListElement_length;
+        INTS[fAUTOCOMPLETE_ringBufferIndexZero] = (ringBufferIndex + diff) % local_AUTOCOMPLETE_arrayFromItemListElement_length;
     }
     else if (diff < 0 && ((diff *= -1) < INTS[fAUTOCOMPLETE_virtualCount])) {
         lowerBound = currVli;
@@ -442,23 +441,23 @@ function AUTOCOMPLETE_events_scroll_render(timestamp) {
 
         INTS[fAUTOCOMPLETE_ringBufferIndexZero] = (lastIndex - (diff - 1) + local_AUTOCOMPLETE_arrayFromItemListElement_length) % local_AUTOCOMPLETE_arrayFromItemListElement_length;
 
-        beltIndexLine = INTS[fAUTOCOMPLETE_ringBufferIndexZero];
+        ringBufferIndex = INTS[fAUTOCOMPLETE_ringBufferIndexZero];
     }
     else {
         lowerBound = currVli;
         upperBound = currVli + INTS[fAUTOCOMPLETE_virtualCount];
-        beltIndexLine = INTS[fAUTOCOMPLETE_ringBufferIndexZero];
+        ringBufferIndex = INTS[fAUTOCOMPLETE_ringBufferIndexZero];
     }
 
     let verticalOffset = CONST_AUTOCOMPLETE_topPadding + (lowerBound * INTS[fAPP_lineHeight]);
 
-    beltIndexLine--; // The 0th loop will increment somewhat awkwardly. This decrement avoids that.
+    ringBufferIndex--; // The 0th loop will increment somewhat awkwardly. This decrement avoids that.
 
     for (let i = lowerBound; i < upperBound; i++) {
 
-        beltIndexLine = (beltIndexLine + 1) % local_AUTOCOMPLETE_arrayFromItemListElement_length;
+        ringBufferIndex = (ringBufferIndex + 1) % local_AUTOCOMPLETE_arrayFromItemListElement_length;
 
-        let div = local_AUTOCOMPLETE_arrayFromItemListElement[beltIndexLine];
+        let div = local_AUTOCOMPLETE_arrayFromItemListElement[ringBufferIndex];
         
         if (i >= local_AUTOCOMPLETE_items_totalLength) {
             div.textContent = '~';

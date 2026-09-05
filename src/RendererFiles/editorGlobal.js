@@ -8633,4 +8633,6 @@ I don't want you to "accept an apology as though yadayada" I'm chillin
 "You need to let this love go || multifandom" is another one that really offends me when I see it
 "this loser is still sitting here trying to make an IDE let it go bro"
 
+A lot of my inner voice seems to center around me being a loser, that's a psychologist field day right there
+
 */

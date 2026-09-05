@@ -54,7 +54,7 @@ class TreeViewComponent {
         this.scrollTimer = null;
         this.hasTrailingCall = false;
 
-        this.beltIndexZero = 0;
+        this.ringBufferIndexZero = 0;
 
         this.TREEVIEW_renderKindArray = [];
         this.TREEVIEW_isRenderPending = false;
@@ -326,7 +326,7 @@ class TreeViewComponent {
         this._ONSCROLLvirtualCount = this.virtualCount;
 
         this.virtualIndex_ofScrollTop = Math.floor(this.lastReadNumber_scrollTop / this.itemHeightNumber);
-        this.beltIndexZero = 0;
+        this.ringBufferIndexZero = 0;
 
         let totalCount = this.director.tvd_getTotalCount();
 
@@ -401,16 +401,16 @@ class TreeViewComponent {
         let indexItem = Math.floor(rY / this.itemHeightNumber);
         indexItem = this.state_cursor_validateIndex(indexItem);
 
-        // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
-        // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-        // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-        // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexItem = ((indexItem)) - this.virtualIndex_ofScrollTop;
-        if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-        else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+        // TODO: This is an awkward explicit inlining of 'this.indexItemTo_ringBufferIndexItem'...
+        // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
+        // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+        // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
+        let ringBufferIndexItem = ((indexItem)) - this.virtualIndex_ofScrollTop;
+        if (ringBufferIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
+        else ringBufferIndexItem = (ringBufferIndexItem + this.ringBufferIndexZero) % this.virtualCount;
 
-        if (beltIndexItem < 0) return;
-        let divItem = this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem];
+        if (ringBufferIndexItem < 0) return;
+        let divItem = this.TREEVIEW_ArrayFrom_itemListElement_children[ringBufferIndexItem];
 
         if (event_target === divItem.children[0]) {
             return this.director.tvd_expandCollapseIconWasClicked_async(divItem, indexItem);
@@ -427,29 +427,29 @@ class TreeViewComponent {
         let indexItem = Math.floor(rY / this.itemHeightNumber);
         indexItem = this.state_cursor_validateIndex(indexItem);
 
-        // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
-        // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-        // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-        // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-        let beltIndexItem = ((indexItem)) - this.virtualIndex_ofScrollTop;
-        if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-        else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+        // TODO: This is an awkward explicit inlining of 'this.indexItemTo_ringBufferIndexItem'...
+        // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
+        // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+        // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
+        let ringBufferIndexItem = ((indexItem)) - this.virtualIndex_ofScrollTop;
+        if (ringBufferIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
+        else ringBufferIndexItem = (ringBufferIndexItem + this.ringBufferIndexZero) % this.virtualCount;
 
-        if (beltIndexItem < 0) return;
-        let divItem = this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem];
+        if (ringBufferIndexItem < 0) return;
+        let divItem = this.TREEVIEW_ArrayFrom_itemListElement_children[ringBufferIndexItem];
 
         // if not clicked "chevron"
         if (event_target !== divItem.children[0]) {
-            // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
-            // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-            // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-            // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-            let beltIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
-            if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-            else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+            // TODO: This is an awkward explicit inlining of 'this.indexItemTo_ringBufferIndexItem'...
+            // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
+            // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+            // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
+            let ringBufferIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
+            if (ringBufferIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
+            else ringBufferIndexItem = (ringBufferIndexItem + this.ringBufferIndexZero) % this.virtualCount;
 
-            if (beltIndexItem < 0) return;
-            return this.director.tvd_ondblclick_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex);
+            if (ringBufferIndexItem < 0) return;
+            return this.director.tvd_ondblclick_async(this.TREEVIEW_ArrayFrom_itemListElement_children[ringBufferIndexItem], this.cursorIndex);
         }
     }
 
@@ -464,16 +464,16 @@ class TreeViewComponent {
 
             // TODO: you need to move this above the divItem assignment and do checks earlier... double check all other uses
 
-            // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
-            // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-            // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-            // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-            let beltIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
-            if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-            else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+            // TODO: This is an awkward explicit inlining of 'this.indexItemTo_ringBufferIndexItem'...
+            // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
+            // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+            // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
+            let ringBufferIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
+            if (ringBufferIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
+            else ringBufferIndexItem = (ringBufferIndexItem + this.ringBufferIndexZero) % this.virtualCount;
 
-            if (beltIndexItem < 0) return;
-            return this.director.tvd_oncontextmenu_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex, event_button, event_clientX, event_clientY, beltIndexItem);
+            if (ringBufferIndexItem < 0) return;
+            return this.director.tvd_oncontextmenu_async(this.TREEVIEW_ArrayFrom_itemListElement_children[ringBufferIndexItem], this.cursorIndex, event_button, event_clientX, event_clientY, ringBufferIndexItem);
         } else {
             if (this.cursorIndex >= this.director.tvd_getTotalCount()) {
                 return;
@@ -482,18 +482,18 @@ class TreeViewComponent {
             this.state_cursor_setIndex(this.state_cursor_validateIndex(
                 this.cursorIndex));
 
-            // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
-            // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-            // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-            // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-            let beltIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
-            if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-            else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+            // TODO: This is an awkward explicit inlining of 'this.indexItemTo_ringBufferIndexItem'...
+            // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
+            // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+            // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
+            let ringBufferIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
+            if (ringBufferIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
+            else ringBufferIndexItem = (ringBufferIndexItem + this.ringBufferIndexZero) % this.virtualCount;
 
-            if (beltIndexItem < 0) return;
+            if (ringBufferIndexItem < 0) return;
 
             // TODO: Handle context menu with keyboard when active node is out of view
-            return this.director.tvd_oncontextmenu_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex, event_button, event_clientX, event_clientY, beltIndexItem);
+            return this.director.tvd_oncontextmenu_async(this.TREEVIEW_ArrayFrom_itemListElement_children[ringBufferIndexItem], this.cursorIndex, event_button, event_clientX, event_clientY, ringBufferIndexItem);
         }
     }
 
@@ -527,16 +527,16 @@ class TreeViewComponent {
 
                     // TODO: 'ArrowRight' when the cursor is on a valid item but isn't part of the virtualization result.
 
-                    // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
-                    // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-                    // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-                    // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-                    let beltIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
-                    if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-                    else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+                    // TODO: This is an awkward explicit inlining of 'this.indexItemTo_ringBufferIndexItem'...
+                    // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
+                    // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+                    // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
+                    let ringBufferIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
+                    if (ringBufferIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
+                    else ringBufferIndexItem = (ringBufferIndexItem + this.ringBufferIndexZero) % this.virtualCount;
 
-                    if (beltIndexItem < 0) return;
-                    return this.director.tvd_arrowRight_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex);
+                    if (ringBufferIndexItem < 0) return;
+                    return this.director.tvd_arrowRight_async(this.TREEVIEW_ArrayFrom_itemListElement_children[ringBufferIndexItem], this.cursorIndex);
                 }
                 return;
             case 'ArrowLeft':
@@ -545,16 +545,16 @@ class TreeViewComponent {
                     this.state_cursor_setIndex(this.state_cursor_validateIndex(
                         this.cursorIndex));
                     
-                    // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
-                    // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-                    // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-                    // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-                    let beltIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
-                    if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-                    else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+                    // TODO: This is an awkward explicit inlining of 'this.indexItemTo_ringBufferIndexItem'...
+                    // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
+                    // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+                    // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
+                    let ringBufferIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
+                    if (ringBufferIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
+                    else ringBufferIndexItem = (ringBufferIndexItem + this.ringBufferIndexZero) % this.virtualCount;
 
-                    if (beltIndexItem < 0) return;
-                    return this.director.tvd_arrowLeft_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex);
+                    if (ringBufferIndexItem < 0) return;
+                    return this.director.tvd_arrowLeft_async(this.TREEVIEW_ArrayFrom_itemListElement_children[ringBufferIndexItem], this.cursorIndex);
                 }
             	return;
             case ' ':
@@ -563,16 +563,16 @@ class TreeViewComponent {
                 this.state_cursor_setIndex(this.state_cursor_validateIndex(
                     this.cursorIndex));
                 
-                // TODO: This is an awkward explicit inlining of 'this.indexItemTo_beltIndexItem'...
-                // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-                // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-                // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-                let beltIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
-                if (beltIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || beltIndexItem < 0) beltIndexItem = -1;
-                else beltIndexItem = (beltIndexItem + this.beltIndexZero) % this.virtualCount;
+                // TODO: This is an awkward explicit inlining of 'this.indexItemTo_ringBufferIndexItem'...
+                // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
+                // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+                // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
+                let ringBufferIndexItem = ((this.cursorIndex)) - this.virtualIndex_ofScrollTop;
+                if (ringBufferIndexItem >= this.TREEVIEW_ArrayFrom_itemListElement_children_length || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
+                else ringBufferIndexItem = (ringBufferIndexItem + this.ringBufferIndexZero) % this.virtualCount;
 
-                if (beltIndexItem < 0) return;
-                return this.director.tvd_onkeydown_async(this.TREEVIEW_ArrayFrom_itemListElement_children[beltIndexItem], this.cursorIndex, event.key);
+                if (ringBufferIndexItem < 0) return;
+                return this.director.tvd_onkeydown_async(this.TREEVIEW_ArrayFrom_itemListElement_children[ringBufferIndexItem], this.cursorIndex, event.key);
         }
     }
 

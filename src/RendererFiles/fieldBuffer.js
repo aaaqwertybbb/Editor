@@ -759,7 +759,7 @@ a fast bitwise AND mask (index & (size - 1)).
 
 
 
-// for the beltIndezZero etc... consider using max value?
+// for the ringBufferIndexZero etc... consider using max value?
 // Although it might "just work" because you're using locals which would become negative?
 // TODO: figure it out
 

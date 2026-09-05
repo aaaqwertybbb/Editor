@@ -45,7 +45,7 @@ class ListComponent {
         this.hasTrailingCall = false;
         this.rAFTimer = null;
 
-        /** @type {number} */ this.beltIndexZero = 0;
+        /** @type {number} */ this.ringBufferIndexZero = 0;
 
         this.LIST_renderKindArray = [];
         this.LIST_isRenderPending = false;
@@ -204,22 +204,22 @@ class ListComponent {
                     let firstIndexLineThatWasNotAlreadyRendered = prevVli + this._ONSCROLLvirtualCount;
                     let itemsCount = this.getItemsCountFunc();
                     let vertical = (prevVli + this._ONSCROLLvirtualCount) * this.itemHeightNumber;
-                    let origin = this.beltIndexZero;
+                    let origin = this.ringBufferIndexZero;
 
-                    this.beltIndexZero = origin + diff;
-                    if (this.beltIndexZero >= this.itemListElement.children.length) {
-                        this.beltIndexZero -= this.itemListElement.children.length;
+                    this.ringBufferIndexZero = origin + diff;
+                    if (this.ringBufferIndexZero >= this.itemListElement.children.length) {
+                        this.ringBufferIndexZero -= this.itemListElement.children.length;
                     }
 
                     for (var i = 0; i < diff; i++) {
                         let indexItem = prevVli + this._ONSCROLLvirtualCount + i;
 
-                        let beltIndexItem = origin + i;
-                        if (beltIndexItem >= this.itemListElement.children.length) {
-                            beltIndexItem -= this.itemListElement.children.length;
+                        let ringBufferIndexItem = origin + i;
+                        if (ringBufferIndexItem >= this.itemListElement.children.length) {
+                            ringBufferIndexItem -= this.itemListElement.children.length;
                         }
 
-                        let divItem = this.itemListElement.children[beltIndexItem];
+                        let divItem = this.itemListElement.children[ringBufferIndexItem];
                         
                         divItem.style.transform = `translateY(${vertical}px)`;
                         vertical += this.itemHeightNumber;
@@ -238,16 +238,16 @@ class ListComponent {
                     let itemsCount = this.getItemsCountFunc();
 
                     let lastIndex;
-                    if (this.beltIndexZero === 0) {
+                    if (this.ringBufferIndexZero === 0) {
                         lastIndex = this.itemListElement.children.length - 1;
                     }
                     else {
-                        lastIndex = this.beltIndexZero - 1;
+                        lastIndex = this.ringBufferIndexZero - 1;
                     }
-                    this.beltIndexZero = lastIndex - (diff - 1);
+                    this.ringBufferIndexZero = lastIndex - (diff - 1);
 
-                    if (this.beltIndexZero < 0) {
-                        this.beltIndexZero += this.itemListElement.children.length;
+                    if (this.ringBufferIndexZero < 0) {
+                        this.ringBufferIndexZero += this.itemListElement.children.length;
                     }
 
                     let vertical = (currVli + (diff - 1)) * this.itemHeightNumber;
@@ -274,17 +274,17 @@ class ListComponent {
 
                     let itemsCount = this.getItemsCountFunc();
                     let vertical = this.virtualIndex_ofScrollTop * this.itemHeightNumber;
-                    let origin = this.beltIndexZero;
+                    let origin = this.ringBufferIndexZero;
                     
                     for (var i = 0; i < this.virtualCount; i++) {
                         let indexItem = i + this.virtualIndex_ofScrollTop;
 
-                        let beltIndexItem = origin + i;
-                        if (beltIndexItem >= this.itemListElement.children.length) {
-                            beltIndexItem -= this.itemListElement.children.length;
+                        let ringBufferIndexItem = origin + i;
+                        if (ringBufferIndexItem >= this.itemListElement.children.length) {
+                            ringBufferIndexItem -= this.itemListElement.children.length;
                         }
 
-                        let divItem = this.itemListElement.children[beltIndexItem];
+                        let divItem = this.itemListElement.children[ringBufferIndexItem];
 
                         divItem.style.transform = `translateY(${vertical}px)`;
                         vertical += this.itemHeightNumber;
@@ -303,7 +303,7 @@ class ListComponent {
         this._ONSCROLLvirtualCount = this.virtualCount;
         this.itemListElement.innerHTML = '';
         this.virtualIndex_ofScrollTop = Math.floor(this.rootElement.scrollTop / this.itemHeightNumber);
-        this.beltIndexZero = 0;
+        this.ringBufferIndexZero = 0;
 
         let itemsCount = this.getItemsCountFunc();
         let vertical = this.virtualIndex_ofScrollTop * this.itemHeightNumber;
@@ -351,7 +351,7 @@ class ListComponent {
                     this.state_cursor_validateIndex(this.cursorIndex));
                 let virtualIndex_ofEvent = this.cursorIndex - this.virtualIndex_ofScrollTop;
                 if (virtualIndex_ofEvent >= 0 && virtualIndex_ofEvent < this.itemListElement.children.length) { // check if is in virtualization space
-                    virtualIndex_ofEvent += this.beltIndexZero; // then map the "virtualIndex_ofEvent" by the origin aka:'this.beltIndexZero'... i.e.: which line in the dom is the first line from the top of the screen down.
+                    virtualIndex_ofEvent += this.ringBufferIndexZero; // then map the "virtualIndex_ofEvent" by the origin aka:'this.ringBufferIndexZero'... i.e.: which line in the dom is the first line from the top of the screen down.
                     if (virtualIndex_ofEvent >= this.itemListElement.children.length) {
                         virtualIndex_ofEvent -= this.itemListElement.children.length;
                     }

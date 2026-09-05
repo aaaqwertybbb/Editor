@@ -29,7 +29,7 @@ I actually think 'lineIndex' "rolls off the tongue" a little easier.
 But if you apply the pattern it hides the word 'line'.
 And the importance when reading the code lies with the words 'line' and 'column'.
 
-- [ ] When getting the beltIndex of anything that follows this pattern you don't check whether the underlying data has a large enough count, it is solely related to whether the itemHeight and height of the element can fit "that many divs".
+- [ ] When getting the ringBufferIndex of anything that follows this pattern you don't check whether the underlying data has a large enough count, it is solely related to whether the itemHeight and height of the element can fit "that many divs".
     - [ ] TreeView
     - [ ] List
 - [ ] When creating divs for the viewport you follow up by drawing the viewport afterwards.
@@ -8045,9 +8045,9 @@ Google AI:
 
 //> Do you have any thoughts on the most optimal way to perform this calculation?
 //> 
-//> I have the code 'ringBufferIndexCurrent = EDI_beltIndexLine_NEXT(ringBufferIndexCurrent);'.
+//> I have the code 'ringBufferIndexCurrent = EDI_ringBufferIndex_NEXT(ringBufferIndexCurrent);'.
 //> 
-//> This runs very often within a loop. The 'EDI_beltIndexLine_NEXT' function is:
+//> This runs very often within a loop. The 'EDI_ringBufferIndex_NEXT' function is:
 //> return ++ringBufferIndex >= INTS[fEDI_ArrayFrom_textElement_children_length] ? ringBufferIndex -= INTS[fEDI_ArrayFrom_textElement_children_length] : ringBufferIndex;
 //
 //< To optimize this operation, the most effective approach is to replace the function call and conditional branch with a
@@ -8489,33 +8489,6 @@ Ensure this doesn't break hidden classes before you do this tomorrow.
 
 vite + typescript in aaaqwertybbb/DifferentialEquations
 
-===========
-
-Need to be renamed:
-- [x] fEDI_EDI_beltIndexZero => fEDI_ringBuffer_indexZero
-- [x] beltIndexLine => ringBufferIndex
-- [x] beltIndexCurrent => ringBufferIndexCurrent
-- [x] EDI_indexLineTo_beltIndexLine => EDI_indexLineTo_ringBufferIndex
-- [x] fEDI_w_beltIndexLine => fEDI_w_ringBufferIndex
-- [x] beltIndexLine_current => ringBufferIndex_current
-- [x] beltIndexLine_first => ringBufferIndex_first
-- [x] beltIndexLine_last => ringBufferIndex_last
-- [x] beltIndexLine_next => ringBufferIndex_next
-- [x] beltIndexLine_firstTilde => ringBufferIndex_firstTilde
-- [x] next_beltIndexLine => next_ringBufferIndex
-- [x] inclusiveSmallestBeltIndexLineToShift
-- [x] smallestBeltIndexLineToReceive => smallestRingBufferIndexToReceive
-- [x] ArrayFrom_gutter_children => EDI_ringBuffer_gutter
-- [x] ArrayFrom_textElement_children => EDI_ringBuffer_text
-
-Comments only:
-- [x] belt => ringBuffer
-- [x] belt_index_zero => ringBuffer_indexZero
-
-=======
-
 - [ ] TODO: I saw at least 1 case where the HTML element's children were being read when it should've used the ArrayFrom so go through them all and fix this and possibly any other cases.
-
-
 
 */

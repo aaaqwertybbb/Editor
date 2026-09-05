@@ -8594,4 +8594,9 @@ Then aging of insurance was the "okay here we go gonna toss you in the deep end"
 And it was a good thing because I realize how much I regret the time I spent in painting.
 But I have to live with the damage I've done to my body while I was there.
 
+And I'm just trying to undo that damage
+and it's working
+and such
+but I just anxiety and thoughts and I just thinking about this is all
+
 */

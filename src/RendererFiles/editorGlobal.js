@@ -8513,4 +8513,21 @@ I do think a lot of people like me but I don't think I'm ever gonna shake this
 
 cringe, anxiety, ???
 
+==========
+
+=====================
+***SPOILER START?****
+=====================
+In clair obscur expedition 33 one of the lines is from
+alicia's father to her.
+They're arguing about whether alicia escaping from
+the real world by entering the world of her paintings
+is healthy.
+And all in all I think the father eventually sighs
+and says I'll keep the lights on.
+So she can go into her painting and delusion.
+=====================
+***SPOILER END?****
+=====================
+
 */

@@ -135,7 +135,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_trailingEdge() {
 };
 
 /** 
- * @param {number} caseThreeOrigin if left undefined or (falsey but not 0), this will default to 'this.beltIndexZero'
+ * @param {number} caseThreeOrigin if left undefined or (falsey but not 0), this will default to 'INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]'
  */
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositiveDiff_twoNegativeDiff_orThreeFullScreen, caseThreeOrigin, timestamp) {
 
@@ -335,26 +335,26 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     INTS[fEXPLORER_TreeViewDirector_pullData_array_count] = 0;
 
     // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_beltIndexItem'...
-    // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-    // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-    // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
-    let beltIndex_current = ((INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex])) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
-    if (beltIndex_current >= INTS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] || beltIndex_current < 0) beltIndex_current = -1;
-    else beltIndex_current = (beltIndex_current + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
+    // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
+    // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+    // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
+    let ringBufferIndex_current = ((INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex])) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
+    if (ringBufferIndex_current >= INTS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] || ringBufferIndex_current < 0) ringBufferIndex_current = -1;
+    else ringBufferIndex_current = (ringBufferIndex_current + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
 
     for (let i = 0; i < itemListElement_childrenLength; i++) {
 
-        if (itemListElement_children[beltIndex_current].className === 'eN') {
+        if (itemListElement_children[ringBufferIndex_current].className === 'eN') {
             let indexItem = INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex] + i;
             
             // The index of the actual dom element within EXPLORER_TreeViewDirector_itemListElement.children
             // that is displaying the UI representation of what 'indexItem' points to.
-            let indexBelt = beltIndex_current;
+            let indexRingBuffer = ringBufferIndex_current;
 
-            EXPLORER_TreeViewDirector_pullData_array[INTS[fEXPLORER_TreeViewDirector_pullData_array_count]++] = ((indexBelt << CONST_EXPLORER_TreeViewDirector_KEY_BITS) | EXPLORER_TreeViewDirector_nodeList.getKey(indexItem));
+            EXPLORER_TreeViewDirector_pullData_array[INTS[fEXPLORER_TreeViewDirector_pullData_array_count]++] = ((indexRingBuffer << CONST_EXPLORER_TreeViewDirector_KEY_BITS) | EXPLORER_TreeViewDirector_nodeList.getKey(indexItem));
         }
 
-        beltIndex_current = (beltIndex_current + 1) % itemListElement_childrenLength;
+        ringBufferIndex_current = (ringBufferIndex_current + 1) % itemListElement_childrenLength;
     }
 
     EXPLORER_TreeViewDirector_arrayEntries = await window.myAPI.getFilesystemEntryById_ARRAY(EXPLORER_TreeViewDirector_pullData_array.subarray(0, INTS[fEXPLORER_TreeViewDirector_pullData_array_count]));
@@ -985,9 +985,9 @@ function EXPLORER_TreeViewDirector_event_click(event) {
     indexItem = EXPLORER_TreeViewDirector_state_cursor_validateIndex(indexItem);
 
     // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_beltIndexItem'...
-    // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-    // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-    // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+    // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
+    // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+    // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
     let beltIndexItem = ((indexItem)) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
     if (beltIndexItem >= INTS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] || beltIndexItem < 0) beltIndexItem = -1;
     else beltIndexItem = (beltIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
@@ -1016,9 +1016,9 @@ function EXPLORER_TreeViewDirector_event_dblclick(event) {
     indexItem = EXPLORER_TreeViewDirector_state_cursor_validateIndex(indexItem);
 
     // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_beltIndexItem'...
-    // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-    // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-    // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+    // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
+    // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+    // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
     let beltIndexItem = ((indexItem)) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
     if (beltIndexItem >= INTS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] || beltIndexItem < 0) beltIndexItem = -1;
     else beltIndexItem = (beltIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
@@ -1029,9 +1029,9 @@ function EXPLORER_TreeViewDirector_event_dblclick(event) {
     // if not clicked "chevron"
     if (event_target !== divItem.children[0]) {
         // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_beltIndexItem'...
-        // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-        // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-        // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+        // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
+        // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+        // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
         let beltIndexItem = ((INTS[fEXPLORER_TreeViewDirector_cursorIndex])) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
         if (beltIndexItem >= INTS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] || beltIndexItem < 0) beltIndexItem = -1;
         else beltIndexItem = (beltIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
@@ -1059,9 +1059,9 @@ function EXPLORER_TreeViewDirector_event_contextmenu(event) {
         // TODO: you need to move this above the divItem assignment and do checks earlier... double check all other uses
 
         // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_beltIndexItem'...
-        // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-        // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-        // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+        // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
+        // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+        // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
         let beltIndexItem = ((INTS[fEXPLORER_TreeViewDirector_cursorIndex])) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
         if (beltIndexItem >= INTS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] || beltIndexItem < 0) beltIndexItem = -1;
         else beltIndexItem = (beltIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
@@ -1077,9 +1077,9 @@ function EXPLORER_TreeViewDirector_event_contextmenu(event) {
             INTS[fEXPLORER_TreeViewDirector_cursorIndex]));
 
         // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_beltIndexItem'...
-        // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-        // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-        // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+        // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
+        // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+        // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
         let beltIndexItem = ((INTS[fEXPLORER_TreeViewDirector_cursorIndex])) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
         if (beltIndexItem >= INTS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] || beltIndexItem < 0) beltIndexItem = -1;
         else beltIndexItem = (beltIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
@@ -1125,9 +1125,9 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
                 // TODO: 'ArrowRight' when the cursor is on a valid item but isn't part of the virtualization result.
 
                 // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_beltIndexItem'...
-                // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-                // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-                // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+                // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
+                // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+                // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
                 let beltIndexItem = ((INTS[fEXPLORER_TreeViewDirector_cursorIndex])) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
                 if (beltIndexItem >= INTS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] || beltIndexItem < 0) beltIndexItem = -1;
                 else beltIndexItem = (beltIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
@@ -1143,9 +1143,9 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
                     INTS[fEXPLORER_TreeViewDirector_cursorIndex]));
                 
                 // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_beltIndexItem'...
-                // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-                // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-                // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+                // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
+                // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+                // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
                 let beltIndexItem = ((INTS[fEXPLORER_TreeViewDirector_cursorIndex])) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
                 if (beltIndexItem >= INTS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] || beltIndexItem < 0) beltIndexItem = -1;
                 else beltIndexItem = (beltIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
@@ -1161,9 +1161,9 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
                 INTS[fEXPLORER_TreeViewDirector_cursorIndex]));
             
             // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_beltIndexItem'...
-            // ...the initial declaration of 'let beltIndexLine' is assigned what I refer to as the "virtualIndex"
-            // but 'beltIndexLine' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
-            // for the calculation. So by storing the 'virtualIndex' in 'beltIndexLine' at the start I skip a variable declaration.
+            // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
+            // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
+            // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
             let beltIndexItem = ((INTS[fEXPLORER_TreeViewDirector_cursorIndex])) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
             if (beltIndexItem >= INTS[fEXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children_length] || beltIndexItem < 0) beltIndexItem = -1;
             else beltIndexItem = (beltIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];

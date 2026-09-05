@@ -8508,15 +8508,6 @@ vite + typescript in aaaqwertybbb/DifferentialEquations
 > - you scrolled to a larger scrollTop
 > - you scrolled by at least the entire viewport
 >
-> When I started the app. I initially had the virtual scrolling:
-> - remove item at index 0
-> - then append it back onto the parent element
-> 
-> And then, there were 3 cases total.
-> - you scrolled to a smaller scrollTop
-> - you scrolled to a larger scrollTop
-> - you scrolled by at least the entire viewport
-> 
 > This caused extremely bad 'cumulative layout shift' scoring in the developer tools.
 > 
 > Thus I had an idea for a 'belt'. Where you have a 'belt' wrapped around a pulley.

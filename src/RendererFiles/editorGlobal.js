@@ -8502,4 +8502,11 @@ yikes sorry idk I'm idk I'm done for the day
 I just felt a sudden surge of cringe go through my body is all so I added the yikes idk if it was cause of what I just previously said or what
 but I just had the vibe
 
+ah it happened twice okay I think this is why
+I got recommended Three Days Grace - I hate everything about you
+and I was like "omg they hate everything about me
+and they want me to stop making progress and I'm seeing this video recommended to me
+specifically because I made progress and now they're in response watching this music video
+to celebrate how much they hate me or something"
+
 */

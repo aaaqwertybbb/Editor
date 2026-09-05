@@ -8651,4 +8651,6 @@ belt => elementPool
 A circular buffer is done by one element pointing to the next actually.
 I just have an array and am moving index.
 
+A ring buffer is I think the exact wording for what I have.
+
 */

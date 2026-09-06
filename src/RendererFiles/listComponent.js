@@ -53,6 +53,10 @@ class ListComponent {
         this.LIST_ArrayFrom_menuOptionList_children = [];
 
         this.lastSeenScrollTop = 0;
+
+        this.boundingClientRect_height = 0;
+        this.boundingClientRect_top = 0;
+        this.boundingClientRect_isValid = false;
     }
 
     LIST_render_request(renderKind) {
@@ -106,7 +110,7 @@ class ListComponent {
         this.getItemsCountFunc = getItemsCountFunc;
         this.itemHeightTotal = this.getItemsCountFunc() * this.itemHeightNumber;
         this.virtualizationElement.style.height = this.itemHeightTotal + 'px';
-        this.boundingClientRect = null;
+        this.boundingClientRect_isValid = false;
     }
 
     /**
@@ -133,7 +137,7 @@ class ListComponent {
     draw_delete() {
         if (!this.rootElement.parentElement) return;
         this.draw_removeEvents();
-        this.boundingClientRect = null;
+        this.boundingClientRect_isValid = false;
         this.rootElement.parentElement.removeChild(this.rootElement);
     }
 
@@ -170,7 +174,7 @@ class ListComponent {
     }
 
     draw_render() {
-        if (!this.boundingClientRect) {
+        if (!this.boundingClientRect_isValid) {
             this.ensure_boundingClientRect();
         }
 
@@ -331,7 +335,7 @@ class ListComponent {
     event_click(event) {
         this.ensure_boundingClientRect();
 
-        let rY = event.clientY - this.boundingClientRect.top + this.lastSeenScrollTop;
+        let rY = event.clientY - this.boundingClientRect_top + this.lastSeenScrollTop;
         let index = Math.floor(rY / this.itemHeightNumber);
         index = this.state_cursor_validateIndex(index);
         this.state_cursor_setIndex(index);
@@ -369,7 +373,7 @@ class ListComponent {
      * intra-app resizes or movements will also invoke this; i.e.: if a list is shown in a dialog and the dialog is resized or moved.
      */
     event_windowResize() {
-        this.boundingClientRect = null;
+        this.boundingClientRect_isValid = false;
     }
 
     event_scroll_WRAPIT() {
@@ -382,8 +386,11 @@ class ListComponent {
     }
 
     ensure_boundingClientRect() {
-        if (!this.boundingClientRect) {
-            this.boundingClientRect = this.rootElement.getBoundingClientRect();
+        if (!this.boundingClientRect_isValid) {
+            const rect = this.rootElement.getBoundingClientRect();
+            this.boundingClientRect_height = rect.height;
+            this.boundingClientRect_top = rect.top;
+            this.boundingClientRect_isValid = true;
             this.virtualCount = Math.ceil(this.rootElement.offsetHeight / this.itemHeightNumber);
         }
     }
@@ -398,8 +405,8 @@ class ListComponent {
         // If no UI modifications were made prior that are still pending this might avoid a synchronous layout.
         // TODO: If you touch the transform style first... I don't know what would happen it is a GPU related style... so I'm unsure.
         //
-        if (this.cursorTopNumber + (2 * this.itemHeightNumber) > this.lastSeenScrollTop + this.boundingClientRect.height) {
-            let currentBottom = this.lastSeenScrollTop + this.boundingClientRect.height;
+        if (this.cursorTopNumber + (2 * this.itemHeightNumber) > this.lastSeenScrollTop + this.boundingClientRect_height) {
+            let currentBottom = this.lastSeenScrollTop + this.boundingClientRect_height;
             let changeToMakeBottomTouch = this.cursorTopNumber - currentBottom;
             let entireValueToScrollBy = changeToMakeBottomTouch + (2 * this.itemHeightNumber);
             this.rootElement.scrollBy(0, entireValueToScrollBy);

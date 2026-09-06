@@ -8678,4 +8678,8 @@ cause of the ven vil you vear vigs comment that I made in one of the earlier rep
 
 I was thinking to myself ven vill you steal my girl
 
+====
+
+a circular buffer is how you implement optimized enter key events
+
 */

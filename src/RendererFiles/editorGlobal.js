@@ -401,6 +401,7 @@ function EDI_render_do_Clear() {
     EDI_clearSelectionStyle();
     EDI_textElement.innerHTML = '';
     EDI_gutter.innerHTML = '';
+    // TODO: Clear the ring buffer state?
 
     // Force case 3
     INTS[fEDI_prevVli] = 0;

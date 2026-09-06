@@ -329,7 +329,7 @@ async function EXPLORER_drawItem_BATCH_pullData() {
 
     // This isn't the most optimal way of doing things.
     //
-    let itemListElement_children = EXPLORER_ringBuffer;
+    let localEXPLORER_ringBuffer = EXPLORER_ringBuffer;
     let itemListElement_childrenLength = INTS[fEXPLORER_ringBuffer_length];
 
     INTS[fEXPLORER_pullData_array_count] = 0;
@@ -344,7 +344,7 @@ async function EXPLORER_drawItem_BATCH_pullData() {
 
     for (let i = 0; i < itemListElement_childrenLength; i++) {
 
-        if (itemListElement_children[ringBufferIndex_current].className === 'eN') {
+        if (localEXPLORER_ringBuffer[ringBufferIndex_current].className === 'eN') {
             let indexItem = INTS[fEXPLORER_scrollFetchData_virtualIndex] + i;
             
             // The index of the actual dom element within EXPLORER_itemListElement.children

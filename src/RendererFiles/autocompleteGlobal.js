@@ -17,7 +17,7 @@ const AUTOCOMPLETErenderKind_Scroll = 5;
 const AUTOCOMPLETE_renderKindArray = [];
 
 let AUTOCOMPLETEElement = null;
-let AUTOCOMPLETE_arrayFromItemListElement = null;
+let AUTOCOMPLETE_ringBuffer = null;
 
 function AUTOCOMPLETE_render_request(renderKind) {
     if (AUTOCOMPLETE_renderKindArray[AUTOCOMPLETE_renderKindArray.length - 1] !== renderKind) {
@@ -101,7 +101,7 @@ function AUTOCOMPLETE_render_create_lines(AUTOCOMPLETE_itemList) {
         verticalOffset += INTS[fAPP_lineHeight];
     }
 
-    AUTOCOMPLETE_arrayFromItemListElement = Array.from(AUTOCOMPLETE_itemList.children);
+    AUTOCOMPLETE_ringBuffer = Array.from(AUTOCOMPLETE_itemList.children);
 }
 
 function AUTOCOMPLETE_render_RESET_lines(AUTOCOMPLETE_itemList) {
@@ -130,7 +130,7 @@ function AUTOCOMPLETE_render_RESET_lines(AUTOCOMPLETE_itemList) {
 
     for (let i = 0; i < INTS[fAUTOCOMPLETE_virtualCount]; i++) {
         
-        let div = AUTOCOMPLETE_arrayFromItemListElement[i];
+        let div = AUTOCOMPLETE_ringBuffer[i];
 
         // TODO: Does treeViewComponent.js specify a:
         // - [ ] left
@@ -252,8 +252,8 @@ function AUTOCOMPLETE_slice(lspResult) {
             return;
     }
 
-    let local_AUTOCOMPLETE_arrayFromItemListElement = AUTOCOMPLETE_arrayFromItemListElement;
-    let local_AUTOCOMPLETE_arrayFromItemListElement_length = local_AUTOCOMPLETE_arrayFromItemListElement.length;
+    let local_AUTOCOMPLETE_ringBuffer = AUTOCOMPLETE_ringBuffer;
+    let local_AUTOCOMPLETE_ringBuffer_length = local_AUTOCOMPLETE_ringBuffer.length;
 
     let currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = INTS[fAUTOCOMPLETE_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING];
     let NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
@@ -262,8 +262,8 @@ function AUTOCOMPLETE_slice(lspResult) {
 
     for (let i = 0; i < lspResult.items.length; i++) {
         let item = lspResult.items[i];
-        let div = local_AUTOCOMPLETE_arrayFromItemListElement[ringBufferIndex];
-        ringBufferIndex = (ringBufferIndex + 1) % local_AUTOCOMPLETE_arrayFromItemListElement_length;
+        let div = local_AUTOCOMPLETE_ringBuffer[ringBufferIndex];
+        ringBufferIndex = (ringBufferIndex + 1) % local_AUTOCOMPLETE_ringBuffer_length;
         div.className = '';
         div.textContent = item.label;
 
@@ -289,8 +289,8 @@ function AUTOCOMPLETE_slice(lspResult) {
             cursorElement.style.width = widthAttributeValueString;
         }
 
-        for (let i = 0; i < local_AUTOCOMPLETE_arrayFromItemListElement_length; i++) {
-            local_AUTOCOMPLETE_arrayFromItemListElement[i].style.width = widthAttributeValueString;
+        for (let i = 0; i < local_AUTOCOMPLETE_ringBuffer_length; i++) {
+            local_AUTOCOMPLETE_ringBuffer[i].style.width = widthAttributeValueString;
         }
     }
 }
@@ -418,8 +418,8 @@ function AUTOCOMPLETE_events_scroll_render(timestamp) {
     let upperBound;
     let ringBufferIndex;
 
-    let local_AUTOCOMPLETE_arrayFromItemListElement = AUTOCOMPLETE_arrayFromItemListElement;
-    let local_AUTOCOMPLETE_arrayFromItemListElement_length = local_AUTOCOMPLETE_arrayFromItemListElement.length;
+    let local_AUTOCOMPLETE_ringBuffer = AUTOCOMPLETE_ringBuffer;
+    let local_AUTOCOMPLETE_ringBuffer_length = local_AUTOCOMPLETE_ringBuffer.length;
     let local_AUTOCOMPLETE_items_totalLength = INTS[fAUTOCOMPLETE_items_totalLength];
 
     if (diff > 0 && diff < INTS[fAUTOCOMPLETE_virtualCount]) {
@@ -428,7 +428,7 @@ function AUTOCOMPLETE_events_scroll_render(timestamp) {
 
         ringBufferIndex = INTS[fAUTOCOMPLETE_ringBufferIndexZero];
 
-        INTS[fAUTOCOMPLETE_ringBufferIndexZero] = (ringBufferIndex + diff) % local_AUTOCOMPLETE_arrayFromItemListElement_length;
+        INTS[fAUTOCOMPLETE_ringBufferIndexZero] = (ringBufferIndex + diff) % local_AUTOCOMPLETE_ringBuffer_length;
     }
     else if (diff < 0 && ((diff *= -1) < INTS[fAUTOCOMPLETE_virtualCount])) {
         lowerBound = currVli;
@@ -436,10 +436,10 @@ function AUTOCOMPLETE_events_scroll_render(timestamp) {
 
         // TODO: This can be simplified to a modulo operation.
         let lastIndex = INTS[fAUTOCOMPLETE_ringBufferIndexZero] === 0
-            ? local_AUTOCOMPLETE_arrayFromItemListElement_length - 1
+            ? local_AUTOCOMPLETE_ringBuffer_length - 1
             : INTS[fAUTOCOMPLETE_ringBufferIndexZero] - 1;
 
-        INTS[fAUTOCOMPLETE_ringBufferIndexZero] = (lastIndex - (diff - 1) + local_AUTOCOMPLETE_arrayFromItemListElement_length) % local_AUTOCOMPLETE_arrayFromItemListElement_length;
+        INTS[fAUTOCOMPLETE_ringBufferIndexZero] = (lastIndex - (diff - 1) + local_AUTOCOMPLETE_ringBuffer_length) % local_AUTOCOMPLETE_ringBuffer_length;
 
         ringBufferIndex = INTS[fAUTOCOMPLETE_ringBufferIndexZero];
     }
@@ -455,9 +455,9 @@ function AUTOCOMPLETE_events_scroll_render(timestamp) {
 
     for (let i = lowerBound; i < upperBound; i++) {
 
-        ringBufferIndex = (ringBufferIndex + 1) % local_AUTOCOMPLETE_arrayFromItemListElement_length;
+        ringBufferIndex = (ringBufferIndex + 1) % local_AUTOCOMPLETE_ringBuffer_length;
 
-        let div = local_AUTOCOMPLETE_arrayFromItemListElement[ringBufferIndex];
+        let div = local_AUTOCOMPLETE_ringBuffer[ringBufferIndex];
         
         if (i >= local_AUTOCOMPLETE_items_totalLength) {
             div.textContent = '~';

@@ -75,7 +75,7 @@ let EXPLORER_pullData_array = new Uint32Array(0);
 
 let EXPLORER_pullData_result = new Uint32Array(0);
 
-let EXPLORER_TreeViewDirector_arrayEntries = null;
+let EXPLORER_arrayEntries = null;
 
 // Google AI'd the bit logic
 // Configuration matching our table above
@@ -357,7 +357,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
         ringBufferIndex_current = (ringBufferIndex_current + 1) % itemListElement_childrenLength;
     }
 
-    EXPLORER_TreeViewDirector_arrayEntries = await window.myAPI.getFilesystemEntryById_ARRAY(EXPLORER_pullData_array.subarray(0, INTS[fEXPLORER_pullData_array_count]));
+    EXPLORER_arrayEntries = await window.myAPI.getFilesystemEntryById_ARRAY(EXPLORER_pullData_array.subarray(0, INTS[fEXPLORER_pullData_array_count]));
 
     EXPLORER_pullData_result = EXPLORER_pullData_array;
     INTS[fEXPLORER_pullData_result_count] = INTS[fEXPLORER_pullData_array_count];
@@ -388,7 +388,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
             let nodeElement = itemListElement_children[ringBufferIndexItem];
             nodeElement.className = '';
             let textNode = nodeElement.lastChild;
-            let entry = EXPLORER_TreeViewDirector_arrayEntries[i];
+            let entry = EXPLORER_arrayEntries[i];
             textNode.nodeValue = entry.basename;
             textNode.title = entry.absolutePath;
 
@@ -415,7 +415,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
         }
 
         EXPLORER_pullData_result = null;
-        EXPLORER_TreeViewDirector_arrayEntries = null;
+        EXPLORER_arrayEntries = null;
     }
 }
 

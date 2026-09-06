@@ -738,9 +738,9 @@ const fEDI_getLineAndColumnIndices_indexColumn = 167;
 
 const fEXPLORER_boundingClientRect_height = 168;
 const fEXPLORER_boundingClientRect_left = 169;
-const fEXPLORER_TreeViewDirector_boundingClientRect_top = 170;
+const fEXPLORER_boundingClientRect_top = 170;
 
-// INTS[fEXPLORER_TreeViewDirector_boundingClientRect_top]
+// INTS[fEXPLORER_boundingClientRect_top]
 
 // inclusive final index is 138
 

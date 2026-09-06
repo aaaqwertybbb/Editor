@@ -557,7 +557,7 @@ module.exports = function (babel) {
 
     "fEXPLORER_boundingClientRect_height",
     "fEXPLORER_boundingClientRect_left",
-    "fEXPLORER_TreeViewDirector_boundingClientRect_top",
+    "fEXPLORER_boundingClientRect_top",
 
     "byteEXPLORER_TreeViewDirector_boundingClientRect_isValid",
 

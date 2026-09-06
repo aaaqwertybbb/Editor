@@ -550,7 +550,7 @@ module.exports = function (babel) {
 
     "byteEXPLORER_isRenderPending",
     "byteEXPLORER_isCheckingTrailingEdge",
-    "byteEXPLORER_TreeViewDirector_scrollIsFetchingData",
+    "byteEXPLORER_scrollIsFetchingData",
 
     "fEDI_getLineAndColumnIndices_indexLine",
     "fEDI_getLineAndColumnIndices_indexColumn",

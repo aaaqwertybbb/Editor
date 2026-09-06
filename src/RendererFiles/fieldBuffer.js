@@ -193,7 +193,7 @@ const byteEXPLORER_isRenderPending = 45;
 
 const byteEXPLORER_isCheckingTrailingEdge = 46;
 
-const byteEXPLORER_TreeViewDirector_scrollIsFetchingData = 47;
+const byteEXPLORER_scrollIsFetchingData = 47;
 
 const byteEXPLORER_TreeViewDirector_boundingClientRect_isValid = 48;
 

@@ -128,8 +128,8 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck(ti
 
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_trailingEdge() {
     BYTES[byteEXPLORER_isCheckingTrailingEdge] = 0; // Reset the flag here
-    if (!BYTES[byteEXPLORER_TreeViewDirector_scrollIsFetchingData]) {
-        BYTES[byteEXPLORER_TreeViewDirector_scrollIsFetchingData] = 1;
+    if (!BYTES[byteEXPLORER_scrollIsFetchingData]) {
+        BYTES[byteEXPLORER_scrollIsFetchingData] = 1;
         EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData(); // no await
     }
 };
@@ -362,7 +362,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     EXPLORER_pullData_result = EXPLORER_pullData_array;
     INTS[fEXPLORER_pullData_result_count] = INTS[fEXPLORER_pullData_array_count];
 
-    BYTES[byteEXPLORER_TreeViewDirector_scrollIsFetchingData] = 0; // TODO: try/catch/finally; put this in the finally.
+    BYTES[byteEXPLORER_scrollIsFetchingData] = 0; // TODO: try/catch/finally; put this in the finally.
 
     EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Scroll_PullDataDrawResult);
 };

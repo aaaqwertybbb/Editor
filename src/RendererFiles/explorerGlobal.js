@@ -32,9 +32,9 @@ EXPLORER_rootElement.classList.add('TREEVIEW', 'unselectable');
 EXPLORER_rootElement.tabIndex = 0;
 EXPLORER_rootElement.style.height = '100%';
 
-const EXPLORER_TreeViewDirector_virtualizationElement = document.createElement('div');
-EXPLORER_TreeViewDirector_virtualizationElement.className = 'TREEVIEW_virtualization';
-EXPLORER_rootElement.appendChild(EXPLORER_TreeViewDirector_virtualizationElement);
+const EXPLORER_virtualizationElement = document.createElement('div');
+EXPLORER_virtualizationElement.className = 'TREEVIEW_virtualization';
+EXPLORER_rootElement.appendChild(EXPLORER_virtualizationElement);
 
 /** Consider the existence of such methods as 'state_cursor_setIndex' before mutating state directly */
 const EXPLORER_TreeViewDirector_cursorElement = document.createElement('div');
@@ -94,7 +94,7 @@ function EXPLORER_TreeViewDirector_setChosenDirectory(chosenDirectory, chosenDir
     let nodeKind = TreeViewNodeKind_isExpandable_NOTisExpanded;
     EXPLORER_TreeViewDirector_nodeList.insert(EXPLORER_TreeViewDirector_nodeList.count_abstract, nodeKind, EXPLORER_TreeViewDirector_chosenDirectoryAbsolutePathId, 0);
     INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
-    EXPLORER_TreeViewDirector_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
+    EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
 }
 
 /** // Invoke this?: 'this.draw_render_fullReset_request();' */
@@ -112,7 +112,7 @@ function EXPLORER_TreeViewDirector_setChosenWorkspace(chooseWorkspaceResult) {
     }
 
     INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
-    EXPLORER_TreeViewDirector_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
+    EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
 }
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck(timestamp) {
@@ -530,7 +530,7 @@ async function EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(
             // TODO: Insert range, or at the least 'pre-emptively' resize the list so that it fits each insertion without resizing per insertion.
             EXPLORER_TreeViewDirector_nodeList.insert(indexItem + 1 + i, nodeKind, entry.id, depth + 1);
             INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
-            EXPLORER_TreeViewDirector_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
+            EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
         }
 
         EXPLORER_TreeViewDirector_draw_render_fullReset_request();
@@ -553,7 +553,7 @@ async function EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(
         if (countChildren > 0) { // TODO: is this check necessary?
             EXPLORER_TreeViewDirector_nodeList.removeAt(indexItem + 1, countChildren);
             INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
-            EXPLORER_TreeViewDirector_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
+            EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
             EXPLORER_TreeViewDirector_draw_render_fullReset_request();
         }
     }
@@ -652,7 +652,7 @@ function EXPLORER_TreeViewDirector_removeFromNodeList(indexItem) {
 
     EXPLORER_TreeViewDirector_nodeList.removeAt(indexItem, 1 + countChildren);
     INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
-    EXPLORER_TreeViewDirector_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
+    EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
     return 1 + countChildren;
 }
 
@@ -737,7 +737,7 @@ function EXPLORER_TreeViewDirector_renderDo(timestamp) {
  */
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_SetItems() {
     EXPLORER_TreeViewDirector_itemListElement.innerHTML = '';
-    EXPLORER_TreeViewDirector_virtualizationElement.style.height = 1 + 'px';
+    EXPLORER_virtualizationElement.style.height = 1 + 'px';
     EXPLORER_TreeViewDirector_state_cursor_setIndex(0);
     
     INTS[fEXPLORER_TreeViewDirector_itemHeightNumber] = INTS[fEXPLORER_TreeViewDirector_SET_ITEMS_itemHeightNumber];
@@ -745,7 +745,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_SetItems() {
 
     EXPLORER_TreeViewDirector_cursorElement.style.height = EXPLORER_TreeViewDirector_itemHeightStyleAttributeValueString;
     INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
-    EXPLORER_TreeViewDirector_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
+    EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
     BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = 0;
 }
 
@@ -1590,7 +1590,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                                     let finalDiv = EXPLORER_TreeViewDirector_itemListElement.children[EXPLORER_TreeViewDirector_itemListElement.children.length - 1];
 
                                     INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
-                                    EXPLORER_TreeViewDirector_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
+                                    EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
 
                                     // TODO: Check that the node you're pasting into is expanded.
 
@@ -1629,7 +1629,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                                         }
 
                                         INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
-                                        EXPLORER_TreeViewDirector_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
+                                        EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
 
                                         let remainingChangesToRender = countChanges < INTS[fEXPLORER_TreeViewDirector_virtualCount] ? countChanges : INTS[fEXPLORER_TreeViewDirector_virtualCount] - divRelativeIndex;
 
@@ -1811,7 +1811,7 @@ async function NewFile_Directory_WIDGET_InputText_callback(result) {
                     //let finalDiv = EXPLORER_TreeViewDirector_itemListElement.children[EXPLORER_TreeViewDirector_itemListElement.children.length - 1];
 
                     INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
-                    EXPLORER_TreeViewDirector_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
+                    EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
 
                     //await EXPLORER_TreeViewDirector_tvd_drawItem_async(finalDiv, someIndex, /*isNull*/ false);
                     if (someIndex !== largestIndexItemBeingShown) {
@@ -1893,7 +1893,7 @@ async function NewFile_File_WIDGET_InputText_callback(result) {
                     //let finalDiv = EXPLORER_TreeViewDirector_itemListElement.children[EXPLORER_TreeViewDirector_itemListElement.children.length - 1];
     
                     INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
-                    EXPLORER_TreeViewDirector_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
+                    EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
     
                     //await EXPLORER_TreeViewDirector_tvd_drawItem_async(finalDiv, someIndex, /*isNull*/ false);
                     if (someIndex !== largestIndexItemBeingShown) {
@@ -1920,7 +1920,7 @@ async function DeleteFile_Directory_YesCancel_callback(result) {
         let countChanges = EXPLORER_TreeViewDirector_removeFromNodeList(WIDGET_target.indexItem);
 
         INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
-        EXPLORER_TreeViewDirector_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
+        EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
 
         let remainingChangesToRender = countChanges < INTS[fEXPLORER_TreeViewDirector_virtualCount] ? countChanges : INTS[fEXPLORER_TreeViewDirector_virtualCount] - WIDGET_target.divRelativeIndex;
 
@@ -1965,7 +1965,7 @@ async function DeleteFile_File_YesCancel_callback(result) {
             //let divItem = EXPLORER_TreeViewDirector_itemListElement.children[WIDGET_target.divRelativeIndex];
 
             INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
-            EXPLORER_TreeViewDirector_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
+            EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
 
             //EXPLORER_TreeViewDirector_itemListElement.insertBefore(divItem, undefined);
             if (noMoreEntriesToShow) {

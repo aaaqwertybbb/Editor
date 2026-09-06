@@ -195,9 +195,9 @@ const byteEXPLORER_isCheckingTrailingEdge = 46;
 
 const byteEXPLORER_scrollIsFetchingData = 47;
 
-const byteEXPLORER_TreeViewDirector_boundingClientRect_isValid = 48;
+const byteEXPLORER_boundingClientRect_isValid = 48;
 
-// BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid]
+// BYTES[byteEXPLORER_boundingClientRect_isValid]
 
 // TODO: some things to consider when moving from a boolean to BYTES
 // - [ ] triple equals

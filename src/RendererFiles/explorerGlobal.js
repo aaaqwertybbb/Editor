@@ -746,7 +746,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_SetItems() {
     EXPLORER_cursorElement.style.height = EXPLORER_itemHeightStyleAttributeValueString;
     INTS[fEXPLORER_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_itemHeightNumber];
     EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_itemHeightTotal] + 'px';
-    BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = 0;
+    BYTES[byteEXPLORER_boundingClientRect_isValid] = 0;
 }
 
 /**
@@ -818,7 +818,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Batch(timestamp) {
 function EXPLORER_TreeViewDirector_draw_delete() {
     if (!EXPLORER_rootElement.parentElement) return;
     EXPLORER_TreeViewDirector_draw_removeEvents();
-    BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = 0;
+    BYTES[byteEXPLORER_boundingClientRect_isValid] = 0;
     EXPLORER_rootElement.parentElement.removeChild(EXPLORER_rootElement);
 }
 
@@ -1180,7 +1180,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Resize(timestamp) {
 
     EXPLORER_TreeViewDirector_measureBaseElement();
 
-    BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = 0;
+    BYTES[byteEXPLORER_boundingClientRect_isValid] = 0;
     EXPLORER_TreeViewDirector_ensure_boundingClientRect();
     EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp);
 }
@@ -1205,12 +1205,12 @@ function EXPLORER_TreeViewDirector_event_scroll() {
 }
 
 function EXPLORER_TreeViewDirector_ensure_boundingClientRect() {
-    if (!BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid]) {
+    if (!BYTES[byteEXPLORER_boundingClientRect_isValid]) {
         let rect = EXPLORER_rootElement.getBoundingClientRect();
         INTS[fEXPLORER_boundingClientRect_height] = rect.height;
         INTS[fEXPLORER_boundingClientRect_left] = rect.left;
         INTS[fEXPLORER_boundingClientRect_top] = rect.top;
-        BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = 1;
+        BYTES[byteEXPLORER_boundingClientRect_isValid] = 1;
         INTS[fEXPLORER_virtualCount] = Math.ceil(EXPLORER_rootElement.offsetHeight / INTS[fEXPLORER_itemHeightNumber]);
     }
 }

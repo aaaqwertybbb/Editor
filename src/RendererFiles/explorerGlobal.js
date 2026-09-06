@@ -334,7 +334,7 @@ async function EXPLORER_drawItem_BATCH_pullData() {
 
     INTS[fEXPLORER_pullData_array_count] = 0;
 
-    // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_ringBufferIndexItem'...
+    // TODO: This is an awkward explicit inlining of 'EXPLORER_indexItemTo_ringBufferIndexItem'...
     // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
     // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
@@ -984,7 +984,7 @@ function EXPLORER_event_click(event) {
     let indexItem = Math.floor(rY / INTS[fEXPLORER_itemHeightNumber]);
     indexItem = EXPLORER_state_cursor_validateIndex(indexItem);
 
-    // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_ringBufferIndexItem'...
+    // TODO: This is an awkward explicit inlining of 'EXPLORER_indexItemTo_ringBufferIndexItem'...
     // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
     // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
@@ -1015,7 +1015,7 @@ function EXPLORER_event_dblclick(event) {
     let indexItem = Math.floor(rY / INTS[fEXPLORER_itemHeightNumber]);
     indexItem = EXPLORER_state_cursor_validateIndex(indexItem);
 
-    // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_ringBufferIndexItem'...
+    // TODO: This is an awkward explicit inlining of 'EXPLORER_indexItemTo_ringBufferIndexItem'...
     // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
     // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
@@ -1028,7 +1028,7 @@ function EXPLORER_event_dblclick(event) {
 
     // if not clicked "chevron"
     if (event_target !== divItem.children[0]) {
-        // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_ringBufferIndexItem'...
+        // TODO: This is an awkward explicit inlining of 'EXPLORER_indexItemTo_ringBufferIndexItem'...
         // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
         // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
@@ -1058,7 +1058,7 @@ function EXPLORER_event_contextmenu(event) {
 
         // TODO: you need to move this above the divItem assignment and do checks earlier... double check all other uses
 
-        // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_ringBufferIndexItem'...
+        // TODO: This is an awkward explicit inlining of 'EXPLORER_indexItemTo_ringBufferIndexItem'...
         // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
         // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
@@ -1077,7 +1077,7 @@ function EXPLORER_event_contextmenu(event) {
         EXPLORER_state_cursor_setIndex(EXPLORER_state_cursor_validateIndex(
             INTS[fEXPLORER_cursorIndex]));
 
-        // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_ringBufferIndexItem'...
+        // TODO: This is an awkward explicit inlining of 'EXPLORER_indexItemTo_ringBufferIndexItem'...
         // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
         // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
@@ -1125,7 +1125,7 @@ function EXPLORER_event_keydown(event) {
 
                 // TODO: 'ArrowRight' when the cursor is on a valid item but isn't part of the virtualization result.
 
-                // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_ringBufferIndexItem'...
+                // TODO: This is an awkward explicit inlining of 'EXPLORER_indexItemTo_ringBufferIndexItem'...
                 // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
                 // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                 // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
@@ -1143,7 +1143,7 @@ function EXPLORER_event_keydown(event) {
                 EXPLORER_state_cursor_setIndex(EXPLORER_state_cursor_validateIndex(
                     INTS[fEXPLORER_cursorIndex]));
                 
-                // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_ringBufferIndexItem'...
+                // TODO: This is an awkward explicit inlining of 'EXPLORER_indexItemTo_ringBufferIndexItem'...
                 // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
                 // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                 // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
@@ -1161,7 +1161,7 @@ function EXPLORER_event_keydown(event) {
             EXPLORER_state_cursor_setIndex(EXPLORER_state_cursor_validateIndex(
                 INTS[fEXPLORER_cursorIndex]));
             
-            // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_ringBufferIndexItem'...
+            // TODO: This is an awkward explicit inlining of 'EXPLORER_indexItemTo_ringBufferIndexItem'...
             // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
             // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
             // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.

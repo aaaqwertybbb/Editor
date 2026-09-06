@@ -657,7 +657,7 @@ function EXPLORER_removeFromNodeList(indexItem) {
 }
 
 /** TODO: any usage of this needs to respect the actual zeroth UI div not the literal. */
-function EXPLORER_TreeViewDirector_setNodeListEntryId(indexItem, pathId) {
+function EXPLORER_setNodeListEntryId(indexItem, pathId) {
     EXPLORER_treeViewNodes.setKey(indexItem, pathId);
 }
 
@@ -1991,7 +1991,7 @@ async function RenameFile_Directory_InputText_callback(result) {
     WIDGET_target = WIDGET_target.MENU_target;
     let renameFileResult = await window.myAPI.renameFile(entry.absolutePath, result.value, /*isDirectory*/ true);
     if (renameFileResult.success) {
-        EXPLORER_TreeViewDirector_setNodeListEntryId(WIDGET_target.indexItem, renameFileResult.pathId);
+        EXPLORER_setNodeListEntryId(WIDGET_target.indexItem, renameFileResult.pathId);
         let divItem = EXPLORER_itemListElement.children[WIDGET_target.divRelativeIndex];
         divItem.lastChild.nodeValue = result.value;
     }
@@ -2004,7 +2004,7 @@ async function RenameFile_File_InputText_callback(result) {
     WIDGET_target = WIDGET_target.MENU_target;
     let renameFileResult = await window.myAPI.renameFile(entry.absolutePath, result.value, /*isDirectory*/ false);
     if (renameFileResult.success) {
-        EXPLORER_TreeViewDirector_setNodeListEntryId(WIDGET_target.indexItem, renameFileResult.pathId);
+        EXPLORER_setNodeListEntryId(WIDGET_target.indexItem, renameFileResult.pathId);
         let divItem = EXPLORER_itemListElement.children[WIDGET_target.divRelativeIndex];
         divItem.lastChild.nodeValue = result.value;
     }

@@ -828,7 +828,7 @@ function EXPLORER_TreeViewDirector_draw_addEvents() {
     EXPLORER_rootElement.addEventListener('scroll', EXPLORER_event_scroll, { passive: true }); // this.event_scroll();
     EXPLORER_rootElement.addEventListener('dblclick', EXPLORER_event_dblclick); // this.event_dblclick(event.clientY, event.target);
     EXPLORER_rootElement.addEventListener('contextmenu', EXPLORER_event_contextmenu); // this.event_contextmenu(event.button, event.clientX, event.clientY);
-    window.addEventListener('resize', EXPLORER_TreeViewDirector_event_windowResize); // this.event_windowResize();
+    window.addEventListener('resize', EXPLORER_event_windowResize); // this.event_windowResize();
 }
 
 function EXPLORER_TreeViewDirector_draw_removeEvents() {
@@ -837,7 +837,7 @@ function EXPLORER_TreeViewDirector_draw_removeEvents() {
     EXPLORER_rootElement.removeEventListener('scroll', EXPLORER_event_scroll, { passive: true });
     EXPLORER_rootElement.addEventListener('dblclick', EXPLORER_event_dblclick);
     EXPLORER_rootElement.addEventListener('contextmenu', EXPLORER_event_contextmenu);
-    window.removeEventListener('resize', EXPLORER_TreeViewDirector_event_windowResize);
+    window.removeEventListener('resize', EXPLORER_event_windowResize);
 }
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp) {
@@ -1188,7 +1188,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Resize(timestamp) {
 /**
  * TODO: intra-app resizes or movements will also invoke this; i.e.: if a list is shown in a dialog and the dialog is resized or moved.
  */
-function EXPLORER_TreeViewDirector_event_windowResize() {
+function EXPLORER_event_windowResize() {
 
     // this.event_windowResize();
 

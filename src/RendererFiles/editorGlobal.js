@@ -8720,6 +8720,6 @@ so I gotta try once more today at the same store
 and if they still don't have it that means I gotta drive around and find somewhere that does.
 But this experimentally speaking never happens but it is just my thought process for guaranteeing consistency.
 
-It's the pair of pants you where when you realize you haven't done laundry recently type ish
+It's the pair of pants you wear when you realize you haven't done laundry recently type ish
 
 */

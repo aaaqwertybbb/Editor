@@ -711,7 +711,7 @@ function EXPLORER_TreeViewDirector_renderDo(timestamp) {
                 EXPLORER_TreeViewDirector_TREEVIEW_render_do_Batch(timestamp);
                 break;
             case TREEVIEWrenderKind_Scroll:
-                EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp);
+                EXPLORER_render_do_Scroll(timestamp);
                 break;
             case TREEVIEWrenderKind_Scroll_PullDataDrawResult:
                 EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll_PullDataDrawResult();
@@ -788,7 +788,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Create(timestamp) {
 
     EXPLORER_measureBaseElement();
 
-    EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp);
+    EXPLORER_render_do_Scroll(timestamp);
 }
 
 /**
@@ -840,7 +840,7 @@ function EXPLORER_TreeViewDirector_draw_removeEvents() {
     window.removeEventListener('resize', EXPLORER_event_windowResize);
 }
 
-function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp) {
+function EXPLORER_render_do_Scroll(timestamp) {
     if (INTS[fEXPLORER_ringBuffer_length] !== INTS[fEXPLORER_virtualCount]) {
         EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp);
     }

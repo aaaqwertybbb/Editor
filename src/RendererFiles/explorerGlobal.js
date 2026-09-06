@@ -312,17 +312,6 @@ This comment is from 'EXPLORER_drawItem_BATCH', it was in my way
 */
 
 async function EXPLORER_drawItem_BATCH_pullData() {
-    /*
-    Google AI:
-    > my rAF loop is currently synchronous.
-    >
-    > I believe 'fetchMissingNodeNames(); // Pull data from Main process' would have to be async for it to work correctly, but I might be wrong about this.
-    > 
-    > If it does need to be async, I worry about making the entire rAF loop async just so a single branch can await.
-
-    < You are 100% correct to worry about this. Never make your requestAnimationFrame loop async or use await inside it.
-    < ...
-    */
     INTS[fEXPLORER_scrollFetchData_virtualIndex] = INTS[fEXPLORER_ONSCROLLvirtualIndex];
     INTS[fEXPLORER_scrollFetchData_virtualCount] = INTS[fEXPLORER_ONSCROLLvirtualCount];
     INTS[fEXPLORER_scrollFetchData_ringBufferIndexZero] = INTS[fEXPLORER_ringBufferIndexZero];

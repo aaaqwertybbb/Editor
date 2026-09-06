@@ -68,7 +68,7 @@ let EXPLORER_chosenWorkspace = -1;
 /**
  * @type {TreeViewNodeList}
  * */
-const EXPLORER_TreeViewDirector_nodeList = new TreeViewNodeList(32);
+const EXPLORER_treeViewNodes = new TreeViewNodeList(32);
 
 /** Starting with an empty array so I can have undefined/null signify that the "TreeViewDirector" is "opting out" of this feature, thus the component should not allocate this on the "TreeViewDirector"'s behalf. */
 let EXPLORER_TreeViewDirector_pullData_array = new Uint32Array(0);
@@ -87,12 +87,12 @@ function EXPLORER_TreeViewDirector_setChosenDirectory(chosenDirectory, chosenDir
     EXPLORER_chosenDirectory = chosenDirectory;
     EXPLORER_chosenDirectoryAbsolutePathId = chosenDirectoryAbsolutePathId;
 
-    EXPLORER_TreeViewDirector_nodeList.clear();
+    EXPLORER_treeViewNodes.clear();
 
     if (!EXPLORER_chosenDirectory) return;
 
     let nodeKind = TreeViewNodeKind_isExpandable_NOTisExpanded;
-    EXPLORER_TreeViewDirector_nodeList.insert(EXPLORER_TreeViewDirector_nodeList.count_abstract, nodeKind, EXPLORER_chosenDirectoryAbsolutePathId, 0);
+    EXPLORER_treeViewNodes.insert(EXPLORER_treeViewNodes.count_abstract, nodeKind, EXPLORER_chosenDirectoryAbsolutePathId, 0);
     INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
     EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
 }
@@ -101,14 +101,14 @@ function EXPLORER_TreeViewDirector_setChosenDirectory(chosenDirectory, chosenDir
 function EXPLORER_TreeViewDirector_setChosenWorkspace(chooseWorkspaceResult) {
     EXPLORER_chosenWorkspace = chooseWorkspaceResult.workspaceFileAbsolutePath;
 
-    EXPLORER_TreeViewDirector_nodeList.clear();
+    EXPLORER_treeViewNodes.clear();
 
     if (!EXPLORER_chosenWorkspace) return;
 
     for (let i = 0; i < chooseWorkspaceResult.directories.length; i++) {
         let directory = chooseWorkspaceResult.directories[i];
         let nodeKind = TreeViewNodeKind_isExpandable_NOTisExpanded;
-        EXPLORER_TreeViewDirector_nodeList.insert(EXPLORER_TreeViewDirector_nodeList.count_abstract, nodeKind, directory.id, 0);
+        EXPLORER_treeViewNodes.insert(EXPLORER_treeViewNodes.count_abstract, nodeKind, directory.id, 0);
     }
 
     INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
@@ -148,7 +148,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositive
     }
 
     let upperBound = start + length;
-    let totalCount = EXPLORER_TreeViewDirector_nodeList.count_abstract;
+    let totalCount = EXPLORER_treeViewNodes.count_abstract;
     let loopCounter = 0;
 
     let lastIndex = (INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero] - 1 + INTS[fEXPLORER_TreeViewDirector_virtualCount]) % INTS[fEXPLORER_TreeViewDirector_virtualCount]; // TODO: 'INTS[fEXPLORER_TreeViewDirector_virtualCount]' or 'EXPLORER_ringBuffer.length'
@@ -193,7 +193,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositive
             divItem.lastChild.title = '';
         }
         else {
-            EXPLORER_TreeViewDirector_nodeList.getElementAt(indexItem);
+            EXPLORER_treeViewNodes.getElementAt(indexItem);
             let key = INTS[fTreeView_pooledNode_key];
             depth = INTS[fTreeView_pooledNode_depth];
             nodeKind = BYTES[byteTreeView_pooledNode_nodeKind];
@@ -209,7 +209,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositive
 
             if (false /*isDirectory*/ /*&& !entry.isDirectory*/) {
                 // A file was deleted then a directory was created with same absolute file path or vice versa.
-                EXPLORER_TreeViewDirector_nodeList.setNodeKind(indexItem, TreeViewNodeKind_NOTisExpandable_NOTisExpanded);
+                EXPLORER_treeViewNodes.setNodeKind(indexItem, TreeViewNodeKind_NOTisExpandable_NOTisExpanded);
                 nodeKind = TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
             }
         }
@@ -351,7 +351,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
             // that is displaying the UI representation of what 'indexItem' points to.
             let indexRingBuffer = ringBufferIndex_current;
 
-            EXPLORER_TreeViewDirector_pullData_array[INTS[fEXPLORER_TreeViewDirector_pullData_array_count]++] = ((indexRingBuffer << CONST_EXPLORER_TreeViewDirector_KEY_BITS) | EXPLORER_TreeViewDirector_nodeList.getKey(indexItem));
+            EXPLORER_TreeViewDirector_pullData_array[INTS[fEXPLORER_TreeViewDirector_pullData_array_count]++] = ((indexRingBuffer << CONST_EXPLORER_TreeViewDirector_KEY_BITS) | EXPLORER_treeViewNodes.getKey(indexItem));
         }
 
         ringBufferIndex_current = (ringBufferIndex_current + 1) % itemListElement_childrenLength;
@@ -426,7 +426,7 @@ async function EXPLORER_TreeViewDirector_tvd_onkeydown_async(divItem, indexItem,
     switch (eventKey) {
         case ' ':
         case 'Enter':
-            EXPLORER_TreeViewDirector_nodeList.getElementAt(indexItem);
+            EXPLORER_treeViewNodes.getElementAt(indexItem);
             let key = INTS[fTreeView_pooledNode_key];
             let depth = INTS[fTreeView_pooledNode_depth];
             let nodeKind = BYTES[byteTreeView_pooledNode_nodeKind];
@@ -451,7 +451,7 @@ async function EXPLORER_TreeViewDirector_tvd_onkeydown_async(divItem, indexItem,
 }
 
 async function EXPLORER_TreeViewDirector_tvd_ondblclick_async(divItem, indexItem) {
-    EXPLORER_TreeViewDirector_nodeList.getElementAt(indexItem);
+    EXPLORER_treeViewNodes.getElementAt(indexItem);
     let key = INTS[fTreeView_pooledNode_key];
     let depth = INTS[fTreeView_pooledNode_depth];
     let nodeKind = BYTES[byteTreeView_pooledNode_nodeKind];
@@ -476,7 +476,7 @@ function EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(divItem, indexItem, e
     EXPLORER_TreeViewDirector_ensure_boundingClientRect();
 
     // TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
-    EXPLORER_TreeViewDirector_nodeList.getElementAt(indexItem);
+    EXPLORER_treeViewNodes.getElementAt(indexItem);
     let key = INTS[fTreeView_pooledNode_key];
     let depth = INTS[fTreeView_pooledNode_depth];
     let nodeKind = BYTES[byteTreeView_pooledNode_nodeKind];
@@ -506,7 +506,7 @@ function EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(divItem, indexItem, e
  */
 async function EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(divItem, indexItem) {
     // TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
-    EXPLORER_TreeViewDirector_nodeList.getElementAt(indexItem);
+    EXPLORER_treeViewNodes.getElementAt(indexItem);
     let key = INTS[fTreeView_pooledNode_key];
     let depth = INTS[fTreeView_pooledNode_depth];
     let nodeKind = BYTES[byteTreeView_pooledNode_nodeKind];
@@ -514,7 +514,7 @@ async function EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(
     if (nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded) {
 
         divItem.children[0].textContent = '-';
-        EXPLORER_TreeViewDirector_nodeList.setNodeKind(indexItem, TreeViewNodeKind_isExpandable_isExpanded);
+        EXPLORER_treeViewNodes.setNodeKind(indexItem, TreeViewNodeKind_isExpandable_isExpanded);
 
         const filesystemEntries = await window.myAPI.getFilesystemEntries_argumentIsId(key);
 
@@ -528,7 +528,7 @@ async function EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(
                 nodeKind = TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
             }
             // TODO: Insert range, or at the least 'pre-emptively' resize the list so that it fits each insertion without resizing per insertion.
-            EXPLORER_TreeViewDirector_nodeList.insert(indexItem + 1 + i, nodeKind, entry.id, depth + 1);
+            EXPLORER_treeViewNodes.insert(indexItem + 1 + i, nodeKind, entry.id, depth + 1);
             INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
             EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
         }
@@ -538,12 +538,12 @@ async function EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(
     else if (nodeKind === TreeViewNodeKind_isExpandable_isExpanded) {
 
         divItem.children[0].textContent = '+';
-        EXPLORER_TreeViewDirector_nodeList.setNodeKind(indexItem, TreeViewNodeKind_isExpandable_NOTisExpanded);
+        EXPLORER_treeViewNodes.setNodeKind(indexItem, TreeViewNodeKind_isExpandable_NOTisExpanded);
 
         let countChildren = 0;
-        for (let i = indexItem + 1; i < EXPLORER_TreeViewDirector_nodeList.count_abstract; i++) {
+        for (let i = indexItem + 1; i < EXPLORER_treeViewNodes.count_abstract; i++) {
             // If currentDepth < ithElementDepth; // then current is a parent of ithElement.
-            if (depth < EXPLORER_TreeViewDirector_nodeList.getDepth(i)) {
+            if (depth < EXPLORER_treeViewNodes.getDepth(i)) {
                 countChildren++;
             }
             else {
@@ -551,7 +551,7 @@ async function EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(
             }
         }
         if (countChildren > 0) { // TODO: is this check necessary?
-            EXPLORER_TreeViewDirector_nodeList.removeAt(indexItem + 1, countChildren);
+            EXPLORER_treeViewNodes.removeAt(indexItem + 1, countChildren);
             INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
             EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
             EXPLORER_TreeViewDirector_draw_render_fullReset_request();
@@ -561,14 +561,14 @@ async function EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(
 
 function EXPLORER_TreeViewDirector_tvd_arrowRight_async(divItem, indexItem) {
     // TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
-    EXPLORER_TreeViewDirector_nodeList.getElementAt(indexItem);
+    EXPLORER_treeViewNodes.getElementAt(indexItem);
     let key = INTS[fTreeView_pooledNode_key];
     let depth = INTS[fTreeView_pooledNode_depth];
     let nodeKind = BYTES[byteTreeView_pooledNode_nodeKind];
     
     if (nodeKind === TreeViewNodeKind_isExpandable_isExpanded) {
-        if (indexItem + 1 < EXPLORER_TreeViewDirector_nodeList.count_abstract) {
-            if (EXPLORER_TreeViewDirector_nodeList.getDepth(indexItem + 1) > depth) {
+        if (indexItem + 1 < EXPLORER_treeViewNodes.count_abstract) {
+            if (EXPLORER_treeViewNodes.getDepth(indexItem + 1) > depth) {
                 EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
                     INTS[fEXPLORER_TreeViewDirector_cursorIndex] + 1));
             }
@@ -583,7 +583,7 @@ function EXPLORER_TreeViewDirector_tvd_arrowRight_async(divItem, indexItem) {
 
 function EXPLORER_TreeViewDirector_tvd_arrowLeft_async(divItem, indexItem) {
     // TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
-    EXPLORER_TreeViewDirector_nodeList.getElementAt(indexItem);
+    EXPLORER_treeViewNodes.getElementAt(indexItem);
     let key = INTS[fTreeView_pooledNode_key];
     let depth = INTS[fTreeView_pooledNode_depth];
     let nodeKind = BYTES[byteTreeView_pooledNode_nodeKind];
@@ -595,7 +595,7 @@ function EXPLORER_TreeViewDirector_tvd_arrowLeft_async(divItem, indexItem) {
         let distanceToParent = 0;
         for (let i = indexItem - 1; i >= 0; i--) {
             // If ithElementDepth < currentDepth; // then ithElement is the parent of current.
-            if (EXPLORER_TreeViewDirector_nodeList.getDepth(i) < depth) {
+            if (EXPLORER_treeViewNodes.getDepth(i) < depth) {
                 distanceToParent++;
                 break;
             }
@@ -613,7 +613,7 @@ function EXPLORER_TreeViewDirector_tvd_arrowLeft_async(divItem, indexItem) {
 }
 
 function EXPLORER_TreeViewDirector_tvd_getTotalCount() {
-    return EXPLORER_TreeViewDirector_nodeList.count_abstract;
+    return EXPLORER_treeViewNodes.count_abstract;
 }
 
 /**
@@ -626,7 +626,7 @@ function EXPLORER_TreeViewDirector_tvd_getTotalCount() {
  * @returns 
  */
 function EXPLORER_TreeViewDirector_removeFromNodeList(indexItem) {
-    EXPLORER_TreeViewDirector_nodeList.getElementAt(indexItem);
+    EXPLORER_treeViewNodes.getElementAt(indexItem);
     let key = INTS[fTreeView_pooledNode_key];
     let depth = INTS[fTreeView_pooledNode_depth];
     let nodeKind = BYTES[byteTreeView_pooledNode_nodeKind];
@@ -639,9 +639,9 @@ function EXPLORER_TreeViewDirector_removeFromNodeList(indexItem) {
     let countChildren = 0;
 
     if (nodeKind === TreeViewNodeKind_isExpandable_isExpanded) {
-        for (let i = indexItem + 1; i < EXPLORER_TreeViewDirector_nodeList.count_abstract; i++) {
+        for (let i = indexItem + 1; i < EXPLORER_treeViewNodes.count_abstract; i++) {
             // If currentDepth < ithElementDepth; then current is a parent of ithElement.
-            if (depth < EXPLORER_TreeViewDirector_nodeList.getDepth(i)) {
+            if (depth < EXPLORER_treeViewNodes.getDepth(i)) {
                 countChildren++;
             }
             else {
@@ -650,7 +650,7 @@ function EXPLORER_TreeViewDirector_removeFromNodeList(indexItem) {
         }
     }
 
-    EXPLORER_TreeViewDirector_nodeList.removeAt(indexItem, 1 + countChildren);
+    EXPLORER_treeViewNodes.removeAt(indexItem, 1 + countChildren);
     INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
     EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
     return 1 + countChildren;
@@ -658,7 +658,7 @@ function EXPLORER_TreeViewDirector_removeFromNodeList(indexItem) {
 
 /** TODO: any usage of this needs to respect the actual zeroth UI div not the literal. */
 function EXPLORER_TreeViewDirector_setNodeListEntryId(indexItem, pathId) {
-    EXPLORER_TreeViewDirector_nodeList.setKey(indexItem, pathId);
+    EXPLORER_treeViewNodes.setKey(indexItem, pathId);
 }
 
 function EXPLORER_TreeViewDirector_addSpecificMenuOptionsForTarget(optionList, divItem, target) {
@@ -1517,7 +1517,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
             break;
         case CommandKind_Paste:
             {
-                EXPLORER_TreeViewDirector_nodeList.getElementAt(MENU_target.indexItem);
+                EXPLORER_treeViewNodes.getElementAt(MENU_target.indexItem);
                 let nodeKind = BYTES[byteTreeView_pooledNode_nodeKind];
                 let depthOfTheParent = INTS[fTreeView_pooledNode_depth];
                 let isCollapsed = nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
@@ -1554,7 +1554,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                             // whether that sibling is expanded, if so you skip all the children of the sibling.
                             //
                             for (let i_targetDepth = 0; i_targetDepth < pasteResult.indexOf; i_targetDepth++) {
-                                EXPLORER_TreeViewDirector_nodeList.getElementAt(someIndex);
+                                EXPLORER_treeViewNodes.getElementAt(someIndex);
                                 let nodeKind = BYTES[byteTreeView_pooledNode_nodeKind];
                                 let isCollapsed = nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
@@ -1568,7 +1568,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
 
                                 if (!isCollapsed) {
                                     while (someIndex < EXPLORER_TreeViewDirector_tvd_getTotalCount()) {
-                                        let d_of_perhaps_too_large_depth = EXPLORER_TreeViewDirector_nodeList.getDepth(someIndex);
+                                        let d_of_perhaps_too_large_depth = EXPLORER_treeViewNodes.getDepth(someIndex);
                                         if (d_of_perhaps_too_large_depth > targetDepth) {
                                             someIndex++;
                                         }
@@ -1582,7 +1582,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                                 // TODO: You're missing a 'someIndex < EXPLORER_TreeViewDirector_tvd_getTotalCount()' check for after the while loop.
                             }
 
-                            EXPLORER_TreeViewDirector_nodeList.insert(someIndex, nodeKind, pasteResult.pathId, MENU_target.depth + 1);
+                            EXPLORER_treeViewNodes.insert(someIndex, nodeKind, pasteResult.pathId, MENU_target.depth + 1);
 
                             if (INTS[fEXPLORER_TreeViewDirector_virtualCount] > 0) {
                                 let largestIndexItemBeingShown = INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + (INTS[fEXPLORER_TreeViewDirector_virtualCount] - 1);
@@ -1624,7 +1624,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                                             countChanges = EXPLORER_TreeViewDirector_removeFromNodeList(indexItem);
                                         }
                                         else {
-                                            EXPLORER_TreeViewDirector_nodeList.removeAt(indexItem, 1);
+                                            EXPLORER_treeViewNodes.removeAt(indexItem, 1);
                                             countChanges = 1;
                                         }
 
@@ -1748,7 +1748,7 @@ async function NewFile_Directory_WIDGET_InputText_callback(result) {
 
     let entry = WIDGET_SHOW_value;
 
-    EXPLORER_TreeViewDirector_nodeList.getElementAt(WIDGET_target.indexItem);
+    EXPLORER_treeViewNodes.getElementAt(WIDGET_target.indexItem);
     let nodeKind = BYTES[byteTreeView_pooledNode_nodeKind];
     let depthOfTheParent = INTS[fTreeView_pooledNode_depth];
     let isCollapsed = nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
@@ -1775,7 +1775,7 @@ async function NewFile_Directory_WIDGET_InputText_callback(result) {
             // whether that sibling is expanded, if so you skip all the children of the sibling.
             //
             for (let i_targetDepth = 0; i_targetDepth < newFileResult.indexOf; i_targetDepth++) {
-                EXPLORER_TreeViewDirector_nodeList.getElementAt(someIndex);
+                EXPLORER_treeViewNodes.getElementAt(someIndex);
                 let nodeKind = BYTES[byteTreeView_pooledNode_nodeKind];
                 let isCollapsed = nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
@@ -1789,7 +1789,7 @@ async function NewFile_Directory_WIDGET_InputText_callback(result) {
 
                 if (!isCollapsed) {
                     while (someIndex < EXPLORER_TreeViewDirector_tvd_getTotalCount()) {
-                        let d_of_perhaps_too_large_depth = EXPLORER_TreeViewDirector_nodeList.getDepth(someIndex);
+                        let d_of_perhaps_too_large_depth = EXPLORER_treeViewNodes.getDepth(someIndex);
                         if (d_of_perhaps_too_large_depth > targetDepth) {
                             someIndex++;
                         }
@@ -1803,7 +1803,7 @@ async function NewFile_Directory_WIDGET_InputText_callback(result) {
                 // TODO: You're missing a 'someIndex < EXPLORER_TreeViewDirector_tvd_getTotalCount()' check for after the while loop.
             }
 
-            EXPLORER_TreeViewDirector_nodeList.insert(someIndex, nodeKind, newFileResult.pathId, WIDGET_target.depth + 1);
+            EXPLORER_treeViewNodes.insert(someIndex, nodeKind, newFileResult.pathId, WIDGET_target.depth + 1);
 
             if (INTS[fEXPLORER_TreeViewDirector_virtualCount] > 0) {
                 let largestIndexItemBeingShown = INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + (INTS[fEXPLORER_TreeViewDirector_virtualCount] - 1);
@@ -1833,7 +1833,7 @@ async function NewFile_File_WIDGET_InputText_callback(result) {
 
     let entry = WIDGET_SHOW_value;
     
-    EXPLORER_TreeViewDirector_nodeList.getElementAt(WIDGET_target.indexItem);
+    EXPLORER_treeViewNodes.getElementAt(WIDGET_target.indexItem);
     let nodeKind = BYTES[byteTreeView_pooledNode_nodeKind];
     let depthOfTheParent = INTS[fTreeView_pooledNode_depth];
     let isCollapsed = nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
@@ -1857,7 +1857,7 @@ async function NewFile_File_WIDGET_InputText_callback(result) {
             // whether that sibling is expanded, if so you skip all the children of the sibling.
             //
             for (let i_targetDepth = 0; i_targetDepth < newFileResult.indexOf; i_targetDepth++) {
-                EXPLORER_TreeViewDirector_nodeList.getElementAt(someIndex);
+                EXPLORER_treeViewNodes.getElementAt(someIndex);
                 let nodeKind = BYTES[byteTreeView_pooledNode_nodeKind];
                 let isCollapsed = nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded || nodeKind === TreeViewNodeKind_NOTisExpandable_NOTisExpanded;
 
@@ -1871,7 +1871,7 @@ async function NewFile_File_WIDGET_InputText_callback(result) {
 
                 if (!isCollapsed) {
                     while (someIndex < EXPLORER_TreeViewDirector_tvd_getTotalCount()) {
-                        let d_of_perhaps_too_large_depth = EXPLORER_TreeViewDirector_nodeList.getDepth(someIndex);
+                        let d_of_perhaps_too_large_depth = EXPLORER_treeViewNodes.getDepth(someIndex);
                         if (d_of_perhaps_too_large_depth > targetDepth) {
                             someIndex++;
                         }
@@ -1885,7 +1885,7 @@ async function NewFile_File_WIDGET_InputText_callback(result) {
                 // TODO: You're missing a 'someIndex < EXPLORER_TreeViewDirector_tvd_getTotalCount()' check for after the while loop.
             }
 
-            EXPLORER_TreeViewDirector_nodeList.insert(someIndex, nodeKind, newFileResult.pathId, WIDGET_target.depth + 1);
+            EXPLORER_treeViewNodes.insert(someIndex, nodeKind, newFileResult.pathId, WIDGET_target.depth + 1);
     
             if (INTS[fEXPLORER_TreeViewDirector_virtualCount] > 0) {
                 let largestIndexItemBeingShown = INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + (INTS[fEXPLORER_TreeViewDirector_virtualCount] - 1);
@@ -1959,7 +1959,7 @@ async function DeleteFile_File_YesCancel_callback(result) {
     if (deleteFileResult) {
         let noMoreEntriesToShow = INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + INTS[fEXPLORER_TreeViewDirector_virtualCount] >= EXPLORER_TreeViewDirector_tvd_getTotalCount();
 
-        EXPLORER_TreeViewDirector_nodeList.removeAt(WIDGET_target.indexItem, 1);
+        EXPLORER_treeViewNodes.removeAt(WIDGET_target.indexItem, 1);
 
         if (INTS[fEXPLORER_TreeViewDirector_virtualCount] > 0) {
             //let divItem = EXPLORER_itemListElement.children[WIDGET_target.divRelativeIndex];

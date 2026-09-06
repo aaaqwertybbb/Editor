@@ -37,9 +37,9 @@ EXPLORER_virtualizationElement.className = 'TREEVIEW_virtualization';
 EXPLORER_rootElement.appendChild(EXPLORER_virtualizationElement);
 
 /** Consider the existence of such methods as 'state_cursor_setIndex' before mutating state directly */
-const EXPLORER_TreeViewDirector_cursorElement = document.createElement('div');
-EXPLORER_TreeViewDirector_cursorElement.className = 'TREEVIEW_cursor';
-EXPLORER_rootElement.appendChild(EXPLORER_TreeViewDirector_cursorElement);
+const EXPLORER_cursorElement = document.createElement('div');
+EXPLORER_cursorElement.className = 'TREEVIEW_cursor';
+EXPLORER_rootElement.appendChild(EXPLORER_cursorElement);
 
 const EXPLORER_TreeViewDirector_itemListElement = document.createElement('div');
 EXPLORER_TreeViewDirector_itemListElement.className = 'TREEVIEW_itemList';
@@ -408,7 +408,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
             //}
             //INTS[fEXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING]
             let widthAttributeValueString = widthAttributeValueNumber + 'px';
-            EXPLORER_TreeViewDirector_cursorElement.style.width = widthAttributeValueString;
+            EXPLORER_cursorElement.style.width = widthAttributeValueString;
             for (let i = 0; i < itemListElement_childrenLength; i++) {
                 itemListElement_children[i].style.width = widthAttributeValueString;
             }
@@ -743,7 +743,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_SetItems() {
     INTS[fEXPLORER_TreeViewDirector_itemHeightNumber] = INTS[fEXPLORER_TreeViewDirector_SET_ITEMS_itemHeightNumber];
     EXPLORER_TreeViewDirector_itemHeightStyleAttributeValueString = EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightStyleAttributeValueString;
 
-    EXPLORER_TreeViewDirector_cursorElement.style.height = EXPLORER_TreeViewDirector_itemHeightStyleAttributeValueString;
+    EXPLORER_cursorElement.style.height = EXPLORER_TreeViewDirector_itemHeightStyleAttributeValueString;
     INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
     EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
     BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = 0;
@@ -922,7 +922,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
         //}
         //INTS[fEXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING]
         let widthAttributeValueString = widthAttributeValueNumber + 'px';
-        EXPLORER_TreeViewDirector_cursorElement.style.width = widthAttributeValueString;
+        EXPLORER_cursorElement.style.width = widthAttributeValueString;
 
         // this is zero'd, could use change for clarity of algorithm and match patterns but focus elsewhere first
         for (let i = 0; i < INTS[fEXPLORER_TreeViewDirector_virtualCount]; i++) {
@@ -1236,7 +1236,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Cursor(index) {
     }
 
     // transform last for optimal state flagging of the modified DOM element
-    EXPLORER_TreeViewDirector_cursorElement.style.transform = `translateY(${INTS[fEXPLORER_TreeViewDirector_cursorTranslateYNumber]}px)`;
+    EXPLORER_cursorElement.style.transform = `translateY(${INTS[fEXPLORER_TreeViewDirector_cursorTranslateYNumber]}px)`;
 }
 
 /**

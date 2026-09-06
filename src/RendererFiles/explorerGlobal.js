@@ -73,7 +73,7 @@ const EXPLORER_treeViewNodes = new TreeViewNodeList(32);
 /** Starting with an empty array so I can have undefined/null signify that the "TreeViewDirector" is "opting out" of this feature, thus the component should not allocate this on the "TreeViewDirector"'s behalf. */
 let EXPLORER_pullData_array = new Uint32Array(0);
 
-let EXPLORER_TreeViewDirector_pullData_result = new Uint32Array(0);
+let EXPLORER_pullData_result = new Uint32Array(0);
 
 let EXPLORER_TreeViewDirector_arrayEntries = null;
 
@@ -359,7 +359,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
 
     EXPLORER_TreeViewDirector_arrayEntries = await window.myAPI.getFilesystemEntryById_ARRAY(EXPLORER_pullData_array.subarray(0, INTS[fEXPLORER_pullData_array_count]));
 
-    EXPLORER_TreeViewDirector_pullData_result = EXPLORER_pullData_array;
+    EXPLORER_pullData_result = EXPLORER_pullData_array;
     INTS[fEXPLORER_pullData_result_count] = INTS[fEXPLORER_pullData_array_count];
 
     BYTES[byteEXPLORER_TreeViewDirector_scrollIsFetchingData] = 0; // TODO: try/catch/finally; put this in the finally.
@@ -381,7 +381,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
         let NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
 
         for (let i = 0; i < INTS[fEXPLORER_pullData_result_count]; i++) {
-            let packedInteger = EXPLORER_TreeViewDirector_pullData_result[i];
+            let packedInteger = EXPLORER_pullData_result[i];
             const key = packedInteger & EXPLORER_TreeViewDirector_KEY_MASK;
             const ringBufferIndexItem = packedInteger >> CONST_EXPLORER_TreeViewDirector_KEY_BITS;
 
@@ -414,7 +414,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
             }
         }
 
-        EXPLORER_TreeViewDirector_pullData_result = null;
+        EXPLORER_pullData_result = null;
         EXPLORER_TreeViewDirector_arrayEntries = null;
     }
 }

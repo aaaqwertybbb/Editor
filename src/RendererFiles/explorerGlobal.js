@@ -364,7 +364,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
 
     BYTES[byteEXPLORER_scrollIsFetchingData] = 0; // TODO: try/catch/finally; put this in the finally.
 
-    EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Scroll_PullDataDrawResult);
+    EXPLORER_render_request(TREEVIEWrenderKind_Scroll_PullDataDrawResult);
 };
 
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
@@ -684,7 +684,7 @@ function EXPLORER_TreeViewDirector_addSpecificMenuOptionsForTarget(optionList, d
     }
 }
 
-function EXPLORER_TreeViewDirector_TREEVIEW_render_request(renderKind) {
+function EXPLORER_render_request(renderKind) {
     if (EXPLORER_renderKindArray[EXPLORER_renderKindArray.length - 1] !== renderKind) {
         EXPLORER_renderKindArray.push(renderKind);
     }
@@ -756,7 +756,7 @@ function EXPLORER_render_do_SetItems() {
 function EXPLORER_setItems(itemHeightNumber, itemHeightStyleAttributeValueString) {
     INTS[fEXPLORER_SET_ITEMS_itemHeightNumber] = itemHeightNumber;
     EXPLORER_SET_ITEMS_itemHeightStyleAttributeValueString = itemHeightStyleAttributeValueString;
-    EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_SetItems);
+    EXPLORER_render_request(TREEVIEWrenderKind_SetItems);
 }
 
 function EXPLORER_render_do_Create(timestamp) {
@@ -801,7 +801,7 @@ function EXPLORER_render_do_Create(timestamp) {
 function EXPLORER_draw_create_request(parentElement, insertBeforeThisChild) {
     EXPLORER_draw_create_request_parentElement = parentElement;
     EXPLORER_draw_create_request_insertBeforeThisChild = insertBeforeThisChild;
-    EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Create);
+    EXPLORER_render_request(TREEVIEWrenderKind_Create);
 }
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Batch(timestamp) {
@@ -895,7 +895,7 @@ function EXPLORER_TreeViewDirector_draw_BATCH_request(start, length, onePositive
     INTS[fEXPLORER_length] = length;
     INTS[fEXPLORER_onePositiveDiff_twoNegativeDiff_orThreeFullScreen] = onePositiveDiff_twoNegativeDiff_orThreeFullScreen;
     INTS[fEXPLORER_caseThreeOrigin] = caseThreeOrigin;
-    EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Batch);
+    EXPLORER_render_request(TREEVIEWrenderKind_Batch);
 }
 
 function EXPLORER_render_do_FullReset(timestamp) {
@@ -963,7 +963,7 @@ function EXPLORER_render_do_FullReset(timestamp) {
  * so it is easier to just invoke this directly when you change totalCount?
  */
 function EXPLORER_TreeViewDirector_draw_render_fullReset_request() {
-    EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_FullReset);
+    EXPLORER_render_request(TREEVIEWrenderKind_FullReset);
 }
 
 /**
@@ -1193,7 +1193,7 @@ function EXPLORER_event_windowResize() {
 
     // this.event_windowResize();
 
-    EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Resize);
+    EXPLORER_render_request(TREEVIEWrenderKind_Resize);
 }
 
 function EXPLORER_event_scroll() {
@@ -1202,7 +1202,7 @@ function EXPLORER_event_scroll() {
 
     INTS[fEXPLORER_lastReadNumber_scrollLeft] = EXPLORER_rootElement.scrollLeft;
     INTS[fEXPLORER_lastReadNumber_scrollTop] = EXPLORER_rootElement.scrollTop;
-    EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Scroll);
+    EXPLORER_render_request(TREEVIEWrenderKind_Scroll);
 }
 
 function EXPLORER_ensure_boundingClientRect() {
@@ -1248,7 +1248,7 @@ function EXPLORER_render_do_Cursor(index) {
 function EXPLORER_TreeViewDirector_state_cursor_setIndex(index) {
     if (INTS[fEXPLORER_cursorIndex] === index) return;
     INTS[fEXPLORER_cursorIndex] = index;
-    EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Cursor);
+    EXPLORER_render_request(TREEVIEWrenderKind_Cursor);
 }
 
 /**

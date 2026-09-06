@@ -569,7 +569,7 @@ function EXPLORER_arrowRight(divItem, indexItem) {
     if (nodeKind === TreeViewNodeKind_isExpandable_isExpanded) {
         if (indexItem + 1 < EXPLORER_treeViewNodes.count_abstract) {
             if (EXPLORER_treeViewNodes.getDepth(indexItem + 1) > depth) {
-                EXPLORER_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+                EXPLORER_state_cursor_setIndex(EXPLORER_state_cursor_validateIndex(
                     INTS[fEXPLORER_cursorIndex] + 1));
             }
         }
@@ -604,7 +604,7 @@ function EXPLORER_arrowLeft(divItem, indexItem) {
             }
         }
         if (distanceToParent > 0) {
-            EXPLORER_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+            EXPLORER_state_cursor_setIndex(EXPLORER_state_cursor_validateIndex(
                 indexItem - distanceToParent));
         }
     }
@@ -982,7 +982,7 @@ function EXPLORER_event_click(event) {
 
     let rY = event_clientY - INTS[fEXPLORER_boundingClientRect_top] + INTS[fEXPLORER_lastReadNumber_scrollTop];
     let indexItem = Math.floor(rY / INTS[fEXPLORER_itemHeightNumber]);
-    indexItem = EXPLORER_TreeViewDirector_state_cursor_validateIndex(indexItem);
+    indexItem = EXPLORER_state_cursor_validateIndex(indexItem);
 
     // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_ringBufferIndexItem'...
     // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
@@ -1013,7 +1013,7 @@ function EXPLORER_event_dblclick(event) {
 
     let rY = event_clientY - INTS[fEXPLORER_boundingClientRect_top] + INTS[fEXPLORER_lastReadNumber_scrollTop];
     let indexItem = Math.floor(rY / INTS[fEXPLORER_itemHeightNumber]);
-    indexItem = EXPLORER_TreeViewDirector_state_cursor_validateIndex(indexItem);
+    indexItem = EXPLORER_state_cursor_validateIndex(indexItem);
 
     // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_ringBufferIndexItem'...
     // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
@@ -1053,7 +1053,7 @@ function EXPLORER_event_contextmenu(event) {
     if (event_button === 2) {
         let rY = event_clientY - INTS[fEXPLORER_boundingClientRect_top] + INTS[fEXPLORER_lastReadNumber_scrollTop];
 
-        EXPLORER_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+        EXPLORER_state_cursor_setIndex(EXPLORER_state_cursor_validateIndex(
             Math.floor(rY / INTS[fEXPLORER_itemHeightNumber])));
 
         // TODO: you need to move this above the divItem assignment and do checks earlier... double check all other uses
@@ -1074,7 +1074,7 @@ function EXPLORER_event_contextmenu(event) {
             return;
         }
 
-        EXPLORER_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+        EXPLORER_state_cursor_setIndex(EXPLORER_state_cursor_validateIndex(
             INTS[fEXPLORER_cursorIndex]));
 
         // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_ringBufferIndexItem'...
@@ -1103,7 +1103,7 @@ function EXPLORER_event_keydown(event) {
                 EXPLORER_rootElement.scrollBy(0, INTS[fEXPLORER_itemHeightNumber]);
             }
             else {
-                EXPLORER_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+                EXPLORER_state_cursor_setIndex(EXPLORER_state_cursor_validateIndex(
                     INTS[fEXPLORER_cursorIndex] + 1));
             }
             return;
@@ -1113,14 +1113,14 @@ function EXPLORER_event_keydown(event) {
                 EXPLORER_rootElement.scrollBy(0, -1 * INTS[fEXPLORER_itemHeightNumber]);
             }
             else {
-                EXPLORER_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+                EXPLORER_state_cursor_setIndex(EXPLORER_state_cursor_validateIndex(
                     INTS[fEXPLORER_cursorIndex] - 1));
             }
             return;
         case 'ArrowRight':
             if (!event.ctrlKey) { // If holding ctrl, don't preventDefault so the user can scroll horizontally?
                 event.preventDefault();
-                EXPLORER_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+                EXPLORER_state_cursor_setIndex(EXPLORER_state_cursor_validateIndex(
                     INTS[fEXPLORER_cursorIndex]));
 
                 // TODO: 'ArrowRight' when the cursor is on a valid item but isn't part of the virtualization result.
@@ -1140,7 +1140,7 @@ function EXPLORER_event_keydown(event) {
         case 'ArrowLeft':
             if (!event.ctrlKey) { // If holding ctrl, don't preventDefault so the user can scroll horizontally?
                 event.preventDefault();
-                EXPLORER_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+                EXPLORER_state_cursor_setIndex(EXPLORER_state_cursor_validateIndex(
                     INTS[fEXPLORER_cursorIndex]));
                 
                 // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_ringBufferIndexItem'...
@@ -1158,7 +1158,7 @@ function EXPLORER_event_keydown(event) {
         case ' ':
         case 'Enter':
             event.preventDefault();
-            EXPLORER_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+            EXPLORER_state_cursor_setIndex(EXPLORER_state_cursor_validateIndex(
                 INTS[fEXPLORER_cursorIndex]));
             
             // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_ringBufferIndexItem'...
@@ -1256,7 +1256,7 @@ function EXPLORER_state_cursor_setIndex(index) {
  * 
  * @param {*} indexItem 
  */
-function EXPLORER_TreeViewDirector_state_cursor_validateIndex(indexItem) {
+function EXPLORER_state_cursor_validateIndex(indexItem) {
     if (indexItem >= EXPLORER_getTotalCount()) {
         indexItem = EXPLORER_getTotalCount() - 1;
     }

@@ -41,9 +41,9 @@ const EXPLORER_cursorElement = document.createElement('div');
 EXPLORER_cursorElement.className = 'TREEVIEW_cursor';
 EXPLORER_rootElement.appendChild(EXPLORER_cursorElement);
 
-const EXPLORER_TreeViewDirector_itemListElement = document.createElement('div');
-EXPLORER_TreeViewDirector_itemListElement.className = 'TREEVIEW_itemList';
-EXPLORER_rootElement.appendChild(EXPLORER_TreeViewDirector_itemListElement);
+const EXPLORER_itemListElement = document.createElement('div');
+EXPLORER_itemListElement.className = 'TREEVIEW_itemList';
+EXPLORER_rootElement.appendChild(EXPLORER_itemListElement);
 
 const EXPLORER_TreeViewDirector_TREEVIEW_renderKindArray = [];
 
@@ -347,7 +347,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
         if (itemListElement_children[ringBufferIndex_current].className === 'eN') {
             let indexItem = INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex] + i;
             
-            // The index of the actual dom element within EXPLORER_TreeViewDirector_itemListElement.children
+            // The index of the actual dom element within EXPLORER_itemListElement.children
             // that is displaying the UI representation of what 'indexItem' points to.
             let indexRingBuffer = ringBufferIndex_current;
 
@@ -736,7 +736,7 @@ function EXPLORER_TreeViewDirector_renderDo(timestamp) {
  * of the second are used for the first.
  */
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_SetItems() {
-    EXPLORER_TreeViewDirector_itemListElement.innerHTML = '';
+    EXPLORER_itemListElement.innerHTML = '';
     EXPLORER_virtualizationElement.style.height = 1 + 'px';
     EXPLORER_TreeViewDirector_state_cursor_setIndex(0);
     
@@ -908,8 +908,8 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
 
     let totalCount = EXPLORER_TreeViewDirector_tvd_getTotalCount();
 
-    if (EXPLORER_TreeViewDirector_itemListElement.children.length !== INTS[fEXPLORER_TreeViewDirector_virtualCount]) {
-        EXPLORER_TreeViewDirector_itemListElement.innerHTML = '';
+    if (EXPLORER_itemListElement.children.length !== INTS[fEXPLORER_TreeViewDirector_virtualCount]) {
+        EXPLORER_itemListElement.innerHTML = '';
 
         // padding of 2ch (the style attribute receives the width as a pixel by using 'INTS[fEXPLORER_firstSpanWidthValue]' as a baseline (not quite ch))
         // TODO: this is all very inaccurate and prone to eventual rounding issues due to not monospace font.
@@ -932,7 +932,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
             divItem.style.height = EXPLORER_TreeViewDirector_itemHeightStyleAttributeValueString;
             divItem.style.whiteSpace = 'nowrap';
             divItem.style.position = 'absolute';
-            EXPLORER_TreeViewDirector_itemListElement.appendChild(divItem);
+            EXPLORER_itemListElement.appendChild(divItem);
             let iconSpan = document.createElement('span');
             iconSpan.style.width = EXPLORER_firstSpanWidth;
             iconSpan.style.display = 'inline-block';
@@ -947,12 +947,12 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
             INTS[fEXPLORER_TreeViewDirector_pullData_array_count] = 0;
         }
 
-        EXPLORER_ringBuffer = Array.from(EXPLORER_TreeViewDirector_itemListElement.children);
+        EXPLORER_ringBuffer = Array.from(EXPLORER_itemListElement.children);
         INTS[fEXPLORER_ringBuffer_length] = EXPLORER_ringBuffer.length;
     }
 
     // TODO: This if statement check is awkward because the previous if statement ought to have guaranteed this one to be true.
-    if (EXPLORER_TreeViewDirector_itemListElement.children.length === INTS[fEXPLORER_TreeViewDirector_virtualCount]) {
+    if (EXPLORER_itemListElement.children.length === INTS[fEXPLORER_TreeViewDirector_virtualCount]) {
         EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop], INTS[fEXPLORER_TreeViewDirector_virtualCount], 3, undefined, timestamp);
     }
 }
@@ -1587,7 +1587,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                             if (INTS[fEXPLORER_TreeViewDirector_virtualCount] > 0) {
                                 let largestIndexItemBeingShown = INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + (INTS[fEXPLORER_TreeViewDirector_virtualCount] - 1);
                                 if (someIndex >= INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] && someIndex <= largestIndexItemBeingShown) {
-                                    let finalDiv = EXPLORER_TreeViewDirector_itemListElement.children[EXPLORER_TreeViewDirector_itemListElement.children.length - 1];
+                                    let finalDiv = EXPLORER_itemListElement.children[EXPLORER_itemListElement.children.length - 1];
 
                                     INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
                                     EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
@@ -1596,7 +1596,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
 
                                     //await EXPLORER_TreeViewDirector_tvd_drawItem_async(finalDiv, someIndex, /*isNull*/ false);
                                     if (someIndex !== largestIndexItemBeingShown) {
-                                        //EXPLORER_TreeViewDirector_itemListElement.insertBefore(finalDiv, EXPLORER_TreeViewDirector_itemListElement.children[MENU_target.divRelativeIndex + 1 + pasteResult.indexOf]);
+                                        //EXPLORER_itemListElement.insertBefore(finalDiv, EXPLORER_itemListElement.children[MENU_target.divRelativeIndex + 1 + pasteResult.indexOf]);
                                     }
                                 }
 
@@ -1638,10 +1638,10 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                                         }
 
                                         for (let i = 0; i < remainingChangesToRender; i++) {
-                                            //let divItem = EXPLORER_TreeViewDirector_itemListElement.children[divRelativeIndex];
+                                            //let divItem = EXPLORER_itemListElement.children[divRelativeIndex];
                     
                                             // TODO: if you remove including the eventual final div in the itemListElement then this moving of the div isn't accomplishing anything and could be skipped.
-                                            //EXPLORER_TreeViewDirector_itemListElement.insertBefore(divItem, undefined);
+                                            //EXPLORER_itemListElement.insertBefore(divItem, undefined);
 
                                             if (countOfMoreEntriesToShow <= 0) {
                                                 //await EXPLORER_TreeViewDirector_tvd_drawItem_async(divItem, INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + INTS[fEXPLORER_TreeViewDirector_virtualCount] - 1, /*isNull*/ true);
@@ -1808,14 +1808,14 @@ async function NewFile_Directory_WIDGET_InputText_callback(result) {
             if (INTS[fEXPLORER_TreeViewDirector_virtualCount] > 0) {
                 let largestIndexItemBeingShown = INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + (INTS[fEXPLORER_TreeViewDirector_virtualCount] - 1);
                 if (someIndex >= INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] && someIndex <= largestIndexItemBeingShown) {
-                    //let finalDiv = EXPLORER_TreeViewDirector_itemListElement.children[EXPLORER_TreeViewDirector_itemListElement.children.length - 1];
+                    //let finalDiv = EXPLORER_itemListElement.children[EXPLORER_itemListElement.children.length - 1];
 
                     INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
                     EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
 
                     //await EXPLORER_TreeViewDirector_tvd_drawItem_async(finalDiv, someIndex, /*isNull*/ false);
                     if (someIndex !== largestIndexItemBeingShown) {
-                        //EXPLORER_TreeViewDirector_itemListElement.insertBefore(finalDiv, EXPLORER_TreeViewDirector_itemListElement.children[WIDGET_target.divRelativeIndex + 1 + newFileResult.indexOf]);
+                        //EXPLORER_itemListElement.insertBefore(finalDiv, EXPLORER_itemListElement.children[WIDGET_target.divRelativeIndex + 1 + newFileResult.indexOf]);
                     }
                 }
 
@@ -1890,14 +1890,14 @@ async function NewFile_File_WIDGET_InputText_callback(result) {
             if (INTS[fEXPLORER_TreeViewDirector_virtualCount] > 0) {
                 let largestIndexItemBeingShown = INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + (INTS[fEXPLORER_TreeViewDirector_virtualCount] - 1);
                 if (someIndex >= INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] && someIndex <= largestIndexItemBeingShown) {
-                    //let finalDiv = EXPLORER_TreeViewDirector_itemListElement.children[EXPLORER_TreeViewDirector_itemListElement.children.length - 1];
+                    //let finalDiv = EXPLORER_itemListElement.children[EXPLORER_itemListElement.children.length - 1];
     
                     INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
                     EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
     
                     //await EXPLORER_TreeViewDirector_tvd_drawItem_async(finalDiv, someIndex, /*isNull*/ false);
                     if (someIndex !== largestIndexItemBeingShown) {
-                        //EXPLORER_TreeViewDirector_itemListElement.insertBefore(finalDiv, EXPLORER_TreeViewDirector_itemListElement.children[WIDGET_target.divRelativeIndex + 1 + newFileResult.indexOf]);
+                        //EXPLORER_itemListElement.insertBefore(finalDiv, EXPLORER_itemListElement.children[WIDGET_target.divRelativeIndex + 1 + newFileResult.indexOf]);
                     }
                 }
     
@@ -1929,10 +1929,10 @@ async function DeleteFile_Directory_YesCancel_callback(result) {
         }
 
         for (let i = 0; i < remainingChangesToRender; i++) {
-            //let divItem = EXPLORER_TreeViewDirector_itemListElement.children[WIDGET_target.divRelativeIndex];
+            //let divItem = EXPLORER_itemListElement.children[WIDGET_target.divRelativeIndex];
 
             // TODO: if you remove including the eventual final div in the itemListElement then this moving of the div isn't accomplishing anything and could be skipped.
-            //EXPLORER_TreeViewDirector_itemListElement.insertBefore(divItem, undefined);
+            //EXPLORER_itemListElement.insertBefore(divItem, undefined);
 
             if (countOfMoreEntriesToShow <= 0) {
                 //await EXPLORER_TreeViewDirector_tvd_drawItem_async(divItem, INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + INTS[fEXPLORER_TreeViewDirector_virtualCount] - 1, /*isNull*/ true);
@@ -1962,12 +1962,12 @@ async function DeleteFile_File_YesCancel_callback(result) {
         EXPLORER_TreeViewDirector_nodeList.removeAt(WIDGET_target.indexItem, 1);
 
         if (INTS[fEXPLORER_TreeViewDirector_virtualCount] > 0) {
-            //let divItem = EXPLORER_TreeViewDirector_itemListElement.children[WIDGET_target.divRelativeIndex];
+            //let divItem = EXPLORER_itemListElement.children[WIDGET_target.divRelativeIndex];
 
             INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
             EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] + 'px';
 
-            //EXPLORER_TreeViewDirector_itemListElement.insertBefore(divItem, undefined);
+            //EXPLORER_itemListElement.insertBefore(divItem, undefined);
             if (noMoreEntriesToShow) {
                 //await EXPLORER_TreeViewDirector_tvd_drawItem_async(divItem, INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop] + INTS[fEXPLORER_TreeViewDirector_virtualCount] - 1, /*isNull*/ true);
             }
@@ -1991,7 +1991,7 @@ async function RenameFile_Directory_InputText_callback(result) {
     let renameFileResult = await window.myAPI.renameFile(entry.absolutePath, result.value, /*isDirectory*/ true);
     if (renameFileResult.success) {
         EXPLORER_TreeViewDirector_setNodeListEntryId(WIDGET_target.indexItem, renameFileResult.pathId);
-        let divItem = EXPLORER_TreeViewDirector_itemListElement.children[WIDGET_target.divRelativeIndex];
+        let divItem = EXPLORER_itemListElement.children[WIDGET_target.divRelativeIndex];
         divItem.lastChild.nodeValue = result.value;
     }
 }
@@ -2004,7 +2004,7 @@ async function RenameFile_File_InputText_callback(result) {
     let renameFileResult = await window.myAPI.renameFile(entry.absolutePath, result.value, /*isDirectory*/ false);
     if (renameFileResult.success) {
         EXPLORER_TreeViewDirector_setNodeListEntryId(WIDGET_target.indexItem, renameFileResult.pathId);
-        let divItem = EXPLORER_TreeViewDirector_itemListElement.children[WIDGET_target.divRelativeIndex];
+        let divItem = EXPLORER_itemListElement.children[WIDGET_target.divRelativeIndex];
         divItem.lastChild.nodeValue = result.value;
     }
 }

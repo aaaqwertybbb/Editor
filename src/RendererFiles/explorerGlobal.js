@@ -625,7 +625,7 @@ function EXPLORER_getTotalCount() {
  * @param {*} indexItem 
  * @returns 
  */
-function EXPLORER_TreeViewDirector_removeFromNodeList(indexItem) {
+function EXPLORER_removeFromNodeList(indexItem) {
     EXPLORER_treeViewNodes.getElementAt(indexItem);
     let key = INTS[fTreeView_pooledNode_key];
     let depth = INTS[fTreeView_pooledNode_depth];
@@ -1622,7 +1622,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                                         let countChanges;
                                         
                                         if (pasteResult.isDirectory) {
-                                            countChanges = EXPLORER_TreeViewDirector_removeFromNodeList(indexItem);
+                                            countChanges = EXPLORER_removeFromNodeList(indexItem);
                                         }
                                         else {
                                             EXPLORER_treeViewNodes.removeAt(indexItem, 1);
@@ -1918,7 +1918,7 @@ async function DeleteFile_Directory_YesCancel_callback(result) {
     if (deleteFileResult) {
         let countOfMoreEntriesToShow = EXPLORER_getTotalCount() - (INTS[fEXPLORER_virtualIndex_ofScrollTop] + INTS[fEXPLORER_virtualCount]);
 
-        let countChanges = EXPLORER_TreeViewDirector_removeFromNodeList(WIDGET_target.indexItem);
+        let countChanges = EXPLORER_removeFromNodeList(WIDGET_target.indexItem);
 
         INTS[fEXPLORER_itemHeightTotal] = EXPLORER_getTotalCount() * INTS[fEXPLORER_itemHeightNumber];
         EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_itemHeightTotal] + 'px';

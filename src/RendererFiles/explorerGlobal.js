@@ -422,7 +422,7 @@ function EXPLORER_drawItem_BATCH_PullDataDrawResult() {
 /**
  * Not every key invokes this. 
  */
-async function EXPLORER_TreeViewDirector_tvd_onkeydown_async(divItem, indexItem, eventKey) {
+async function EXPLORER_onkeydown(divItem, indexItem, eventKey) {
     switch (eventKey) {
         case ' ':
         case 'Enter':
@@ -1170,7 +1170,7 @@ function EXPLORER_event_keydown(event) {
             else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
 
             if (ringBufferIndexItem < 0) return;
-            return EXPLORER_TreeViewDirector_tvd_onkeydown_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_cursorIndex], event.key);
+            return EXPLORER_onkeydown(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_cursorIndex], event.key);
     }
 }
 

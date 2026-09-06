@@ -770,16 +770,16 @@ function EXPLORER_render_do_Create(timestamp) {
         EXPLORER_render_do_FullReset(timestamp);
         // TODO: Should there be a return here?...
         // ...more accurately the concern is 'TREEVIEW_draw_create_request_parentElement.insertBefore'
-        // and 'EXPLORER_TreeViewDirector_draw_addEvents()'
+        // and 'EXPLORER_draw_addEvents()'
         // |
         // Should those be in an else?
         // It reads as though you'd be inserting the element twice, which internally you cannot
         // have an HTML node with two parents so this probably doesn't duplicate the UI, but instead just wastes CPU.
         // |
-        // The 'EXPLORER_TreeViewDirector_draw_addEvents();'... can you subscribe twice?
+        // The 'EXPLORER_draw_addEvents();'... can you subscribe twice?
     }
     EXPLORER_draw_create_request_parentElement.insertBefore(EXPLORER_rootElement, EXPLORER_draw_create_request_insertBeforeThisChild);
-    EXPLORER_TreeViewDirector_draw_addEvents();
+    EXPLORER_draw_addEvents();
 
 
     EXPLORER_rootElement.style.width = '';
@@ -822,7 +822,7 @@ function EXPLORER_draw_delete() {
     EXPLORER_rootElement.parentElement.removeChild(EXPLORER_rootElement);
 }
 
-function EXPLORER_TreeViewDirector_draw_addEvents() {
+function EXPLORER_draw_addEvents() {
     EXPLORER_rootElement.addEventListener('click', EXPLORER_event_click); // this.event_click(event.clientY, event.target);
     EXPLORER_rootElement.addEventListener('keydown', EXPLORER_event_keydown); // this.event_keydown(event);
     EXPLORER_rootElement.addEventListener('scroll', EXPLORER_event_scroll, { passive: true }); // this.event_scroll();

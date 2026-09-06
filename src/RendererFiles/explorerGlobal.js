@@ -123,10 +123,10 @@ function EXPLORER_render_do_ScrollTrailingEdgeCheck(timestamp) {
     }
 
     // The 1,000ms has passed! Fire your trailing edge logic safely
-    EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_trailingEdge();
+    EXPLORER_drawItem_BATCH_trailingEdge();
 }
 
-function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_trailingEdge() {
+function EXPLORER_drawItem_BATCH_trailingEdge() {
     BYTES[byteEXPLORER_isCheckingTrailingEdge] = 0; // Reset the flag here
     if (!BYTES[byteEXPLORER_scrollIsFetchingData]) {
         BYTES[byteEXPLORER_scrollIsFetchingData] = 1;

@@ -137,7 +137,7 @@ function EXPLORER_drawItem_BATCH_trailingEdge() {
 /** 
  * @param {number} caseThreeOrigin if left undefined or (falsey but not 0), this will default to 'INTS[fEXPLORER_ringBufferIndexZero]'
  */
-function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositiveDiff_twoNegativeDiff_orThreeFullScreen, caseThreeOrigin, timestamp) {
+function EXPLORER_drawItem_BATCH(start, length, onePositiveDiff_twoNegativeDiff_orThreeFullScreen, caseThreeOrigin, timestamp) {
 
     // TODO: I'm putting this in treeViewComponent.js as well for now when diff === 0:
     INTS[fEXPLORER_scrollEndDeadline] = timestamp + 300;
@@ -805,7 +805,7 @@ function EXPLORER_draw_create_request(parentElement, insertBeforeThisChild) {
 }
 
 function EXPLORER_render_do_Batch(timestamp) {
-    EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(INTS[fEXPLORER_start], INTS[fEXPLORER_length], INTS[fEXPLORER_onePositiveDiff_twoNegativeDiff_orThreeFullScreen], INTS[fEXPLORER_caseThreeOrigin], timestamp);
+    EXPLORER_drawItem_BATCH(INTS[fEXPLORER_start], INTS[fEXPLORER_length], INTS[fEXPLORER_onePositiveDiff_twoNegativeDiff_orThreeFullScreen], INTS[fEXPLORER_caseThreeOrigin], timestamp);
 }
 
 /**
@@ -867,17 +867,17 @@ function EXPLORER_render_do_Scroll(timestamp) {
             let totalCount = EXPLORER_getTotalCount();
 
             if (diff > 0 && diff < INTS[fEXPLORER_virtualCount]) {
-                EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(prevVli + INTS[fEXPLORER_ONSCROLLvirtualCount], diff, 1, undefined, timestamp);
+                EXPLORER_drawItem_BATCH(prevVli + INTS[fEXPLORER_ONSCROLLvirtualCount], diff, 1, undefined, timestamp);
             }
             else if (diff < 0 && (diff *= -1) < INTS[fEXPLORER_virtualCount]) {
-                EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(currVli, diff, 2, undefined, timestamp);
+                EXPLORER_drawItem_BATCH(currVli, diff, 2, undefined, timestamp);
             }
             else {
                 if (diff === 0) {
                     INTS[fEXPLORER_scrollEndDeadline] = timestamp + 300;
                 }
                 else {
-                    EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(INTS[fEXPLORER_virtualIndex_ofScrollTop], INTS[fEXPLORER_virtualCount], 3, undefined, timestamp);
+                    EXPLORER_drawItem_BATCH(INTS[fEXPLORER_virtualIndex_ofScrollTop], INTS[fEXPLORER_virtualCount], 3, undefined, timestamp);
                 }
             }
         }
@@ -953,7 +953,7 @@ function EXPLORER_render_do_FullReset(timestamp) {
 
     // TODO: This if statement check is awkward because the previous if statement ought to have guaranteed this one to be true.
     if (EXPLORER_itemListElement.children.length === INTS[fEXPLORER_virtualCount]) {
-        EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(INTS[fEXPLORER_virtualIndex_ofScrollTop], INTS[fEXPLORER_virtualCount], 3, undefined, timestamp);
+        EXPLORER_drawItem_BATCH(INTS[fEXPLORER_virtualIndex_ofScrollTop], INTS[fEXPLORER_virtualCount], 3, undefined, timestamp);
     }
 }
 

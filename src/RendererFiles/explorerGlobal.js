@@ -130,7 +130,7 @@ function EXPLORER_drawItem_BATCH_trailingEdge() {
     BYTES[byteEXPLORER_isCheckingTrailingEdge] = 0; // Reset the flag here
     if (!BYTES[byteEXPLORER_scrollIsFetchingData]) {
         BYTES[byteEXPLORER_scrollIsFetchingData] = 1;
-        EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData(); // no await
+        EXPLORER_drawItem_BATCH_pullData(); // no await
     }
 };
 
@@ -311,7 +311,7 @@ This comment is from 'tvd_drawItem_BATCH', it was in my way
     //
 */
 
-async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
+async function EXPLORER_drawItem_BATCH_pullData() {
     /*
     Google AI:
     > my rAF loop is currently synchronous.

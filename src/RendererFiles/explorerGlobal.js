@@ -723,7 +723,7 @@ function EXPLORER_TreeViewDirector_renderDo(timestamp) {
                 EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp);
                 break;
             case TREEVIEWrenderKind_Resize:
-                EXPLORER_TreeViewDirector_TREEVIEW_render_do_Resize(timestamp);
+                EXPLORER_render_do_Resize(timestamp);
                 break;
         }
     }
@@ -1173,7 +1173,7 @@ function EXPLORER_event_keydown(event) {
     }
 }
 
-function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Resize(timestamp) {
+function EXPLORER_render_do_Resize(timestamp) {
     EXPLORER_rootElement.style.width = '';
     EXPLORER_rootElement.style.height = '';
     EXPLORER_rootElement.style.contain = '';

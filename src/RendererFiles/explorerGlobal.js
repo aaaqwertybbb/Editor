@@ -786,7 +786,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Create(timestamp) {
     EXPLORER_rootElement.style.height = '';
     EXPLORER_rootElement.style.contain = '';
 
-    EXPLORER_TreeViewDirector_measureBaseElement();
+    EXPLORER_measureBaseElement();
 
     EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp);
 }
@@ -1178,7 +1178,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Resize(timestamp) {
     EXPLORER_rootElement.style.height = '';
     EXPLORER_rootElement.style.contain = '';
 
-    EXPLORER_TreeViewDirector_measureBaseElement();
+    EXPLORER_measureBaseElement();
 
     BYTES[byteEXPLORER_boundingClientRect_isValid] = 0;
     EXPLORER_TreeViewDirector_ensure_boundingClientRect();
@@ -1298,7 +1298,7 @@ function EXPLORER_TreeViewDirector_state_cursor_validateIndex(indexItem) {
  * I read the property back just incase some weird interaction (perhaps DPI?) causes the number I set to not actually be the end result number that is used
  * for the attribute value.
  */
-function EXPLORER_TreeViewDirector_measureBaseElement() {
+function EXPLORER_measureBaseElement() {
     INTS[fEXPLORER_lastReadNumber_offsetWidth] = Math.floor(EXPLORER_rootElement.offsetWidth);
     INTS[fEXPLORER_lastReadNumber_offsetHeight] = Math.floor(EXPLORER_rootElement.offsetHeight);
     

@@ -6281,7 +6281,7 @@ function EDI_onResize_startThrottleTimeout() {
 }
 
 /**
- * See comment above 'EXPLORER_TreeViewDirector_measureBaseElement'
+ * See comment above 'EXPLORER_measureBaseElement'
  * for explanation why this code is a bad idea.
  * 
  * I can't get rid of it because I don't fully understand my mistake yet.

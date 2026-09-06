@@ -450,7 +450,7 @@ async function EXPLORER_onkeydown(divItem, indexItem, eventKey) {
     }
 }
 
-async function EXPLORER_TreeViewDirector_tvd_ondblclick_async(divItem, indexItem) {
+async function EXPLORER_ondblclick(divItem, indexItem) {
     EXPLORER_treeViewNodes.getElementAt(indexItem);
     let key = INTS[fTreeView_pooledNode_key];
     let depth = INTS[fTreeView_pooledNode_depth];
@@ -1037,7 +1037,7 @@ function EXPLORER_event_dblclick(event) {
         else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
 
         if (ringBufferIndexItem < 0) return;
-        return EXPLORER_TreeViewDirector_tvd_ondblclick_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_cursorIndex]);
+        return EXPLORER_ondblclick(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_cursorIndex]);
     }
 }
 
@@ -2009,3 +2009,6 @@ async function RenameFile_File_InputText_callback(result) {
         divItem.lastChild.nodeValue = result.value;
     }
 }
+
+// TODO: look at the "async" events because its nonsensical
+

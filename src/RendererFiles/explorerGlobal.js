@@ -367,7 +367,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     EXPLORER_render_request(TREEVIEWrenderKind_Scroll_PullDataDrawResult);
 };
 
-function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
+function EXPLORER_drawItem_BATCH_PullDataDrawResult() {
     if (INTS[fEXPLORER_scrollFetchData_virtualIndex] === INTS[fEXPLORER_ONSCROLLvirtualIndex] &&
         INTS[fEXPLORER_scrollFetchData_virtualCount] === INTS[fEXPLORER_ONSCROLLvirtualCount] &&
         INTS[fEXPLORER_scrollFetchData_ringBufferIndexZero] === INTS[fEXPLORER_ringBufferIndexZero]) {
@@ -885,8 +885,8 @@ function EXPLORER_render_do_Scroll(timestamp) {
 }
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll_PullDataDrawResult() {
-    if (EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult) {
-        EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult();
+    if (EXPLORER_drawItem_BATCH_PullDataDrawResult) {
+        EXPLORER_drawItem_BATCH_PullDataDrawResult();
     }
 }
 

@@ -518,7 +518,7 @@ module.exports = function (babel) {
     "fEXPLORER_menuOptionY",
     "byteEXPLORER_show",
 
-    "fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth",
+    "fEXPLORER_lastReadNumber_offsetWidth",
     "fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight",
     "fEXPLORER_TreeViewDirector_cursorTranslateYNumber",
     "fEXPLORER_itemHeightTotal",

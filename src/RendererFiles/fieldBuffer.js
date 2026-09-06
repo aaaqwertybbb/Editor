@@ -677,7 +677,7 @@ INTS[fEXPLORER_firstSpanWidthValue] = 8;
 const fEXPLORER_menuOptionX = 137;
 const fEXPLORER_menuOptionY = 138;
 
-const fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth = 139;
+const fEXPLORER_lastReadNumber_offsetWidth = 139;
 const fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight = 140;
 
 const fEXPLORER_TreeViewDirector_cursorTranslateYNumber = 141;

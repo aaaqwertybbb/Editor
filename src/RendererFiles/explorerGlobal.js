@@ -403,8 +403,8 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
             let widthAttributeValueNumber = Math.ceil(((INTS[fEXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] + 2/*padding*/) * INTS[fEXPLORER_firstSpanWidthValue]) + CONST_EXPLORER_offsetPerDepth * INTS[fEXPLORER_TreeViewDirector_LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH]);
 
             // This is actually more complicated you have to track whether you go above the minimum requirement lest you add 1 character over and over in width just to keep redrawing widths.
-            //if (widthAttributeValueNumber < INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth]) {
-            //    widthAttributeValueNumber = INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth];
+            //if (widthAttributeValueNumber < INTS[fEXPLORER_lastReadNumber_offsetWidth]) {
+            //    widthAttributeValueNumber = INTS[fEXPLORER_lastReadNumber_offsetWidth];
             //}
             //INTS[fEXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING]
             let widthAttributeValueString = widthAttributeValueNumber + 'px';
@@ -917,8 +917,8 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
         INTS[fEXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] = 2;
         let widthAttributeValueNumber = Math.ceil((INTS[fEXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] + 2/*padding*/) * INTS[fEXPLORER_firstSpanWidthValue]);
         // This is actually more complicated you have to track whether you go above the minimum requirement lest you add 1 character over and over in width just to keep redrawing widths.
-        //if (widthAttributeValueNumber < INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth]) {
-        //    widthAttributeValueNumber = INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth];
+        //if (widthAttributeValueNumber < INTS[fEXPLORER_lastReadNumber_offsetWidth]) {
+        //    widthAttributeValueNumber = INTS[fEXPLORER_lastReadNumber_offsetWidth];
         //}
         //INTS[fEXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING]
         let widthAttributeValueString = widthAttributeValueNumber + 'px';
@@ -1299,15 +1299,15 @@ function EXPLORER_TreeViewDirector_state_cursor_validateIndex(indexItem) {
  * for the attribute value.
  */
 function EXPLORER_TreeViewDirector_measureBaseElement() {
-    INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth] = Math.floor(EXPLORER_rootElement.offsetWidth);
+    INTS[fEXPLORER_lastReadNumber_offsetWidth] = Math.floor(EXPLORER_rootElement.offsetWidth);
     INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight] = Math.floor(EXPLORER_rootElement.offsetHeight);
     
-    EXPLORER_rootElement.style.width = INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth] + 'px';
+    EXPLORER_rootElement.style.width = INTS[fEXPLORER_lastReadNumber_offsetWidth] + 'px';
     EXPLORER_rootElement.style.height = INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight] + 'px';
 
     EXPLORER_rootElement.style.contain = 'layout';
 
-    INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth] = EXPLORER_rootElement.offsetWidth;
+    INTS[fEXPLORER_lastReadNumber_offsetWidth] = EXPLORER_rootElement.offsetWidth;
     INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight] = EXPLORER_rootElement.offsetHeight;
 }
 

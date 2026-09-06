@@ -98,7 +98,7 @@ function EXPLORER_setChosenDirectory(chosenDirectory, chosenDirectoryAbsolutePat
 }
 
 /** // Invoke this?: 'this.draw_render_fullReset_request();' */
-function EXPLORER_TreeViewDirector_setChosenWorkspace(chooseWorkspaceResult) {
+function EXPLORER_setChosenWorkspace(chooseWorkspaceResult) {
     EXPLORER_chosenWorkspace = chooseWorkspaceResult.workspaceFileAbsolutePath;
 
     EXPLORER_treeViewNodes.clear();
@@ -1464,7 +1464,7 @@ async function EXPLORER_pickFolderOrWorkspaceButton_MenuOnClick(indexClicked, el
                 pickWorkspaceButton.textContent = chooseWorkspaceResult.workspaceFileNameWithoutExtension;
                 pickWorkspaceButton.title = chooseWorkspaceResult.workspaceFileAbsolutePath;
     
-                EXPLORER_TreeViewDirector_setChosenWorkspace(chooseWorkspaceResult);
+                EXPLORER_setChosenWorkspace(chooseWorkspaceResult);
                 EXPLORER_TreeViewDirector_setItems(INTS[fAPP_lineHeight], INTS[fAPP_lineHeight] + 'px');
                 EXPLORER_TreeViewDirector_draw_create_request(EXPLORER_Element, null);
             }

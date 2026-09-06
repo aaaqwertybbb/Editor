@@ -27,23 +27,23 @@ NO ASYNC EVENTS
 /////
 ///// start treeViewComponent.js
 /////
-const EXPLORER_TreeViewDirector_rootElement = document.createElement('div');
-EXPLORER_TreeViewDirector_rootElement.classList.add('TREEVIEW', 'unselectable');
-EXPLORER_TreeViewDirector_rootElement.tabIndex = 0;
-EXPLORER_TreeViewDirector_rootElement.style.height = '100%';
+const EXPLORER_rootElement = document.createElement('div');
+EXPLORER_rootElement.classList.add('TREEVIEW', 'unselectable');
+EXPLORER_rootElement.tabIndex = 0;
+EXPLORER_rootElement.style.height = '100%';
 
 const EXPLORER_TreeViewDirector_virtualizationElement = document.createElement('div');
 EXPLORER_TreeViewDirector_virtualizationElement.className = 'TREEVIEW_virtualization';
-EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_virtualizationElement);
+EXPLORER_rootElement.appendChild(EXPLORER_TreeViewDirector_virtualizationElement);
 
 /** Consider the existence of such methods as 'state_cursor_setIndex' before mutating state directly */
 const EXPLORER_TreeViewDirector_cursorElement = document.createElement('div');
 EXPLORER_TreeViewDirector_cursorElement.className = 'TREEVIEW_cursor';
-EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_cursorElement);
+EXPLORER_rootElement.appendChild(EXPLORER_TreeViewDirector_cursorElement);
 
 const EXPLORER_TreeViewDirector_itemListElement = document.createElement('div');
 EXPLORER_TreeViewDirector_itemListElement.className = 'TREEVIEW_itemList';
-EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_itemListElement);
+EXPLORER_rootElement.appendChild(EXPLORER_TreeViewDirector_itemListElement);
 
 const EXPLORER_TreeViewDirector_TREEVIEW_renderKindArray = [];
 
@@ -494,7 +494,7 @@ function EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(divItem, indexItem, e
         return menuSet('EXPLORER', target, optionList, INTS[fEXPLORER_menuOptionX]=event_clientX, INTS[fEXPLORER_menuOptionY]=event_clientY);
     } else {
         EXPLORER_TreeViewDirector_addSpecificMenuOptionsForTarget(optionList, divItem, target);
-        return menuSet('EXPLORER', target, optionList, INTS[fEXPLORER_menuOptionX]=INTS[fEXPLORER_TreeViewDirector_boundingClientRect_left], INTS[fEXPLORER_menuOptionY]=(INTS[fEXPLORER_TreeViewDirector_boundingClientRect_top] + ((INTS[fEXPLORER_TreeViewDirector_cursorIndex] + 1) * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]) - EXPLORER_TreeViewDirector_rootElement.scrollTop));
+        return menuSet('EXPLORER', target, optionList, INTS[fEXPLORER_menuOptionX]=INTS[fEXPLORER_TreeViewDirector_boundingClientRect_left], INTS[fEXPLORER_menuOptionY]=(INTS[fEXPLORER_TreeViewDirector_boundingClientRect_top] + ((INTS[fEXPLORER_TreeViewDirector_cursorIndex] + 1) * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]) - EXPLORER_rootElement.scrollTop));
     }
 }
 
@@ -760,7 +760,7 @@ function EXPLORER_TreeViewDirector_setItems(itemHeightNumber, itemHeightStyleAtt
 }
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Create(timestamp) {
-    if (EXPLORER_TreeViewDirector_rootElement.parentElement) {
+    if (EXPLORER_rootElement.parentElement) {
         // It is the case that I invoke 'draw_create_request' when creating the tree view for the first time.
         // But I also do this when I re-open the os input file dialog and pick either a separate or the same folder.
         // In this scenario having this invoke a "fullReset" is necessary otherwise nothing appears in the treeview.
@@ -778,13 +778,13 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Create(timestamp) {
         // |
         // The 'EXPLORER_TreeViewDirector_draw_addEvents();'... can you subscribe twice?
     }
-    EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_parentElement.insertBefore(EXPLORER_TreeViewDirector_rootElement, EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_insertBeforeThisChild);
+    EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_parentElement.insertBefore(EXPLORER_rootElement, EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_insertBeforeThisChild);
     EXPLORER_TreeViewDirector_draw_addEvents();
 
 
-    EXPLORER_TreeViewDirector_rootElement.style.width = '';
-    EXPLORER_TreeViewDirector_rootElement.style.height = '';
-    EXPLORER_TreeViewDirector_rootElement.style.contain = '';
+    EXPLORER_rootElement.style.width = '';
+    EXPLORER_rootElement.style.height = '';
+    EXPLORER_rootElement.style.contain = '';
 
     EXPLORER_TreeViewDirector_measureBaseElement();
 
@@ -816,27 +816,27 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Batch(timestamp) {
  * @returns 
  */
 function EXPLORER_TreeViewDirector_draw_delete() {
-    if (!EXPLORER_TreeViewDirector_rootElement.parentElement) return;
+    if (!EXPLORER_rootElement.parentElement) return;
     EXPLORER_TreeViewDirector_draw_removeEvents();
     BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = 0;
-    EXPLORER_TreeViewDirector_rootElement.parentElement.removeChild(EXPLORER_TreeViewDirector_rootElement);
+    EXPLORER_rootElement.parentElement.removeChild(EXPLORER_rootElement);
 }
 
 function EXPLORER_TreeViewDirector_draw_addEvents() {
-    EXPLORER_TreeViewDirector_rootElement.addEventListener('click', EXPLORER_TreeViewDirector_event_click); // this.event_click(event.clientY, event.target);
-    EXPLORER_TreeViewDirector_rootElement.addEventListener('keydown', EXPLORER_TreeViewDirector_event_keydown); // this.event_keydown(event);
-    EXPLORER_TreeViewDirector_rootElement.addEventListener('scroll', EXPLORER_TreeViewDirector_event_scroll, { passive: true }); // this.event_scroll();
-    EXPLORER_TreeViewDirector_rootElement.addEventListener('dblclick', EXPLORER_TreeViewDirector_event_dblclick); // this.event_dblclick(event.clientY, event.target);
-    EXPLORER_TreeViewDirector_rootElement.addEventListener('contextmenu', EXPLORER_TreeViewDirector_event_contextmenu); // this.event_contextmenu(event.button, event.clientX, event.clientY);
+    EXPLORER_rootElement.addEventListener('click', EXPLORER_TreeViewDirector_event_click); // this.event_click(event.clientY, event.target);
+    EXPLORER_rootElement.addEventListener('keydown', EXPLORER_TreeViewDirector_event_keydown); // this.event_keydown(event);
+    EXPLORER_rootElement.addEventListener('scroll', EXPLORER_TreeViewDirector_event_scroll, { passive: true }); // this.event_scroll();
+    EXPLORER_rootElement.addEventListener('dblclick', EXPLORER_TreeViewDirector_event_dblclick); // this.event_dblclick(event.clientY, event.target);
+    EXPLORER_rootElement.addEventListener('contextmenu', EXPLORER_TreeViewDirector_event_contextmenu); // this.event_contextmenu(event.button, event.clientX, event.clientY);
     window.addEventListener('resize', EXPLORER_TreeViewDirector_event_windowResize); // this.event_windowResize();
 }
 
 function EXPLORER_TreeViewDirector_draw_removeEvents() {
-    EXPLORER_TreeViewDirector_rootElement.removeEventListener('click', EXPLORER_TreeViewDirector_event_click);
-    EXPLORER_TreeViewDirector_rootElement.removeEventListener('keydown', EXPLORER_TreeViewDirector_event_keydown);
-    EXPLORER_TreeViewDirector_rootElement.removeEventListener('scroll', EXPLORER_TreeViewDirector_event_scroll, { passive: true });
-    EXPLORER_TreeViewDirector_rootElement.addEventListener('dblclick', EXPLORER_TreeViewDirector_event_dblclick);
-    EXPLORER_TreeViewDirector_rootElement.addEventListener('contextmenu', EXPLORER_TreeViewDirector_event_contextmenu);
+    EXPLORER_rootElement.removeEventListener('click', EXPLORER_TreeViewDirector_event_click);
+    EXPLORER_rootElement.removeEventListener('keydown', EXPLORER_TreeViewDirector_event_keydown);
+    EXPLORER_rootElement.removeEventListener('scroll', EXPLORER_TreeViewDirector_event_scroll, { passive: true });
+    EXPLORER_rootElement.addEventListener('dblclick', EXPLORER_TreeViewDirector_event_dblclick);
+    EXPLORER_rootElement.addEventListener('contextmenu', EXPLORER_TreeViewDirector_event_contextmenu);
     window.removeEventListener('resize', EXPLORER_TreeViewDirector_event_windowResize);
 }
 
@@ -1099,7 +1099,7 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
         case 'ArrowDown':
             event.preventDefault();
             if (event.ctrlKey) {
-                EXPLORER_TreeViewDirector_rootElement.scrollBy(0, INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]);
+                EXPLORER_rootElement.scrollBy(0, INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]);
             }
             else {
                 EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
@@ -1109,7 +1109,7 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
         case 'ArrowUp':
             event.preventDefault();
             if (event.ctrlKey) {
-                EXPLORER_TreeViewDirector_rootElement.scrollBy(0, -1 * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]);
+                EXPLORER_rootElement.scrollBy(0, -1 * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]);
             }
             else {
                 EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
@@ -1174,9 +1174,9 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
 }
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Resize(timestamp) {
-    EXPLORER_TreeViewDirector_rootElement.style.width = '';
-    EXPLORER_TreeViewDirector_rootElement.style.height = '';
-    EXPLORER_TreeViewDirector_rootElement.style.contain = '';
+    EXPLORER_rootElement.style.width = '';
+    EXPLORER_rootElement.style.height = '';
+    EXPLORER_rootElement.style.contain = '';
 
     EXPLORER_TreeViewDirector_measureBaseElement();
 
@@ -1199,19 +1199,19 @@ function EXPLORER_TreeViewDirector_event_scroll() {
 
     // this.event_scroll();
 
-    INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollLeft] = EXPLORER_TreeViewDirector_rootElement.scrollLeft;
-    INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop] = EXPLORER_TreeViewDirector_rootElement.scrollTop;
+    INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollLeft] = EXPLORER_rootElement.scrollLeft;
+    INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop] = EXPLORER_rootElement.scrollTop;
     EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Scroll);
 }
 
 function EXPLORER_TreeViewDirector_ensure_boundingClientRect() {
     if (!BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid]) {
-        let rect = EXPLORER_TreeViewDirector_rootElement.getBoundingClientRect();
+        let rect = EXPLORER_rootElement.getBoundingClientRect();
         INTS[fEXPLORER_TreeViewDirector_boundingClientRect_height] = rect.height;
         INTS[fEXPLORER_TreeViewDirector_boundingClientRect_left] = rect.left;
         INTS[fEXPLORER_TreeViewDirector_boundingClientRect_top] = rect.top;
         BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = 1;
-        INTS[fEXPLORER_TreeViewDirector_virtualCount] = Math.ceil(EXPLORER_TreeViewDirector_rootElement.offsetHeight / INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]);
+        INTS[fEXPLORER_TreeViewDirector_virtualCount] = Math.ceil(EXPLORER_rootElement.offsetHeight / INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]);
     }
 }
 
@@ -1229,10 +1229,10 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Cursor(index) {
         let currentBottom = INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop] + INTS[fEXPLORER_TreeViewDirector_boundingClientRect_height];
         let changeToMakeBottomTouch = INTS[fEXPLORER_TreeViewDirector_cursorTranslateYNumber] - currentBottom;
         let entireValueToScrollBy = changeToMakeBottomTouch + (2 * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]);
-        EXPLORER_TreeViewDirector_rootElement.scrollBy(0, entireValueToScrollBy);
+        EXPLORER_rootElement.scrollBy(0, entireValueToScrollBy);
     }
     else if (INTS[fEXPLORER_TreeViewDirector_cursorTranslateYNumber] < INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop]) {
-        EXPLORER_TreeViewDirector_rootElement.scrollBy(0, INTS[fEXPLORER_TreeViewDirector_cursorTranslateYNumber] - INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop]);
+        EXPLORER_rootElement.scrollBy(0, INTS[fEXPLORER_TreeViewDirector_cursorTranslateYNumber] - INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop]);
     }
 
     // transform last for optimal state flagging of the modified DOM element
@@ -1299,16 +1299,16 @@ function EXPLORER_TreeViewDirector_state_cursor_validateIndex(indexItem) {
  * for the attribute value.
  */
 function EXPLORER_TreeViewDirector_measureBaseElement() {
-    INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth] = Math.floor(EXPLORER_TreeViewDirector_rootElement.offsetWidth);
-    INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight] = Math.floor(EXPLORER_TreeViewDirector_rootElement.offsetHeight);
+    INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth] = Math.floor(EXPLORER_rootElement.offsetWidth);
+    INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight] = Math.floor(EXPLORER_rootElement.offsetHeight);
     
-    EXPLORER_TreeViewDirector_rootElement.style.width = INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth] + 'px';
-    EXPLORER_TreeViewDirector_rootElement.style.height = INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight] + 'px';
+    EXPLORER_rootElement.style.width = INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth] + 'px';
+    EXPLORER_rootElement.style.height = INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight] + 'px';
 
-    EXPLORER_TreeViewDirector_rootElement.style.contain = 'layout';
+    EXPLORER_rootElement.style.contain = 'layout';
 
-    INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth] = EXPLORER_TreeViewDirector_rootElement.offsetWidth;
-    INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight] = EXPLORER_TreeViewDirector_rootElement.offsetHeight;
+    INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetWidth] = EXPLORER_rootElement.offsetWidth;
+    INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight] = EXPLORER_rootElement.offsetHeight;
 }
 
 /*

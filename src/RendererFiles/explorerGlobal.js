@@ -249,7 +249,7 @@ function EXPLORER_drawItem_BATCH(start, length, onePositiveDiff_twoNegativeDiff_
 }
 
 /*
-This comment is from 'tvd_drawItem_BATCH', it was in my way
+This comment is from 'EXPLORER_drawItem_BATCH', it was in my way
 
 // The main process has similar logic that allocates an array of length in order to return a response that converted the keys to their filesystem entries.
     // (maybe I could overwrite the same array indices and return that but...)

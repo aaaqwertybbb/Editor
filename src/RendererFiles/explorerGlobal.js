@@ -845,7 +845,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp) {
         EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp);
     }
     else {
-        INTS[fEXPLORER_virtualIndex_ofScrollTop] = Math.floor(INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop] / INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]);
+        INTS[fEXPLORER_virtualIndex_ofScrollTop] = Math.floor(INTS[fEXPLORER_lastReadNumber_scrollTop] / INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]);
 
         if (INTS[fEXPLORER_ONSCROLLvirtualIndex] === INTS[fEXPLORER_virtualIndex_ofScrollTop] &&
             INTS[fEXPLORER_ONSCROLLvirtualCount] === INTS[fEXPLORER_virtualCount]) {
@@ -903,7 +903,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
 
     INTS[fEXPLORER_ONSCROLLvirtualCount] = INTS[fEXPLORER_virtualCount];
 
-    INTS[fEXPLORER_virtualIndex_ofScrollTop] = Math.floor(INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop] / INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]);
+    INTS[fEXPLORER_virtualIndex_ofScrollTop] = Math.floor(INTS[fEXPLORER_lastReadNumber_scrollTop] / INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]);
     INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero] = 0;
 
     let totalCount = EXPLORER_TreeViewDirector_tvd_getTotalCount();
@@ -980,7 +980,7 @@ function EXPLORER_TreeViewDirector_event_click(event) {
 
     EXPLORER_TreeViewDirector_ensure_boundingClientRect();
 
-    let rY = event_clientY - INTS[fEXPLORER_TreeViewDirector_boundingClientRect_top] + INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop];
+    let rY = event_clientY - INTS[fEXPLORER_TreeViewDirector_boundingClientRect_top] + INTS[fEXPLORER_lastReadNumber_scrollTop];
     let indexItem = Math.floor(rY / INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]);
     indexItem = EXPLORER_TreeViewDirector_state_cursor_validateIndex(indexItem);
 
@@ -1011,7 +1011,7 @@ function EXPLORER_TreeViewDirector_event_dblclick(event) {
 
     EXPLORER_TreeViewDirector_ensure_boundingClientRect();
 
-    let rY = event_clientY - INTS[fEXPLORER_TreeViewDirector_boundingClientRect_top] + INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop];
+    let rY = event_clientY - INTS[fEXPLORER_TreeViewDirector_boundingClientRect_top] + INTS[fEXPLORER_lastReadNumber_scrollTop];
     let indexItem = Math.floor(rY / INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]);
     indexItem = EXPLORER_TreeViewDirector_state_cursor_validateIndex(indexItem);
 
@@ -1051,7 +1051,7 @@ function EXPLORER_TreeViewDirector_event_contextmenu(event) {
     EXPLORER_TreeViewDirector_ensure_boundingClientRect();
 
     if (event_button === 2) {
-        let rY = event_clientY - INTS[fEXPLORER_TreeViewDirector_boundingClientRect_top] + INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop];
+        let rY = event_clientY - INTS[fEXPLORER_TreeViewDirector_boundingClientRect_top] + INTS[fEXPLORER_lastReadNumber_scrollTop];
 
         EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
             Math.floor(rY / INTS[fEXPLORER_TreeViewDirector_itemHeightNumber])));
@@ -1200,7 +1200,7 @@ function EXPLORER_TreeViewDirector_event_scroll() {
     // this.event_scroll();
 
     INTS[fEXPLORER_lastReadNumber_scrollLeft] = EXPLORER_rootElement.scrollLeft;
-    INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop] = EXPLORER_rootElement.scrollTop;
+    INTS[fEXPLORER_lastReadNumber_scrollTop] = EXPLORER_rootElement.scrollTop;
     EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Scroll);
 }
 
@@ -1225,14 +1225,14 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Cursor(index) {
     // If no UI modifications were made prior that are still pending this might avoid a synchronous layout.
     // TODO: If you touch the transform style first... I don't know what would happen it is a GPU related style... so I'm unsure.
     //
-    if (INTS[fEXPLORER_cursorTranslateYNumber] + (2 * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]) > INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop] + INTS[fEXPLORER_TreeViewDirector_boundingClientRect_height]) {
-        let currentBottom = INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop] + INTS[fEXPLORER_TreeViewDirector_boundingClientRect_height];
+    if (INTS[fEXPLORER_cursorTranslateYNumber] + (2 * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]) > INTS[fEXPLORER_lastReadNumber_scrollTop] + INTS[fEXPLORER_TreeViewDirector_boundingClientRect_height]) {
+        let currentBottom = INTS[fEXPLORER_lastReadNumber_scrollTop] + INTS[fEXPLORER_TreeViewDirector_boundingClientRect_height];
         let changeToMakeBottomTouch = INTS[fEXPLORER_cursorTranslateYNumber] - currentBottom;
         let entireValueToScrollBy = changeToMakeBottomTouch + (2 * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]);
         EXPLORER_rootElement.scrollBy(0, entireValueToScrollBy);
     }
-    else if (INTS[fEXPLORER_cursorTranslateYNumber] < INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop]) {
-        EXPLORER_rootElement.scrollBy(0, INTS[fEXPLORER_cursorTranslateYNumber] - INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop]);
+    else if (INTS[fEXPLORER_cursorTranslateYNumber] < INTS[fEXPLORER_lastReadNumber_scrollTop]) {
+        EXPLORER_rootElement.scrollBy(0, INTS[fEXPLORER_cursorTranslateYNumber] - INTS[fEXPLORER_lastReadNumber_scrollTop]);
     }
 
     // transform last for optimal state flagging of the modified DOM element

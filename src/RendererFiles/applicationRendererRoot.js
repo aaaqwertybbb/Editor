@@ -264,7 +264,8 @@ function EDI_listComponent_drawItemAction(div, index) {
 function dialog_documentSymbol_onResizeAction() {
     if (EDI_listComponent) {
         EDI_listComponent.boundingClientRect = null;
-        EDI_listComponent.event_scroll();
+        // TODO: You should probably be using 'event_scroll_WRAPIT'?
+        EDI_listComponent.LIST_render_do_Scroll();
     }
 }
 

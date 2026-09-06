@@ -1,5 +1,6 @@
 const LISTrenderKind_None = 0;
 const LISTrenderKind_Cursor = 1;
+const LISTrenderKind_Scroll = 2;
 
 class ListComponent {
     constructor() {
@@ -43,7 +44,6 @@ class ListComponent {
         ///** @type {boolean} */ this.event_scroll_bool = false;
         this.scrollTimer = null;
         this.hasTrailingCall = false;
-        this.rAFTimer = null;
 
         /** @type {number} */ this.ringBufferIndexZero = 0;
 
@@ -51,6 +51,8 @@ class ListComponent {
         this.LIST_isRenderPending = false;
 
         this.LIST_ArrayFrom_menuOptionList_children = [];
+
+        this.lastSeenScrollTop = 0;
     }
 
     LIST_render_request(renderKind) {
@@ -73,6 +75,8 @@ class ListComponent {
                 case LISTrenderKind_Cursor:
                     this.LIST_render_do_Cursor();
                     break;
+                case LISTrenderKind_Scroll:
+                    this.LIST_render_do_Scroll();
             }
         }
         
@@ -174,15 +178,15 @@ class ListComponent {
             this.draw_render_fullReset();
         }
         else {
-            this.virtualIndex_ofScrollTop = Math.floor(this.rootElement.scrollTop / this.itemHeightNumber);
+            this.virtualIndex_ofScrollTop = Math.floor(this.lastSeenScrollTop / this.itemHeightNumber);
 
-            if (this._ONSCROLLscrollTop === this.rootElement.scrollTop &&
+            if (this._ONSCROLLscrollTop === this.lastSeenScrollTop &&
                 this._ONSCROLLvirtualIndex === this.virtualIndex_ofScrollTop &&
                 this._ONSCROLLvirtualCount === this.virtualCount) {
                     return;
             }
 
-            this._ONSCROLLscrollTop = this.rootElement.scrollTop;
+            this._ONSCROLLscrollTop = this.lastSeenScrollTop;
 
             // If I delay setting 'this._ONSCROLLvirtualIndex' then I can just use that.
             // I can't bear to do that right now though. I'm just gonna make this variable.
@@ -302,7 +306,7 @@ class ListComponent {
     draw_render_fullReset() {
         this._ONSCROLLvirtualCount = this.virtualCount;
         this.itemListElement.innerHTML = '';
-        this.virtualIndex_ofScrollTop = Math.floor(this.rootElement.scrollTop / this.itemHeightNumber);
+        this.virtualIndex_ofScrollTop = Math.floor(this.lastSeenScrollTop / this.itemHeightNumber);
         this.ringBufferIndexZero = 0;
 
         let itemsCount = this.getItemsCountFunc();
@@ -327,7 +331,7 @@ class ListComponent {
     event_click(event) {
         this.ensure_boundingClientRect();
 
-        let rY = event.clientY - this.boundingClientRect.top + this.rootElement.scrollTop;
+        let rY = event.clientY - this.boundingClientRect.top + this.lastSeenScrollTop;
         let index = Math.floor(rY / this.itemHeightNumber);
         index = this.state_cursor_validateIndex(index);
         this.state_cursor_setIndex(index);
@@ -368,23 +372,12 @@ class ListComponent {
         this.boundingClientRect = null;
     }
 
-    // 1. The Entry Point (Replaces WRAPIT)
     event_scroll_WRAPIT() {
-        // If a frame is already scheduled, do nothing (drops intermediate inputs)
-        if (this.rAFTimer) {
-            return;
-        }
-
-        // Schedule the sync work to happen right before the next browser paint
-        this.rAFTimer = requestAnimationFrame(() => {
-            this.event_scroll();
-            
-            // Clear the gate AFTER the work is done so the next event can schedule
-            this.rAFTimer = null;
-        });
+        this.lastSeenScrollTop = this.rootElement.scrollTop;
+        this.LIST_render_request(LISTrenderKind_Scroll);
     }
     
-    event_scroll() {
+    LIST_render_do_Scroll() {
         this.draw_render();
     }
 
@@ -405,14 +398,14 @@ class ListComponent {
         // If no UI modifications were made prior that are still pending this might avoid a synchronous layout.
         // TODO: If you touch the transform style first... I don't know what would happen it is a GPU related style... so I'm unsure.
         //
-        if (this.cursorTopNumber + (2 * this.itemHeightNumber) > this.rootElement.scrollTop + this.boundingClientRect.height) {
-            let currentBottom = this.rootElement.scrollTop + this.boundingClientRect.height;
+        if (this.cursorTopNumber + (2 * this.itemHeightNumber) > this.lastSeenScrollTop + this.boundingClientRect.height) {
+            let currentBottom = this.lastSeenScrollTop + this.boundingClientRect.height;
             let changeToMakeBottomTouch = this.cursorTopNumber - currentBottom;
             let entireValueToScrollBy = changeToMakeBottomTouch + (2 * this.itemHeightNumber);
             this.rootElement.scrollBy(0, entireValueToScrollBy);
         }
-        else if (this.cursorTopNumber < this.rootElement.scrollTop) {
-            this.rootElement.scrollBy(0, this.cursorTopNumber - this.rootElement.scrollTop);
+        else if (this.cursorTopNumber < this.lastSeenScrollTop) {
+            this.rootElement.scrollBy(0, this.cursorTopNumber - this.lastSeenScrollTop);
         }
 
         this.cursorElement.style.top = this.cursorTopNumber + 'px';

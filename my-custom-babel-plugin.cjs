@@ -177,6 +177,7 @@ module.exports = function (babel) {
 
     "LISTrenderKind_None",
     "LISTrenderKind_Cursor",
+    "LISTrenderKind_Scroll",
 
     "TREEVIEWrenderKind_None",
     "TREEVIEWrenderKind_Cursor",

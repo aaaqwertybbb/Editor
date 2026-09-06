@@ -360,7 +360,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     EXPLORER_TreeViewDirector_arrayEntries = await window.myAPI.getFilesystemEntryById_ARRAY(EXPLORER_pullData_array.subarray(0, INTS[fEXPLORER_pullData_array_count]));
 
     EXPLORER_TreeViewDirector_pullData_result = EXPLORER_pullData_array;
-    INTS[fEXPLORER_TreeViewDirector_pullData_result_count] = INTS[fEXPLORER_pullData_array_count];
+    INTS[fEXPLORER_pullData_result_count] = INTS[fEXPLORER_pullData_array_count];
 
     BYTES[byteEXPLORER_TreeViewDirector_scrollIsFetchingData] = 0; // TODO: try/catch/finally; put this in the finally.
 
@@ -380,7 +380,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
         let currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = INTS[fEXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING];
         let NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
 
-        for (let i = 0; i < INTS[fEXPLORER_TreeViewDirector_pullData_result_count]; i++) {
+        for (let i = 0; i < INTS[fEXPLORER_pullData_result_count]; i++) {
             let packedInteger = EXPLORER_TreeViewDirector_pullData_result[i];
             const key = packedInteger & EXPLORER_TreeViewDirector_KEY_MASK;
             const ringBufferIndexItem = packedInteger >> CONST_EXPLORER_TreeViewDirector_KEY_BITS;

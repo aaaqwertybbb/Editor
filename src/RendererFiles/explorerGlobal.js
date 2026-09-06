@@ -817,7 +817,7 @@ function EXPLORER_render_do_Batch(timestamp) {
  */
 function EXPLORER_draw_delete() {
     if (!EXPLORER_rootElement.parentElement) return;
-    EXPLORER_TreeViewDirector_draw_removeEvents();
+    EXPLORER_draw_removeEvents();
     BYTES[byteEXPLORER_boundingClientRect_isValid] = 0;
     EXPLORER_rootElement.parentElement.removeChild(EXPLORER_rootElement);
 }
@@ -831,7 +831,7 @@ function EXPLORER_draw_addEvents() {
     window.addEventListener('resize', EXPLORER_event_windowResize); // this.event_windowResize();
 }
 
-function EXPLORER_TreeViewDirector_draw_removeEvents() {
+function EXPLORER_draw_removeEvents() {
     EXPLORER_rootElement.removeEventListener('click', EXPLORER_event_click);
     EXPLORER_rootElement.removeEventListener('keydown', EXPLORER_event_keydown);
     EXPLORER_rootElement.removeEventListener('scroll', EXPLORER_event_scroll, { passive: true });

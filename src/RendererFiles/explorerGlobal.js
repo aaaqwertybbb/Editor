@@ -490,10 +490,10 @@ function EXPLORER_oncontextmenu(divItem, indexItem, event_button, event_clientX,
     };
 
     if (event_button === 2) {
-        EXPLORER_TreeViewDirector_addSpecificMenuOptionsForTarget(optionList, divItem, target);
+        EXPLORER_addSpecificMenuOptionsForTarget(optionList, divItem, target);
         return menuSet('EXPLORER', target, optionList, INTS[fEXPLORER_menuOptionX]=event_clientX, INTS[fEXPLORER_menuOptionY]=event_clientY);
     } else {
-        EXPLORER_TreeViewDirector_addSpecificMenuOptionsForTarget(optionList, divItem, target);
+        EXPLORER_addSpecificMenuOptionsForTarget(optionList, divItem, target);
         return menuSet('EXPLORER', target, optionList, INTS[fEXPLORER_menuOptionX]=INTS[fEXPLORER_boundingClientRect_left], INTS[fEXPLORER_menuOptionY]=(INTS[fEXPLORER_boundingClientRect_top] + ((INTS[fEXPLORER_cursorIndex] + 1) * INTS[fEXPLORER_itemHeightNumber]) - EXPLORER_rootElement.scrollTop));
     }
 }
@@ -661,7 +661,7 @@ function EXPLORER_setNodeListEntryId(indexItem, pathId) {
     EXPLORER_treeViewNodes.setKey(indexItem, pathId);
 }
 
-function EXPLORER_TreeViewDirector_addSpecificMenuOptionsForTarget(optionList, divItem, target) {
+function EXPLORER_addSpecificMenuOptionsForTarget(optionList, divItem, target) {
     if (!divItem) return;
 
     // check the "text icon": { '-', '+', '' }

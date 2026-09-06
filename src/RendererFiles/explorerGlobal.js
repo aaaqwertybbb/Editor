@@ -691,11 +691,11 @@ function EXPLORER_render_request(renderKind) {
     
     if (!BYTES[byteEXPLORER_isRenderPending]) {
         BYTES[byteEXPLORER_isRenderPending] = 1;
-        requestAnimationFrame(EXPLORER_TreeViewDirector_renderDo);
+        requestAnimationFrame(EXPLORER_renderDo);
     }
 }
 
-function EXPLORER_TreeViewDirector_renderDo(timestamp) {
+function EXPLORER_renderDo(timestamp) {
     let renderKind = 0;
     
     // Synchronously exhaust the item queue for this animation frame

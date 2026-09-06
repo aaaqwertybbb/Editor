@@ -467,7 +467,7 @@ async function EXPLORER_TreeViewDirector_tvd_ondblclick_async(divItem, indexItem
     }
 }
 
-function EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(divItem, indexItem, event_button, event_clientX, event_clientY, relativeIndex) {
+function EXPLORER_oncontextmenu(divItem, indexItem, event_button, event_clientX, event_clientY, relativeIndex) {
     let optionList = [
         new MenuOption(CommandKind_Copy, 'Copy', null),
         new MenuOption(CommandKind_CopyAbsolutePath, 'Copy Absolute Path', null),
@@ -1067,7 +1067,7 @@ function EXPLORER_event_contextmenu(event) {
         else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
 
         if (ringBufferIndexItem < 0) return;
-        return EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_cursorIndex], event_button, event_clientX, event_clientY, ringBufferIndexItem);
+        return EXPLORER_oncontextmenu(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_cursorIndex], event_button, event_clientX, event_clientY, ringBufferIndexItem);
     } else {
         if (INTS[fEXPLORER_cursorIndex] >= EXPLORER_TreeViewDirector_tvd_getTotalCount()) {
             return;
@@ -1087,7 +1087,7 @@ function EXPLORER_event_contextmenu(event) {
         if (ringBufferIndexItem < 0) return;
 
         // TODO: Handle context menu with keyboard when active node is out of view
-        return EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_cursorIndex], event_button, event_clientX, event_clientY, ringBufferIndexItem);
+        return EXPLORER_oncontextmenu(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_cursorIndex], event_button, event_clientX, event_clientY, ringBufferIndexItem);
     }
 }
 

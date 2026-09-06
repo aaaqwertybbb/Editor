@@ -1217,7 +1217,7 @@ function EXPLORER_TreeViewDirector_ensure_boundingClientRect() {
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Cursor(index) {
     // Determine the number without modifying styles so you can use this variable to determine the need to scroll into view without synchronous layout.
-    INTS[fEXPLORER_TreeViewDirector_cursorTranslateYNumber] = INTS[fEXPLORER_TreeViewDirector_cursorIndex] * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
+    INTS[fEXPLORER_cursorTranslateYNumber] = INTS[fEXPLORER_TreeViewDirector_cursorIndex] * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
 
     // Preferably this hasn't changed thus the function immediately just returns.
     EXPLORER_TreeViewDirector_ensure_boundingClientRect();
@@ -1225,18 +1225,18 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Cursor(index) {
     // If no UI modifications were made prior that are still pending this might avoid a synchronous layout.
     // TODO: If you touch the transform style first... I don't know what would happen it is a GPU related style... so I'm unsure.
     //
-    if (INTS[fEXPLORER_TreeViewDirector_cursorTranslateYNumber] + (2 * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]) > INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop] + INTS[fEXPLORER_TreeViewDirector_boundingClientRect_height]) {
+    if (INTS[fEXPLORER_cursorTranslateYNumber] + (2 * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]) > INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop] + INTS[fEXPLORER_TreeViewDirector_boundingClientRect_height]) {
         let currentBottom = INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop] + INTS[fEXPLORER_TreeViewDirector_boundingClientRect_height];
-        let changeToMakeBottomTouch = INTS[fEXPLORER_TreeViewDirector_cursorTranslateYNumber] - currentBottom;
+        let changeToMakeBottomTouch = INTS[fEXPLORER_cursorTranslateYNumber] - currentBottom;
         let entireValueToScrollBy = changeToMakeBottomTouch + (2 * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]);
         EXPLORER_rootElement.scrollBy(0, entireValueToScrollBy);
     }
-    else if (INTS[fEXPLORER_TreeViewDirector_cursorTranslateYNumber] < INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop]) {
-        EXPLORER_rootElement.scrollBy(0, INTS[fEXPLORER_TreeViewDirector_cursorTranslateYNumber] - INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop]);
+    else if (INTS[fEXPLORER_cursorTranslateYNumber] < INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop]) {
+        EXPLORER_rootElement.scrollBy(0, INTS[fEXPLORER_cursorTranslateYNumber] - INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop]);
     }
 
     // transform last for optimal state flagging of the modified DOM element
-    EXPLORER_cursorElement.style.transform = `translateY(${INTS[fEXPLORER_TreeViewDirector_cursorTranslateYNumber]}px)`;
+    EXPLORER_cursorElement.style.transform = `translateY(${INTS[fEXPLORER_cursorTranslateYNumber]}px)`;
 }
 
 /**

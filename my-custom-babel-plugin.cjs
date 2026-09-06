@@ -548,7 +548,7 @@ module.exports = function (babel) {
     
     "CONST_EXPLORER_KEY_BITS",
 
-    "byteEXPLORER_TreeViewDirector_TREEVIEW_isRenderPending",
+    "byteEXPLORER_isRenderPending",
     "byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge",
     "byteEXPLORER_TreeViewDirector_scrollIsFetchingData",
 

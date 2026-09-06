@@ -189,7 +189,7 @@ const byteEDI_mousemove_eventListener_isActive = 43;
 const byteEXPLORER_show = 44;
 BYTES[byteEXPLORER_show] = 1;
 
-const byteEXPLORER_TreeViewDirector_TREEVIEW_isRenderPending = 45;
+const byteEXPLORER_isRenderPending = 45;
 
 const byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge = 46;
 

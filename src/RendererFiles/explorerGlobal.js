@@ -689,8 +689,8 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_request(renderKind) {
         EXPLORER_renderKindArray.push(renderKind);
     }
     
-    if (!BYTES[byteEXPLORER_TreeViewDirector_TREEVIEW_isRenderPending]) {
-        BYTES[byteEXPLORER_TreeViewDirector_TREEVIEW_isRenderPending] = 1;
+    if (!BYTES[byteEXPLORER_isRenderPending]) {
+        BYTES[byteEXPLORER_isRenderPending] = 1;
         requestAnimationFrame(EXPLORER_TreeViewDirector_renderDo);
     }
 }
@@ -728,7 +728,7 @@ function EXPLORER_TreeViewDirector_renderDo(timestamp) {
         }
     }
     
-    BYTES[byteEXPLORER_TreeViewDirector_TREEVIEW_isRenderPending] = 0; // Reset the paint lock
+    BYTES[byteEXPLORER_isRenderPending] = 0; // Reset the paint lock
 };
 
 /**

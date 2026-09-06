@@ -1595,7 +1595,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
 
                                     // TODO: Check that the node you're pasting into is expanded.
 
-                                    //await EXPLORER_TreeViewDirector_tvd_drawItem_async(finalDiv, someIndex, /*isNull*/ false);
+                                    //await EXPLORER_drawItem_async(finalDiv, someIndex, /*isNull*/ false);
                                     if (someIndex !== largestIndexItemBeingShown) {
                                         //EXPLORER_itemListElement.insertBefore(finalDiv, EXPLORER_itemListElement.children[MENU_target.divRelativeIndex + 1 + pasteResult.indexOf]);
                                     }
@@ -1645,10 +1645,10 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                                             //EXPLORER_itemListElement.insertBefore(divItem, undefined);
 
                                             if (countOfMoreEntriesToShow <= 0) {
-                                                //await EXPLORER_TreeViewDirector_tvd_drawItem_async(divItem, INTS[fEXPLORER_virtualIndex_ofScrollTop] + INTS[fEXPLORER_virtualCount] - 1, /*isNull*/ true);
+                                                //await EXPLORER_drawItem_async(divItem, INTS[fEXPLORER_virtualIndex_ofScrollTop] + INTS[fEXPLORER_virtualCount] - 1, /*isNull*/ true);
                                             }
                                             else {
-                                                //await EXPLORER_TreeViewDirector_tvd_drawItem_async(divItem, INTS[fEXPLORER_virtualIndex_ofScrollTop] + INTS[fEXPLORER_virtualCount] - (remainingChangesToRender - i), /*isNull*/ false);
+                                                //await EXPLORER_drawItem_async(divItem, INTS[fEXPLORER_virtualIndex_ofScrollTop] + INTS[fEXPLORER_virtualCount] - (remainingChangesToRender - i), /*isNull*/ false);
                                                 countOfMoreEntriesToShow--;
                                             }
                                         }
@@ -1814,7 +1814,7 @@ async function NewFile_Directory_WIDGET_InputText_callback(result) {
                     INTS[fEXPLORER_itemHeightTotal] = EXPLORER_getTotalCount() * INTS[fEXPLORER_itemHeightNumber];
                     EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_itemHeightTotal] + 'px';
 
-                    //await EXPLORER_TreeViewDirector_tvd_drawItem_async(finalDiv, someIndex, /*isNull*/ false);
+                    //await EXPLORER_drawItem_async(finalDiv, someIndex, /*isNull*/ false);
                     if (someIndex !== largestIndexItemBeingShown) {
                         //EXPLORER_itemListElement.insertBefore(finalDiv, EXPLORER_itemListElement.children[WIDGET_target.divRelativeIndex + 1 + newFileResult.indexOf]);
                     }
@@ -1896,7 +1896,7 @@ async function NewFile_File_WIDGET_InputText_callback(result) {
                     INTS[fEXPLORER_itemHeightTotal] = EXPLORER_getTotalCount() * INTS[fEXPLORER_itemHeightNumber];
                     EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_itemHeightTotal] + 'px';
     
-                    //await EXPLORER_TreeViewDirector_tvd_drawItem_async(finalDiv, someIndex, /*isNull*/ false);
+                    //await EXPLORER_drawItem_async(finalDiv, someIndex, /*isNull*/ false);
                     if (someIndex !== largestIndexItemBeingShown) {
                         //EXPLORER_itemListElement.insertBefore(finalDiv, EXPLORER_itemListElement.children[WIDGET_target.divRelativeIndex + 1 + newFileResult.indexOf]);
                     }
@@ -1936,10 +1936,10 @@ async function DeleteFile_Directory_YesCancel_callback(result) {
             //EXPLORER_itemListElement.insertBefore(divItem, undefined);
 
             if (countOfMoreEntriesToShow <= 0) {
-                //await EXPLORER_TreeViewDirector_tvd_drawItem_async(divItem, INTS[fEXPLORER_virtualIndex_ofScrollTop] + INTS[fEXPLORER_virtualCount] - 1, /*isNull*/ true);
+                //await EXPLORER_drawItem_async(divItem, INTS[fEXPLORER_virtualIndex_ofScrollTop] + INTS[fEXPLORER_virtualCount] - 1, /*isNull*/ true);
             }
             else {
-                //await EXPLORER_TreeViewDirector_tvd_drawItem_async(divItem, INTS[fEXPLORER_virtualIndex_ofScrollTop] + INTS[fEXPLORER_virtualCount] - (remainingChangesToRender - i), /*isNull*/ false);
+                //await EXPLORER_drawItem_async(divItem, INTS[fEXPLORER_virtualIndex_ofScrollTop] + INTS[fEXPLORER_virtualCount] - (remainingChangesToRender - i), /*isNull*/ false);
                 countOfMoreEntriesToShow--;
             }
         }
@@ -1970,10 +1970,10 @@ async function DeleteFile_File_YesCancel_callback(result) {
 
             //EXPLORER_itemListElement.insertBefore(divItem, undefined);
             if (noMoreEntriesToShow) {
-                //await EXPLORER_TreeViewDirector_tvd_drawItem_async(divItem, INTS[fEXPLORER_virtualIndex_ofScrollTop] + INTS[fEXPLORER_virtualCount] - 1, /*isNull*/ true);
+                //await EXPLORER_drawItem_async(divItem, INTS[fEXPLORER_virtualIndex_ofScrollTop] + INTS[fEXPLORER_virtualCount] - 1, /*isNull*/ true);
             }
             else {
-                //await EXPLORER_TreeViewDirector_tvd_drawItem_async(divItem, INTS[fEXPLORER_virtualIndex_ofScrollTop] + INTS[fEXPLORER_virtualCount] - 1, /*isNull*/ false);
+                //await EXPLORER_drawItem_async(divItem, INTS[fEXPLORER_virtualIndex_ofScrollTop] + INTS[fEXPLORER_virtualCount] - 1, /*isNull*/ false);
             }
         }
 

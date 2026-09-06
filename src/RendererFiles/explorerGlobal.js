@@ -377,7 +377,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
         let itemListElement_children = EXPLORER_ringBuffer;
         let itemListElement_childrenLength = INTS[fEXPLORER_ringBuffer_length];
 
-        let currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = INTS[fEXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING];
+        let currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = INTS[fEXPLORER_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING];
         let NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
 
         for (let i = 0; i < INTS[fEXPLORER_pullData_result_count]; i++) {
@@ -399,14 +399,14 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
         }
 
         if (NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING > currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING) {
-            INTS[fEXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] = NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
-            let widthAttributeValueNumber = Math.ceil(((INTS[fEXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] + 2/*padding*/) * INTS[fEXPLORER_firstSpanWidthValue]) + CONST_EXPLORER_offsetPerDepth * INTS[fEXPLORER_TreeViewDirector_LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH]);
+            INTS[fEXPLORER_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] = NEXT_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING;
+            let widthAttributeValueNumber = Math.ceil(((INTS[fEXPLORER_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] + 2/*padding*/) * INTS[fEXPLORER_firstSpanWidthValue]) + CONST_EXPLORER_offsetPerDepth * INTS[fEXPLORER_TreeViewDirector_LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH]);
 
             // This is actually more complicated you have to track whether you go above the minimum requirement lest you add 1 character over and over in width just to keep redrawing widths.
             //if (widthAttributeValueNumber < INTS[fEXPLORER_lastReadNumber_offsetWidth]) {
             //    widthAttributeValueNumber = INTS[fEXPLORER_lastReadNumber_offsetWidth];
             //}
-            //INTS[fEXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING]
+            //INTS[fEXPLORER_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING]
             let widthAttributeValueString = widthAttributeValueNumber + 'px';
             EXPLORER_cursorElement.style.width = widthAttributeValueString;
             for (let i = 0; i < itemListElement_childrenLength; i++) {
@@ -914,13 +914,13 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
         // padding of 2ch (the style attribute receives the width as a pixel by using 'INTS[fEXPLORER_firstSpanWidthValue]' as a baseline (not quite ch))
         // TODO: this is all very inaccurate and prone to eventual rounding issues due to not monospace font.
         //
-        INTS[fEXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] = 2;
-        let widthAttributeValueNumber = Math.ceil((INTS[fEXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] + 2/*padding*/) * INTS[fEXPLORER_firstSpanWidthValue]);
+        INTS[fEXPLORER_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] = 2;
+        let widthAttributeValueNumber = Math.ceil((INTS[fEXPLORER_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING] + 2/*padding*/) * INTS[fEXPLORER_firstSpanWidthValue]);
         // This is actually more complicated you have to track whether you go above the minimum requirement lest you add 1 character over and over in width just to keep redrawing widths.
         //if (widthAttributeValueNumber < INTS[fEXPLORER_lastReadNumber_offsetWidth]) {
         //    widthAttributeValueNumber = INTS[fEXPLORER_lastReadNumber_offsetWidth];
         //}
-        //INTS[fEXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING]
+        //INTS[fEXPLORER_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING]
         let widthAttributeValueString = widthAttributeValueNumber + 'px';
         EXPLORER_cursorElement.style.width = widthAttributeValueString;
 

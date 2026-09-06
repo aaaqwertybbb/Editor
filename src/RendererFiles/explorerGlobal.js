@@ -702,7 +702,7 @@ function EXPLORER_TreeViewDirector_renderDo(timestamp) {
     while (renderKind = EXPLORER_renderKindArray.shift()) {
         switch (renderKind) {
             case TREEVIEWrenderKind_Cursor:
-                EXPLORER_TreeViewDirector_TREEVIEW_render_do_Cursor();
+                EXPLORER_render_do_Cursor();
                 break;
             case TREEVIEWrenderKind_Create:
                 EXPLORER_render_do_Create(timestamp);
@@ -1215,7 +1215,7 @@ function EXPLORER_TreeViewDirector_ensure_boundingClientRect() {
     }
 }
 
-function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Cursor(index) {
+function EXPLORER_render_do_Cursor(index) {
     // Determine the number without modifying styles so you can use this variable to determine the need to scroll into view without synchronous layout.
     INTS[fEXPLORER_cursorTranslateYNumber] = INTS[fEXPLORER_cursorIndex] * INTS[fEXPLORER_itemHeightNumber];
 

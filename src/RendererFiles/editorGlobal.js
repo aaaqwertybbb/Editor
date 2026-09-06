@@ -61,9 +61,9 @@ And it can introduce oddities involving tabstop or very tiny changes in horizont
 */
 
 /*
-#################################################################
+###################################################################
 # Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex': #
-#################################################################
+###################################################################
 
 // TODO: This is an awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'...
 // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"

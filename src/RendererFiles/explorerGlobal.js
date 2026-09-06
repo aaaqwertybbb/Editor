@@ -330,7 +330,7 @@ async function EXPLORER_drawItem_BATCH_pullData() {
     // This isn't the most optimal way of doing things.
     //
     let localEXPLORER_ringBuffer = EXPLORER_ringBuffer;
-    let itemListElement_childrenLength = INTS[fEXPLORER_ringBuffer_length];
+    let localRingBufferLength = INTS[fEXPLORER_ringBuffer_length];
 
     INTS[fEXPLORER_pullData_array_count] = 0;
 
@@ -342,7 +342,7 @@ async function EXPLORER_drawItem_BATCH_pullData() {
     if (ringBufferIndex_current >= INTS[fEXPLORER_ringBuffer_length] || ringBufferIndex_current < 0) ringBufferIndex_current = -1;
     else ringBufferIndex_current = (ringBufferIndex_current + INTS[fEXPLORER_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
 
-    for (let i = 0; i < itemListElement_childrenLength; i++) {
+    for (let i = 0; i < localRingBufferLength; i++) {
 
         if (localEXPLORER_ringBuffer[ringBufferIndex_current].className === 'eN') {
             let indexItem = INTS[fEXPLORER_scrollFetchData_virtualIndex] + i;
@@ -354,7 +354,7 @@ async function EXPLORER_drawItem_BATCH_pullData() {
             EXPLORER_pullData_array[INTS[fEXPLORER_pullData_array_count]++] = ((indexRingBuffer << CONST_EXPLORER_KEY_BITS) | EXPLORER_treeViewNodes.getKey(indexItem));
         }
 
-        ringBufferIndex_current = (ringBufferIndex_current + 1) % itemListElement_childrenLength;
+        ringBufferIndex_current = (ringBufferIndex_current + 1) % localRingBufferLength;
     }
 
     EXPLORER_arrayEntries = await window.myAPI.getFilesystemEntryById_ARRAY(EXPLORER_pullData_array.subarray(0, INTS[fEXPLORER_pullData_array_count]));
@@ -365,7 +365,7 @@ async function EXPLORER_drawItem_BATCH_pullData() {
     BYTES[byteEXPLORER_scrollIsFetchingData] = 0; // TODO: try/catch/finally; put this in the finally.
 
     EXPLORER_render_request(TREEVIEWrenderKind_Scroll_PullDataDrawResult);
-};
+}
 
 function EXPLORER_drawItem_BATCH_PullDataDrawResult() {
     if (INTS[fEXPLORER_scrollFetchData_virtualIndex] === INTS[fEXPLORER_ONSCROLLvirtualIndex] &&

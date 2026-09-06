@@ -720,7 +720,7 @@ function EXPLORER_TreeViewDirector_renderDo(timestamp) {
                 EXPLORER_render_do_SetItems();
                 break;
             case TREEVIEWrenderKind_FullReset:
-                EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp);
+                EXPLORER_render_do_FullReset(timestamp);
                 break;
             case TREEVIEWrenderKind_Resize:
                 EXPLORER_render_do_Resize(timestamp);
@@ -767,7 +767,7 @@ function EXPLORER_render_do_Create(timestamp) {
         //
         // TODO: but, perhaps this is best left to the consumer of the TreeViewComponent to invoke themselves...
         // ...in such a scenario. Until further decision is made I'll have the invocation here.
-        EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp);
+        EXPLORER_render_do_FullReset(timestamp);
         // TODO: Should there be a return here?...
         // ...more accurately the concern is 'TREEVIEW_draw_create_request_parentElement.insertBefore'
         // and 'EXPLORER_TreeViewDirector_draw_addEvents()'
@@ -842,7 +842,7 @@ function EXPLORER_TreeViewDirector_draw_removeEvents() {
 
 function EXPLORER_render_do_Scroll(timestamp) {
     if (INTS[fEXPLORER_ringBuffer_length] !== INTS[fEXPLORER_virtualCount]) {
-        EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp);
+        EXPLORER_render_do_FullReset(timestamp);
     }
     else {
         INTS[fEXPLORER_virtualIndex_ofScrollTop] = Math.floor(INTS[fEXPLORER_lastReadNumber_scrollTop] / INTS[fEXPLORER_itemHeightNumber]);
@@ -898,7 +898,7 @@ function EXPLORER_TreeViewDirector_draw_BATCH_request(start, length, onePositive
     EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Batch);
 }
 
-function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
+function EXPLORER_render_do_FullReset(timestamp) {
     EXPLORER_ensure_boundingClientRect();
 
     INTS[fEXPLORER_ONSCROLLvirtualCount] = INTS[fEXPLORER_virtualCount];
@@ -1182,7 +1182,7 @@ function EXPLORER_render_do_Resize(timestamp) {
 
     BYTES[byteEXPLORER_boundingClientRect_isValid] = 0;
     EXPLORER_ensure_boundingClientRect();
-    EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp);
+    EXPLORER_render_do_FullReset(timestamp);
 }
 
 /**

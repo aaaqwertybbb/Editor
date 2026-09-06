@@ -47,7 +47,7 @@ EXPLORER_TreeViewDirector_rootElement.appendChild(EXPLORER_TreeViewDirector_item
 
 const EXPLORER_TreeViewDirector_TREEVIEW_renderKindArray = [];
 
-let EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children = [];
+let EXPLORER_ringBuffer = [];
 
 let EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_parentElement = null;
 let EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_insertBeforeThisChild = null;
@@ -151,7 +151,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositive
     let totalCount = EXPLORER_TreeViewDirector_nodeList.count_abstract;
     let loopCounter = 0;
 
-    let lastIndex = (INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero] - 1 + INTS[fEXPLORER_TreeViewDirector_virtualCount]) % INTS[fEXPLORER_TreeViewDirector_virtualCount]; // TODO: 'INTS[fEXPLORER_TreeViewDirector_virtualCount]' or 'EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children.length'
+    let lastIndex = (INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero] - 1 + INTS[fEXPLORER_TreeViewDirector_virtualCount]) % INTS[fEXPLORER_TreeViewDirector_virtualCount]; // TODO: 'INTS[fEXPLORER_TreeViewDirector_virtualCount]' or 'EXPLORER_ringBuffer.length'
 
     let loopTotalIterations = upperBound - start;
 
@@ -185,7 +185,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositive
                 divIndex = (caseThreeOrigin + loopCounter) % INTS[fEXPLORER_ringBuffer_length];
                 break;
         }
-        divItem = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[divIndex];
+        divItem = EXPLORER_ringBuffer[divIndex];
 
         if (indexItem >= totalCount) {
             // TODO: Will the user agent remove a text node that has an "empty" nodeValue?
@@ -329,7 +329,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
 
     // This isn't the most optimal way of doing things.
     //
-    let itemListElement_children = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children;
+    let itemListElement_children = EXPLORER_ringBuffer;
     let itemListElement_childrenLength = INTS[fEXPLORER_ringBuffer_length];
 
     INTS[fEXPLORER_TreeViewDirector_pullData_array_count] = 0;
@@ -374,7 +374,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
 
         // This isn't the most optimal way of doing things.
         //
-        let itemListElement_children = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children;
+        let itemListElement_children = EXPLORER_ringBuffer;
         let itemListElement_childrenLength = INTS[fEXPLORER_ringBuffer_length];
 
         let currentWIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = INTS[fEXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING];
@@ -947,8 +947,8 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
             INTS[fEXPLORER_TreeViewDirector_pullData_array_count] = 0;
         }
 
-        EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children = Array.from(EXPLORER_TreeViewDirector_itemListElement.children);
-        INTS[fEXPLORER_ringBuffer_length] = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children.length;
+        EXPLORER_ringBuffer = Array.from(EXPLORER_TreeViewDirector_itemListElement.children);
+        INTS[fEXPLORER_ringBuffer_length] = EXPLORER_ringBuffer.length;
     }
 
     // TODO: This if statement check is awkward because the previous if statement ought to have guaranteed this one to be true.
@@ -993,7 +993,7 @@ function EXPLORER_TreeViewDirector_event_click(event) {
     else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
 
     if (ringBufferIndexItem < 0) return;
-    let divItem = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[ringBufferIndexItem];
+    let divItem = EXPLORER_ringBuffer[ringBufferIndexItem];
 
     if (event_target === divItem.children[0]) {
         return EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(divItem, indexItem);
@@ -1024,7 +1024,7 @@ function EXPLORER_TreeViewDirector_event_dblclick(event) {
     else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
 
     if (ringBufferIndexItem < 0) return;
-    let divItem = EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[ringBufferIndexItem];
+    let divItem = EXPLORER_ringBuffer[ringBufferIndexItem];
 
     // if not clicked "chevron"
     if (event_target !== divItem.children[0]) {
@@ -1037,7 +1037,7 @@ function EXPLORER_TreeViewDirector_event_dblclick(event) {
         else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
 
         if (ringBufferIndexItem < 0) return;
-        return EXPLORER_TreeViewDirector_tvd_ondblclick_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[ringBufferIndexItem], INTS[fEXPLORER_TreeViewDirector_cursorIndex]);
+        return EXPLORER_TreeViewDirector_tvd_ondblclick_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_TreeViewDirector_cursorIndex]);
     }
 }
 
@@ -1067,7 +1067,7 @@ function EXPLORER_TreeViewDirector_event_contextmenu(event) {
         else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
 
         if (ringBufferIndexItem < 0) return;
-        return EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[ringBufferIndexItem], INTS[fEXPLORER_TreeViewDirector_cursorIndex], event_button, event_clientX, event_clientY, ringBufferIndexItem);
+        return EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_TreeViewDirector_cursorIndex], event_button, event_clientX, event_clientY, ringBufferIndexItem);
     } else {
         if (INTS[fEXPLORER_TreeViewDirector_cursorIndex] >= EXPLORER_TreeViewDirector_tvd_getTotalCount()) {
             return;
@@ -1087,7 +1087,7 @@ function EXPLORER_TreeViewDirector_event_contextmenu(event) {
         if (ringBufferIndexItem < 0) return;
 
         // TODO: Handle context menu with keyboard when active node is out of view
-        return EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[ringBufferIndexItem], INTS[fEXPLORER_TreeViewDirector_cursorIndex], event_button, event_clientX, event_clientY, ringBufferIndexItem);
+        return EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_TreeViewDirector_cursorIndex], event_button, event_clientX, event_clientY, ringBufferIndexItem);
     }
 }
 
@@ -1133,7 +1133,7 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
                 else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
 
                 if (ringBufferIndexItem < 0) return;
-                return EXPLORER_TreeViewDirector_tvd_arrowRight_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[ringBufferIndexItem], INTS[fEXPLORER_TreeViewDirector_cursorIndex]);
+                return EXPLORER_TreeViewDirector_tvd_arrowRight_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_TreeViewDirector_cursorIndex]);
             }
             return;
         case 'ArrowLeft':
@@ -1151,7 +1151,7 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
                 else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
 
                 if (ringBufferIndexItem < 0) return;
-                return EXPLORER_TreeViewDirector_tvd_arrowLeft_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[ringBufferIndexItem], INTS[fEXPLORER_TreeViewDirector_cursorIndex]);
+                return EXPLORER_TreeViewDirector_tvd_arrowLeft_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_TreeViewDirector_cursorIndex]);
             }
             return;
         case ' ':
@@ -1169,7 +1169,7 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
             else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
 
             if (ringBufferIndexItem < 0) return;
-            return EXPLORER_TreeViewDirector_tvd_onkeydown_async(EXPLORER_TreeViewDirector_TREEVIEW_ArrayFrom_itemListElement_children[ringBufferIndexItem], INTS[fEXPLORER_TreeViewDirector_cursorIndex], event.key);
+            return EXPLORER_TreeViewDirector_tvd_onkeydown_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_TreeViewDirector_cursorIndex], event.key);
     }
 }
 

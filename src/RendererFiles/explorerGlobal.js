@@ -83,7 +83,7 @@ let EXPLORER_KEY_MASK = (1 << CONST_EXPLORER_KEY_BITS) - 1; // Binary: 000000000
 // end CONSTRUCTOR
 
 /** // Invoke this?: 'this.draw_render_fullReset_request();' */
-function EXPLORER_TreeViewDirector_setChosenDirectory(chosenDirectory, chosenDirectoryAbsolutePathId) {
+function EXPLORER_setChosenDirectory(chosenDirectory, chosenDirectoryAbsolutePathId) {
     EXPLORER_chosenDirectory = chosenDirectory;
     EXPLORER_chosenDirectoryAbsolutePathId = chosenDirectoryAbsolutePathId;
 
@@ -1445,7 +1445,7 @@ async function EXPLORER_pickFolderOrWorkspaceButton_MenuOnClick(indexClicked, el
                 EXPLORER_PickFolder.textContent = chooseDirectoryResult.basename;
                 EXPLORER_PickFolder.title = chosenDirectory;
     
-                EXPLORER_TreeViewDirector_setChosenDirectory(chosenDirectory, chooseDirectoryResult.id);
+                EXPLORER_setChosenDirectory(chosenDirectory, chooseDirectoryResult.id);
                 EXPLORER_TreeViewDirector_setItems(INTS[fAPP_lineHeight], INTS[fAPP_lineHeight] + 'px');
                 EXPLORER_TreeViewDirector_draw_create_request(EXPLORER_Element, null);
             }

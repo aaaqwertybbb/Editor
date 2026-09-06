@@ -494,7 +494,7 @@ function EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(divItem, indexItem, e
         return menuSet('EXPLORER', target, optionList, INTS[fEXPLORER_menuOptionX]=event_clientX, INTS[fEXPLORER_menuOptionY]=event_clientY);
     } else {
         EXPLORER_TreeViewDirector_addSpecificMenuOptionsForTarget(optionList, divItem, target);
-        return menuSet('EXPLORER', target, optionList, INTS[fEXPLORER_menuOptionX]=INTS[fEXPLORER_TreeViewDirector_boundingClientRect_left], INTS[fEXPLORER_menuOptionY]=(INTS[fEXPLORER_TreeViewDirector_boundingClientRect_top] + ((INTS[fEXPLORER_TreeViewDirector_cursorIndex] + 1) * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]) - EXPLORER_rootElement.scrollTop));
+        return menuSet('EXPLORER', target, optionList, INTS[fEXPLORER_menuOptionX]=INTS[fEXPLORER_TreeViewDirector_boundingClientRect_left], INTS[fEXPLORER_menuOptionY]=(INTS[fEXPLORER_TreeViewDirector_boundingClientRect_top] + ((INTS[fEXPLORER_cursorIndex] + 1) * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]) - EXPLORER_rootElement.scrollTop));
     }
 }
 
@@ -570,7 +570,7 @@ function EXPLORER_TreeViewDirector_tvd_arrowRight_async(divItem, indexItem) {
         if (indexItem + 1 < EXPLORER_treeViewNodes.count_abstract) {
             if (EXPLORER_treeViewNodes.getDepth(indexItem + 1) > depth) {
                 EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
-                    INTS[fEXPLORER_TreeViewDirector_cursorIndex] + 1));
+                    INTS[fEXPLORER_cursorIndex] + 1));
             }
         }
     }
@@ -1032,12 +1032,12 @@ function EXPLORER_TreeViewDirector_event_dblclick(event) {
         // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
         // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
-        let ringBufferIndexItem = ((INTS[fEXPLORER_TreeViewDirector_cursorIndex])) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
+        let ringBufferIndexItem = ((INTS[fEXPLORER_cursorIndex])) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
         if (ringBufferIndexItem >= INTS[fEXPLORER_ringBuffer_length] || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
         else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
 
         if (ringBufferIndexItem < 0) return;
-        return EXPLORER_TreeViewDirector_tvd_ondblclick_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_TreeViewDirector_cursorIndex]);
+        return EXPLORER_TreeViewDirector_tvd_ondblclick_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_cursorIndex]);
     }
 }
 
@@ -1062,32 +1062,32 @@ function EXPLORER_TreeViewDirector_event_contextmenu(event) {
         // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
         // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
-        let ringBufferIndexItem = ((INTS[fEXPLORER_TreeViewDirector_cursorIndex])) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
+        let ringBufferIndexItem = ((INTS[fEXPLORER_cursorIndex])) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
         if (ringBufferIndexItem >= INTS[fEXPLORER_ringBuffer_length] || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
         else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
 
         if (ringBufferIndexItem < 0) return;
-        return EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_TreeViewDirector_cursorIndex], event_button, event_clientX, event_clientY, ringBufferIndexItem);
+        return EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_cursorIndex], event_button, event_clientX, event_clientY, ringBufferIndexItem);
     } else {
-        if (INTS[fEXPLORER_TreeViewDirector_cursorIndex] >= EXPLORER_TreeViewDirector_tvd_getTotalCount()) {
+        if (INTS[fEXPLORER_cursorIndex] >= EXPLORER_TreeViewDirector_tvd_getTotalCount()) {
             return;
         }
 
         EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
-            INTS[fEXPLORER_TreeViewDirector_cursorIndex]));
+            INTS[fEXPLORER_cursorIndex]));
 
         // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_ringBufferIndexItem'...
         // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
         // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
         // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
-        let ringBufferIndexItem = ((INTS[fEXPLORER_TreeViewDirector_cursorIndex])) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
+        let ringBufferIndexItem = ((INTS[fEXPLORER_cursorIndex])) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
         if (ringBufferIndexItem >= INTS[fEXPLORER_ringBuffer_length] || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
         else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
 
         if (ringBufferIndexItem < 0) return;
 
         // TODO: Handle context menu with keyboard when active node is out of view
-        return EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_TreeViewDirector_cursorIndex], event_button, event_clientX, event_clientY, ringBufferIndexItem);
+        return EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_cursorIndex], event_button, event_clientX, event_clientY, ringBufferIndexItem);
     }
 }
 
@@ -1103,7 +1103,7 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
             }
             else {
                 EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
-                    INTS[fEXPLORER_TreeViewDirector_cursorIndex] + 1));
+                    INTS[fEXPLORER_cursorIndex] + 1));
             }
             return;
         case 'ArrowUp':
@@ -1113,14 +1113,14 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
             }
             else {
                 EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
-                    INTS[fEXPLORER_TreeViewDirector_cursorIndex] - 1));
+                    INTS[fEXPLORER_cursorIndex] - 1));
             }
             return;
         case 'ArrowRight':
             if (!event.ctrlKey) { // If holding ctrl, don't preventDefault so the user can scroll horizontally?
                 event.preventDefault();
                 EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
-                    INTS[fEXPLORER_TreeViewDirector_cursorIndex]));
+                    INTS[fEXPLORER_cursorIndex]));
 
                 // TODO: 'ArrowRight' when the cursor is on a valid item but isn't part of the virtualization result.
 
@@ -1128,48 +1128,48 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
                 // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
                 // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                 // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
-                let ringBufferIndexItem = ((INTS[fEXPLORER_TreeViewDirector_cursorIndex])) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
+                let ringBufferIndexItem = ((INTS[fEXPLORER_cursorIndex])) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
                 if (ringBufferIndexItem >= INTS[fEXPLORER_ringBuffer_length] || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
                 else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
 
                 if (ringBufferIndexItem < 0) return;
-                return EXPLORER_TreeViewDirector_tvd_arrowRight_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_TreeViewDirector_cursorIndex]);
+                return EXPLORER_TreeViewDirector_tvd_arrowRight_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_cursorIndex]);
             }
             return;
         case 'ArrowLeft':
             if (!event.ctrlKey) { // If holding ctrl, don't preventDefault so the user can scroll horizontally?
                 event.preventDefault();
                 EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
-                    INTS[fEXPLORER_TreeViewDirector_cursorIndex]));
+                    INTS[fEXPLORER_cursorIndex]));
                 
                 // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_ringBufferIndexItem'...
                 // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
                 // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
                 // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
-                let ringBufferIndexItem = ((INTS[fEXPLORER_TreeViewDirector_cursorIndex])) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
+                let ringBufferIndexItem = ((INTS[fEXPLORER_cursorIndex])) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
                 if (ringBufferIndexItem >= INTS[fEXPLORER_ringBuffer_length] || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
                 else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
 
                 if (ringBufferIndexItem < 0) return;
-                return EXPLORER_TreeViewDirector_tvd_arrowLeft_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_TreeViewDirector_cursorIndex]);
+                return EXPLORER_TreeViewDirector_tvd_arrowLeft_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_cursorIndex]);
             }
             return;
         case ' ':
         case 'Enter':
             event.preventDefault();
             EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
-                INTS[fEXPLORER_TreeViewDirector_cursorIndex]));
+                INTS[fEXPLORER_cursorIndex]));
             
             // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_ringBufferIndexItem'...
             // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
             // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
             // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
-            let ringBufferIndexItem = ((INTS[fEXPLORER_TreeViewDirector_cursorIndex])) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
+            let ringBufferIndexItem = ((INTS[fEXPLORER_cursorIndex])) - INTS[fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop];
             if (ringBufferIndexItem >= INTS[fEXPLORER_ringBuffer_length] || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
             else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_TreeViewDirector_virtualCount];
 
             if (ringBufferIndexItem < 0) return;
-            return EXPLORER_TreeViewDirector_tvd_onkeydown_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_TreeViewDirector_cursorIndex], event.key);
+            return EXPLORER_TreeViewDirector_tvd_onkeydown_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_cursorIndex], event.key);
     }
 }
 
@@ -1217,7 +1217,7 @@ function EXPLORER_TreeViewDirector_ensure_boundingClientRect() {
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Cursor(index) {
     // Determine the number without modifying styles so you can use this variable to determine the need to scroll into view without synchronous layout.
-    INTS[fEXPLORER_cursorTranslateYNumber] = INTS[fEXPLORER_TreeViewDirector_cursorIndex] * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
+    INTS[fEXPLORER_cursorTranslateYNumber] = INTS[fEXPLORER_cursorIndex] * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
 
     // Preferably this hasn't changed thus the function immediately just returns.
     EXPLORER_TreeViewDirector_ensure_boundingClientRect();
@@ -1245,8 +1245,8 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Cursor(index) {
  * @param {*} index 
  */
 function EXPLORER_TreeViewDirector_state_cursor_setIndex(index) {
-    if (INTS[fEXPLORER_TreeViewDirector_cursorIndex] === index) return;
-    INTS[fEXPLORER_TreeViewDirector_cursorIndex] = index;
+    if (INTS[fEXPLORER_cursorIndex] === index) return;
+    INTS[fEXPLORER_cursorIndex] = index;
     EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Cursor);
 }
 

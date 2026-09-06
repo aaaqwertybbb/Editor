@@ -805,7 +805,7 @@ function EXPLORER_TreeViewDirector_draw_create_request(parentElement, insertBefo
 }
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Batch(timestamp) {
-    EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(INTS[fEXPLORER_start], INTS[fEXPLORER_length], INTS[fEXPLORER_TreeViewDirector_onePositiveDiff_twoNegativeDiff_orThreeFullScreen], INTS[fEXPLORER_TreeViewDirector_caseThreeOrigin], timestamp);
+    EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(INTS[fEXPLORER_start], INTS[fEXPLORER_length], INTS[fEXPLORER_onePositiveDiff_twoNegativeDiff_orThreeFullScreen], INTS[fEXPLORER_TreeViewDirector_caseThreeOrigin], timestamp);
 }
 
 /**
@@ -893,7 +893,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll_PullDataDrawResult(
 function EXPLORER_TreeViewDirector_draw_BATCH_request(start, length, onePositiveDiff_twoNegativeDiff_orThreeFullScreen, caseThreeOrigin) {
     INTS[fEXPLORER_start] = start;
     INTS[fEXPLORER_length] = length;
-    INTS[fEXPLORER_TreeViewDirector_onePositiveDiff_twoNegativeDiff_orThreeFullScreen] = onePositiveDiff_twoNegativeDiff_orThreeFullScreen;
+    INTS[fEXPLORER_onePositiveDiff_twoNegativeDiff_orThreeFullScreen] = onePositiveDiff_twoNegativeDiff_orThreeFullScreen;
     INTS[fEXPLORER_TreeViewDirector_caseThreeOrigin] = caseThreeOrigin;
     EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Batch);
 }

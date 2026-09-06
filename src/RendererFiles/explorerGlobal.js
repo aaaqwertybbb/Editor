@@ -332,7 +332,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     let itemListElement_children = EXPLORER_ringBuffer;
     let itemListElement_childrenLength = INTS[fEXPLORER_ringBuffer_length];
 
-    INTS[fEXPLORER_TreeViewDirector_pullData_array_count] = 0;
+    INTS[fEXPLORER_pullData_array_count] = 0;
 
     // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_ringBufferIndexItem'...
     // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
@@ -351,16 +351,16 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
             // that is displaying the UI representation of what 'indexItem' points to.
             let indexRingBuffer = ringBufferIndex_current;
 
-            EXPLORER_TreeViewDirector_pullData_array[INTS[fEXPLORER_TreeViewDirector_pullData_array_count]++] = ((indexRingBuffer << CONST_EXPLORER_TreeViewDirector_KEY_BITS) | EXPLORER_treeViewNodes.getKey(indexItem));
+            EXPLORER_TreeViewDirector_pullData_array[INTS[fEXPLORER_pullData_array_count]++] = ((indexRingBuffer << CONST_EXPLORER_TreeViewDirector_KEY_BITS) | EXPLORER_treeViewNodes.getKey(indexItem));
         }
 
         ringBufferIndex_current = (ringBufferIndex_current + 1) % itemListElement_childrenLength;
     }
 
-    EXPLORER_TreeViewDirector_arrayEntries = await window.myAPI.getFilesystemEntryById_ARRAY(EXPLORER_TreeViewDirector_pullData_array.subarray(0, INTS[fEXPLORER_TreeViewDirector_pullData_array_count]));
+    EXPLORER_TreeViewDirector_arrayEntries = await window.myAPI.getFilesystemEntryById_ARRAY(EXPLORER_TreeViewDirector_pullData_array.subarray(0, INTS[fEXPLORER_pullData_array_count]));
 
     EXPLORER_TreeViewDirector_pullData_result = EXPLORER_TreeViewDirector_pullData_array;
-    INTS[fEXPLORER_TreeViewDirector_pullData_result_count] = INTS[fEXPLORER_TreeViewDirector_pullData_array_count];
+    INTS[fEXPLORER_TreeViewDirector_pullData_result_count] = INTS[fEXPLORER_pullData_array_count];
 
     BYTES[byteEXPLORER_TreeViewDirector_scrollIsFetchingData] = 0; // TODO: try/catch/finally; put this in the finally.
 
@@ -944,7 +944,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
         // TODO: check the resize logic, that it works
         if (EXPLORER_TreeViewDirector_pullData_array) {
             EXPLORER_TreeViewDirector_pullData_array = new Uint32Array(INTS[fEXPLORER_TreeViewDirector_virtualCount]);
-            INTS[fEXPLORER_TreeViewDirector_pullData_array_count] = 0;
+            INTS[fEXPLORER_pullData_array_count] = 0;
         }
 
         EXPLORER_ringBuffer = Array.from(EXPLORER_itemListElement.children);

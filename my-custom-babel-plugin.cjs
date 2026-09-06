@@ -555,7 +555,7 @@ module.exports = function (babel) {
     "fEDI_getLineAndColumnIndices_indexLine",
     "fEDI_getLineAndColumnIndices_indexColumn",
 
-    "fEXPLORER_TreeViewDirector_boundingClientRect_height",
+    "fEXPLORER_boundingClientRect_height",
     "fEXPLORER_TreeViewDirector_boundingClientRect_left",
     "fEXPLORER_TreeViewDirector_boundingClientRect_top",
 

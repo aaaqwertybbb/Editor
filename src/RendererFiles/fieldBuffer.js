@@ -736,7 +736,7 @@ const fEXPLORER_pullData_result_count = 165;
 const fEDI_getLineAndColumnIndices_indexLine = 166;
 const fEDI_getLineAndColumnIndices_indexColumn = 167;
 
-const fEXPLORER_TreeViewDirector_boundingClientRect_height = 168;
+const fEXPLORER_boundingClientRect_height = 168;
 const fEXPLORER_TreeViewDirector_boundingClientRect_left = 169;
 const fEXPLORER_TreeViewDirector_boundingClientRect_top = 170;
 

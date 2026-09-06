@@ -1207,7 +1207,7 @@ function EXPLORER_TreeViewDirector_event_scroll() {
 function EXPLORER_TreeViewDirector_ensure_boundingClientRect() {
     if (!BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid]) {
         let rect = EXPLORER_rootElement.getBoundingClientRect();
-        INTS[fEXPLORER_TreeViewDirector_boundingClientRect_height] = rect.height;
+        INTS[fEXPLORER_boundingClientRect_height] = rect.height;
         INTS[fEXPLORER_TreeViewDirector_boundingClientRect_left] = rect.left;
         INTS[fEXPLORER_TreeViewDirector_boundingClientRect_top] = rect.top;
         BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = 1;
@@ -1225,8 +1225,8 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Cursor(index) {
     // If no UI modifications were made prior that are still pending this might avoid a synchronous layout.
     // TODO: If you touch the transform style first... I don't know what would happen it is a GPU related style... so I'm unsure.
     //
-    if (INTS[fEXPLORER_cursorTranslateYNumber] + (2 * INTS[fEXPLORER_itemHeightNumber]) > INTS[fEXPLORER_lastReadNumber_scrollTop] + INTS[fEXPLORER_TreeViewDirector_boundingClientRect_height]) {
-        let currentBottom = INTS[fEXPLORER_lastReadNumber_scrollTop] + INTS[fEXPLORER_TreeViewDirector_boundingClientRect_height];
+    if (INTS[fEXPLORER_cursorTranslateYNumber] + (2 * INTS[fEXPLORER_itemHeightNumber]) > INTS[fEXPLORER_lastReadNumber_scrollTop] + INTS[fEXPLORER_boundingClientRect_height]) {
+        let currentBottom = INTS[fEXPLORER_lastReadNumber_scrollTop] + INTS[fEXPLORER_boundingClientRect_height];
         let changeToMakeBottomTouch = INTS[fEXPLORER_cursorTranslateYNumber] - currentBottom;
         let entireValueToScrollBy = changeToMakeBottomTouch + (2 * INTS[fEXPLORER_itemHeightNumber]);
         EXPLORER_rootElement.scrollBy(0, entireValueToScrollBy);

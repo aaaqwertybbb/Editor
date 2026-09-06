@@ -699,7 +699,7 @@ const fEXPLORER_ONSCROLLvirtualCount = 147;
 const fEXPLORER_lastReadNumber_scrollLeft = 148;
 const fEXPLORER_lastReadNumber_scrollTop = 149;
 
-const fEXPLORER_TreeViewDirector_ringBufferIndexZero = 150;
+const fEXPLORER_ringBufferIndexZero = 150;
 
 const fEXPLORER_ringBuffer_length = 151;
 

@@ -135,7 +135,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_trailingEdge() {
 };
 
 /** 
- * @param {number} caseThreeOrigin if left undefined or (falsey but not 0), this will default to 'INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]'
+ * @param {number} caseThreeOrigin if left undefined or (falsey but not 0), this will default to 'INTS[fEXPLORER_ringBufferIndexZero]'
  */
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositiveDiff_twoNegativeDiff_orThreeFullScreen, caseThreeOrigin, timestamp) {
 
@@ -151,7 +151,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositive
     let totalCount = EXPLORER_treeViewNodes.count_abstract;
     let loopCounter = 0;
 
-    let lastIndex = (INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero] - 1 + INTS[fEXPLORER_virtualCount]) % INTS[fEXPLORER_virtualCount]; // TODO: 'INTS[fEXPLORER_virtualCount]' or 'EXPLORER_ringBuffer.length'
+    let lastIndex = (INTS[fEXPLORER_ringBufferIndexZero] - 1 + INTS[fEXPLORER_virtualCount]) % INTS[fEXPLORER_virtualCount]; // TODO: 'INTS[fEXPLORER_virtualCount]' or 'EXPLORER_ringBuffer.length'
 
     let loopTotalIterations = upperBound - start;
 
@@ -160,7 +160,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositive
     let verticalStyleNumber = start * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
 
     if (!caseThreeOrigin && caseThreeOrigin !== 0) {
-        caseThreeOrigin = INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero];
+        caseThreeOrigin = INTS[fEXPLORER_ringBufferIndexZero];
     }
     if (caseThreeOrigin < 0 || caseThreeOrigin >= INTS[fEXPLORER_ringBuffer_length]) {
         throw new RangeError();
@@ -176,7 +176,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositive
 
         switch (onePositiveDiff_twoNegativeDiff_orThreeFullScreen) {
             case 1:
-                divIndex = (INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero] + loopCounter) % INTS[fEXPLORER_ringBuffer_length];
+                divIndex = (INTS[fEXPLORER_ringBufferIndexZero] + loopCounter) % INTS[fEXPLORER_ringBuffer_length];
                 break;
             case 2:
                 divIndex = (caseTwoDivIndex++) % INTS[fEXPLORER_ringBuffer_length];
@@ -241,10 +241,10 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositive
     }
 
     if (onePositiveDiff_twoNegativeDiff_orThreeFullScreen === 1) {
-        INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero] = (INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero] + loopCounter) % INTS[fEXPLORER_ringBuffer_length];
+        INTS[fEXPLORER_ringBufferIndexZero] = (INTS[fEXPLORER_ringBufferIndexZero] + loopCounter) % INTS[fEXPLORER_ringBuffer_length];
     }
     else if (onePositiveDiff_twoNegativeDiff_orThreeFullScreen === 2) {
-        INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero] = (lastIndex - (loopTotalIterations - 1) + INTS[fEXPLORER_ringBuffer_length]) % INTS[fEXPLORER_ringBuffer_length];
+        INTS[fEXPLORER_ringBufferIndexZero] = (lastIndex - (loopTotalIterations - 1) + INTS[fEXPLORER_ringBuffer_length]) % INTS[fEXPLORER_ringBuffer_length];
     }
 }
 
@@ -325,7 +325,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     */
     INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex] = INTS[fEXPLORER_ONSCROLLvirtualIndex];
     INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualCount] = INTS[fEXPLORER_ONSCROLLvirtualCount];
-    INTS[fEXPLORER_TreeViewDirector_scrollFetchData_ringBufferIndexZero] = INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero];
+    INTS[fEXPLORER_TreeViewDirector_scrollFetchData_ringBufferIndexZero] = INTS[fEXPLORER_ringBufferIndexZero];
 
     // This isn't the most optimal way of doing things.
     //
@@ -340,7 +340,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
     let ringBufferIndex_current = ((INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex])) - INTS[fEXPLORER_virtualIndex_ofScrollTop];
     if (ringBufferIndex_current >= INTS[fEXPLORER_ringBuffer_length] || ringBufferIndex_current < 0) ringBufferIndex_current = -1;
-    else ringBufferIndex_current = (ringBufferIndex_current + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
+    else ringBufferIndex_current = (ringBufferIndex_current + INTS[fEXPLORER_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
 
     for (let i = 0; i < itemListElement_childrenLength; i++) {
 
@@ -370,7 +370,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
     if (INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex] === INTS[fEXPLORER_ONSCROLLvirtualIndex] &&
         INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualCount] === INTS[fEXPLORER_ONSCROLLvirtualCount] &&
-        INTS[fEXPLORER_TreeViewDirector_scrollFetchData_ringBufferIndexZero] === INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) {
+        INTS[fEXPLORER_TreeViewDirector_scrollFetchData_ringBufferIndexZero] === INTS[fEXPLORER_ringBufferIndexZero]) {
 
         // This isn't the most optimal way of doing things.
         //
@@ -904,7 +904,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
     INTS[fEXPLORER_ONSCROLLvirtualCount] = INTS[fEXPLORER_virtualCount];
 
     INTS[fEXPLORER_virtualIndex_ofScrollTop] = Math.floor(INTS[fEXPLORER_lastReadNumber_scrollTop] / INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]);
-    INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero] = 0;
+    INTS[fEXPLORER_ringBufferIndexZero] = 0;
 
     let totalCount = EXPLORER_TreeViewDirector_tvd_getTotalCount();
 
@@ -990,7 +990,7 @@ function EXPLORER_TreeViewDirector_event_click(event) {
     // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
     let ringBufferIndexItem = ((indexItem)) - INTS[fEXPLORER_virtualIndex_ofScrollTop];
     if (ringBufferIndexItem >= INTS[fEXPLORER_ringBuffer_length] || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
-    else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
+    else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
 
     if (ringBufferIndexItem < 0) return;
     let divItem = EXPLORER_ringBuffer[ringBufferIndexItem];
@@ -1021,7 +1021,7 @@ function EXPLORER_TreeViewDirector_event_dblclick(event) {
     // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
     let ringBufferIndexItem = ((indexItem)) - INTS[fEXPLORER_virtualIndex_ofScrollTop];
     if (ringBufferIndexItem >= INTS[fEXPLORER_ringBuffer_length] || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
-    else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
+    else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
 
     if (ringBufferIndexItem < 0) return;
     let divItem = EXPLORER_ringBuffer[ringBufferIndexItem];
@@ -1034,7 +1034,7 @@ function EXPLORER_TreeViewDirector_event_dblclick(event) {
         // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
         let ringBufferIndexItem = ((INTS[fEXPLORER_cursorIndex])) - INTS[fEXPLORER_virtualIndex_ofScrollTop];
         if (ringBufferIndexItem >= INTS[fEXPLORER_ringBuffer_length] || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
-        else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
+        else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
 
         if (ringBufferIndexItem < 0) return;
         return EXPLORER_TreeViewDirector_tvd_ondblclick_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_cursorIndex]);
@@ -1064,7 +1064,7 @@ function EXPLORER_TreeViewDirector_event_contextmenu(event) {
         // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
         let ringBufferIndexItem = ((INTS[fEXPLORER_cursorIndex])) - INTS[fEXPLORER_virtualIndex_ofScrollTop];
         if (ringBufferIndexItem >= INTS[fEXPLORER_ringBuffer_length] || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
-        else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
+        else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
 
         if (ringBufferIndexItem < 0) return;
         return EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_cursorIndex], event_button, event_clientX, event_clientY, ringBufferIndexItem);
@@ -1082,7 +1082,7 @@ function EXPLORER_TreeViewDirector_event_contextmenu(event) {
         // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
         let ringBufferIndexItem = ((INTS[fEXPLORER_cursorIndex])) - INTS[fEXPLORER_virtualIndex_ofScrollTop];
         if (ringBufferIndexItem >= INTS[fEXPLORER_ringBuffer_length] || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
-        else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
+        else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
 
         if (ringBufferIndexItem < 0) return;
 
@@ -1130,7 +1130,7 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
                 // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
                 let ringBufferIndexItem = ((INTS[fEXPLORER_cursorIndex])) - INTS[fEXPLORER_virtualIndex_ofScrollTop];
                 if (ringBufferIndexItem >= INTS[fEXPLORER_ringBuffer_length] || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
-                else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
+                else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
 
                 if (ringBufferIndexItem < 0) return;
                 return EXPLORER_TreeViewDirector_tvd_arrowRight_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_cursorIndex]);
@@ -1148,7 +1148,7 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
                 // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
                 let ringBufferIndexItem = ((INTS[fEXPLORER_cursorIndex])) - INTS[fEXPLORER_virtualIndex_ofScrollTop];
                 if (ringBufferIndexItem >= INTS[fEXPLORER_ringBuffer_length] || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
-                else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
+                else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
 
                 if (ringBufferIndexItem < 0) return;
                 return EXPLORER_TreeViewDirector_tvd_arrowLeft_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_cursorIndex]);
@@ -1166,7 +1166,7 @@ function EXPLORER_TreeViewDirector_event_keydown(event) {
             // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
             let ringBufferIndexItem = ((INTS[fEXPLORER_cursorIndex])) - INTS[fEXPLORER_virtualIndex_ofScrollTop];
             if (ringBufferIndexItem >= INTS[fEXPLORER_ringBuffer_length] || ringBufferIndexItem < 0) ringBufferIndexItem = -1;
-            else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
+            else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
 
             if (ringBufferIndexItem < 0) return;
             return EXPLORER_TreeViewDirector_tvd_onkeydown_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_cursorIndex], event.key);

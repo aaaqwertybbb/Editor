@@ -723,7 +723,7 @@ const fEXPLORER_LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH = 159;
 
 const fEXPLORER_scrollEndDeadline = 160;
 
-const fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex = 161;
+const fEXPLORER_scrollFetchData_virtualIndex = 161;
 
 const fEXPLORER_TreeViewDirector_scrollFetchData_virtualCount = 162;
 

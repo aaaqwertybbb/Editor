@@ -323,7 +323,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     < You are 100% correct to worry about this. Never make your requestAnimationFrame loop async or use await inside it.
     < ...
     */
-    INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex] = INTS[fEXPLORER_ONSCROLLvirtualIndex];
+    INTS[fEXPLORER_scrollFetchData_virtualIndex] = INTS[fEXPLORER_ONSCROLLvirtualIndex];
     INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualCount] = INTS[fEXPLORER_ONSCROLLvirtualCount];
     INTS[fEXPLORER_TreeViewDirector_scrollFetchData_ringBufferIndexZero] = INTS[fEXPLORER_ringBufferIndexZero];
 
@@ -338,14 +338,14 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
     // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
     // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
-    let ringBufferIndex_current = ((INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex])) - INTS[fEXPLORER_virtualIndex_ofScrollTop];
+    let ringBufferIndex_current = ((INTS[fEXPLORER_scrollFetchData_virtualIndex])) - INTS[fEXPLORER_virtualIndex_ofScrollTop];
     if (ringBufferIndex_current >= INTS[fEXPLORER_ringBuffer_length] || ringBufferIndex_current < 0) ringBufferIndex_current = -1;
     else ringBufferIndex_current = (ringBufferIndex_current + INTS[fEXPLORER_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
 
     for (let i = 0; i < itemListElement_childrenLength; i++) {
 
         if (itemListElement_children[ringBufferIndex_current].className === 'eN') {
-            let indexItem = INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex] + i;
+            let indexItem = INTS[fEXPLORER_scrollFetchData_virtualIndex] + i;
             
             // The index of the actual dom element within EXPLORER_itemListElement.children
             // that is displaying the UI representation of what 'indexItem' points to.
@@ -368,7 +368,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
 };
 
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
-    if (INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex] === INTS[fEXPLORER_ONSCROLLvirtualIndex] &&
+    if (INTS[fEXPLORER_scrollFetchData_virtualIndex] === INTS[fEXPLORER_ONSCROLLvirtualIndex] &&
         INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualCount] === INTS[fEXPLORER_ONSCROLLvirtualCount] &&
         INTS[fEXPLORER_TreeViewDirector_scrollFetchData_ringBufferIndexZero] === INTS[fEXPLORER_ringBufferIndexZero]) {
 

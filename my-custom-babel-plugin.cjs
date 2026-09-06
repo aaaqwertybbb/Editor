@@ -540,7 +540,7 @@ module.exports = function (babel) {
     "fEXPLORER_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING",
     "fEXPLORER_LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH",
     "fEXPLORER_scrollEndDeadline",
-    "fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex",
+    "fEXPLORER_scrollFetchData_virtualIndex",
     "fEXPLORER_TreeViewDirector_scrollFetchData_virtualCount",
     "fEXPLORER_TreeViewDirector_scrollFetchData_ringBufferIndexZero",
     "fEXPLORER_pullData_array_count",

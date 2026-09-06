@@ -753,7 +753,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_SetItems() {
  * @param {*} itemHeightNumber '50'; cursorTop = currentIndex * itemHeightNumber;
  * @param {*} itemHeightStyleAttributeValueString '50px'; div.style.height = itemHeightStyleAttributeValueString;
  */
-function EXPLORER_TreeViewDirector_setItems(itemHeightNumber, itemHeightStyleAttributeValueString) {
+function EXPLORER_setItems(itemHeightNumber, itemHeightStyleAttributeValueString) {
     INTS[fEXPLORER_SET_ITEMS_itemHeightNumber] = itemHeightNumber;
     EXPLORER_SET_ITEMS_itemHeightStyleAttributeValueString = itemHeightStyleAttributeValueString;
     EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_SetItems);
@@ -1446,7 +1446,7 @@ async function EXPLORER_pickFolderOrWorkspaceButton_MenuOnClick(indexClicked, el
                 EXPLORER_PickFolder.title = chosenDirectory;
     
                 EXPLORER_setChosenDirectory(chosenDirectory, chooseDirectoryResult.id);
-                EXPLORER_TreeViewDirector_setItems(INTS[fAPP_lineHeight], INTS[fAPP_lineHeight] + 'px');
+                EXPLORER_setItems(INTS[fAPP_lineHeight], INTS[fAPP_lineHeight] + 'px');
                 EXPLORER_TreeViewDirector_draw_create_request(EXPLORER_Element, null);
             }
             break;
@@ -1465,7 +1465,7 @@ async function EXPLORER_pickFolderOrWorkspaceButton_MenuOnClick(indexClicked, el
                 pickWorkspaceButton.title = chooseWorkspaceResult.workspaceFileAbsolutePath;
     
                 EXPLORER_setChosenWorkspace(chooseWorkspaceResult);
-                EXPLORER_TreeViewDirector_setItems(INTS[fAPP_lineHeight], INTS[fAPP_lineHeight] + 'px');
+                EXPLORER_setItems(INTS[fAPP_lineHeight], INTS[fAPP_lineHeight] + 'px');
                 EXPLORER_TreeViewDirector_draw_create_request(EXPLORER_Element, null);
             }
             break;

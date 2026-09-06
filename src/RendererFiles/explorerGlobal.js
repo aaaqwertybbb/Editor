@@ -504,7 +504,7 @@ function EXPLORER_oncontextmenu(divItem, indexItem, event_button, event_clientX,
  * ...thus, you should consider checking the x position of the event against the x position of the nodeElement.children[0].
  * @param {*} event 
  */
-async function EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(divItem, indexItem) {
+async function EXPLORER_expandCollapseIconWasClicked(divItem, indexItem) {
     // TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
     EXPLORER_treeViewNodes.getElementAt(indexItem);
     let key = INTS[fTreeView_pooledNode_key];
@@ -575,7 +575,7 @@ function EXPLORER_arrowRight(divItem, indexItem) {
         }
     }
     else if (nodeKind === TreeViewNodeKind_isExpandable_NOTisExpanded) {
-        return EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(divItem, indexItem);
+        return EXPLORER_expandCollapseIconWasClicked(divItem, indexItem);
     }
 
     return Promise.resolve();
@@ -589,7 +589,7 @@ function EXPLORER_arrowLeft(divItem, indexItem) {
     let nodeKind = BYTES[byteTreeView_pooledNode_nodeKind];
     
     if (nodeKind === TreeViewNodeKind_isExpandable_isExpanded) {
-        return EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(divItem, indexItem);
+        return EXPLORER_expandCollapseIconWasClicked(divItem, indexItem);
     }
     else {
         let distanceToParent = 0;
@@ -996,7 +996,7 @@ function EXPLORER_event_click(event) {
     let divItem = EXPLORER_ringBuffer[ringBufferIndexItem];
 
     if (event_target === divItem.children[0]) {
-        return EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(divItem, indexItem);
+        return EXPLORER_expandCollapseIconWasClicked(divItem, indexItem);
     }
     else {
         EXPLORER_state_cursor_setIndex(indexItem);

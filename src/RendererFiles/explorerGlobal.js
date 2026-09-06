@@ -714,7 +714,7 @@ function EXPLORER_TreeViewDirector_renderDo(timestamp) {
                 EXPLORER_render_do_Scroll(timestamp);
                 break;
             case TREEVIEWrenderKind_Scroll_PullDataDrawResult:
-                EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll_PullDataDrawResult();
+                EXPLORER_render_do_Scroll_PullDataDrawResult();
                 break;
             case TREEVIEWrenderKind_SetItems:
                 EXPLORER_render_do_SetItems();
@@ -884,7 +884,7 @@ function EXPLORER_render_do_Scroll(timestamp) {
     }
 }
 
-function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll_PullDataDrawResult() {
+function EXPLORER_render_do_Scroll_PullDataDrawResult() {
     if (EXPLORER_drawItem_BATCH_PullDataDrawResult) {
         EXPLORER_drawItem_BATCH_PullDataDrawResult();
     }

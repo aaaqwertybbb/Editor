@@ -581,7 +581,7 @@ function EXPLORER_arrowRight(divItem, indexItem) {
     return Promise.resolve();
 }
 
-function EXPLORER_TreeViewDirector_tvd_arrowLeft_async(divItem, indexItem) {
+function EXPLORER_arrowLeft(divItem, indexItem) {
     // TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
     EXPLORER_treeViewNodes.getElementAt(indexItem);
     let key = INTS[fTreeView_pooledNode_key];
@@ -1152,7 +1152,7 @@ function EXPLORER_event_keydown(event) {
                 else ringBufferIndexItem = (ringBufferIndexItem + INTS[fEXPLORER_ringBufferIndexZero]) % INTS[fEXPLORER_virtualCount];
 
                 if (ringBufferIndexItem < 0) return;
-                return EXPLORER_TreeViewDirector_tvd_arrowLeft_async(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_cursorIndex]);
+                return EXPLORER_arrowLeft(EXPLORER_ringBuffer[ringBufferIndexItem], INTS[fEXPLORER_cursorIndex]);
             }
             return;
         case ' ':

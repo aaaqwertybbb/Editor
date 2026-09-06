@@ -8714,4 +8714,10 @@ If nothing is on sale it is like $17
 I stockpile it so that if I go in on any given day, I'm not eating the chicken I buy that day
 so then if they don't have it some day then I don't miss a day
 
+Then 1 extra leaves half the amount for a day but that's the
+"oh sh*t" serving where it means 2 days in a row they didn't have it
+so I gotta try once more today at the same store
+and if they still don't have it that means I gotta drive around and find somewhere that does.
+But this experimentally speaking never happens but it is just my thought process for guaranteeing consistency.
+
 */

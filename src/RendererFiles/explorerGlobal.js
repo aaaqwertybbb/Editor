@@ -740,7 +740,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_SetItems() {
     EXPLORER_virtualizationElement.style.height = 1 + 'px';
     EXPLORER_TreeViewDirector_state_cursor_setIndex(0);
     
-    INTS[fEXPLORER_itemHeightNumber] = INTS[fEXPLORER_TreeViewDirector_SET_ITEMS_itemHeightNumber];
+    INTS[fEXPLORER_itemHeightNumber] = INTS[fEXPLORER_SET_ITEMS_itemHeightNumber];
     EXPLORER_itemHeightStyleAttributeValueString = EXPLORER_SET_ITEMS_itemHeightStyleAttributeValueString;
 
     EXPLORER_cursorElement.style.height = EXPLORER_itemHeightStyleAttributeValueString;
@@ -754,7 +754,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_SetItems() {
  * @param {*} itemHeightStyleAttributeValueString '50px'; div.style.height = itemHeightStyleAttributeValueString;
  */
 function EXPLORER_TreeViewDirector_setItems(itemHeightNumber, itemHeightStyleAttributeValueString) {
-    INTS[fEXPLORER_TreeViewDirector_SET_ITEMS_itemHeightNumber] = itemHeightNumber;
+    INTS[fEXPLORER_SET_ITEMS_itemHeightNumber] = itemHeightNumber;
     EXPLORER_SET_ITEMS_itemHeightStyleAttributeValueString = itemHeightStyleAttributeValueString;
     EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_SetItems);
 }

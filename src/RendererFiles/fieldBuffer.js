@@ -715,7 +715,7 @@ const fEXPLORER_caseThreeOrigin = 155;
 const fEXPLORER_itemHeightNumber = 156;
 INTS[fEXPLORER_itemHeightNumber] = 20;
 
-const fEXPLORER_TreeViewDirector_SET_ITEMS_itemHeightNumber = 157;
+const fEXPLORER_SET_ITEMS_itemHeightNumber = 157;
 
 const fEXPLORER_TreeViewDirector_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = 158;
 

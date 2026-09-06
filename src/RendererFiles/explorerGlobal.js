@@ -115,10 +115,10 @@ function EXPLORER_setChosenWorkspace(chooseWorkspaceResult) {
     EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_itemHeightTotal] + 'px';
 }
 
-function EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck(timestamp) {
+function EXPLORER_render_do_ScrollTrailingEdgeCheck(timestamp) {
     // If the scroll deadline hasn't been met yet, keep checking on the next frame
     if (timestamp < INTS[fEXPLORER_scrollEndDeadline]) {
-        requestAnimationFrame(EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck);
+        requestAnimationFrame(EXPLORER_render_do_ScrollTrailingEdgeCheck);
         return;
     }
 
@@ -144,7 +144,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositive
 
     if (!BYTES[byteEXPLORER_isCheckingTrailingEdge]) {
         BYTES[byteEXPLORER_isCheckingTrailingEdge] = 1;
-        requestAnimationFrame(EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck);
+        requestAnimationFrame(EXPLORER_render_do_ScrollTrailingEdgeCheck);
     }
 
     let upperBound = start + length;

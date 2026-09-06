@@ -1199,7 +1199,7 @@ function EXPLORER_TreeViewDirector_event_scroll() {
 
     // this.event_scroll();
 
-    INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollLeft] = EXPLORER_rootElement.scrollLeft;
+    INTS[fEXPLORER_lastReadNumber_scrollLeft] = EXPLORER_rootElement.scrollLeft;
     INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop] = EXPLORER_rootElement.scrollTop;
     EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Scroll);
 }

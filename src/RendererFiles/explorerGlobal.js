@@ -1300,15 +1300,15 @@ function EXPLORER_TreeViewDirector_state_cursor_validateIndex(indexItem) {
  */
 function EXPLORER_TreeViewDirector_measureBaseElement() {
     INTS[fEXPLORER_lastReadNumber_offsetWidth] = Math.floor(EXPLORER_rootElement.offsetWidth);
-    INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight] = Math.floor(EXPLORER_rootElement.offsetHeight);
+    INTS[fEXPLORER_lastReadNumber_offsetHeight] = Math.floor(EXPLORER_rootElement.offsetHeight);
     
     EXPLORER_rootElement.style.width = INTS[fEXPLORER_lastReadNumber_offsetWidth] + 'px';
-    EXPLORER_rootElement.style.height = INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight] + 'px';
+    EXPLORER_rootElement.style.height = INTS[fEXPLORER_lastReadNumber_offsetHeight] + 'px';
 
     EXPLORER_rootElement.style.contain = 'layout';
 
     INTS[fEXPLORER_lastReadNumber_offsetWidth] = EXPLORER_rootElement.offsetWidth;
-    INTS[fEXPLORER_TreeViewDirector_lastReadNumber_offsetHeight] = EXPLORER_rootElement.offsetHeight;
+    INTS[fEXPLORER_lastReadNumber_offsetHeight] = EXPLORER_rootElement.offsetHeight;
 }
 
 /*

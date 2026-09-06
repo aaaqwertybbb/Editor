@@ -349,6 +349,7 @@ class ListComponent {
             this.drawItemAction(divItem, this.virtualIndex_ofScrollTop + i);
         }
         this.LIST_ringBuffer = Array.from(this.itemListElement.children);
+        this.LIST_ringBufferLength = this.LIST_ringBuffer.length;
     }
 
     event_click(event) {

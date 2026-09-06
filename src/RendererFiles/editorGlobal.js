@@ -8682,4 +8682,33 @@ I was thinking to myself ven vill you steal my girl
 
 a circular buffer is how you implement optimized enter key events
 
+=====
+
+each morning I go to the store and buy:
+2 lbs of 98% fat free ground chicken
+8 nutrigrain strawberry bars
+
+As for the chicken I always have 5 lbs in the fridge stockpiled.
+But for example
+right now since I just got home I have 5 lbs in the fridge.
+
+Tonight I'll eat 1 lb so that goes down to 4
+
+then tomorrow morning I'll eat 1 lb that goes down to 3.
+
+Then I go to the store I buy 2 lbs
+I go back up to 5 lbs
+and the 2 new ones (short of the dates being mixed up)
+I'll put the 2 new ones at the bottom by picking up
+the stack of 3 and putting the new 2 at the bottom then placing down
+the stack of 3 on top of it.
+
+Today was $12.77 for:
+- 2 lbs of 98% fat free ground chicken
+- 8 nutrigrain strawberry bars
+
+because EVERYTHING was on sale today
+
+If nothing is on sale it is like $17
+
 */

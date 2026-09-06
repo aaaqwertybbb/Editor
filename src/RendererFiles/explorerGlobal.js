@@ -324,7 +324,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     < ...
     */
     INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex] = INTS[fEXPLORER_ONSCROLLvirtualIndex];
-    INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualCount] = INTS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount];
+    INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualCount] = INTS[fEXPLORER_ONSCROLLvirtualCount];
     INTS[fEXPLORER_TreeViewDirector_scrollFetchData_ringBufferIndexZero] = INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero];
 
     // This isn't the most optimal way of doing things.
@@ -369,7 +369,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
 
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
     if (INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex] === INTS[fEXPLORER_ONSCROLLvirtualIndex] &&
-        INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualCount] === INTS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount] &&
+        INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualCount] === INTS[fEXPLORER_ONSCROLLvirtualCount] &&
         INTS[fEXPLORER_TreeViewDirector_scrollFetchData_ringBufferIndexZero] === INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) {
 
         // This isn't the most optimal way of doing things.
@@ -848,7 +848,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp) {
         INTS[fEXPLORER_virtualIndex_ofScrollTop] = Math.floor(INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop] / INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]);
 
         if (INTS[fEXPLORER_ONSCROLLvirtualIndex] === INTS[fEXPLORER_virtualIndex_ofScrollTop] &&
-            INTS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount] === INTS[fEXPLORER_virtualCount]) {
+            INTS[fEXPLORER_ONSCROLLvirtualCount] === INTS[fEXPLORER_virtualCount]) {
                 return;
         }
 
@@ -859,7 +859,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp) {
 
         INTS[fEXPLORER_ONSCROLLvirtualIndex] = INTS[fEXPLORER_virtualIndex_ofScrollTop];
 
-        if (INTS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount] === INTS[fEXPLORER_virtualCount] &&
+        if (INTS[fEXPLORER_ONSCROLLvirtualCount] === INTS[fEXPLORER_virtualCount] &&
             INTS[fEXPLORER_ringBuffer_length] === INTS[fEXPLORER_virtualCount]) {
 
             let diff = currVli - prevVli;
@@ -867,7 +867,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp) {
             let totalCount = EXPLORER_TreeViewDirector_tvd_getTotalCount();
 
             if (diff > 0 && diff < INTS[fEXPLORER_virtualCount]) {
-                EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(prevVli + INTS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount], diff, 1, undefined, timestamp);
+                EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(prevVli + INTS[fEXPLORER_ONSCROLLvirtualCount], diff, 1, undefined, timestamp);
             }
             else if (diff < 0 && (diff *= -1) < INTS[fEXPLORER_virtualCount]) {
                 EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(currVli, diff, 2, undefined, timestamp);
@@ -901,7 +901,7 @@ function EXPLORER_TreeViewDirector_draw_BATCH_request(start, length, onePositive
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
     EXPLORER_TreeViewDirector_ensure_boundingClientRect();
 
-    INTS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount] = INTS[fEXPLORER_virtualCount];
+    INTS[fEXPLORER_ONSCROLLvirtualCount] = INTS[fEXPLORER_virtualCount];
 
     INTS[fEXPLORER_virtualIndex_ofScrollTop] = Math.floor(INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop] / INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]);
     INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero] = 0;

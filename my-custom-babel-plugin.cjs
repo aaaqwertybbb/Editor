@@ -526,7 +526,7 @@ module.exports = function (babel) {
     "fEXPLORER_virtualIndex_ofScrollTop",
     "fEXPLORER_virtualCount",
     "fEXPLORER_ONSCROLLvirtualIndex",
-    "fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount",
+    "fEXPLORER_ONSCROLLvirtualCount",
     "fEXPLORER_TreeViewDirector_lastReadNumber_scrollLeft",
     "fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop",
     "fEXPLORER_TreeViewDirector_ringBufferIndexZero",

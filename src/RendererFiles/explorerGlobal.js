@@ -533,7 +533,7 @@ async function EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(
             EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_itemHeightTotal] + 'px';
         }
 
-        EXPLORER_TreeViewDirector_draw_render_fullReset_request();
+        EXPLORER_draw_render_fullReset_request();
     }
     else if (nodeKind === TreeViewNodeKind_isExpandable_isExpanded) {
 
@@ -554,7 +554,7 @@ async function EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(
             EXPLORER_treeViewNodes.removeAt(indexItem + 1, countChildren);
             INTS[fEXPLORER_itemHeightTotal] = EXPLORER_getTotalCount() * INTS[fEXPLORER_itemHeightNumber];
             EXPLORER_virtualizationElement.style.height = INTS[fEXPLORER_itemHeightTotal] + 'px';
-            EXPLORER_TreeViewDirector_draw_render_fullReset_request();
+            EXPLORER_draw_render_fullReset_request();
         }
     }
 }
@@ -962,7 +962,7 @@ function EXPLORER_render_do_FullReset(timestamp) {
  * ...But it is a bit more complicated if you want to involve a change to totalCount, you'd need to force the final 'else' case
  * so it is easier to just invoke this directly when you change totalCount?
  */
-function EXPLORER_TreeViewDirector_draw_render_fullReset_request() {
+function EXPLORER_draw_render_fullReset_request() {
     EXPLORER_render_request(TREEVIEWrenderKind_FullReset);
 }
 

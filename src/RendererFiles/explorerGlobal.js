@@ -823,7 +823,7 @@ function EXPLORER_TreeViewDirector_draw_delete() {
 }
 
 function EXPLORER_TreeViewDirector_draw_addEvents() {
-    EXPLORER_rootElement.addEventListener('click', EXPLORER_TreeViewDirector_event_click); // this.event_click(event.clientY, event.target);
+    EXPLORER_rootElement.addEventListener('click', EXPLORER_event_click); // this.event_click(event.clientY, event.target);
     EXPLORER_rootElement.addEventListener('keydown', EXPLORER_event_keydown); // this.event_keydown(event);
     EXPLORER_rootElement.addEventListener('scroll', EXPLORER_TreeViewDirector_event_scroll, { passive: true }); // this.event_scroll();
     EXPLORER_rootElement.addEventListener('dblclick', EXPLORER_TreeViewDirector_event_dblclick); // this.event_dblclick(event.clientY, event.target);
@@ -832,7 +832,7 @@ function EXPLORER_TreeViewDirector_draw_addEvents() {
 }
 
 function EXPLORER_TreeViewDirector_draw_removeEvents() {
-    EXPLORER_rootElement.removeEventListener('click', EXPLORER_TreeViewDirector_event_click);
+    EXPLORER_rootElement.removeEventListener('click', EXPLORER_event_click);
     EXPLORER_rootElement.removeEventListener('keydown', EXPLORER_event_keydown);
     EXPLORER_rootElement.removeEventListener('scroll', EXPLORER_TreeViewDirector_event_scroll, { passive: true });
     EXPLORER_rootElement.addEventListener('dblclick', EXPLORER_TreeViewDirector_event_dblclick);
@@ -972,7 +972,7 @@ function EXPLORER_TreeViewDirector_draw_render_fullReset_request() {
  * ...thus, you should consider checking the x position of the event against the x position of the nodeElement.children[0].
  * @param {*} event 
  */
-function EXPLORER_TreeViewDirector_event_click(event) {
+function EXPLORER_event_click(event) {
 
      // this.event_click(event.clientY, event.target);
      let event_clientY = event.clientY;

@@ -569,7 +569,7 @@ function EXPLORER_arrowRight(divItem, indexItem) {
     if (nodeKind === TreeViewNodeKind_isExpandable_isExpanded) {
         if (indexItem + 1 < EXPLORER_treeViewNodes.count_abstract) {
             if (EXPLORER_treeViewNodes.getDepth(indexItem + 1) > depth) {
-                EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+                EXPLORER_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
                     INTS[fEXPLORER_cursorIndex] + 1));
             }
         }
@@ -604,7 +604,7 @@ function EXPLORER_TreeViewDirector_tvd_arrowLeft_async(divItem, indexItem) {
             }
         }
         if (distanceToParent > 0) {
-            EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+            EXPLORER_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
                 indexItem - distanceToParent));
         }
     }
@@ -738,7 +738,7 @@ function EXPLORER_TreeViewDirector_renderDo(timestamp) {
 function EXPLORER_render_do_SetItems() {
     EXPLORER_itemListElement.innerHTML = '';
     EXPLORER_virtualizationElement.style.height = 1 + 'px';
-    EXPLORER_TreeViewDirector_state_cursor_setIndex(0);
+    EXPLORER_state_cursor_setIndex(0);
     
     INTS[fEXPLORER_itemHeightNumber] = INTS[fEXPLORER_SET_ITEMS_itemHeightNumber];
     EXPLORER_itemHeightStyleAttributeValueString = EXPLORER_SET_ITEMS_itemHeightStyleAttributeValueString;
@@ -999,7 +999,7 @@ function EXPLORER_event_click(event) {
         return EXPLORER_TreeViewDirector_tvd_expandCollapseIconWasClicked_async(divItem, indexItem);
     }
     else {
-        EXPLORER_TreeViewDirector_state_cursor_setIndex(indexItem);
+        EXPLORER_state_cursor_setIndex(indexItem);
     }
 }
 
@@ -1053,7 +1053,7 @@ function EXPLORER_event_contextmenu(event) {
     if (event_button === 2) {
         let rY = event_clientY - INTS[fEXPLORER_boundingClientRect_top] + INTS[fEXPLORER_lastReadNumber_scrollTop];
 
-        EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+        EXPLORER_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
             Math.floor(rY / INTS[fEXPLORER_itemHeightNumber])));
 
         // TODO: you need to move this above the divItem assignment and do checks earlier... double check all other uses
@@ -1074,7 +1074,7 @@ function EXPLORER_event_contextmenu(event) {
             return;
         }
 
-        EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+        EXPLORER_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
             INTS[fEXPLORER_cursorIndex]));
 
         // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_ringBufferIndexItem'...
@@ -1103,7 +1103,7 @@ function EXPLORER_event_keydown(event) {
                 EXPLORER_rootElement.scrollBy(0, INTS[fEXPLORER_itemHeightNumber]);
             }
             else {
-                EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+                EXPLORER_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
                     INTS[fEXPLORER_cursorIndex] + 1));
             }
             return;
@@ -1113,14 +1113,14 @@ function EXPLORER_event_keydown(event) {
                 EXPLORER_rootElement.scrollBy(0, -1 * INTS[fEXPLORER_itemHeightNumber]);
             }
             else {
-                EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+                EXPLORER_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
                     INTS[fEXPLORER_cursorIndex] - 1));
             }
             return;
         case 'ArrowRight':
             if (!event.ctrlKey) { // If holding ctrl, don't preventDefault so the user can scroll horizontally?
                 event.preventDefault();
-                EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+                EXPLORER_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
                     INTS[fEXPLORER_cursorIndex]));
 
                 // TODO: 'ArrowRight' when the cursor is on a valid item but isn't part of the virtualization result.
@@ -1140,7 +1140,7 @@ function EXPLORER_event_keydown(event) {
         case 'ArrowLeft':
             if (!event.ctrlKey) { // If holding ctrl, don't preventDefault so the user can scroll horizontally?
                 event.preventDefault();
-                EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+                EXPLORER_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
                     INTS[fEXPLORER_cursorIndex]));
                 
                 // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_ringBufferIndexItem'...
@@ -1158,7 +1158,7 @@ function EXPLORER_event_keydown(event) {
         case ' ':
         case 'Enter':
             event.preventDefault();
-            EXPLORER_TreeViewDirector_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
+            EXPLORER_state_cursor_setIndex(EXPLORER_TreeViewDirector_state_cursor_validateIndex(
                 INTS[fEXPLORER_cursorIndex]));
             
             // TODO: This is an awkward explicit inlining of 'EXPLORER_TreeViewDirector_indexItemTo_ringBufferIndexItem'...
@@ -1245,7 +1245,7 @@ function EXPLORER_render_do_Cursor(index) {
  * 
  * @param {*} index 
  */
-function EXPLORER_TreeViewDirector_state_cursor_setIndex(index) {
+function EXPLORER_state_cursor_setIndex(index) {
     if (INTS[fEXPLORER_cursorIndex] === index) return;
     INTS[fEXPLORER_cursorIndex] = index;
     EXPLORER_render_request(TREEVIEWrenderKind_Cursor);

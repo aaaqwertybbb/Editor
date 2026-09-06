@@ -54,7 +54,7 @@ let EXPLORER_draw_create_request_insertBeforeThisChild = null;
 
 let EXPLORER_itemHeightStyleAttributeValueString = '20px';
 
-let EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightStyleAttributeValueString = '';
+let EXPLORER_SET_ITEMS_itemHeightStyleAttributeValueString = '';
 
 /////
 ///// end treeViewComponent.js
@@ -741,7 +741,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_SetItems() {
     EXPLORER_TreeViewDirector_state_cursor_setIndex(0);
     
     INTS[fEXPLORER_TreeViewDirector_itemHeightNumber] = INTS[fEXPLORER_TreeViewDirector_SET_ITEMS_itemHeightNumber];
-    EXPLORER_itemHeightStyleAttributeValueString = EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightStyleAttributeValueString;
+    EXPLORER_itemHeightStyleAttributeValueString = EXPLORER_SET_ITEMS_itemHeightStyleAttributeValueString;
 
     EXPLORER_cursorElement.style.height = EXPLORER_itemHeightStyleAttributeValueString;
     INTS[fEXPLORER_TreeViewDirector_itemHeightTotal] = EXPLORER_TreeViewDirector_tvd_getTotalCount() * INTS[fEXPLORER_TreeViewDirector_itemHeightNumber];
@@ -755,7 +755,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_SetItems() {
  */
 function EXPLORER_TreeViewDirector_setItems(itemHeightNumber, itemHeightStyleAttributeValueString) {
     INTS[fEXPLORER_TreeViewDirector_SET_ITEMS_itemHeightNumber] = itemHeightNumber;
-    EXPLORER_TreeViewDirector_SET_ITEMS_itemHeightStyleAttributeValueString = itemHeightStyleAttributeValueString;
+    EXPLORER_SET_ITEMS_itemHeightStyleAttributeValueString = itemHeightStyleAttributeValueString;
     EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_SetItems);
 }
 

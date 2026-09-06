@@ -541,7 +541,7 @@ module.exports = function (babel) {
     "fEXPLORER_LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH",
     "fEXPLORER_scrollEndDeadline",
     "fEXPLORER_scrollFetchData_virtualIndex",
-    "fEXPLORER_TreeViewDirector_scrollFetchData_virtualCount",
+    "fEXPLORER_scrollFetchData_virtualCount",
     "fEXPLORER_TreeViewDirector_scrollFetchData_ringBufferIndexZero",
     "fEXPLORER_pullData_array_count",
     "fEXPLORER_pullData_result_count",

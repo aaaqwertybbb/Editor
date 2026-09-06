@@ -725,7 +725,7 @@ const fEXPLORER_scrollEndDeadline = 160;
 
 const fEXPLORER_scrollFetchData_virtualIndex = 161;
 
-const fEXPLORER_TreeViewDirector_scrollFetchData_virtualCount = 162;
+const fEXPLORER_scrollFetchData_virtualCount = 162;
 
 const fEXPLORER_TreeViewDirector_scrollFetchData_ringBufferIndexZero = 163;
 

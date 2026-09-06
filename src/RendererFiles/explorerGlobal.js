@@ -708,7 +708,7 @@ function EXPLORER_TreeViewDirector_renderDo(timestamp) {
                 EXPLORER_render_do_Create(timestamp);
                 break;
             case TREEVIEWrenderKind_Batch:
-                EXPLORER_TreeViewDirector_TREEVIEW_render_do_Batch(timestamp);
+                EXPLORER_render_do_Batch(timestamp);
                 break;
             case TREEVIEWrenderKind_Scroll:
                 EXPLORER_render_do_Scroll(timestamp);
@@ -804,7 +804,7 @@ function EXPLORER_draw_create_request(parentElement, insertBeforeThisChild) {
     EXPLORER_render_request(TREEVIEWrenderKind_Create);
 }
 
-function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Batch(timestamp) {
+function EXPLORER_render_do_Batch(timestamp) {
     EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(INTS[fEXPLORER_start], INTS[fEXPLORER_length], INTS[fEXPLORER_onePositiveDiff_twoNegativeDiff_orThreeFullScreen], INTS[fEXPLORER_caseThreeOrigin], timestamp);
 }
 

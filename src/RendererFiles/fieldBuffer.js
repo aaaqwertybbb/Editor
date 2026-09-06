@@ -709,7 +709,7 @@ const fEXPLORER_length = 153;
 
 const fEXPLORER_onePositiveDiff_twoNegativeDiff_orThreeFullScreen = 154;
 
-const fEXPLORER_TreeViewDirector_caseThreeOrigin = 155;
+const fEXPLORER_caseThreeOrigin = 155;
 
 /** TODO: what height should this start at? applicationRendererRoot.ts will eventually run initialization logic that actually does the measuring. */
 const fEXPLORER_TreeViewDirector_itemHeightNumber = 156;

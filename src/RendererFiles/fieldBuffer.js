@@ -690,8 +690,8 @@ const fEXPLORER_cursorIndex = 143;
 const fEXPLORER_virtualIndex_ofScrollTop = 144;
 
 /** Hacky: Must initialize to a number other than 0 or else nothing renders. */
-const fEXPLORER_TreeViewDirector_virtualCount = 145
-INTS[fEXPLORER_TreeViewDirector_virtualCount] = 1;
+const fEXPLORER_virtualCount = 145
+INTS[fEXPLORER_virtualCount] = 1;
 
 const fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex = 146;
 const fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount = 147;

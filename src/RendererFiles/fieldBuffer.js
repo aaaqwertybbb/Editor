@@ -687,7 +687,7 @@ const fEXPLORER_itemHeightTotal = 142;
 /** Consider the existence of such methods as 'state_cursor_setIndex' before mutating state directly */
 const fEXPLORER_cursorIndex = 143;
 
-const fEXPLORER_TreeViewDirector_virtualIndex_ofScrollTop = 144;
+const fEXPLORER_virtualIndex_ofScrollTop = 144;
 
 /** Hacky: Must initialize to a number other than 0 or else nothing renders. */
 const fEXPLORER_TreeViewDirector_virtualCount = 145

@@ -127,7 +127,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck(ti
 }
 
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_trailingEdge() {
-    BYTES[byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge] = 0; // Reset the flag here
+    BYTES[byteEXPLORER_isCheckingTrailingEdge] = 0; // Reset the flag here
     if (!BYTES[byteEXPLORER_TreeViewDirector_scrollIsFetchingData]) {
         BYTES[byteEXPLORER_TreeViewDirector_scrollIsFetchingData] = 1;
         EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData(); // no await
@@ -142,8 +142,8 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositive
     // TODO: I'm putting this in treeViewComponent.js as well for now when diff === 0:
     INTS[fEXPLORER_scrollEndDeadline] = timestamp + 300;
 
-    if (!BYTES[byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge]) {
-        BYTES[byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge] = 1;
+    if (!BYTES[byteEXPLORER_isCheckingTrailingEdge]) {
+        BYTES[byteEXPLORER_isCheckingTrailingEdge] = 1;
         requestAnimationFrame(EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck);
     }
 

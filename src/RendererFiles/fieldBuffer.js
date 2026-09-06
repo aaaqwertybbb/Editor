@@ -191,7 +191,7 @@ BYTES[byteEXPLORER_show] = 1;
 
 const byteEXPLORER_isRenderPending = 45;
 
-const byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge = 46;
+const byteEXPLORER_isCheckingTrailingEdge = 46;
 
 const byteEXPLORER_TreeViewDirector_scrollIsFetchingData = 47;
 

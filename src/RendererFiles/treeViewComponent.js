@@ -12,6 +12,14 @@
 // ...the initial declaration of 'let ringBufferIndex' is assigned what I refer to as the "virtualIndex"
 // but 'ringBufferIndex' is the output of the function, and a 'virtualIndex' variable is only needed temporarily
 // for the calculation. So by storing the 'virtualIndex' in 'ringBufferIndex' at the start I skip a variable declaration.
+|
+(retrospective comment): I see what I was doing.
+It isn't just the single variable declaration.
+You can't do the modulo logic UNLESS the virtual index is valid (that the line of text is actually being drawn in the UI).
+BUT I think this was an assumption on my end.
+I wonder if the modulo math would work out such that I could...
+well I guess I'd need to add an if to verify that the modulo math went correctly
+thus the same thing happens but now I can't just re-use that I'm virtual index first then you're safe thus the if else part...
 */
 
 const TREEVIEWrenderKind_None = 0;

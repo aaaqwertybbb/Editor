@@ -890,7 +890,7 @@ function EXPLORER_render_do_Scroll_PullDataDrawResult() {
     }
 }
 
-function EXPLORER_TreeViewDirector_draw_BATCH_request(start, length, onePositiveDiff_twoNegativeDiff_orThreeFullScreen, caseThreeOrigin) {
+function EXPLORER_draw_BATCH_request(start, length, onePositiveDiff_twoNegativeDiff_orThreeFullScreen, caseThreeOrigin) {
     INTS[fEXPLORER_start] = start;
     INTS[fEXPLORER_length] = length;
     INTS[fEXPLORER_onePositiveDiff_twoNegativeDiff_orThreeFullScreen] = onePositiveDiff_twoNegativeDiff_orThreeFullScreen;
@@ -1658,7 +1658,7 @@ async function EXPLORER_MenuOnClick(indexClicked, elementClicked) {
                                 // TODO: fine grained redrawing of only the nodes that are:
                                 // - part of the virtualization result
                                 // - and have changed in some way that necessitates their UI be redrawn
-                                EXPLORER_TreeViewDirector_draw_BATCH_request(INTS[fEXPLORER_virtualIndex_ofScrollTop], INTS[fEXPLORER_virtualCount], 3);
+                                EXPLORER_draw_BATCH_request(INTS[fEXPLORER_virtualIndex_ofScrollTop], INTS[fEXPLORER_virtualCount], 3);
                             }
                         }
                     }
@@ -1823,7 +1823,7 @@ async function NewFile_Directory_WIDGET_InputText_callback(result) {
                 // TODO: fine grained redrawing of only the nodes that are:
                 // - part of the virtualization result
                 // - and have changed in some way that necessitates their UI be redrawn
-                EXPLORER_TreeViewDirector_draw_BATCH_request(INTS[fEXPLORER_virtualIndex_ofScrollTop], INTS[fEXPLORER_virtualCount], 3);
+                EXPLORER_draw_BATCH_request(INTS[fEXPLORER_virtualIndex_ofScrollTop], INTS[fEXPLORER_virtualCount], 3);
             }
         }
     }
@@ -1905,7 +1905,7 @@ async function NewFile_File_WIDGET_InputText_callback(result) {
                 // TODO: fine grained redrawing of only the nodes that are:
                 // - part of the virtualization result
                 // - and have changed in some way that necessitates their UI be redrawn
-                EXPLORER_TreeViewDirector_draw_BATCH_request(INTS[fEXPLORER_virtualIndex_ofScrollTop], INTS[fEXPLORER_virtualCount], 3);
+                EXPLORER_draw_BATCH_request(INTS[fEXPLORER_virtualIndex_ofScrollTop], INTS[fEXPLORER_virtualCount], 3);
             }
         }
     }
@@ -1947,7 +1947,7 @@ async function DeleteFile_Directory_YesCancel_callback(result) {
         // TODO: fine grained redrawing of only the nodes that are:
         // - part of the virtualization result
         // - and have changed in some way that necessitates their UI be redrawn
-        EXPLORER_TreeViewDirector_draw_BATCH_request(INTS[fEXPLORER_virtualIndex_ofScrollTop], INTS[fEXPLORER_virtualCount], 3);
+        EXPLORER_draw_BATCH_request(INTS[fEXPLORER_virtualIndex_ofScrollTop], INTS[fEXPLORER_virtualCount], 3);
     }
 }
 
@@ -1980,7 +1980,7 @@ async function DeleteFile_File_YesCancel_callback(result) {
         // TODO: fine grained redrawing of only the nodes that are:
         // - part of the virtualization result
         // - and have changed in some way that necessitates their UI be redrawn
-        EXPLORER_TreeViewDirector_draw_BATCH_request(INTS[fEXPLORER_virtualIndex_ofScrollTop], INTS[fEXPLORER_virtualCount], 3);
+        EXPLORER_draw_BATCH_request(INTS[fEXPLORER_virtualIndex_ofScrollTop], INTS[fEXPLORER_virtualCount], 3);
     }
 }
 

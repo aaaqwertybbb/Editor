@@ -323,7 +323,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     < You are 100% correct to worry about this. Never make your requestAnimationFrame loop async or use await inside it.
     < ...
     */
-    INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex] = INTS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex];
+    INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex] = INTS[fEXPLORER_ONSCROLLvirtualIndex];
     INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualCount] = INTS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount];
     INTS[fEXPLORER_TreeViewDirector_scrollFetchData_ringBufferIndexZero] = INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero];
 
@@ -368,7 +368,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
 };
 
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
-    if (INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex] === INTS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex] &&
+    if (INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex] === INTS[fEXPLORER_ONSCROLLvirtualIndex] &&
         INTS[fEXPLORER_TreeViewDirector_scrollFetchData_virtualCount] === INTS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount] &&
         INTS[fEXPLORER_TreeViewDirector_scrollFetchData_ringBufferIndexZero] === INTS[fEXPLORER_TreeViewDirector_ringBufferIndexZero]) {
 
@@ -847,17 +847,17 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp) {
     else {
         INTS[fEXPLORER_virtualIndex_ofScrollTop] = Math.floor(INTS[fEXPLORER_TreeViewDirector_lastReadNumber_scrollTop] / INTS[fEXPLORER_TreeViewDirector_itemHeightNumber]);
 
-        if (INTS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex] === INTS[fEXPLORER_virtualIndex_ofScrollTop] &&
+        if (INTS[fEXPLORER_ONSCROLLvirtualIndex] === INTS[fEXPLORER_virtualIndex_ofScrollTop] &&
             INTS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount] === INTS[fEXPLORER_virtualCount]) {
                 return;
         }
 
-        // If I delay setting 'INTS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex]' then I can just use that.
+        // If I delay setting 'INTS[fEXPLORER_ONSCROLLvirtualIndex]' then I can just use that.
         // I can't bear to do that right now though. I'm just gonna make this variable.
-        let prevVli = INTS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex];
+        let prevVli = INTS[fEXPLORER_ONSCROLLvirtualIndex];
         let currVli = INTS[fEXPLORER_virtualIndex_ofScrollTop];
 
-        INTS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex] = INTS[fEXPLORER_virtualIndex_ofScrollTop];
+        INTS[fEXPLORER_ONSCROLLvirtualIndex] = INTS[fEXPLORER_virtualIndex_ofScrollTop];
 
         if (INTS[fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount] === INTS[fEXPLORER_virtualCount] &&
             INTS[fEXPLORER_ringBuffer_length] === INTS[fEXPLORER_virtualCount]) {

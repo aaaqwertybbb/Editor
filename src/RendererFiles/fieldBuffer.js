@@ -693,7 +693,7 @@ const fEXPLORER_virtualIndex_ofScrollTop = 144;
 const fEXPLORER_virtualCount = 145
 INTS[fEXPLORER_virtualCount] = 1;
 
-const fEXPLORER_TreeViewDirector__ONSCROLLvirtualIndex = 146;
+const fEXPLORER_ONSCROLLvirtualIndex = 146;
 const fEXPLORER_TreeViewDirector__ONSCROLLvirtualCount = 147;
 
 const fEXPLORER_TreeViewDirector_lastReadNumber_scrollLeft = 148;

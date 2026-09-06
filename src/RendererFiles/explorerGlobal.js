@@ -117,7 +117,7 @@ function EXPLORER_TreeViewDirector_setChosenWorkspace(chooseWorkspaceResult) {
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck(timestamp) {
     // If the scroll deadline hasn't been met yet, keep checking on the next frame
-    if (timestamp < INTS[fEXPLORER_TreeViewDirector_scrollEndDeadline]) {
+    if (timestamp < INTS[fEXPLORER_scrollEndDeadline]) {
         requestAnimationFrame(EXPLORER_TreeViewDirector_TREEVIEW_render_do_ScrollTrailingEdgeCheck);
         return;
     }
@@ -140,7 +140,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_trailingEdge() {
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(start, length, onePositiveDiff_twoNegativeDiff_orThreeFullScreen, caseThreeOrigin, timestamp) {
 
     // TODO: I'm putting this in treeViewComponent.js as well for now when diff === 0:
-    INTS[fEXPLORER_TreeViewDirector_scrollEndDeadline] = timestamp + 300;
+    INTS[fEXPLORER_scrollEndDeadline] = timestamp + 300;
 
     if (!BYTES[byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge]) {
         BYTES[byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge] = 1;
@@ -874,7 +874,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll(timestamp) {
             }
             else {
                 if (diff === 0) {
-                    INTS[fEXPLORER_TreeViewDirector_scrollEndDeadline] = timestamp + 300;
+                    INTS[fEXPLORER_scrollEndDeadline] = timestamp + 300;
                 }
                 else {
                     EXPLORER_TreeViewDirector_tvd_drawItem_BATCH(INTS[fEXPLORER_virtualIndex_ofScrollTop], INTS[fEXPLORER_virtualCount], 3, undefined, timestamp);

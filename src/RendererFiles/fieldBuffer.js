@@ -721,7 +721,7 @@ const fEXPLORER_WIDTH_NODE_DRAWN_NUMBER_IN_CH_UNITS_NO_PADDING = 158;
 
 const fEXPLORER_LARGEST_DEPTH_SEEN_NOT_THE_CSS_JUST_THE_DEPTH = 159;
 
-const fEXPLORER_TreeViewDirector_scrollEndDeadline = 160;
+const fEXPLORER_scrollEndDeadline = 160;
 
 const fEXPLORER_TreeViewDirector_scrollFetchData_virtualIndex = 161;
 

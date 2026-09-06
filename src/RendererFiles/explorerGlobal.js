@@ -61,7 +61,7 @@ let EXPLORER_SET_ITEMS_itemHeightStyleAttributeValueString = '';
 /////
 
 /** @type {string} */
-let EXPLORER_TreeViewDirector_chosenDirectory = null;
+let EXPLORER_chosenDirectory = null;
 let EXPLORER_chosenDirectoryAbsolutePathId = -1;
 let EXPLORER_TreeViewDirector_chosenWorkspace = -1;
 
@@ -84,12 +84,12 @@ let EXPLORER_TreeViewDirector_KEY_MASK = (1 << CONST_EXPLORER_TreeViewDirector_K
 
 /** // Invoke this?: 'this.draw_render_fullReset_request();' */
 function EXPLORER_TreeViewDirector_setChosenDirectory(chosenDirectory, chosenDirectoryAbsolutePathId) {
-    EXPLORER_TreeViewDirector_chosenDirectory = chosenDirectory;
+    EXPLORER_chosenDirectory = chosenDirectory;
     EXPLORER_chosenDirectoryAbsolutePathId = chosenDirectoryAbsolutePathId;
 
     EXPLORER_TreeViewDirector_nodeList.clear();
 
-    if (!EXPLORER_TreeViewDirector_chosenDirectory) return;
+    if (!EXPLORER_chosenDirectory) return;
 
     let nodeKind = TreeViewNodeKind_isExpandable_NOTisExpanded;
     EXPLORER_TreeViewDirector_nodeList.insert(EXPLORER_TreeViewDirector_nodeList.count_abstract, nodeKind, EXPLORER_chosenDirectoryAbsolutePathId, 0);

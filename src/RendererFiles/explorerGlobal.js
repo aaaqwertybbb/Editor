@@ -50,7 +50,7 @@ const EXPLORER_renderKindArray = [];
 let EXPLORER_ringBuffer = [];
 
 let EXPLORER_draw_create_request_parentElement = null;
-let EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_insertBeforeThisChild = null;
+let EXPLORER_draw_create_request_insertBeforeThisChild = null;
 
 let EXPLORER_TreeViewDirector_itemHeightStyleAttributeValueString = '20px';
 
@@ -778,7 +778,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Create(timestamp) {
         // |
         // The 'EXPLORER_TreeViewDirector_draw_addEvents();'... can you subscribe twice?
     }
-    EXPLORER_draw_create_request_parentElement.insertBefore(EXPLORER_rootElement, EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_insertBeforeThisChild);
+    EXPLORER_draw_create_request_parentElement.insertBefore(EXPLORER_rootElement, EXPLORER_draw_create_request_insertBeforeThisChild);
     EXPLORER_TreeViewDirector_draw_addEvents();
 
 
@@ -800,7 +800,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Create(timestamp) {
  */
 function EXPLORER_TreeViewDirector_draw_create_request(parentElement, insertBeforeThisChild) {
     EXPLORER_draw_create_request_parentElement = parentElement;
-    EXPLORER_TreeViewDirector_TREEVIEW_draw_create_request_insertBeforeThisChild = insertBeforeThisChild;
+    EXPLORER_draw_create_request_insertBeforeThisChild = insertBeforeThisChild;
     EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Create);
 }
 

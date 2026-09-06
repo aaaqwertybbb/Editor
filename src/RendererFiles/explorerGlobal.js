@@ -325,7 +325,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
     */
     INTS[fEXPLORER_scrollFetchData_virtualIndex] = INTS[fEXPLORER_ONSCROLLvirtualIndex];
     INTS[fEXPLORER_scrollFetchData_virtualCount] = INTS[fEXPLORER_ONSCROLLvirtualCount];
-    INTS[fEXPLORER_TreeViewDirector_scrollFetchData_ringBufferIndexZero] = INTS[fEXPLORER_ringBufferIndexZero];
+    INTS[fEXPLORER_scrollFetchData_ringBufferIndexZero] = INTS[fEXPLORER_ringBufferIndexZero];
 
     // This isn't the most optimal way of doing things.
     //
@@ -370,7 +370,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
 function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
     if (INTS[fEXPLORER_scrollFetchData_virtualIndex] === INTS[fEXPLORER_ONSCROLLvirtualIndex] &&
         INTS[fEXPLORER_scrollFetchData_virtualCount] === INTS[fEXPLORER_ONSCROLLvirtualCount] &&
-        INTS[fEXPLORER_TreeViewDirector_scrollFetchData_ringBufferIndexZero] === INTS[fEXPLORER_ringBufferIndexZero]) {
+        INTS[fEXPLORER_scrollFetchData_ringBufferIndexZero] === INTS[fEXPLORER_ringBufferIndexZero]) {
 
         // This isn't the most optimal way of doing things.
         //

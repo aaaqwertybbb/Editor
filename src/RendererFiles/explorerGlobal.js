@@ -815,7 +815,7 @@ function EXPLORER_render_do_Batch(timestamp) {
  * 
  * @returns 
  */
-function EXPLORER_TreeViewDirector_draw_delete() {
+function EXPLORER_draw_delete() {
     if (!EXPLORER_rootElement.parentElement) return;
     EXPLORER_TreeViewDirector_draw_removeEvents();
     BYTES[byteEXPLORER_boundingClientRect_isValid] = 0;

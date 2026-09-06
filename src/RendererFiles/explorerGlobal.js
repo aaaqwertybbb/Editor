@@ -1190,7 +1190,7 @@ function EXPLORER_ensure_boundingClientRect() {
     }
 }
 
-function EXPLORER_render_do_Cursor(index) {
+function EXPLORER_render_do_Cursor() {
     // Determine the number without modifying styles so you can use this variable to determine the need to scroll into view without synchronous layout.
     INTS[fEXPLORER_cursorTranslateYNumber] = INTS[fEXPLORER_cursorIndex] * INTS[fEXPLORER_itemHeightNumber];
 

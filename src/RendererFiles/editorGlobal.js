@@ -8711,4 +8711,7 @@ because EVERYTHING was on sale today
 
 If nothing is on sale it is like $17
 
+I stockpile it so that if I go in on any given day, I'm not eating the chicken I buy that day
+so then if they don't have it some day then I don't miss a day
+
 */

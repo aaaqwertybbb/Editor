@@ -962,8 +962,6 @@ function EXPLORER_draw_render_fullReset_request() {
  * @param {*} event 
  */
 function EXPLORER_event_click(event) {
-
-     // this.event_click(event.clientY, event.target);
      let event_clientY = event.clientY;
      let event_target = event.target;
 
@@ -993,8 +991,6 @@ function EXPLORER_event_click(event) {
 }
 
 function EXPLORER_event_dblclick(event) {
-
-    // this.event_dblclick(event.clientY, event.target);
     let event_clientY = event.clientY;
     let event_target = event.target;
 
@@ -1031,8 +1027,6 @@ function EXPLORER_event_dblclick(event) {
 }
 
 function EXPLORER_event_contextmenu(event) {
-
-    // this.event_contextmenu(event.button, event.clientX, event.clientY);
     let event_button = event.button;
     let event_clientX = event.clientX;
     let event_clientY = event.clientY;
@@ -1082,9 +1076,6 @@ function EXPLORER_event_contextmenu(event) {
 }
 
 function EXPLORER_event_keydown(event) {
-
-    // this.event_keydown(event);
-
     switch (event.key) {
         case 'ArrowDown':
             event.preventDefault();
@@ -1179,16 +1170,10 @@ function EXPLORER_render_do_Resize(timestamp) {
  * TODO: intra-app resizes or movements will also invoke this; i.e.: if a list is shown in a dialog and the dialog is resized or moved.
  */
 function EXPLORER_event_windowResize() {
-
-    // this.event_windowResize();
-
     EXPLORER_render_request(TREEVIEWrenderKind_Resize);
 }
 
 function EXPLORER_event_scroll() {
-
-    // this.event_scroll();
-
     INTS[fEXPLORER_lastReadNumber_scrollLeft] = EXPLORER_rootElement.scrollLeft;
     INTS[fEXPLORER_lastReadNumber_scrollTop] = EXPLORER_rootElement.scrollTop;
     EXPLORER_render_request(TREEVIEWrenderKind_Scroll);

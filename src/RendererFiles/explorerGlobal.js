@@ -473,7 +473,7 @@ function EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(divItem, indexItem, e
         new MenuOption(CommandKind_CopyAbsolutePath, 'Copy Absolute Path', null),
     ];
 
-    EXPLORER_TreeViewDirector_ensure_boundingClientRect();
+    EXPLORER_ensure_boundingClientRect();
 
     // TODO: !!!! You might need to be careful with async and the TreeView_pooledNode; I'm not certain whether you do or don't have to be careful, and I don't feel like looking into it at the moment.
     EXPLORER_treeViewNodes.getElementAt(indexItem);
@@ -899,7 +899,7 @@ function EXPLORER_TreeViewDirector_draw_BATCH_request(start, length, onePositive
 }
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
-    EXPLORER_TreeViewDirector_ensure_boundingClientRect();
+    EXPLORER_ensure_boundingClientRect();
 
     INTS[fEXPLORER_ONSCROLLvirtualCount] = INTS[fEXPLORER_virtualCount];
 
@@ -978,7 +978,7 @@ function EXPLORER_event_click(event) {
      let event_clientY = event.clientY;
      let event_target = event.target;
 
-    EXPLORER_TreeViewDirector_ensure_boundingClientRect();
+    EXPLORER_ensure_boundingClientRect();
 
     let rY = event_clientY - INTS[fEXPLORER_boundingClientRect_top] + INTS[fEXPLORER_lastReadNumber_scrollTop];
     let indexItem = Math.floor(rY / INTS[fEXPLORER_itemHeightNumber]);
@@ -1009,7 +1009,7 @@ function EXPLORER_event_dblclick(event) {
     let event_clientY = event.clientY;
     let event_target = event.target;
 
-    EXPLORER_TreeViewDirector_ensure_boundingClientRect();
+    EXPLORER_ensure_boundingClientRect();
 
     let rY = event_clientY - INTS[fEXPLORER_boundingClientRect_top] + INTS[fEXPLORER_lastReadNumber_scrollTop];
     let indexItem = Math.floor(rY / INTS[fEXPLORER_itemHeightNumber]);
@@ -1048,7 +1048,7 @@ function EXPLORER_event_contextmenu(event) {
     let event_clientX = event.clientX;
     let event_clientY = event.clientY;
 
-    EXPLORER_TreeViewDirector_ensure_boundingClientRect();
+    EXPLORER_ensure_boundingClientRect();
 
     if (event_button === 2) {
         let rY = event_clientY - INTS[fEXPLORER_boundingClientRect_top] + INTS[fEXPLORER_lastReadNumber_scrollTop];
@@ -1181,7 +1181,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Resize(timestamp) {
     EXPLORER_measureBaseElement();
 
     BYTES[byteEXPLORER_boundingClientRect_isValid] = 0;
-    EXPLORER_TreeViewDirector_ensure_boundingClientRect();
+    EXPLORER_ensure_boundingClientRect();
     EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp);
 }
 
@@ -1204,7 +1204,7 @@ function EXPLORER_event_scroll() {
     EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Scroll);
 }
 
-function EXPLORER_TreeViewDirector_ensure_boundingClientRect() {
+function EXPLORER_ensure_boundingClientRect() {
     if (!BYTES[byteEXPLORER_boundingClientRect_isValid]) {
         let rect = EXPLORER_rootElement.getBoundingClientRect();
         INTS[fEXPLORER_boundingClientRect_height] = rect.height;
@@ -1220,7 +1220,7 @@ function EXPLORER_render_do_Cursor(index) {
     INTS[fEXPLORER_cursorTranslateYNumber] = INTS[fEXPLORER_cursorIndex] * INTS[fEXPLORER_itemHeightNumber];
 
     // Preferably this hasn't changed thus the function immediately just returns.
-    EXPLORER_TreeViewDirector_ensure_boundingClientRect();
+    EXPLORER_ensure_boundingClientRect();
     
     // If no UI modifications were made prior that are still pending this might avoid a synchronous layout.
     // TODO: If you touch the transform style first... I don't know what would happen it is a GPU related style... so I'm unsure.

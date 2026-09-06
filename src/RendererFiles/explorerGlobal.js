@@ -798,7 +798,7 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Create(timestamp) {
  * @param {HTMLElement} parentElement 
  * @param {*} insertBeforeThisChild (if falsey, the list UI is appended to the parent element)
  */
-function EXPLORER_TreeViewDirector_draw_create_request(parentElement, insertBeforeThisChild) {
+function EXPLORER_draw_create_request(parentElement, insertBeforeThisChild) {
     EXPLORER_draw_create_request_parentElement = parentElement;
     EXPLORER_draw_create_request_insertBeforeThisChild = insertBeforeThisChild;
     EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_Create);
@@ -1447,7 +1447,7 @@ async function EXPLORER_pickFolderOrWorkspaceButton_MenuOnClick(indexClicked, el
     
                 EXPLORER_setChosenDirectory(chosenDirectory, chooseDirectoryResult.id);
                 EXPLORER_setItems(INTS[fAPP_lineHeight], INTS[fAPP_lineHeight] + 'px');
-                EXPLORER_TreeViewDirector_draw_create_request(EXPLORER_Element, null);
+                EXPLORER_draw_create_request(EXPLORER_Element, null);
             }
             break;
         case CommandKind_SelectWorkspace:
@@ -1466,7 +1466,7 @@ async function EXPLORER_pickFolderOrWorkspaceButton_MenuOnClick(indexClicked, el
     
                 EXPLORER_setChosenWorkspace(chooseWorkspaceResult);
                 EXPLORER_setItems(INTS[fAPP_lineHeight], INTS[fAPP_lineHeight] + 'px');
-                EXPLORER_TreeViewDirector_draw_create_request(EXPLORER_Element, null);
+                EXPLORER_draw_create_request(EXPLORER_Element, null);
             }
             break;
     }

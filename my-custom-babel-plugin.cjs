@@ -531,7 +531,7 @@ module.exports = function (babel) {
     "fEXPLORER_lastReadNumber_scrollTop",
     "fEXPLORER_ringBufferIndexZero",
     "fEXPLORER_ringBuffer_length",
-    "fEXPLORER_TreeViewDirector_start",
+    "fEXPLORER_start",
     "fEXPLORER_TreeViewDirector_length",
     "fEXPLORER_TreeViewDirector_onePositiveDiff_twoNegativeDiff_orThreeFullScreen",
     "fEXPLORER_TreeViewDirector_caseThreeOrigin",

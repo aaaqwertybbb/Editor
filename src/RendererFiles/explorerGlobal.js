@@ -705,7 +705,7 @@ function EXPLORER_TreeViewDirector_renderDo(timestamp) {
                 EXPLORER_TreeViewDirector_TREEVIEW_render_do_Cursor();
                 break;
             case TREEVIEWrenderKind_Create:
-                EXPLORER_TreeViewDirector_TREEVIEW_render_do_Create(timestamp);
+                EXPLORER_render_do_Create(timestamp);
                 break;
             case TREEVIEWrenderKind_Batch:
                 EXPLORER_TreeViewDirector_TREEVIEW_render_do_Batch(timestamp);
@@ -759,7 +759,7 @@ function EXPLORER_setItems(itemHeightNumber, itemHeightStyleAttributeValueString
     EXPLORER_TreeViewDirector_TREEVIEW_render_request(TREEVIEWrenderKind_SetItems);
 }
 
-function EXPLORER_TreeViewDirector_TREEVIEW_render_do_Create(timestamp) {
+function EXPLORER_render_do_Create(timestamp) {
     if (EXPLORER_rootElement.parentElement) {
         // It is the case that I invoke 'draw_create_request' when creating the tree view for the first time.
         // But I also do this when I re-open the os input file dialog and pick either a separate or the same folder.

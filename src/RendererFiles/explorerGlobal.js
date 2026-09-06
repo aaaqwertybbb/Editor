@@ -494,7 +494,7 @@ function EXPLORER_TreeViewDirector_tvd_oncontextmenu_async(divItem, indexItem, e
         return menuSet('EXPLORER', target, optionList, INTS[fEXPLORER_menuOptionX]=event_clientX, INTS[fEXPLORER_menuOptionY]=event_clientY);
     } else {
         EXPLORER_TreeViewDirector_addSpecificMenuOptionsForTarget(optionList, divItem, target);
-        return menuSet('EXPLORER', target, optionList, INTS[fEXPLORER_menuOptionX]=INTS[fEXPLORER_TreeViewDirector_boundingClientRect_left], INTS[fEXPLORER_menuOptionY]=(INTS[fEXPLORER_TreeViewDirector_boundingClientRect_top] + ((INTS[fEXPLORER_cursorIndex] + 1) * INTS[fEXPLORER_itemHeightNumber]) - EXPLORER_rootElement.scrollTop));
+        return menuSet('EXPLORER', target, optionList, INTS[fEXPLORER_menuOptionX]=INTS[fEXPLORER_boundingClientRect_left], INTS[fEXPLORER_menuOptionY]=(INTS[fEXPLORER_TreeViewDirector_boundingClientRect_top] + ((INTS[fEXPLORER_cursorIndex] + 1) * INTS[fEXPLORER_itemHeightNumber]) - EXPLORER_rootElement.scrollTop));
     }
 }
 
@@ -1208,7 +1208,7 @@ function EXPLORER_TreeViewDirector_ensure_boundingClientRect() {
     if (!BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid]) {
         let rect = EXPLORER_rootElement.getBoundingClientRect();
         INTS[fEXPLORER_boundingClientRect_height] = rect.height;
-        INTS[fEXPLORER_TreeViewDirector_boundingClientRect_left] = rect.left;
+        INTS[fEXPLORER_boundingClientRect_left] = rect.left;
         INTS[fEXPLORER_TreeViewDirector_boundingClientRect_top] = rect.top;
         BYTES[byteEXPLORER_TreeViewDirector_boundingClientRect_isValid] = 1;
         INTS[fEXPLORER_virtualCount] = Math.ceil(EXPLORER_rootElement.offsetHeight / INTS[fEXPLORER_itemHeightNumber]);

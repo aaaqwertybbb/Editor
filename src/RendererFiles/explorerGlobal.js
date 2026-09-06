@@ -717,7 +717,7 @@ function EXPLORER_TreeViewDirector_renderDo(timestamp) {
                 EXPLORER_TreeViewDirector_TREEVIEW_render_do_Scroll_PullDataDrawResult();
                 break;
             case TREEVIEWrenderKind_SetItems:
-                EXPLORER_TreeViewDirector_TREEVIEW_render_do_SetItems();
+                EXPLORER_render_do_SetItems();
                 break;
             case TREEVIEWrenderKind_FullReset:
                 EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp);
@@ -735,7 +735,7 @@ function EXPLORER_TreeViewDirector_renderDo(timestamp) {
  * TODO: Many of these suffer from two invocations sitting in the render queue with something between them so they didn't coallesce then the parameters
  * of the second are used for the first.
  */
-function EXPLORER_TreeViewDirector_TREEVIEW_render_do_SetItems() {
+function EXPLORER_render_do_SetItems() {
     EXPLORER_itemListElement.innerHTML = '';
     EXPLORER_virtualizationElement.style.height = 1 + 'px';
     EXPLORER_TreeViewDirector_state_cursor_setIndex(0);

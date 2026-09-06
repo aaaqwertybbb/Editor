@@ -79,7 +79,7 @@ let EXPLORER_arrayEntries = null;
 
 // Google AI'd the bit logic
 // Configuration matching our table above
-let EXPLORER_KEY_MASK = (1 << CONST_EXPLORER_TreeViewDirector_KEY_BITS) - 1; // Binary: 00000000000000000000111111111111 (0xFFF)
+let EXPLORER_KEY_MASK = (1 << CONST_EXPLORER_KEY_BITS) - 1; // Binary: 00000000000000000000111111111111 (0xFFF)
 // end CONSTRUCTOR
 
 /** // Invoke this?: 'this.draw_render_fullReset_request();' */
@@ -351,7 +351,7 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
             // that is displaying the UI representation of what 'indexItem' points to.
             let indexRingBuffer = ringBufferIndex_current;
 
-            EXPLORER_pullData_array[INTS[fEXPLORER_pullData_array_count]++] = ((indexRingBuffer << CONST_EXPLORER_TreeViewDirector_KEY_BITS) | EXPLORER_treeViewNodes.getKey(indexItem));
+            EXPLORER_pullData_array[INTS[fEXPLORER_pullData_array_count]++] = ((indexRingBuffer << CONST_EXPLORER_KEY_BITS) | EXPLORER_treeViewNodes.getKey(indexItem));
         }
 
         ringBufferIndex_current = (ringBufferIndex_current + 1) % itemListElement_childrenLength;
@@ -383,7 +383,7 @@ function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_PullDataDrawResult () {
         for (let i = 0; i < INTS[fEXPLORER_pullData_result_count]; i++) {
             let packedInteger = EXPLORER_pullData_result[i];
             const key = packedInteger & EXPLORER_KEY_MASK;
-            const ringBufferIndexItem = packedInteger >> CONST_EXPLORER_TreeViewDirector_KEY_BITS;
+            const ringBufferIndexItem = packedInteger >> CONST_EXPLORER_KEY_BITS;
 
             let nodeElement = itemListElement_children[ringBufferIndexItem];
             nodeElement.className = '';

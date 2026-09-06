@@ -292,7 +292,7 @@ const CONST_EXPLORER_offsetPerDepth = 8;
 
 // Google AI'd the bit logic
 // Configuration matching our table above
-const CONST_EXPLORER_TreeViewDirector_KEY_BITS = 12;
+const CONST_EXPLORER_KEY_BITS = 12;
 
 // TODO: Consider using these (need to add them to babel plugin if you do)
 //const CONST_EXPLORER_isExpandedText = '-';

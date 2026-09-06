@@ -546,7 +546,7 @@ module.exports = function (babel) {
     "fEXPLORER_pullData_array_count",
     "fEXPLORER_pullData_result_count",
     
-    "CONST_EXPLORER_TreeViewDirector_KEY_BITS",
+    "CONST_EXPLORER_KEY_BITS",
 
     "byteEXPLORER_TreeViewDirector_TREEVIEW_isRenderPending",
     "byteEXPLORER_TreeViewDirector_isCheckingTrailingEdge",

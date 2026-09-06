@@ -71,7 +71,7 @@ let EXPLORER_chosenWorkspace = -1;
 const EXPLORER_treeViewNodes = new TreeViewNodeList(32);
 
 /** Starting with an empty array so I can have undefined/null signify that the "TreeViewDirector" is "opting out" of this feature, thus the component should not allocate this on the "TreeViewDirector"'s behalf. */
-let EXPLORER_TreeViewDirector_pullData_array = new Uint32Array(0);
+let EXPLORER_pullData_array = new Uint32Array(0);
 
 let EXPLORER_TreeViewDirector_pullData_result = new Uint32Array(0);
 
@@ -351,15 +351,15 @@ async function EXPLORER_TreeViewDirector_tvd_drawItem_BATCH_pullData() {
             // that is displaying the UI representation of what 'indexItem' points to.
             let indexRingBuffer = ringBufferIndex_current;
 
-            EXPLORER_TreeViewDirector_pullData_array[INTS[fEXPLORER_pullData_array_count]++] = ((indexRingBuffer << CONST_EXPLORER_TreeViewDirector_KEY_BITS) | EXPLORER_treeViewNodes.getKey(indexItem));
+            EXPLORER_pullData_array[INTS[fEXPLORER_pullData_array_count]++] = ((indexRingBuffer << CONST_EXPLORER_TreeViewDirector_KEY_BITS) | EXPLORER_treeViewNodes.getKey(indexItem));
         }
 
         ringBufferIndex_current = (ringBufferIndex_current + 1) % itemListElement_childrenLength;
     }
 
-    EXPLORER_TreeViewDirector_arrayEntries = await window.myAPI.getFilesystemEntryById_ARRAY(EXPLORER_TreeViewDirector_pullData_array.subarray(0, INTS[fEXPLORER_pullData_array_count]));
+    EXPLORER_TreeViewDirector_arrayEntries = await window.myAPI.getFilesystemEntryById_ARRAY(EXPLORER_pullData_array.subarray(0, INTS[fEXPLORER_pullData_array_count]));
 
-    EXPLORER_TreeViewDirector_pullData_result = EXPLORER_TreeViewDirector_pullData_array;
+    EXPLORER_TreeViewDirector_pullData_result = EXPLORER_pullData_array;
     INTS[fEXPLORER_TreeViewDirector_pullData_result_count] = INTS[fEXPLORER_pullData_array_count];
 
     BYTES[byteEXPLORER_TreeViewDirector_scrollIsFetchingData] = 0; // TODO: try/catch/finally; put this in the finally.
@@ -942,8 +942,8 @@ function EXPLORER_TreeViewDirector_TREEVIEW_render_do_FullReset(timestamp) {
         }
         
         // TODO: check the resize logic, that it works
-        if (EXPLORER_TreeViewDirector_pullData_array) {
-            EXPLORER_TreeViewDirector_pullData_array = new Uint32Array(INTS[fEXPLORER_TreeViewDirector_virtualCount]);
+        if (EXPLORER_pullData_array) {
+            EXPLORER_pullData_array = new Uint32Array(INTS[fEXPLORER_TreeViewDirector_virtualCount]);
             INTS[fEXPLORER_pullData_array_count] = 0;
         }
 

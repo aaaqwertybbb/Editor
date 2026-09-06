@@ -50,7 +50,8 @@ class ListComponent {
         this.LIST_renderKindArray = [];
         this.LIST_isRenderPending = false;
 
-        this.LIST_ArrayFrom_menuOptionList_children = [];
+        this.LIST_ringBuffer = [];
+        this.LIST_ringBufferLength = 0;
 
         this.lastSeenScrollTop = 0;
 
@@ -96,6 +97,11 @@ class ListComponent {
      */
     setItems(itemHeightNumber, itemHeightStyleAttributeValueString, drawItemAction, onkeydownAction, getItemsCountFunc) {
         this.itemListElement.innerHTML = '';
+        // TODO: Ensure all patterns of this clear the ring buffer in any side cases of the Array.From source having had its HTML cleared...
+        // ...I think they're all covered but I'm not sure so just double check.
+        this.LIST_ringBuffer = [];
+        this.LIST_ringBufferLength = 0;
+
         this.virtualizationElement.style.height = 1 + 'px';
         this.state_cursor_setIndex(0);
 
@@ -178,7 +184,7 @@ class ListComponent {
             this.ensure_boundingClientRect();
         }
 
-        if (this.itemListElement.children.length !== this.virtualCount) {
+        if (this.LIST_ringBufferLength !== this.virtualCount) {
             this.draw_render_fullReset();
         }
         else {
@@ -200,7 +206,7 @@ class ListComponent {
             this._ONSCROLLvirtualIndex = this.virtualIndex_ofScrollTop;
 
             if (this._ONSCROLLvirtualCount === this.virtualCount &&
-                this.itemListElement.children.length === this.virtualCount) {
+                this.LIST_ringBufferLength === this.virtualCount) {
 
                 // The same count of lines is on the UI so you can probably
                 // redraw them one by one and save "some" of the existing HTML.
@@ -215,19 +221,19 @@ class ListComponent {
                     let origin = this.ringBufferIndexZero;
 
                     this.ringBufferIndexZero = origin + diff;
-                    if (this.ringBufferIndexZero >= this.itemListElement.children.length) {
-                        this.ringBufferIndexZero -= this.itemListElement.children.length;
+                    if (this.ringBufferIndexZero >= this.LIST_ringBufferLength) {
+                        this.ringBufferIndexZero -= this.LIST_ringBufferLength;
                     }
 
                     for (var i = 0; i < diff; i++) {
                         let indexItem = prevVli + this._ONSCROLLvirtualCount + i;
 
                         let ringBufferIndexItem = origin + i;
-                        if (ringBufferIndexItem >= this.itemListElement.children.length) {
-                            ringBufferIndexItem -= this.itemListElement.children.length;
+                        if (ringBufferIndexItem >= this.LIST_ringBufferLength) {
+                            ringBufferIndexItem -= this.LIST_ringBufferLength;
                         }
 
-                        let divItem = this.itemListElement.children[ringBufferIndexItem];
+                        let divItem = this.LIST_ringBuffer[ringBufferIndexItem];
                         
                         divItem.style.transform = `translateY(${vertical}px)`;
                         vertical += this.itemHeightNumber;
@@ -247,7 +253,7 @@ class ListComponent {
 
                     let lastIndex;
                     if (this.ringBufferIndexZero === 0) {
-                        lastIndex = this.itemListElement.children.length - 1;
+                        lastIndex = this.LIST_ringBufferLength - 1;
                     }
                     else {
                         lastIndex = this.ringBufferIndexZero - 1;
@@ -255,7 +261,7 @@ class ListComponent {
                     this.ringBufferIndexZero = lastIndex - (diff - 1);
 
                     if (this.ringBufferIndexZero < 0) {
-                        this.ringBufferIndexZero += this.itemListElement.children.length;
+                        this.ringBufferIndexZero += this.LIST_ringBufferLength;
                     }
 
                     let vertical = (currVli + (diff - 1)) * this.itemHeightNumber;
@@ -263,9 +269,9 @@ class ListComponent {
                     for (var i = 0; i < diff; i++) {
                         let indexItem = currVli + i;
                         
-                        let divItem = this.itemListElement.children[lastIndex--];
+                        let divItem = this.LIST_ringBuffer[lastIndex--];
                         if (lastIndex <= -1) {
-                            lastIndex = this.itemListElement.children.length - 1;
+                            lastIndex = this.LIST_ringBufferLength - 1;
                         }
 
                         divItem.style.transform = `translateY(${vertical}px)`;
@@ -288,11 +294,11 @@ class ListComponent {
                         let indexItem = i + this.virtualIndex_ofScrollTop;
 
                         let ringBufferIndexItem = origin + i;
-                        if (ringBufferIndexItem >= this.itemListElement.children.length) {
-                            ringBufferIndexItem -= this.itemListElement.children.length;
+                        if (ringBufferIndexItem >= this.LIST_ringBufferLength) {
+                            ringBufferIndexItem -= this.LIST_ringBufferLength;
                         }
 
-                        let divItem = this.itemListElement.children[ringBufferIndexItem];
+                        let divItem = this.LIST_ringBuffer[ringBufferIndexItem];
 
                         divItem.style.transform = `translateY(${vertical}px)`;
                         vertical += this.itemHeightNumber;
@@ -328,8 +334,21 @@ class ListComponent {
             vertical += this.itemHeightNumber;
             divItem.textContent = i;
             this.itemListElement.appendChild(divItem);
+
+            // TODO: You shouldn't invoke this from the full reset,
+            // but you need to ensure the full reset follows up with a draw of the full screen logic
+            //
+            // As a means of "separation of concerns".
+            // Because if someone has a drawItemAction that thinks it is safe to access
+            // 'this.itemListElement'
+            // or 'this.LIST_ringBuffer' to get the next element for whatever reason
+            // well the 'this.itemListElement' hasn't even been fully populated with elements yet.
+            // 
+            // ^I don't knonw what someone would do the above but I'm just saying if they did...
+            //
             this.drawItemAction(divItem, this.virtualIndex_ofScrollTop + i);
         }
+        this.LIST_ringBuffer = Array.from(this.itemListElement.children);
     }
 
     event_click(event) {
@@ -358,12 +377,12 @@ class ListComponent {
                 this.state_cursor_setIndex(
                     this.state_cursor_validateIndex(this.cursorIndex));
                 let virtualIndex_ofEvent = this.cursorIndex - this.virtualIndex_ofScrollTop;
-                if (virtualIndex_ofEvent >= 0 && virtualIndex_ofEvent < this.itemListElement.children.length) { // check if is in virtualization space
+                if (virtualIndex_ofEvent >= 0 && virtualIndex_ofEvent < this.LIST_ringBufferLength) { // check if is in virtualization space
                     virtualIndex_ofEvent += this.ringBufferIndexZero; // then map the "virtualIndex_ofEvent" by the origin aka:'this.ringBufferIndexZero'... i.e.: which line in the dom is the first line from the top of the screen down.
-                    if (virtualIndex_ofEvent >= this.itemListElement.children.length) {
-                        virtualIndex_ofEvent -= this.itemListElement.children.length;
+                    if (virtualIndex_ofEvent >= this.LIST_ringBufferLength) {
+                        virtualIndex_ofEvent -= this.LIST_ringBufferLength;
                     }
-                    this.onkeydownAction(this.itemListElement.children[virtualIndex_ofEvent], this.cursorIndex);
+                    this.onkeydownAction(this.LIST_ringBuffer[virtualIndex_ofEvent], this.cursorIndex);
                 }
                 break;
         }

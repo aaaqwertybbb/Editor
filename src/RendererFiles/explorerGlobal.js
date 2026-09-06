@@ -45,7 +45,7 @@ const EXPLORER_itemListElement = document.createElement('div');
 EXPLORER_itemListElement.className = 'TREEVIEW_itemList';
 EXPLORER_rootElement.appendChild(EXPLORER_itemListElement);
 
-const EXPLORER_TreeViewDirector_TREEVIEW_renderKindArray = [];
+const EXPLORER_renderKindArray = [];
 
 let EXPLORER_ringBuffer = [];
 
@@ -685,8 +685,8 @@ function EXPLORER_TreeViewDirector_addSpecificMenuOptionsForTarget(optionList, d
 }
 
 function EXPLORER_TreeViewDirector_TREEVIEW_render_request(renderKind) {
-    if (EXPLORER_TreeViewDirector_TREEVIEW_renderKindArray[EXPLORER_TreeViewDirector_TREEVIEW_renderKindArray.length - 1] !== renderKind) {
-        EXPLORER_TreeViewDirector_TREEVIEW_renderKindArray.push(renderKind);
+    if (EXPLORER_renderKindArray[EXPLORER_renderKindArray.length - 1] !== renderKind) {
+        EXPLORER_renderKindArray.push(renderKind);
     }
     
     if (!BYTES[byteEXPLORER_TreeViewDirector_TREEVIEW_isRenderPending]) {
@@ -699,7 +699,7 @@ function EXPLORER_TreeViewDirector_renderDo(timestamp) {
     let renderKind = 0;
     
     // Synchronously exhaust the item queue for this animation frame
-    while (renderKind = EXPLORER_TreeViewDirector_TREEVIEW_renderKindArray.shift()) {
+    while (renderKind = EXPLORER_renderKindArray.shift()) {
         switch (renderKind) {
             case TREEVIEWrenderKind_Cursor:
                 EXPLORER_TreeViewDirector_TREEVIEW_render_do_Cursor();

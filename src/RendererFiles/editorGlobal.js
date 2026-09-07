@@ -8762,8 +8762,21 @@ I have the science one, so I'm kind of a big deal
 back in the day I didn't take anything not even caffeine btw.
 I have no idea how I did it.
 
+=========
 
+today was 3 hours cause lots of stuff had to be done.
 
+when you buy a bulk case of water 20+,
+and then you get home.
+
+and you go to unload the trunk or whatever.
+
+It's almost like the walk from your trunk while carrying that bulk case of water
+to wherever you place it down.
+
+And then you're do that over and over.
+
+It's decent exercise.
 
 
 

@@ -8948,4 +8948,12 @@ I'm barely hanging on sometimes it wouldn't go well
 
 Would working in a walk in cooler cause me to get acne?
 
+It's decently physically active to the point where you are sweating in a below 30 degree fahrenheit walk in cooler
+for 2-3 hours and you constantly are going back and forth to the garbage to clear it all for the other employees that are doing food
+so you go and you take a middle-man trashbin that has wheels and is small everyone puts their stuff in that it's by the back
+then you come out the cooler full geared up for the below 30 degree fahrenheit weeather
+and then you go out in the full eheat of the day
+and take the rtrash to thte dumpster
+and that makes you sweat like crazy then you go back i n walk in cooler
+
 */

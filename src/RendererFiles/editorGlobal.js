@@ -8961,4 +8961,9 @@ This is what's going on in my mind though like circularly all day and I am losin
 I have some acne scars and stretch marks that make me think I have nothing to live for.
 It's super weird.
 
+And I wasn't kidding about what I did when I cut myself.
+I'm scared about that. That something is going wrong all this time.
+
+Or that I have an STD or sti or something and it is dormant in me
+
 */

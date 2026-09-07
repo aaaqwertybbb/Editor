@@ -8731,4 +8731,32 @@ But this experimentally speaking never happens but it is just my thought process
 
 It's the pair of pants you wear when you realize you haven't done laundry recently type ish
 
+============
+
+
+back when I was taking calc 3 we had a test one morning.
+So before the test a bunch of us were hanging out in the
+public math rooms.
+
+One of the professors that taught a different class of calc 3 saw us and
+came in the room to talk to us cause we had crazy aura and just knew everyone.
+(while I did know him I also think someone from his class was in the room but idk also aura)
+
+But he started helping this one guy.
+And the guy goes "I don't understand... I just... I'm on so much adderall right now"
+And without missing a beat the professor just starts talking immediately about one of the problems again.
+And nobody acknowledged it at all but I felt such tension and awkwardness it was hilarious
+cause I was just sittin there having studied already knowing I'd get a 98 (which I did).
+
+I wonder if the guy is up at 2 am replaying that in his head over and over.
+
+I might not know what the chain rule is anymore but I was goated back in my golden years.
+
+
+
+
+
+
+
+
 */

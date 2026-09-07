@@ -917,14 +917,14 @@ function EDI_render_do_Scroll(timestamp) {
         ringBufferIndex = INTS[fEDI_ringBuffer_indexZero] - 1/*This decrement avoids that.*/;
     }
 
-    const EDI_lineEndPositionList_data = EDI_lineEndPositionList_data;
-    const EDI_lineEndPositionList_count = EDI_lineEndPositionList_count;
+    const local_EDI_lineEndPositionList_data = EDI_lineEndPositionList_data;
+    const local_EDI_lineEndPositionList_count = EDI_lineEndPositionList_count;
 
     // If you intend to use the variables 'lineStart' or 'lineEnd': Important detail to consider: the lines that are >= EDI_lineEndPositionList_count will continually increment lineStart by 1 So if you expect this to accurately represent the EOF position when it is in view, it probably does NOT.
     let lineStart = 0;
     let lineEnd = -1;
-    if (lowerBound < EDI_lineEndPositionList_count && lowerBound !== 0) {
-        lineEnd = EDI_lineEndPositionList_data[lowerBound - 1];
+    if (lowerBound < local_EDI_lineEndPositionList_count && lowerBound !== 0) {
+        lineEnd = local_EDI_lineEndPositionList_data[lowerBound - 1];
     }
 
     const bytes = EDI_textByteList_bytes;
@@ -943,9 +943,9 @@ function EDI_render_do_Scroll(timestamp) {
         const div = local_EDI_ringBuffer_text[ringBufferIndex];
 
         lineStart = lineEnd + 1;
-        if (indexLine < EDI_lineEndPositionList_count) {
+        if (indexLine < local_EDI_lineEndPositionList_count) {
             gutter.textContent = indexLine + 1;
-            lineEnd = EDI_lineEndPositionList_data[indexLine];
+            lineEnd = local_EDI_lineEndPositionList_data[indexLine];
         }
         else {
             gutter.textContent = '~';
@@ -1236,7 +1236,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     //          "local alias" of the 'global scope' variable because now it points to the 'module scope' and is very optimized.)
     EDI_lineEndString = lineEndString;
 
-    let EDI_lineEndPositionList_count = EDI_lineEndPositionList_count;
+    let local_EDI_lineEndPositionList_count = EDI_lineEndPositionList_count;
     let local_EDI_textByteList_count = EDI_textByteList_count;
 
     /**
@@ -1270,10 +1270,10 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
                 }
                 if (lineLength > INTS[fEDI_longestLine_length]) {
                     INTS[fEDI_longestLine_length] = lineLength;
-                    INTS[fEDI_longestLine_indexLine] = EDI_lineEndPositionList_count;
+                    INTS[fEDI_longestLine_indexLine] = local_EDI_lineEndPositionList_count;
                 }
                 lineLength = 0;
-                EDI_lineEndPositionList_insert(EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
+                EDI_lineEndPositionList_insert(local_EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
                 EDI_textByteList_insert(local_EDI_textByteList_count++, CONST_EDI_ASCII_LINE_FEED);
                 break;
             case CONST_EDI_ASCII_LINE_FEED:
@@ -1282,10 +1282,10 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
                 }
                 if (lineLength > INTS[fEDI_longestLine_length]) {
                     INTS[fEDI_longestLine_length] = lineLength;
-                    INTS[fEDI_longestLine_indexLine] = EDI_lineEndPositionList_count;
+                    INTS[fEDI_longestLine_indexLine] = local_EDI_lineEndPositionList_count;
                 }
                 lineLength = 0;
-                EDI_lineEndPositionList_insert(EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
+                EDI_lineEndPositionList_insert(local_EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
                 EDI_textByteList_insert(local_EDI_textByteList_count++, CONST_EDI_ASCII_LINE_FEED);
                 break;
             case CONST_EDI_ASCII_TAB:
@@ -1307,7 +1307,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     }
 
     // TODO: The ++ here "isn't needed" but it makes the code consistent and less prone to future mistakes should another access of 'EDI_lineEndPositionList_count' be made after this point in the future.
-    EDI_lineEndPositionList_insert(EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
+    EDI_lineEndPositionList_insert(local_EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
 
     update_VirtualIndexLine();
     update_virtualCount();

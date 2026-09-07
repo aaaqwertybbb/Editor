@@ -295,6 +295,9 @@ function EDI_render_do(timestamp) {
     while (renderKind = EDI_renderKindArray.shift()) {
         switch (renderKind) {
             case RenderKind_Scroll:
+                // TODO: (consider) Move 'INTS[fEDI_scrollEndDeadline] = timestamp + 1000;'
+                // ...as a statement just above the invocation.
+                // ...this removes a parameter from being passed to the render scroll function.
                 EDI_render_do_Scroll(timestamp);
                 break;
             case RenderKind_Resize:

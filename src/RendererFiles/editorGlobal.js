@@ -130,13 +130,13 @@ const EDI_textByteList = new ByteList(1024);
 
 /*
 this.capacity = initialCapacity;
-EDI_textByteList.bytes
-EDI_textByteList.clear()
-EDI_textByteList.count
-EDI_textByteList.insert
-EDI_textByteList.insertBytes
-EDI_textByteList.removeAt
-EDI_textByteList.duplicateWithin
+EDI_textByteList_bytes
+EDI_textByteList_clear()
+EDI_textByteList_count
+EDI_textByteList_insert
+EDI_textByteList_insertBytes
+EDI_textByteList_removeAt
+EDI_textByteList_duplicateWithin
 */
 
 let EDI_textByteList_capacity = 1024;
@@ -921,7 +921,7 @@ function EDI_render_do_Scroll(timestamp) {
         lineEnd = EDI_lineEndPositionList_data[lowerBound - 1];
     }
 
-    const EDI_textByteList_bytes = EDI_textByteList.bytes;
+    const EDI_textByteList_bytes = EDI_textByteList_bytes;
     const local_EDI_ringBuffer_gutter = EDI_ringBuffer_gutter;
     const local_EDI_ringBuffer_text = EDI_ringBuffer_text;
     
@@ -1196,7 +1196,7 @@ function EDI_state_clear() {
     set_EDI_fileStartsWithBom(false);
     EDI_lineEndString = null;
     EDI_lineEndPositionList.clear();
-    EDI_textByteList.clear();
+    EDI_textByteList_clear();
     INTS[fEDI_longestLine_indexLine] = 0;
     INTS[fEDI_longestLine_length] = 0;
     
@@ -1231,7 +1231,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     EDI_lineEndString = lineEndString;
 
     let EDI_lineEndPositionList_count = EDI_lineEndPositionList.count;
-    let EDI_textByteList_count = EDI_textByteList.count;
+    let EDI_textByteList_count = EDI_textByteList_count;
 
     /**
      * TODO: I don't know whether I should calculate this from the EDI_lineEndPositionList or some such...
@@ -1268,7 +1268,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
                 }
                 lineLength = 0;
                 EDI_lineEndPositionList.insert(EDI_lineEndPositionList_count++, EDI_textByteList_count);
-                EDI_textByteList.insert(EDI_textByteList_count++, CONST_EDI_ASCII_LINE_FEED);
+                EDI_textByteList_insert(EDI_textByteList_count++, CONST_EDI_ASCII_LINE_FEED);
                 break;
             case CONST_EDI_ASCII_LINE_FEED:
                 if (!lineEndString) {
@@ -1280,11 +1280,11 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
                 }
                 lineLength = 0;
                 EDI_lineEndPositionList.insert(EDI_lineEndPositionList_count++, EDI_textByteList_count);
-                EDI_textByteList.insert(EDI_textByteList_count++, CONST_EDI_ASCII_LINE_FEED);
+                EDI_textByteList_insert(EDI_textByteList_count++, CONST_EDI_ASCII_LINE_FEED);
                 break;
             case CONST_EDI_ASCII_TAB:
                 lineLength += 4;
-                EDI_textByteList.insertBytes(EDI_textByteList_count, EDI_tab_tabsbytes, /*offset*/ 0, /*length*/ 4);
+                EDI_textByteList_insertBytes(EDI_textByteList_count, EDI_tab_tabsbytes, /*offset*/ 0, /*length*/ 4);
                 // 'EDI_textByteList_count++' pattern breaking line here
                 EDI_textByteList_count += 4;
                 break;
@@ -1295,7 +1295,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
                 // tbh: TODO: 'charCodeAt' also might be more allocation expensive than you expect. It returns a JavaScript number. Switching and returning an index from byte array prehardcoded might avoid an allocation per number returned?
                 // ... although I hear most engines store numbers such that the pointer represents the value and you avoid the allocation but even then where is the metadata that tells you how to read that pointer differently than the other ones etc...
                 //
-                EDI_textByteList.insert(EDI_textByteList_count++, code);
+                EDI_textByteList_insert(EDI_textByteList_count++, code);
                 break;
         }
     }
@@ -1563,7 +1563,7 @@ function EDI_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
             EDI_trackedSyntaxList.setLength(i, INTS[fEDI_pooledTrackedSyntax_length] + INTS[fEDI_cursor_editLength]);
         }
     }
-    EDI_textByteList.insertBytes(INTS[fEDI_cursor_editPosition], EDI_cursor_gapBuffer, /*offset*/ 0, /*length*/ INTS[fEDI_cursor_gapBufferCount]);
+    EDI_textByteList_insertBytes(INTS[fEDI_cursor_editPosition], EDI_cursor_gapBuffer, /*offset*/ 0, /*length*/ INTS[fEDI_cursor_gapBufferCount]);
 
     let textSourceIdentifier = EDI_FORMATTED_textSourceIdentifier;
     EDI_getLineAndColumnIndices(INTS[fEDI_cursor_editPosition]);
@@ -1607,7 +1607,7 @@ function EDI_finalizeEdit_Enter(indexLine_editOccurredOn) {
     // throws an exception if 'EnterKeyEventKind_None' (...or falsey).
     if (!BYTES[byteEDI_cursor_enterKeyEventKind] || BYTES[byteEDI_cursor_enterKeyEventKind] === EnterKeyEventKind_None) { EDI_finalizeEdit_ClearEditState(); throw new Error('if (!enterKeyEventKind...)'); }
 
-    EDI_textByteList.insertBytes(INTS[fEDI_cursor_editPosition], EDI_cursor_enterKey_newLinePlusIndentation_byteList.bytes, /*offset*/ 0, EDI_cursor_enterKey_newLinePlusIndentation_byteList.count);
+    EDI_textByteList_insertBytes(INTS[fEDI_cursor_editPosition], EDI_cursor_enterKey_newLinePlusIndentation_byteList.bytes, /*offset*/ 0, EDI_cursor_enterKey_newLinePlusIndentation_byteList.count);
 
     for (var i = INTS[fEDI_cursor_editIndexLine]; i < EDI_lineEndPositionList.count; i++) {
         EDI_lineEndPositionList.data[i] += INTS[fEDI_cursor_editLength];
@@ -1644,7 +1644,7 @@ function EDI_finalizeEdit_Tab(indexLine_editOccurredOn) {
 
     EDI_trackedSyntaxList_inefficientUpdateStartAndLength(INTS[fEDI_cursor_editPosition], that_four);
 
-    EDI_textByteList.insertBytes(INTS[fEDI_cursor_editPosition], bytes, /*offset*/ 0, /*length*/ that_four);
+    EDI_textByteList_insertBytes(INTS[fEDI_cursor_editPosition], bytes, /*offset*/ 0, /*length*/ that_four);
 
     for (var i = INTS[fEDI_cursor_editIndexLine]; i < EDI_lineEndPositionList.count; i++) {
         EDI_lineEndPositionList.data[i] += that_four;
@@ -1737,7 +1737,7 @@ function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
         }
 
         // # Insert the text on the respective line.
-        EDI_textByteList.insertBytes(linePos.start, bytes, 0 /*offset*/, bytesLength /*length*/);
+        EDI_textByteList_insertBytes(linePos.start, bytes, 0 /*offset*/, bytesLength /*length*/);
         
         // # Increment the entry in 'EDI_lineEndPositionList' for the respective line
         EDI_lineEndPositionList.data[lineI] += incrementBy;
@@ -2009,7 +2009,7 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
             EDI_trackedSyntaxList.setLength(trackedSyntaxReposition_i, INTS[fEDI_pooledTrackedSyntax_length] - innerRemoveCount);
         }
 
-        EDI_textByteList.removeAt(linePos.start, innerRemoveCount);
+        EDI_textByteList_removeAt(linePos.start, innerRemoveCount);
 	    EDI_lineEndPositionList.data[lineI] -= decrementBy;
 
         decrementBy -= innerRemoveCount;
@@ -2037,11 +2037,11 @@ function EDI_finalizeEdit_Paste(indexLine_editOccurredOn) {
         const code = content.charCodeAt(sourceI);
         switch (code) {
             case CONST_EDI_ASCII_TAB:
-                EDI_textByteList.insertBytes(INTS[fEDI_cursor_editPosition] + insertionLength, EDI_tab_tabsbytes, /*offset*/ 0, /*length*/ 4);
+                EDI_textByteList_insertBytes(INTS[fEDI_cursor_editPosition] + insertionLength, EDI_tab_tabsbytes, /*offset*/ 0, /*length*/ 4);
                 insertionLength += 4;
                 break;
             case CONST_EDI_ASCII_LINE_FEED:
-                EDI_textByteList.insert(INTS[fEDI_cursor_editPosition] + insertionLength, CONST_EDI_ASCII_LINE_FEED);
+                EDI_textByteList_insert(INTS[fEDI_cursor_editPosition] + insertionLength, CONST_EDI_ASCII_LINE_FEED);
                 EDI_lineEndPositionList.insert(INTS[fEDI_cursor_editIndexLine] + linesInsertedCount, INTS[fEDI_cursor_editPosition] + insertionLength);
                 insertionLength++;
                 linesInsertedCount++;
@@ -2050,13 +2050,13 @@ function EDI_finalizeEdit_Paste(indexLine_editOccurredOn) {
                 if (sourceI < content.length - 1 && content.charCodeAt(sourceI + 1) === CONST_EDI_ASCII_LINE_FEED) {
                     sourceI++;
                 }
-                EDI_textByteList.insert(INTS[fEDI_cursor_editPosition] + insertionLength, CONST_EDI_ASCII_LINE_FEED);
+                EDI_textByteList_insert(INTS[fEDI_cursor_editPosition] + insertionLength, CONST_EDI_ASCII_LINE_FEED);
                 EDI_lineEndPositionList.insert(INTS[fEDI_cursor_editIndexLine] + linesInsertedCount, INTS[fEDI_cursor_editPosition] + insertionLength);
                 insertionLength++;
                 linesInsertedCount++;
                 break;
             default:
-                EDI_textByteList.insert(INTS[fEDI_cursor_editPosition] + insertionLength, code);
+                EDI_textByteList_insert(INTS[fEDI_cursor_editPosition] + insertionLength, code);
                 insertionLength++;
                 break;
         }
@@ -2083,7 +2083,7 @@ function EDI_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
     let linesInsertedCount = 0;
     let insertionLength = 0;
 
-    EDI_textByteList.duplicateWithin(small, INTS[fEDI_cursor_editPosition], length);
+    EDI_textByteList_duplicateWithin(small, INTS[fEDI_cursor_editPosition], length);
     
     // TODO: cursor between '\t\0\0\0' is presumed to be the concern of the editor, duplication logic presumes correctness i.e.: that if the '\t' is selected that the '\0\0\0' that come after is selected too...
     // ...and that no partial selection over those characters could ever occur.
@@ -2091,7 +2091,7 @@ function EDI_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
     // TODO: You should be able to do this much faster than looping over the selected bytes since you know the line end positions that exist and would know whether the selection will insert line endings.
 
     for (let offset = 0; offset < length; offset++) {
-        switch (EDI_textByteList.bytes[small + offset]) {
+        switch (EDI_textByteList_bytes[small + offset]) {
             case CONST_EDI_ASCII_TAB:
                 insertionLength += 4; // TODO: (this is probably wrong given the context of duplicating you already would have '\t\0\0\0' so tab is (PROBABLY) just 1 insertion length in this context.) ??? I think this is copy pasted from 'paste' logic where the tab would change to 4 characters total, in the case of duplication you get what you select.
                 break;
@@ -2195,7 +2195,7 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
         }
     }
 
-    EDI_textByteList.removeAt(INTS[fEDI_cursor_editPosition], INTS[fEDI_cursor_editLength]);
+    EDI_textByteList_removeAt(INTS[fEDI_cursor_editPosition], INTS[fEDI_cursor_editLength]);
 
     let textSourceIdentifier = EDI_FORMATTED_textSourceIdentifier;
     // TODO: Account for any '\t\0\0\0' that exist on the line            
@@ -2307,8 +2307,8 @@ function EDI_getFinalizedEditsAndRawSaveFileData(NOTfinalizePendingEdits) {
         EDI_finalizeEdit();
     }
     return {
-        uint8arrayTextBytes: EDI_textByteList.bytes,
-        countOfBytesInUse: EDI_textByteList.count,
+        uint8arrayTextBytes: EDI_textByteList_bytes,
+        countOfBytesInUse: EDI_textByteList_count,
         lineEndString: EDI_lineEndString,
         fileStartsWithBom: Boolean(get_EDI_fileStartsWithBom())
     };
@@ -2398,7 +2398,7 @@ function EDI_createSpansForLineOfText(div, lineStart, lineEnd, trackedSyntax_I) 
 				}
                 let trackedSyntaxEnd = INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length];
                 let subend = trackedSyntaxEnd > lineEnd ? lineEnd : trackedSyntaxEnd;
-                span.textContent = EDI_decoder.decode(EDI_textByteList.bytes.subarray(substart, subend));
+                span.textContent = EDI_decoder.decode(EDI_textByteList_bytes.subarray(substart, subend));
                 substart += (subend - substart);
                 switch (BYTES[byteEDI_pooledTrackedSyntax_trackedSyntaxKind]) {
                     case TrackedSyntaxKind_Comment:
@@ -3155,7 +3155,7 @@ function EDI_onMouseMoveDetailRankOne(indexLineClicked, indexColumnClicked) {
 }
 
 function getCharacter_raw(positionIndex) {
-    return String.fromCharCode(EDI_textByteList.bytes[positionIndex]);
+    return String.fromCharCode(EDI_textByteList_bytes[positionIndex]);
 }
 
 function getCharacter_kind_raw(positionIndex) {
@@ -3212,7 +3212,7 @@ function getCharacter(positionIndex) {
     // ...long term it presumably fails for characters that I don't tend to type, but until then this is working so I'll just use fromCharCode.
     //
     // TODO: This takes a spread/array; if I give it a single byte does it allocate a length of 1 array every invocation?
-    return String.fromCharCode(EDI_textByteList.bytes[positionIndex - totalShift]);
+    return String.fromCharCode(EDI_textByteList_bytes[positionIndex - totalShift]);
 }
 
 /**
@@ -4640,7 +4640,7 @@ async function EDI_onKeyDown_keyLengthEqualsOne_ctrlKey(event) {
 
             EDI_finalizeEdit();
             INTS[fEDI_cursor_selectionAnchor] = 0;
-            INTS[fEDI_cursor_selectionEnd] = EDI_textByteList.count;
+            INTS[fEDI_cursor_selectionEnd] = EDI_textByteList_count;
             EDI_getLineAndColumnIndices(INTS[fEDI_cursor_selectionEnd]);
             let selectionEndLineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
             let selectionEndLineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
@@ -4803,18 +4803,18 @@ function EDI_findOverlay_doSearch() {
     }
     
     if (get_EDI_findOverlay_options_matchWord() && ((searchEncoded[0] >= 97 && searchEncoded[0] <= 122) || (searchEncoded[0] >= 65 && searchEncoded[0] <= 90) || (searchEncoded[0] >= 48 && searchEncoded[0] <= 57) || (searchEncoded[0] === 95))) {
-		for (let i = 0; i < EDI_textByteList.count; i++) {
-			if ((EDI_textByteList.bytes[i] >= 97 && EDI_textByteList.bytes[i] <= 122) || (EDI_textByteList.bytes[i] >= 65 && EDI_textByteList.bytes[i] <= 90) || (EDI_textByteList.bytes[i] >= 48 && EDI_textByteList.bytes[i] <= 57) || (EDI_textByteList.bytes[i] === 95)) {
-				if (EDI_textByteList.bytes[i] === searchEncoded[0]) {
-    				while (i < EDI_textByteList.count) { // context switch to checking match
-    					if (EDI_textByteList.bytes[i] === searchEncoded[offset]) {
+		for (let i = 0; i < EDI_textByteList_count; i++) {
+			if ((EDI_textByteList_bytes[i] >= 97 && EDI_textByteList_bytes[i] <= 122) || (EDI_textByteList_bytes[i] >= 65 && EDI_textByteList_bytes[i] <= 90) || (EDI_textByteList_bytes[i] >= 48 && EDI_textByteList_bytes[i] <= 57) || (EDI_textByteList_bytes[i] === 95)) {
+				if (EDI_textByteList_bytes[i] === searchEncoded[0]) {
+    				while (i < EDI_textByteList_count) { // context switch to checking match
+    					if (EDI_textByteList_bytes[i] === searchEncoded[offset]) {
 				            if (offset === 0) {
 				                posStartOfMatch = i;
 				            }
 				            offset++;
 				            if (offset === searchEncoded.length) { // found "possible match"
-				            	if (i + 1 >= EDI_textByteList.count ||
-				            		!((EDI_textByteList.bytes[i + 1] >= 97 && EDI_textByteList.bytes[i + 1] <= 122) || (EDI_textByteList.bytes[i + 1] >= 65 && EDI_textByteList.bytes[i + 1] <= 90) || (EDI_textByteList.bytes[i + 1] >= 48 && EDI_textByteList.bytes[i + 1] <= 57) || (EDI_textByteList.bytes[i + 1] === 95))) { // ends on a word, therefore take match
+				            	if (i + 1 >= EDI_textByteList_count ||
+				            		!((EDI_textByteList_bytes[i + 1] >= 97 && EDI_textByteList_bytes[i + 1] <= 122) || (EDI_textByteList_bytes[i + 1] >= 65 && EDI_textByteList_bytes[i + 1] <= 90) || (EDI_textByteList_bytes[i + 1] >= 48 && EDI_textByteList_bytes[i + 1] <= 57) || (EDI_textByteList_bytes[i + 1] === 95))) { // ends on a word, therefore take match
 					            		EDI_findOverlay_searchResultPositionList.insert(EDI_findOverlay_searchResultPositionList.count, posStartOfMatch);
                                         if (nextMatchNumber === -1 && posStartOfMatch >= nextMatchPos) {
                                             nextMatchNumber = EDI_findOverlay_searchResultPositionList.count;
@@ -4825,8 +4825,8 @@ function EDI_findOverlay_doSearch() {
 				            	}
 				            	else { // does NOT end on a word, therefore ignore match
 				            		offset = 0;
-				            		while (i < EDI_textByteList.count) { // move pos to next NON(letterOrDigit) or EOF
-				            			if (!((EDI_textByteList.bytes[i] >= 97 && EDI_textByteList.bytes[i] <= 122) || (EDI_textByteList.bytes[i] >= 65 && EDI_textByteList.bytes[i] <= 90) || (EDI_textByteList.bytes[i] >= 48 && EDI_textByteList.bytes[i] <= 57) || (EDI_textByteList.bytes[i] === 95))) {
+				            		while (i < EDI_textByteList_count) { // move pos to next NON(letterOrDigit) or EOF
+				            			if (!((EDI_textByteList_bytes[i] >= 97 && EDI_textByteList_bytes[i] <= 122) || (EDI_textByteList_bytes[i] >= 65 && EDI_textByteList_bytes[i] <= 90) || (EDI_textByteList_bytes[i] >= 48 && EDI_textByteList_bytes[i] <= 57) || (EDI_textByteList_bytes[i] === 95))) {
 				            				i--; // backtrack by one due to outer for loop's incrementation step
 				            				break;
 				            			}
@@ -4839,8 +4839,8 @@ function EDI_findOverlay_doSearch() {
 				        }
 				        else {
 				            offset = 0;
-				            while (i < EDI_textByteList.count) { // move pos to next NON(letterOrDigit) or EOF
-		            			if (!((EDI_textByteList.bytes[i] >= 97 && EDI_textByteList.bytes[i] <= 122) || (EDI_textByteList.bytes[i] >= 65 && EDI_textByteList.bytes[i] <= 90) || (EDI_textByteList.bytes[i] >= 48 && EDI_textByteList.bytes[i] <= 57) || (EDI_textByteList.bytes[i] === 95))) {
+				            while (i < EDI_textByteList_count) { // move pos to next NON(letterOrDigit) or EOF
+		            			if (!((EDI_textByteList_bytes[i] >= 97 && EDI_textByteList_bytes[i] <= 122) || (EDI_textByteList_bytes[i] >= 65 && EDI_textByteList_bytes[i] <= 90) || (EDI_textByteList_bytes[i] >= 48 && EDI_textByteList_bytes[i] <= 57) || (EDI_textByteList_bytes[i] === 95))) {
 		            				i--; // backtrack by one due to outer for loop's incrementation step
 		            				break;
 		            			}
@@ -4851,8 +4851,8 @@ function EDI_findOverlay_doSearch() {
 					}
 				}
 				else {
-					while (i < EDI_textByteList.count) { // move pos to next NON(letterOrDigit) or EOF
-            			if (!((EDI_textByteList.bytes[i] >= 97 && EDI_textByteList.bytes[i] <= 122) || (EDI_textByteList.bytes[i] >= 65 && EDI_textByteList.bytes[i] <= 90) || (EDI_textByteList.bytes[i] >= 48 && EDI_textByteList.bytes[i] <= 57) || (EDI_textByteList.bytes[i] === 95))) {
+					while (i < EDI_textByteList_count) { // move pos to next NON(letterOrDigit) or EOF
+            			if (!((EDI_textByteList_bytes[i] >= 97 && EDI_textByteList_bytes[i] <= 122) || (EDI_textByteList_bytes[i] >= 65 && EDI_textByteList_bytes[i] <= 90) || (EDI_textByteList_bytes[i] >= 48 && EDI_textByteList_bytes[i] <= 57) || (EDI_textByteList_bytes[i] === 95))) {
             				i--; // backtrack by one due to outer for loop's incrementation step
             				break;
             			}
@@ -4861,8 +4861,8 @@ function EDI_findOverlay_doSearch() {
 				}
 			}
 			else {
-				while (i < EDI_textByteList.count) { // move pos to next letterOrDigit or EOF
-        			if ((EDI_textByteList.bytes[i] >= 97 && EDI_textByteList.bytes[i] <= 122) || (EDI_textByteList.bytes[i] >= 65 && EDI_textByteList.bytes[i] <= 90) || (EDI_textByteList.bytes[i] >= 48 && EDI_textByteList.bytes[i] <= 57) || (EDI_textByteList.bytes[i] === 95)) {
+				while (i < EDI_textByteList_count) { // move pos to next letterOrDigit or EOF
+        			if ((EDI_textByteList_bytes[i] >= 97 && EDI_textByteList_bytes[i] <= 122) || (EDI_textByteList_bytes[i] >= 65 && EDI_textByteList_bytes[i] <= 90) || (EDI_textByteList_bytes[i] >= 48 && EDI_textByteList_bytes[i] <= 57) || (EDI_textByteList_bytes[i] === 95)) {
         				i--; // backtrack by one due to outer for loop's incrementation step
         				break;
         			}
@@ -4872,8 +4872,8 @@ function EDI_findOverlay_doSearch() {
 	    }
     }
     else {
-    	for (let i = 0; i < EDI_textByteList.count; i++) {
-	        if (EDI_textByteList.bytes[i] === searchEncoded[offset]) {
+    	for (let i = 0; i < EDI_textByteList_count; i++) {
+	        if (EDI_textByteList_bytes[i] === searchEncoded[offset]) {
 	            if (offset === 0) {
 	                posStartOfMatch = i;
 	            }
@@ -5073,7 +5073,7 @@ function EDI_btnPrev_onclick(/*event*/) {
     let index = current - 1;
     if (index >= 0 && index < total && index < EDI_findOverlay_searchResultPositionList.count) {
         let pos = EDI_findOverlay_searchResultPositionList.data[index];
-        if (pos <= EDI_textByteList.count) {
+        if (pos <= EDI_textByteList_count) {
             EDI_moveCursor_position(pos);
         }
     }
@@ -5103,7 +5103,7 @@ function EDI_btnNext_onclick() {
     let index = current - 1;
     if (index >= 0 && index < total && index < EDI_findOverlay_searchResultPositionList.count) {
         let pos = EDI_findOverlay_searchResultPositionList.data[index];
-        if (pos <= EDI_textByteList.count) {
+        if (pos <= EDI_textByteList_count) {
             EDI_moveCursor_position(pos);
         }
     }
@@ -5466,7 +5466,7 @@ async function EDI_copySelection() {
         small = selectionEnd;
         large = selectionAnchor;
     }
-    return window.myAPI.editorSetClipboard(EDI_textByteList.bytes, small, large - small, EDI_lineEndString);
+    return window.myAPI.editorSetClipboard(EDI_textByteList_bytes, small, large - small, EDI_lineEndString);
 }
 
 /**
@@ -5533,7 +5533,7 @@ function EDI_render_do_DuplicateOrPaste() {
 
         // TODO: re-use the paste byte array
         if (INTS[fEDI_cursor_editKind] === EditKind_Duplicate) {
-            byteArray = EDI_textByteList.bytes.subarray(small, large);
+            byteArray = EDI_textByteList_bytes.subarray(small, large);
         }
         else if (INTS[fEDI_cursor_editKind] === EditKind_Paste) {
             large = EDI_getPositionIndex_raw_cursor();
@@ -7602,7 +7602,7 @@ function EDI_decode_textonly(start, length) {
 
     let end = start + length;
 	
-	let bytes = EDI_textByteList.bytes;
+	let bytes = EDI_textByteList_bytes;
 	
 	if (length <= 0) {
 		return '';
@@ -7947,7 +7947,7 @@ function PLAINTEXT_line_lex(div, substart, lineEnd, childIndex) {
     let length = 0;
     let pos = substart;
 
-    let bytes = EDI_textByteList.bytes;
+    let bytes = EDI_textByteList_bytes;
 
     while (pos < lineEnd) {
         length++;
@@ -7965,7 +7965,7 @@ function PLAINTEXT_line_lex(div, substart, lineEnd, childIndex) {
             div.appendChild(span);
             childIndex++;
         }
-        span.textContent = EDI_decoder.decode(EDI_textByteList.bytes.subarray(substart, substart + length));
+        span.textContent = EDI_decoder.decode(EDI_textByteList_bytes.subarray(substart, substart + length));
     }
 
     return childIndex;
@@ -8208,9 +8208,9 @@ I want to get this done as soon as possible today.
 <     }
 < 
 <     // CRITICAL HOT LOOP OPTIMIZATION
-<     // Removed unnecessary aliasing of globals like EDI_decoder and EDI_textByteList.
+<     // Removed unnecessary aliasing of globals like EDI_decoder and EDI_textByteList_
 <     // Cached DOM structure variables to reduce property lookups inside the loop body.
-<     const textBytes = EDI_textByteList.bytes;
+<     const textBytes = EDI_textByteList_bytes;
 < 
 <     for (let indexLine = lowerBound; indexLine < upperBound; indexLine++) {
 <         

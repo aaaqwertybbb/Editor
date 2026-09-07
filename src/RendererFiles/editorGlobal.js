@@ -233,6 +233,33 @@ function EDI_textByteList_ensureCapacityForInsertion(index, count) {
         capacityPrevious = EDI_textByteList_capacity;
     }
 }
+function EDI_textByteList_ensureCapacityForInsertion_2(index, count) {
+    const requiredCapacity = Math.max(EDI_textByteList_count + count, index);
+    
+    // If we already have enough capacity, do absolutely nothing
+    if (requiredCapacity <= EDI_textByteList_capacity) {
+        return;
+    }
+
+    // Calculate the new capacity by doubling until it fits
+    let capacityNew = EDI_textByteList_capacity || 1; // Prevent infinite loops if capacity is 0
+    while (capacityNew < requiredCapacity) {
+        capacityNew *= 2;
+    }
+
+    // Safety check against integer overflow / negative bounds
+    if (capacityNew < EDI_textByteList_capacity) {
+        throw new Error('ensureCapacityForInsertion(...): Capacity overflowed or went negative');
+    }
+
+    // Allocate and copy EXACTLY ONCE
+    let bytesNew = new Uint8Array(capacityNew);
+    EDI_textByteList_copyTo(EDI_textByteList_bytes, 0, bytesNew, 0, EDI_textByteList_count);
+    
+    // Commit the changes to your global/module state
+    EDI_textByteList_bytes = bytesNew;
+    EDI_textByteList_capacity = capacityNew;
+}
 function EDI_textByteList_doubleCapacity() {
     let capacityNew = EDI_textByteList_capacity * 2;
     let bytesNew = new Uint8Array(capacityNew);
@@ -8834,6 +8861,46 @@ function EDI_textByteList_ensureCapacityForInsertion(index, count) {
 < 
 < If EDI_textByteList_copyTo is a custom JavaScript function iterating through bytes manually, we can optimize it even further.
 < Do you want to try replacing it with the built-in, native Use Uint8Array.prototype.set() for instant native-speed memory copying?
+
+> 'const requiredCapacity = Math.max(EDI_textByteList_count + count, index);'
+> 
+> Should this be:
+> 
+> 'const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count);'?
+> 
+> Reason being if your index to insert at is too large, you'd still need to possibly insert more than 1 character.
+
+< You caught a very important detail, but the exact formula depends on how your index variable behaves during an insertion.
+<
+< 1. If you are inserting count items at an existing index
+< If you are inserting data into the middle or at the end of the current valid elements, index will always be less than or equal to EDI_textByteList_count.
+< - In this case, EDI_textByteList_count + count is always the largest number.
+< - Neither index nor index + count will ever exceed it, making the Math.max check only protect against out-of-bounds index parameters.
+<
+< 2. If you allow "Sparse" insertions (Inserting past the current count)
+< If your editor allows an insertion at an index far beyond the current count (leaving empty uninitialized gaps in the byte array), then your original logic handles it like this:
+< Your original code checked:
+< ```js
+else if (index >= EDI_textByteList_capacity)
+< ```
+<
+< This means the original code only cared if the starting index itself was out of bounds, without accounting for the width of the insertion (count) from that starting point.
+<
+< Therefore, if you want to support sparse insertions safely, your formula should actually be:
+<
+< ```js
+const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count);
+< ```
+<
+< Direct Comparison of Scenarios
+< ...
+<
+< If your editor logic guarantees that index <= EDI_textByteList_count before this function is called, you can drop the Math.max and index checks entirely and
+< simply use const requiredCapacity = EDI_textByteList_count + count; for the cleanest, fastest hot-path execution.
+<
+< Does your text editor allow sparse insertions (where index > EDI_textByteList_count), or are insertions always sequential/contiguous up to the current count?
+<
+< If you'd like, we can also look at optimizing how you shift the existing bytes over to make room for the insertion.
 
 
 */

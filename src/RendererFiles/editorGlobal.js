@@ -8755,4 +8755,85 @@ TODO: 'ensureCapacityForInsertion':
 - [ ] (class TrackedSyntaxList).ensureCapacityForInsertion
 - [ ] (class TreeViewNodeList).ensureCapacityForInsertion
 
+I'm extremely tired I'm gonna give it to Google AI and see what it does.
+
+> rewrite this to avoid the wasteful re-copying of each EDI_textByteList_doubleCapacity() invocation.
+> 
+> function EDI_textByteList_ensureCapacityForInsertion(index, count) {
+>     let capacityPrevious = EDI_textByteList_capacity;
+>     while (true) {
+>         if (EDI_textByteList_count + count > EDI_textByteList_capacity) {
+>             EDI_textByteList_doubleCapacity();
+>         }
+>         else if (index >= EDI_textByteList_capacity) {
+>             EDI_textByteList_doubleCapacity();
+>         }
+>         else {
+>             break;
+>         }
+> 
+>         if (EDI_textByteList_capacity === capacityPrevious) {
+>             break;
+>         }
+>         if (EDI_textByteList_capacity < capacityPrevious) {
+>             throw new Error('ensureCapacityForInsertion(...): EDI_textByteList_capacity < capacityPrevious');
+>         }
+> 
+>         capacityPrevious = EDI_textByteList_capacity;
+>     }
+> }
+> function EDI_textByteList_doubleCapacity() {
+>     let capacityNew = EDI_textByteList_capacity * 2;
+>     let bytesNew = new Uint8Array(capacityNew);
+>     EDI_textByteList_copyTo(EDI_textByteList_bytes, 0, bytesNew, 0, EDI_textByteList_count);
+>     EDI_textByteList_bytes = bytesNew;
+>     EDI_textByteList_capacity = capacityNew;
+> }
+
+< To eliminate the wasteful re-copying, we can calculate the exact target capacity needed up front using a mathematical loop or bitwise math,
+< and then perform exactly one resize and copy operation at the very end.
+<
+< Here is the rewritten, optimized version:
+<
+< ```js
+function EDI_textByteList_ensureCapacityForInsertion(index, count) {
+    const requiredCapacity = Math.max(EDI_textByteList_count + count, index);
+    
+    // If we already have enough capacity, do absolutely nothing
+    if (requiredCapacity <= EDI_textByteList_capacity) {
+        return;
+    }
+
+    // Calculate the new capacity by doubling until it fits
+    let capacityNew = EDI_textByteList_capacity || 1; // Prevent infinite loops if capacity is 0
+    while (capacityNew < requiredCapacity) {
+        capacityNew *= 2;
+    }
+
+    // Safety check against integer overflow / negative bounds
+    if (capacityNew < EDI_textByteList_capacity) {
+        throw new Error('ensureCapacityForInsertion(...): Capacity overflowed or went negative');
+    }
+
+    // Allocate and copy EXACTLY ONCE
+    let bytesNew = new Uint8Array(capacityNew);
+    EDI_textByteList_copyTo(EDI_textByteList_bytes, 0, bytesNew, 0, EDI_textByteList_count);
+    
+    // Commit the changes to your global/module state
+    EDI_textByteList_bytes = bytesNew;
+    EDI_textByteList_capacity = capacityNew;
+}
+< ```
+<
+< Why this is significantly faster for V8:
+< - Removes Intermediate Array Allocations: If you inserted 1000 elements into a list with a capacity of 8, your original loop would allocate,
+    copy, and immediately discard arrays of size 16, 32, 64, 128, 256, 512, and 1024. This triggers massive Garbage Collection pressure.
+    The new version skips straight to 1024.
+< - Single JIT-Optimizable Copy: Modern engines can highly optimize TypedArray copies (often compiled down to a single raw CPU memcpy instruction).
+    Running that instruction once instead of inside a progressive loop saves a massive amount of overhead.
+< 
+< If EDI_textByteList_copyTo is a custom JavaScript function iterating through bytes manually, we can optimize it even further.
+< Do you want to try replacing it with the built-in, native Use Uint8Array.prototype.set() for instant native-speed memory copying?
+
+
 */

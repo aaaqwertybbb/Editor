@@ -8956,4 +8956,6 @@ and then you go out in the full eheat of the day
 and take the rtrash to thte dumpster
 and that makes you sweat like crazy then you go back i n walk in cooler
 
+This is what's going on in my mind though like circularly all day and I am losing my mind I can't stop thinking about this
+
 */

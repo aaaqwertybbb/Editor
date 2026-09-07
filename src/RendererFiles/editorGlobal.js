@@ -8747,6 +8747,7 @@ function EDI_render_do(timestamp) {
 ============
 
 TODO: 'ensureCapacityForInsertion':
+    "// TODO: what??? do you have to allocate and copy over and over like this? can you make a variable and check if the variable hits > and only then you allocate and copy?"
 - [ ] EDI_textByteList_ensureCapacityForInsertion
 - [ ] EDI_lineEndPositionList_ensureCapacityForInsertion
 - [ ] (class ByteList).ensureCapacityForInsertion

@@ -143,7 +143,7 @@ let EDI_textByteList_capacity = 1024;
 let EDI_textByteList_bytes = new Uint8Array(EDI_textByteList_capacity);
 let EDI_textByteList_count = 0;
 /**
- * Does not clear the information, only sets 'this.count' to '0'.
+ * Does not clear the information, only sets 'EDI_textByteList_count' to '0'.
  */
 function EDI_textByteList_clear() {
     EDI_textByteList_count = 0;
@@ -154,45 +154,45 @@ function EDI_textByteList_clear() {
 function EDI_textByteList_insert(index, byte) {
     EDI_textByteList_ensureCapacityForInsertion(index, 1);
 
-    if (index !== this.count) {
-        this.copyTo(this.bytes, index, this.bytes, index + 1, this.count - index);
+    if (index !== EDI_textByteList_count) {
+        EDI_textByteList_copyTo(EDI_textByteList_bytes, index, EDI_textByteList_bytes, index + 1, EDI_textByteList_count - index);
     }
 
-    this.bytes[index] = byte;
+    EDI_textByteList_bytes[index] = byte;
 
-    this.count++;
+    EDI_textByteList_count++;
 }
 function EDI_textByteList_insertString(index, string, encoder) {
-    this.ensureCapacityForInsertion(index, string.length);
+    EDI_textByteList_ensureCapacityForInsertion(index, string.length);
 
-    if (index !== this.count) {
-        this.copyTo(this.bytes, index, this.bytes, index + string.length, this.count - index);
+    if (index !== EDI_textByteList_count) {
+        EDI_textByteList_copyTo(EDI_textByteList_bytes, index, EDI_textByteList_bytes, index + string.length, EDI_textByteList_count - index);
     }
 
     for (var i = 0; i < string.length; i++) {
-        this.bytes[index + i] = encoder.encode(string[i]);
+        EDI_textByteList_bytes[index + i] = encoder.encode(string[i]);
     }
 
-    this.count += string.length;
+    EDI_textByteList_count += string.length;
 }
 /**
  * @param {number} index 
- * @param {Uint8Array} incomingBs the incoming bytes, name avoids confusion with this.bytes
+ * @param {Uint8Array} incomingBs the incoming bytes, name avoids confusion with EDI_textByteList_bytes
  * @param {number} offset the offset to begin reading from
  * @param {number} length the amount of bytes to read
  */
 function EDI_textByteList_insertBytes(index, incomingBs, offset, length) {
-    this.ensureCapacityForInsertion(index, length);
+    EDI_textByteList_ensureCapacityForInsertion(index, length);
 
-    if (index !== this.count) {
-        this.copyTo(this.bytes, index, this.bytes, index + length, this.count - index);
+    if (index !== EDI_textByteList_count) {
+        EDI_textByteList_copyTo(EDI_textByteList_bytes, index, EDI_textByteList_bytes, index + length, EDI_textByteList_count - index);
     }
 
     for (var i = 0; i < length; i++) {
-        this.bytes[index + i] = incomingBs[offset + i];
+        EDI_textByteList_bytes[index + i] = incomingBs[offset + i];
     }
 
-    this.count += length;
+    EDI_textByteList_count += length;
 }
 /**
  * Does not clear trailing information.
@@ -200,31 +200,31 @@ function EDI_textByteList_insertBytes(index, incomingBs, offset, length) {
  * count === 0 immediately returns
  */
 function EDI_textByteList_removeAt(index, count) {
-    if (index > this.count) { throw new Error('removeAt(...): index > this.count'); }
-    if (index + count > this.count) { throw new Error('removeAt(...): index + count > this.count'); }
+    if (index > EDI_textByteList_count) { throw new Error('removeAt(...): index > EDI_textByteList_count'); }
+    if (index + count > EDI_textByteList_count) { throw new Error('removeAt(...): index + count > EDI_textByteList_count'); }
     if (count === 0) { return; }
 
-    if (index + count === this.count) {
-        let shiftableCount = this.count - (index + count);
+    if (index + count === EDI_textByteList_count) {
+        let shiftableCount = EDI_textByteList_count - (index + count);
         if (shiftableCount > 0) {
-            this.copyTo(
-                this.bytes,
+            EDI_textByteList_copyTo(
+                EDI_textByteList_bytes,
                 index + count,
-                this.bytes,
+                EDI_textByteList_bytes,
                 index,
                 shiftableCount);
         }
     }
     else {
-        this.copyTo(
-            this.bytes,
+        EDI_textByteList_copyTo(
+            EDI_textByteList_bytes,
             index + count,
-            this.bytes,
+            EDI_textByteList_bytes,
             index,
-            this.count - (index + count));
+            EDI_textByteList_count - (index + count));
     }
 
-    this.count -= count;
+    EDI_textByteList_count -= count;
 }
 /**
  * 
@@ -245,15 +245,15 @@ function EDI_textByteList_duplicateWithin(sourceStart, destinationStart, length)
         throw new Error('TODO: sourceStart + length > destinationStart');
     }
 
-    this.ensureCapacityForInsertion(destinationStart, length);
+    EDI_textByteList_ensureCapacityForInsertion(destinationStart, length);
 
-    if (destinationStart !== this.count) {
-        this.copyTo(this.bytes, destinationStart, this.bytes, destinationStart + length, this.count - destinationStart);
+    if (destinationStart !== EDI_textByteList_count) {
+        EDI_textByteList_copyTo(EDI_textByteList_bytes, destinationStart, EDI_textByteList_bytes, destinationStart + length, EDI_textByteList_count - destinationStart);
     }
 
-    this.copyTo(this.bytes, sourceStart, this.bytes, destinationStart, length);
+    EDI_textByteList_copyTo(EDI_textByteList_bytes, sourceStart, EDI_textByteList_bytes, destinationStart, length);
 
-    this.count += length;
+    EDI_textByteList_count += length;
 }
 /**
  * - If the size asked for cannot be allocated, an exception will be thrown. (presumably the wording "thrown by the runtime" is involved.)
@@ -264,45 +264,45 @@ function EDI_textByteList_duplicateWithin(sourceStart, destinationStart, length)
  *         And failure to catch that case if it happens is an infinite loop.
  */
 function EDI_textByteList_ensureCapacityForInsertion(index, count) {
-    let capacityPrevious = this.capacity;
+    let capacityPrevious = EDI_textByteList_capacity;
     while (true) {
-        if (this.count + count > this.capacity) {
-            this.doubleCapacity();
+        if (EDI_textByteList_count + count > EDI_textByteList_capacity) {
+            EDI_textByteList_doubleCapacity();
         }
-        else if (index >= this.capacity) {
-            this.doubleCapacity();
+        else if (index >= EDI_textByteList_capacity) {
+            EDI_textByteList_doubleCapacity();
         }
         else {
             break;
         }
 
-        if (this.capacity === capacityPrevious) {
+        if (EDI_textByteList_capacity === capacityPrevious) {
             break;
         }
-        if (this.capacity < capacityPrevious) {
-            throw new Error('ensureCapacityForInsertion(...): this.capacity < capacityPrevious');
+        if (EDI_textByteList_capacity < capacityPrevious) {
+            throw new Error('ensureCapacityForInsertion(...): EDI_textByteList_capacity < capacityPrevious');
         }
 
-        capacityPrevious = this.capacity;
+        capacityPrevious = EDI_textByteList_capacity;
     }
 }
 function EDI_textByteList_doubleCapacity() {
-    let capacityNew = this.capacity * 2;
+    let capacityNew = EDI_textByteList_capacity * 2;
     let bytesNew = new Uint8Array(capacityNew);
-    this.copyTo(this.bytes, 0, bytesNew, 0, this.count);
-    this.bytes = bytesNew;
-    this.capacity = capacityNew;
+    EDI_textByteList_copyTo(EDI_textByteList_bytes, 0, bytesNew, 0, EDI_textByteList_count);
+    EDI_textByteList_bytes = bytesNew;
+    EDI_textByteList_capacity = capacityNew;
 }
 /**
  * inclusive/exclusive
  */
 function EDI_textByteList_copyTo(bytesSource, sourceStart, bytesDestination, destinationStart, length) {
     if (bytesSource === bytesDestination) {
-        if (bytesSource !== this.bytes) {
-            throw new Error('bytesSource === bytesDestination ; but bytesSource !== this');
+        if (bytesSource !== EDI_textByteList_bytes) {
+            throw new Error('bytesSource === bytesDestination ; but bytesSource !== EDI_textByteList_bytes');
         }
 
-        this.bytes.copyWithin(destinationStart, sourceStart, sourceStart + length);
+        EDI_textByteList_bytes.copyWithin(destinationStart, sourceStart, sourceStart + length);
     }
     else {
         // TODO: use 'set' method here and other such locations

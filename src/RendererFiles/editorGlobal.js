@@ -341,22 +341,11 @@ EDI_on_tab_bytes[3] = 0;
  */
 const EDI_lineEndPositionList_PENDING = new UInt32List(128);
 
+let EDI_lineEndPositionList_capacity = 128;
 /**
  * IMPORTANT: use EDI_readLineEndPositionList(...) rather than indexing into this directly...
  * ...due to the possibility of pending edits.
  */
-const EDI_lineEndPositionList = new UInt32List(128);
-
-/*
-EDI_lineEndPositionList_capacity = initialCapacity;
-EDI_lineEndPositionList_data
-EDI_lineEndPositionList_clear()
-EDI_lineEndPositionList_count
-EDI_lineEndPositionList_insert()
-EDI_lineEndPositionList_removeAt()
-*/
-
-let EDI_lineEndPositionList_capacity = 128;
 let EDI_lineEndPositionList_data = new Uint32Array(EDI_lineEndPositionList_capacity);
 let EDI_lineEndPositionList_count = 0;
 /**

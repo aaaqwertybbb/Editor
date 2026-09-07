@@ -1,4 +1,4 @@
-/** TODO: Remove this class (paste logic still uses it) */
+/** TODO: Remove this class (enter key logic still uses it) */
 class ByteList {
     bytes;
     capacity;

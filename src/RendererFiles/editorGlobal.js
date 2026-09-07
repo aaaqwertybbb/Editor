@@ -86,17 +86,6 @@ const EDI_trackedSyntaxList = new TrackedSyntaxList(32);
  */
 let EDI_findOverlay_searchResultPositionList = null;
 
-/*
-this.capacity = initialCapacity;
-EDI_textByteList_bytes
-EDI_textByteList_clear()
-EDI_textByteList_count
-EDI_textByteList_insert
-EDI_textByteList_insertBytes
-EDI_textByteList_removeAt
-EDI_textByteList_duplicateWithin
-*/
-
 let EDI_textByteList_capacity = 1024;
 let EDI_textByteList_bytes = new Uint8Array(EDI_textByteList_capacity);
 let EDI_textByteList_count = 0;

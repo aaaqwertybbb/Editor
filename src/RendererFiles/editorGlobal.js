@@ -468,6 +468,7 @@ function EDI_lineEndPositionList_removeAt(index, count) {
  */
 function EDI_lineEndPositionList_ensureCapacityForInsertion(index, count) {
     let capacityPrevious = this.capacity;
+    // TODO: what??? do you have to allocate and copy over and over like this? can you make a variable and check if the variable hits > and only then you allocate and copy?
     while (true) {
         if (this.count + count > this.capacity) {
             this.doubleCapacity();

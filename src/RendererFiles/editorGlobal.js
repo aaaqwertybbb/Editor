@@ -8973,4 +8973,6 @@ The thought process is that nobody would ever find me attractive or something
 
 But then like why does that even make the difference or something? I don;t know
 
+"nobody asked"
+
 */

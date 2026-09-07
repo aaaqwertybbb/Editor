@@ -8933,46 +8933,4 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
 < If you'd like, we can also look at optimizing how you shift the existing bytes over to make room for the insertion.
 
 
-This is probably gonna be seen as a super cringy song but I'm listening to Krewella - Anxiety right now.
-I'm trippin ong fr
-
-"Brennan Heart -Don't speak (Full)"
-
-I see this a ton and I don't think I want to have this get big
-cause I'm being recommended it because I say things like what I said this morning
-and you think if I didn't then this repo would have more attention
-
-I think this repo having too much attention would be the worst thing for me.
-
-I'm barely hanging on sometimes it wouldn't go well
-
-Would working in a walk in cooler cause me to get acne?
-
-It's decently physically active to the point where you are sweating in a below 30 degree fahrenheit walk in cooler
-for 2-3 hours and you constantly are going back and forth to the garbage to clear it all for the other employees that are doing food
-so you go and you take a middle-man trashbin that has wheels and is small everyone puts their stuff in that it's by the back
-then you come out the cooler full geared up for the below 30 degree fahrenheit weeather
-and then you go out in the full eheat of the day
-and take the rtrash to thte dumpster
-and that makes you sweat like crazy then you go back i n walk in cooler
-
-This is what's going on in my mind though like circularly all day and I am losing my mind I can't stop thinking about this
-
-I have some acne scars and stretch marks that make me think I have nothing to live for.
-It's super weird.
-
-And I wasn't kidding about what I did when I cut myself.
-I'm scared about that. That something is going wrong all this time.
-
-Or that I have an STD or sti or something and it is dormant in me
-
-I have 0 proof of that but I think about it constatntly
-
-"make me think I have nothing to live for"
-The thought process is that nobody would ever find me attractive or something
-
-But then like why does that even make the difference or something? I don;t know
-
-"nobody asked"
-
 */

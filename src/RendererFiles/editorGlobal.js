@@ -292,6 +292,8 @@ function EDI_render_do(timestamp) {
 
     // TODO: Could combining the low frequency RenderKinds somehow such that they invoke another intermediate function that then does a switch within it...
     // ...as a means of reducing the stackframe size of the function, be performance impactful?
+    //
+    // TODO: (Google AI) Would you like to look at replacing the .shift() loop with an O(1) ring buffer/pointer implementation
     while (renderKind = EDI_renderKindArray.shift()) {
         switch (renderKind) {
             case RenderKind_Scroll:

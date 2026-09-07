@@ -18,8 +18,6 @@ let DIALOG_SHOW_onResizeAction = null;
 
 const DIALOG_renderKindArray = [];
 
-//let DIALOG_ArrayFrom_menuOptionList_children = [];
-
 const DIALOGrenderKind_None = 0;
 const DIALOGrenderKind_Show = 1;
 const DIALOGrenderKind_Hide = 2;

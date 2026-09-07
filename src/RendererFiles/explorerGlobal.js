@@ -135,18 +135,16 @@ function EXPLORER_setChosenWorkspace(chooseWorkspaceResult) {
 }
 
 function EXPLORER_render_do_ScrollTrailingEdgeCheck(timestamp) {
-    // If the scroll deadline hasn't been met yet, keep checking on the next frame
     if (timestamp < INTS[fEXPLORER_scrollEndDeadline]) {
         requestAnimationFrame(EXPLORER_render_do_ScrollTrailingEdgeCheck);
         return;
     }
 
-    // The 1,000ms has passed! Fire your trailing edge logic safely
     EXPLORER_drawItem_BATCH_trailingEdge();
 }
 
 function EXPLORER_drawItem_BATCH_trailingEdge() {
-    BYTES[byteEXPLORER_isCheckingTrailingEdge] = 0; // Reset the flag here
+    BYTES[byteEXPLORER_isCheckingTrailingEdge] = 0;
     if (!BYTES[byteEXPLORER_scrollIsFetchingData]) {
         BYTES[byteEXPLORER_scrollIsFetchingData] = 1;
         EXPLORER_drawItem_BATCH_pullData(); // no await

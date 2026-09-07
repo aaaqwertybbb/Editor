@@ -396,11 +396,11 @@ const EDI_lineEndPositionList = new UInt32List(128);
 
 /*
 EDI_lineEndPositionList_capacity = initialCapacity;
-EDI_lineEndPositionList.data
-EDI_lineEndPositionList.clear()
-EDI_lineEndPositionList.count
-EDI_lineEndPositionList.insert()
-EDI_lineEndPositionList.removeAt()
+EDI_lineEndPositionList_data
+EDI_lineEndPositionList_clear()
+EDI_lineEndPositionList_count
+EDI_lineEndPositionList_insert()
+EDI_lineEndPositionList_removeAt()
 */
 
 let EDI_lineEndPositionList_capacity = 128;
@@ -852,7 +852,7 @@ function EDI_render_do_CreateViewport() {
         const indexLine = i + INTS[fEDI_virtualIndexLine];
 
         const gutterLineElement = document.createElement('div');
-        if (indexLine >= EDI_lineEndPositionList.count) {
+        if (indexLine >= EDI_lineEndPositionList_count) {
             gutterLineElement.textContent = '~';
         }
         else {
@@ -1009,8 +1009,8 @@ function EDI_render_do_Scroll(timestamp) {
         ringBufferIndex = INTS[fEDI_ringBuffer_indexZero] - 1/*This decrement avoids that.*/;
     }
 
-    const EDI_lineEndPositionList_data = EDI_lineEndPositionList.data;
-    const EDI_lineEndPositionList_count = EDI_lineEndPositionList.count;
+    const EDI_lineEndPositionList_data = EDI_lineEndPositionList_data;
+    const EDI_lineEndPositionList_count = EDI_lineEndPositionList_count;
 
     // If you intend to use the variables 'lineStart' or 'lineEnd': Important detail to consider: the lines that are >= EDI_lineEndPositionList_count will continually increment lineStart by 1 So if you expect this to accurately represent the EOF position when it is in view, it probably does NOT.
     let lineStart = 0;
@@ -1188,8 +1188,8 @@ function EDI_onScroll_TrailingEdge() {
  * - [ ] TODO: There is something in this method that is decently pointless overhead relating to...:
  *     - An empty line, a line only consisting of whitespace, or a line that is indented.
  *         - ...this one is perhaps less obvious from a non-branching perspective. And perhaps even just adding a conditional branch that avoids invoking 'JS_line_lex_newVersion' in this case is worthwhile.
- *     - A line that is out of bounds of 'indexLine < EDI_lineEndPositionList.count'
- *         - ...consider separating the loop bounds in some way to remove conditional branches related to 'if (indexLine < EDI_lineEndPositionList.count)'
+ *     - A line that is out of bounds of 'indexLine < EDI_lineEndPositionList_count'
+ *         - ...consider separating the loop bounds in some way to remove conditional branches related to 'if (indexLine < EDI_lineEndPositionList_count)'
  * 
  * ===
 */
@@ -1239,8 +1239,8 @@ function EDI_render_do_SyntaxHighlighting() {
         }
     }
 
-    const local_EDI_lineEndPositionList_data = EDI_lineEndPositionList.data;
-    const local_EDI_lineEndPositionList_count = EDI_lineEndPositionList.count;
+    const local_EDI_lineEndPositionList_data = EDI_lineEndPositionList_data;
+    const local_EDI_lineEndPositionList_count = EDI_lineEndPositionList_count;
 
     // If you intend to use the variables 'lineStart' or 'lineEnd': Important detail to consider: the lines that are >= EDI_lineEndPositionList_count will continually increment lineStart by 1 So if you expect this to accurately represent the EOF position when it is in view, it probably does NOT.
     let lineStart = 0;
@@ -1293,7 +1293,7 @@ function EDI_state_clear() {
     BYTES[byteEDI_extensionKind] = ExtensionKind_None;
     set_EDI_fileStartsWithBom(false);
     EDI_lineEndString = null;
-    EDI_lineEndPositionList.clear();
+    EDI_lineEndPositionList_clear();
     EDI_textByteList_clear();
     INTS[fEDI_longestLine_indexLine] = 0;
     INTS[fEDI_longestLine_length] = 0;
@@ -1328,7 +1328,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     //          "local alias" of the 'global scope' variable because now it points to the 'module scope' and is very optimized.)
     EDI_lineEndString = lineEndString;
 
-    let EDI_lineEndPositionList_count = EDI_lineEndPositionList.count;
+    let EDI_lineEndPositionList_count = EDI_lineEndPositionList_count;
     let local_EDI_textByteList_count = EDI_textByteList_count;
 
     /**
@@ -1365,7 +1365,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
                     INTS[fEDI_longestLine_indexLine] = EDI_lineEndPositionList_count;
                 }
                 lineLength = 0;
-                EDI_lineEndPositionList.insert(EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
+                EDI_lineEndPositionList_insert(EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
                 EDI_textByteList_insert(local_EDI_textByteList_count++, CONST_EDI_ASCII_LINE_FEED);
                 break;
             case CONST_EDI_ASCII_LINE_FEED:
@@ -1377,7 +1377,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
                     INTS[fEDI_longestLine_indexLine] = EDI_lineEndPositionList_count;
                 }
                 lineLength = 0;
-                EDI_lineEndPositionList.insert(EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
+                EDI_lineEndPositionList_insert(EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
                 EDI_textByteList_insert(local_EDI_textByteList_count++, CONST_EDI_ASCII_LINE_FEED);
                 break;
             case CONST_EDI_ASCII_TAB:
@@ -1399,7 +1399,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     }
 
     // TODO: The ++ here "isn't needed" but it makes the code consistent and less prone to future mistakes should another access of 'EDI_lineEndPositionList_count' be made after this point in the future.
-    EDI_lineEndPositionList.insert(EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
+    EDI_lineEndPositionList_insert(EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
 
     update_VirtualIndexLine();
     update_virtualCount();
@@ -1434,12 +1434,12 @@ function EDI_setText(text, fileStartsWithBom, textSourceIdentifier, FORMATTED_te
 }
 
 /**
- * You may want to update the vertical virtualization boundary prior to actually updating the EDI_lineEndPositionList.
- * Thus this function takes a 'lineCount' which defaults to EDI_lineEndPositionList.count if falsey.
- * @param {number | null | undefined} lineCount In order to permit arbitrarily updating the vertical virtualization boundary, this takes a lineCount. If falsey, then EDI_lineEndPositionList.count is used.
+ * You may want to update the vertical virtualization boundary prior to actually updating the EDI_lineEndPositionList_
+ * Thus this function takes a 'lineCount' which defaults to EDI_lineEndPositionList_count if falsey.
+ * @param {number | null | undefined} lineCount In order to permit arbitrarily updating the vertical virtualization boundary, this takes a lineCount. If falsey, then EDI_lineEndPositionList_count is used.
  */
 function update_verticalVirtualizationBoundary(lineCount) {
-    if (!lineCount) lineCount = EDI_lineEndPositionList.count;
+    if (!lineCount) lineCount = EDI_lineEndPositionList_count;
     EDI_virtualization_vertical.style.height = ((lineCount + INTS[fEDI_virtualCount] - 1) * INTS[fEDI_lineHeight]) + 'px';
 }
 
@@ -1462,7 +1462,7 @@ function update_virtualCount() {
 }
 
 /**
- * If the 'INTS[fEDI_drawn_count_of_digits_longest_line_number] === positiveNumbersOnly_countDigitsLoop(EDI_lineEndPositionList.count)'
+ * If the 'INTS[fEDI_drawn_count_of_digits_longest_line_number] === positiveNumbersOnly_countDigitsLoop(EDI_lineEndPositionList_count)'
  * then the function does nothing.
  * 
  * TODO: Track the min and max until length changes and then only 2 operations at worst case than while
@@ -1477,7 +1477,7 @@ function update_virtualCount() {
  * The confusion, if there is any, comes from the dependent UI in some scenarios being required independently of whether drawGutter changes. And at other times they're solely dependent on whether drawGutter changes.
  */
 function EDI_drawGutter_Width() {
-    let count = EDI_lineEndPositionList.count;
+    let count = EDI_lineEndPositionList_count;
     if (BYTES[byteEDI_cursor_enterKeyEventKind] !== EnterKeyEventKind_None) {
         count += 1;
     }
@@ -1605,7 +1605,7 @@ function EDI_finalizeEdit() {
     // When gap buffer is finalized editor tries to redraw the line in order to lex it again.
     // You need to NOT do this when you are working with multiple cursors however, because it bugs everything out.
     // 
-    if (indexLine_editOccurredOn >= 0 && indexLine_editOccurredOn < EDI_lineEndPositionList.count) {
+    if (indexLine_editOccurredOn >= 0 && indexLine_editOccurredOn < EDI_lineEndPositionList_count) {
         if (EDI_gutter.children.length === INTS[fEDI_virtualCount] &&
             EDI_textElement.children.length === INTS[fEDI_virtualCount]) {
                 
@@ -1632,12 +1632,12 @@ function EDI_finalizeEdit() {
 }
 
 function EDI_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
-    for (let i = EDI_lineEndPositionList.count - 1; i >= 0; i--) {
-        if (INTS[fEDI_cursor_editPosition] <= EDI_lineEndPositionList.data[i]) {
-            EDI_lineEndPositionList.data[i] += INTS[fEDI_cursor_editLength];
+    for (let i = EDI_lineEndPositionList_count - 1; i >= 0; i--) {
+        if (INTS[fEDI_cursor_editPosition] <= EDI_lineEndPositionList_data[i]) {
+            EDI_lineEndPositionList_data[i] += INTS[fEDI_cursor_editLength];
         }
         else {
-            if (i === EDI_lineEndPositionList.count - 1) {
+            if (i === EDI_lineEndPositionList_count - 1) {
                 indexLine_editOccurredOn = i;
             }
             else {
@@ -1707,15 +1707,15 @@ function EDI_finalizeEdit_Enter(indexLine_editOccurredOn) {
 
     EDI_textByteList_insertBytes(INTS[fEDI_cursor_editPosition], EDI_cursor_enterKey_newLinePlusIndentation_byteList.bytes, /*offset*/ 0, EDI_cursor_enterKey_newLinePlusIndentation_byteList.count);
 
-    for (var i = INTS[fEDI_cursor_editIndexLine]; i < EDI_lineEndPositionList.count; i++) {
-        EDI_lineEndPositionList.data[i] += INTS[fEDI_cursor_editLength];
+    for (var i = INTS[fEDI_cursor_editIndexLine]; i < EDI_lineEndPositionList_count; i++) {
+        EDI_lineEndPositionList_data[i] += INTS[fEDI_cursor_editLength];
     }
 
     // You need to consider if the longest line gets split
     if (INTS[fEDI_cursor_editIndexLine] <= INTS[fEDI_longestLine_indexLine])
         INTS[fEDI_longestLine_indexLine] = INTS[fEDI_longestLine_indexLine] + 1;
 
-    EDI_lineEndPositionList.insert(INTS[fEDI_cursor_editIndexLine], INTS[fEDI_cursor_editPosition]);
+    EDI_lineEndPositionList_insert(INTS[fEDI_cursor_editIndexLine], INTS[fEDI_cursor_editPosition]);
 
     EDI_finalizeEdit_ClearEditState();
 
@@ -1744,8 +1744,8 @@ function EDI_finalizeEdit_Tab(indexLine_editOccurredOn) {
 
     EDI_textByteList_insertBytes(INTS[fEDI_cursor_editPosition], bytes, /*offset*/ 0, /*length*/ that_four);
 
-    for (var i = INTS[fEDI_cursor_editIndexLine]; i < EDI_lineEndPositionList.count; i++) {
-        EDI_lineEndPositionList.data[i] += that_four;
+    for (var i = INTS[fEDI_cursor_editIndexLine]; i < EDI_lineEndPositionList_count; i++) {
+        EDI_lineEndPositionList_data[i] += that_four;
     }
 
     EDI_finalizeEdit_ClearEditState();
@@ -1838,7 +1838,7 @@ function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
         EDI_textByteList_insertBytes(linePos.start, bytes, 0 /*offset*/, bytesLength /*length*/);
         
         // # Increment the entry in 'EDI_lineEndPositionList' for the respective line
-        EDI_lineEndPositionList.data[lineI] += incrementBy;
+        EDI_lineEndPositionList_data[lineI] += incrementBy;
 
         // # Each loop you reduce incrementBy, because you're initial starting the loop knowing you will eventually insert 4 characters on every line.
         //     # thus, the first iteration of the loop you're increasing that line's end position by the length of text inserted per line by the amount of lines.
@@ -1850,8 +1850,8 @@ function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
     ///////////
 
     // # Any line that is not part of the selected set of lines, and is at a greater indexLine, needs to have their line end position entry updated.
-    for (var lineI = startingIndex + 1; lineI < EDI_lineEndPositionList.count; lineI++) {
-        EDI_lineEndPositionList.data[lineI] += ORIGINAL_incrementBy;
+    for (var lineI = startingIndex + 1; lineI < EDI_lineEndPositionList_count; lineI++) {
+        EDI_lineEndPositionList_data[lineI] += ORIGINAL_incrementBy;
     }
 
     EDI_finalizeEdit_ClearEditState();
@@ -2108,13 +2108,13 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
         }
 
         EDI_textByteList_removeAt(linePos.start, innerRemoveCount);
-	    EDI_lineEndPositionList.data[lineI] -= decrementBy;
+	    EDI_lineEndPositionList_data[lineI] -= decrementBy;
 
         decrementBy -= innerRemoveCount;
     }
 
-    for (var lineI = startingIndex + 1; lineI < EDI_lineEndPositionList.count; lineI++) {
-        EDI_lineEndPositionList.data[lineI] -= ORIGINAL_decrementBy;
+    for (var lineI = startingIndex + 1; lineI < EDI_lineEndPositionList_count; lineI++) {
+        EDI_lineEndPositionList_data[lineI] -= ORIGINAL_decrementBy;
     }
 
     EDI_finalizeEdit_ClearEditState();
@@ -2140,7 +2140,7 @@ function EDI_finalizeEdit_Paste(indexLine_editOccurredOn) {
                 break;
             case CONST_EDI_ASCII_LINE_FEED:
                 EDI_textByteList_insert(INTS[fEDI_cursor_editPosition] + insertionLength, CONST_EDI_ASCII_LINE_FEED);
-                EDI_lineEndPositionList.insert(INTS[fEDI_cursor_editIndexLine] + linesInsertedCount, INTS[fEDI_cursor_editPosition] + insertionLength);
+                EDI_lineEndPositionList_insert(INTS[fEDI_cursor_editIndexLine] + linesInsertedCount, INTS[fEDI_cursor_editPosition] + insertionLength);
                 insertionLength++;
                 linesInsertedCount++;
                 break;
@@ -2149,7 +2149,7 @@ function EDI_finalizeEdit_Paste(indexLine_editOccurredOn) {
                     sourceI++;
                 }
                 EDI_textByteList_insert(INTS[fEDI_cursor_editPosition] + insertionLength, CONST_EDI_ASCII_LINE_FEED);
-                EDI_lineEndPositionList.insert(INTS[fEDI_cursor_editIndexLine] + linesInsertedCount, INTS[fEDI_cursor_editPosition] + insertionLength);
+                EDI_lineEndPositionList_insert(INTS[fEDI_cursor_editIndexLine] + linesInsertedCount, INTS[fEDI_cursor_editPosition] + insertionLength);
                 insertionLength++;
                 linesInsertedCount++;
                 break;
@@ -2160,8 +2160,8 @@ function EDI_finalizeEdit_Paste(indexLine_editOccurredOn) {
         }
     }
 
-    for (var i = INTS[fEDI_cursor_editIndexLine] + linesInsertedCount; i < EDI_lineEndPositionList.count; i++) {
-        EDI_lineEndPositionList.data[i] += insertionLength;
+    for (var i = INTS[fEDI_cursor_editIndexLine] + linesInsertedCount; i < EDI_lineEndPositionList_count; i++) {
+        EDI_lineEndPositionList_data[i] += insertionLength;
     }
 
     EDI_finalizeEdit_ClearEditState();
@@ -2194,7 +2194,7 @@ function EDI_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
                 insertionLength += 4; // TODO: (this is probably wrong given the context of duplicating you already would have '\t\0\0\0' so tab is (PROBABLY) just 1 insertion length in this context.) ??? I think this is copy pasted from 'paste' logic where the tab would change to 4 characters total, in the case of duplication you get what you select.
                 break;
             case CONST_EDI_ASCII_LINE_FEED:
-                EDI_lineEndPositionList.insert(INTS[fEDI_cursor_editIndexLine] + linesInsertedCount, INTS[fEDI_cursor_editPosition] + insertionLength);
+                EDI_lineEndPositionList_insert(INTS[fEDI_cursor_editIndexLine] + linesInsertedCount, INTS[fEDI_cursor_editPosition] + insertionLength);
                 insertionLength++;
                 linesInsertedCount++;
                 break;
@@ -2204,8 +2204,8 @@ function EDI_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
         }
     }
 
-    for (var i = INTS[fEDI_cursor_editIndexLine] + linesInsertedCount; i < EDI_lineEndPositionList.count; i++) {
-        EDI_lineEndPositionList.data[i] += insertionLength;
+    for (var i = INTS[fEDI_cursor_editIndexLine] + linesInsertedCount; i < EDI_lineEndPositionList_count; i++) {
+        EDI_lineEndPositionList_data[i] += insertionLength;
     }
 
     EDI_finalizeEdit_ClearEditState();
@@ -2254,15 +2254,15 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
             }
         }
         if (count > 0) {
-            EDI_lineEndPositionList.removeAt(lastMatchedIndexLine, count);
+            EDI_lineEndPositionList_removeAt(lastMatchedIndexLine, count);
         }
     }
-    for (let i = EDI_lineEndPositionList.count - 1; i >= 0; i--) {
-        if (INTS[fEDI_cursor_editPosition] < EDI_lineEndPositionList.data[i]) {
-            EDI_lineEndPositionList.data[i] -= INTS[fEDI_cursor_editLength];
+    for (let i = EDI_lineEndPositionList_count - 1; i >= 0; i--) {
+        if (INTS[fEDI_cursor_editPosition] < EDI_lineEndPositionList_data[i]) {
+            EDI_lineEndPositionList_data[i] -= INTS[fEDI_cursor_editLength];
         }
         else {
-            if (i === EDI_lineEndPositionList.count - 1) {
+            if (i === EDI_lineEndPositionList_count - 1) {
                 indexLine_editOccurredOn = i;
             }
             else {
@@ -2417,7 +2417,7 @@ function EDI_getFinalizedEditsAndRawSaveFileData(NOTfinalizePendingEdits) {
  * @returns {number} the last valid POSITION index on the line, but with respect to any pending edits.
  */
 function EDI_readLineEndPositionList(indexLine) {
-    let lineEndPositionIndex = EDI_lineEndPositionList.data[indexLine];
+    let lineEndPositionIndex = EDI_lineEndPositionList_data[indexLine];
 
     // If you need to determine the text without finalizing an edit, you DO have to loop forwards right?
     if (INTS[fEDI_cursor_editLength] > 0 && INTS[fEDI_cursor_editPosition] <= lineEndPositionIndex) {
@@ -2602,7 +2602,7 @@ function walkLineUntilIndexColumn() {
  * @param {HTMLElement} divElement 
  */
 function EDI_drawLine(indexLine, gutterLineElement, textLineElement) {
-    if (indexLine >= EDI_lineEndPositionList.count) {
+    if (indexLine >= EDI_lineEndPositionList_count) {
         gutterLineElement.textContent = '~';
     }
     else {
@@ -2764,7 +2764,7 @@ function EDI_drawCursor(NOTscrollCursorIntoView) {
  */
 function EDI_getLineAndColumnIndices_raw(positionIndex) {
     let left = 0;
-    let right = EDI_lineEndPositionList.count - 1;
+    let right = EDI_lineEndPositionList_count - 1;
 
     let indexLine = -1;
     let indexColumn = -1;
@@ -2772,16 +2772,16 @@ function EDI_getLineAndColumnIndices_raw(positionIndex) {
     while (left <= right) {
         const mid = Math.floor((left + right) / 2);
         
-        if (EDI_lineEndPositionList.data[mid] >= positionIndex) {
+        if (EDI_lineEndPositionList_data[mid] >= positionIndex) {
             indexLine = mid;
 
-            if (EDI_lineEndPositionList.data[mid] === positionIndex) {
+            if (EDI_lineEndPositionList_data[mid] === positionIndex) {
                 break;
             }
             
             right = mid - 1;
         }
-        else if (EDI_lineEndPositionList.data[mid] < positionIndex) {
+        else if (EDI_lineEndPositionList_data[mid] < positionIndex) {
             left = mid + 1;
         }
         else {
@@ -2801,7 +2801,7 @@ function EDI_getLineAndColumnIndices_raw(positionIndex) {
         indexColumn = positionIndex;
     }
     else {
-        indexColumn = positionIndex - (EDI_lineEndPositionList.data[indexLine - 1] + 1);
+        indexColumn = positionIndex - (EDI_lineEndPositionList_data[indexLine - 1] + 1);
     }
 
     INTS[fEDI_getLineAndColumnIndices_indexLine] = indexLine;
@@ -2817,7 +2817,7 @@ function EDI_getLineAndColumnIndices_raw(positionIndex) {
  */
 function EDI_getLineAndColumnIndices(positionIndex) {
     let left = 0;
-    let right = EDI_lineEndPositionList.count - 1;
+    let right = EDI_lineEndPositionList_count - 1;
 
     let indexLine = -1;
     let indexColumn = -1;
@@ -3050,7 +3050,7 @@ function EDI_createStyleForSelection_indentMore() {
 }
 
 function EDI_getLastValidIndexColumn(indexLine) {
-    if (indexLine < EDI_lineEndPositionList.count) {
+    if (indexLine < EDI_lineEndPositionList_count) {
         if (indexLine === 0) {
             return EDI_readLineEndPositionList(indexLine) - 0;
         }
@@ -3062,12 +3062,12 @@ function EDI_getLastValidIndexColumn(indexLine) {
 }
 
 function EDI_getLastValidIndexColumn_raw(indexLine) {
-    if (indexLine < EDI_lineEndPositionList.count) {
+    if (indexLine < EDI_lineEndPositionList_count) {
         if (indexLine === 0) {
-            return EDI_lineEndPositionList.data[indexLine] - 0;
+            return EDI_lineEndPositionList_data[indexLine] - 0;
         }
         else {
-            return EDI_lineEndPositionList.data[indexLine] - (EDI_lineEndPositionList.data[indexLine - 1] + 1);
+            return EDI_lineEndPositionList_data[indexLine] - (EDI_lineEndPositionList_data[indexLine - 1] + 1);
         }
     }
     return 0;
@@ -3088,7 +3088,7 @@ function EDI_getLastValidIndexColumn_raw(indexLine) {
  * TODO: Remove this function or move the output to two entries of 'INTS'
  */
 function EDI_getLineBoundaryPositions(indexLine) {
-    if (indexLine < EDI_lineEndPositionList.count) {
+    if (indexLine < EDI_lineEndPositionList_count) {
         if (indexLine === 0) {
             return {
                 start: 0,
@@ -3109,7 +3109,7 @@ function EDI_getLineBoundaryPositions(indexLine) {
 }
 
 function EDI_getLineStart_pos(indexLine) {
-    if (indexLine < EDI_lineEndPositionList.count) {
+    if (indexLine < EDI_lineEndPositionList_count) {
         if (indexLine === 0) {
             return 0;
         }
@@ -3121,7 +3121,7 @@ function EDI_getLineStart_pos(indexLine) {
 }
 
 function EDI_getLineEnd_pos(indexLine) {
-    if (indexLine < EDI_lineEndPositionList.count) {
+    if (indexLine < EDI_lineEndPositionList_count) {
         if (indexLine === 0) {
             return EDI_readLineEndPositionList(indexLine) - 0;
         }
@@ -3143,17 +3143,17 @@ function EDI_getLineEnd_pos(indexLine) {
  * @returns an object with properties 'start' inclusive, 'end' exclusive
  */
 function EDI_getLineBoundaryPositions_raw(indexLine) {
-    if (indexLine < EDI_lineEndPositionList.count) {
+    if (indexLine < EDI_lineEndPositionList_count) {
         if (indexLine === 0) {
             return {
                 start: 0,
-                end: EDI_lineEndPositionList.data[indexLine] - 0
+                end: EDI_lineEndPositionList_data[indexLine] - 0
             }
         }
         else {
             return {
-                start: (EDI_lineEndPositionList.data[indexLine - 1] + 1),
-                end: EDI_lineEndPositionList.data[indexLine]
+                start: (EDI_lineEndPositionList_data[indexLine - 1] + 1),
+                end: EDI_lineEndPositionList_data[indexLine]
             }
         }
     }
@@ -3164,24 +3164,24 @@ function EDI_getLineBoundaryPositions_raw(indexLine) {
 }
 
 function EDI_getLineStart_pos_raw(indexLine) {
-    if (indexLine < EDI_lineEndPositionList.count) {
+    if (indexLine < EDI_lineEndPositionList_count) {
         if (indexLine === 0) {
             return 0;
         }
         else {
-            return (EDI_lineEndPositionList.data[indexLine - 1] + 1);
+            return (EDI_lineEndPositionList_data[indexLine - 1] + 1);
         }
     }
     return 0;
 }
 
 function EDI_getLineEnd_pos_raw(indexLine) {
-    if (indexLine < EDI_lineEndPositionList.count) {
+    if (indexLine < EDI_lineEndPositionList_count) {
         if (indexLine === 0) {
-            return EDI_lineEndPositionList.data[indexLine] - 0;
+            return EDI_lineEndPositionList_data[indexLine] - 0;
         }
         else {
-            return EDI_lineEndPositionList.data[indexLine];
+            return EDI_lineEndPositionList_data[indexLine];
         }
     }
     return 0;
@@ -3206,8 +3206,8 @@ function EDI_onMouseMove_WRAPIT(event) {
             indexLine = 0;
         }
 
-        if (indexLine >= EDI_lineEndPositionList.count) {
-            indexLine = EDI_lineEndPositionList.count - 1;
+        if (indexLine >= EDI_lineEndPositionList_count) {
+            indexLine = EDI_lineEndPositionList_count - 1;
         }
 
         let lastValidIndexColumn = EDI_getLastValidIndexColumn(indexLine);
@@ -3517,7 +3517,7 @@ function EDI_onMouseMoveDetailRankThree(indexLineClicked, indexColumnClicked) {
         let lineLength = line.end - line.start;
         positionIndex += lineLength - INTS[fEDI_cursor_indexColumn];
 
-        if (INTS[fEDI_cursor_indexLine] === EDI_lineEndPositionList.count - 1) {
+        if (INTS[fEDI_cursor_indexLine] === EDI_lineEndPositionList_count - 1) {
             INTS[fEDI_cursor_indexColumn] = lineLength;
             INTS[fEDI_cursor_selectionEnd] = positionIndex;
         }
@@ -3703,7 +3703,7 @@ function EDI_onMouseDownDetailRankThree(event_button, event_shiftKey, indexLineC
     
     INTS[fEDI_detailRank3OriginLine] = INTS[fEDI_cursor_indexLine];
 
-    if (INTS[fEDI_cursor_indexLine] === EDI_lineEndPositionList.count - 1) {
+    if (INTS[fEDI_cursor_indexLine] === EDI_lineEndPositionList_count - 1) {
         let line = EDI_getLineBoundaryPositions(INTS[fEDI_cursor_indexLine]);
         INTS[fEDI_cursor_selectionEnd] = line.end;
         EDI_render_request(RenderKind_Cursor_n);
@@ -3854,7 +3854,7 @@ function EDI_postKeyboardMovementSelectionLogic(shiftKey) {
 function EDI_arrowDown(shiftKey) {
     EDI_movementBasedCacheInvalidation();
     EDI_preKeyboardMovementSelectionLogic(shiftKey);
-    if (INTS[fEDI_cursor_indexLine] < EDI_lineEndPositionList.count - 1) {
+    if (INTS[fEDI_cursor_indexLine] < EDI_lineEndPositionList_count - 1) {
         INTS[fEDI_cursor_indexLine]++;
         let lastValidIndexColumn = EDI_getLastValidIndexColumn(INTS[fEDI_cursor_indexLine]);
         if (INTS[fEDI_cursor_STORED_indexColumn] > lastValidIndexColumn) {
@@ -4556,7 +4556,7 @@ function EDI_onKeyDown_ArrowRight(event) {
             if (INTS[fEDI_cursor_indexColumn] < lastValidIndexColumn) {
                 INTS[fEDI_cursor_indexColumn]++;
             }
-            else if (INTS[fEDI_cursor_indexLine] < EDI_lineEndPositionList.count - 1) {
+            else if (INTS[fEDI_cursor_indexLine] < EDI_lineEndPositionList_count - 1) {
                 INTS[fEDI_cursor_indexColumn] = 0;
                 INTS[fEDI_cursor_indexLine]++;
             }
@@ -4607,7 +4607,7 @@ function EDI_onKeyDown_End(event) {
     EDI_movementBasedCacheInvalidation();
     EDI_preKeyboardMovementSelectionLogic(event.shiftKey);
     if (event.ctrlKey) {
-        INTS[fEDI_cursor_indexLine] = EDI_lineEndPositionList.count - 1;
+        INTS[fEDI_cursor_indexLine] = EDI_lineEndPositionList_count - 1;
     }
     INTS[fEDI_cursor_indexColumn] = EDI_getLastValidIndexColumn(INTS[fEDI_cursor_indexLine]);
     EDI_postKeyboardMovementSelectionLogic(event.shiftKey);
@@ -4628,9 +4628,9 @@ function EDI_onKeyDown_PageDown(event) {
             // this seems to more commonly have the cursor staying within the viewport rather than overlapping outside.
             INTS[fEDI_cursor_indexLine]--;
         }
-        if (INTS[fEDI_cursor_indexLine] >= EDI_lineEndPositionList.count) {
+        if (INTS[fEDI_cursor_indexLine] >= EDI_lineEndPositionList_count) {
             // TODO: You can't delete EOF can you? i.e.: cursor final position of file then delete?
-            INTS[fEDI_cursor_indexLine] = EDI_lineEndPositionList.count - 1;
+            INTS[fEDI_cursor_indexLine] = EDI_lineEndPositionList_count - 1;
         }
         INTS[fEDI_cursor_indexColumn] = 0;
         // TODO: allow someone to select via this keybind, but for now it causes a bad selection if you { 'Ctrl' + 'a' } then use it so I'm clearing any active selection here for now.
@@ -4651,9 +4651,9 @@ function EDI_onKeyDown_PageUp(event) {
             // this seems to more commonly have the cursor staying within the viewport rather than overlapping outside.
             INTS[fEDI_cursor_indexLine]++;
         }
-        if (INTS[fEDI_cursor_indexLine] >= EDI_lineEndPositionList.count) {
+        if (INTS[fEDI_cursor_indexLine] >= EDI_lineEndPositionList_count) {
             // TODO: You can't delete EOF can you? i.e.: cursor final position of file then delete?
-            INTS[fEDI_cursor_indexLine] = EDI_lineEndPositionList.count - 1;
+            INTS[fEDI_cursor_indexLine] = EDI_lineEndPositionList_count - 1;
         }
         INTS[fEDI_cursor_indexColumn] = 0;
         // TODO: allow someone to select via this keybind, but for now it causes a bad selection if you { 'Ctrl' + 'a' } then use it so I'm clearing any active selection here for now.
@@ -4800,8 +4800,8 @@ function EDI_onMouseDown(event) {
         indexColumn = 0;
     }
 
-    if (indexLine >= EDI_lineEndPositionList.count) {
-        indexLine = EDI_lineEndPositionList.count - 1;
+    if (indexLine >= EDI_lineEndPositionList_count) {
+        indexLine = EDI_lineEndPositionList_count - 1;
     }
 
     let lastValidIndexColumn = EDI_getLastValidIndexColumn(indexLine);
@@ -5831,7 +5831,7 @@ function EDI_render_do_DuplicateOrPaste() {
         INTS[fEDI_cursor_editPosition] = large;
 
         if (linesInsertedCount > 0) {
-            update_verticalVirtualizationBoundary(EDI_lineEndPositionList.count + linesInsertedCount);
+            update_verticalVirtualizationBoundary(EDI_lineEndPositionList_count + linesInsertedCount);
             // I uncommented this, it isn't doing what I want it to. I'm just gonna be done for now.
             // TODO: draw gutter?
         }
@@ -6109,7 +6109,7 @@ function EDI_paste(content) {
     //else if (linefeedLength > 0) writeLinefeed();
 
     if (linesInsertedCount > 0) {
-        update_verticalVirtualizationBoundary(EDI_lineEndPositionList.count + linesInsertedCount);
+        update_verticalVirtualizationBoundary(EDI_lineEndPositionList_count + linesInsertedCount);
         // I uncommented this, it isn't doing what I want it to.
         // I'm just gonna be done for now.
         // TODO: draw gutter?
@@ -6320,12 +6320,12 @@ function EDI_render_do_EnterKey() {
         // TODO: This 'ringBufferIndex_firstTilde' is maybe correct I don't know but it's been a long time since I wrote this line of code, and glancing at it, it looks like you need to subtract 1?
 
         // See comment "Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex'" for more information.
-        let ringBufferIndex_firstTilde = EDI_lineEndPositionList.count - INTS[fEDI_virtualIndexLine];
+        let ringBufferIndex_firstTilde = EDI_lineEndPositionList_count - INTS[fEDI_virtualIndexLine];
         if (ringBufferIndex_firstTilde >= INTS[fEDI_ArrayFrom_textElement_children_length] || ringBufferIndex_firstTilde < 0) ringBufferIndex_firstTilde = -1;
         else ringBufferIndex_firstTilde = (ringBufferIndex_firstTilde + INTS[fEDI_ringBuffer_indexZero]) % INTS[fEDI_virtualCount];
 
         if (ringBufferIndex_firstTilde >= 0) {
-            EDI_gutter.children[ringBufferIndex_firstTilde].textContent = EDI_lineEndPositionList.count + 1;
+            EDI_gutter.children[ringBufferIndex_firstTilde].textContent = EDI_lineEndPositionList_count + 1;
         }
         
         let shouldRenderEntireViewport = false;
@@ -6627,7 +6627,7 @@ function EDI_render_do_Resize(timestamp) {
     update_virtualCount();
     if (INTS[fEDI_virtualCount] !== remember_virtualCount) {
         // why 'update_verticalVirtualizationBoundary' here???
-        update_verticalVirtualizationBoundary(EDI_lineEndPositionList.count + 1);
+        update_verticalVirtualizationBoundary(EDI_lineEndPositionList_count + 1);
 
         INTS[fEDI_intFalsey_isScrolling] = 0;
 
@@ -6858,12 +6858,12 @@ function EDI_render_do_RemoveSelection() {
         let possibleTrackedSyntaxToSpanSingleLine = false;
         if (indexTrackedSyntax < EDI_trackedSyntaxList.count_abstract) {
             EDI_trackedSyntaxList.getElementAt(indexTrackedSyntax);
-            if (INTS[fEDI_pooledTrackedSyntax_start] < EDI_lineEndPositionList.data[INTS[fEDI_cursor_indexLine]]) {
+            if (INTS[fEDI_pooledTrackedSyntax_start] < EDI_lineEndPositionList_data[INTS[fEDI_cursor_indexLine]]) {
                 possibleTrackedSyntaxToSpanSingleLine = true;
             }
             // TODO: This has no reason to be a for loop
             for (let i = INTS[fEDI_cursor_indexLine] - 1; i >= 0; i--) {
-                let lineEndPosition = EDI_lineEndPositionList.data[i];
+                let lineEndPosition = EDI_lineEndPositionList_data[i];
                 if (INTS[fEDI_pooledTrackedSyntax_start] < lineEndPosition &&
                     INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length] > lineEndPosition) {
                         possibleTrackedSyntaxToSpanSingleLine = false;
@@ -6877,7 +6877,7 @@ function EDI_render_do_RemoveSelection() {
 
         let linesRemovedCount = 0;
         // -1 since you can't remove EOF
-        for (var iVarDependent = INTS[fEDI_cursor_indexLine]; iVarDependent < EDI_lineEndPositionList.count - 1; iVarDependent++) {
+        for (var iVarDependent = INTS[fEDI_cursor_indexLine]; iVarDependent < EDI_lineEndPositionList_count - 1; iVarDependent++) {
             // TODO: all of these reads need to be raw for this work with multicursor just remember that for tomorrow don't worry about this right now just focus on the one task but remember this for tomorrow.
             let lineEnding = EDI_readLineEndPositionList(iVarDependent);
             if (lineEnding >= INTS[fEDI_cursor_editPosition] && lineEnding < INTS[fEDI_cursor_editPosition] + editLength) {
@@ -6887,9 +6887,9 @@ function EDI_render_do_RemoveSelection() {
 
                 if (possibleTrackedSyntaxToSpanSingleLine) {
                     let NOTlineEndBelongsToSyntax;
-                    if (iVarDependent >= EDI_lineEndPositionList.count)
+                    if (iVarDependent >= EDI_lineEndPositionList_count)
                         NOTlineEndBelongsToSyntax = true;
-                    else if (INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length] <= EDI_lineEndPositionList.data[iVarDependent])
+                    else if (INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length] <= EDI_lineEndPositionList_data[iVarDependent])
                         NOTlineEndBelongsToSyntax = true;
                     
                     if (NOTlineEndBelongsToSyntax) {
@@ -6918,9 +6918,9 @@ function EDI_render_do_RemoveSelection() {
             // Inside the for loop you need to do this when you exhaust the encompassed line ends for a given syntax and move to the next one too.
             //
             let NOTlineEndBelongsToSyntax;
-            if (iVarDependent >= EDI_lineEndPositionList.count)
+            if (iVarDependent >= EDI_lineEndPositionList_count)
                 NOTlineEndBelongsToSyntax = true;
-            else if (INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length] <= EDI_lineEndPositionList.data[iVarDependent])
+            else if (INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length] <= EDI_lineEndPositionList_data[iVarDependent])
                 NOTlineEndBelongsToSyntax = true;
             
             if (NOTlineEndBelongsToSyntax)
@@ -7129,7 +7129,7 @@ function EDI_render_do_Delete() {
                         // Extreme cancellation logic whenever finalizeEdit runs, if there were any pending specific draws, skip them and force full screen redraw
                         // would permit a bridge of having the code work as I narrow down the edge cases more and more maybe.
                         //
-                        if (INTS[fEDI_cursor_indexLine] < EDI_lineEndPositionList.count - 1) {
+                        if (INTS[fEDI_cursor_indexLine] < EDI_lineEndPositionList_count - 1) {
 
                             remaining--;
 
@@ -7210,7 +7210,7 @@ function EDI_state_do_Delete(event) {
     // but it worth it?
 
     if (virtual_cursorIndexColumn === lastValidIndexColumn) {
-        if (virtual_cursorIndexLine < EDI_lineEndPositionList.count - 1) {
+        if (virtual_cursorIndexLine < EDI_lineEndPositionList_count - 1) {
 
             // flag the current editlength whenever u change lines so you can check the editlength relative to the line
 
@@ -7312,7 +7312,7 @@ function EDI_render_do_Backspace() {
     
                 if (remaining > 0) {
                     if (INTS[fEDI_w_indexSpan] >= w_div.children.length) {
-                        if (INTS[fEDI_cursor_indexLine] < EDI_lineEndPositionList.count - 1) {
+                        if (INTS[fEDI_cursor_indexLine] < EDI_lineEndPositionList_count - 1) {
 
                             remaining--;
 
@@ -7477,7 +7477,7 @@ function EDI_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine() {
 
             // TODO: This has no reason to be a for loop
             for (let i = INTS[fEDI_cursor_indexLine] - 1; i >= 0; i--) {
-                let lineEndPosition = EDI_lineEndPositionList.data[i];
+                let lineEndPosition = EDI_lineEndPositionList_data[i];
                 if (INTS[fEDI_pooledTrackedSyntax_start] < lineEndPosition &&
                     INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length] > lineEndPosition) {
                         moreThanOneLineEndPositionIsEncompassed = true;
@@ -7490,8 +7490,8 @@ function EDI_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine() {
             
             if (!moreThanOneLineEndPositionIsEncompassed) {
                 // TODO: This has no reason to be a for loop
-                for (let i = INTS[fEDI_cursor_indexLine] + 1; i < EDI_lineEndPositionList.count; i++) {
-                    let lineEndPosition = EDI_lineEndPositionList.data[i];
+                for (let i = INTS[fEDI_cursor_indexLine] + 1; i < EDI_lineEndPositionList_count; i++) {
+                    let lineEndPosition = EDI_lineEndPositionList_data[i];
                     if (INTS[fEDI_pooledTrackedSyntax_start] < lineEndPosition &&
                         INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length] > lineEndPosition) {
                             moreThanOneLineEndPositionIsEncompassed = true;
@@ -8180,7 +8180,7 @@ function EDI_requestLspHover() {
 
     if (indexLine < 0) return;
     if (indexColumn < 0) return;
-    if (indexLine >= EDI_lineEndPositionList.count) return;
+    if (indexLine >= EDI_lineEndPositionList_count) return;
     // ----
     let lastValidIndexColumn = EDI_getLastValidIndexColumn(indexLine);
     if (indexColumn > lastValidIndexColumn) return;
@@ -8298,8 +8298,8 @@ I want to get this done as soon as possible today.
 < 
 <     let lineStart = 0;
 <     let lineEnd = -1;
-<     const count = EDI_lineEndPositionList.count;
-<     const data = EDI_lineEndPositionList.data;
+<     const count = EDI_lineEndPositionList_count;
+<     const data = EDI_lineEndPositionList_data;
 < 
 <     if (lowerBound < count && lowerBound !== 0) {
 <         lineEnd = data[lowerBound - 1];

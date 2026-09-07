@@ -130,14 +130,14 @@ async function window_myAPI_onMessage(data) {
 
             let lineStart;
             //let lineEnd;
-            if (line < EDI_lineEndPositionList.count) {
+            if (line < EDI_lineEndPositionList_count) {
                 if (line === 0) {
                     lineStart = 0;
-                    //lineEnd = EDI_lineEndPositionList.data[line] - 0;
+                    //lineEnd = EDI_lineEndPositionList_data[line] - 0;
                 }
                 else {
-                    lineStart = (EDI_lineEndPositionList.data[line - 1] + 1);
-                    //lineEnd = EDI_lineEndPositionList.data[line];
+                    lineStart = (EDI_lineEndPositionList_data[line - 1] + 1);
+                    //lineEnd = EDI_lineEndPositionList_data[line];
                 }
             }
             else {

@@ -178,7 +178,7 @@ class DIALOG_FindAll_TreeViewDirector {
             
             await EXPLORER_openInEditor(absolutePath, /*shouldFocus*/ true);
             
-            if (intValue > EDI_lineEndPositionList.count) {
+            if (intValue > EDI_lineEndPositionList_count) {
                 return;
             }
 

@@ -1126,7 +1126,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     EDI_lineEndString = lineEndString;
 
     let EDI_lineEndPositionList_count = EDI_lineEndPositionList.count;
-    let EDI_textByteList_count = EDI_textByteList_count;
+    let local_EDI_textByteList_count = EDI_textByteList_count;
 
     /**
      * TODO: I don't know whether I should calculate this from the EDI_lineEndPositionList or some such...
@@ -1162,8 +1162,8 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
                     INTS[fEDI_longestLine_indexLine] = EDI_lineEndPositionList_count;
                 }
                 lineLength = 0;
-                EDI_lineEndPositionList.insert(EDI_lineEndPositionList_count++, EDI_textByteList_count);
-                EDI_textByteList_insert(EDI_textByteList_count++, CONST_EDI_ASCII_LINE_FEED);
+                EDI_lineEndPositionList.insert(EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
+                EDI_textByteList_insert(local_EDI_textByteList_count++, CONST_EDI_ASCII_LINE_FEED);
                 break;
             case CONST_EDI_ASCII_LINE_FEED:
                 if (!lineEndString) {
@@ -1174,14 +1174,14 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
                     INTS[fEDI_longestLine_indexLine] = EDI_lineEndPositionList_count;
                 }
                 lineLength = 0;
-                EDI_lineEndPositionList.insert(EDI_lineEndPositionList_count++, EDI_textByteList_count);
-                EDI_textByteList_insert(EDI_textByteList_count++, CONST_EDI_ASCII_LINE_FEED);
+                EDI_lineEndPositionList.insert(EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
+                EDI_textByteList_insert(local_EDI_textByteList_count++, CONST_EDI_ASCII_LINE_FEED);
                 break;
             case CONST_EDI_ASCII_TAB:
                 lineLength += 4;
-                EDI_textByteList_insertBytes(EDI_textByteList_count, EDI_tab_tabsbytes, /*offset*/ 0, /*length*/ 4);
-                // 'EDI_textByteList_count++' pattern breaking line here
-                EDI_textByteList_count += 4;
+                EDI_textByteList_insertBytes(local_EDI_textByteList_count, EDI_tab_tabsbytes, /*offset*/ 0, /*length*/ 4);
+                // 'local_EDI_textByteList_count++' pattern breaking line here
+                local_EDI_textByteList_count += 4;
                 break;
             default:
                 lineLength++;
@@ -1190,13 +1190,13 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
                 // tbh: TODO: 'charCodeAt' also might be more allocation expensive than you expect. It returns a JavaScript number. Switching and returning an index from byte array prehardcoded might avoid an allocation per number returned?
                 // ... although I hear most engines store numbers such that the pointer represents the value and you avoid the allocation but even then where is the metadata that tells you how to read that pointer differently than the other ones etc...
                 //
-                EDI_textByteList_insert(EDI_textByteList_count++, code);
+                EDI_textByteList_insert(local_EDI_textByteList_count++, code);
                 break;
         }
     }
 
     // TODO: The ++ here "isn't needed" but it makes the code consistent and less prone to future mistakes should another access of 'EDI_lineEndPositionList_count' be made after this point in the future.
-    EDI_lineEndPositionList.insert(EDI_lineEndPositionList_count++, EDI_textByteList_count);
+    EDI_lineEndPositionList.insert(EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
 
     update_VirtualIndexLine();
     update_virtualCount();

@@ -8966,4 +8966,6 @@ I'm scared about that. That something is going wrong all this time.
 
 Or that I have an STD or sti or something and it is dormant in me
 
+I have 0 proof of that but I think about it constatntly
+
 */

@@ -40,7 +40,7 @@ const TREEVIEWrenderKind_Resize = 8;
  * You just keep flattening it into a byte array and map back and forth.
  */
 class TreeViewComponent {
-    constructor(itemHeight) {
+    constructor() {
         this.rootElement = document.createElement('div');
         this.rootElement.classList.add('TREEVIEW', 'unselectable');
         this.rootElement.tabIndex = 0;

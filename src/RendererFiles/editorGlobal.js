@@ -816,7 +816,7 @@ function EDI_render_do_Scroll(timestamp) {
         lineEnd = EDI_lineEndPositionList_data[lowerBound - 1];
     }
 
-    const EDI_textByteList_bytes = EDI_textByteList_bytes;
+    const bytes = EDI_textByteList_bytes;
     const local_EDI_ringBuffer_gutter = EDI_ringBuffer_gutter;
     const local_EDI_ringBuffer_text = EDI_ringBuffer_text;
     
@@ -844,7 +844,7 @@ function EDI_render_do_Scroll(timestamp) {
         // Corrupt state if assumption is not met: - All lines of text are to contain at least 1 span at all times even if that span is just an empty one.
         const span = div.firstChild;
         span.className = 'eN';
-        span.textContent = lineStart === lineEnd ? '' : EDI_decoder.decode(EDI_textByteList_bytes.subarray(lineStart, lineEnd));
+        span.textContent = lineStart === lineEnd ? '' : EDI_decoder.decode(bytes.subarray(lineStart, lineEnd));
 
         while (div.lastChild && div.lastChild !== div.firstChild) {
             div.removeChild(div.lastChild);
@@ -7497,7 +7497,7 @@ function EDI_decode_textonly(start, length) {
 
     let end = start + length;
 	
-	let bytes = EDI_textByteList_bytes;
+	const bytes = EDI_textByteList_bytes;
 	
 	if (length <= 0) {
 		return '';
@@ -7842,7 +7842,7 @@ function PLAINTEXT_line_lex(div, substart, lineEnd, childIndex) {
     let length = 0;
     let pos = substart;
 
-    let bytes = EDI_textByteList_bytes;
+    const bytes = EDI_textByteList_bytes;
 
     while (pos < lineEnd) {
         length++;
@@ -7860,7 +7860,7 @@ function PLAINTEXT_line_lex(div, substart, lineEnd, childIndex) {
             div.appendChild(span);
             childIndex++;
         }
-        span.textContent = EDI_decoder.decode(EDI_textByteList_bytes.subarray(substart, substart + length));
+        span.textContent = EDI_decoder.decode(bytes.subarray(substart, substart + length));
     }
 
     return childIndex;

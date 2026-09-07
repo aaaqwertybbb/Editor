@@ -6,7 +6,7 @@ import "./fieldBuffer"
 function JS_line_lex(div, substart, lineEnd, childIndex) {
     let pos = substart;
 
-    let bytes = EDI_textByteList_bytes;
+    const bytes = EDI_textByteList_bytes;
 
     let span;
     let textContent;

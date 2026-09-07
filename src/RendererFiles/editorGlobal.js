@@ -8744,6 +8744,14 @@ function EDI_render_do(timestamp) {
 // ...as a statement just above the invocation.
 // ...this removes a parameter from being passed to the render scroll function.
 
+============
 
+TODO: 'ensureCapacityForInsertion':
+- [ ] EDI_textByteList_ensureCapacityForInsertion
+- [ ] EDI_lineEndPositionList_ensureCapacityForInsertion
+- [ ] (class ByteList).ensureCapacityForInsertion
+- [ ] (class UInt32List).ensureCapacityForInsertion
+- [ ] (class TrackedSyntaxList).ensureCapacityForInsertion
+- [ ] (class TreeViewNodeList).ensureCapacityForInsertion
 
 */

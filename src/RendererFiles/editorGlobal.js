@@ -135,7 +135,7 @@ function EDI_textByteList_insertBytes(index, incomingBs, offset, length) {
         EDI_textByteList_copyTo(EDI_textByteList_bytes, index, EDI_textByteList_bytes, index + length, EDI_textByteList_count - index);
     }
 
-    // this is wrong use set
+    // TODO: this is wrong use set
     for (var i = 0; i < length; i++) {
         EDI_textByteList_bytes[index + i] = incomingBs[offset + i];
     }
@@ -211,30 +211,37 @@ function EDI_textByteList_duplicateWithin(sourceStart, destinationStart, length)
  *         Since this ought to be a negligible check for this method to perform.
  *         And failure to catch that case if it happens is an infinite loop.
  */
+//function EDI_textByteList_ensureCapacityForInsertion(index, count) {
+//    let capacityPrevious = EDI_textByteList_capacity;
+//    while (true) {
+//        if (EDI_textByteList_count + count > EDI_textByteList_capacity) {
+//            EDI_textByteList_doubleCapacity();
+//        }
+//        else if (index >= EDI_textByteList_capacity) {
+//            EDI_textByteList_doubleCapacity();
+//        }
+//        else {
+//            break;
+//        }
+//
+//        if (EDI_textByteList_capacity === capacityPrevious) {
+//            break;
+//        }
+//        if (EDI_textByteList_capacity < capacityPrevious) {
+//            throw new Error('ensureCapacityForInsertion(...): EDI_textByteList_capacity < capacityPrevious');
+//        }
+//
+//        capacityPrevious = EDI_textByteList_capacity;
+//    }
+//}
+//function EDI_textByteList_doubleCapacity() {
+//    let capacityNew = EDI_textByteList_capacity * 2;
+//    let bytesNew = new Uint8Array(capacityNew);
+//    EDI_textByteList_copyTo(EDI_textByteList_bytes, 0, bytesNew, 0, EDI_textByteList_count);
+//    EDI_textByteList_bytes = bytesNew;
+//    EDI_textByteList_capacity = capacityNew;
+//}
 function EDI_textByteList_ensureCapacityForInsertion(index, count) {
-    let capacityPrevious = EDI_textByteList_capacity;
-    while (true) {
-        if (EDI_textByteList_count + count > EDI_textByteList_capacity) {
-            EDI_textByteList_doubleCapacity();
-        }
-        else if (index >= EDI_textByteList_capacity) {
-            EDI_textByteList_doubleCapacity();
-        }
-        else {
-            break;
-        }
-
-        if (EDI_textByteList_capacity === capacityPrevious) {
-            break;
-        }
-        if (EDI_textByteList_capacity < capacityPrevious) {
-            throw new Error('ensureCapacityForInsertion(...): EDI_textByteList_capacity < capacityPrevious');
-        }
-
-        capacityPrevious = EDI_textByteList_capacity;
-    }
-}
-function EDI_textByteList_ensureCapacityForInsertion_2(index, count) {
     const requiredCapacity = Math.max(EDI_textByteList_count + count, index);
     
     // If we already have enough capacity, do absolutely nothing
@@ -258,13 +265,6 @@ function EDI_textByteList_ensureCapacityForInsertion_2(index, count) {
     EDI_textByteList_copyTo(EDI_textByteList_bytes, 0, bytesNew, 0, EDI_textByteList_count);
     
     // Commit the changes to your global/module state
-    EDI_textByteList_bytes = bytesNew;
-    EDI_textByteList_capacity = capacityNew;
-}
-function EDI_textByteList_doubleCapacity() {
-    let capacityNew = EDI_textByteList_capacity * 2;
-    let bytesNew = new Uint8Array(capacityNew);
-    EDI_textByteList_copyTo(EDI_textByteList_bytes, 0, bytesNew, 0, EDI_textByteList_count);
     EDI_textByteList_bytes = bytesNew;
     EDI_textByteList_capacity = capacityNew;
 }
@@ -436,35 +436,62 @@ function EDI_lineEndPositionList_removeAt(index, count) {
  *         Since this ought to be a negligible check for this method to perform.
  *         And failure to catch that case if it happens is an infinite loop.
  */
+//function EDI_lineEndPositionList_ensureCapacityForInsertion(index, count) {
+//    let capacityPrevious = EDI_lineEndPositionList_capacity;
+//    // TODO: what??? do you have to allocate and copy over and over like this? can you make a variable and check if the variable hits > and only then you allocate and copy?
+//    while (true) {
+//        if (EDI_lineEndPositionList_count + count > EDI_lineEndPositionList_capacity) {
+//            EDI_lineEndPositionList_doubleCapacity();
+//        }
+//        else if (index >= EDI_lineEndPositionList_capacity) {
+//            EDI_lineEndPositionList_doubleCapacity();
+//        }
+//        else {
+//            break;
+//        }
+//
+//        if (EDI_lineEndPositionList_capacity === capacityPrevious) {
+//            break;
+//        }
+//        if (EDI_lineEndPositionList_capacity < capacityPrevious) {
+//            throw new Error('ensureCapacityForInsertion(...): EDI_lineEndPositionList_capacity < capacityPrevious');
+//        }
+//
+//        capacityPrevious = EDI_lineEndPositionList_capacity;
+//    }
+//}
+//function EDI_lineEndPositionList_doubleCapacity() {
+//    let capacityNew = EDI_lineEndPositionList_capacity * 2;
+//    let bytesNew = new Uint32Array(capacityNew);
+//    EDI_lineEndPositionList_copyTo(EDI_lineEndPositionList_data, 0, bytesNew, 0, EDI_lineEndPositionList_count);
+//    EDI_lineEndPositionList_data = bytesNew;
+//    EDI_lineEndPositionList_capacity = capacityNew;
+//}
 function EDI_lineEndPositionList_ensureCapacityForInsertion(index, count) {
-    let capacityPrevious = EDI_lineEndPositionList_capacity;
-    // TODO: what??? do you have to allocate and copy over and over like this? can you make a variable and check if the variable hits > and only then you allocate and copy?
-    while (true) {
-        if (EDI_lineEndPositionList_count + count > EDI_lineEndPositionList_capacity) {
-            EDI_lineEndPositionList_doubleCapacity();
-        }
-        else if (index >= EDI_lineEndPositionList_capacity) {
-            EDI_lineEndPositionList_doubleCapacity();
-        }
-        else {
-            break;
-        }
-
-        if (EDI_lineEndPositionList_capacity === capacityPrevious) {
-            break;
-        }
-        if (EDI_lineEndPositionList_capacity < capacityPrevious) {
-            throw new Error('ensureCapacityForInsertion(...): EDI_lineEndPositionList_capacity < capacityPrevious');
-        }
-
-        capacityPrevious = EDI_lineEndPositionList_capacity;
+    const requiredCapacity = Math.max(EDI_lineEndPositionList_count + count, index);
+    
+    // If we already have enough capacity, do absolutely nothing
+    if (requiredCapacity <= EDI_lineEndPositionList_capacity) {
+        return;
     }
-}
-function EDI_lineEndPositionList_doubleCapacity() {
-    let capacityNew = EDI_lineEndPositionList_capacity * 2;
-    let bytesNew = new Uint32Array(capacityNew);
-    EDI_lineEndPositionList_copyTo(EDI_lineEndPositionList_data, 0, bytesNew, 0, EDI_lineEndPositionList_count);
-    EDI_lineEndPositionList_data = bytesNew;
+
+    // Calculate the new capacity by doubling until it fits
+    let capacityNew = EDI_lineEndPositionList_capacity || 1; // Prevent infinite loops if capacity is 0
+    while (capacityNew < requiredCapacity) {
+        capacityNew *= 2;
+    }
+
+    // Safety check against integer overflow / negative bounds
+    if (capacityNew < EDI_lineEndPositionList_capacity) {
+        throw new Error('ensureCapacityForInsertion(...): Capacity overflowed or went negative');
+    }
+
+    // Allocate and copy EXACTLY ONCE
+    let dataNew = new Uint32Array(capacityNew);
+    EDI_lineEndPositionList_copyTo(EDI_lineEndPositionList_data, 0, dataNew, 0, EDI_lineEndPositionList_count);
+    
+    // Commit the changes to your global/module state
+    EDI_lineEndPositionList_data = dataNew;
     EDI_lineEndPositionList_capacity = capacityNew;
 }
 /**

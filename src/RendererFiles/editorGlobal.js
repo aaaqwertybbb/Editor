@@ -8971,4 +8971,6 @@ I have 0 proof of that but I think about it constatntly
 "make me think I have nothing to live for"
 The thought process is that nobody would ever find me attractive or something
 
+But then like why does that even make the difference or something? I don;t know
+
 */

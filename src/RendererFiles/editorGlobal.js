@@ -8752,6 +8752,13 @@ I wonder if the guy is up at 2 am replaying that in his head over and over.
 
 I might not know what the chain rule is anymore but I was goated back in my golden years.
 
+I have an associates in computer science
+and there's two versions
+- science
+- art
+
+I have the science one, so I'm kind of a big deal
+
 
 
 

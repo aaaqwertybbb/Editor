@@ -140,34 +140,62 @@ class ByteList {
      *         Since this ought to be a negligible check for this method to perform.
      *         And failure to catch that case if it happens is an infinite loop.
      */
+    //ensureCapacityForInsertion(index, count) {
+    //    let capacityPrevious = this.capacity;
+    //    while (true) {
+    //        if (this.count + count > this.capacity) {
+    //            this.doubleCapacity();
+    //        }
+    //        else if (index >= this.capacity) {
+    //            this.doubleCapacity();
+    //        }
+    //        else {
+    //            break;
+    //        }
+//
+    //        if (this.capacity === capacityPrevious) {
+    //            break;
+    //        }
+    //        if (this.capacity < capacityPrevious) {
+    //            throw new Error('ensureCapacityForInsertion(...): this.capacity < capacityPrevious');
+    //        }
+//
+    //        capacityPrevious = this.capacity;
+    //    }
+    //}
+//
+    //doubleCapacity() {
+    //    let capacityNew = this.capacity * 2;
+    //    let bytesNew = new Uint8Array(capacityNew);
+    //    this.copyTo(this.bytes, 0, bytesNew, 0, this.count);
+    //    this.bytes = bytesNew;
+    //    this.capacity = capacityNew;
+    //}
     ensureCapacityForInsertion(index, count) {
-        let capacityPrevious = this.capacity;
-        while (true) {
-            if (this.count + count > this.capacity) {
-                this.doubleCapacity();
-            }
-            else if (index >= this.capacity) {
-                this.doubleCapacity();
-            }
-            else {
-                break;
-            }
-
-            if (this.capacity === capacityPrevious) {
-                break;
-            }
-            if (this.capacity < capacityPrevious) {
-                throw new Error('ensureCapacityForInsertion(...): this.capacity < capacityPrevious');
-            }
-
-            capacityPrevious = this.capacity;
+        // TODO: sparse insertions?
+        const requiredCapacity = Math.max(this.count + count, index);
+        
+        // If we already have enough capacity, do absolutely nothing
+        if (requiredCapacity <= this.capacity) {
+            return;
         }
-    }
 
-    doubleCapacity() {
-        let capacityNew = this.capacity * 2;
+        // Calculate the new capacity by doubling until it fits
+        let capacityNew = this.capacity || 1; // Prevent infinite loops if capacity is 0
+        while (capacityNew < requiredCapacity) {
+            capacityNew *= 2;
+        }
+
+        // Safety check against integer overflow / negative bounds
+        if (capacityNew < this.capacity) {
+            throw new Error('ensureCapacityForInsertion(...): Capacity overflowed or went negative');
+        }
+
+        // Allocate and copy EXACTLY ONCE
         let bytesNew = new Uint8Array(capacityNew);
         this.copyTo(this.bytes, 0, bytesNew, 0, this.count);
+        
+        // Commit the changes to your global/module state
         this.bytes = bytesNew;
         this.capacity = capacityNew;
     }
@@ -268,35 +296,63 @@ class UInt32List {
      *         Since this ought to be a negligible check for this method to perform.
      *         And failure to catch that case if it happens is an infinite loop.
      */
+    //ensureCapacityForInsertion(index, count) {
+    //    let capacityPrevious = this.capacity;
+    //    while (true) {
+    //        if (this.count + count > this.capacity) {
+    //            this.doubleCapacity();
+    //        }
+    //        else if (index >= this.capacity) {
+    //            this.doubleCapacity();
+    //        }
+    //        else {
+    //            break;
+    //        }
+//
+    //        if (this.capacity === capacityPrevious) {
+    //            break;
+    //        }
+    //        if (this.capacity < capacityPrevious) {
+    //            throw new Error('ensureCapacityForInsertion(...): this.capacity < capacityPrevious');
+    //        }
+//
+    //        capacityPrevious = this.capacity;
+    //    }
+    //}
+//
+    //doubleCapacity() {
+    //    let capacityNew = this.capacity * 2;
+    //    let bytesNew = new Uint32Array(capacityNew);
+    //    this.copyTo(this.data, 0, bytesNew, 0, this.count);
+    //    this.data = bytesNew;
+    //    this.capacity = capacityNew;
+    //}
     ensureCapacityForInsertion(index, count) {
-        let capacityPrevious = this.capacity;
-        while (true) {
-            if (this.count + count > this.capacity) {
-                this.doubleCapacity();
-            }
-            else if (index >= this.capacity) {
-                this.doubleCapacity();
-            }
-            else {
-                break;
-            }
-
-            if (this.capacity === capacityPrevious) {
-                break;
-            }
-            if (this.capacity < capacityPrevious) {
-                throw new Error('ensureCapacityForInsertion(...): this.capacity < capacityPrevious');
-            }
-
-            capacityPrevious = this.capacity;
+        // TODO: sparse insertions?
+        const requiredCapacity = Math.max(this.count + count, index);
+        
+        // If we already have enough capacity, do absolutely nothing
+        if (requiredCapacity <= this.capacity) {
+            return;
         }
-    }
 
-    doubleCapacity() {
-        let capacityNew = this.capacity * 2;
-        let bytesNew = new Uint32Array(capacityNew);
-        this.copyTo(this.data, 0, bytesNew, 0, this.count);
-        this.data = bytesNew;
+        // Calculate the new capacity by doubling until it fits
+        let capacityNew = this.capacity || 1; // Prevent infinite loops if capacity is 0
+        while (capacityNew < requiredCapacity) {
+            capacityNew *= 2;
+        }
+
+        // Safety check against integer overflow / negative bounds
+        if (capacityNew < this.capacity) {
+            throw new Error('ensureCapacityForInsertion(...): Capacity overflowed or went negative');
+        }
+
+        // Allocate and copy EXACTLY ONCE
+        let dataNew = new Uint32Array(capacityNew);
+        this.copyTo(this.data, 0, dataNew, 0, this.count);
+        
+        // Commit the changes to your global/module state
+        this.data = dataNew;
         this.capacity = capacityNew;
     }
 

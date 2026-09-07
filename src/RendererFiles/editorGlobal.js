@@ -242,6 +242,7 @@ function EDI_textByteList_duplicateWithin(sourceStart, destinationStart, length)
 //    EDI_textByteList_capacity = capacityNew;
 //}
 function EDI_textByteList_ensureCapacityForInsertion(index, count) {
+    // TODO: sparse insertions?
     const requiredCapacity = Math.max(EDI_textByteList_count + count, index);
     
     // If we already have enough capacity, do absolutely nothing
@@ -468,6 +469,7 @@ function EDI_lineEndPositionList_removeAt(index, count) {
 //    EDI_lineEndPositionList_capacity = capacityNew;
 //}
 function EDI_lineEndPositionList_ensureCapacityForInsertion(index, count) {
+    // TODO: sparse insertions?
     const requiredCapacity = Math.max(EDI_lineEndPositionList_count + count, index);
     
     // If we already have enough capacity, do absolutely nothing
@@ -8803,12 +8805,12 @@ function EDI_render_do(timestamp) {
 
 TODO: 'ensureCapacityForInsertion':
     "// TODO: what??? do you have to allocate and copy over and over like this? can you make a variable and check if the variable hits > and only then you allocate and copy?"
-- [ ] EDI_textByteList_ensureCapacityForInsertion
-- [ ] EDI_lineEndPositionList_ensureCapacityForInsertion
-- [ ] (class ByteList).ensureCapacityForInsertion
-- [ ] (class UInt32List).ensureCapacityForInsertion
-- [ ] (class TrackedSyntaxList).ensureCapacityForInsertion
-- [ ] (class TreeViewNodeList).ensureCapacityForInsertion
+- [/] EDI_textByteList_ensureCapacityForInsertion
+- [/] EDI_lineEndPositionList_ensureCapacityForInsertion
+- [/] (class ByteList).ensureCapacityForInsertion
+- [/] (class UInt32List).ensureCapacityForInsertion
+- [/] (class TrackedSyntaxList).ensureCapacityForInsertion
+- [/] (class TreeViewNodeList).ensureCapacityForInsertion
 
 I'm extremely tired I'm gonna give it to Google AI and see what it does.
 

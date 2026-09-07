@@ -862,37 +862,68 @@ class TreeViewNodeList {
      *         Since this ought to be a negligible check for this method to perform.
      *         And failure to catch that case if it happens is an infinite loop.
      */
+    //ensureCapacityForInsertion(index_abstract, count_abstract) {
+    //    let capacityPrevious_abstract = this.capacity_abstract;
+    //    while (true) {
+    //        if (this.count_abstract + count_abstract > this.capacity_abstract) {
+    //            this.doubleCapacity();
+    //        }
+    //        else if (index_abstract >= this.capacity_abstract) {
+    //            this.doubleCapacity();
+    //        }
+    //        else {
+    //            break;
+    //        }
+//
+    //        if (this.capacity_abstract === capacityPrevious_abstract) {
+    //            break;
+    //        }
+    //        if (this.capacity_abstract < capacityPrevious_abstract) {
+    //            throw new Error('ensureCapacityForInsertion(...): this.capacity_abstract < capacityPrevious_abstract');
+    //        }
+//
+    //        capacityPrevious_abstract = this.capacity_abstract;
+    //    }
+    //}
+//
+    //doubleCapacity() {
+    //    let capacityNew_literal = this.capacity_literal * 2;
+    //    let dataNew_literal = new Uint32Array(capacityNew_literal);
+    //    this.copyTo(this.data_literal, 0, dataNew_literal, 0, this.count_abstract);
+    //    this.data_literal = dataNew_literal;
+    //    this.capacity_literal = capacityNew_literal;
+    //    this.capacity_abstract *= 2;
+    //}
     ensureCapacityForInsertion(index_abstract, count_abstract) {
-        let capacityPrevious_abstract = this.capacity_abstract;
-        while (true) {
-            if (this.count_abstract + count_abstract > this.capacity_abstract) {
-                this.doubleCapacity();
-            }
-            else if (index_abstract >= this.capacity_abstract) {
-                this.doubleCapacity();
-            }
-            else {
-                break;
-            }
-
-            if (this.capacity_abstract === capacityPrevious_abstract) {
-                break;
-            }
-            if (this.capacity_abstract < capacityPrevious_abstract) {
-                throw new Error('ensureCapacityForInsertion(...): this.capacity_abstract < capacityPrevious_abstract');
-            }
-
-            capacityPrevious_abstract = this.capacity_abstract;
+        // TODO: sparse insertions?
+        const requiredCapacity_literal = Math.max((this.count_abstract + count_abstract) * this.field_count, index_abstract * this.field_count);
+        
+        // If we already have enough capacity, do absolutely nothing
+        if (requiredCapacity_literal <= this.capacity_literal) {
+            return;
         }
-    }
 
-    doubleCapacity() {
-        let capacityNew_literal = this.capacity_literal * 2;
+        // Calculate the new capacity by doubling until it fits
+        let capacityNew_literal = this.capacity_literal || 1; // Prevent infinite loops if capacity is 0
+        let capacityNew_abstract = this.capacity_abstract || 1; // Prevent infinite loops if capacity is 0
+        while (capacityNew_literal < requiredCapacity_literal) {
+            capacityNew_literal *= 2;
+            capacityNew_abstract *= 2;
+        }
+
+        // Safety check against integer overflow / negative bounds
+        if (capacityNew_literal < this.capacity_literal) {
+            throw new Error('ensureCapacityForInsertion(...): Capacity overflowed or went negative');
+        }
+
+        // Allocate and copy EXACTLY ONCE
         let dataNew_literal = new Uint32Array(capacityNew_literal);
         this.copyTo(this.data_literal, 0, dataNew_literal, 0, this.count_abstract);
+        
+        // Commit the changes to your global/module state
         this.data_literal = dataNew_literal;
         this.capacity_literal = capacityNew_literal;
-        this.capacity_abstract *= 2;
+        this.capacity_abstract = capacityNew_abstract;
     }
 
     /**

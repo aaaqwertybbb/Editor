@@ -135,6 +135,7 @@ function EDI_textByteList_insertBytes(index, incomingBs, offset, length) {
         EDI_textByteList_copyTo(EDI_textByteList_bytes, index, EDI_textByteList_bytes, index + length, EDI_textByteList_count - index);
     }
 
+    // this is wrong use set
     for (var i = 0; i < length; i++) {
         EDI_textByteList_bytes[index + i] = incomingBs[offset + i];
     }

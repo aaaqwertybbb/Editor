@@ -71,15 +71,10 @@ let EDI_textByteList_count = 0;
 function EDI_textByteList_clear() {
     EDI_textByteList_count = 0;
 }
-//let EDI_textByteList_insert_count = 0;
 /**
  * TODO: ensure all the parameters are encoded, especially because I'm noticing myself forgetting.
  */
 function EDI_textByteList_insert(index, byte) {
-
-    //++EDI_textByteList_insert_count;
-    
-
     EDI_textByteList_ensureCapacityForInsertion(index, 1);
 
     if (index !== EDI_textByteList_count) {

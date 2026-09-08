@@ -8934,4 +8934,24 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
 
 8:20 AM
 
+I'm unsure of the exact details but I believe I'm headed in the correct direction with the following changes that I'll make.
+And I'll just adjust as I feel it out.
+
+ultimately it is trivial.
+How many ways can you write the logic for TrackedSyntaxList (and other such ...List classes I have)
+Let's say there's 3 ways just for argument's sake.
+
+Now let's say that I have 2 of the 3 ideas in my head.
+And of the 2 in my head I have 1 already written.
+
+So today I rewrite it from the first idea to the second.
+It is upon doing so that I discover the third idea.
+
+Tomorrow I write the third idea.
+I have now written every possible implementation.
+I have now felt every possible implementation run.
+
+Do you plan or do you do?
+It is always a moment to moment decision.
+
 */

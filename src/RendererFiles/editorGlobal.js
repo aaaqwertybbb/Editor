@@ -8848,10 +8848,12 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
     - [ ] whitespace collapsing?
     - [ ] tab-stop messing with tab-size?
 - [ ] tab keyboard input
+    - [ ] use tabs '\t'
+    - [ ] use spaces '    '
     - [ ] no modifier keys
     - [ ] shift key
     - [ ] aka:
-        - [ ] insert '\t'
+        - [ ] insert "tab"
         - [ ] indentMore
         - [ ] indentLess
 - [ ] main.cjs '\t' logic:

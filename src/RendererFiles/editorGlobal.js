@@ -1701,6 +1701,74 @@ span.textContent = decodedText
 < - Show me how to map a mouse click pixel coordinate back to a byte index using this setup
 < - Show me how to manage selection highlighting across these spaces
 
+> What does the javascript: "span.textContent = decodedText.replaceAll('\t', '\u00a0\u00a0\u00a0\u00a0').replaceAll(' ', '\u00a0');"
+> compile to? The idea that this is the answer on one hand makes sense, but on the other I'm seeing two replaceAll invocations.
+> This sounds like a wild solution. Does it optimize behind the scenes?
+
+< It is completely fair to look at replaceAll().replaceAll() and think:
+< "Wait, this is allocating multiple strings, iterating twice, and sounds incredibly slow for a high-performance app."
+< 
+< Your skepticism is spot on, but the reality of how modern JavaScript engines (like V8 in Electron) handle this under the hood is fascinating.
+< It isn't a "wild" solution—it is actually one of the fastest paths available because of how V8 compiles and optimizes built-in string methods.
+<
+< Here is exactly what happens behind the scenes.
+<
+< 1. What does it compile to? (The V8 Engine Pipeline)
+< JavaScript is JIT (Just-In-Time) compiled. When V8 encounters replaceAll, it does not compile your code down to a loop written in JavaScript bytecode.
+< - The Fast Path (C++ Torque/Assembly): V8 implements String.prototype.replaceAll using Torque
+<   (a highly specialized language V8 developers use to write built-in functions) and low-level C++.
+< - Vectorized Execution: When called, the engine drops out of standard JavaScript execution entirely and enters raw C++ memory space.
+<   It scans the string's underlying sequential memory buffer at hardware-level speeds, performing vectorized checks.
+< - The "Two Passes" Reality: Yes, sequentially chaining them means V8 performs two distinct operations.
+<   First, the C++ engine allocates a new string buffer for the tab replacements, and then it instantly runs the second C++ pass over that new buffer for the space replacements.
+< 
+< Because this is executing in low-level, pre-compiled C++ memory blocks rather than an interpreted JavaScript loop,
+< running two passes this way is often orders of magnitude faster than a single custom manual for loop written in JavaScript.
+< 
+< 2. The Internal V8 String Optimizations
+< V8 uses a trick called ConsStrings (Sliced/Spliced Strings) and specialized string allocations to avoid heavy performance penalties:
+< - When you modify strings, V8 frequently avoids allocating a brand-new chunk of physical RAM for the entire length of the text.
+<   Instead, it creates an internal pointer structure that represents the mutations.
+< - If a line has no tabs or spaces, replaceAll recognizes this instantly at the C++ layer and returns the exact same string reference without allocating anything.
+< 
+< 3. Why it beats the alternatives
+< If you were to write a single-pass manual loop in JavaScript to do both replacements at once:
+< ```js
+// A single pass, but entirely in JavaScript
+let result = "";
+for (let i = 0; i < decodedText.length; i++) {
+    const char = decodedText[i];
+    if (char === '\t') result += '\u00a0\u00a0\u00a0\u00a0';
+    else if (char === ' ') result += '\u00a0';
+    else result += char;
+}
+< ```
+< 1. This single-pass loop is massively slower because:
+< 2. V8 has to step through 393,000+ loops manually executing JavaScript instruction boundaries, rather than letting a single C++ function blast through raw memory.
+<
+< # If you want to make it even faster (A Single-Pass Regex Alternative)
+< If the idea of two distinct passes still bugs your architectural sensibilities, you can combine them into a single pass using a specialized native Regex replacement.
+< 
+< V8 highly optimizes replace() with a global regex and a mapping dictionary:
+< 
+< ```js
+const map = { '\t': '\u00a0\u00a0\u00a0\u00a0', ' ': '\u00a0' };
+
+// A single C++ pass that handles both transformations simultaneously
+span.textContent = decodedText.replace(/[\t ]/g, match => map[match]);
+< ```
+< 
+< How it performs: For very short text strings (like an individual editor line), the chained replaceAll is usually faster because callback functions (match => ...)
+< carry a minor execution tax. For massive chunks of text, the single-pass regex can pull ahead.
+< 
+< To optimize this line rendering step further for your monolith, let me know:
+< - Approximately how many characters live on a typical line in your editor?
+< - Whether you are rendering one line at a time as it scrolls into view, or processing blocks of lines at once.
+<
+< I can help you benchmark or structure this exact rendering loop to maximize V8's fast-path compilation.
+
+
+
 */
 
     // TODO: The ++ here "isn't needed" but it makes the code consistent and less prone to future mistakes should another access of 'EDI_lineEndPositionList_count' be made after this point in the future.

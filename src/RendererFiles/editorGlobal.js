@@ -95,10 +95,15 @@ let EDI_textByteList_count = 0;
 function EDI_textByteList_clear() {
     EDI_textByteList_count = 0;
 }
+//let EDI_textByteList_insert_count = 0;
 /**
  * TODO: ensure all the parameters are encoded, especially because I'm noticing myself forgetting.
  */
 function EDI_textByteList_insert(index, byte) {
+
+    //++EDI_textByteList_insert_count;
+    
+
     EDI_textByteList_ensureCapacityForInsertion(index, 1);
 
     if (index !== EDI_textByteList_count) {
@@ -1352,6 +1357,11 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
                 break;
         }
     }
+
+    // Open editorGlobal.js
+    //
+    // EDI_textByteList_insert_count:393148 (aka: 393,148)
+    //console.log(`EDI_textByteList_insert_count:${EDI_textByteList_insert_count}`);
 
     // TODO: The ++ here "isn't needed" but it makes the code consistent and less prone to future mistakes should another access of 'EDI_lineEndPositionList_count' be made after this point in the future.
     EDI_lineEndPositionList_insert(local_EDI_lineEndPositionList_count++, local_EDI_textByteList_count);

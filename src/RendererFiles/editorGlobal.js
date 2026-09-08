@@ -8565,6 +8565,9 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
                 - [x] use tabs '\t'
                 - [x] use spaces '    '
         - [ ] indentMore
+            - [ ] EDI_editEvent_checkFor_NOTcanBatch_IndentMore
+                - [ ] use tabs '\t'
+                - [ ] use spaces '    '
             - [ ] EDI_indentMore
                 - [ ] use tabs '\t'
                 - [ ] use spaces '    '
@@ -8572,10 +8575,15 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
                 - [ ] use tabs '\t'
                 - [ ] use spaces '    '
         - [ ] indentLess
-                - [ ] EDI_indentLess
-                    - [ ] use tabs '\t'
-                - [ ] EDI_render_do_IndentLess
-                    - [ ] use spaces '    '
+            - [ ] EDI_editEvent_checkFor_NOTcanBatch_IndentMore
+                - [ ] use tabs '\t'
+                - [ ] use spaces '    '
+            - [ ] EDI_indentLess
+                - [ ] use tabs '\t'
+                - [ ] use spaces '    '
+            - [ ] EDI_render_do_IndentLess
+                - [ ] use tabs '\t'
+                - [ ] use spaces '    '
 - [ ] main.cjs '\t' logic:
     - [/] MAIN_decode_experimental_textonly(bytes, start, length, EDI_lineEndString, EDI_fileStartsWithBom)
 

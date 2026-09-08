@@ -1605,29 +1605,28 @@ function EDI_finalizeEdit_Enter(indexLine_editOccurredOn) {
 }
 
 function EDI_finalizeEdit_Tab(indexLine_editOccurredOn) {
-
-    let that_four = 4;
-
-    let bytes = EDI_on_tab_bytes;
+    const bytes = EDI_on_tab_bytes;
+    const per_edit_length = bytes.length;
+    let length = per_edit_length;
 
     if (INTS[fEDI_cursor_editLength] > 1) {
-        that_four *= INTS[fEDI_cursor_editLength];
-        bytes = new Uint8Array(that_four);
-        let src_bytes = EDI_on_tab_bytes;
+        length *= INTS[fEDI_cursor_editLength];
+        bytes = new Uint8Array(length);
+        let src_bytes = bytes;
         // TODO: typed array function usage
-        for (let i = 0; i < that_four; i += 4) {
-            for (let k = 0; k < 4; k++) {
+        for (let i = 0; i < length; i += per_edit_length) {
+            for (let k = 0; k < per_edit_length; k++) {
                 bytes[i + k] = src_bytes[k];
             }
         }
     }
 
-    EDI_trackedSyntaxList_inefficientUpdateStartAndLength(INTS[fEDI_cursor_editPosition], that_four);
+    EDI_trackedSyntaxList_inefficientUpdateStartAndLength(INTS[fEDI_cursor_editPosition], length);
 
-    EDI_textByteList_insertBytes(INTS[fEDI_cursor_editPosition], bytes, /*offset*/ 0, /*length*/ that_four);
+    EDI_textByteList_insertBytes(INTS[fEDI_cursor_editPosition], bytes, /*offset*/ 0, /*length*/ length);
 
     for (var i = INTS[fEDI_cursor_editIndexLine]; i < EDI_lineEndPositionList_count; i++) {
-        EDI_lineEndPositionList_data[i] += that_four;
+        EDI_lineEndPositionList_data[i] += length;
     }
 
     EDI_finalizeEdit_ClearEditState();
@@ -8553,6 +8552,10 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
     - [ ] shift key
     - [ ] aka:
         - [ ] insert "tab"
+            - [ ] tab
+            - [ ] tab_state
+            - [ ] tab_render
+            - [/] EDI_finalizeEdit_Tab
         - [ ] indentMore
         - [ ] indentLess
 - [ ] main.cjs '\t' logic:

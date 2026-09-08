@@ -1638,35 +1638,37 @@ function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
     let SMALL_lineAndColumnIndices_indexLine = INTS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine];
     INTS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] = 0;
 
-    let ORIGINAL_incrementBy = (startingIndex + 1 - SMALL_lineAndColumnIndices_indexLine) * 4;
+    let bytes = EDI_on_tab_bytes;
+    const per_edit_length = bytes.length;
+
+    let ORIGINAL_incrementBy = (startingIndex + 1 - SMALL_lineAndColumnIndices_indexLine) * per_edit_length;
     let incrementBy = ORIGINAL_incrementBy;
 
     //let ORIGINAL_incrementBy = INTS[fEDI_indent_ORIGINAL_indentBy];
     //let incrementBy = INTS[fEDI_indent_ORIGINAL_indentBy];
     //INTS[fEDI_indent_ORIGINAL_indentBy] = 0;
 
-    let bytes = EDI_on_tab_bytes;
-    let bytesLength = 4;
+    
+    let bytesLength = per_edit_length;
 
     if (INTS[fEDI_cursor_editLength] > 1) {
         ORIGINAL_incrementBy *= INTS[fEDI_cursor_editLength];
         incrementBy *= INTS[fEDI_cursor_editLength];
-
         bytesLength *= INTS[fEDI_cursor_editLength];
+        const src_bytes = bytes;
         bytes = new Uint8Array(bytesLength);
-        let src_bytes = EDI_on_tab_bytes;
         // TODO: typed array function usage
-        for (let i = 0; i < bytesLength; i += 4) {
-            for (let k = 0; k < 4; k++) {
+        for (let i = 0; i < bytesLength; i += per_edit_length) {
+            for (let k = 0; k < per_edit_length; k++) {
                 bytes[i + k] = src_bytes[k];
             }
         }
     }
 
-    startingLinePos_end = INTS[fEDI_EDI_indentLess_startingLinePos_end];
+    let startingLinePos_end = INTS[fEDI_EDI_indentLess_startingLinePos_end];
     INTS[fEDI_EDI_indentLess_startingLinePos_end] = 0;
 
-    
+    // here
 
     ///////////
     ///////////
@@ -4043,11 +4045,11 @@ function EDI_editEvent_checkFor_NOTcanBatch_Tab(event) {
  * 
  */
 function EDI_editEvent_checkFor_NOTcanBatch_IndentMore() {
+    // TODO: Should this be: 'INTS[fEDI_cursor_editKind] !== EditKind_IndentMore'?
     if (INTS[fEDI_cursor_editKind] === EditKind_IndentLess) {
         return true;
     }
     
-    /////
     let SMALL_pos;
     let LARGE_pos;
     if (INTS[fEDI_cursor_selectionAnchor] < INTS[fEDI_cursor_selectionEnd]) {
@@ -4061,13 +4063,11 @@ function EDI_editEvent_checkFor_NOTcanBatch_IndentMore() {
 
     EDI_getLineAndColumnIndices(SMALL_pos);
     let SMALL_lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
-    let SMALL_lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
 
     EDI_getLineAndColumnIndices(LARGE_pos);
     let LARGE_lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
-    let LARGE_lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
 
-    // # Determine the starting indexLine (the start is the large position, this confused me for a moment)
+    // start at the LARGE position
     let startingIndex = LARGE_lineAndColumnIndices_indexLine;
     let startingLinePos = EDI_getLineBoundaryPositions(startingIndex);
     if (startingLinePos.start === LARGE_pos) {
@@ -4080,15 +4080,11 @@ function EDI_editEvent_checkFor_NOTcanBatch_IndentMore() {
         return true;
     }
 
-    // TODO: '..._EDI_indent_ORIGINAL_indentBy()' is no longer in use
-
     // # Determine the total count of text that will be inserted, prior to actually beginning the edit.
     if (INTS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] === SMALL_lineAndColumnIndices_indexLine &&
         INTS[fEDI_indent_startingIndex] === startingIndex) {
-
             return false;
     }
-    /////
 
     return true;
 }
@@ -5188,13 +5184,11 @@ function EDI_indentMore() {
 
     EDI_getLineAndColumnIndices_raw(SMALL_pos);
     let SMALL_lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
-    let SMALL_lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
 
     EDI_getLineAndColumnIndices_raw(LARGE_pos);
     let LARGE_lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
-    let LARGE_lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
 
-    // # Determine the starting indexLine (the start is the large position, this confused me for a moment)
+    // start at the LARGE position
     let startingIndex = LARGE_lineAndColumnIndices_indexLine;
     let startingLinePos = EDI_getLineBoundaryPositions_raw(startingIndex);
     if (startingLinePos.start === LARGE_pos) {
@@ -5223,7 +5217,7 @@ function EDI_indentMore() {
     //}
 
     // # Update the cursor's indexColumn to reflect the inserted text
-    INTS[fEDI_cursor_indexColumn] += 4;
+    INTS[fEDI_cursor_indexColumn] += EDI_on_tab_bytes.length;
 
     //// # Update the cursor's selection to reflect the inserted text
     //let smallLinePos = EDI_getLineBoundaryPositions(SMALL_lineAndColumnIndices.indexLine);
@@ -8544,12 +8538,12 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
 
 - [ ] tab keyboard input
     - [ ] indentMore
-        - [ ] EDI_editEvent_checkFor_NOTcanBatch_IndentMore
-            - [ ] use tabs '\t'
-            - [ ] use spaces '    '
-        - [ ] EDI_indentMore
-            - [ ] use tabs '\t'
-            - [ ] use spaces '    '
+        - [x] EDI_editEvent_checkFor_NOTcanBatch_IndentMore
+            - [x] use tabs '\t'
+            - [x] use spaces '    '
+        - [x] EDI_indentMore
+            - [x] use tabs '\t'
+            - [x] use spaces '    '
         - [ ] EDI_render_do_IndentMore
             - [ ] use tabs '\t'
             - [ ] use spaces '    '
@@ -8557,7 +8551,7 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
             - [ ] use tabs '\t'
             - [ ] use spaces '    '
     - [ ] indentLess
-        - [ ] EDI_editEvent_checkFor_NOTcanBatch_IndentMore
+        - [ ] EDI_editEvent_checkFor_NOTcanBatch_IndentLess
             - [ ] use tabs '\t'
             - [ ] use spaces '    '
         - [ ] EDI_indentLess

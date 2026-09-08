@@ -1298,6 +1298,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     let lineLength = 0;
 
     // TODO: Insert multiple characters at the same time when you do this?
+    EDI_textByteList_ensureCapacityForInsertion(0, text.length);
 
     for (var sourceI = 0; sourceI < text.length; sourceI++) {
         const code = text.charCodeAt(sourceI);

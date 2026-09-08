@@ -1624,7 +1624,7 @@ const finalUint8Array = encoder.encode(normalizedText);
 < Direct Comparison Overview
 < 
 < Feature / Metric               | DOM-Based Architecture                                                                 | Canvas-Based Architecture
-< -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+< -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 < Rendering Strategy             | Browser handles text rendering, layouts, and styles via HTML/CSS.                      | You manually paint every single pixel, character, and line onto a 2D/WebGL context.
 < Maximum File Performance       | Highly dependent on DOM recycling (virtualization). High memory overhead per line.     | Exceptionally high performance. Can handle massive files smoothly because memory overhead is minuscule.
 < Text Selection & Clipboard     | Native. The browser handles copy, paste, drag-and-drop, and highlights out-of-the-box. | Completely Manual. You must calculate click coordinates, track drag states, paint highlights, and manage clipboard APIs manually.

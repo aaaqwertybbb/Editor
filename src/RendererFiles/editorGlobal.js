@@ -8858,7 +8858,7 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
         - [ ] indentMore
         - [ ] indentLess
 - [ ] main.cjs '\t' logic:
-    - [ ] MAIN_decode_experimental_textonly(bytes, start, length, EDI_lineEndString, EDI_fileStartsWithBom)
+    - [/] MAIN_decode_experimental_textonly(bytes, start, length, EDI_lineEndString, EDI_fileStartsWithBom)
 
 
 */

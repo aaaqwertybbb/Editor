@@ -109,9 +109,10 @@ async function window_myAPI_onMessage(data) {
 
         let data_countAbstract = data.result.length / fieldCount;
 
-        // TODO: Just use 'EDI_trackedSyntaxList' directly
         let trackedSyntaxList = EDI_trackedSyntaxList;
         trackedSyntaxList.clear();
+        trackedSyntaxList.ensureCapacityForInsertion(0, data_countAbstract);
+        // !!!! for the text?
 
         // '_psuedoFourFieldTrackedSyntaxList.Add((int)TrackedSyntaxKind.Comment);'
         // 

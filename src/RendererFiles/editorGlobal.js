@@ -333,13 +333,10 @@ EDI_findOverlay.style.visibility = 'hidden';
 const EDI_gutterBackgroundColor = document.getElementById('EDI_gutter_background_color');
 
 /**
- * Null characters provide visual width for proportional fonts. They do not get copied or saved out.
+ * TODO: This used to be const so make sure you check all the references that they weren't relying on that for either behavior or optimization.
  */
-const EDI_on_tab_bytes = new Uint8Array(4);
+let EDI_on_tab_bytes = new Uint8Array(1);
 EDI_on_tab_bytes[0] = CONST_EDI_ASCII_TAB;
-EDI_on_tab_bytes[1] = 17;
-EDI_on_tab_bytes[2] = 17;
-EDI_on_tab_bytes[3] = 17;
 
 /**
  * When a cursor removes a line end the position of the line end is stored in this list until the edit is finalized.
@@ -8540,6 +8537,10 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
 <
 < If you'd like, we can also look at optimizing how you shift the existing bytes over to make room for the insertion.
 
+- [/] initial state of the ontab bytes thing
+- [/] swapping between
+    - [/] tabs
+    - [/] spaces
 - [ ] rendering '\t' as tab-size of 4
     - [ ] whitespace collapsing?
     - [ ] tab-stop messing with tab-size?

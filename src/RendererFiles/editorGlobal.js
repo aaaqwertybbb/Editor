@@ -8529,19 +8529,6 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
 < If you'd like, we can also look at optimizing how you shift the existing bytes over to make room for the insertion.
 
 - [ ] tab keyboard input
-    - [ ] indentMore
-        - [x] EDI_editEvent_checkFor_NOTcanBatch_IndentMore
-            - [x] use tabs '\t'
-            - [x] use spaces '    '
-        - [x] EDI_indentMore
-            - [x] use tabs '\t'
-            - [x] use spaces '    '
-        - [ ] EDI_render_do_IndentMore
-            - [ ] use tabs '\t'
-            - [ ] use spaces '    '
-        - [x] EDI_finalizeEdit_IndentMore
-            - [x] use tabs '\t'
-            - [x] use spaces '    '
     - [ ] indentLess
         - [ ] EDI_editEvent_checkFor_NOTcanBatch_IndentLess
             - [ ] use tabs '\t'
@@ -8566,6 +8553,19 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
             - [x] use tabs '\t'
             - [x] use spaces '    '
         - [x] EDI_finalizeEdit_Tab
+            - [x] use tabs '\t'
+            - [x] use spaces '    '
+    - [x] indentMore
+        - [x] EDI_editEvent_checkFor_NOTcanBatch_IndentMore
+            - [x] use tabs '\t'
+            - [x] use spaces '    '
+        - [x] EDI_indentMore
+            - [x] use tabs '\t'
+            - [x] use spaces '    '
+        - [x] EDI_render_do_IndentMore
+            - [x] use tabs '\t'
+            - [x] use spaces '    '
+        - [x] EDI_finalizeEdit_IndentMore
             - [x] use tabs '\t'
             - [x] use spaces '    '
 - [ ] rendering '\t' as tab-size of 4

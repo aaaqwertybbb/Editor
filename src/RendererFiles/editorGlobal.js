@@ -8543,9 +8543,9 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
         - [x] EDI_editEvent_checkFor_NOTcanBatch_Tab
             - [x] use tabs '\t'
             - [x] use spaces '    '
-        - [ ] EDI_tabKey
-            - [ ] use tabs '\t'
-            - [ ] use spaces '    '
+        - [x] EDI_tabKey
+            - [x] use tabs '\t'
+            - [x] use spaces '    '
         - [ ] EDI_render_do_TabKey
             - [ ] use tabs '\t'
             - [ ] use spaces '    '

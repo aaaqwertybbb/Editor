@@ -8990,4 +8990,20 @@ But you need to understand that enduring this continued discipline
 will lead you to those enjoyable feelings of pleasure and excitement, inevitably.
 You just don't have control over when they appear.
 
+It's all about achieving fatigue.
+And it is equivalent to a time gated mechanic in an MMO.
+
+You can only get so many hours of useful sleep each night.
+You only have so much energy to expend on engaging with material each day.
+
+So your best bet is to engage with the material daily.
+If you feel fatigued on a given day after just 1 minute of engaging with the material
+then you've done well.
+
+The issue is these measurements of fatigue are simply heuristics that we are applying to ourselves.
+And our lazy side wants to sit there after 5 minutes and say "yeah I'm fatigued".
+So you have to be real with yourself,
+and understand that no single heuristic is sufficient and that following any
+kind of "hack" like "4 hours everyday is exactly the answer" is absolutely incorrect.
+
 */

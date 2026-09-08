@@ -8982,6 +8982,12 @@ Whereas if you achieve these emotions through drug use,
 you are more and more falling out of a maintainable cycle
 you cannot just sit there and do drugs all day, where will you get the money to do more drugs?
 
+The frustration and difficulty in maintaining a disciplined schedule is that
+achieving success has a capricious outcome.
 
+Sometimes the times where I'm most successful are the times where I feel my worst.
+But you need to understand that enduring this continued discipline
+will lead you to those enjoyable feelings of pleasure and excitement, inevitably.
+You just don't have control over when they appear.
 
 */

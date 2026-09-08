@@ -6028,7 +6028,9 @@ function EDI_render_do_TabKey() {
     }
     if (INTS[fEDI_cursor_editRenderedDisplacement] < INTS[fEDI_cursor_editLength] || INTS[fEDI_cursor_editKind] === EditKind_Tab) {
 
-        INTS[fEDI_cursor_indexColumn] -= 4; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
+        // TODO: 'fEDI_cursor_editRenderedDisplacement' here and check other render_do's
+
+        INTS[fEDI_cursor_indexColumn] -= EDI_on_tab_bytes.length; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
 
         walkLineUntilIndexColumn();
 
@@ -6038,6 +6040,8 @@ function EDI_render_do_TabKey() {
         }
 
         // TODO: Consider having this string available rather than making it everytime this function is invoked.
+        // TODO: This is bad (there's many other ways to get this as a string: decoder, caching of a hardcoded string?, ???)
+        //
         let EDI_on_tab_string = '';
         for (let i = 0; i < EDI_on_tab_bytes.length; i++) {
             EDI_on_tab_string += String.fromCharCode(EDI_on_tab_bytes[i]);
@@ -6048,7 +6052,7 @@ function EDI_render_do_TabKey() {
             EDI_on_tab_string +
             w_span.textContent.slice(INTS[fEDI_w_indexColumn_SpanTextContentRelative]);
 
-        INTS[fEDI_cursor_indexColumn] += 4; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
+        INTS[fEDI_cursor_indexColumn] += EDI_on_tab_bytes.length; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
     }
 }
 
@@ -8539,19 +8543,6 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
 < If you'd like, we can also look at optimizing how you shift the existing bytes over to make room for the insertion.
 
 - [ ] tab keyboard input
-    - [ ] insert "tab"
-        - [x] EDI_editEvent_checkFor_NOTcanBatch_Tab
-            - [x] use tabs '\t'
-            - [x] use spaces '    '
-        - [x] EDI_tabKey
-            - [x] use tabs '\t'
-            - [x] use spaces '    '
-        - [ ] EDI_render_do_TabKey
-            - [ ] use tabs '\t'
-            - [ ] use spaces '    '
-        - [x] EDI_finalizeEdit_Tab
-            - [x] use tabs '\t'
-            - [x] use spaces '    '
     - [ ] indentMore
         - [ ] EDI_editEvent_checkFor_NOTcanBatch_IndentMore
             - [ ] use tabs '\t'
@@ -8578,6 +8569,19 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
         - [ ] EDI_finalizeEdit_IndentLess
             - [ ] use tabs '\t'
             - [ ] use spaces '    '
+    - [x] insert "tab"
+        - [x] EDI_editEvent_checkFor_NOTcanBatch_Tab
+            - [x] use tabs '\t'
+            - [x] use spaces '    '
+        - [x] EDI_tabKey
+            - [x] use tabs '\t'
+            - [x] use spaces '    '
+        - [x] EDI_render_do_TabKey
+            - [x] use tabs '\t'
+            - [x] use spaces '    '
+        - [x] EDI_finalizeEdit_Tab
+            - [x] use tabs '\t'
+            - [x] use spaces '    '
 - [ ] rendering '\t' as tab-size of 4
     - [ ] whitespace collapsing?
     - [ ] tab-stop messing with tab-size?

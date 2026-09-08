@@ -1363,6 +1363,80 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     // EDI_textByteList_insert_count:393148 (aka: 393,148)
     //console.log(`EDI_textByteList_insert_count:${EDI_textByteList_insert_count}`);
 
+/*
+Google AI:
+==========
+
+> I am making a text editor app. A lot of the code is written already,
+> and so my question is more specifically going to relate to a generalized performance question.
+> The app uses electron, and vanilla javascript as a single monolithic ES6 module.
+
+< ...
+<
+< 4. Memory Footprint and Garbage Collection
+< Monoliths often suffer from accidental memory retention due to global event listeners or long-lived closures.
+< - The Problem: If your module attaches event listeners (like keyup or scroll) globally or holds references to deleted text chunks in a closure,
+<   V8 cannot garbage collect them. This causes the Electron Renderer process memory to swell over time.
+< - The Solution: Explicitly clean up references. Use WeakMap or WeakSet to store metadata about lines or tokens,
+<   ensuring that when a line is deleted, its metadata is automatically swept from memory.
+<
+< ...
+
+> ...
+
+< ...
+
+> My question is: one sample file that I tested invoked this insertion function '393,148' times. Do you have any information regarding what kind of overhead this would cause?
+> 
+> (note: I do figure this is a bad thing I'm going to change it, but I'm interested if there's any overhead you think of that isn't on my mind)
+
+< Invoking a function 393,148 times sequentially inside a single loop triggers several layers of overhead in V8 (Electron's JavaScript engine).
+< While ~400k iterations of a basic math operation are trivial for modern CPUs, executing a wrapper function that touches TypedArrays introduces distinct engine behaviors.
+<
+< Here is the exact hidden overhead you are running into, ranked from most severe to least:
+<
+< 1. The Call Stack & Function Activation Cost
+< Every single one of those 393,148 invocations forces V8 to manage a function execution context.
+< - The Mechanism: The engine must push a frame onto the call stack, pass arguments, allocate a local scope, execute the check, and pop the frame back off.
+< - The Penalty: Even though the execution frame is destroyed instantly, doing this 400k times adds significant execution time entirely unrelated to the actual data copying.
+<
+< 2. V8 Inline Caching (IC) and JIT Deoptimization
+< Modern engines like V8 optimize code by analyzing shapes.
+< - The Trigger: Because your wrapper function continuously checks if it needs to reallocate the Uint8Array, the reference to that array changes whenever capacity is hit.
+< - The Penalty: If the function arguments frequently change shape (e.g., swapping old arrays for newly allocated arrays), V8’s JIT compiler might mark the function as
+<   polymorphic or megamorphic. When this happens, the engine abandons optimized machine code compilation and drops back to slower interpreted execution.
+< 
+< 3. V8 Array Bounds Checks
+< JavaScript TypedArrays (Uint8Array) do not allow arbitrary out-of-bounds writes without consequences.
+< - The Mechanism: Every single index assignment (arr[i] = char) triggers an internal C++ bounds check behind the scenes to ensure you aren't corrupting memory.
+< - The Penalty: By wrapping the insertion character-by-character, you force the engine to check bounds twice per character—once manually in your JavaScript code
+<   (if (index >= capacity)) and once automatically by V8 when the assignment executes.
+< 
+< 4. Memory Allocator Pressure & Fragmentation
+< If your reallocation logic grows the array incrementally (e.g., adding a fixed size or doubling), you aren't just moving pointers.
+< - The Mechanism: Uint8Array allocations require contiguous blocks of memory. When you reallocate, the engine must ask the system for a brand new chunk of memory,
+<   copy the entire existing dataset over to the new array, and abandon the old array.
+< - The Penalty: Over 393,000 character loops, if the array resizes dozens of times, you are generating heavy Garbage Collection (GC) churn and
+<   risking memory fragmentation inside the renderer thread.
+< 
+< A More Performant Alternative
+< Instead of a character-by-character wrapper loop, you can process the file in a single batch operation using native browser APIs:
+< ```js
+// Convert the entire text file into a buffer at once
+const encoder = new TextEncoder();
+const finalUint8Array = encoder.encode(entireFileTextString);
+< ```
+<
+< This passes the work down to low-level C++ rendering loops inside Chromium, completing the transformation near-instantaneously without ever invoking a JavaScript function loop.
+<
+< If you want to look at fixing this, let me know:
+< - How your reallocation logic determines the new size (e.g., doubling the size or adding a fixed buffer)
+< - Whether you strictly need a mutable Uint8Array during this phase, or if a standard string can be kept until editing begins
+<
+< I can help you refactor the ingestion logic to minimize the V8 overhead.
+
+*/
+
     // TODO: The ++ here "isn't needed" but it makes the code consistent and less prone to future mistakes should another access of 'EDI_lineEndPositionList_count' be made after this point in the future.
     EDI_lineEndPositionList_insert(local_EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
 

@@ -1602,7 +1602,7 @@ function EDI_finalizeEdit_Enter(indexLine_editOccurredOn) {
 }
 
 function EDI_finalizeEdit_Tab(indexLine_editOccurredOn) {
-    const bytes = EDI_on_tab_bytes;
+    let bytes = EDI_on_tab_bytes;
     const per_edit_length = bytes.length;
     let length = per_edit_length;
 
@@ -8554,6 +8554,9 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
             - [ ] tab
                 - [ ] use tabs '\t'
                 - [ ] use spaces '    '
+            - [ ] EDI_editEvent_checkFor_NOTcanBatch_Tab
+                - [ ] use tabs '\t'
+                - [ ] use spaces '    '
             - [ ] tab_state
                 - [ ] use tabs '\t'
                 - [ ] use spaces '    '
@@ -8578,5 +8581,6 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
 - [ ] main.cjs '\t' logic:
     - [/] MAIN_decode_experimental_textonly(bytes, start, length, EDI_lineEndString, EDI_fileStartsWithBom)
 
+// TODO: When you change the tab from spaces to tabs or vice versa finalize edits?
 
 */

@@ -8933,5 +8933,11 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
 <
 < If you'd like, we can also look at optimizing how you shift the existing bytes over to make room for the insertion.
 
+I have this anxiety where
+I said something along the lines of "brain rot"
+and even though I've deleted that code from this file it is still in the git history
+and I feel like it being in the git history will
+cause my brain to rot.
+
 
 */

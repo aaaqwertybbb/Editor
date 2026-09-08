@@ -8531,9 +8531,9 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
         - [ ] EDI_render_do_IndentLess
             - [ ] use tabs '\t'
             - [ ] use spaces '    '
-        - [ ] EDI_finalizeEdit_IndentLess
-            - [ ] use tabs '\t'
-            - [ ] use spaces '    '
+        - [x] EDI_finalizeEdit_IndentLess
+            - [x] use tabs '\t'
+            - [x] use spaces '    '
     - [x] insert "tab"
         - [x] EDI_editEvent_checkFor_NOTcanBatch_Tab
             - [x] use tabs '\t'

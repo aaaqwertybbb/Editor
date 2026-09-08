@@ -41,6 +41,9 @@ And the importance when reading the code lies with the words 'line' and 'column'
 # Handling of tabs: #
 #####################
 
+```js
+// function EDI_state_setText
+```
 What I do with tabs is a terrible idea.
 I convert them from '\t' to '\t\0\0\0'.
 Then I set tab-size to 1 for '#EDI_text'.

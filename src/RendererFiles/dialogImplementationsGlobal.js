@@ -451,9 +451,9 @@ function DIALOG_checkboxTrueTabsFalseSpaces_onchange() {
     BYTES[byteDIALOG_Settings_trueTabs_falseSpaces] = checkboxTrueTabsFalseSpaces.checked;
     if (BYTES[byteDIALOG_Settings_trueTabs_falseSpaces]) {
         EDI_on_tab_bytes[0] = CONST_EDI_ASCII_TAB;
-        EDI_on_tab_bytes[1] = 0;
-        EDI_on_tab_bytes[2] = 0;
-        EDI_on_tab_bytes[3] = 0;
+        EDI_on_tab_bytes[1] = 17;
+        EDI_on_tab_bytes[2] = 17;
+        EDI_on_tab_bytes[3] = 17;
     }
     else {
         EDI_on_tab_bytes[0] = CONST_EDI_ASCII_SPACE;

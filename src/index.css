@@ -495,7 +495,7 @@ TODO: Is it better to have one virtualization element that has both the width an
   white-space: pre;
   width: 0;
   height: 0;
-  tab-size: 1;
+  tab-size: 4;
   display: contents;
 }
 

@@ -8934,12 +8934,5 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
 
 I just had a funny memory
 
-"you so, f***ing, precious, when you, smile❤️❤️❤️"
-
-when I was in college my acne was worse than what it is now
-and I'd be super anxious and uncomfortable when a girl was behind me
-cause I thought to myself "oh they prob see the back of my neck and I prob got acne or smthin going on"
-
-That's when I was reminded of that song
 
 */

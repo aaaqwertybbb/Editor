@@ -1299,7 +1299,6 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     }
 
     let local_EDI_lineEndPositionList_count = EDI_lineEndPositionList_count;
-    let local_EDI_textByteList_count = EDI_textByteList_count;
 
     
     let lineLength = 0; /** TODO: Track the linePosition last seen when making a line or something you don't have to increment this per character, you just need the difference of the last line drawn to the current or something. */
@@ -1322,7 +1321,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     }
 
     // TODO: The ++ here "isn't needed" but it makes the code consistent and less prone to future mistakes should another access of 'EDI_lineEndPositionList_count' be made after this point in the future.
-    EDI_lineEndPositionList_insert(local_EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
+    EDI_lineEndPositionList_insert(local_EDI_lineEndPositionList_count++, EDI_textByteList_count);
 
     update_VirtualIndexLine();
     update_virtualCount();

@@ -1300,7 +1300,6 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
 
     let local_EDI_lineEndPositionList_count = EDI_lineEndPositionList_count;
 
-    
     let lineLength = 0; /** TODO: Track the linePosition last seen when making a line or something you don't have to increment this per character, you just need the difference of the last line drawn to the current or something. */
     const normalizedText = text.replaceAll('\r\n', '\n').replaceAll('\t', '\t\x11\x11\x11');
     const finalUint8Array = EDI_encoder.encode(normalizedText); /** how do I 'encodeInto' when a character might actually be multi-byte thus I don't ever truly know the size ahead of time? */
@@ -1308,9 +1307,12 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     EDI_textByteList_bytes.set(finalUint8Array, 0);
     EDI_textByteList_count = finalUint8Array.length;
 
-    for (var sourceI = 0; sourceI < EDI_textByteList_count; sourceI++) {
+    const local_EDI_textByteList_bytes = EDI_textByteList_bytes;
+    const local_EDI_textByteList_count = EDI_textByteList_count;
+
+    for (var sourceI = 0; sourceI < local_EDI_textByteList_count; sourceI++) {
         lineLength++; // avoid branching by eager counting the lineLength and then excluding the lineEnding later
-        if (EDI_textByteList_bytes[sourceI] === CONST_EDI_ASCII_LINE_FEED) {
+        if (local_EDI_textByteList_bytes[sourceI] === CONST_EDI_ASCII_LINE_FEED) {
             if (lineLength - 1 > INTS[fEDI_longestLine_length]) { // avoid branching by eager counting the lineLength and then excluding the lineEnding later
                 INTS[fEDI_longestLine_length] = lineLength - 1; // avoid branching by eager counting the lineLength and then excluding the lineEnding later
                 INTS[fEDI_longestLine_indexLine] = local_EDI_lineEndPositionList_count;
@@ -1321,7 +1323,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     }
 
     // TODO: The ++ here "isn't needed" but it makes the code consistent and less prone to future mistakes should another access of 'EDI_lineEndPositionList_count' be made after this point in the future.
-    EDI_lineEndPositionList_insert(local_EDI_lineEndPositionList_count++, EDI_textByteList_count);
+    EDI_lineEndPositionList_insert(local_EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
 
     update_VirtualIndexLine();
     update_virtualCount();

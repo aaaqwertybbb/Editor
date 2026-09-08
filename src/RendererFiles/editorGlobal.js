@@ -43,16 +43,20 @@ And the importance when reading the code lies with the words 'line' and 'column'
 
 ```js
 // function EDI_state_setText
+if (text.includes('\x11')) {
+    throw new Error("text.includes('\x11')");
+}
 ```
+
 What I do with tabs is a terrible idea.
-I convert them from '\t' to '\t\0\0\0'.
+I convert them from '\t' to '\t\x11\x11\x11'.
 Then I set tab-size to 1 for '#EDI_text'.
 
 This maps a tab width of 4 to 4 characters.
-I save out the content by skipping over the '\0'.
+I save out the content by skipping over the '\x11'.
 
-And the editor itself ought to handle '\0' such that you are at the expected position
-rather than ever being at or modifying a '\0' itself.
+And the editor itself ought to handle '\x11' such that you are at the expected position
+rather than ever being at or modifying a '\x11' itself.
 I haven't gotten to this part though.
 
 Perhaps what I'm doing is working with font styling I don't know I need to find time to look into it.
@@ -60,7 +64,7 @@ Perhaps what I'm doing is working with font styling I don't know I need to find 
 But the issue is that tab is a control character and has extra processing than a normal character.
 And it can introduce oddities involving tabstop or very tiny changes in horizontal positioning of surrounding text or something.
 
-'\0' is a similar problem, it is a special character that might cause odd behavior.
+'\x11' is a similar problem, it is a special character that might cause odd behavior.
 */
 
 /*
@@ -369,9 +373,9 @@ const EDI_gutterBackgroundColor = document.getElementById('EDI_gutter_background
  */
 const EDI_on_tab_bytes = new Uint8Array(4);
 EDI_on_tab_bytes[0] = CONST_EDI_ASCII_TAB;
-EDI_on_tab_bytes[1] = 0;
-EDI_on_tab_bytes[2] = 0;
-EDI_on_tab_bytes[3] = 0;
+EDI_on_tab_bytes[1] = 17;
+EDI_on_tab_bytes[2] = 17;
+EDI_on_tab_bytes[3] = 17;
 
 /**
  * When a cursor removes a line end the position of the line end is stored in this list until the edit is finalized.
@@ -1269,6 +1273,11 @@ function EDI_clear() {
 }
 
 function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMATTED_textSourceIdentifier, extensionKind, lineEndString) {
+
+    if (text.includes('\x11')) {
+        throw new Error("text.includes('\x11')");
+    }
+
     EDI_baseElement.scrollTop = 0;
     INTS[fEDI_lastReadNumber_scrollTop] = 0;
     EDI_baseElement.scrollLeft = 0;
@@ -1305,61 +1314,68 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
      */
     let lineLength = 0;
 
-    // TODO: Insert multiple characters at the same time when you do this?
-    EDI_textByteList_ensureCapacityForInsertion(0, text.length);
 
-    for (var sourceI = 0; sourceI < text.length; sourceI++) {
-        const code = text.charCodeAt(sourceI);
-        switch (code) {
-            case 13 /* carriage return '\r' */:
-                if (sourceI < text.length - 1 && text.charCodeAt(sourceI + 1) === CONST_EDI_ASCII_LINE_FEED) {
-                    if (!lineEndString) {
-                        lineEndString = EDI_lineEndString = '\r\n';
-                    }
-                    sourceI++;
-                }
-                else {
-                    if (!lineEndString) {
-                        lineEndString = EDI_lineEndString = '\r';
-                    }
-                }
-                if (lineLength > INTS[fEDI_longestLine_length]) {
-                    INTS[fEDI_longestLine_length] = lineLength;
-                    INTS[fEDI_longestLine_indexLine] = local_EDI_lineEndPositionList_count;
-                }
-                lineLength = 0;
-                EDI_lineEndPositionList_insert(local_EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
-                EDI_textByteList_insert(local_EDI_textByteList_count++, CONST_EDI_ASCII_LINE_FEED);
-                break;
-            case CONST_EDI_ASCII_LINE_FEED:
-                if (!lineEndString) {
-                    lineEndString = EDI_lineEndString = '\n';
-                }
-                if (lineLength > INTS[fEDI_longestLine_length]) {
-                    INTS[fEDI_longestLine_length] = lineLength;
-                    INTS[fEDI_longestLine_indexLine] = local_EDI_lineEndPositionList_count;
-                }
-                lineLength = 0;
-                EDI_lineEndPositionList_insert(local_EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
-                EDI_textByteList_insert(local_EDI_textByteList_count++, CONST_EDI_ASCII_LINE_FEED);
-                break;
-            case CONST_EDI_ASCII_TAB:
-                lineLength += 4;
-                EDI_textByteList_insertBytes(local_EDI_textByteList_count, EDI_tab_tabsbytes, /*offset*/ 0, /*length*/ 4);
-                // 'local_EDI_textByteList_count++' pattern breaking line here
-                local_EDI_textByteList_count += 4;
-                break;
-            default:
-                lineLength++;
-                // TODO: add a function for '.add' and avoid the "pointless" passing of count in scenarios like this.
-                //
-                // tbh: TODO: 'charCodeAt' also might be more allocation expensive than you expect. It returns a JavaScript number. Switching and returning an index from byte array prehardcoded might avoid an allocation per number returned?
-                // ... although I hear most engines store numbers such that the pointer represents the value and you avoid the allocation but even then where is the metadata that tells you how to read that pointer differently than the other ones etc...
-                //
-                EDI_textByteList_insert(local_EDI_textByteList_count++, code);
-                break;
+    //////////
+    //////////
+    //////////
+
+    // 1. Detect the original line ending format (e.g., \r\n or \n)
+    const firstNewlineMatch = text.match(/\r?\n/);
+    const originalLineEnding = firstNewlineMatch ? firstNewlineMatch[0] : '\n';
+    EDI_lineEndString = originalLineEnding;
+
+    // 2. Batch-replace all CRLF to LF using native C++ optimization
+    // (Chromium executes this near-instantaneously without JS loop overhead)
+    const normalizedText = entireFileTextString.replaceAll('\r\n', '\n').replaceAll('\t', '\t\x11\x11\x11');
+
+    // 3. Allocate the EXACT memory buffer size needed (zero reallocation churn!)
+    const encoder = new TextEncoder();
+    /** how do I 'encodeInto' when a character might actually be multi-byte thus I don't ever truly know the size ahead of time? */
+    const finalUint8Array = encoder.encode(normalizedText);
+
+    //////////
+    //////////
+    //////////
+
+    // TODO: Insert multiple characters at the same time when you do this?
+    EDI_textByteList_ensureCapacityForInsertion(0, finalUint8Array.length);
+    EDI_textByteList_bytes.set(0, finalUint8Array.length);
+    EDI_textByteList_count = finalUint8Array.length;
+
+    for (var sourceI = 0; sourceI < EDI_textByteList_count; sourceI++) {
+        lineLength++; // avoid branching by eager counting the lineLength and then excluding the lineEnding later
+        if (EDI_on_tab_bytes[sourceI] === CONST_EDI_ASCII_LINE_FEED) {
+            if (lineLength - 1 > INTS[fEDI_longestLine_length]) { // avoid branching by eager counting the lineLength and then excluding the lineEnding later
+                INTS[fEDI_longestLine_length] = lineLength - 1; // avoid branching by eager counting the lineLength and then excluding the lineEnding later
+                INTS[fEDI_longestLine_indexLine] = local_EDI_lineEndPositionList_count;
+            }
+            lineLength = 0;
+            EDI_lineEndPositionList_insert(local_EDI_lineEndPositionList_count++, sourceI);
         }
     }
+
+    // TODO: The ++ here "isn't needed" but it makes the code consistent and less prone to future mistakes should another access of 'EDI_lineEndPositionList_count' be made after this point in the future.
+    EDI_lineEndPositionList_insert(local_EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
+
+    update_VirtualIndexLine();
+    update_virtualCount();
+
+    update_verticalVirtualizationBoundary();
+
+    EDI_drawGutter_Width();
+    EDI_render_request(RenderKind_Cursor_n);
+    EDI_drawHorizontalScrollbar();
+    // Force 'case 3' within 'EDI_onScroll_WRAPIT();' downstream
+    // TODO: (this comment is being made sometime after this solution was written but from memory...)...
+    // ...I believe this works because when you change the text you guarantee a virtual index line of '0' because the scrollTop gets moved to 0...
+    // ...the partial solution is to set it to anything other than '0' so the editor detects that a line of text needs to be drawn...
+    // ...but this isn't enough because you want the editor to draw every line, thus you make the difference...
+    // ...in the virtual index line equal to the count of lines being displayed, i.e.: set virtual index line to 'INTS[fEDI_virtualCount]'...
+    // ...then it sees the new value for virtual index line is 0...
+    // ...the difference between the previous and new value is 'INTS[fEDI_virtualCount]'...
+    // ...thus 'INTS[fEDI_virtualCount]' amount of lines get redrawn...
+    // ...i.e.: the entire viewport is redrawn with the new file's text.
+    INTS[fEDI_ONSCROLLvirtualIndexLine] = INTS[fEDI_virtualCount];
 
     // Open editorGlobal.js
     //
@@ -1820,30 +1836,42 @@ const normalizedText = entireFileTextString
 < 
 < Best of luck with the code rewrite! Let me know whenever you want to dive back in.
 
+> Is there an alternative that wouldn't appear in a text file and is also 1 byte?
+
+< Yes, you can leverage the ASCII Control Characters (bytes 1 through 31).
+<
+< These characters are explicitly designed as internal operational codes, meaning they almost never naturally occur inside a standard user text file
+< (except for \t which is byte 9, \n which is byte 10, and \r which is byte 13).
+<
+< Best of all, they are exactly 1 byte.
+<
+< # The Ideal Candidates
+< To avoid stepping on standard text editing behaviors, you want to pick characters that have no meaning to modern modern operating systems or file viewers.
+< The absolute best choices are the Device Control or Separation codes:
+< - \x11 (Device Control 1 / DC1 - Byte 17): Historically used to pause/resume data transmission. Entirely obsolete now.
+<   It is 1 byte, safe for C++ because it isn't \0, and will never naturally be typed by a user.
+< - \x1c (File Separator / FS - Byte 28): An old mainframe control code. Completely ignored by text files today.
+< \x01 (Start of Header / SOH - Byte 1): Safe, but note that some terminal logs use it for color configurations.
+<
+< How to use it in your code:
+< ```js
+const normalizedText = entireFileTextString
+    .replaceAll('\r\n', '\n')
+    .replaceAll('\t', '\t\x11\x11\x11'); // Expands 1 tab byte into 4 distinct bytes
+< ```
+<
+< Why this option works for your temporary stack:
+< 1. Guaranteed 1-Byte Alignment: Unlike · (which is multi-byte in UTF-8), \x11 maps to exactly one byte in your Uint8Array. Your pointer offsets and loop indices will align perfectly.
+< 2. 100% C++ Safe: Because it isn't a null byte (\0), Electron's underlying C++ APIs, file-saving operations, and IPC bridges will read right past it without triggering silent text truncation.
+< 3. Safe in the DOM: Chromium treats control codes like \x11 as non-printable. It will not drop into the slow-path font-fallback loops that broke the render engine when you tried using \0.
+< 
+< Keep this exact replacement until you are ready to implement the layout lookup tables or the CSS updates we mapped out earlier.
+<
+< When you are ready to transition away from this interim architecture, let me know:
+< - Show me how to use pure CSS tab-size to remove this padding loop entirely
+< - Show me how to build a byte-to-pixel lookup table for my cursor positioning
+
 */
-
-    // TODO: The ++ here "isn't needed" but it makes the code consistent and less prone to future mistakes should another access of 'EDI_lineEndPositionList_count' be made after this point in the future.
-    EDI_lineEndPositionList_insert(local_EDI_lineEndPositionList_count++, local_EDI_textByteList_count);
-
-    update_VirtualIndexLine();
-    update_virtualCount();
-
-    update_verticalVirtualizationBoundary();
-
-    EDI_drawGutter_Width();
-    EDI_render_request(RenderKind_Cursor_n);
-    EDI_drawHorizontalScrollbar();
-    // Force 'case 3' within 'EDI_onScroll_WRAPIT();' downstream
-    // TODO: (this comment is being made sometime after this solution was written but from memory...)...
-    // ...I believe this works because when you change the text you guarantee a virtual index line of '0' because the scrollTop gets moved to 0...
-    // ...the partial solution is to set it to anything other than '0' so the editor detects that a line of text needs to be drawn...
-    // ...but this isn't enough because you want the editor to draw every line, thus you make the difference...
-    // ...in the virtual index line equal to the count of lines being displayed, i.e.: set virtual index line to 'INTS[fEDI_virtualCount]'...
-    // ...then it sees the new value for virtual index line is 0...
-    // ...the difference between the previous and new value is 'INTS[fEDI_virtualCount]'...
-    // ...thus 'INTS[fEDI_virtualCount]' amount of lines get redrawn...
-    // ...i.e.: the entire viewport is redrawn with the new file's text.
-    INTS[fEDI_ONSCROLLvirtualIndexLine] = INTS[fEDI_virtualCount];
 }
 
 /**
@@ -2091,7 +2119,7 @@ function EDI_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
     EDI_getLineAndColumnIndices(INTS[fEDI_cursor_editPosition]);
     let lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
     let lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
-    // TODO: Account for any '\t\0\0\0' that exist on the line
+    // TODO: Account for any '\t\x11\x11\x11' that exist on the line
     let text = EDI_decoder.decode(EDI_cursor_gapBuffer.subarray(0, INTS[fEDI_cursor_gapBufferCount]));
     INTS[F_didChangeTextDocument_version] = INTS[F_didChangeTextDocument_version] + 1;
     let version = INTS[F_didChangeTextDocument_version];
@@ -2347,7 +2375,7 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
                     DETERMINE_decrementBy += 4;
                     rank++;
                     break;
-                case '\0':
+                case '\x11':
                     break;
                 default:
                     break outer;
@@ -2510,7 +2538,7 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
                     innerRemoveCount += 4;
                     rank++;
                     break;
-                case '\0':
+                case '\x11':
                     break;
                 default:
                     break outer;
@@ -2607,7 +2635,7 @@ function EDI_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
 
     EDI_textByteList_duplicateWithin(small, INTS[fEDI_cursor_editPosition], length);
     
-    // TODO: cursor between '\t\0\0\0' is presumed to be the concern of the editor, duplication logic presumes correctness i.e.: that if the '\t' is selected that the '\0\0\0' that come after is selected too...
+    // TODO: cursor between '\t\x11\x11\x11' is presumed to be the concern of the editor, duplication logic presumes correctness i.e.: that if the '\t' is selected that the '\x11\x11\x11' that come after is selected too...
     // ...and that no partial selection over those characters could ever occur.
 
     // TODO: You should be able to do this much faster than looping over the selected bytes since you know the line end positions that exist and would know whether the selection will insert line endings.
@@ -2615,7 +2643,7 @@ function EDI_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
     for (let offset = 0; offset < length; offset++) {
         switch (EDI_textByteList_bytes[small + offset]) {
             case CONST_EDI_ASCII_TAB:
-                insertionLength += 4; // TODO: (this is probably wrong given the context of duplicating you already would have '\t\0\0\0' so tab is (PROBABLY) just 1 insertion length in this context.) ??? I think this is copy pasted from 'paste' logic where the tab would change to 4 characters total, in the case of duplication you get what you select.
+                insertionLength += 4; // TODO: (this is probably wrong given the context of duplicating you already would have '\t\x11\x11\x11' so tab is (PROBABLY) just 1 insertion length in this context.) ??? I think this is copy pasted from 'paste' logic where the tab would change to 4 characters total, in the case of duplication you get what you select.
                 break;
             case CONST_EDI_ASCII_LINE_FEED:
                 EDI_lineEndPositionList_insert(INTS[fEDI_cursor_editIndexLine] + linesInsertedCount, INTS[fEDI_cursor_editPosition] + insertionLength);
@@ -2720,7 +2748,7 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
     EDI_textByteList_removeAt(INTS[fEDI_cursor_editPosition], INTS[fEDI_cursor_editLength]);
 
     let textSourceIdentifier = EDI_FORMATTED_textSourceIdentifier;
-    // TODO: Account for any '\t\0\0\0' that exist on the line            
+    // TODO: Account for any '\t\x11\x11\x11' that exist on the line
     let text = '';
     INTS[F_didChangeTextDocument_version] = INTS[F_didChangeTextDocument_version] + 1;
     let version = INTS[F_didChangeTextDocument_version];
@@ -2815,10 +2843,10 @@ async function processLspQueue() {
  * The editor stores all line endings as '\n'.
  * When saving the bytes, swap out any '\n' for the 'lineEndString' which may or may not be '\n' (i.e.: it could be '\r\n' or '\r').
  * 
- * Tab characters are stored as '\t\0\0\0'.
- * When saving out the bytes you need to skip over these '\0' characters.
+ * Tab characters are stored as '\t\x11\x11\x11'.
+ * When saving out the bytes you need to skip over these '\x11' characters.
  * 
- * A '\0' character does NOT terminate the subarray's bytes that are in use.
+ * A '\x11' character does NOT terminate the subarray's bytes that are in use.
  * You need to iterate specifically for 'countOfBytesInUse'.
  * 
  * @param {*} NOTfinalizePendingEdits if there is a pending edit, it needs to be finalized in order to see the updated text. The default behavior is to finalize the pending edits. To use default behavior, do NOT provide the parameter, or provide a falsey expression like 'null'.
@@ -3750,7 +3778,7 @@ function EDI_getCharacterPrevious(indexColumn, positionIndex) {
         return getCharacter(positionIndex - 1);
     }
     else {
-        return '\0';
+        return '\x11';
     }
 }
 
@@ -3768,7 +3796,9 @@ function EDI_getCharacterCurrent(indexColumn, positionIndex, lineEnd) {
         return getCharacter(positionIndex);
     }
     else {
-        return '\0';
+        // TODO: Keep this as '\0' rather than changing it to '\x11'?
+        // return '\0';
+        return '\x11';
     }
 }
 
@@ -5675,8 +5705,8 @@ function EDI_render_do_IndentMore() {
                         div.insertBefore(span, div.children[0]);
                     }
                     if (span.textContent.length > 0 &&
-                        (span.textContent[0] === ' ' || span.textContent[0] === '\t' || span.textContent[0] === '\0') &&
-                        (span.textContent[span.textContent.length - 1] === ' ' || span.textContent[span.textContent.length - 1] === '\t' || span.textContent[span.textContent.length - 1] === '\0')) {
+                        (span.textContent[0] === ' ' || span.textContent[0] === '\t' || span.textContent[0] === '\x11') &&
+                        (span.textContent[span.textContent.length - 1] === ' ' || span.textContent[span.textContent.length - 1] === '\t' || span.textContent[span.textContent.length - 1] === '\x11')) {
                             span.textContent += EDI_on_tab_string;
                     }
                     else {
@@ -6114,9 +6144,9 @@ function EDI_render_do_DuplicateOrPaste() {
                         // '\t\0\0\0' was likely a bad idea and should "TODO: be changed", but nevertheless it is how the editor works at the moment.
                         //
                         byteArray[lengthBytes++] = 9; // char code for '\t' is 9
-                        byteArray[lengthBytes++] = 0; // char code for '\0' is 0
-                        byteArray[lengthBytes++] = 0; // char code for '\0' is 0
-                        byteArray[lengthBytes++] = 0; // char code for '\0' is 0
+                        byteArray[lengthBytes++] = 0; // char code for '·' is 0
+                        byteArray[lengthBytes++] = 0; // char code for '·' is 0
+                        byteArray[lengthBytes++] = 0; // char code for '·' is 0
                         pos++;
                         break;
                     default:
@@ -6635,7 +6665,7 @@ function EDI_findEndExclusiveIndentationIndexColumn() {
         switch (c) {
             case ' ':
             case '\t':
-            case '\0': // tabs are stored as: '\t\0\0\0'
+            case '\x11': // tabs are stored as: '\t\x11\x11\x11'
                 break;
             default:
                 return i;
@@ -6680,7 +6710,7 @@ function EDI_cacheIndentation() {
                 EDI_cursor_enterKey_newLinePlusIndentation_byteList.insert(EDI_cursor_enterKey_newLinePlusIndentation_byteList.count, CONST_EDI_ASCII_TAB);
                 indentationBuilder.push(c);
                 break;
-            case '\0': // tabs are stored as: '\t\0\0\0'
+            case '\x11': // tabs are stored as: '\t\x11\x11\x11'
                 EDI_cursor_enterKey_newLinePlusIndentation_byteList.insert(EDI_cursor_enterKey_newLinePlusIndentation_byteList.count, 0);
                 indentationBuilder.push(c);
                 break;

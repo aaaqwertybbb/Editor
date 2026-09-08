@@ -8939,5 +8939,8 @@ and even though I've deleted that code from this file it is still in the git his
 and I feel like it being in the git history will
 cause my brain to rot.
 
+One of my biggest 'pet peeves' or whatever is hearing someone say that cause for a moment I
+get this sense of panic that them verbalizing that and me having heard it infected me with the rot
+
 
 */

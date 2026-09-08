@@ -8933,12 +8933,4 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
 <
 < If you'd like, we can also look at optimizing how you shift the existing bytes over to make room for the insertion.
 
-When I was kid and I played dark souls
-I struggled to play when I was hollow because I had these intrusive thoughts
-that playing as hollowed would make my skin turn to that of a hollow in real life.
-
-When I was kid and I played elder scrolls online
-I struggled to kill enemies because I had these intrusive thoughts
-that it made me a murderer in real life
-
 */

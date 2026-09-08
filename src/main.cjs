@@ -381,14 +381,12 @@ function MAIN_initializeLanguageServer() {
 }
 
 /**
- * TODO: This is copy, pasted, and modified from editor.js
+ * TODO: repeated duplications of the same extremely large selection might benefit from temporary caching of this functions result.
  * 
  * TODO: SPECULATION: If passing the byte array requires a copy to be made then you perhaps might as well make the string in the renderer process? I'm trying to consider...
  * ...whether gc would incur reduce renderer process if this is done in the main process.
  * 
- * Tabs are stored as '\t\0\0\0', all line feeds converted to '\n'.
- * 
- * textonly is in reference to conversion of the raw storage of the text editor such that a tab of '\t\0\0\0' is returned as just '\t', and all line feeds as EDI_lineEndString
+ * textonly is in reference to conversion of the raw storage of the text editor such that all line feeds get returned as as EDI_lineEndString rather than the internal representation of '\n'.
  * 
  * @returns {string}
  */

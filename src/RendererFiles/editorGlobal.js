@@ -1662,6 +1662,45 @@ const finalUint8Array = encoder.encode(normalizedText);
 < - Do you intend to support complex editor features like syntax highlighting, code folding, or extensions?
 < - Would you like to see a basic architecture example for DOM row virtualization, or are you leaning toward exploring Canvas coordinate mapping?
 
+> If I were to use &nbsp; for tabs (and I assume also spaces?).
+> 
+> How would I decode the line of text in order to display it in a span? See the following line of javascript, it is my current code.
+> 
+> span.textContent = lineStart === lineEnd ? '' : EDI_decoder.decode(bytes.subarray(lineStart, lineEnd));
+
+< To transition to the &nbsp; (\u00a0) approach while keeping your high-performance TextDecoder pipeline, you don't actually want to insert raw HTML markup like &nbsp;
+< directly into span.textContent (otherwise the browser will literalize it as the text "&nbsp;").
+<
+< Instead, you decode the text normally using your TextDecoder and then perform a lightning-fast native string swap replacing tabs (\t) and standard spaces ( )
+< with the true Unicode non-breaking space character: \u00a0.
+< 
+< Here is how you update your line of JavaScript to achieve this:
+< The Updated Code Line
+< ```js
+// 1. Decode the raw bytes into a standard JavaScript string
+const decodedText = lineStart === lineEnd ? '' : EDI_decoder.decode(bytes.subarray(lineStart, lineEnd));
+
+// 2. Globally replace tabs (expanding them to 4 spaces) and standard spaces with non-breaking spaces
+span.textContent = decodedText
+    .replaceAll('\t', '\u00a0\u00a0\u00a0\u00a0')
+    .replaceAll(' ', '\u00a0');
+< ```
+< 
+< Why this approach works flawlessly with your architecture:
+< 1. Bypasses HTML Parsing Overhead: By assigning to span.textContent rather than span.innerHTML, you completely bypass Chromium's heavy HTML tokenization and parsing engine.
+<    The browser accepts the \u00a0 characters instantly.
+< 2. Maintains Pixel-Perfect Layout Constraints: Standard spaces ( ) are collapsible in HTML, and tabs (\t) introduce dynamic sizing calculations.
+<    Replacing both with \u00a0 tells Chromium's layout engine: "Treat every single one of these slots as an identical, hard-bounded layout column."
+< 3. Keeps Your Underlying Array Pure: Your bytes array stays completely clean. It stores normal \t (byte 9) and normal space (byte 32) characters.
+<    The substitution only happens at the exact millisecond a line enters the visual DOM viewport.
+< 4. Trivial Cursor Math: If you are using a monospaced font, a tab is now strictly 4 characters wide on screen, and a space is 1.
+<    If your cursor needs to go to character index 10 on that line, its exact horizontal CSS pixel offset is always: 10 * characterWidth.
+<
+< To ensure this fits into the rest of your text pipeline perfectly, let me know:
+< - Does your editor support a dynamic tab size (e.g., letting the user swap between a tab width of 2 or 4), or is it strictly locked to 4?
+< - Show me how to map a mouse click pixel coordinate back to a byte index using this setup
+< - Show me how to manage selection highlighting across these spaces
+
 */
 
     // TODO: The ++ here "isn't needed" but it makes the code consistent and less prone to future mistakes should another access of 'EDI_lineEndPositionList_count' be made after this point in the future.

@@ -1574,6 +1574,46 @@ const finalUint8Array = encoder.encode(normalizedText);
 < - Are you rendering the text using standard DOM elements (like <span> tokens), or are you drawing the text onto an HTML5 <canvas>?
 < - How are you currently tracking cursor coordinates when the user clicks on a line?
 
+> Why does Visual Studio Code use '&nbsp;' for tabs if the tab-size css was 'highly optimized layout engine features built specifically for code editors'?
+
+< This is an incredibly sharp observation. The short answer is: VS Code does not use the browser's native text wrapping or natural text flow because
+< it bypassed standard HTML layout entirely.
+<
+< The tab-size CSS property is a highly optimized browser feature, but it was designed for standard web pages (like a <pre> block displaying a snippet on a blog).
+< It was never meant to handle the intense architectural requirements of an IDE.
+<
+< VS Code's core text engine (Monaco) uses &nbsp; (non-breaking spaces, or \u00a0) for an entirely different set of architectural rules.
+<
+< 1. Pixel-Perfect Coordinate Mapping (The Primary Reason)
+<
+< An editor needs an absolute, flawless mathematical link between Character Index and Screen X-Coordinate.
+< - The Native Problem: If you use a native \t character and apply tab-size: 4, the width of that tab character is dynamic. If a tab occurs at column 0, it spans 4 characters. If it occurs at column 3, it only spans 1 character to push the text to the next tab stop.
+< - The Math Nightmare: If the browser engine handles that alignment dynamically in low-level C++, JavaScript has a very hard time calculating exactly where a mouse click landed or where to draw a custom absolute-positioned cursor.
+< - The VS Code Solution: By forcefully splitting tabs into absolute chunks (either multiple non-breaking spaces or absolute width inline containers), the mathematical mapping becomes trivial. If a character is at column 12, its X-position is 12 * character_width. There is zero layout ambiguity.
+< 
+< 2. Preventing "Collapsing" and Text Wrapping Chaos
+< In HTML, a normal space ( ) or a native \t is treated as collapsible white space under standard rendering rules. Even with white-space: pre;, mixing trailing spaces and tabs causes edge-case bugs across different operating systems' sub-pixel font rendering systems.
+< - By using &nbsp; (\u00a0), VS Code explicitly forces the Chromium layout engine to treat every single space as an un-collapsible, solid structural block. The browser is blocked from making any internal layout optimizations that might accidentally shift code by 1 pixel.
+< 
+< 3. Absolute DOM Virtualization
+< As mentioned in our first message, you can't render thousands of DOM nodes. VS Code uses rigid DOM virtualization.
+< - Every line in VS Code is an absolutely positioned or strictly bounded individual row block.
+< - Inside that row, they don't let text flow naturally. To support features like Multiple Cursors, In-line Git Lens Blame text, Bracket Pair Colorization lines, and Autocomplete Popups, they have to control the DOM explicitly.
+< - If they relied on native browser tab expansion, a single font update or zoom-level change could break the alignment of their overlay UI elements (like the cursor line or squiggly error underlines).
+< 
+< The Takeaway for Your Architecture:
+< VS Code uses &nbsp; because it treats HTML not as a text document, but as a 2D Canvas grid made out of DOM elements.
+<
+< However, notice a massive difference between what VS Code does and what your initial \t\0\0\0 experiment did:
+< - VS Code uses valid printable glyphs: &nbsp; is a standard, universally supported character. It has a fast-path glyph width in every font on earth.
+< - Your experiment used \0 (Null): \0 is a non-printable control character. It forces the browser engine into slow-path font fallbacks.
+<
+< If you want to handle tabs simply and want pixel-perfect alignment without the overhead of \0, you can copy VS Code's logical approach: when you ingest the text into your display layer, map your logical tabs to an absolute number of standard spaces or non-breaking spaces \u00a0.
+<
+< To help frame your next step:
+< - Are you intending your editor to support variable-width fonts (like Arial), or is it strictly for monospaced code (like Consolas/Fira Code)?
+< - Would you like to see how to build a quick character-to-pixel index mapping function that avoids both null bytes and native tab positioning?
+
 */
 
     // TODO: The ++ here "isn't needed" but it makes the code consistent and less prone to future mistakes should another access of 'EDI_lineEndPositionList_count' be made after this point in the future.

@@ -1519,6 +1519,60 @@ const finalUint8Array = encoder.encode(normalizedText);
 < - Aside from converting line endings, are you calculating any other data during that loop (like tracking line start/end byte offsets)?
 < - What data structure do you use to manage lines once the file is loaded (e.g., an array of line metadata, a piece table, or a rope)?
 
+> // This list includes 'EOF' (EndOfFile)
+> // Thus the end of the line with index of 0 is 'EDI_lineEndPositionList_data[0]'
+> let EDI_lineEndPositionList_data = new Uint32Array(EDI_lineEndPositionList_capacity);
+> 
+> I replace all '\t' with '\t\0\0\0' in order to ensure simple caret positioning
+> logic when using a tabwidth of 4. More and more I doubt whether this is a good idea
+> because asking the browser to render a '\t' or a '\0' might carry
+> more overhead than a normal character such as the letter 'a'.
+
+< Your intuition is correct. The \t\0\0\0 strategy introduces major rendering, layout, and
+< processing overhead inside Chromium (Electron's foundation) that goes far beyond processing normal text.
+<
+< The exact mechanics behind why this happens, along with the performance penalties, break down into several key layers:
+<
+< 1. The Rendering & Text Shaper Breakdown (Severe)
+< When Chromium encounters a string to paint on the screen, it sends it to a text-shaper engine called HarfBuzz.
+< - The Normal Path: For a, the engine checks the font's lookup table, grabs the glyph vector, and draws it instantly.
+< - The Null Character Path: The null byte (\0) is a non-printable control character. Most text fonts do not have a physical visual representation (glyph) for \0.
+< - The Penalty: When a font lacks a character, the browser's layout engine has to drop into a fallback rendering routine.
+<   It checks multiple system fonts trying to find a valid glyph before ultimately giving up and treating it as a hidden or zero-width ignorable character.
+<   Doing this for every single tab in a file forces Chromium to spend massive amounts of layout time traversing fallback loops.
+<
+< 2. Tab Width CSS Already Exists
+< Injecting multiple null bytes to pad out the space bypasses the native, highly optimized layout engine features built specifically for code editors.
+< - You can achieve native, instantaneous tab sizing in the browser using the standard CSS property: tab-size.
+< ```css
+.editor-line {
+    white-space: pre;
+    tab-size: 4; !//! Automatically tells the browser engine that \t equals 4 spaces
+}
+< ```
+<
+< By relying on tab-size, the browser performs the layout sizing instantly in low-level C++, entirely eliminating the need to pad text arrays with proxy null characters.
+<
+< 3. Memory Footprint and Array Shift Inflation
+< Expanding \t into a 4-byte chunk (\t\0\0\0) creates massive array inflation.
+< - Data Bloat: For every tab in a source file, your raw text buffer grows by 4 times its original size.
+< - Index Complexity: When a user types a new character or deletes text, your index offset math becomes fragmented.
+<   You are forced to continuously calculate logical text indexes versus physical buffer indices, creating complex logic checks in your monolithic module.
+<
+< How to Fix This for Seamless Caret Positioning
+< Instead of modifying the text buffer to fit a coordinate system, keep the data pure and map Text Coordinates to Screen Coordinates using faster approaches:
+< 1. Keep the Raw Data Clean: Store the text strictly as \t or normal space strings in your Uint8Array.
+< 2. Use Character Width Arrays: If you are rendering standard monospaced text, every character (a, 1, etc.) has a fixed width (e.g., 8px). A \t simply has a width of 32px (if tab width is 4).
+< 3. Calculating Caret position: When drawing the caret at character index X on a line:
+<     1. Iterate from the start of the line up to index X.
+<     2. For every normal character, add 1. For every \t, add 4.
+<     3. Multiply the final total by your base monospaced character width.
+< 
+< This mathematical approach executes instantly in standard V8 memory registers, keeping your rendering pipelines clean and avoiding browser engine fallback traps.
+<
+< To optimize this part of your editor architecture, let me know:
+< - Are you rendering the text using standard DOM elements (like <span> tokens), or are you drawing the text onto an HTML5 <canvas>?
+< - How are you currently tracking cursor coordinates when the user clicks on a line?
 
 */
 

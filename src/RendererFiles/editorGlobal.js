@@ -8574,4 +8574,19 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
 
 // TODO: When you change the tab from spaces to tabs or vice versa finalize edits?
 
+> I am making a text editor app. A lot of the code is written already, and so my question is more specifically going to relate to a generalized performance question.
+> The app uses electron, and vanilla javascript as a single monolithic ES6 module.
+
+< ...
+
+> I'm currently dealing with tab keys ('\t').
+> 
+> Specifically I have everything written except for the mouse events.
+> 
+> Is it correct to just count the amount of tab characters on the same line as the cursor that come prior to the "column/character" that the cursor is on?
+
+< ...
+
+Oof I gotta eat a lb of 98% fat free ground chicken with sriracha
+
 */

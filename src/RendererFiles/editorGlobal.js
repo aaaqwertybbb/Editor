@@ -6030,7 +6030,7 @@ function EDI_render_do_TabKey() {
 
         // TODO: 'fEDI_cursor_editRenderedDisplacement' here and check other render_do's
 
-        INTS[fEDI_cursor_indexColumn] -= EDI_on_tab_bytes.length; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
+        INTS[fEDI_cursor_indexColumn] -= EDI_on_tab_bytes.length; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= EDI_on_tab_bytes.length'.
 
         walkLineUntilIndexColumn();
 
@@ -6052,7 +6052,7 @@ function EDI_render_do_TabKey() {
             EDI_on_tab_string +
             w_span.textContent.slice(INTS[fEDI_w_indexColumn_SpanTextContentRelative]);
 
-        INTS[fEDI_cursor_indexColumn] += EDI_on_tab_bytes.length; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= 4'.
+        INTS[fEDI_cursor_indexColumn] += EDI_on_tab_bytes.length; // awkward thing to have 'walkLineUntilIndexColumn' invocation work then at end of block I '+= EDI_on_tab_bytes.length'.
     }
 }
 

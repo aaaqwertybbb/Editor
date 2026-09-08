@@ -8589,4 +8589,10 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
 
 Oof I gotta eat a lb of 98% fat free ground chicken with sriracha
 
+I've never seen the movie Manic before.
+And I just watched it for the first time.
+It'd been in my youtube recommendations for so long that I don't even know how long it'd been in my recommendations.
+I just kept scrolling by it.
+And it is one of the greatest I've ever seen.
+
 */

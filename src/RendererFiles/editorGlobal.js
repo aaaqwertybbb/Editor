@@ -9006,4 +9006,16 @@ So you have to be real with yourself,
 and understand that no single heuristic is sufficient and that following any
 kind of "hack" like "4 hours everyday is exactly the answer" is absolutely incorrect.
 
+"I code for 13 hours everyday that way I can be produce for the first half
+and then my brain rots for the latter half because I've already achieved exhaustion."
+
+versus:
+"I code for 6.5 hours then achieve exhaustion
+then I give my brain something else to digest like
+playing a videogame
+and this therefore gives me immense creativity
+and actual improved cognition because
+changing up half way through the day what I'm doing
+actually keeps my brain more engaged."
+
 */

@@ -8954,4 +8954,20 @@ I have now felt every possible implementation run.
 Do you plan or do you do?
 It is always a moment to moment decision.
 
+=====
+
+Coding is like an MMO.
+
+In an MMO would you say mindlessly grinding xp is necessarily difficult?
+
+Well the same is true for coding.
+
+So much of what you need to do to make progress is akin to "mindlessly grinding in an MMO"
+
+People hype up the idea of planning and completely dismiss the throughput.
+And that is just as bad as mindlessly never planning.
+
+All modes of action are useful and you only will achieve success by understanding
+how to leverage each mode.
+
 */

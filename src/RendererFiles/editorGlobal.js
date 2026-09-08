@@ -1614,6 +1614,54 @@ const finalUint8Array = encoder.encode(normalizedText);
 < - Are you intending your editor to support variable-width fonts (like Arial), or is it strictly for monospaced code (like Consolas/Fira Code)?
 < - Would you like to see how to build a quick character-to-pixel index mapping function that avoids both null bytes and native tab positioning?
 
+> what differences exist between using dom elements versus canvas when creating UI for a text editor?
+
+< When building a high-performance text editor (especially inside Electron), deciding between a DOM-based architecture (like VS Code/Monaco and CodeMirror)
+< and a Canvas-based architecture (like Sublime Text or Zed) is one of the most critical foundational choices you will make.
+< 
+< The differences center on a fundamental tradeoff: Development Velocity & Native Features vs. Absolute Control & Raw Performance.
+<
+< Direct Comparison Overview
+< 
+< Feature / Metric               | DOM-Based Architecture                                                                 | Canvas-Based Architecture
+< -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+< Rendering Strategy             | Browser handles text rendering, layouts, and styles via HTML/CSS.                      | You manually paint every single pixel, character, and line onto a 2D/WebGL context.
+< Maximum File Performance       | Highly dependent on DOM recycling (virtualization). High memory overhead per line.     | Exceptionally high performance. Can handle massive files smoothly because memory overhead is minuscule.
+< Text Selection & Clipboard     | Native. The browser handles copy, paste, drag-and-drop, and highlights out-of-the-box. | Completely Manual. You must calculate click coordinates, track drag states, paint highlights, and manage clipboard APIs manually.
+< Accessibility (Screen Readers) | Native. Screen readers easily parse DOM nodes, focus states, and text content.         | Invisible by default. You must implement an invisible "dummy" DOM overlay layer just to feed text to screen readers.
+< Internationalization (I18n)    | Handles right-to-left text (RTL), emojis, and complex font ligatures automatically.    | Extremely difficult. You must manually account for character widths, variable font spacing, and complex scripts.
+< Styling & Extensibility        | Easy. Themes and extensions can use standard CSS variables, borders, and animations.   | Complex. Custom layouts or themes require code changes to the pixel-painting loops.
+< 
+< In-Depth Breakdown
+< 1. Rendering Bottlenecks & Performance
+< - DOM: The main bottleneck is the browser's Layout and Reflow pipeline. If a user types a character and it triggers a DOM shift, Chromium recalculates style, layout, paint, and
+<   composite steps. To make this fast, you must implement row virtualization (only rendering what is on screen).
+< - Canvas: Bypasses the HTML layout tree entirely. You tell the GPU to clear a rectangle and redraw the text. Because there are no DOM elements,
+<   scrolling a million-line file doesn't trigger layout calculations, resulting in a highly consistent 60fps (or 120fps+) experience.
+< 
+< 2. Typography and "Text Shaping" (The Hidden Trap)
+< - DOM: The browser automatically handles modern typography features like font ligatures (e.g., turning -> into an arrow glyph in coding fonts), bolding, sub-pixel antialiasing,
+<   and mixed-font styling.
+< - Canvas: Canvas text APIs (ctx.fillText) are notoriously bare-bones. Handling font ligatures or mixing standard text with bold text on the same line requires
+<   manual tracking of character advances (ctx.measureText) and precise X/Y coordinate calculations.
+< 
+< 3. Cursors, Selections, and Inputs
+< - DOM: Even if you virtualize the editor, you can let the browser manage a hidden <textarea> or use absolute-positioned elements for selections.
+<   Text highlighting across multiple rows is handled by native browser layout selection or simple absolute CSS blocks.
+< - Canvas: Text selection does not exist natively in a canvas. You must capture mouse coordinates on click, determine which character index is closest to that pixel,
+<   track the drag state, calculate the bounding boxes for all selected text, and draw blue rectangles behind the text manually before painting the characters over them.
+<
+< Architectural Recommendation
+< Given that you are developing a vanilla JavaScript architecture running inside an ES6 Monolith, your choice heavily impacts your code size and complexity:
+< - Choose the DOM approach if you want to focus your architecture on editor features (like syntax highlighting, auto-complete, and file management) rather than
+<   reinventing operating-system-level text rendering. You can manage performance by strictly virtualizing lines and keeping DOM structures simple.
+< - Choose the Canvas approach only if your absolute primary goal is beating all other editors on raw file capacity, or
+<   if you enjoy writing low-level graphic routines, mouse coordinate geometry solvers, and custom text-layout systems from scratch.
+< 
+< To help guide your choice or next implementation phase:
+< - Do you intend to support complex editor features like syntax highlighting, code folding, or extensions?
+< - Would you like to see a basic architecture example for DOM row virtualization, or are you leaning toward exploring Canvas coordinate mapping?
+
 */
 
     // TODO: The ++ here "isn't needed" but it makes the code consistent and less prone to future mistakes should another access of 'EDI_lineEndPositionList_count' be made after this point in the future.

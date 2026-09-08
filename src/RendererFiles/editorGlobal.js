@@ -8547,18 +8547,28 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
     - [ ] Mouse events
 - [/] EDI_decode_textonly(start, length)
 - [ ] tab keyboard input
-    - [ ] use tabs '\t'
-    - [ ] use spaces '    '
-    - [ ] no modifier keys
+    - [x] no modifier keys
     - [ ] shift key
     - [ ] aka:
         - [ ] insert "tab"
             - [ ] tab
+                - [ ] use tabs '\t'
+                - [ ] use spaces '    '
             - [ ] tab_state
+                - [ ] use tabs '\t'
+                - [ ] use spaces '    '
             - [ ] tab_render
+                - [ ] use tabs '\t'
+                - [ ] use spaces '    '
             - [x] EDI_finalizeEdit_Tab
+                - [x] use tabs '\t'
+                - [x] use spaces '    '
         - [ ] indentMore
+                - [ ] use tabs '\t'
+                - [ ] use spaces '    '
         - [ ] indentLess
+                - [ ] use tabs '\t'
+                - [ ] use spaces '    '
 - [ ] main.cjs '\t' logic:
     - [/] MAIN_decode_experimental_textonly(bytes, start, length, EDI_lineEndString, EDI_fileStartsWithBom)
 

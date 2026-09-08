@@ -1301,17 +1301,10 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     let local_EDI_lineEndPositionList_count = EDI_lineEndPositionList_count;
     let local_EDI_textByteList_count = EDI_textByteList_count;
 
-    /** TODO: Track the linePosition last seen when making a line or something you don't have to increment this per character, you just need the difference of the last line drawn to the current or something. */
-    let lineLength = 0;
-
+    
+    let lineLength = 0; /** TODO: Track the linePosition last seen when making a line or something you don't have to increment this per character, you just need the difference of the last line drawn to the current or something. */
     const normalizedText = text.replaceAll('\r\n', '\n').replaceAll('\t', '\t\x11\x11\x11');
-
-    // 3. Allocate the EXACT memory buffer size needed (zero reallocation churn!)
-    const encoder = new TextEncoder();
-    /** how do I 'encodeInto' when a character might actually be multi-byte thus I don't ever truly know the size ahead of time? */
-    const finalUint8Array = encoder.encode(normalizedText);
-
-    // TODO: Insert multiple characters at the same time when you do this?
+    const finalUint8Array = EDI_encoder.encode(normalizedText); /** how do I 'encodeInto' when a character might actually be multi-byte thus I don't ever truly know the size ahead of time? */
     EDI_textByteList_ensureCapacityForInsertion(0, finalUint8Array.length);
     EDI_textByteList_bytes.set(finalUint8Array, 0);
     EDI_textByteList_count = finalUint8Array.length;

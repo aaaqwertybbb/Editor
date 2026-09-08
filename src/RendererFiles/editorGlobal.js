@@ -8548,44 +8548,41 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
     - [ ] Mouse events
 - [/] EDI_decode_textonly(start, length)
 - [ ] tab keyboard input
-    - [x] no modifier keys
-    - [ ] shift key
-    - [ ] aka:
-        - [ ] insert "tab"
-            - [x] EDI_editEvent_checkFor_NOTcanBatch_Tab
-                - [x] use tabs '\t'
-                - [x] use spaces '    '
-            - [ ] EDI_tabKey
-                - [ ] use tabs '\t'
-                - [ ] use spaces '    '
-            - [ ] EDI_render_do_TabKey
-                - [ ] use tabs '\t'
-                - [ ] use spaces '    '
-            - [x] EDI_finalizeEdit_Tab
-                - [x] use tabs '\t'
-                - [x] use spaces '    '
-        - [ ] indentMore
-            - [ ] EDI_editEvent_checkFor_NOTcanBatch_IndentMore
-                - [ ] use tabs '\t'
-                - [ ] use spaces '    '
-            - [ ] EDI_indentMore
-                - [ ] use tabs '\t'
-                - [ ] use spaces '    '
-            - [ ] EDI_render_do_IndentMore
-                - [ ] use tabs '\t'
-                - [ ] use spaces '    '
-        - [ ] indentLess
-            - [ ] EDI_editEvent_checkFor_NOTcanBatch_IndentMore
-                - [ ] use tabs '\t'
-                - [ ] use spaces '    '
-            - [ ] EDI_indentLess
-                - [ ] use tabs '\t'
-                - [ ] use spaces '    '
-            - [ ] EDI_render_do_IndentLess
-                - [ ] use tabs '\t'
-                - [ ] use spaces '    '
-- [ ] main.cjs '\t' logic:
-    - [/] MAIN_decode_experimental_textonly(bytes, start, length, EDI_lineEndString, EDI_fileStartsWithBom)
+    - [ ] insert "tab"
+        - [x] EDI_editEvent_checkFor_NOTcanBatch_Tab
+            - [x] use tabs '\t'
+            - [x] use spaces '    '
+        - [ ] EDI_tabKey
+            - [ ] use tabs '\t'
+            - [ ] use spaces '    '
+        - [ ] EDI_render_do_TabKey
+            - [ ] use tabs '\t'
+            - [ ] use spaces '    '
+        - [x] EDI_finalizeEdit_Tab
+            - [x] use tabs '\t'
+            - [x] use spaces '    '
+    - [ ] indentMore
+        - [ ] EDI_editEvent_checkFor_NOTcanBatch_IndentMore
+            - [ ] use tabs '\t'
+            - [ ] use spaces '    '
+        - [ ] EDI_indentMore
+            - [ ] use tabs '\t'
+            - [ ] use spaces '    '
+        - [ ] EDI_render_do_IndentMore
+            - [ ] use tabs '\t'
+            - [ ] use spaces '    '
+    - [ ] indentLess
+        - [ ] EDI_editEvent_checkFor_NOTcanBatch_IndentMore
+            - [ ] use tabs '\t'
+            - [ ] use spaces '    '
+        - [ ] EDI_indentLess
+            - [ ] use tabs '\t'
+            - [ ] use spaces '    '
+        - [ ] EDI_render_do_IndentLess
+            - [ ] use tabs '\t'
+            - [ ] use spaces '    '
+- [x] main.cjs '\t' logic:
+    - [x] MAIN_decode_experimental_textonly(bytes, start, length, EDI_lineEndString, EDI_fileStartsWithBom)
 
 // TODO: When you change the tab from spaces to tabs or vice versa finalize edits?
 

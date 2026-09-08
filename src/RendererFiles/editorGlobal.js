@@ -5277,7 +5277,7 @@ function EDI_render_do_IndentLess() {
                         break;
                     case '\t':
                         if (!seenSpace) {
-                            innerRemoveCount += 4;
+                            innerRemoveCount++;
                         }
                         break outer;
                     default:
@@ -8520,17 +8520,21 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
 <
 < If you'd like, we can also look at optimizing how you shift the existing bytes over to make room for the insertion.
 
-- [ ] tab keyboard input
-    - [ ] indentLess
+- [ ] rendering '\t' as tab-size of 4
+    - [ ] whitespace collapsing?
+    - [ ] tab-stop messing with tab-size?
+    - [ ] Mouse events
+- [x] tab keyboard input
+    - [x] indentLess
         - [x] EDI_editEvent_checkFor_NOTcanBatch_IndentLess
             - [x] use tabs '\t'
             - [x] use spaces '    '
         - [x] EDI_indentLess
             - [x] use tabs '\t'
             - [x] use spaces '    '
-        - [ ] EDI_render_do_IndentLess
-            - [ ] use tabs '\t'
-            - [ ] use spaces '    '
+        - [x] EDI_render_do_IndentLess
+            - [x] use tabs '\t'
+            - [x] use spaces '    '
         - [x] EDI_finalizeEdit_IndentLess
             - [x] use tabs '\t'
             - [x] use spaces '    '
@@ -8560,10 +8564,6 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
         - [x] EDI_finalizeEdit_IndentMore
             - [x] use tabs '\t'
             - [x] use spaces '    '
-- [ ] rendering '\t' as tab-size of 4
-    - [ ] whitespace collapsing?
-    - [ ] tab-stop messing with tab-size?
-    - [ ] Mouse events
 - [x] initial state of the ontab bytes thing
 - [x] swapping between
     - [x] tabs

@@ -37,37 +37,6 @@ And the importance when reading the code lies with the words 'line' and 'column'
 */
 
 /*
-#####################
-# Handling of tabs: #
-#####################
-
-```js
-// function EDI_state_setText
-if (text.includes('\x11')) {
-    throw new Error("text.includes('\x11')");
-}
-```
-
-What I do with tabs is a terrible idea.
-I convert them from '\t' to '\t\x11\x11\x11'.
-Then I set tab-size to 1 for '#EDI_text'.
-
-This maps a tab width of 4 to 4 characters.
-I save out the content by skipping over the '\x11'.
-
-And the editor itself ought to handle '\x11' such that you are at the expected position
-rather than ever being at or modifying a '\x11' itself.
-I haven't gotten to this part though.
-
-Perhaps what I'm doing is working with font styling I don't know I need to find time to look into it.
-
-But the issue is that tab is a control character and has extra processing than a normal character.
-And it can introduce oddities involving tabstop or very tiny changes in horizontal positioning of surrounding text or something.
-
-'\x11' is a similar problem, it is a special character that might cause odd behavior.
-*/
-
-/*
 ###################################################################
 # Awkward explicit inlining of 'EDI_indexLineTo_ringBufferIndex': #
 ###################################################################
@@ -1273,11 +1242,6 @@ function EDI_clear() {
 }
 
 function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMATTED_textSourceIdentifier, extensionKind, lineEndString) {
-
-    if (text.includes('\x11')) {
-        throw new Error("text.includes('\x11')");
-    }
-
     EDI_baseElement.scrollTop = 0;
     INTS[fEDI_lastReadNumber_scrollTop] = 0;
     EDI_baseElement.scrollLeft = 0;
@@ -1301,7 +1265,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     let local_EDI_lineEndPositionList_count = EDI_lineEndPositionList_count;
 
     let lineLength = 0; /** TODO: Track the linePosition last seen when making a line or something you don't have to increment this per character, you just need the difference of the last line drawn to the current or something. */
-    const normalizedText = text.replaceAll('\r\n', '\n');//.replaceAll('\t', '\t\x11\x11\x11');
+    const normalizedText = text.replaceAll('\r\n', '\n');
     const finalUint8Array = EDI_encoder.encode(normalizedText); /** how do I 'encodeInto' when a character might actually be multi-byte thus I don't ever truly know the size ahead of time? */
     EDI_textByteList_ensureCapacityForInsertion(0, finalUint8Array.length);
     EDI_textByteList_bytes.set(finalUint8Array, 0);
@@ -1591,7 +1555,6 @@ function EDI_finalizeEdit_InsertLtr(indexLine_editOccurredOn) {
     EDI_getLineAndColumnIndices(INTS[fEDI_cursor_editPosition]);
     let lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
     let lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
-    // TODO: Account for any '\t\x11\x11\x11' that exist on the line
     let text = EDI_decoder.decode(EDI_cursor_gapBuffer.subarray(0, INTS[fEDI_cursor_gapBufferCount]));
     INTS[F_didChangeTextDocument_version] = INTS[F_didChangeTextDocument_version] + 1;
     let version = INTS[F_didChangeTextDocument_version];
@@ -1847,8 +1810,6 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
                     DETERMINE_decrementBy += 4;
                     rank++;
                     break;
-                case '\x11':
-                    break;
                 default:
                     break outer;
             }
@@ -2010,8 +1971,6 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
                     innerRemoveCount += 4;
                     rank++;
                     break;
-                case '\x11':
-                    break;
                 default:
                     break outer;
             }
@@ -2106,16 +2065,13 @@ function EDI_finalizeEdit_Duplicate(indexLine_editOccurredOn) {
     let insertionLength = 0;
 
     EDI_textByteList_duplicateWithin(small, INTS[fEDI_cursor_editPosition], length);
-    
-    // TODO: cursor between '\t\x11\x11\x11' is presumed to be the concern of the editor, duplication logic presumes correctness i.e.: that if the '\t' is selected that the '\x11\x11\x11' that come after is selected too...
-    // ...and that no partial selection over those characters could ever occur.
 
     // TODO: You should be able to do this much faster than looping over the selected bytes since you know the line end positions that exist and would know whether the selection will insert line endings.
 
     for (let offset = 0; offset < length; offset++) {
         switch (EDI_textByteList_bytes[small + offset]) {
             case CONST_EDI_ASCII_TAB:
-                insertionLength += 4; // TODO: (this is probably wrong given the context of duplicating you already would have '\t\x11\x11\x11' so tab is (PROBABLY) just 1 insertion length in this context.) ??? I think this is copy pasted from 'paste' logic where the tab would change to 4 characters total, in the case of duplication you get what you select.
+                insertionLength += 4;
                 break;
             case CONST_EDI_ASCII_LINE_FEED:
                 EDI_lineEndPositionList_insert(INTS[fEDI_cursor_editIndexLine] + linesInsertedCount, INTS[fEDI_cursor_editPosition] + insertionLength);
@@ -2220,7 +2176,6 @@ function EDI_finalizeEdit_DeleteLtr_BackspaceRtl_RemoveTextNoBatching(indexLine_
     EDI_textByteList_removeAt(INTS[fEDI_cursor_editPosition], INTS[fEDI_cursor_editLength]);
 
     let textSourceIdentifier = EDI_FORMATTED_textSourceIdentifier;
-    // TODO: Account for any '\t\x11\x11\x11' that exist on the line
     let text = '';
     INTS[F_didChangeTextDocument_version] = INTS[F_didChangeTextDocument_version] + 1;
     let version = INTS[F_didChangeTextDocument_version];
@@ -2315,10 +2270,7 @@ async function processLspQueue() {
  * The editor stores all line endings as '\n'.
  * When saving the bytes, swap out any '\n' for the 'lineEndString' which may or may not be '\n' (i.e.: it could be '\r\n' or '\r').
  * 
- * Tab characters are stored as '\t\x11\x11\x11'.
- * When saving out the bytes you need to skip over these '\x11' characters.
- * 
- * A '\x11' character does NOT terminate the subarray's bytes that are in use.
+ * A '\0' character does NOT terminate the subarray's bytes that are in use.
  * You need to iterate specifically for 'countOfBytesInUse'.
  * 
  * @param {*} NOTfinalizePendingEdits if there is a pending edit, it needs to be finalized in order to see the updated text. The default behavior is to finalize the pending edits. To use default behavior, do NOT provide the parameter, or provide a falsey expression like 'null'.
@@ -3250,7 +3202,7 @@ function EDI_getCharacterPrevious(indexColumn, positionIndex) {
         return getCharacter(positionIndex - 1);
     }
     else {
-        return '\x11';
+        return '\0';
     }
 }
 
@@ -3268,9 +3220,7 @@ function EDI_getCharacterCurrent(indexColumn, positionIndex, lineEnd) {
         return getCharacter(positionIndex);
     }
     else {
-        // TODO: Keep this as '\0' rather than changing it to '\x11'?
-        // return '\0';
-        return '\x11';
+        return '\0';
     }
 }
 
@@ -5177,8 +5127,8 @@ function EDI_render_do_IndentMore() {
                         div.insertBefore(span, div.children[0]);
                     }
                     if (span.textContent.length > 0 &&
-                        (span.textContent[0] === ' ' || span.textContent[0] === '\t' || span.textContent[0] === '\x11') &&
-                        (span.textContent[span.textContent.length - 1] === ' ' || span.textContent[span.textContent.length - 1] === '\t' || span.textContent[span.textContent.length - 1] === '\x11')) {
+                        (span.textContent[0] === ' ' || span.textContent[0] === '\t') &&
+                        (span.textContent[span.textContent.length - 1] === ' ' || span.textContent[span.textContent.length - 1] === '\t')) {
                             span.textContent += EDI_on_tab_string;
                     }
                     else {
@@ -6137,7 +6087,6 @@ function EDI_findEndExclusiveIndentationIndexColumn() {
         switch (c) {
             case ' ':
             case '\t':
-            case '\x11': // tabs are stored as: '\t\x11\x11\x11'
                 break;
             default:
                 return i;
@@ -6180,10 +6129,6 @@ function EDI_cacheIndentation() {
                 break;
             case '\t':
                 EDI_cursor_enterKey_newLinePlusIndentation_byteList.insert(EDI_cursor_enterKey_newLinePlusIndentation_byteList.count, CONST_EDI_ASCII_TAB);
-                indentationBuilder.push(c);
-                break;
-            case '\x11': // tabs are stored as: '\t\x11\x11\x11'
-                EDI_cursor_enterKey_newLinePlusIndentation_byteList.insert(EDI_cursor_enterKey_newLinePlusIndentation_byteList.count, 0);
                 indentationBuilder.push(c);
                 break;
             default:

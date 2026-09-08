@@ -8564,11 +8564,17 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
                 - [x] use tabs '\t'
                 - [x] use spaces '    '
         - [ ] indentMore
+            - [ ] EDI_indentMore
+                - [ ] use tabs '\t'
+                - [ ] use spaces '    '
+            - [ ] EDI_render_do_IndentMore
                 - [ ] use tabs '\t'
                 - [ ] use spaces '    '
         - [ ] indentLess
-                - [ ] use tabs '\t'
-                - [ ] use spaces '    '
+                - [ ] EDI_indentLess
+                    - [ ] use tabs '\t'
+                - [ ] EDI_render_do_IndentLess
+                    - [ ] use spaces '    '
 - [ ] main.cjs '\t' logic:
     - [/] MAIN_decode_experimental_textonly(bytes, start, length, EDI_lineEndString, EDI_fileStartsWithBom)
 

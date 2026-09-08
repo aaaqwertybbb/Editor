@@ -1326,7 +1326,7 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
 
     // 2. Batch-replace all CRLF to LF using native C++ optimization
     // (Chromium executes this near-instantaneously without JS loop overhead)
-    const normalizedText = entireFileTextString.replaceAll('\r\n', '\n').replaceAll('\t', '\t\x11\x11\x11');
+    const normalizedText = text.replaceAll('\r\n', '\n').replaceAll('\t', '\t\x11\x11\x11');
 
     // 3. Allocate the EXACT memory buffer size needed (zero reallocation churn!)
     const encoder = new TextEncoder();
@@ -1339,12 +1339,12 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
 
     // TODO: Insert multiple characters at the same time when you do this?
     EDI_textByteList_ensureCapacityForInsertion(0, finalUint8Array.length);
-    EDI_textByteList_bytes.set(0, finalUint8Array.length);
+    EDI_textByteList_bytes.set(finalUint8Array, 0);
     EDI_textByteList_count = finalUint8Array.length;
 
     for (var sourceI = 0; sourceI < EDI_textByteList_count; sourceI++) {
         lineLength++; // avoid branching by eager counting the lineLength and then excluding the lineEnding later
-        if (EDI_on_tab_bytes[sourceI] === CONST_EDI_ASCII_LINE_FEED) {
+        if (EDI_textByteList_bytes[sourceI] === CONST_EDI_ASCII_LINE_FEED) {
             if (lineLength - 1 > INTS[fEDI_longestLine_length]) { // avoid branching by eager counting the lineLength and then excluding the lineEnding later
                 INTS[fEDI_longestLine_length] = lineLength - 1; // avoid branching by eager counting the lineLength and then excluding the lineEnding later
                 INTS[fEDI_longestLine_indexLine] = local_EDI_lineEndPositionList_count;

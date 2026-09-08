@@ -8847,6 +8847,7 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
 - [ ] rendering '\t' as tab-size of 4
     - [ ] whitespace collapsing?
     - [ ] tab-stop messing with tab-size?
+- [ ] EDI_decode_textonly(start, length)
 - [ ] tab keyboard input
     - [ ] use tabs '\t'
     - [ ] use spaces '    '
@@ -8857,7 +8858,7 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
         - [ ] indentMore
         - [ ] indentLess
 - [ ] main.cjs '\t' logic:
-    - [ ] aaa?
+    - [ ] MAIN_decode_experimental_textonly(bytes, start, length, EDI_lineEndString, EDI_fileStartsWithBom)
 
 
 */

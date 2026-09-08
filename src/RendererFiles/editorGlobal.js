@@ -1611,8 +1611,8 @@ function EDI_finalizeEdit_Tab(indexLine_editOccurredOn) {
 
     if (INTS[fEDI_cursor_editLength] > 1) {
         length *= INTS[fEDI_cursor_editLength];
+        const src_bytes = bytes;
         bytes = new Uint8Array(length);
-        let src_bytes = bytes;
         // TODO: typed array function usage
         for (let i = 0; i < length; i += per_edit_length) {
             for (let k = 0; k < per_edit_length; k++) {

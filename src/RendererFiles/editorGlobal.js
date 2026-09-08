@@ -8538,15 +8538,6 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
 <
 < If you'd like, we can also look at optimizing how you shift the existing bytes over to make room for the insertion.
 
-- [x] initial state of the ontab bytes thing
-- [x] swapping between
-    - [x] tabs
-    - [x] spaces
-- [ ] rendering '\t' as tab-size of 4
-    - [ ] whitespace collapsing?
-    - [ ] tab-stop messing with tab-size?
-    - [ ] Mouse events
-- [/] EDI_decode_textonly(start, length)
 - [ ] tab keyboard input
     - [ ] insert "tab"
         - [x] EDI_editEvent_checkFor_NOTcanBatch_Tab
@@ -8571,6 +8562,9 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
         - [ ] EDI_render_do_IndentMore
             - [ ] use tabs '\t'
             - [ ] use spaces '    '
+        - [ ] EDI_finalizeEdit_IndentMore
+            - [ ] use tabs '\t'
+            - [ ] use spaces '    '
     - [ ] indentLess
         - [ ] EDI_editEvent_checkFor_NOTcanBatch_IndentMore
             - [ ] use tabs '\t'
@@ -8581,6 +8575,18 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
         - [ ] EDI_render_do_IndentLess
             - [ ] use tabs '\t'
             - [ ] use spaces '    '
+        - [ ] EDI_finalizeEdit_IndentLess
+            - [ ] use tabs '\t'
+            - [ ] use spaces '    '
+- [ ] rendering '\t' as tab-size of 4
+    - [ ] whitespace collapsing?
+    - [ ] tab-stop messing with tab-size?
+    - [ ] Mouse events
+- [x] initial state of the ontab bytes thing
+- [x] swapping between
+    - [x] tabs
+    - [x] spaces
+- [x] EDI_decode_textonly(start, length)
 - [x] main.cjs '\t' logic:
     - [x] MAIN_decode_experimental_textonly(bytes, start, length, EDI_lineEndString, EDI_fileStartsWithBom)
 

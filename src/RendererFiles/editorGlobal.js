@@ -8537,10 +8537,10 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
 <
 < If you'd like, we can also look at optimizing how you shift the existing bytes over to make room for the insertion.
 
-- [/] initial state of the ontab bytes thing
-- [/] swapping between
-    - [/] tabs
-    - [/] spaces
+- [x] initial state of the ontab bytes thing
+- [x] swapping between
+    - [x] tabs
+    - [x] spaces
 - [ ] rendering '\t' as tab-size of 4
     - [ ] whitespace collapsing?
     - [ ] tab-stop messing with tab-size?
@@ -8556,7 +8556,7 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
             - [ ] tab
             - [ ] tab_state
             - [ ] tab_render
-            - [/] EDI_finalizeEdit_Tab
+            - [x] EDI_finalizeEdit_Tab
         - [ ] indentMore
         - [ ] indentLess
 - [ ] main.cjs '\t' logic:

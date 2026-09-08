@@ -8970,4 +8970,18 @@ And that is just as bad as mindlessly never planning.
 All modes of action are useful and you only will achieve success by understanding
 how to leverage each mode.
 
+Why should you achieve success if life is meaningless and all goals you achieve
+are essentially futile?
+
+When you achieve success, this is correlated with feelings of pleasure and excitement.
+These meaningless emotions are enjoyable to experience.
+And your success becomes a continuous cycle of enabling you to continue being successful
+and thus continuing to feel those enjoyable emotions.
+
+Whereas if you achieve these emotions through drug use,
+you are more and more falling out of a maintainable cycle
+you cannot just sit there and do drugs all day, where will you get the money to do more drugs?
+
+
+
 */

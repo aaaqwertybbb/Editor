@@ -1749,8 +1749,8 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
 
     // !!!!!! watch out for the big breaks when hitting a tab presuming that_four is 4
     // If I could go back in time I'd go back to the day I thought it a good idea to name this variable 'that_four'
-    let that_four = 4;
-    that_four *= INTS[fEDI_cursor_editLength];
+    let maxVirtualColumnIndex = 4;
+    maxVirtualColumnIndex *= INTS[fEDI_cursor_editLength];
     let largestRank = INTS[fEDI_cursor_editLength];
 
     // loop over the lines to sum the "amount" of whitespace being removed
@@ -1760,8 +1760,8 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
         let line = linePos;
         let lastValidIndexColumn = EDI_getLastValidIndexColumn(lineI);
         let upperLimitIndexColumn;
-        if (lastValidIndexColumn > that_four) {
-            upperLimitIndexColumn = that_four;
+        if (lastValidIndexColumn > maxVirtualColumnIndex) {
+            upperLimitIndexColumn = maxVirtualColumnIndex;
         }
         else {
             upperLimitIndexColumn = lastValidIndexColumn;
@@ -1794,7 +1794,7 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
                         seenSpaceCount = 0;
                     }
                     if (rank >= largestRank) break outer;
-                    DETERMINE_decrementBy += 4;
+                    DETERMINE_decrementBy++;
                     rank++;
                     break;
                 default:
@@ -1920,8 +1920,8 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
         let line = linePos;
         let lastValidIndexColumn = EDI_getLastValidIndexColumn(lineI);
         let upperLimitIndexColumn;
-        if (lastValidIndexColumn > that_four) {
-            upperLimitIndexColumn = that_four;
+        if (lastValidIndexColumn > maxVirtualColumnIndex) {
+            upperLimitIndexColumn = maxVirtualColumnIndex;
         }
         else {
             upperLimitIndexColumn = lastValidIndexColumn;
@@ -1955,7 +1955,7 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
                         seenSpaceCount = 0;
                     }
                     if (rank >= largestRank) break outer;
-                    innerRemoveCount += 4;
+                    innerRemoveCount++;
                     rank++;
                     break;
                 default:
@@ -5221,7 +5221,7 @@ function EDI_indentMore() {
 }
 
 function EDI_render_do_IndentLess() {
-    let startingIndex = INTS[fEDI_indent_startingIndex] = startingIndex;
+    let startingIndex = INTS[fEDI_indent_startingIndex];
     let SMALL_lineAndColumnIndices_indexLine = INTS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine];
 
     if (INTS[fEDI_cursor_editKind] !== EditKind_IndentLess) {

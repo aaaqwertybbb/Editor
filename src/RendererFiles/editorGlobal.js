@@ -1668,11 +1668,6 @@ function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
     let startingLinePos_end = INTS[fEDI_EDI_indentLess_startingLinePos_end];
     INTS[fEDI_EDI_indentLess_startingLinePos_end] = 0;
 
-    // here
-
-    ///////////
-    ///////////
-    ///////////
     // # Determine the total count of text that will be inserted, prior to actually beginning the edit.
     // ...
 
@@ -1712,7 +1707,7 @@ function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
         EDI_trackedSyntaxList.getElementAt(trackedSyntaxReposition_i);
         if (linePos.start > INTS[fEDI_pooledTrackedSyntax_start] && linePos.start < INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length]) {
             // # Then, you immediately know the trackedSyntax that encompasses the insertion (if it exists), so you increment its length by the text inserted on that respective line.
-            EDI_trackedSyntaxList.setLength(trackedSyntaxReposition_i, INTS[fEDI_pooledTrackedSyntax_length] + 4);
+            EDI_trackedSyntaxList.setLength(trackedSyntaxReposition_i, INTS[fEDI_pooledTrackedSyntax_length] + bytesLength);
         }
 
         // # Insert the text on the respective line.
@@ -1724,11 +1719,8 @@ function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
         // # Each loop you reduce incrementBy, because you're initial starting the loop knowing you will eventually insert 4 characters on every line.
         //     # thus, the first iteration of the loop you're increasing that line's end position by the length of text inserted per line by the amount of lines.
         //     # The next iteration is a smaller indexLine so you decrement because you have the insertion of one less line to consider.
-        bytesLength -= 4;
+        incrementBy -= bytesLength;
     }
-    ///////////
-    ///////////
-    ///////////
 
     // # Any line that is not part of the selected set of lines, and is at a greater indexLine, needs to have their line end position entry updated.
     for (var lineI = startingIndex + 1; lineI < EDI_lineEndPositionList_count; lineI++) {
@@ -8547,9 +8539,9 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
         - [ ] EDI_render_do_IndentMore
             - [ ] use tabs '\t'
             - [ ] use spaces '    '
-        - [ ] EDI_finalizeEdit_IndentMore
-            - [ ] use tabs '\t'
-            - [ ] use spaces '    '
+        - [x] EDI_finalizeEdit_IndentMore
+            - [x] use tabs '\t'
+            - [x] use spaces '    '
     - [ ] indentLess
         - [ ] EDI_editEvent_checkFor_NOTcanBatch_IndentLess
             - [ ] use tabs '\t'

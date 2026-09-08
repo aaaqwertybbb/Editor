@@ -334,6 +334,7 @@ const EDI_gutterBackgroundColor = document.getElementById('EDI_gutter_background
 
 /**
  * TODO: This used to be const so make sure you check all the references that they weren't relying on that for either behavior or optimization.
+ * TODO: Prior to this changing you need to finalize the edits
  */
 let EDI_on_tab_bytes = new Uint8Array(1);
 EDI_on_tab_bytes[0] = CONST_EDI_ASCII_TAB;
@@ -4026,7 +4027,7 @@ function EDI_editEvent_checkFor_NOTcanBatch_Tab(event) {
         }
         else {
             if (INTS[fEDI_cursor_editIndexLine] === INTS[fEDI_cursor_indexLine] &&
-                INTS[fEDI_cursor_editIndexColumn] + (4 * INTS[fEDI_cursor_editLength]) === INTS[fEDI_cursor_indexColumn]) {
+                INTS[fEDI_cursor_editIndexColumn] + (EDI_on_tab_bytes.length * INTS[fEDI_cursor_editLength]) === INTS[fEDI_cursor_indexColumn]) {
                     return false;
             }
         }
@@ -6061,7 +6062,7 @@ function EDI_tabKey() {
 
     INTS[fEDI_cursor_editLength]++;
 
-    INTS[fEDI_cursor_indexColumn] += 4; // this has to come after the 'walkLineUntilIndexColumn' invocation.
+    INTS[fEDI_cursor_indexColumn] += EDI_on_tab_bytes.length; // this has to come after the 'walkLineUntilIndexColumn' invocation.
 
     EDI_render_request(RenderKind_TabKey);
 }
@@ -8554,9 +8555,9 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
             - [ ] tab
                 - [ ] use tabs '\t'
                 - [ ] use spaces '    '
-            - [ ] EDI_editEvent_checkFor_NOTcanBatch_Tab
-                - [ ] use tabs '\t'
-                - [ ] use spaces '    '
+            - [x] EDI_editEvent_checkFor_NOTcanBatch_Tab
+                - [x] use tabs '\t'
+                - [x] use spaces '    '
             - [ ] tab_state
                 - [ ] use tabs '\t'
                 - [ ] use spaces '    '

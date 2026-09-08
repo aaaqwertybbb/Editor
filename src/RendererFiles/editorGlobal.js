@@ -1748,6 +1748,7 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
     INTS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] = 0;
 
     // !!!!!! watch out for the big breaks when hitting a tab presuming that_four is 4
+    // If I could go back in time I'd go back to the day I thought it a good idea to name this variable 'that_four'
     let that_four = 4;
     that_four *= INTS[fEDI_cursor_editLength];
     let largestRank = INTS[fEDI_cursor_editLength];
@@ -4072,7 +4073,6 @@ function EDI_editEvent_checkFor_NOTcanBatch_IndentMore() {
         return true;
     }
 
-    // # Determine the total count of text that will be inserted, prior to actually beginning the edit.
     if (INTS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] === SMALL_lineAndColumnIndices_indexLine &&
         INTS[fEDI_indent_startingIndex] === startingIndex) {
             return false;
@@ -4088,12 +4088,11 @@ function EDI_editEvent_checkFor_NOTcanBatch_IndentMore() {
  * 
  */
 function EDI_editEvent_checkFor_NOTcanBatch_IndentLess() {
+    // TODO: Should this be: 'INTS[fEDI_cursor_editKind] !== EditKind_IndentLess'?
     if (INTS[fEDI_cursor_editKind] === EditKind_IndentMore) {
         return true;
     }
     
-    /////
-    // selection positions
     let SMALL_pos;
     let LARGE_pos;
     if (INTS[fEDI_cursor_selectionAnchor] < INTS[fEDI_cursor_selectionEnd]) {
@@ -4107,13 +4106,11 @@ function EDI_editEvent_checkFor_NOTcanBatch_IndentLess() {
 
     EDI_getLineAndColumnIndices_raw(SMALL_pos);
     let SMALL_lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
-    let SMALL_lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
 
     EDI_getLineAndColumnIndices_raw(LARGE_pos);
     let LARGE_lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
-    let LARGE_lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn]; // TODO: remove these unused if they're truly unused.
 
-    // starting index
+    // start at the LARGE position
     let startingIndex = LARGE_lineAndColumnIndices_indexLine;
     let startingLinePos = EDI_getLineBoundaryPositions_raw(startingIndex);
     if (startingLinePos.start === LARGE_pos) {
@@ -4126,13 +4123,10 @@ function EDI_editEvent_checkFor_NOTcanBatch_IndentLess() {
         return;
     }
 
-    // # Determine the total count of text that will be inserted, prior to actually beginning the edit.
     if (INTS[fEDI_indent_SMALL_lineAndColumnIndices_indexLine] === SMALL_lineAndColumnIndices_indexLine &&
         INTS[fEDI_indent_startingIndex] === startingIndex) {
-
             return false;
     }
-    /////
 
     return true;
 }
@@ -5358,11 +5352,9 @@ function EDI_indentLess() {
 
     EDI_getLineAndColumnIndices(SMALL_pos);
     let SMALL_lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
-    let SMALL_lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
     
     EDI_getLineAndColumnIndices(LARGE_pos);
     let LARGE_lineAndColumnIndices_indexLine = INTS[fEDI_getLineAndColumnIndices_indexLine];
-    let LARGE_lineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
 
     // starting index
     let startingIndex = LARGE_lineAndColumnIndices_indexLine;
@@ -8530,12 +8522,12 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
 
 - [ ] tab keyboard input
     - [ ] indentLess
-        - [ ] EDI_editEvent_checkFor_NOTcanBatch_IndentLess
-            - [ ] use tabs '\t'
-            - [ ] use spaces '    '
-        - [ ] EDI_indentLess
-            - [ ] use tabs '\t'
-            - [ ] use spaces '    '
+        - [x] EDI_editEvent_checkFor_NOTcanBatch_IndentLess
+            - [x] use tabs '\t'
+            - [x] use spaces '    '
+        - [x] EDI_indentLess
+            - [x] use tabs '\t'
+            - [x] use spaces '    '
         - [ ] EDI_render_do_IndentLess
             - [ ] use tabs '\t'
             - [ ] use spaces '    '

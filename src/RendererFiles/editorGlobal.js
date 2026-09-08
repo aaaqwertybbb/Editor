@@ -1292,40 +1292,18 @@ function EDI_state_setText(text, fileStartsWithBom, textSourceIdentifier, FORMAT
     BYTES[byteEDI_extensionKind] = extensionKind;
     EDI_language_line_lex_SET(BYTES[byteEDI_extensionKind]);
 
-    // TODO: Does this matter:
-    // use 'lineEndString' for the within-loop checks of '!lineEndString' to avoid reading non-cont global scope during loop when 'lineEndString' is equivalent.
-    // ^ NOTE: (it was an old comment when not using ES6 modules but even with modules,
-    //          'EDI_lineEndString' technically isn't a const does that change things? i.e.: with modules you'd remove this
-    //          "local alias" of the 'global scope' variable because now it points to the 'module scope' and is very optimized.)
     EDI_lineEndString = lineEndString;
+    if (!EDI_lineEndString) {
+        const firstNewlineMatch = text.match(/\r?\n/);
+        EDI_lineEndString = firstNewlineMatch ? firstNewlineMatch[0] : '\n';
+    }
 
     let local_EDI_lineEndPositionList_count = EDI_lineEndPositionList_count;
     let local_EDI_textByteList_count = EDI_textByteList_count;
 
-    /**
-     * TODO: I don't know whether I should calculate this from the EDI_lineEndPositionList or some such...
-     * ...But all in all this detail is nothing relative to me starting the code that tracks the longest line
-     * so I stop drawing the horizontal scrollbar during some scroll events.
-     * 
-     * In terms of changing it after the fact it isn't a big deal is what I mean.
-     * 
-     * TODO: Track the linePosition last seen when making a line or something
-     * you don't have to increment this per character, you just need the difference of the last line drawn to the current or something.
-     */
+    /** TODO: Track the linePosition last seen when making a line or something you don't have to increment this per character, you just need the difference of the last line drawn to the current or something. */
     let lineLength = 0;
 
-
-    //////////
-    //////////
-    //////////
-
-    // 1. Detect the original line ending format (e.g., \r\n or \n)
-    const firstNewlineMatch = text.match(/\r?\n/);
-    const originalLineEnding = firstNewlineMatch ? firstNewlineMatch[0] : '\n';
-    EDI_lineEndString = originalLineEnding;
-
-    // 2. Batch-replace all CRLF to LF using native C++ optimization
-    // (Chromium executes this near-instantaneously without JS loop overhead)
     const normalizedText = text.replaceAll('\r\n', '\n').replaceAll('\t', '\t\x11\x11\x11');
 
     // 3. Allocate the EXACT memory buffer size needed (zero reallocation churn!)

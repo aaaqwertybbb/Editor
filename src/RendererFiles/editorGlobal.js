@@ -2609,6 +2609,8 @@ function EDI_drawCursor(NOTscrollCursorIntoView) {
 - [ ] INTS[fEDI_cursor_indexColumn]--
 - [ ] INTS[fEDI_cursor_indexColumn] -=
 - [ ] INTS[fEDI_cursor_indexColumn] +=
+- [ ] INTS[fEDI_cursor_indexColumn]-=
+- [ ] INTS[fEDI_cursor_indexColumn]+=
 
 - [ ] Resets:
     - [ ] ArrowDown

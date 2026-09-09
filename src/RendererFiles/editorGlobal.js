@@ -2612,9 +2612,9 @@ function EDI_drawCursor(NOTscrollCursorIntoView) {
 - [x] INTS[fEDI_cursor_indexColumn] =
 - [x] INTS[fEDI_cursor_indexColumn]=
 - [x] INTS[fEDI_cursor_indexColumn]++
-- [ ] INTS[fEDI_cursor_indexColumn]--
-- [ ] INTS[fEDI_cursor_indexColumn] ++
-- [ ] INTS[fEDI_cursor_indexColumn] --
+- [x] INTS[fEDI_cursor_indexColumn]--
+- [x] INTS[fEDI_cursor_indexColumn] ++
+- [x] INTS[fEDI_cursor_indexColumn] --
 - [ ] INTS[fEDI_cursor_indexColumn] -=
 - [ ] INTS[fEDI_cursor_indexColumn] +=
 - [ ] INTS[fEDI_cursor_indexColumn]-=
@@ -3367,6 +3367,7 @@ function EDI_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
                 }
                 tempPositionIndex--;
                 INTS[fEDI_cursor_indexColumn]--;
+                INTS[fEDI_cursorVisualColumnIndex]--;
             }
 
             if (!leftWasFound) {
@@ -4420,11 +4421,13 @@ function EDI_onKeyDown_ArrowLeft(event) {
             let indexPosition = line.start + INTS[fEDI_cursor_indexColumn];
             let originalCharacterKind = EDI_getCharacterPrevious_KIND(INTS[fEDI_cursor_indexColumn], indexPosition);
             INTS[fEDI_cursor_indexColumn]--;
+            INTS[fEDI_cursorVisualColumnIndex]--;
             indexPosition--;
 
             while (INTS[fEDI_cursor_indexColumn] > 0) {
                 if (EDI_getCharacterPrevious_KIND(INTS[fEDI_cursor_indexColumn], indexPosition) === originalCharacterKind) {
                     INTS[fEDI_cursor_indexColumn]--;
+                    INTS[fEDI_cursorVisualColumnIndex]--;
                     indexPosition--;
                 }
                 else {
@@ -4435,6 +4438,7 @@ function EDI_onKeyDown_ArrowLeft(event) {
         else {
             if (INTS[fEDI_cursor_indexColumn] > 0) {
                 INTS[fEDI_cursor_indexColumn]--;
+                INTS[fEDI_cursorVisualColumnIndex]--;
             }
             else if (INTS[fEDI_cursor_indexLine] > 0) {
                 INTS[fEDI_cursor_indexLine]--;
@@ -7439,6 +7443,7 @@ function EDI_state_do_Backspace(event) {
 
             let originalCharacterKind = getCharacter_kind_raw(INTS[fEDI_cursor_editPosition] - 1);
             INTS[fEDI_cursor_indexColumn]--;
+            INTS[fEDI_cursorVisualColumnIndex]--;
             INTS[fEDI_cursor_editPosition]--;
             INTS[fEDI_cursor_editIndexColumn]--;
             INTS[fEDI_cursor_editLength]++;
@@ -7448,6 +7453,7 @@ function EDI_state_do_Backspace(event) {
                     break;
                 }
                 INTS[fEDI_cursor_indexColumn]--;
+                INTS[fEDI_cursorVisualColumnIndex]--;
                 INTS[fEDI_cursor_editPosition]--;
                 INTS[fEDI_cursor_editIndexColumn]--;
                 INTS[fEDI_cursor_editLength]++;

@@ -2602,6 +2602,14 @@ function EDI_drawCursor(NOTscrollCursorIntoView) {
 - [x] cursorVisualColumnIndex_relativeToThisLineIndex
 - [ ] You actually need to start off by getting 'cursorVisualColumnIndex' and 'cursorVisualColumnIndex_relativeToThisLineIndex' to replicate the current behavior while ignoring tabs
     - [ ] Once you replicate the current behavior you extend the 'cursorVisualColumnIndex' and 'cursorVisualColumnIndex_relativeToThisLineIndex' to be responsible for tracking visual width as the cursor moves.
+
+- [x] INTS[fEDI_cursor_indexColumn] =
+- [ ] INTS[fEDI_cursor_indexColumn]=
+- [ ] INTS[fEDI_cursor_indexColumn]++
+- [ ] INTS[fEDI_cursor_indexColumn]--
+- [ ] INTS[fEDI_cursor_indexColumn] -=
+- [ ] INTS[fEDI_cursor_indexColumn] +=
+
 - [ ] Resets:
     - [ ] ArrowDown
     - [ ] ArrowUp

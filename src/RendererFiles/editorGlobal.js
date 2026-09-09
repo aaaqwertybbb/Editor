@@ -8810,5 +8810,62 @@ window.addEventListener('keydown', (e) => {
 < - If yes, we can talk about how to structure your line-rendering loop to handle those tokens cleanly.
 < - If no, a flat DOM structure with standard spaces will save you massive amounts of development time.
 
+> Visual Studio Code uses a div per line. But then they do something odd, they actually put a span within that div, and that span goes on to wrap all the spans that represent each "token"/text.
+> 
+> For example I'll do something like this:
+> <div>
+> 	<span class="keyword">let</span>
+> 	<span class="plaintext"> foo;</span>
+> </div>
+> 
+> Whereas Visual Studio Code does something like this:
+> <div>
+>     <span>
+> 	    <span class="keyword">let</span>
+> 		<span class="plaintext"> foo;</span>
+> 	</span>
+> </div>
+
+< That extra, seemingly redundant wrapper <span> is actually a brilliant piece of engineering.
+< VS Code's editor engine (Monaco) puts it there to solve a major performance bottleneck in Chromium's rendering pipeline.
+<
+< It specifically acts as a hardware acceleration and layout boundary layer.
+< 
+< 1. Forcing GPU Layer Creation (will-change: transform)
+< If you look closely at that inner parent <span> in VS Code's DOM using the Element Inspector, you will find it has a CSS class or inline style applying
+< will-change: transform or a 3D transform like transform: translate3d(0, 0, 0);.
+<
+< In Chromium (Electron's core), wrapping the tokens in an accelerated <span> forces the browser to isolate that line's text onto its own GPU compositor layer.
+< - Without the wrapper: If a user types a single character, Chromium might re-evaluate and re-paint the layout of the entire line, or even adjacent lines in the <div>.
+< - With the wrapper: The text tokens inside the wrapper are uploaded to the GPU as a flat bitmap texture.
+<   When you move the cursor, scroll, or highlight text, the browser shifts the layer on the GPU rather than recalculating the CPU layout geometries of every individual token span.
+<
+< 2. Micro-Optimized Cursor and Selection Overlays
+<
+< VS Code does not draw the blinking cursor or the blue text-selection boxes inside your text HTML. The cursor and selections are actually separate DOM elements floating on a layer completely independent of the text.
+< 
+< To ensure the cursor aligns perfectly, VS Code needs to know the exact width of the line's content.
+< - A <div> is a block element. By default, it stretches to fill 100% of the editor's width, even if the text inside it is only 5 characters long.
+< - A <span> is an inline element. Its width is exactly equal to the text inside it.
+<
+< By having an inner <span> wrapping all tokens, VS Code can instantly read .getBoundingClientRect().width on that single wrapper to get the exact sub-pixel physical width of the code
+< line. It uses this to calculate exactly where the selection highlights or line-end cursors should be drawn without having to loop through and sum up the widths of every single keyword
+< or plaintext span.
+<
+< 3. Sub-pixel Font Smoothing and Font Ligatures
+< 
+< When you mix multiple spans directly inside a block container, browsers occasionally suffer from sub-pixel rounding errors at the boundaries where the spans meet.
+< This can cause text to subtly "jitter" or shift by 1 pixel when token colors change (e.g., when a word goes from being plaintext to a keyword as you finish typing it).
+< 
+< Putting all tokens inside a single inline <span> parent establishes a strict, unified text-formatting context.
+< It ensures that font ligatures (like turning -> into → in programming fonts) and font anti-aliasing remain perfectly smooth across token boundaries.
+< 
+< Should you adopt this in your app?
+< Since you are building your editor as a monolithic module, keeping the DOM tree as flat as possible is usually better for initial development speed.
+< However, if you start noticing typing lag or micro-stuttering while scrolling large files, adding this accelerated wrapper layer is the exact remedy.
+< 
+< Are you currently experiencing any input lag when typing quickly in your editor, or is your rendering loop currently feeling snappy?
+< - Show me how to implement will-change layer isolation for lines
+< - Explain how to handle selection highlights without changing text DOM
 
 */

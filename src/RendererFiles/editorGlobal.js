@@ -2603,10 +2603,18 @@ function EDI_drawCursor(NOTscrollCursorIntoView) {
 - [ ] You actually need to start off by getting 'cursorVisualColumnIndex' and 'cursorVisualColumnIndex_relativeToThisLineIndex' to replicate the current behavior while ignoring tabs
     - [ ] Once you replicate the current behavior you extend the 'cursorVisualColumnIndex' and 'cursorVisualColumnIndex_relativeToThisLineIndex' to be responsible for tracking visual width as the cursor moves.
 
+// Google search: javascript: is it valid to put spaces between a prefix/postfix operator and its operand
+// ...
+//
+// I control shift f'd 'fEDI_cursor_indexColumn'
+// and took a list of all the cases that were being used... so adding these extra cases is kinda extra cuz they just weren't in use
+
 - [x] INTS[fEDI_cursor_indexColumn] =
 - [ ] INTS[fEDI_cursor_indexColumn]=
 - [ ] INTS[fEDI_cursor_indexColumn]++
 - [ ] INTS[fEDI_cursor_indexColumn]--
+- [ ] INTS[fEDI_cursor_indexColumn] ++
+- [ ] INTS[fEDI_cursor_indexColumn] --
 - [ ] INTS[fEDI_cursor_indexColumn] -=
 - [ ] INTS[fEDI_cursor_indexColumn] +=
 - [ ] INTS[fEDI_cursor_indexColumn]-=

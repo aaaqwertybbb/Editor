@@ -381,6 +381,8 @@ module.exports = function (babel) {
     "fEDI_cursor_editLineFeedCount",
     "fEDI_cursor_EDI_duplicate_small",
     "fEDI_cursor_EDI_duplicate_length",
+    "fEDI_cursorVisualColumnIndex",
+    "fEDI_cursorVisualColumnIndex_relativeToThisLineIndex",
 
 
 

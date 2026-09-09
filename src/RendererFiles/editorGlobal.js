@@ -2596,8 +2596,8 @@ function EDI_drawCursor(NOTscrollCursorIntoView) {
 
 
 /*
-- [ ] cursorVisualColumnIndex
-- [ ] cursorVisualColumnIndex_relativeToThisLineIndex
+- [x] cursorVisualColumnIndex
+- [x] cursorVisualColumnIndex_relativeToThisLineIndex
 - [ ] Resets:
     - [ ] ArrowDown
     - [ ] ArrowUp
@@ -2609,9 +2609,11 @@ function EDI_drawCursor(NOTscrollCursorIntoView) {
     - [ ] ArrowLeft where 'cursorVisualColumnIndex_relativeToThisLineIndex' === the same line index that the cursor is on, determine the 'characters traveled' to go from initial position to ending position and modify by how many chars/tabs etc... you traveled over
         - [ ] No modifiers
         - [ ] CtrlKey
+        - [ ] When NOT holding shift, but you have an active selection
     - [ ] ArrowRight where 'cursorVisualColumnIndex_relativeToThisLineIndex' === the same line index that the cursor is on, determine the 'characters traveled' to go from initial position to ending position and modify by how many chars/tabs etc... you traveled over
         - [ ] No modifiers
         - [ ] CtrlKey
+        - [ ] When NOT holding shift, but you have an active selection
 - [ ] Further necessary details:
     - [ ] I... does MouseDown need to finalize the edits?
     - [ ] Do other things need to finalize the edits?
@@ -2631,6 +2633,9 @@ function EDI_drawCursor(NOTscrollCursorIntoView) {
         - [ ] (i.e.: not yet?)
         - [ ] Thus you get the simple batching of edits 100% correct first
         - [ ] And do the other complex batching later.
+- [ ] A thought for checking the answer:
+    - [ ] Ctrl+Shift+F for 'INTS[fEDI_cursor_indexColumn]' and make sure any modifications to it (eventually) result in a modification to 'fEDI_cursorVisualColumnIndex'.
+        - [ ] I say eventually because maybe you'd in some cases save the 'fEDI_cursorVisualColumnIndex' part until the end I'm not sure I just consider that maybe there'd be a case where that's done.
 */
 
 
@@ -2657,13 +2662,14 @@ function EDI_drawCursor(NOTscrollCursorIntoView) {
 
 
 
-    INTS[fEDI_cursor_cursorTranslateXValue] = INTS[fEDI_cursor_indexColumn] * EDI_characterWidth;
+    INTS[fEDI_cursor_cursorTranslateXValue] = INTS[fEDI_cursorVisualColumnIndex] * EDI_characterWidth;
 
     EDI_cursor_caretRow.style.transform = `translateY(${INTS[fEDI_cursor_cursorTranslateYValue]}px)`;
     EDI_cursor_cursorElement.style.transform = `translateX(${INTS[fEDI_cursor_cursorTranslateXValue]}px)`;
 
     EDI_createStyleForSelection();
 
+    // TODO: This logic has way too much overhead to be in this function.
     let text = '';
 
     text += '(' + INTS[fEDI_cursor_indexLine] + ', ' + INTS[fEDI_cursor_indexColumn] + ')';
@@ -4475,6 +4481,7 @@ function EDI_onKeyDown_ArrowRight(event) {
         else {
             if (INTS[fEDI_cursor_indexColumn] < lastValidIndexColumn) {
                 INTS[fEDI_cursor_indexColumn]++;
+                INTS[fEDI_cursorVisualColumnIndex]++;
             }
             else if (INTS[fEDI_cursor_indexLine] < EDI_lineEndPositionList_count - 1) {
                 INTS[fEDI_cursor_indexColumn] = 0;

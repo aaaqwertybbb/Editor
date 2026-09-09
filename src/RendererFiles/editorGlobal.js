@@ -8657,5 +8657,68 @@ function getIndexFromVisualColumn(lineString, targetVisualColumn, tabSize = 4) {
 < - Are you using a monospace font, or are you planning to support variable-width fonts?
 < - How are you converting the raw mouse click clientX into your base targetVisualColumn index?
 
+> Is there a way I can disable '\t' related tab-stop rendering inconsistencies
+
+< The short answer is yes. If you want to bypass the dynamic math of traditional tab stops entirely, you have two main approaches:
+< forcing the browser to treat tabs as a fixed width, or eliminating raw \t characters from your internal data structures altogether.
+< 
+< Here is how you can achieve this depending on your architectural choices:
+< 
+< # Approach 1: Use ch units in CSS (The Simplest Fix)
+< By default, browsers calculate tab stops based on complex layout rules.
+< However, you can force the browser to treat a \t character as an absolute, unchanging width of exactly X characters by using the tab-size property combined with the ch font unit.
+< |
+< The ch unit represents the exact width of the "0" character in your chosen font. In a monospace font, every character is exactly 1ch wide.
+< |
+< ```css
+.editor-line {
+    font-family: 'Fira Code', 'Courier New', monospace;
+    white-space: pre;
+    
+    !//! Forces every single '\t' to be exactly 4 characters wide,
+    !//! completely overriding dynamic tab-stop behavior
+    tab-size: 4ch; 
+}
+< ```
+< 
+< Why this helps your math:
+< Once you apply tab-size: 4ch; to a monospaced font, every single tab character behaves exactly like a block of 4 spaces, no matter where it sits on the line.
+< - A tab at index 0 takes 4 character widths.
+< - A tab at index 1 takes 4 character widths.
+< 
+< Your math scales linearly. If a line has 2 tabs and 3 regular characters, its visual width is exactly (2 * 4) + 3 = 11 characters wide.
+< 
+< # Approach 2: "Soft Tabs" (The Industry Standard)
+< 
+< Most modern text editors (like VS Code, Sublime Text, and Notepad++) don't actually insert raw \t characters into the document when a user presses the Tab key.
+< Instead, they intercept the keypress event and insert 3 or 4 space characters ("    ").
+< 
+< You can implement this in your editor by capturing the keydown event on the renderer process:
+< ```js
+window.addEventListener('keydown', (e) => {
+    if (e.key === 'Tab') {
+        e.preventDefault(); // Stop the browser from moving focus to the next UI element
+        
+        const spaces = "    "; // Your preferred tab size
+        
+        // Insert 'spaces' into your internal text buffer/DOM at the cursor position
+        insertTextAtCursor(spaces); 
+    }
+});
+< ```
+< 
+< Pros of this approach:
+< - Total consistency: Spaces never suffer from tab-stop logic. They are always exactly 1 character wide.
+< - Math simplification: Your mouse coordinate code becomes exceptionally simple because 1 character in memory always equals 1 character on screen.
+< - Cross-platform safety: The file looks exactly the same when opened in any other editor, terminal, or GitHub markdown view.
+< 
+< # Approach 3: CSS white-space: pre-wrap with caution
+< If you are currently using white-space: pre;, the browser maps character to screen directly. If you are using standard white-space: normal, tabs collapse into a single space,
+< which causes total chaos. Ensure your text container explicitly uses pre or pre-wrap alongside your tab-size adjustments.
+< 
+< Which approach aligns better with your goals for the app?
+< - If you want to support raw \t characters in saved files, we can look at the tab-size: 4ch implementation.
+< - If you prefer the simplicity of converting tabs to spaces, we can look at handling selection/deletion blocks of spaces cleanly.
+
 
 */

@@ -2610,8 +2610,8 @@ function EDI_drawCursor(NOTscrollCursorIntoView) {
 // and took a list of all the cases that were being used... so adding these extra cases is kinda extra cuz they just weren't in use
 
 - [x] INTS[fEDI_cursor_indexColumn] =
-- [ ] INTS[fEDI_cursor_indexColumn]=
-- [ ] INTS[fEDI_cursor_indexColumn]++
+- [x] INTS[fEDI_cursor_indexColumn]=
+- [x] INTS[fEDI_cursor_indexColumn]++
 - [ ] INTS[fEDI_cursor_indexColumn]--
 - [ ] INTS[fEDI_cursor_indexColumn] ++
 - [ ] INTS[fEDI_cursor_indexColumn] --
@@ -2619,6 +2619,9 @@ function EDI_drawCursor(NOTscrollCursorIntoView) {
 - [ ] INTS[fEDI_cursor_indexColumn] +=
 - [ ] INTS[fEDI_cursor_indexColumn]-=
 - [ ] INTS[fEDI_cursor_indexColumn]+=
+
+TODO:
+INTS[fEDI_cursor_indexLine]
 
 - [ ] Resets:
     - [ ] ArrowDown
@@ -3404,6 +3407,7 @@ function EDI_onMouseMoveDetailRankTwo(indexLineClicked, indexColumnClicked) {
                 }
                 tempPositionIndex++;
                 INTS[fEDI_cursor_indexColumn]++;
+                INTS[fEDI_cursorVisualColumnIndex]++;
             }
 
             if (!rightWasFound) {
@@ -3652,6 +3656,7 @@ function EDI_onMouseDownDetailRankTwo(event_button, event_shiftKey, indexLineCli
 
         while (INTS[fEDI_cursor_indexColumn] < lineLength) {
             INTS[fEDI_cursor_indexColumn]++;
+            INTS[fEDI_cursorVisualColumnIndex]++;
             positionIndex++;
             rightCharacterKind = EDI_getCharacterCurrent_KIND(INTS[fEDI_cursor_indexColumn], positionIndex, line.end);
             if (rightCharacterKind !== goalCharacterKind) {
@@ -4530,11 +4535,13 @@ function EDI_onKeyDown_ArrowRight(event) {
             let indexPosition = line.start + INTS[fEDI_cursor_indexColumn];
             let originalCharacterKind = EDI_getCharacterCurrent_KIND(INTS[fEDI_cursor_indexColumn], indexPosition, line.end);
             INTS[fEDI_cursor_indexColumn]++;
+            INTS[fEDI_cursorVisualColumnIndex]++;
             indexPosition++;
 
             while (INTS[fEDI_cursor_indexColumn] < lastValidIndexColumn) {
                 if (EDI_getCharacterCurrent_KIND(INTS[fEDI_cursor_indexColumn], indexPosition, line.end) === originalCharacterKind) {
                     INTS[fEDI_cursor_indexColumn]++;
+                    INTS[fEDI_cursorVisualColumnIndex]++;
                     indexPosition++;
                 }
                 else {
@@ -7491,6 +7498,7 @@ function EDI_insertDo(character) {
 
     INTS[fEDI_cursor_editLength]++;
     INTS[fEDI_cursor_indexColumn]++;
+    INTS[fEDI_cursorVisualColumnIndex]++;
 }
 
 function EDI_stopTrackingIfTrackedSyntaxMadeToSpanSingleLine() {

@@ -2615,6 +2615,20 @@ function EDI_drawCursor(NOTscrollCursorIntoView) {
 - [ ] Further necessary details:
     - [ ] I... does MouseDown need to finalize the edits?
     - [ ] Do other things need to finalize the edits?
+    - [ ] ArrowLeft/ArrowRight?
+    - [ ] Preferably if you insert text, then remove text, but the removed text is part of the text that you inserted
+          that you'd just modify the "gap buffer" and avoid:
+          - insert
+          - remove triggers finalize of insert
+          - start remove
+          - eventually finalize remove
+          ============================
+          versus
+          - insert
+          - remove just modifies the inserted text
+          - eventually finalize insert
+        - [ ] But from an order of implementations I don't necessarily know if it is a good idea for me to concern myself with these details or not.
+        - [ ] (i.e.: not yet?)
 */
 
 

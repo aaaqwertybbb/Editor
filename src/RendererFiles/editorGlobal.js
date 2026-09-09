@@ -2616,7 +2616,7 @@ function EDI_drawCursor(NOTscrollCursorIntoView) {
 - [x] INTS[fEDI_cursor_indexColumn] ++
 - [x] INTS[fEDI_cursor_indexColumn] --
 - [x] INTS[fEDI_cursor_indexColumn] +=
-- [ ] INTS[fEDI_cursor_indexColumn] -=
+- [x] INTS[fEDI_cursor_indexColumn] -=
 - [x] INTS[fEDI_cursor_indexColumn]+=
 - [x] INTS[fEDI_cursor_indexColumn]-=
 
@@ -7464,6 +7464,7 @@ function EDI_state_do_Backspace(event) {
         }
         else {
             INTS[fEDI_cursor_indexColumn] -= 1;
+            INTS[fEDI_cursorVisualColumnIndex] -= 1;
             INTS[fEDI_cursor_editPosition] -= 1;
             INTS[fEDI_cursor_editIndexColumn] -= 1;
             INTS[fEDI_cursor_editLength]++;

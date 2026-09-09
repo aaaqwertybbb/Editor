@@ -6221,6 +6221,7 @@ function EDI_tabKey() {
     INTS[fEDI_cursor_indexColumn] += EDI_on_tab_bytes.length; // this has to come after the 'walkLineUntilIndexColumn' invocation.
     INTS[fEDI_cursorVisualColumnIndex] += EDI_on_tab_bytes.length * INTS[fEDI_ontab_visualWidth_perCharacter];
     // I say 'uhhhh' cause I'm trying to get an obvious case to work and it isn't working entirely and I'm so tired so just like "uhhhhhhhhh"
+    // oh wait lol tab-stops
 
     EDI_render_request(RenderKind_TabKey);
 }

@@ -746,8 +746,6 @@ const fEDI_ontab_visualWidth_perCharacter = 173;
 
 // INTS[fEDI_cursorVisualColumnIndex]
 
-// inclusive final index is 138
-
 /*
 Google AI
 =========

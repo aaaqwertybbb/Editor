@@ -338,6 +338,7 @@ const EDI_gutterBackgroundColor = document.getElementById('EDI_gutter_background
  */
 let EDI_on_tab_bytes = new Uint8Array(1);
 EDI_on_tab_bytes[0] = CONST_EDI_ASCII_TAB;
+INTS[fEDI_ontab_visualWidth_perCharacter] = 4;
 
 /**
  * When a cursor removes a line end the position of the line end is stored in this list until the edit is finalized.
@@ -6218,7 +6219,7 @@ function EDI_tabKey() {
     INTS[fEDI_cursor_editLength]++;
 
     INTS[fEDI_cursor_indexColumn] += EDI_on_tab_bytes.length; // this has to come after the 'walkLineUntilIndexColumn' invocation.
-    INTS[fEDI_cursorVisualColumnIndex] += EDI_on_tab_bytes.length;
+    INTS[fEDI_cursorVisualColumnIndex] += EDI_on_tab_bytes.length * INTS[fEDI_ontab_visualWidth_perCharacter];
 
     EDI_render_request(RenderKind_TabKey);
 }

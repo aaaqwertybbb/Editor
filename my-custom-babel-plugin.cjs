@@ -358,6 +358,7 @@ module.exports = function (babel) {
     "fEDI_cursor_indexColumn",
     "fEDI_cursorVisualColumnIndex",
     "fEDI_cursorVisualColumnIndex_relativeToThisLineIndex",
+    "fEDI_ontab_visualWidth_perCharacter",
     "fEDI_cursor_STORED_indexColumn",
     "fEDI_cursor_cursorTranslateYValue",
     "fEDI_cursor_cursorTranslateXValue",

@@ -452,6 +452,7 @@ function DIALOG_checkboxTrueTabsFalseSpaces_onchange() {
     if (BYTES[byteDIALOG_Settings_trueTabs_falseSpaces]) {
         EDI_on_tab_bytes = new Uint8Array(1);
         EDI_on_tab_bytes[0] = CONST_EDI_ASCII_TAB;
+        INTS[fEDI_ontab_visualWidth_perCharacter] = 4;
     }
     else {
         EDI_on_tab_bytes = new Uint8Array(4);
@@ -459,6 +460,7 @@ function DIALOG_checkboxTrueTabsFalseSpaces_onchange() {
         EDI_on_tab_bytes[1] = CONST_EDI_ASCII_SPACE;
         EDI_on_tab_bytes[2] = CONST_EDI_ASCII_SPACE;
         EDI_on_tab_bytes[3] = CONST_EDI_ASCII_SPACE;
+        INTS[fEDI_ontab_visualWidth_perCharacter] = 1;
     }
 }
 

@@ -2615,10 +2615,10 @@ function EDI_drawCursor(NOTscrollCursorIntoView) {
 - [x] INTS[fEDI_cursor_indexColumn]--
 - [x] INTS[fEDI_cursor_indexColumn] ++
 - [x] INTS[fEDI_cursor_indexColumn] --
+- [x] INTS[fEDI_cursor_indexColumn] +=
 - [ ] INTS[fEDI_cursor_indexColumn] -=
-- [ ] INTS[fEDI_cursor_indexColumn] +=
-- [ ] INTS[fEDI_cursor_indexColumn]-=
-- [ ] INTS[fEDI_cursor_indexColumn]+=
+- [x] INTS[fEDI_cursor_indexColumn]+=
+- [x] INTS[fEDI_cursor_indexColumn]-=
 
 TODO:
 INTS[fEDI_cursor_indexLine]
@@ -5367,6 +5367,7 @@ function EDI_indentMore() {
 
     // # Update the cursor's indexColumn to reflect the inserted text
     INTS[fEDI_cursor_indexColumn] += EDI_on_tab_bytes.length;
+    INTS[fEDI_cursorVisualColumnIndex] += EDI_on_tab_bytes.length;
 
     //// # Update the cursor's selection to reflect the inserted text
     //let smallLinePos = EDI_getLineBoundaryPositions(SMALL_lineAndColumnIndices.indexLine);
@@ -5976,6 +5977,7 @@ function EDI_render_do_DuplicateOrPaste() {
                 w_span.textContent.slice(INTS[fEDI_w_indexColumn_SpanTextContentRelative]);
 
             INTS[fEDI_cursor_indexColumn] += wordLength;
+            INTS[fEDI_cursorVisualColumnIndex] += wordLength;
             INTS[fEDI_w_indexColumn_SpanTextContentRelative] += wordLength;
         }
     }
@@ -6216,6 +6218,7 @@ function EDI_tabKey() {
     INTS[fEDI_cursor_editLength]++;
 
     INTS[fEDI_cursor_indexColumn] += EDI_on_tab_bytes.length; // this has to come after the 'walkLineUntilIndexColumn' invocation.
+    INTS[fEDI_cursorVisualColumnIndex] += EDI_on_tab_bytes.length;
 
     EDI_render_request(RenderKind_TabKey);
 }

@@ -2629,6 +2629,8 @@ function EDI_drawCursor(NOTscrollCursorIntoView) {
           - eventually finalize insert
         - [ ] But from an order of implementations I don't necessarily know if it is a good idea for me to concern myself with these details or not.
         - [ ] (i.e.: not yet?)
+        - [ ] Thus you get the simple batching of edits 100% correct first
+        - [ ] And do the other complex batching later.
 */
 
 

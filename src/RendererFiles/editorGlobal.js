@@ -9334,4 +9334,7 @@ function getIndexFromX(lineText, localX, charWidth) {
 < - How are you currently measuring and storing your monospace character width (charWidth)?
 < - Do your lines feature sub-pixel font scaling or variations due to zooming?
 
+I feel anxiety, panic, and sadness.
+"Don't Speak", I guess
+
 */

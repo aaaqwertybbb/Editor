@@ -2587,6 +2587,60 @@ function positiveNumbersOnly_countDigitsLoop(number) {
  */
 function EDI_drawCursor(NOTscrollCursorIntoView) {
     INTS[fEDI_cursor_cursorTranslateYValue] = INTS[fEDI_cursor_indexLine] * INTS[fEDI_lineHeight];
+
+
+
+// cursor should store visual column then
+// and relative to line index
+
+
+
+/*
+- [ ] cursorVisualColumnIndex
+- [ ] cursorVisualColumnIndex_relativeToThisLineIndex
+- [ ] Resets:
+    - [ ] ArrowDown
+    - [ ] ArrowUp
+    - [ ] MouseDown where 'cursorVisualColumnIndex_relativeToThisLineIndex' !== the line index mouse down-ed on.
+    - [ ] MouseMove where 'cursorVisualColumnIndex_relativeToThisLineIndex' !== the line index mouse move-ed on.
+- [ ] Updates:
+    - [ ] All edits where 'cursorVisualColumnIndex_relativeToThisLineIndex' === the line index edited, and the edit comes at or a lower column index than that of the cursor need to update the cursorVisualColumnIndex
+    - [ ] MouseDown where 'cursorVisualColumnIndex_relativeToThisLineIndex' === the same line index that the cursor is on, determine the 'characters traveled' to go from initial position to mouse down position and modify by how many chars/tabs etc... you traveled over
+    - [ ] ArrowLeft where 'cursorVisualColumnIndex_relativeToThisLineIndex' === the same line index that the cursor is on, determine the 'characters traveled' to go from initial position to ending position and modify by how many chars/tabs etc... you traveled over
+        - [ ] No modifiers
+        - [ ] CtrlKey
+    - [ ] ArrowRight where 'cursorVisualColumnIndex_relativeToThisLineIndex' === the same line index that the cursor is on, determine the 'characters traveled' to go from initial position to ending position and modify by how many chars/tabs etc... you traveled over
+        - [ ] No modifiers
+        - [ ] CtrlKey
+- [ ] Further necessary details:
+    - [ ] I... does MouseDown need to finalize the edits?
+    - [ ] Do other things need to finalize the edits?
+*/
+
+
+    ////getXFromIndex(lineText, targetIndex, charWidth, paddingLeft = 0)
+    //let visualColumns = 0;
+    ////// Clamp target index to string boundaries
+    ////const end = Math.min(targetIndex, lineText.length);
+    //const end = INTS[fEDI_cursor_indexColumn];
+    //for (let i = 0; i < end; i++) {
+    //    if (lineText[i] === '\t') {
+    //        // Calculate spaces to next tab stop
+    //        visualColumns += 4 - (visualColumns % 4);
+    //    } else {
+    //        visualColumns += 1;
+    //    }
+    //}
+    //return paddingLeft + (visualColumns * charWidth);
+
+
+
+
+
+
+
+
+
     INTS[fEDI_cursor_cursorTranslateXValue] = INTS[fEDI_cursor_indexColumn] * EDI_characterWidth;
 
     EDI_cursor_caretRow.style.transform = `translateY(${INTS[fEDI_cursor_cursorTranslateYValue]}px)`;

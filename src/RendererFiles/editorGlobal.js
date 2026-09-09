@@ -9026,4 +9026,91 @@ New Google AI thread:
 
 < It looks like there's no response available for this search. Try asking something else.
 
+> I'm currently dealing with tab keys ('\t').
+> Specifically I have everything written except for x positioning of 'the mouse events'/'the x translation of the cursor' when there are tab characters in a line of text.
+
+< To map a clientX position to a character index in a monospace line containing tabs (tab-size: 4), we have to calculate how much visual space each \t character occupies.
+<
+< Because tab-size: 4 aligns text to fixed grid stops rather than just rendering 4 spaces for every tab, a tab's visual width depends dynamically on its starting column index.
+<
+< Here is the exact linear math and implementation logic to calculate the cursor's pixel position, or to translate a click back into a character index.
+< 
+< 1. The Core Tab Math
+< 
+< In a monospace font, let W be the width of a single character in pixels.
+< If a tab character starts at a 0-indexed string column position col, its visual width in character units (L) is:
+<     Tab Length (L) = 4 - (col (mod 4))
+< 
+< - If a tab is at column 0, it takes up 4 spaces (occupying columns 0, 1, 2, 3). Next character is at 4.
+< - If a tab is at column 1, it takes up 3 spaces (occupying columns 1, 2, 3). Next character is at 4.
+< 
+< 2. String Index to Visual Pixel X Position
+< 
+< To position your cursor element using a character index, loop through the string up to that index and track the cumulative visual column width.
+< 
+< ```js
+function getXFromIndex(lineText, targetIndex, charWidth, paddingLeft = 0) {
+    let visualColumns = 0;
+    
+    // Clamp target index to string boundaries
+    const end = Math.min(targetIndex, lineText.length);
+
+    for (let i = 0; i < end; i++) {
+        if (lineText[i] === '\t') {
+            // Calculate spaces to next tab stop
+            visualColumns += 4 - (visualColumns % 4);
+        } else {
+            visualColumns += 1;
+        }
+    }
+
+    return paddingLeft + (visualColumns * charWidth);
+}
+< ```
+< 
+< 3. Mouse Click (Pixel X) to String Index
+< 
+< When a user clicks, you receive a clientX. Subtract the line's bounding left offset to get the relative localX inside the text container.
+< Then, step through the string to see where that coordinate falls.
+< 
+< ```js
+function getIndexFromX(lineText, localX, charWidth) {
+    let visualColumns = 0;
+    let stringIndex = 0;
+
+    while (stringIndex < lineText.length) {
+        let charLength = 1;
+        
+        if (lineText[stringIndex] === '\t') {
+            charLength = 4 - (visualColumns % 4);
+        }
+
+        // Calculate pixel boundaries for the current character
+        const charLeftX = visualColumns * charWidth;
+        const charRightX = (visualColumns + charLength) * charWidth;
+        const charMidpointX = charLeftX + (charRightX - charLeftX) / 2;
+
+        // If the click is before the midpoint of this character/tab, target this index
+        if (localX < charMidpointX) {
+            return stringIndex;
+        }
+
+        visualColumns += charLength;
+        stringIndex++;
+    }
+
+    // If clicked past the end of the line text
+    return stringIndex;
+}
+< ```
+< 
+< Why this fits your Architecture
+< - Performance: Because this avoids reading layout properties from the DOM (like getBoundingClientRect on text ranges),
+<   it runs in pure JavaScript memory (O(N) where N is the string length). This prevents layout thrashing on mouse movements.
+< - Accuracy: Using the charMidpointX ensures standard editor behavior—clicking the right half of a character snaps the cursor to the right side of it.
+< 
+< To make sure this fits your event pipeline perfectly:
+< - How are you currently measuring and storing your monospace character width (charWidth)?
+< - Do your lines feature sub-pixel font scaling or variations due to zooming?
+
 */

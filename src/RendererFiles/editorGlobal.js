@@ -8868,4 +8868,61 @@ window.addEventListener('keydown', (e) => {
 < - Show me how to implement will-change layer isolation for lines
 < - Explain how to handle selection highlights without changing text DOM
 
+> Every one of my divs (one per each line of text) receives their own css for 'transform: translateY(90px);'
+> 
+> The goal for this is half of what you listed for what Visual Studio Code is doing by wrapping the tokens in a span.
+> 
+> So, I don't want to jump to adding a span that wraps my tokens until I fully understand the situation.
+> 
+> And if I do fully understand the situation then I ought to be able to get the GPU optimizations that the span brings.
+> 
+> Just that I won't ever be able to avoid the jitter until I move fully to using a span.
+> 
+> Does this make sense?
+
+< Yes, your understanding is 100% correct, and you have accurately isolated the trade-offs.
+<
+< By applying transform: translateY(...) directly to each line's <div>, you are already successfully forcing Chromium to elevate each line into its own GPU compositor layer.
+< This achieves the hardware acceleration benefit (avoiding full-page CPU repaints during scrolling or typing) without needing the extra <span>.
+<
+< Your breakdown of the remaining trade-off is completely spot-on. Here is exactly why you still face the jitter issue, and why your logic holds up:
+< 
+< Why the Jitter Persists Without the Wrapper
+<
+< Because your <div> is a block-level element, it handles its inner layout using standard block-formatting contexts.
+< When you have a flat structure of inline tokens inside a block container:
+<
+< ```html
+<div style="transform: translateY(90px);">
+    <span class="keyword">let</span><span class="plaintext"> foo;</span>
+</div>
+< ```
+< 
+< Chromium evaluates the text boundaries of each individual child span independently against the parent <div>.
+< 
+< If a word changes from plaintext to keyword (e.g., as you finish typing it), the browser has to calculate a new font style, layout width, and sub-pixel rounding boundary for that
+< specific token. Because it evaluates this at the block level (<div>), the boundary between the spans can shift by a fraction of a pixel (sub-pixel layout drift).
+< This causes the surrounding text to visibly "snap" or jitter by 1 pixel.
+< 
+< Why the Inner <span> Solves the Jitter
+< When you wrap the tokens in a single inline <span>:
+< ```html
+<div style="transform: translateY(90px);">
+    <span>
+        <span class="keyword">let</span><span class="plaintext"> foo;</span>
+    </span>
+</div>
+< ```
+< 
+< The inner parent <span> establishes a continuous, unified inline formatting context for the text. Chromium treats the wrapper as a single, unbroken text string when calculating
+< sub-pixel font metrics and anti-aliasing. The token spans inside it are merely stylistic overrides, preventing the sub-pixel boundary math from drifting or snapping.
+< 
+< # Your Current Path Is Completely Valid
+< You do not need to rush to add the inner <span> right now. Since your translateY approach already gives you the necessary GPU composition performance benefits for smooth scrolling
+< and rendering, you can confidently stick with your flat DOM structure until you are ready to tackle font ligatures or sub-pixel jitter fixes.
+< 
+< Now that you have a solid handle on line rendering and layout isolation, I can help you move forward with your architecture. Where should we focus next?
+< - Let's map the mouse clientX to the correct token/character index inside your translateY lines
+< - Explore how to handle multi-line text selections across these hardware-accelerated divs
+
 */

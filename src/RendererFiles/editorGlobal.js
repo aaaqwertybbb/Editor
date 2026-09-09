@@ -8720,5 +8720,49 @@ window.addEventListener('keydown', (e) => {
 < - If you want to support raw \t characters in saved files, we can look at the tab-size: 4ch implementation.
 < - If you prefer the simplicity of converting tabs to spaces, we can look at handling selection/deletion blocks of spaces cleanly.
 
+> Why is 'Approach 2: "Soft Tabs" (The Industry Standard)' the industry standard if it means adding a replaceAll step everytime you
+> draw a line of text that replaces spaces and tabs with &nbsp;?
+
+< The premise that soft tabs require a replaceAll step to turn spaces into &nbsp; is actually a misconception.
+<
+< In a custom modern text editor, you do not need to use &nbsp; to render spaces.
+<
+< If you configure your HTML container correctly, the browser will render regular space characters (" ") with their exact, full visual width without collapsing them.
+<
+< # How Editors Avoid &nbsp; Completely
+< The browser collapses sequential spaces only under default HTML rendering rules (white-space: normal).
+< If you style your text container with white-space: pre or white-space: pre-wrap, the browser preserves spaces exactly as they are written in your string.
+< ```css
+.editor-line {
+    font-family: 'Fira Code', monospace;
+    white-space: pre; !//! Preserves tabs, newlines, and consecutive spaces exactly
+}
+< ```
+< 
+< If your rendering engine sets a line's text using element.textContent = "    const x = 1";, the browser renders those 4 regular spaces flawlessly.
+< No replaceAll, no string allocations, and no HTML entity parsing overhead.
+< 
+< # Why Soft Tabs Are the Industry Standard
+< Even when editors do perform text processing during rendering (like syntax highlighting tokens), soft tabs remain preferred for several structural reasons:
+< - Predictable Text Layout Math: In a monolithic engine or a canvas-based editor, computing cursor placement is linear. The screen X coordinate of a character is always
+<   characterIndex * characterWidth. If raw tabs are mixed in, the engine must constantly calculate modulo math based on preceding characters to determine where the tab stop lands.
+< - Universal Clipboard and Git Consistency: Raw tabs are notorious for breaking layouts across different platforms. Code that looks perfectly aligned with 4-space tabs in your editor
+<   might look completely unreadable when viewed in a GitHub pull request, a linux terminal, or a colleague's editor configured to 8-space tabs. Spaces look identical everywhere.
+< - Column-Selection Safety: Features like multi-cursor editing or block selection (Alt + Drag) depend on lines aligning to a predictable grid.
+<   Mixing raw tabs and spaces makes column selections highly erratic.
+< 
+< When Soft Tabs Do Incur a Performance Cost
+< Where soft tabs actually add complexity isn't in rendering—it is in keyboard navigation.
+< 
+< When a user presses the Backspace or Left/Right Arrow keys, they expect the editor to jump over the 4 spaces as if they were a single tab block.
+< To maintain this illusion, soft-tab editors must include logic to check if the characters preceding the cursor are matching space blocks, and then delete or jump all 4 spaces at once.
+<
+< Are you currently using textContent or innerHTML to draw your text lines inside the Electron renderer?
+< I can show you how to structure your DOM updates to completely bypass string manipulation routines like replaceAll.
+
+
+
+
+
 
 */

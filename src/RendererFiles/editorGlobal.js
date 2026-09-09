@@ -8991,6 +8991,20 @@ Architectural Context for Text Editor App:
 <
 < Whenever you are ready, spin up the new thread, drop that context in, and we will build out the exact mouse tracking engine you need!
 
+> Architectural Context for Text Editor App:
+> - Environment: Electron with vanilla JavaScript.
+> - Monolithic ES6 module structure.
+> - Line Layout: One <div> per line of text, hardware-accelerated using inline 'transform: translateY(...)'.
+> - Tab Setup: Monospace font using CSS 'tab-size: 4' (integer-based).
+> - Goal: Implement mouse event logic to translate `clientX` positions into accurate string/character column indices, correctly handling the linear math of the tabs.
 
+< It looks like there's no response available for this search. Try asking something else.
+
+> I am making a text editor app. A lot of the code is written already, and so my question is more specifically going to relate to a generalized performance question.
+> The app uses electron, and vanilla javascript as a single monolithic ES6 module.
+
+< Since you are building a text editor in Electron with vanilla JavaScript, keeping performance optimal is key...
+< 
+< ...
 
 */

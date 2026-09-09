@@ -8925,4 +8925,49 @@ window.addEventListener('keydown', (e) => {
 < - Let's map the mouse clientX to the correct token/character index inside your translateY lines
 < - Explore how to handle multi-line text selections across these hardware-accelerated divs
 
+> Are there any performance issues that can arise from overriding the tab-stop behavior with 'tab-size: 4ch;'?
+
+< Using tab-size: 4ch; is structurally safe, but using it introduces a hidden mathematical duplication and potential font-loading rendering traps rather
+< than direct CPU performance issues.
+<
+< There are two main issues to keep in mind if you choose this path for a text editor engine:
+< 
+< 1. Integer vs. Length Metric Invalidation (The Real Trap)
+< The CSS tab-size property accepts two completely different types of values:
+< - An integer: tab-size: 4; (Means "4 space characters long", which tracks natively against the tab-stop grid rules).
+< - A physical length unit: tab-size: 4ch; (Means "exactly evaluate the width of the 0 character, multiply it by 4, and force this absolute pixel width onto every tab").
+< 
+< The Performance Impact:
+< When you provide an integer (tab-size: 4;), Chromium’s layout engine performs fast integer math when tracking text blocks.
+<
+< When you use a physical length unit like 4ch, you force Chromium to look up the font's internal sub-pixel geometry matrices (U+0030, the zero glyph).
+< If your text lines change dynamically or re-render during typing, checking the physical bounding boxes of specific glyph metrics can occasionally trigger
+< micro-re-layouts in complex DOM systems, especially when mixed with your custom transform: translateY() layers.
+<
+< The Fix:
+< If you want regular, linear behavior, use a raw integer instead:
+< ```css
+tab-size: 4;
+< ```
+< 
+< In a monospace font, tab-size: 4; acts identically to 4ch mathematically, but it signals the layout engine to use its fast,
+< native tab-stop rendering pathways without querying absolute sub-pixel glyph metrics.
+< 
+< 2. Font Flash / Loading Layout Failures
+< 
+< Because ch depends entirely on the active font face, a subtle race condition can happen when an Electron renderer process boots up.
+< 
+< If your custom editor lines render before your custom monospace font has completely loaded into Chromium's memory, the browser calculates the ch unit using the system fallback font (like Arial or Times New Roman).
+< 
+< - Arial's 0 character is a variable width.
+< - When your custom font finally finishes loading a few milliseconds later, Chromium is forced to abruptly trigger a flash of unstyled text (FOUT), invalidating the layout tree of every single active line layer and forcing a sudden CPU layout redraw.
+< 
+< Recommendation for Your Current Setup
+< 
+< Since you are using a flat DOM with translateY lines to build your mouse and selection handling, avoid 4ch and use a raw integer tab-size: 4; instead.
+< 
+< It bypasses the font lookup bottleneck and achieves the flat math you need while remaining more performant in Chromium's rendering pipeline.
+< 
+< Should we move into implementing the mouse events next? I can help you write the logic that takes a mouse click clientX and accurately snaps it to a character column using your fixed tab-size calculations.
+
 */

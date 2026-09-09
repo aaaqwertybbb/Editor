@@ -8585,8 +8585,77 @@ const requiredCapacity = Math.max(EDI_textByteList_count + count, index + count)
 > 
 > Is it correct to just count the amount of tab characters on the same line as the cursor that come prior to the "column/character" that the cursor is on?
 
-< ...
+< No, simply counting the tab characters is not correct because tab stops are dynamic.
+<
+< A tab character (\t) does not have a fixed size; its visual width depends entirely on where it sits relative to the previous tab stops.
+<
+< The Math Behind Tabs
+<
+< In almost all text editors, tab stops occur at fixed intervals (e.g., every 4 or 8 characters).
+< When a browser encounters a \t, it expands it so that the cursor moves forward to the next available tab stop, not by a fixed number of spaces
+<
+< Consider a tab size of 4. The tab stops are at visual columns 0, 4, 8, 12, 16...
+< 
+< - Scenario A: A line has 0 characters, then a tab.
+<     - String: "\t"
+<     - Visual columns: The \t starts at 0. The next stop is 4. Visual width = 4.
+< - Scenario B: A line has 1 character, then a tab.
+<     - String: "a\t"
+<     - Visual columns: "a" is at 0. The \t starts at 1. The next stop is 4. Visual width = 3.
+< - Scenario C: A line has 4 characters, then a tab.
+<     - String: "abcd\t"
+<     - Visual columns: "abcd" occupies 0, 1, 2, 3. The \t starts at 4. The next stop is 8. Visual width = 4.
+< - If a user clicks their mouse on a line, your mouse event will give you a visual X coordinate, which you will translate into a visual column index. If you merely
+<   count the number of raw \t characters and multiply them by a fixed scalar (like 4), your string index calculation will drift out of sync with where the user actually clicked.
+<
+< How to Calculate String Index from Visual Column
+< To find the correct text-string index from a mouse-click visual column, you must iterate through the string from left to right, character by character,
+< computing a running tally of the visual column position:
+< ```js
+function getIndexFromVisualColumn(lineString, targetVisualColumn, tabSize = 4) {
+    let currentVisualColumn = 0;
+    let stringIndex = 0;
 
-Oof I gotta eat a lb of 98% fat free ground chicken with sriracha
+    while (stringIndex < lineString.length && currentVisualColumn < targetVisualColumn) {
+        const char = lineString[stringIndex];
+
+        if (char === '\t') {
+            // Calculate how many visual spaces this specific tab takes up
+            const spacesToNextStop = tabSize - (currentVisualColumn % tabSize);
+            
+            // If the click is inside this expanding tab, decide which side it falls on
+            if (currentVisualColumn + spacesToNextStop > targetVisualColumn) {
+                // Snap to closest side of the tab block
+                if (targetVisualColumn - currentVisualColumn > spacesToNextStop / 2) {
+                    return stringIndex + 1; // Snap to after the tab
+                }
+                return stringIndex; // Snap to before the tab
+            }
+            
+            currentVisualColumn += spacesToNextStop;
+        } else {
+            // Standard characters take 1 visual column 
+            // (Note: Extra logic is needed here later if you support Emojis/Surrogate pairs)
+            currentVisualColumn += 1;
+        }
+
+        stringIndex++;
+    }
+
+    return stringIndex;
+}
+< ```
+<
+< # Two More Gotchas for Text Editors
+< Since you are engineering a custom text editor, tabs aren't your only pitfall when mapping pixels to characters:
+< 1. Surrogate Pairs / Unicode: In JavaScript, emojis or complex characters (like 𝌆 or 👨‍👩‍👧‍👦) have a .length of 2 or more code units.
+<    Iterating strictly by index (lineString[i]) will tear them apart. Consider using [...lineString] or Intl.Segmenter if you need to support multi-byte characters down the road
+< 2. Variable-Width Fonts: If you aren't using a strict monospaced font (like Courier Prime or Fira Code), you cannot map X coordinates to columns using basic math at all.
+<    Instead, you'll have to use DOM API tricks like document.caretPositionFromPoint() or Canvas measurements (ctx.measureText()).
+<
+< To ensure this fits your architecture perfectly:
+< - Are you using a monospace font, or are you planning to support variable-width fonts?
+< - How are you converting the raw mouse click clientX into your base targetVisualColumn index?
+
 
 */

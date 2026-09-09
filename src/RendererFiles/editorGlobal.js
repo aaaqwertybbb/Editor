@@ -8970,4 +8970,27 @@ tab-size: 4;
 < 
 < Should we move into implementing the mouse events next? I can help you write the logic that takes a mouse click clientX and accurately snaps it to a character column using your fixed tab-size calculations.
 
+> I'd like to do this "Should we move into implementing the mouse events next?" but should I start a new Google AI thread?
+> I heard the longer the history is for a given Google AI thread, the more computationally expensive it is for you to respond.
+
+< You are exactly right! The longer a conversation history grows, the more context the model has to process,
+< which can occasionally slow down response times or increase the likelihood of subtle context drift.
+<
+< Starting a fresh thread is a great habit when pivoting to a distinct coding task.
+<
+< Before you open a new thread, copy down this quick summary of your architecture constraints so you can paste it right into your first prompt.
+< This ensures the next instance has 100% of the relevant context instantly:
+< ```text
+Architectural Context for Text Editor App:
+- Environment: Electron with vanilla JavaScript.
+- Monolithic ES6 module structure.
+- Line Layout: One <div> per line of text, hardware-accelerated using inline 'transform: translateY(...)'.
+- Tab Setup: Monospace font using CSS 'tab-size: 4' (integer-based).
+- Goal: Implement mouse event logic to translate `clientX` positions into accurate string/character column indices, correctly handling the linear math of the tabs.
+< ```
+<
+< Whenever you are ready, spin up the new thread, drop that context in, and we will build out the exact mouse tracking engine you need!
+
+
+
 */

@@ -6218,8 +6218,22 @@ function EDI_tabKey() {
 
     INTS[fEDI_cursor_editLength]++;
 
+    // TODO: I probably don't want these if else statements in here long term.
+    if (EDI_on_tab_bytes.length === 4) {
+        // 4 space characters are being inserted.
+        INTS[fEDI_cursorVisualColumnIndex] += EDI_on_tab_bytes.length;
+    }
+    else {
+        // 1 tab character ('\t') is being inserted
+        // thus match visual width of the insertion to the next tab-stop.
+
+        // Tab Length (L) = 4 - (col (mod 4));
+        let tabLengthL = 4 - (INTS[fEDI_cursor_indexColumn] % 4);
+        INTS[fEDI_cursorVisualColumnIndex] += tabLengthL;
+    }
+
     INTS[fEDI_cursor_indexColumn] += EDI_on_tab_bytes.length; // this has to come after the 'walkLineUntilIndexColumn' invocation.
-    INTS[fEDI_cursorVisualColumnIndex] += EDI_on_tab_bytes.length * INTS[fEDI_ontab_visualWidth_perCharacter];
+    //INTS[fEDI_cursorVisualColumnIndex] += EDI_on_tab_bytes.length * INTS[fEDI_ontab_visualWidth_perCharacter];
     // I say 'uhhhh' cause I'm trying to get an obvious case to work and it isn't working entirely and I'm so tired so just like "uhhhhhhhhh"
     // oh wait lol tab-stops
 

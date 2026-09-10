@@ -9352,4 +9352,12 @@ They say something like "give a room of monkeys a typewriter they'll eventually 
 Anyone who sits around talking about how "pragmatic" they're coding skills are...
 give a room of monkeys a typewriter you'll get the same quality of code.
 
+=======
+
+- [ ] ArrowLeft
+    - [ ] No modifiers, no selection
+    - [ ] CtrlKey
+    - [ ] Selection exists, not holding shift
+- [ ] Draw selection with correct width
+
 */

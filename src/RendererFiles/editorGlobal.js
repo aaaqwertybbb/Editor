@@ -9370,4 +9370,7 @@ but doubt is eating at me a lot right now
 
 I just gotta somehow get an hours worth of progress today
 
+When I saw the movie manic a few days ago.
+I ever since keep thinking of the scenes of Chad.
+
 */

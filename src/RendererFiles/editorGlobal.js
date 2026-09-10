@@ -4439,7 +4439,12 @@ function EDI_onKeyDown_ArrowLeft(event) {
         else {
             if (INTS[fEDI_cursor_indexColumn] > 0) {
                 INTS[fEDI_cursor_indexColumn]--;
-                INTS[fEDI_cursorVisualColumnIndex]--;
+                if (getCharacter(EDI_getPositionIndex_cursor()) === '\t') {
+                    INTS[fEDI_cursorVisualColumnIndex] -= (4 - (INTS[fEDI_cursor_indexColumn] % 4)); // (tabLength)
+                }
+                else {
+                    INTS[fEDI_cursorVisualColumnIndex]--;
+                }
             }
             else if (INTS[fEDI_cursor_indexLine] > 0) {
                 INTS[fEDI_cursor_indexLine]--;

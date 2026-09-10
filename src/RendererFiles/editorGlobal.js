@@ -9337,4 +9337,19 @@ function getIndexFromX(lineText, localX, charWidth) {
 I feel anxiety, panic, and sadness.
 "Don't Speak", I guess
 
+==========
+
+I remember when I was new to programming I'd brag about how good with the pragmatic side of coding I was.
+
+What I really meant was
+"
+I can smash my head against a keyboard for a few hours and get something resembling the correct answer
+while having 0 understanding of how anything actually works behind the scenes,
+and having 0 understanding of performance.
+"
+
+They say something like "give a room of monkeys a typewriter they'll eventually write shakespear"
+Anyone who sits around talking about how "pragmatic" they're coding skills are...
+give a room of monkeys a typewriter you'll get the same quality of code.
+
 */

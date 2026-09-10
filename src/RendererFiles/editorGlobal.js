@@ -9365,4 +9365,7 @@ give a room of monkeys a typewriter you'll get the same quality of code.
     - [ ] Selection exists, not holding shift
 - [ ] Draw selection with correct width
 
+I don't know how far I'll get with making an IDE but I'll try and get as far as I can
+but doubt is eating at me a lot right now
+
 */

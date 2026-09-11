@@ -1696,11 +1696,11 @@ function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
     //         # The next iteration is a smaller indexLine so you decrement because you have the insertion of one less line to consider.
     for (var lineI = startingIndex; lineI >= SMALL_lineAndColumnIndices_indexLine; lineI--) {
         EDI_getLineBoundaryPositions(lineI);
-        let linePos_start = INTS[fEDI_getLineBoundaryPositions_start];
+        let line_start = INTS[fEDI_getLineBoundaryPositions_start];
 
         for (; trackedSyntaxReposition_i >= 0; trackedSyntaxReposition_i--) {
             let start = EDI_trackedSyntaxList.getStart(trackedSyntaxReposition_i);
-            if (linePos_start <= start) {
+            if (line_start <= start) {
                 // # There's a second (relative to this entire function) modification to the start positions of the tracked syntax list
                 EDI_trackedSyntaxList.setStart(trackedSyntaxReposition_i, start + incrementBy);
             }
@@ -1709,13 +1709,13 @@ function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
             }
         }
         EDI_trackedSyntaxList.getElementAt(trackedSyntaxReposition_i);
-        if (linePos_start > INTS[fEDI_pooledTrackedSyntax_start] && linePos_start < INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length]) {
+        if (line_start > INTS[fEDI_pooledTrackedSyntax_start] && line_start < INTS[fEDI_pooledTrackedSyntax_start] + INTS[fEDI_pooledTrackedSyntax_length]) {
             // # Then, you immediately know the trackedSyntax that encompasses the insertion (if it exists), so you increment its length by the text inserted on that respective line.
             EDI_trackedSyntaxList.setLength(trackedSyntaxReposition_i, INTS[fEDI_pooledTrackedSyntax_length] + bytesLength);
         }
 
         // # Insert the text on the respective line.
-        EDI_textByteList_insertBytes(linePos_start, bytes, 0 /*offset*/, bytesLength /*length*/);
+        EDI_textByteList_insertBytes(line_start, bytes, 0 /*offset*/, bytesLength /*length*/);
         
         // # Increment the entry in 'EDI_lineEndPositionList' for the respective line
         EDI_lineEndPositionList_data[lineI] += incrementBy;

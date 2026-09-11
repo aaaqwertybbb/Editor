@@ -9390,5 +9390,12 @@ Mandatories:
     - [ ] A mouse event related scenario that acts on the same line index multiple times.
 
 
-    
+As for the wording "personal record".
+The two cases listed aren't crazily complicated relative to what I've been doing the last few days.
+i.e.: it isn't crazily complicated in the sense that it is more of what I've been doing: tracking the visual index.
+But nevertheless you can say you understand something all you want, it means little until you've actually done it.
+And for example 'a full reset case' I haven't done yet, it is a unique case given the domain of problems I've been working on as of late.
+
+
+
 */

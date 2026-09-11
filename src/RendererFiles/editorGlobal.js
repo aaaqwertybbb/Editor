@@ -9396,6 +9396,13 @@ i.e.: it isn't crazily complicated in the sense that it is more of what I've bee
 But nevertheless you can say you understand something all you want, it means little until you've actually done it.
 And for example 'a full reset case' I haven't done yet, it is a unique case given the domain of problems I've been working on as of late.
 
+Because it's all just about finding where the "fatigued" point is on a day to day basis.
+
+Yesterday I did extremely little, but that was the "fatigue" point for the day,
+and it was an honest one wat that.
+Because someone might say "oh I just don't feel like doing it and come up with excuses"
+I was exhausted and I did what I could that day and that's just as meaningful as
+a day where I do a lot, because these days lead into one another you can't just have good days everyday.
 
 
 */

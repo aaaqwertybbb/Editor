@@ -4422,13 +4422,23 @@ function EDI_onKeyDown_ArrowLeft(event) {
             let indexPosition = line.start + INTS[fEDI_cursor_indexColumn];
             let originalCharacterKind = EDI_getCharacterPrevious_KIND(INTS[fEDI_cursor_indexColumn], indexPosition);
             INTS[fEDI_cursor_indexColumn]--;
-            INTS[fEDI_cursorVisualColumnIndex]--;
+            if (getCharacter(EDI_getPositionIndex_cursor()) === '\t') {
+                INTS[fEDI_cursorVisualColumnIndex] -= (4 - (INTS[fEDI_cursor_indexColumn] % 4)); // (tabLength)
+            }
+            else {
+                INTS[fEDI_cursorVisualColumnIndex]--;
+            }
             indexPosition--;
 
             while (INTS[fEDI_cursor_indexColumn] > 0) {
                 if (EDI_getCharacterPrevious_KIND(INTS[fEDI_cursor_indexColumn], indexPosition) === originalCharacterKind) {
                     INTS[fEDI_cursor_indexColumn]--;
-                    INTS[fEDI_cursorVisualColumnIndex]--;
+                    if (originalCharacterKind === CharacterKind_Whitespace && getCharacter(EDI_getPositionIndex_cursor()) === '\t') {
+                        INTS[fEDI_cursorVisualColumnIndex] -= (4 - (INTS[fEDI_cursor_indexColumn] % 4)); // (tabLength)
+                    }
+                    else {
+                        INTS[fEDI_cursorVisualColumnIndex]--;
+                    }
                     indexPosition--;
                 }
                 else {
@@ -4544,14 +4554,24 @@ function EDI_onKeyDown_ArrowRight(event) {
             let line = EDI_getLineBoundaryPositions(INTS[fEDI_cursor_indexLine]);
             let indexPosition = line.start + INTS[fEDI_cursor_indexColumn];
             let originalCharacterKind = EDI_getCharacterCurrent_KIND(INTS[fEDI_cursor_indexColumn], indexPosition, line.end);
+            if (getCharacter(EDI_getPositionIndex_cursor()) === '\t') {
+                INTS[fEDI_cursorVisualColumnIndex] += (4 - (INTS[fEDI_cursor_indexColumn] % 4)); // (tabLength)
+            }
+            else {
+                INTS[fEDI_cursorVisualColumnIndex]++;
+            }
             INTS[fEDI_cursor_indexColumn]++;
-            INTS[fEDI_cursorVisualColumnIndex]++;
             indexPosition++;
 
             while (INTS[fEDI_cursor_indexColumn] < lastValidIndexColumn) {
                 if (EDI_getCharacterCurrent_KIND(INTS[fEDI_cursor_indexColumn], indexPosition, line.end) === originalCharacterKind) {
+                    if (originalCharacterKind === CharacterKind_Whitespace && getCharacter(EDI_getPositionIndex_cursor()) === '\t') {
+                        INTS[fEDI_cursorVisualColumnIndex] += (4 - (INTS[fEDI_cursor_indexColumn] % 4)); // (tabLength)
+                    }
+                    else {
+                        INTS[fEDI_cursorVisualColumnIndex]++;
+                    }
                     INTS[fEDI_cursor_indexColumn]++;
-                    INTS[fEDI_cursorVisualColumnIndex]++;
                     indexPosition++;
                 }
                 else {
@@ -9382,9 +9402,9 @@ Him having the book 'The Myth of Sisyphus' in his hands is so funny I love that 
 Everything he says related to that is what I refer to specifically
 
 Mandatories:
-- [ ] Ctrl Key Modified (2x throughput)
-    - [ ] ArrowLeft
-    - [ ] ArrowRight
+- [x] Ctrl Key Modified (2x throughput)
+    - [x] ArrowLeft
+    - [x] ArrowRight
 - [ ] Either: (1x personal record)
     - [ ] A full reset case
     - [ ] A mouse event related scenario that acts on the same line index multiple times.

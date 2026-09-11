@@ -9381,4 +9381,14 @@ I ever since keep thinking of the scenes of Chad.
 Him having the book 'The Myth of Sisyphus' in his hands is so funny I love that movie lol
 Everything he says related to that is what I refer to specifically
 
+Mandatories:
+- [ ] Ctrl Key Modified (2x throughput)
+    - [ ] ArrowLeft
+    - [ ] ArrowRight
+- [ ] Either: (1x personal record)
+    - [ ] A full reset case
+    - [ ] A mouse event related scenario that acts on the same line index multiple times.
+
+
+    
 */

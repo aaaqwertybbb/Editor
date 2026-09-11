@@ -1696,7 +1696,7 @@ function EDI_finalizeEdit_IndentMore(indexLine_editOccurredOn) {
     //         # The next iteration is a smaller indexLine so you decrement because you have the insertion of one less line to consider.
     for (var lineI = startingIndex; lineI >= SMALL_lineAndColumnIndices_indexLine; lineI--) {
         EDI_getLineBoundaryPositions(lineI);
-        let line_start = INTS[fEDI_getLineBoundaryPositions_start];
+        const line_start = INTS[fEDI_getLineBoundaryPositions_start];
 
         for (; trackedSyntaxReposition_i >= 0; trackedSyntaxReposition_i--) {
             let start = EDI_trackedSyntaxList.getStart(trackedSyntaxReposition_i);

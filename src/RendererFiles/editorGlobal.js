@@ -9404,5 +9404,9 @@ Because someone might say "oh I just don't feel like doing it and come up with e
 I was exhausted and I did what I could that day and that's just as meaningful as
 a day where I do a lot, because these days lead into one another you can't just have good days everyday.
 
+And so the minimum point of fatigue given all the various factors involved in how I'm feeling and whether
+the stars are aligned in the correct order, I've decided are the "mandatories" that I've listed.
+Then if I'm feeling up to it after the mandatories I'll do more.
+But what matters is the consistency.
 
 */

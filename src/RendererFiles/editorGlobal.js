@@ -9409,4 +9409,15 @@ the stars are aligned in the correct order, I've decided are the "mandatories" t
 Then if I'm feeling up to it after the mandatories I'll do more.
 But what matters is the consistency.
 
+And you always wanna get your progress done as soon as possible
+because you never know how you're gonna be feeling on any given day until you start.
+And you never know how much it will truly take you to reach a fatigued state for any relative day
+until you start and have engaged with the content for an extended period of time.
+You need time under tension.
+And so you can't wait till 2 hours left to do 1 hour of work.
+Even if you finish it in 1 hour, what if suddenly you find a burst of energy that day
+and now you only have an hour left but your burst of energy is calling for you to
+do another 2 hours, suddenly you lost 1 hour of sleep
+this messses you up for the days that follow and it creates this endless feedback of pain and suffering.
+
 */

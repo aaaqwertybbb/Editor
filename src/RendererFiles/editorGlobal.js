@@ -3058,8 +3058,6 @@ function EDI_getLastValidIndexColumn_raw(indexLine) {
  * NOTE: In performance critical sections this code is explicitly inlined and modified to be as performant as it seemingly can get for that specific section of code.
  * 
  * @returns nothing: the results are stored in 'INTS[fEDI_getLineBoundaryPositions_start]' inclusive and 'INTS[fEDI_getLineBoundaryPositions_end]' exclusive.
- * 
- * TODO: Remove this function or move the output to two entries of 'INTS'
  */
 function EDI_getLineBoundaryPositions(indexLine) {
     if (indexLine < EDI_lineEndPositionList_count) {
@@ -3103,14 +3101,16 @@ function EDI_getLineEnd_pos(indexLine) {
 }
 
 /**
- * result.start is the position of the first character on that line.
+ * 'INTS[fEDI_getLineBoundaryPositions_start]' is the position of the first character on that line.
  * 
- * result.end is the position of the "line end" (i.e.: ascii code for '\n' or EOF).
+ * 'INTS[fEDI_getLineBoundaryPositions_end]' is the position of the "line end" (i.e.: ascii code for '\n' or EOF).
  * 
  * The inclusivity/exclusivity is in reference to whether the position
  * points to non-line-end-text that exists on the line
  * 
- * @returns an object with properties 'start' inclusive, 'end' exclusive
+ * NOTE: In performance critical sections this code is explicitly inlined and modified to be as performant as it seemingly can get for that specific section of code.
+ * 
+ * @returns nothing: the results are stored in 'INTS[fEDI_getLineBoundaryPositions_start]' inclusive and 'INTS[fEDI_getLineBoundaryPositions_end]' exclusive.
  */
 function EDI_getLineBoundaryPositions_raw(indexLine) {
     if (indexLine < EDI_lineEndPositionList_count) {
@@ -4834,6 +4834,13 @@ function EDI_onKeyDown_keyLengthEqualsOne_altKey(event) {
     
 }
 
+/**
+ * 'INTS[fEDI_getIndexFromX_indexColumn]'
+ * 
+ * 'INTS[fEDI_getIndexFromX_visualColumns]'
+ * 
+ * @returns nothing: the results are stored in 'INTS[fEDI_getIndexFromX_indexColumn]' and 'INTS[fEDI_getIndexFromX_visualColumns]'.
+ */
 function getIndexFromX(localX, indexLine, lineStart, lineEnd, lastValidIndexColumn) {
     let visualColumns = 0;
     let positionIndex = lineStart;
@@ -4854,10 +4861,9 @@ function getIndexFromX(localX, indexLine, lineStart, lineEnd, lastValidIndexColu
 
         // If the click is before the midpoint of this character/tab, target this index
         if (localX < charMidpointX) {
-            return {
-                indexColumn: indexColumn,
-                visualColumns: visualColumns
-            };
+            INTS[fEDI_getIndexFromX_indexColumn] = indexColumn;
+            INTS[fEDI_getIndexFromX_visualColumns] = visualColumns;
+            return;
         }
 
         visualColumns += charLength;
@@ -4866,10 +4872,8 @@ function getIndexFromX(localX, indexLine, lineStart, lineEnd, lastValidIndexColu
     }
 
     // If clicked past the end of the line text
-    return {
-        indexColumn: indexColumn,
-        visualColumns: visualColumns
-    };
+    INTS[fEDI_getIndexFromX_indexColumn] = indexColumn;
+    INTS[fEDI_getIndexFromX_visualColumns] = visualColumns;
 }
 
 function EDI_onMouseDown(event) {
@@ -4913,9 +4917,9 @@ function EDI_onMouseDown(event) {
     let lineBoundaryPositions_start = INTS[fEDI_getLineBoundaryPositions_start];
     let lineBoundaryPositions_end = INTS[fEDI_getLineBoundaryPositions_end];
 
-    let columnAndVisualObject = getIndexFromX(rX, indexLine, lineBoundaryPositions_start, lineBoundaryPositions_end, lastValidIndexColumn);
-    indexColumn = columnAndVisualObject.indexColumn;
-    indexColumnVisual = columnAndVisualObject.visualColumns;
+    getIndexFromX(rX, indexLine, lineBoundaryPositions_start, lineBoundaryPositions_end, lastValidIndexColumn);
+    indexColumn = INTS[fEDI_getIndexFromX_indexColumn];
+    indexColumnVisual = INTS[fEDI_getIndexFromX_visualColumns];
 
     if (indexColumn > lastValidIndexColumn) {
         indexColumn = lastValidIndexColumn;
@@ -9525,7 +9529,7 @@ TODO: 'getIndexFromX' shouldn't allocate an object to return the result
 
 - [x] EDI_getLineBoundaryPositions
 - [x] EDI_getLineBoundaryPositions_raw
-- [ ] getIndexFromX
+- [x] getIndexFromX
 
 Probably won't change this (at the very least not now):
 - [ ] EDI_getFinalizedEditsAndRawSaveFileData

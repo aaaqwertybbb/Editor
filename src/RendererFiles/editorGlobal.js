@@ -3541,7 +3541,7 @@ function EDI_getPositionIndex_raw_cursor() {
     return EDI_getLineStart_pos_raw(INTS[fEDI_cursor_indexLine]) + INTS[fEDI_cursor_indexColumn];
 }
 
-function EDI_onMouseDownDetailRankOne(event_button, event_shiftKey, indexLineClicked, indexColumnClicked) {
+function EDI_onMouseDownDetailRankOne(event_button, event_shiftKey, indexLineClicked, indexColumnClicked, indexColumnVisual) {
 
     let selectionPlusContextMenuCase = event_button === 2 && EDI_cursor_hasSelection();
 
@@ -3554,7 +3554,7 @@ function EDI_onMouseDownDetailRankOne(event_button, event_shiftKey, indexLineCli
     if (!selectionPlusContextMenuCase) {
         INTS[fEDI_cursor_indexLine] = indexLineClicked;
         INTS[fEDI_cursor_indexColumn] = indexColumnClicked;
-        INTS[fEDI_cursorVisualColumnIndex] = indexColumnClicked;
+        INTS[fEDI_cursorVisualColumnIndex] = indexColumnVisual;
         INTS[fEDI_cursorVisualColumnIndex_relativeToThisLineIndex] = indexLineClicked;
         INTS[fEDI_cursor_STORED_indexColumn] = INTS[fEDI_cursor_indexColumn];
     
@@ -4815,6 +4815,44 @@ function EDI_onKeyDown_keyLengthEqualsOne_altKey(event) {
     
 }
 
+function getIndexFromX(localX, indexLine, lineStart, lineEnd, lastValidIndexColumn) {
+    let visualColumns = 0;
+    let positionIndex = lineStart;
+    let indexColumn = 0;
+    let charWidth = EDI_characterWidth;
+
+    while (positionIndex < lineEnd) {
+        let charLength = 1;
+        
+        if (getCharacter(positionIndex) === '\t') {
+            charLength = 4 - (visualColumns % 4);
+        }
+
+        // Calculate pixel boundaries for the current character
+        const charLeftX = visualColumns * charWidth;
+        const charRightX = (visualColumns + charLength) * charWidth;
+        const charMidpointX = charLeftX + (charRightX - charLeftX) / 2;
+
+        // If the click is before the midpoint of this character/tab, target this index
+        if (localX < charMidpointX) {
+            return {
+                indexColumn: indexColumn,
+                visualColumns: visualColumns
+            };
+        }
+
+        visualColumns += charLength;
+        positionIndex++;
+        indexColumn++;
+    }
+
+    // If clicked past the end of the line text
+    return {
+        indexColumn: indexColumn,
+        visualColumns: visualColumns
+    };
+}
+
 function EDI_onMouseDown(event) {
     EDI_movementBasedCacheInvalidation();
 
@@ -4835,6 +4873,7 @@ function EDI_onMouseDown(event) {
     
     let indexLine = Math.floor(rY / INTS[fEDI_lineHeight]);
     let indexColumn = Math.round(rX / EDI_characterWidth);
+    let indexColumnVisual = indexColumn;
 
     if (indexLine < 0) {
         indexLine = 0;
@@ -4842,6 +4881,7 @@ function EDI_onMouseDown(event) {
 
     if (indexColumn < 0) {
         indexColumn = 0;
+        indexColumnVisual = indexColumn;
     }
 
     if (indexLine >= EDI_lineEndPositionList_count) {
@@ -4849,8 +4889,16 @@ function EDI_onMouseDown(event) {
     }
 
     let lastValidIndexColumn = EDI_getLastValidIndexColumn(indexLine);
+
+    let lineBoundaryPositions = EDI_getLineBoundaryPositions_raw(indexLine);
+
+    let columnAndVisualObject = getIndexFromX(rX, indexLine, lineBoundaryPositions.start, lineBoundaryPositions.end, lastValidIndexColumn);
+    indexColumn = columnAndVisualObject.indexColumn;
+    indexColumnVisual = columnAndVisualObject.visualColumns;
+
     if (indexColumn > lastValidIndexColumn) {
         indexColumn = lastValidIndexColumn;
+        indexColumnVisual = indexColumn;
     }
 
     if (rX < -1 * CONST_EDI_gutterPaddingRight) {
@@ -4872,7 +4920,7 @@ function EDI_onMouseDown(event) {
     }
     else {
         set_EDI_detailRank(1);
-        EDI_onMouseDownDetailRankOne(event.button, event.shiftKey, indexLine, indexColumn);
+        EDI_onMouseDownDetailRankOne(event.button, event.shiftKey, indexLine, indexColumn, indexColumnVisual);
     }
 
     if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
@@ -9407,6 +9455,7 @@ Mandatories:
     - [x] ArrowRight
 - [ ] Either: (1x personal record)
     - [ ] A full reset case
+        - [x] Mouse down (change in line index)
     - [ ] A mouse event related scenario that acts on the same line index multiple times.
 
 
@@ -9439,5 +9488,8 @@ Even if you finish it in 1 hour, what if suddenly you find a burst of energy tha
 and now you only have an hour left but your burst of energy is calling for you to
 do another 2 hours, suddenly you lost 1 hour of sleep
 this messses you up for the days that follow and it creates this endless feedback of pain and suffering.
+
+TODO: 'EDI_getLineBoundaryPositions/EDI_getLineBoundaryPositions_raw' shouldn't allocate an object to return the result
+TODO: 'getIndexFromX' shouldn't allocate an object to return the result
 
 */

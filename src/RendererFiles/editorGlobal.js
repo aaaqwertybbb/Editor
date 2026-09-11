@@ -1761,7 +1761,7 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
     let DETERMINE_decrementBy = 0;
     for (var lineI = SMALL_lineAndColumnIndices_indexLine; lineI <= startingIndex; lineI++) {
         EDI_getLineBoundaryPositions(lineI);
-        let line_start = INTS[fEDI_getLineBoundaryPositions_start];
+        const line_start = INTS[fEDI_getLineBoundaryPositions_start];
         let lastValidIndexColumn = EDI_getLastValidIndexColumn(lineI);
         let upperLimitIndexColumn;
         if (lastValidIndexColumn > maxVirtualColumnIndex) {
@@ -1921,7 +1921,7 @@ function EDI_finalizeEdit_IndentLess(indexLine_editOccurredOn) {
     for (var lineI = startingIndex; lineI >= SMALL_lineAndColumnIndices_indexLine; lineI--) {
         let innerRemoveCount = 0;
         EDI_getLineBoundaryPositions(lineI);
-        let line_start = INTS[fEDI_getLineBoundaryPositions_start];
+        const line_start = INTS[fEDI_getLineBoundaryPositions_start];
         let lastValidIndexColumn = EDI_getLastValidIndexColumn(lineI);
         let upperLimitIndexColumn;
         if (lastValidIndexColumn > maxVirtualColumnIndex) {
@@ -2479,10 +2479,7 @@ function EDI_drawLine(indexLine, gutterLineElement, textLineElement) {
         trackedSyntax_StartingIndex = EDI_trackedSyntaxList.count_abstract;
     }
     EDI_getLineBoundaryPositions(indexLine);
-    // TODO: inline these 'line_start' and 'line_end' variables.
-    let line_start = INTS[fEDI_getLineBoundaryPositions_start];
-    let line_end = INTS[fEDI_getLineBoundaryPositions_end];
-    EDI_createSpansForLineOfText(textLineElement, line_start, line_end, trackedSyntax_StartingIndex);
+    EDI_createSpansForLineOfText(textLineElement, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_end], trackedSyntax_StartingIndex);
 }
 
 /**
@@ -2497,7 +2494,7 @@ function EDI_drawViewPort_FindTrackedSyntax_StartingIndex(indexLineAaa) {
     let local_EDI_trackedSyntaxList = EDI_trackedSyntaxList;
 
     EDI_getLineBoundaryPositions(indexLineAaa);
-    let positionIndex = INTS[fEDI_getLineBoundaryPositions_start];
+    const positionIndex = INTS[fEDI_getLineBoundaryPositions_start];
 
     let left = 0;
     let right = local_EDI_trackedSyntaxList.count_abstract - 1;

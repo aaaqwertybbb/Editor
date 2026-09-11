@@ -4422,7 +4422,7 @@ function EDI_onKeyDown_ArrowLeft(event) {
             let indexPosition = line.start + INTS[fEDI_cursor_indexColumn];
             let originalCharacterKind = EDI_getCharacterPrevious_KIND(INTS[fEDI_cursor_indexColumn], indexPosition);
             INTS[fEDI_cursor_indexColumn]--;
-            if (getCharacter(EDI_getPositionIndex_cursor()) === '\t') {
+            if (originalCharacterKind === CharacterKind_Whitespace && getCharacter(EDI_getPositionIndex_cursor()) === '\t') {
                 INTS[fEDI_cursorVisualColumnIndex] -= (4 - (INTS[fEDI_cursor_indexColumn] % 4)); // (tabLength)
             }
             else {
@@ -4554,7 +4554,7 @@ function EDI_onKeyDown_ArrowRight(event) {
             let line = EDI_getLineBoundaryPositions(INTS[fEDI_cursor_indexLine]);
             let indexPosition = line.start + INTS[fEDI_cursor_indexColumn];
             let originalCharacterKind = EDI_getCharacterCurrent_KIND(INTS[fEDI_cursor_indexColumn], indexPosition, line.end);
-            if (getCharacter(EDI_getPositionIndex_cursor()) === '\t') {
+            if (originalCharacterKind === CharacterKind_Whitespace && getCharacter(EDI_getPositionIndex_cursor()) === '\t') {
                 INTS[fEDI_cursorVisualColumnIndex] += (4 - (INTS[fEDI_cursor_indexColumn] % 4)); // (tabLength)
             }
             else {

@@ -4251,7 +4251,7 @@ function EDI_editEvent_checkFor_NOTcanBatch_IndentLess() {
     let startingLinePos_start = INTS[fEDI_getLineBoundaryPositions_start];
     if (startingLinePos_start === LARGE_pos) {
         startingIndex -= 1;
-        if (startingIndex >= 0) {
+        if (startingIndex >= 0) { // TODO: This if statement is NOT used in this specific case. It was copy and pasted from somewhere that it IS used, i.e.: TODO: remove it from this function?
             EDI_getLineBoundaryPositions_raw(startingIndex);
             startingLinePos_start = INTS[fEDI_getLineBoundaryPositions_start];
         }
@@ -4894,10 +4894,7 @@ function EDI_onMouseDown(event) {
     let lastValidIndexColumn = EDI_getLastValidIndexColumn(indexLine);
 
     EDI_getLineBoundaryPositions_raw(indexLine);
-    let lineBoundaryPositions_start = INTS[fEDI_getLineBoundaryPositions_start];
-    let lineBoundaryPositions_end = INTS[fEDI_getLineBoundaryPositions_end];
-
-    getIndexFromX(rX, indexLine, lineBoundaryPositions_start, lineBoundaryPositions_end, lastValidIndexColumn);
+    getIndexFromX(rX, indexLine, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_end], lastValidIndexColumn);
     indexColumn = INTS[fEDI_getIndexFromX_indexColumn];
     indexColumnVisual = INTS[fEDI_getIndexFromX_visualColumns];
 
@@ -5428,8 +5425,9 @@ function EDI_indentMore() {
         startingIndex -= 1;
         if (startingIndex >= 0) {
             EDI_getLineBoundaryPositions_raw(startingIndex);
-            startingLinePos_start = INTS[fEDI_getLineBoundaryPositions_start];
-            startingLinePos_end = INTS[fEDI_getLineBoundaryPositions_end];
+            startingLinePos_start = INTS[fEDI_getLineBoundaryPositions_start]; // TODO: This updated start value isn't actually used. Keep it for symmetry with 'startingLinePos_end'?
+            startingLinePos_end = INTS[fEDI_getLineBoundaryPositions_end]; // TODO: Well actually this end value is used but you could move the if statement for 'INTS[fEDI_cursor_editLength] === 0' and just immediately set 'INTS[fEDI_EDI_indentLess_startingLinePos_end]' here...
+                                                                           // ...This would avoid the symmetry issue because you updated a different value than the "end" so both values are still outdated rather than just 1.
         }
     }
     if (startingIndex < SMALL_lineAndColumnIndices_indexLine) {

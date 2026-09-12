@@ -8183,4 +8183,6 @@ At least I think... I need to double check I'm so out of it.
 
 Why are people stealing COQ-10 lmao
 
+Is that stuff any good for focus?
+
 */

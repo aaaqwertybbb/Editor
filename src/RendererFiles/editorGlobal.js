@@ -8278,4 +8278,8 @@ It's getting colder out I think that's why the 3rd day schedule is starting to s
 Cause now I get the nose bleeds from just being awake so to speak
 and then go in the cooler it is way worsened I think is what it is
 
+It's not just that though it is so bad for your skin to be in the walk in cooler.
+I can't stand it.
+I only need a few hours a week.
+
 */

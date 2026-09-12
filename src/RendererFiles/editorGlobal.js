@@ -8246,4 +8246,7 @@ uhhhhhhhhhhh
 
 I just had a 20 to 30 minute nose bleed and I'm furious
 
+I don't know how much longer I can do the walkin cooler job
+It is literally killing me no matter how much I try to acclimate to it.
+
 */

@@ -8091,7 +8091,7 @@ TODO: < Would you like to look at replacing the 'renderKind = EDI_renderKindArra
 
 TODO: let vs var for loops
 
-TODO: span jitter
+TODO: span jitter, wrap the spans in a span so you avoid micro(...?) when syntax highlighting. TODO: find exact wording used micro(...?)
 
 TODO: Reminder to myself: Ensure this doesn't break hidden classes before you do this tomorrow.
 < ```js

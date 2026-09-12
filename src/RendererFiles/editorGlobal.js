@@ -9512,4 +9512,14 @@ TODO: 'getIndexFromX' shouldn't allocate an object to return the result
 Probably won't change this (at the very least not now):
 - [ ] EDI_getFinalizedEditsAndRawSaveFileData
 
+236 lbs this morning.
+That's +4 lbs from the last weigh in.
+I've been less ontop of my caloric intake and etc...
+but when cutting weight you can have an illusion of weight lose due to short term effects
+like water retention and etc...
+
+So knowing that I'm 236 when baseline is good.
+
+I gotta lock in tho I'm going the wrong direction...
+
 */

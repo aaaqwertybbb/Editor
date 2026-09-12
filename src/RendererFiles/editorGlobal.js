@@ -4872,9 +4872,31 @@ function EDI_onMouseDown(event) {
     let lastValidIndexColumn = EDI_getLastValidIndexColumn(indexLine);
 
     EDI_getLineBoundaryPositions_raw(indexLine);
-    getIndexFromX(rX, indexLine, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_end], lastValidIndexColumn);
-    indexColumn = INTS[fEDI_getIndexFromX_indexColumn];
-    indexColumnVisual = INTS[fEDI_getIndexFromX_visualColumns];
+
+    /*
+    LICENSE file
+    line number 12
+    put cursor immediately left of the 'n' of 'notice' i.e.: column index 20
+    mousedown immediately left of the 'o' of 'notice' i.e.: column index 21
+
+    'getIndexFromX' does 21 loop iterations.
+    It should only do 1 loop iteration.
+    In mousedown it isn't nearly as important.
+    But I'm imagining a minified file that is all a single line.
+    Then I use my mouse to 'mousedown' => 'mousemove' in order to select text on a line.
+    And that this selection is being done deep into that single line.
+    */
+
+    if (INTS[fEDI_cursor_indexLine] === indexLine) {
+        getIndexFromX(rX, indexLine, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_end], lastValidIndexColumn);
+        indexColumn = INTS[fEDI_getIndexFromX_indexColumn];
+        indexColumnVisual = INTS[fEDI_getIndexFromX_visualColumns];
+    }
+    else {
+        getIndexFromX(rX, indexLine, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_end], lastValidIndexColumn);
+        indexColumn = INTS[fEDI_getIndexFromX_indexColumn];
+        indexColumnVisual = INTS[fEDI_getIndexFromX_visualColumns];
+    }
 
     if (indexColumn > lastValidIndexColumn) {
         indexColumn = lastValidIndexColumn;

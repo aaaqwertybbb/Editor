@@ -2831,7 +2831,9 @@ function EDI_clearSelectionStyle() {
  * Otherwise you have the ring buffer sitting around in the background all the time.
  * And if you only select 1 line of text you probably don't want to fill the screen with empty divs foreach line
  * just to select text on a single line.
- * So as you keep selecting you build a larger and larger ring buffer.
+ * So as you keep selecting you build a larger and larger ring buffer that is capped at max to be the amount of lines that fit the viewport.
+ * 
+ * As you scroll determine the lines that need to be redrawn
 */
 function EDI_createStyleForSelection() {
     if (INTS[fEDI_cursor_DRAWN_selectionAnchor] !== INTS[fEDI_cursor_selectionAnchor] ||

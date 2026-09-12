@@ -4834,7 +4834,7 @@ function getIndexFromX_RESET(localX, indexLine, lineStart, lineEnd, lastValidInd
     INTS[fEDI_getIndexFromX_visualColumns] = visualColumns;
 }
 
-function getIndexFromX_FORWARDS(localX, indexLine, lineStart, lineEnd, lastValidIndexColumn) {
+function getIndexFromX_sameLine_newRxIsLarger(localX, indexLine, lineStart, lineEnd, lastValidIndexColumn) {
     let visualColumns = 0;
     let positionIndex = lineStart;
     let indexColumn = 0;
@@ -4876,7 +4876,7 @@ function getIndexFromX_FORWARDS(localX, indexLine, lineStart, lineEnd, lastValid
  * 
  * @returns nothing: the results are stored in 'INTS[fEDI_getIndexFromX_indexColumn]' and 'INTS[fEDI_getIndexFromX_visualColumns]'.
  */
-function getIndexFromX_REVERSED(localX, indexLine, lineStart, lineEnd, lastValidIndexColumn, startColumnIndex) {
+function getIndexFromX_sameLine_newRxIsSmaller(localX, indexLine, lineStart, lineEnd, lastValidIndexColumn, startColumnIndex) {
     let visualColumns = 0;
     let positionIndex = lineEnd;
     let indexColumn = startColumnIndex;
@@ -4968,14 +4968,14 @@ function EDI_onMouseDown(event) {
         if (rX >= INTS[fEDI_cursor_cursorTranslateXValue]) {
             let aaa = rX - INTS[fEDI_cursor_cursorTranslateXValue];
             if (aaa < 0) aaa = 0;
-            getIndexFromX_FORWARDS(aaa, indexLine, INTS[fEDI_getLineBoundaryPositions_start] + INTS[fEDI_cursor_indexColumn], INTS[fEDI_getLineBoundaryPositions_end], lastValidIndexColumn);
+            getIndexFromX_sameLine_newRxIsLarger(aaa, indexLine, INTS[fEDI_getLineBoundaryPositions_start] + INTS[fEDI_cursor_indexColumn], INTS[fEDI_getLineBoundaryPositions_end], lastValidIndexColumn);
             indexColumn = INTS[fEDI_cursor_indexColumn] + INTS[fEDI_getIndexFromX_indexColumn];
             indexColumnVisual = INTS[fEDI_cursorVisualColumnIndex] + INTS[fEDI_getIndexFromX_visualColumns];
         }
         else {
             let aaa = INTS[fEDI_cursor_cursorTranslateXValue] - rX;
             if (aaa < 0) aaa = 0;
-            getIndexFromX_REVERSED(aaa, indexLine, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_start] + INTS[fEDI_cursor_indexColumn], lastValidIndexColumn, INTS[fEDI_cursor_indexColumn]);
+            getIndexFromX_sameLine_newRxIsSmaller(aaa, indexLine, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_start] + INTS[fEDI_cursor_indexColumn], lastValidIndexColumn, INTS[fEDI_cursor_indexColumn]);
             indexColumn = INTS[fEDI_cursor_indexColumn] - INTS[fEDI_getIndexFromX_indexColumn];
             indexColumnVisual = INTS[fEDI_cursorVisualColumnIndex] - INTS[fEDI_getIndexFromX_visualColumns];
         }

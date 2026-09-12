@@ -4840,6 +4840,7 @@ function getIndexFromX_sameLine_newRxIsLarger(rxDifference, lineStart, lineEnd, 
     let indexColumn = startColumn;
     let charWidth = EDI_characterWidth;
     let rx = startRx;
+    let goalRx = rx + rxDifference;
 
     while (positionIndex < lineEnd) {
         let charLength = 1;
@@ -4854,7 +4855,7 @@ function getIndexFromX_sameLine_newRxIsLarger(rxDifference, lineStart, lineEnd, 
         const charMidpointX = charLeftX + (charRightX - charLeftX) / 2;
 
         // If the click is before the midpoint of this character/tab, target this index
-        if (rx < charMidpointX) {
+        if (goalRx < charMidpointX) {
             INTS[fEDI_getIndexFromX_indexColumn] = indexColumn;
             INTS[fEDI_getIndexFromX_visualColumns] = visualColumns;
             return;
@@ -4883,6 +4884,7 @@ function getIndexFromX_sameLine_newRxIsSmaller(rxDifference, lineStart, lineEnd,
     let indexColumn = startColumn;
     let charWidth = EDI_characterWidth;
     let rx = startRx;
+    let goalRx = rx - rxDifference;
 
     while (positionIndex >= lineStart && positionIndex > 0) {
         let charLength = 1;
@@ -4897,7 +4899,7 @@ function getIndexFromX_sameLine_newRxIsSmaller(rxDifference, lineStart, lineEnd,
         const charMidpointX = charLeftX + (charRightX - charLeftX) / 2;
 
         // If the click is before the midpoint of this character/tab, target this index
-        if (rx < charMidpointX) {
+        if (goalRx < charMidpointX) {
             INTS[fEDI_getIndexFromX_indexColumn] = indexColumn;
             INTS[fEDI_getIndexFromX_visualColumns] = visualColumns;
             return;

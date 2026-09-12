@@ -4940,7 +4940,7 @@ function EDI_onMouseDown(event) {
         else {
             let aaa = INTS[fEDI_cursor_cursorTranslateXValue] - rX;
             if (aaa < 0) aaa = 0;
-            getIndexFromX_REVERSED(aaa, indexLine, INTS[fEDI_getLineBoundaryPositions_start] + INTS[fEDI_cursor_indexColumn], INTS[fEDI_getLineBoundaryPositions_start] + INTS[fEDI_cursor_indexColumn], lastValidIndexColumn, INTS[fEDI_cursor_indexColumn]);
+            getIndexFromX_REVERSED(aaa, indexLine, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_start] + INTS[fEDI_cursor_indexColumn], lastValidIndexColumn, INTS[fEDI_cursor_indexColumn]);
             indexColumn = INTS[fEDI_cursor_indexColumn] - INTS[fEDI_getIndexFromX_indexColumn];
             indexColumnVisual = INTS[fEDI_cursorVisualColumnIndex] - INTS[fEDI_getIndexFromX_visualColumns];
         }
@@ -8214,11 +8214,13 @@ Mandatories:
         - [ ] pass over tab
         - [ ] already has a tab prior to cursor
         - [ ] already has a tab prior to cursor AND pass over tab
+        - [ ] "negative relative x"
     - [ ] to a larger column index
         - [/] no tab
         - [ ] pass over tab
         - [ ] already has a tab prior to cursor
         - [ ] already has a tab prior to cursor AND pass over tab
+        - [ ] "relative x is beyond largest column index"
 
 I've been feeling like garbage recently
 like last 4 days?

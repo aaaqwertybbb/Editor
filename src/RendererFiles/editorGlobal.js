@@ -4890,10 +4890,6 @@ function getIndexFromX_sameLine_newRxIsSmaller(goalRx, lineStart, lineEnd, start
         }
 
         // Calculate pixel boundaries for the current character
-        //const charLeftX = visualColumns * charWidth;
-        //const charRightX = (visualColumns + charLength) * charWidth;
-        //const charMidpointX = charLeftX + (charRightX - charLeftX) / 2;
-
         const charLeftX = (visualColumns - charLength) * charWidth;
         const charRightX = (visualColumns) * charWidth;
         const charMidpointX = charLeftX + (charRightX - charLeftX) / 2;
@@ -8242,16 +8238,16 @@ Mandatories:
 - [ ] mouse down, but for the same line index (i.e: not a full reset, only check for tabs in the space "traveled")
     - [ ] to a smaller column index
         - [x] no tab
+        - [x] "negative relative x"
         - [ ] pass over tab
         - [ ] already has a tab prior to cursor
         - [ ] already has a tab prior to cursor AND pass over tab
-        - [ ] "negative relative x"
     - [ ] to a larger column index
         - [x] no tab
+        - [x] "relative x is beyond largest column index"
         - [ ] pass over tab
         - [ ] already has a tab prior to cursor
         - [ ] already has a tab prior to cursor AND pass over tab
-        - [ ] "relative x is beyond largest column index"
 
 I've been feeling like garbage recently
 like last 4 days?

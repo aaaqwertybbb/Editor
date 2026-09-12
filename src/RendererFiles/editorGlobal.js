@@ -4888,11 +4888,20 @@ function EDI_onMouseDown(event) {
     */
 
     if (INTS[fEDI_cursor_indexLine] === indexLine) {
-        let aaa = rX - INTS[fEDI_cursor_cursorTranslateXValue];
-        if (aaa < 0) aaa = 0;
-        getIndexFromX(aaa, indexLine, INTS[fEDI_getLineBoundaryPositions_start] + INTS[fEDI_cursor_indexColumn], INTS[fEDI_getLineBoundaryPositions_end], lastValidIndexColumn);
-        indexColumn = INTS[fEDI_cursor_indexColumn] + INTS[fEDI_getIndexFromX_indexColumn];
-        indexColumnVisual = INTS[fEDI_cursorVisualColumnIndex] + INTS[fEDI_getIndexFromX_visualColumns];
+        if (rX >= INTS[fEDI_cursor_cursorTranslateXValue]) {
+            let aaa = rX - INTS[fEDI_cursor_cursorTranslateXValue];
+            if (aaa < 0) aaa = 0;
+            getIndexFromX(aaa, indexLine, INTS[fEDI_getLineBoundaryPositions_start] + INTS[fEDI_cursor_indexColumn], INTS[fEDI_getLineBoundaryPositions_end], lastValidIndexColumn);
+            indexColumn = INTS[fEDI_cursor_indexColumn] + INTS[fEDI_getIndexFromX_indexColumn];
+            indexColumnVisual = INTS[fEDI_cursorVisualColumnIndex] + INTS[fEDI_getIndexFromX_visualColumns];
+        }
+        else {
+            let aaa = rX - INTS[fEDI_cursor_cursorTranslateXValue];
+            if (aaa < 0) aaa = 0;
+            getIndexFromX(aaa, indexLine, INTS[fEDI_getLineBoundaryPositions_start] + INTS[fEDI_cursor_indexColumn], INTS[fEDI_getLineBoundaryPositions_end], lastValidIndexColumn);
+            indexColumn = INTS[fEDI_cursor_indexColumn] + INTS[fEDI_getIndexFromX_indexColumn];
+            indexColumnVisual = INTS[fEDI_cursorVisualColumnIndex] + INTS[fEDI_getIndexFromX_visualColumns];
+        }
     }
     else {
         getIndexFromX(rX, indexLine, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_end], lastValidIndexColumn);
@@ -8164,7 +8173,7 @@ Mandatories:
         - [ ] already has a tab prior to cursor
         - [ ] already has a tab prior to cursor AND pass over tab
     - [ ] to a larger column index
-        - [ ] no tab
+        - [/] no tab
         - [ ] pass over tab
         - [ ] already has a tab prior to cursor
         - [ ] already has a tab prior to cursor AND pass over tab

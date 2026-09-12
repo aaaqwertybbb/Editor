@@ -8315,4 +8315,7 @@ as in opposite
 I don't like getting nose bleeds, and I don't like feeling as though my acne is getting worse.
 I'm experiencing both of those things for a few days now and it is really messing with me
 
+Cause you sweat while in the walk in cooler and yet there's freezing cold air blowing on you
+it isn't good for your skin at all that's all
+
 */

@@ -8299,5 +8299,10 @@ Mandatories:
 
 I'm not even sure what I did today
 Did I get good progress today?
-        
+
+I'm seeing Marina and the Diamonds - Primadonna
+I already felt immediate guilt about that
+but now I'm just double guilted
+The idea of me listening the song is how not to be
+
 */

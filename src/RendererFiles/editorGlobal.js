@@ -4888,9 +4888,11 @@ function EDI_onMouseDown(event) {
     */
 
     if (INTS[fEDI_cursor_indexLine] === indexLine) {
-        getIndexFromX(rX, indexLine, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_end], lastValidIndexColumn);
-        indexColumn = INTS[fEDI_getIndexFromX_indexColumn];
-        indexColumnVisual = INTS[fEDI_getIndexFromX_visualColumns];
+        let aaa = rX - INTS[fEDI_cursor_cursorTranslateXValue];
+        if (aaa < 0) aaa = 0;
+        getIndexFromX(aaa, indexLine, INTS[fEDI_getLineBoundaryPositions_start] + INTS[fEDI_cursor_indexColumn], INTS[fEDI_getLineBoundaryPositions_end], lastValidIndexColumn);
+        indexColumn = INTS[fEDI_cursor_indexColumn] + INTS[fEDI_getIndexFromX_indexColumn];
+        indexColumnVisual = INTS[fEDI_cursorVisualColumnIndex] + INTS[fEDI_getIndexFromX_visualColumns];
     }
     else {
         getIndexFromX(rX, indexLine, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_end], lastValidIndexColumn);

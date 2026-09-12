@@ -8297,6 +8297,7 @@ Mandatories:
         - [ ] already has a tab prior to cursor
         - [ ] already has a tab prior to cursor AND pass over tab
     
+I'm being recommended a youtube video where the thumbnail is 'No podré estar más contigo'.
 
 
 */

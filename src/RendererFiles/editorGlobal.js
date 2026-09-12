@@ -8258,4 +8258,6 @@ I HAVE to solve this
 
 WAKE UP
 
+It isn't even that bad I completely understand why it doesn't work
+
 */

@@ -8319,6 +8319,7 @@ I never seen the video
 
 but its like people think everythings just a bit
 
-
+I've heard "He Can't Keep Getting Away With This!" as in the phrase as a reference and it is used jokingly mockingly
+They're mocking me
 
 */

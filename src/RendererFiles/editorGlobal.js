@@ -8266,6 +8266,8 @@ Somehow I need to determine how large the tabs are that appear to the left of my
 Everytime I think of the words "WAKE UP" I just think of "WAKE UP ILYA" and I start laughin
 
 "I'm incompetent at writing code"... "DRUGS, just solve all your problems with stimulants. It's just caffeine I mean that's practically a daily multivitamin in our society"
+I'm half a sleep
+
 
 
 */

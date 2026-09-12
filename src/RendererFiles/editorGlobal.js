@@ -8260,4 +8260,7 @@ WAKE UP
 
 It isn't even that bad I completely understand why it doesn't work
 
+Moving to a larger column index is far easier
+Somehow I need to determine how large the tabs are that appear to the left of my cursor when moving to a smaller column index.
+
 */

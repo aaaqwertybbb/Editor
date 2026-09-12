@@ -9522,4 +9522,7 @@ So knowing that I'm 236 when baseline is good.
 
 I gotta lock in tho I'm going the wrong direction...
 
+I've been eating the 2 lbs of 98% fat free ground chicken with sriracha every day I haven't missed a day.
+Just that I been eating a bit too much of "energy" related foods like fats/carbs
+
 */

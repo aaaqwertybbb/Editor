@@ -8167,7 +8167,7 @@ Mandatories:
         - [ ] already has a tab prior to cursor
         - [ ] already has a tab prior to cursor AND pass over tab
 
-I been feeling like garbage recently
+I've been feeling like garbage recently
 like last 4 days?
 
 I have no focus just been pulling teeth getting done mandatories each day through discipline alone, I feel no pleasure

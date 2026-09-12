@@ -8304,4 +8304,7 @@ it makes my nose bleed
 when I  started I was in the hospital for 16 days getting iv antibiotics
 I'm just EXTREMELY anxious about it all
 
+I gotta go in tomorrow and I don't know what to do
+I'm literally dying
+
 */

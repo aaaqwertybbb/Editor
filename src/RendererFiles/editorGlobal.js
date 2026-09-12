@@ -4890,8 +4890,12 @@ function getIndexFromX_sameLine_newRxIsSmaller(goalRx, lineStart, lineEnd, start
         }
 
         // Calculate pixel boundaries for the current character
-        const charLeftX = visualColumns * charWidth;
-        const charRightX = (visualColumns + charLength) * charWidth;
+        //const charLeftX = visualColumns * charWidth;
+        //const charRightX = (visualColumns + charLength) * charWidth;
+        //const charMidpointX = charLeftX + (charRightX - charLeftX) / 2;
+
+        const charLeftX = (visualColumns - charLength) * charWidth;
+        const charRightX = (visualColumns) * charWidth;
         const charMidpointX = charLeftX + (charRightX - charLeftX) / 2;
 
         // If the click is before the midpoint of this character/tab, target this index

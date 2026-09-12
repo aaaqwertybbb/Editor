@@ -4799,7 +4799,42 @@ function EDI_onKeyDown_keyLengthEqualsOne_altKey(event) {
  * 
  * @returns nothing: the results are stored in 'INTS[fEDI_getIndexFromX_indexColumn]' and 'INTS[fEDI_getIndexFromX_visualColumns]'.
  */
-function getIndexFromX(localX, indexLine, lineStart, lineEnd, lastValidIndexColumn) {
+function getIndexFromX_RESET(localX, indexLine, lineStart, lineEnd, lastValidIndexColumn) {
+    let visualColumns = 0;
+    let positionIndex = lineStart;
+    let indexColumn = 0;
+    let charWidth = EDI_characterWidth;
+
+    while (positionIndex < lineEnd) {
+        let charLength = 1;
+        
+        if (getCharacter(positionIndex) === '\t') {
+            charLength = 4 - (visualColumns % 4);
+        }
+
+        // Calculate pixel boundaries for the current character
+        const charLeftX = visualColumns * charWidth;
+        const charRightX = (visualColumns + charLength) * charWidth;
+        const charMidpointX = charLeftX + (charRightX - charLeftX) / 2;
+
+        // If the click is before the midpoint of this character/tab, target this index
+        if (localX < charMidpointX) {
+            INTS[fEDI_getIndexFromX_indexColumn] = indexColumn;
+            INTS[fEDI_getIndexFromX_visualColumns] = visualColumns;
+            return;
+        }
+
+        visualColumns += charLength;
+        positionIndex++;
+        indexColumn++;
+    }
+
+    // If clicked past the end of the line text
+    INTS[fEDI_getIndexFromX_indexColumn] = indexColumn;
+    INTS[fEDI_getIndexFromX_visualColumns] = visualColumns;
+}
+
+function getIndexFromX_FORWARDS(localX, indexLine, lineStart, lineEnd, lastValidIndexColumn) {
     let visualColumns = 0;
     let positionIndex = lineStart;
     let indexColumn = 0;
@@ -4933,7 +4968,7 @@ function EDI_onMouseDown(event) {
         if (rX >= INTS[fEDI_cursor_cursorTranslateXValue]) {
             let aaa = rX - INTS[fEDI_cursor_cursorTranslateXValue];
             if (aaa < 0) aaa = 0;
-            getIndexFromX(aaa, indexLine, INTS[fEDI_getLineBoundaryPositions_start] + INTS[fEDI_cursor_indexColumn], INTS[fEDI_getLineBoundaryPositions_end], lastValidIndexColumn);
+            getIndexFromX_FORWARDS(aaa, indexLine, INTS[fEDI_getLineBoundaryPositions_start] + INTS[fEDI_cursor_indexColumn], INTS[fEDI_getLineBoundaryPositions_end], lastValidIndexColumn);
             indexColumn = INTS[fEDI_cursor_indexColumn] + INTS[fEDI_getIndexFromX_indexColumn];
             indexColumnVisual = INTS[fEDI_cursorVisualColumnIndex] + INTS[fEDI_getIndexFromX_visualColumns];
         }
@@ -4946,7 +4981,7 @@ function EDI_onMouseDown(event) {
         }
     }
     else {
-        getIndexFromX(rX, indexLine, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_end], lastValidIndexColumn);
+        getIndexFromX_RESET(rX, indexLine, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_end], lastValidIndexColumn);
         indexColumn = INTS[fEDI_getIndexFromX_indexColumn];
         indexColumnVisual = INTS[fEDI_getIndexFromX_visualColumns];
     }

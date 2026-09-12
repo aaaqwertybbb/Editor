@@ -8324,4 +8324,6 @@ They're mocking me
 
 it's not a bit, and they're p*ss*ng me off
 
+"my last goodbye" you're saying goodbye? you're leaving me?
+
 */

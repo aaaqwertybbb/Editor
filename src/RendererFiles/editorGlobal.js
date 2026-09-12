@@ -8308,5 +8308,7 @@ I see it right now
 is this manic depressive behavior or am I just a bad person at heart or whatever?
 if you look at my public playlist on my youtube channel its where my head's at
 
+4 days feeling miserable
+
 
 */

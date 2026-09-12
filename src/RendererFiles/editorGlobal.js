@@ -8170,5 +8170,6 @@ Mandatories:
 I been feeling like garbage recently
 like last 4 days?
 
+I have no focus just been pulling teeth getting done mandatories each day through discipline alone, I feel no pleasure
 
 */

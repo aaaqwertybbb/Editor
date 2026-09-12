@@ -8297,33 +8297,6 @@ Mandatories:
         - [ ] already has a tab prior to cursor
         - [ ] already has a tab prior to cursor AND pass over tab
     
-I'm being recommended a youtube video where the thumbnail is 'No podré estar más contigo'.
 
-
-"I can't be with you anymore"
-"Pool fool he makes me laugh"
-"abc123"
-
-everytime I look at my youtube recommendations everyone is messing with me is what it feels like
-
-they think I'm a fool
-they think I'm an idiot
-and extremely common are youtube videos that straight up call me ret**ded like "I'm ret**ded" and the guy is looking in the mirror.
-
-"He Can't Keep Getting Away With This! | Breaking Bad (Aaron Paul, Dean Norris) "" 
-
-
-I can't stand this one.
-
-I never seen the video
-
-but its like people think everythings just a bit
-
-I've heard "He Can't Keep Getting Away With This!" as in the phrase as a reference and it is used jokingly mockingly
-They're mocking me
-
-it's not a bit, and they're p*ss*ng me off
-
-"my last goodbye" you're saying goodbye? you're leaving me?
 
 */

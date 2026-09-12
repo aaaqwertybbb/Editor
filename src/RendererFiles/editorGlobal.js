@@ -8318,4 +8318,7 @@ I'm experiencing both of those things for a few days now and it is really messin
 Cause you sweat while in the walk in cooler and yet there's freezing cold air blowing on you
 it isn't good for your skin at all that's all
 
+And I had super bad acne in my youth, I still have some acne so it is something I'm very aware of
+and my anxiety been sky rocketing.
+
 */

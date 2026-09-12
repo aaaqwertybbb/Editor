@@ -8272,4 +8272,6 @@ I'm gonna ask my boss if I can go down to every 4th day I think it'd help immens
 I WANT to work at quickcheck I'm lazy, and this is a super easy job.
 I just don't want to sacrifice my health for it is all.
 
+I made a pub pl cause the social anxiety of it wakes me up a bit.
+
 */

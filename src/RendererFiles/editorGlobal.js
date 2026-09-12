@@ -4800,9 +4800,9 @@ function EDI_onKeyDown_keyLengthEqualsOne_altKey(event) {
  * @returns nothing: the results are stored in 'INTS[fEDI_getIndexFromX_indexColumn]' and 'INTS[fEDI_getIndexFromX_visualColumns]'.
  */
 function getIndexFromX_RESET(rx, lineStart, lineEnd) {
+    let indexColumn = 0;
     let visualColumns = 0;
     let positionIndex = lineStart;
-    let indexColumn = 0;
     let charWidth = EDI_characterWidth;
 
     while (positionIndex < lineEnd) {
@@ -4835,9 +4835,9 @@ function getIndexFromX_RESET(rx, lineStart, lineEnd) {
 }
 
 function getIndexFromX_sameLine_newRxIsLarger(goalRx, lineStart, lineEnd, startColumn, startVisualColumns) {
+    let indexColumn = startColumn;
     let visualColumns = startVisualColumns;
     let positionIndex = lineStart + startColumn;
-    let indexColumn = startColumn;
     let charWidth = EDI_characterWidth;
 
     while (positionIndex < lineEnd) {
@@ -4877,9 +4877,9 @@ function getIndexFromX_sameLine_newRxIsLarger(goalRx, lineStart, lineEnd, startC
  * @returns nothing: the results are stored in 'INTS[fEDI_getIndexFromX_indexColumn]' and 'INTS[fEDI_getIndexFromX_visualColumns]'.
  */
 function getIndexFromX_sameLine_newRxIsSmaller(goalRx, lineStart, lineEnd, startColumn, startVisualColumns) {
+    let indexColumn = startColumn;
     let visualColumns = startVisualColumns;
     let positionIndex = lineEnd + startColumn;
-    let indexColumn = startColumn;
     let charWidth = EDI_characterWidth;
 
     while (positionIndex >= lineStart && positionIndex > 0) {

@@ -4799,7 +4799,7 @@ function EDI_onKeyDown_keyLengthEqualsOne_altKey(event) {
  * 
  * @returns nothing: the results are stored in 'INTS[fEDI_getIndexFromX_indexColumn]' and 'INTS[fEDI_getIndexFromX_visualColumns]'.
  */
-function getIndexFromX_RESET(localX, indexLine, lineStart, lineEnd, lastValidIndexColumn) {
+function getIndexFromX_RESET(localX, lineStart, lineEnd) {
     let visualColumns = 0;
     let positionIndex = lineStart;
     let indexColumn = 0;
@@ -4834,7 +4834,7 @@ function getIndexFromX_RESET(localX, indexLine, lineStart, lineEnd, lastValidInd
     INTS[fEDI_getIndexFromX_visualColumns] = visualColumns;
 }
 
-function getIndexFromX_sameLine_newRxIsLarger(localX, indexLine, lineStart, lineEnd, lastValidIndexColumn) {
+function getIndexFromX_sameLine_newRxIsLarger(localX, lineStart, lineEnd) {
     let visualColumns = 0;
     let positionIndex = lineStart;
     let indexColumn = 0;
@@ -4876,7 +4876,7 @@ function getIndexFromX_sameLine_newRxIsLarger(localX, indexLine, lineStart, line
  * 
  * @returns nothing: the results are stored in 'INTS[fEDI_getIndexFromX_indexColumn]' and 'INTS[fEDI_getIndexFromX_visualColumns]'.
  */
-function getIndexFromX_sameLine_newRxIsSmaller(localX, indexLine, lineStart, lineEnd, lastValidIndexColumn, startColumnIndex) {
+function getIndexFromX_sameLine_newRxIsSmaller(localX, lineStart, lineEnd, startColumnIndex) {
     let visualColumns = 0;
     let positionIndex = lineEnd;
     let indexColumn = startColumnIndex;
@@ -4965,23 +4965,24 @@ function EDI_onMouseDown(event) {
     */
 
     if (INTS[fEDI_cursor_indexLine] === indexLine) {
+        // TODO: let rxDifference = absolute value?
         if (rX >= INTS[fEDI_cursor_cursorTranslateXValue]) {
-            let aaa = rX - INTS[fEDI_cursor_cursorTranslateXValue];
-            if (aaa < 0) aaa = 0;
-            getIndexFromX_sameLine_newRxIsLarger(aaa, indexLine, INTS[fEDI_getLineBoundaryPositions_start] + INTS[fEDI_cursor_indexColumn], INTS[fEDI_getLineBoundaryPositions_end], lastValidIndexColumn);
+            let rxDifference = rX - INTS[fEDI_cursor_cursorTranslateXValue];
+            if (rxDifference < 0) rxDifference = 0; // floating point imprecision?
+            getIndexFromX_sameLine_newRxIsLarger(rxDifference, INTS[fEDI_getLineBoundaryPositions_start] + INTS[fEDI_cursor_indexColumn], INTS[fEDI_getLineBoundaryPositions_end]);
             indexColumn = INTS[fEDI_cursor_indexColumn] + INTS[fEDI_getIndexFromX_indexColumn];
             indexColumnVisual = INTS[fEDI_cursorVisualColumnIndex] + INTS[fEDI_getIndexFromX_visualColumns];
         }
         else {
-            let aaa = INTS[fEDI_cursor_cursorTranslateXValue] - rX;
-            if (aaa < 0) aaa = 0;
-            getIndexFromX_sameLine_newRxIsSmaller(aaa, indexLine, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_start] + INTS[fEDI_cursor_indexColumn], lastValidIndexColumn, INTS[fEDI_cursor_indexColumn]);
+            let rxDifference = INTS[fEDI_cursor_cursorTranslateXValue] - rX;
+            if (rxDifference < 0) rxDifference = 0; // floating point imprecision?
+            getIndexFromX_sameLine_newRxIsSmaller(rxDifference, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_start] + INTS[fEDI_cursor_indexColumn], INTS[fEDI_cursor_indexColumn]);
             indexColumn = INTS[fEDI_cursor_indexColumn] - INTS[fEDI_getIndexFromX_indexColumn];
             indexColumnVisual = INTS[fEDI_cursorVisualColumnIndex] - INTS[fEDI_getIndexFromX_visualColumns];
         }
     }
     else {
-        getIndexFromX_RESET(rX, indexLine, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_end], lastValidIndexColumn);
+        getIndexFromX_RESET(rX, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_end]);
         indexColumn = INTS[fEDI_getIndexFromX_indexColumn];
         indexColumnVisual = INTS[fEDI_getIndexFromX_visualColumns];
     }

@@ -8268,6 +8268,8 @@ Everytime I think of the words "WAKE UP" I just think of "WAKE UP ILYA" and I st
 "I'm incompetent at writing code"... "DRUGS, just solve all your problems with stimulants. It's just caffeine I mean that's practically a daily multivitamin in our society"
 I'm half a sleep
 
-
+I'm gonna ask my boss if I can go down to every 4th day I think it'd help immensely.
+I WANT to work at quickcheck I'm lazy, and this is a super easy job.
+I just don't want to sacrifice my health for it is all.
 
 */

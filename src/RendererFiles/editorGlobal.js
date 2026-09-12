@@ -3132,6 +3132,7 @@ function EDI_onMouseMove_WRAPIT(event) {
 
         let indexColumn = Math.round(rX / EDI_characterWidth);
         let indexLine = Math.floor(rY / INTS[fEDI_lineHeight]);
+        let indexColumnVisual = indexColumn;
 
         if (indexColumn < 0) {
             indexColumn = 0;
@@ -3144,6 +3145,20 @@ function EDI_onMouseMove_WRAPIT(event) {
         if (indexLine >= EDI_lineEndPositionList_count) {
             indexLine = EDI_lineEndPositionList_count - 1;
         }
+
+        if (INTS[fEDI_cursor_indexLine] === indexLine) {
+            if (rX >= INTS[fEDI_cursor_cursorTranslateXValue]) {
+                getIndexFromX_sameLine_newRxIsLarger(rX, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_end], INTS[fEDI_cursor_indexColumn], INTS[fEDI_getIndexFromX_visualColumns]);
+            }
+            else {
+                getIndexFromX_sameLine_newRxIsSmaller(rX, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_end], INTS[fEDI_cursor_indexColumn], INTS[fEDI_getIndexFromX_visualColumns]);
+            }
+        }
+        else {
+            getIndexFromX_RESET(rX, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_end]);
+        }
+        indexColumn = INTS[fEDI_getIndexFromX_indexColumn];
+        indexColumnVisual = INTS[fEDI_getIndexFromX_visualColumns];
 
         let lastValidIndexColumn = EDI_getLastValidIndexColumn(indexLine);
         if (indexColumn > lastValidIndexColumn) {
@@ -3166,7 +3181,7 @@ function EDI_onMouseMove_WRAPIT(event) {
             EDI_onMouseMoveDetailRankTwo(indexLine, indexColumn);
         }
         else if (get_EDI_detailRank() === 1) {
-            EDI_onMouseMoveDetailRankOne(indexLine, indexColumn);
+            EDI_onMouseMoveDetailRankOne(indexLine, indexColumn, indexColumnVisual);
         }
 
         if (!BYTES[byteEDI_isChecking_cursorBlinkTrailingEdge]) {
@@ -3179,11 +3194,11 @@ function EDI_onMouseMove_WRAPIT(event) {
     }
 }
 
-function EDI_onMouseMoveDetailRankOne(indexLineClicked, indexColumnClicked) {
+function EDI_onMouseMoveDetailRankOne(indexLineClicked, indexColumnClicked, indexColumnVisual) {
     // TODO: These two sets the ones to line and column seem redundant weren't these just done by the original EDI_onMouseMove_WRAPIT?
     INTS[fEDI_cursor_indexLine] = indexLineClicked;
     INTS[fEDI_cursor_indexColumn] = indexColumnClicked;
-    INTS[fEDI_cursorVisualColumnIndex] = indexColumnClicked;
+    INTS[fEDI_cursorVisualColumnIndex] = indexColumnVisual;
     INTS[fEDI_cursorVisualColumnIndex_relativeToThisLineIndex] = indexLineClicked;
 
     INTS[fEDI_cursor_selectionEnd] = EDI_getPositionIndex_cursor();
@@ -4946,8 +4961,6 @@ function EDI_onMouseDown(event) {
         indexLine = EDI_lineEndPositionList_count - 1;
     }
 
-    let lastValidIndexColumn = EDI_getLastValidIndexColumn(indexLine);
-
     EDI_getLineBoundaryPositions_raw(indexLine);
 
     /*
@@ -4978,6 +4991,7 @@ function EDI_onMouseDown(event) {
     indexColumn = INTS[fEDI_getIndexFromX_indexColumn];
     indexColumnVisual = INTS[fEDI_getIndexFromX_visualColumns];
 
+    let lastValidIndexColumn = EDI_getLastValidIndexColumn(indexLine);
     if (indexColumn > lastValidIndexColumn) {
         indexColumn = lastValidIndexColumn;
         indexColumnVisual = indexColumn;

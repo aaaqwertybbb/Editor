@@ -8305,14 +8305,7 @@ you just immediately see the size of it from the modulo math.
 "Poor Fool, He Makes Me Laugh"
 I see it right now
 
-"Poor Fool, He Makes Me Laugh"
-"Poor Fool, He Makes Me Laugh"
-"Poor Fool, He Makes Me Laugh"
-"Poor Fool, He Makes Me Laugh"
-"Poor Fool, He Makes Me Laugh"
-FUCK
-"Poor Fool, He Makes Me Laugh"
-"Poor Fool, He Makes Me Laugh"
+is this manic depressive behavior or am I just a bad person at heart or whatever?
 
 
 */

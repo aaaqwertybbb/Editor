@@ -2824,6 +2824,15 @@ function EDI_clearSelectionStyle() {
     }
 }
 
+/**
+ * TODO: This needs to be a ring buffer of its own
+ * ...
+ * dynamic ring buffer that scales as your selection requires more and more horizontal divs?
+ * Otherwise you have the ring buffer sitting around in the background all the time.
+ * And if you only select 1 line of text you probably don't want to fill the screen with empty divs foreach line
+ * just to select text on a single line.
+ * So as you keep selecting you build a larger and larger ring buffer.
+*/
 function EDI_createStyleForSelection() {
     if (INTS[fEDI_cursor_DRAWN_selectionAnchor] !== INTS[fEDI_cursor_selectionAnchor] ||
         INTS[fEDI_cursor_DRAWN_selectionEnd] !== INTS[fEDI_cursor_selectionEnd] ||

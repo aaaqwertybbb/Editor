@@ -8249,26 +8249,8 @@ Mandatories:
         - [ ] already has a tab prior to cursor
         - [ ] already has a tab prior to cursor AND pass over tab
 
-I've been feeling like garbage recently
-like last 4 days?
-
-I have no focus just been pulling teeth getting done mandatories each day through discipline alone, I feel no pleasure
-
-At the supermarket I go to, they have a vitamin isle.
-
-And COQ-10 used to be sold there
-
-At first they continued selling it there but put it in a cage that only the cashiers could open.
-
-But recently I've noticed they completely moved it behind a counter.
-At least I think... I need to double check I'm so out of it.
-
-Why are people stealing COQ-10 lmao
-
-Is that stuff any good for focus?
-
-uhhhhhhhhhhh
-
-=====
+I gotta go to the bathroom but you gotta focus on '- [ ] to a larger column index'
+first it is a million times easier cause you don't need to figure out the size of an existing tab
+you just immediately see the size of it from the modulo math.
 
 */

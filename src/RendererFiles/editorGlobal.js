@@ -8302,4 +8302,7 @@ I gotta go to the bathroom but you gotta focus on '- [ ] to a larger column inde
 first it is a million times easier cause you don't need to figure out the size of an existing tab
 you just immediately see the size of it from the modulo math.
 
+"Poor Fool, He Makes Me Laugh"
+I see it right now
+
 */

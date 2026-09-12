@@ -8312,4 +8312,7 @@ and I almost immediately pulled back my behavior once I realized I started snapp
 "you can count on me to misbehave"
 as in opposite
 
+I don't like getting nose bleeds, and I don't like feeling as though my acne is getting worse.
+I'm experiencing both of those things for a few days now and it is really messing with me
+
 */

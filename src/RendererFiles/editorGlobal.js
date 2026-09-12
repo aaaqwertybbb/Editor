@@ -4965,19 +4965,13 @@ function EDI_onMouseDown(event) {
     */
 
     if (INTS[fEDI_cursor_indexLine] === indexLine) {
-        // TODO: let rxDifference = absolute value?
+        let rxDifference = Math.abs(rX - INTS[fEDI_cursor_cursorTranslateXValue]); // floating point imprecision?
         if (rX >= INTS[fEDI_cursor_cursorTranslateXValue]) {
-            let rxDifference = rX - INTS[fEDI_cursor_cursorTranslateXValue];
-            if (rxDifference < 0) rxDifference = 0; // floating point imprecision?
             getIndexFromX_sameLine_newRxIsLarger(rxDifference, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_end], INTS[fEDI_cursor_indexColumn], INTS[fEDI_getIndexFromX_visualColumns]);
-            
         }
         else {
-            let rxDifference = INTS[fEDI_cursor_cursorTranslateXValue] - rX;
-            if (rxDifference < 0) rxDifference = 0; // floating point imprecision?
             getIndexFromX_sameLine_newRxIsSmaller(rxDifference, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_end], INTS[fEDI_cursor_indexColumn], INTS[fEDI_getIndexFromX_visualColumns]);
         }
-        
     }
     else {
         getIndexFromX_RESET(rX, INTS[fEDI_getLineBoundaryPositions_start], INTS[fEDI_getLineBoundaryPositions_end]);

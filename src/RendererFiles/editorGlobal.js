@@ -4834,6 +4834,48 @@ function getIndexFromX(localX, indexLine, lineStart, lineEnd, lastValidIndexColu
     INTS[fEDI_getIndexFromX_visualColumns] = visualColumns;
 }
 
+/**
+ * 'INTS[fEDI_getIndexFromX_indexColumn]'
+ * 
+ * 'INTS[fEDI_getIndexFromX_visualColumns]'
+ * 
+ * @returns nothing: the results are stored in 'INTS[fEDI_getIndexFromX_indexColumn]' and 'INTS[fEDI_getIndexFromX_visualColumns]'.
+ */
+function getIndexFromX_REVERSED(localX, indexLine, lineStart, lineEnd, lastValidIndexColumn, startColumnIndex) {
+    let visualColumns = 0;
+    let positionIndex = lineEnd;
+    let indexColumn = startColumnIndex;
+    let charWidth = EDI_characterWidth;
+
+    while (positionIndex >= lineStart && positionIndex > 0) {
+        let charLength = 1;
+        
+        if (getCharacter(positionIndex - 1) === '\t') {
+            charLength = 4 - (visualColumns % 4);
+        }
+
+        // Calculate pixel boundaries for the current character
+        const charLeftX = visualColumns * charWidth;
+        const charRightX = (visualColumns + charLength) * charWidth;
+        const charMidpointX = charLeftX + (charRightX - charLeftX) / 2;
+
+        // If the click is before the midpoint of this character/tab, target this index
+        if (localX < charMidpointX) {
+            INTS[fEDI_getIndexFromX_indexColumn] = startColumnIndex - indexColumn;
+            INTS[fEDI_getIndexFromX_visualColumns] = visualColumns;
+            return;
+        }
+
+        visualColumns += charLength;
+        positionIndex--;
+        indexColumn--;
+    }
+
+    // If clicked past the end of the line text
+    INTS[fEDI_getIndexFromX_indexColumn] = startColumnIndex - indexColumn;
+    INTS[fEDI_getIndexFromX_visualColumns] = visualColumns;
+}
+
 function EDI_onMouseDown(event) {
     EDI_movementBasedCacheInvalidation();
 
@@ -4896,11 +4938,11 @@ function EDI_onMouseDown(event) {
             indexColumnVisual = INTS[fEDI_cursorVisualColumnIndex] + INTS[fEDI_getIndexFromX_visualColumns];
         }
         else {
-            let aaa = rX - INTS[fEDI_cursor_cursorTranslateXValue];
+            let aaa = INTS[fEDI_cursor_cursorTranslateXValue] - rX;
             if (aaa < 0) aaa = 0;
-            getIndexFromX(aaa, indexLine, INTS[fEDI_getLineBoundaryPositions_start] + INTS[fEDI_cursor_indexColumn], INTS[fEDI_getLineBoundaryPositions_end], lastValidIndexColumn);
-            indexColumn = INTS[fEDI_cursor_indexColumn] + INTS[fEDI_getIndexFromX_indexColumn];
-            indexColumnVisual = INTS[fEDI_cursorVisualColumnIndex] + INTS[fEDI_getIndexFromX_visualColumns];
+            getIndexFromX_REVERSED(aaa, indexLine, INTS[fEDI_getLineBoundaryPositions_start] + INTS[fEDI_cursor_indexColumn], INTS[fEDI_getLineBoundaryPositions_start] + INTS[fEDI_cursor_indexColumn], lastValidIndexColumn, INTS[fEDI_cursor_indexColumn]);
+            indexColumn = INTS[fEDI_cursor_indexColumn] - INTS[fEDI_getIndexFromX_indexColumn];
+            indexColumnVisual = INTS[fEDI_cursorVisualColumnIndex] - INTS[fEDI_getIndexFromX_visualColumns];
         }
     }
     else {

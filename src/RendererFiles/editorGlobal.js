@@ -8297,6 +8297,11 @@ Mandatories:
         - [ ] already has a tab prior to cursor
         - [ ] already has a tab prior to cursor AND pass over tab
     
-
+No I got I wanna say what's going on
+I got a lot of anxiety and I tank these things constantly.
+And being in the walk in cooler is messing with my skin, it makes my acne worse
+it makes my nose bleed
+when I  started I was in the hospital for 16 days getting iv antibiotics
+I'm just EXTREMELY anxious about it all
 
 */

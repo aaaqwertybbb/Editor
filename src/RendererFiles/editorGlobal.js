@@ -8297,6 +8297,7 @@ Mandatories:
         - [ ] already has a tab prior to cursor
         - [ ] already has a tab prior to cursor AND pass over tab
 
-
+I'm not even sure what I did today
+Did I get good progress today?
         
 */

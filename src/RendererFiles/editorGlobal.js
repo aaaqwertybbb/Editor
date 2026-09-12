@@ -8239,8 +8239,10 @@ Mandatories:
     - [ ] to a larger column index
         - [x] no tab
         - [x] "relative x is beyond largest column index"
-        - [ ] pass over tab
-        - [ ] already has a tab prior to cursor
+        - [x] pass over tab
+            - [x] 4 width
+            - [x] 3 width
+        - [x] already has a tab prior to cursor
         - [ ] already has a tab prior to cursor AND pass over tab
     - [ ] to a smaller column index
         - [x] no tab

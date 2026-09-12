@@ -8306,6 +8306,7 @@ you just immediately see the size of it from the modulo math.
 I see it right now
 
 is this manic depressive behavior or am I just a bad person at heart or whatever?
+if you look at my public playlist on my youtube channel its where my head's at
 
 
 */

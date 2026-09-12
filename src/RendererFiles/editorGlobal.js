@@ -8310,4 +8310,15 @@ they think I'm a fool
 they think I'm an idiot
 and extremely common are youtube videos that straight up call me ret**ded like "I'm ret**ded" and the guy is looking in the mirror.
 
+"He Can't Keep Getting Away With This! | Breaking Bad (Aaron Paul, Dean Norris) "" 
+
+
+I can't stand this one.
+
+I never seen the video
+
+but its like people think everythings just a bit
+
+
+
 */

@@ -8274,4 +8274,8 @@ I just don't want to sacrifice my health for it is all.
 
 I made a pub pl cause the social anxiety of it wakes me up a bit.
 
+It's getting colder out I think that's why the 3rd day schedule is starting to show signs of issues.
+Cause now I get the nose bleeds from just being awake so to speak
+and then go in the cooler it is way worsened I think is what it is
+
 */

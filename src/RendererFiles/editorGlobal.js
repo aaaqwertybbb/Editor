@@ -8321,4 +8321,6 @@ it isn't good for your skin at all that's all
 And I had super bad acne in my youth, I still have some acne so it is something I'm very aware of
 and my anxiety been sky rocketing.
 
+In retrospect I think the extra caffeine was a mistake too it only made it 100x worse
+
 */

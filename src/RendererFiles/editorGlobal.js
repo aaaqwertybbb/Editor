@@ -8157,7 +8157,15 @@ vertical += lineHeight;
 Mandatories:
 - [ ] mouse down, but for the same line index (i.e: not a full reset, only check for tabs in the space "traveled")
     - [ ] to a smaller column index
+        - [ ] no tab
+        - [ ] pass over tab
+        - [ ] already has a tab prior to cursor
+        - [ ] already has a tab prior to cursor AND pass over tab
     - [ ] to a larger column index
+        - [ ] no tab
+        - [ ] pass over tab
+        - [ ] already has a tab prior to cursor
+        - [ ] already has a tab prior to cursor AND pass over tab
 
 
 */

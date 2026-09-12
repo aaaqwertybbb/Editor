@@ -8308,4 +8308,8 @@ The idea of me listening the song is how not to be
 100% I tanked anxiety for a long long time and just sat with it like nothing was wrong
 and I almost immediately pulled back my behavior once I realized I started snapping a bit.
 
+"it's always someone elses fault"
+"you can count on me to misbehave"
+as in opposite
+
 */

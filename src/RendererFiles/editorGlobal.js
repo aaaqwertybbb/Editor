@@ -8236,18 +8236,19 @@ vertical += lineHeight;
 
 Mandatories:
 - [ ] mouse down, but for the same line index (i.e: not a full reset, only check for tabs in the space "traveled")
-    - [ ] to a smaller column index
-        - [x] no tab
-        - [x] "negative relative x"
-        - [ ] pass over tab
-        - [ ] already has a tab prior to cursor
-        - [ ] already has a tab prior to cursor AND pass over tab
     - [ ] to a larger column index
         - [x] no tab
         - [x] "relative x is beyond largest column index"
         - [ ] pass over tab
         - [ ] already has a tab prior to cursor
         - [ ] already has a tab prior to cursor AND pass over tab
+    - [ ] to a smaller column index
+        - [x] no tab
+        - [x] "negative relative x"
+        - [ ] pass over tab
+        - [ ] already has a tab prior to cursor
+        - [ ] already has a tab prior to cursor AND pass over tab
+    
 
 I gotta go to the bathroom but you gotta focus on '- [ ] to a larger column index'
 first it is a million times easier cause you don't need to figure out the size of an existing tab

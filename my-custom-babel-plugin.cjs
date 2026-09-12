@@ -388,6 +388,10 @@ module.exports = function (babel) {
     "fEDI_getLineBoundaryPositions_end",
     "fEDI_getIndexFromX_indexColumn",
     "fEDI_getIndexFromX_visualColumns",
+    "fEDI_cursor_selectionIndexAnchorColumnVISUAL",
+    "fEDI_cursor_selectionIndexEndColumnVISUAL",
+    "fEDI_cursor_selectionIndexAnchorColumnVISUAL_DRAWN",
+    "fEDI_cursor_selectionIndexEndColumnVISUAL_DRAWN",
 
 
 

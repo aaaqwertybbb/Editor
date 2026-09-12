@@ -539,10 +539,14 @@ function EDI_cursor_clear() {
     INTS[fEDI_cursor_cursorTranslateXValue] = 0;
     INTS[fEDI_cursor_selectionAnchor] = 0;
     INTS[fEDI_cursor_selectionEnd] = 0;
+    INTS[fEDI_cursor_selectionIndexAnchorColumnVISUAL] = 0;
+    INTS[fEDI_cursor_selectionIndexEndColumnVISUAL] = 0;
     INTS[fEDI_cursor_DRAWN_selectionAnchor] = 0;
     INTS[fEDI_cursor_DRAWN_selectionEnd] = 0;
     INTS[fEDI_cursor_DRAWN_selection_virtualIndexLine] = 0;
     INTS[fEDI_cursor_DRAWN_selection_virtualCount] = 0;
+    INTS[fEDI_cursor_selectionIndexAnchorColumnVISUAL_DRAWN] = 0;
+    INTS[fEDI_cursor_selectionIndexEndColumnVISUAL_DRAWN] = 0;
     INTS[fEDI_cursor_editKind] = EditKind_None;
     INTS[fEDI_cursor_editLength] = 0;
     INTS[fEDI_cursor_editPosition] = 0;
@@ -2839,12 +2843,17 @@ function EDI_createStyleForSelection() {
     if (INTS[fEDI_cursor_DRAWN_selectionAnchor] !== INTS[fEDI_cursor_selectionAnchor] ||
         INTS[fEDI_cursor_DRAWN_selectionEnd] !== INTS[fEDI_cursor_selectionEnd] ||
         INTS[fEDI_cursor_DRAWN_selection_virtualCount] !== INTS[fEDI_virtualCount] ||
-        INTS[fEDI_cursor_DRAWN_selection_virtualIndexLine] !== INTS[fEDI_virtualIndexLine]) {
+        INTS[fEDI_cursor_DRAWN_selection_virtualIndexLine] !== INTS[fEDI_virtualIndexLine] ||
+        INTS[fEDI_cursor_selectionIndexAnchorColumnVISUAL_DRAWN] !== INTS[fEDI_cursor_selectionIndexAnchorColumnVISUAL] ||
+        INTS[fEDI_cursor_selectionIndexAnchorColumnVISUAL_DRAWN] !== INTS[fEDI_cursor_selectionIndexAnchorColumnVISUAL]) {
 
         INTS[fEDI_cursor_DRAWN_selectionAnchor] = INTS[fEDI_cursor_selectionAnchor];
         INTS[fEDI_cursor_DRAWN_selectionEnd] = INTS[fEDI_cursor_selectionEnd];
         INTS[fEDI_cursor_DRAWN_selection_virtualCount] = INTS[fEDI_virtualCount];
         INTS[fEDI_cursor_DRAWN_selection_virtualIndexLine] = INTS[fEDI_virtualIndexLine];
+
+        INTS[fEDI_cursor_selectionIndexAnchorColumnVISUAL_DRAWN] = INTS[fEDI_cursor_selectionIndexAnchorColumnVISUAL];
+        INTS[fEDI_cursor_selectionIndexAnchorColumnVISUAL_DRAWN] = INTS[fEDI_cursor_selectionIndexAnchorColumnVISUAL];
 
         let shouldExistSelectionDiv = false;
         if (INTS[fEDI_cursor_DRAWN_selectionAnchor] === INTS[fEDI_cursor_DRAWN_selectionEnd]) {
@@ -2886,6 +2895,7 @@ function EDI_createStyleForSelection() {
         let startLineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
         let startLine = startLineAndColumnIndices_indexLine;
         let startColumn = startLineAndColumnIndices_indexColumn;
+        let start_visualColumnStart = INTS[fEDI_cursor_selectionIndexAnchorColumnVISUAL];
 
         let end = INTS[fEDI_cursor_selectionEnd];
         EDI_getLineAndColumnIndices(end);
@@ -2893,6 +2903,7 @@ function EDI_createStyleForSelection() {
         let endLineAndColumnIndices_indexColumn = INTS[fEDI_getLineAndColumnIndices_indexColumn];
         let INCLUSIVEendLine = endLineAndColumnIndices_indexLine;
         let INCLUSIVEendColumn = endLineAndColumnIndices_indexColumn;
+        let end_visualColumnStart = INTS[fEDI_cursor_selectionIndexEndColumnVISUAL];
 
         // # Virtualization
         if (startLine < INTS[fEDI_virtualIndexLine]) {
@@ -2909,12 +2920,17 @@ function EDI_createStyleForSelection() {
             let temp = end;
             let tempLine = INCLUSIVEendLine;
             let tempColumn = INCLUSIVEendColumn;
+            let tempVisualColumn;
             end = start;
             INCLUSIVEendLine = startLine;
             INCLUSIVEendColumn = startColumn;
             start = temp;
             startLine = tempLine;
             startColumn = tempColumn;
+
+            tempVisualColumn = start_visualColumnStart;
+            start_visualColumnStart = end_visualColumnStart;
+            end_visualColumnStart = tempVisualColumn;
         }
         //
         // I do not want to fill the screen with display:none divs for when there is a selection to be shown there (I do it all the time but it doesn't seem sensible here).
@@ -2942,8 +2958,8 @@ function EDI_createStyleForSelection() {
             lineSelectionDiv = textSelectionDiv.children[childDivIndex++];
             lineSelectionDiv.className = 'EDI_selection';
             lineSelectionDiv.style.left = gutterWidthTotal_withPxUnits;
-            lineSelectionDiv.style.transform = `translate(${startColumn * EDI_characterWidth}px, ${INTS[fEDI_lineHeight] * startLine}px)`;
-            lineSelectionDiv.style.width = (INCLUSIVEendColumn - startColumn) * EDI_characterWidth + 'px';
+            lineSelectionDiv.style.transform = `translate(${start_visualColumnStart * EDI_characterWidth}px, ${INTS[fEDI_lineHeight] * startLine}px)`;
+            lineSelectionDiv.style.width = (end_visualColumnStart - start_visualColumnStart) * EDI_characterWidth + 'px';
         }
         else {
             // start line
@@ -3213,6 +3229,7 @@ function EDI_onMouseMoveDetailRankOne(indexLineClicked, indexColumnClicked, inde
     INTS[fEDI_cursorVisualColumnIndex_relativeToThisLineIndex] = indexLineClicked;
 
     INTS[fEDI_cursor_selectionEnd] = EDI_getPositionIndex_cursor();
+    INTS[fEDI_cursor_selectionIndexEndColumnVISUAL] = INTS[fEDI_cursorVisualColumnIndex];
 
     EDI_render_request(RenderKind_Cursor_flag_doNotScrollIntoView);
 }
@@ -3544,6 +3561,7 @@ function EDI_onMouseDownDetailRankOne(event_button, event_shiftKey, indexLineCli
     if (event_shiftKey && !selectionPlusContextMenuCase) {
         if (!EDI_cursor_hasSelection()) {
             INTS[fEDI_cursor_selectionAnchor] = EDI_getPositionIndex_cursor();
+            INTS[fEDI_cursor_selectionIndexAnchorColumnVISUAL] = indexColumnVisual;
         }
     }
 
@@ -3824,6 +3842,7 @@ function EDI_preKeyboardMovementSelectionLogic(shiftKey) {
             INTS[fEDI_cursor_selectionAnchor] = EDI_getPositionIndex_cursor();
             INTS[fEDI_cursor_selectionIndexAnchorLine] = INTS[fEDI_cursor_indexLine];
             INTS[fEDI_cursor_selectionIndexAnchorColumn] = INTS[fEDI_cursor_indexColumn];
+            INTS[fEDI_cursor_selectionIndexAnchorColumnVISUAL] = INTS[fEDI_cursorVisualColumnIndex];
         }
     }
     else {
@@ -3831,6 +3850,7 @@ function EDI_preKeyboardMovementSelectionLogic(shiftKey) {
             INTS[fEDI_cursor_selectionAnchor] = INTS[fEDI_cursor_selectionEnd];
             INTS[fEDI_cursor_selectionIndexAnchorLine] = INTS[fEDI_cursor_selectionIndexEndLine];
             INTS[fEDI_cursor_selectionIndexAnchorColumn] = INTS[fEDI_cursor_selectionIndexEndColumn];
+            INTS[fEDI_cursor_selectionIndexAnchorColumnVISUAL] = INTS[fEDI_cursorVisualColumnIndex];
         }
     }
 }
@@ -3843,6 +3863,7 @@ function EDI_postKeyboardMovementSelectionLogic(shiftKey) {
         INTS[fEDI_cursor_selectionEnd] = EDI_getPositionIndex_cursor();
         INTS[fEDI_cursor_selectionIndexEndLine] = INTS[fEDI_cursor_indexLine];
         INTS[fEDI_cursor_selectionIndexEndColumn] = INTS[fEDI_cursor_indexColumn];
+        INTS[fEDI_cursor_selectionIndexEndColumnVISUAL] = INTS[fEDI_cursorVisualColumnIndex];
     }
 }
 

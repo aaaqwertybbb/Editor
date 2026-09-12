@@ -8306,4 +8306,8 @@ I'm being recommended a youtube video where the thumbnail is 'No podr√© estar m√
 
 everytime I look at my youtube recommendations everyone is messing with me is what it feels like
 
+they think I'm a fool
+they think I'm an idiot
+and extremely common are youtube videos that straight up call me ret**ded like "I'm ret**ded" and the guy is looking in the mirror.
+
 */

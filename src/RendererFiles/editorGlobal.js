@@ -8172,4 +8172,15 @@ like last 4 days?
 
 I have no focus just been pulling teeth getting done mandatories each day through discipline alone, I feel no pleasure
 
+At the supermarket I go to, they have a vitamin isle.
+
+And COQ-10 used to be sold there
+
+At first they continued selling it there but put it in a cage that only the cashiers could open.
+
+But recently I've noticed they completely moved it behind a counter.
+At least I think... I need to double check I'm so out of it.
+
+Why are people stealing COQ-10 lmao
+
 */

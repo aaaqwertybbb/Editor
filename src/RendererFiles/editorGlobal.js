@@ -8244,42 +8244,5 @@ uhhhhhhhhhhh
 
 =====
 
-I just had a 20 to 30 minute nose bleed and I'm furious
-
-I don't know how much longer I can do the walkin cooler job
-It is literally killing me no matter how much I try to acclimate to it.
-
-I'm so pissed off at myself cause I can't even solve this problem
-
-I filled a glass with black tea
-cause I've been down to only 200mg of caffeine lately.
-I'm chugging it as fast as I can.
-I HAVE to solve this
-
-WAKE UP
-
-It isn't even that bad I completely understand why it doesn't work
-
-Moving to a larger column index is far easier
-Somehow I need to determine how large the tabs are that appear to the left of my cursor when moving to a smaller column index.
-
-Everytime I think of the words "WAKE UP" I just think of "WAKE UP ILYA" and I start laughin
-
-"I'm incompetent at writing code"... "DRUGS, just solve all your problems with stimulants. It's just caffeine I mean that's practically a daily multivitamin in our society"
-I'm half a sleep
-
-I'm gonna ask my boss if I can go down to every 4th day I think it'd help immensely.
-I WANT to work at quickcheck I'm lazy, and this is a super easy job.
-I just don't want to sacrifice my health for it is all.
-
-I made a pub pl cause the social anxiety of it wakes me up a bit.
-
-It's getting colder out I think that's why the 3rd day schedule is starting to show signs of issues.
-Cause now I get the nose bleeds from just being awake so to speak
-and then go in the cooler it is way worsened I think is what it is
-
-It's not just that though it is so bad for your skin to be in the walk in cooler.
-I can't stand it.
-I only need a few hours a week.
 
 */

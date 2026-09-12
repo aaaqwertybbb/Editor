@@ -8305,4 +8305,14 @@ you just immediately see the size of it from the modulo math.
 "Poor Fool, He Makes Me Laugh"
 I see it right now
 
+"Poor Fool, He Makes Me Laugh"
+"Poor Fool, He Makes Me Laugh"
+"Poor Fool, He Makes Me Laugh"
+"Poor Fool, He Makes Me Laugh"
+"Poor Fool, He Makes Me Laugh"
+FUCK
+"Poor Fool, He Makes Me Laugh"
+"Poor Fool, He Makes Me Laugh"
+
+
 */

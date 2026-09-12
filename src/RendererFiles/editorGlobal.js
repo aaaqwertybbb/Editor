@@ -8133,11 +8133,9 @@ vertical += lineHeight;
 < To update them without re-instantiating wrappers inside the loop, the cleanest approach is to keep a small parallel array of reference objects, or use the direct fast-path setter.
 
 Mandatories:
-- [x] Ctrl Key Modified (2x throughput)
-    - [x] ArrowLeft
-    - [x] ArrowRight
-- [ ] Either: (1x personal record)
-    - [ ] A full reset case
-        - [x] Mouse down (change in line index)
-    - [ ] A mouse event related scenario that acts on the same line index multiple times.
+- [ ] mouse down, but for the same line index (i.e: not a full reset, only check for tabs in the space "traveled")
+    - [ ] to a smaller column index
+    - [ ] to a larger column index
+
+
 */

@@ -8251,4 +8251,9 @@ It is literally killing me no matter how much I try to acclimate to it.
 
 I'm so pissed off at myself cause I can't even solve this problem
 
+I filled a glass with black tea
+cause I've been down to only 200mg of caffeine lately.
+I'm chugging it as fast as I can.
+I HAVE to solve this
+
 */
